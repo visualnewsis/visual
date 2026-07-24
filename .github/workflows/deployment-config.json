@@ -5,9 +5,9 @@
     "username": "newsis",
     "port": "22",
     "beforeHooks": "",
-    "afterHooks": "cd $BASE_PATH/writable; pwd; find ./ -type d -exec chmod g+w {} \\;",
+    "afterHooks": ""
     "backbeforeHooks": "",
-    "backafterHooks": "cd $BACK_PATH/writable; pwd; find ./ -type d -exec chmod g+w {} \\;",
+    "backafterHooks": "",
     "path": "/home/newsis/sites/visual/htdocs",
     "gitDownFolder": "/home/newsis/deployGithub"
   }
