@@ -1,0 +1,195 @@
+name: interactive article by edit
+
+concurrency: 
+  group: production
+  cancel-in-progress: true
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  # checkout을 통하여 github에서 최신 소스를 확보하여 tar 로 묶고 upload 기능을 통하여 공용공간에 업로드하고 여러서버의 정보가 담긴 json의 서버 정보를 읽어와서 github 정보변수에 담습니다.
+  create-deployment-artifacts:
+    name : Create deployment artifacts
+    runs-on: [ self-hosted ]
+    outputs:
+      DEPLOYMENT_MATRIX: ${{ steps.export-deployment-matrix.outputs.DEPLOYMENT_MATRIX }}
+    
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          clean: true
+
+      - name: echo ref name
+        run: |
+          echo 'Hi ~ ${{ github.ref_name }}'
+      # tar 시에 z 로 압축하면 exclude로 제외한 파일 이외에 다른파일이 임시로 생성되었다가 처리되므로 계속 exit code가 1로 나온다.. 압축이 굳이 필요하지 않다면 제외하자..
+      - name: create deployment artifact
+        env: 
+          GITHUB_SHA: ${{ github.sha }}
+        run: |
+          tar -cvf "${GITHUB_SHA}".tar.gz --exclude="${GITHUB_SHA}".tar.gz --exclude=*.git --exclude=node_modules .
+
+      - name: Store artifact for distribution
+        uses: actions/upload-artifact@v4
+        with:
+          name: app-build-${{ matrix.runs-on }}
+          path: ${{ github.sha }}.tar.gz
+
+      - name: Export deployment matrix
+        id: export-deployment-matrix
+        run: |
+            delimiter="$(openssl rand -hex 8)"
+            JSON="$(cat ./.github/workflows/deployment-config.json)"
+            echo "DEPLOYMENT_MATRIX<<${delimiter}" >> "${GITHUB_OUTPUT}"
+            echo "$JSON" >> "${GITHUB_OUTPUT}"
+            echo "${delimiter}" >> "${GITHUB_OUTPUT}"
+
+  # 상기 작업에서 업로드한 소스를 다운받고 scp-action을 통하여 배포하려는 서버에 특정 account로 접속하여 복제하고 특정 임시 폴더를 생성하여 압축을 해제합니다.
+  prepare-release-on-servers:
+    name: "${{ matrix.server.name }}: Prepare release"
+    runs-on: [ self-hosted ]
+    needs: create-deployment-artifacts
+    strategy:
+      matrix:
+        server: ${{ fromJson(needs.create-deployment-artifacts.outputs.DEPLOYMENT_MATRIX) }}
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: app-build-*
+          merge-multiple: true
+
+      - name: Upload
+        uses: appleboy/scp-action@master
+        with:
+          host: ${{ matrix.server.ip }}
+          username: ${{ matrix.server.username }}
+          password: ${{ secrets.SSH_PW }}
+          port: ${{ matrix.server.port }}
+          source: ${{ github.sha }}.tar.gz
+          target: ${{ matrix.server.gitDownFolder }}/artifacts
+
+      - name: Extract archive and create directories
+        uses: appleboy/ssh-action@master
+        env:
+          GITHUB_SHA: ${{ github.sha }}
+        with:
+          host: ${{ matrix.server.ip }}
+          username: ${{ matrix.server.username }}
+          password: ${{ secrets.SSH_PW }}
+          port: ${{ matrix.server.port }}
+          envs: GITHUB_SHA
+          script: |
+            mkdir -p "${{ matrix.server.gitDownFolder }}/releases/${GITHUB_SHA}"
+            tar -xvf ${{ matrix.server.gitDownFolder }}/artifacts/${GITHUB_SHA}.tar.gz -C "${{ matrix.server.gitDownFolder }}/releases/${GITHUB_SHA}"
+
+  # json에 설정된 압축을 풀고 사전 실행해야 할 작업이 있을때 ssh-action을 통하여 계정 접속을 하여 실행합니다.
+  run-before-hooks:
+    name: "${{ matrix.server.name }}: Before hook"
+    runs-on: [ self-hosted ]
+    needs: [ create-deployment-artifacts, prepare-release-on-servers ]
+    strategy:
+      matrix:
+        server: ${{ fromJson(needs.create-deployment-artifacts.outputs.DEPLOYMENT_MATRIX) }}
+    steps:
+      - name: Run before hooks
+        uses: appleboy/ssh-action@master
+        env:
+          GITHUB_SHA: ${{ github.sha }}
+          RELEASE_PATH: ${{ matrix.server.gitDownFolder }}/releases/${{ github.sha }}
+          BASE_PATH: ${{ matrix.server.path }}
+          BACK_PATH: ${{ matrix.server.backPath }}
+          BACK_OK: ${{ matrix.server.isBack }}
+          BRANCH_NAME: ${{ github.head_ref || github.ref_name }}
+        with:
+          host: ${{ matrix.server.ip }}
+          username: ${{ matrix.server.username }}
+          password: ${{ secrets.SSH_PW }}
+          port: ${{ matrix.server.port }}
+          envs: GITHUB_SHA,RELEASE_PATH,BASE_PATH,BACK_PATH,BACK_OK,BRANCH_NAME
+          script: |
+            echo 'main before'
+            ${{ matrix.server.beforeHooks }}
+
+  # ssh-action을 통하여 서버에 계정으로 접속하여 해당 어플리케이션을 실행할 스크립트를 실행합니다.
+  activate-release:
+    name: "${{ matrix.server.name }}: Activate release"
+    runs-on: [ self-hosted ]
+    needs: [ create-deployment-artifacts, prepare-release-on-servers, run-before-hooks ]
+    strategy:
+      matrix:
+        server: ${{ fromJson(needs.create-deployment-artifacts.outputs.DEPLOYMENT_MATRIX) }}
+    steps:
+      - name: Activate release
+        uses: appleboy/ssh-action@master
+        env:
+          GITHUB_SHA: ${{ github.sha }}
+          RELEASE_PATH: ${{ matrix.server.gitDownFolder }}/releases/${{ github.sha }}/
+          BASE_PATH: ${{ matrix.server.path }}
+          BACK_PATH: ${{ matrix.server.backPath }}
+          BACK_OK: ${{ matrix.server.isBack }}
+          BRANCH_NAME: ${{ github.head_ref || github.ref_name }}
+        with:
+          host: ${{ matrix.server.ip }}
+          username: ${{ matrix.server.username }}
+          password: ${{ secrets.SSH_PW }}
+          port: ${{ matrix.server.port }}
+          envs: GITHUB_SHA,RELEASE_PATH,BASE_PATH,BACK_PATH,BACK_OK,BRANCH_NAME
+          script: |
+            echo $BRANCH_NAME
+            rsync -avz --exclude=.git $RELEASE_PATH $BASE_PATH
+            cd $BASE_PATH
+
+  # ssh-action을 통하여 json에 설정된 서버 실행 이후 처리할 작업을 진행합니다..
+  run-after-hooks:
+    name: "${{ matrix.server.name }}: After hook"
+    runs-on: [ self-hosted ]
+    needs: [ create-deployment-artifacts, prepare-release-on-servers, run-before-hooks, activate-release ]
+    strategy:
+      matrix:
+        server: ${{ fromJson(needs.create-deployment-artifacts.outputs.DEPLOYMENT_MATRIX) }}
+    steps:
+      - name: Run after hooks
+        uses: appleboy/ssh-action@master
+        env:
+          GITHUB_SHA: ${{ github.sha }}
+          RELEASE_PATH: ${{ matrix.server.gitDownFolder }}/releases/${{ github.sha }}
+          BASE_PATH: ${{ matrix.server.path }}
+          BACK_PATH: ${{ matrix.server.backPath }}
+          BACK_OK: ${{ matrix.server.isBack }}
+          BRANCH_NAME: ${{ github.head_ref || github.ref_name }}
+        with:
+          host: ${{ matrix.server.ip }}
+          username: ${{ matrix.server.username }}
+          password: ${{ secrets.SSH_PW }}
+          port: ${{ matrix.server.port }}
+          envs: GITHUB_SHA,RELEASE_PATH,BASE_PATH,BACK_PATH,BACK_OK,BRANCH_NAME
+          script: |
+            echo 'main after'
+            ${{ matrix.server.afterHooks }}
+
+  # 모든 과정이 완료된 후 앞서 생성했던 임시 폴더 및 작업에 대한 뒷처리를 진행합니다.
+  clean-up:
+    name: "${{ matrix.server.name }}: Clean up"
+    runs-on: [ self-hosted ]
+    needs: [ create-deployment-artifacts, prepare-release-on-servers, run-before-hooks, activate-release, run-after-hooks ]
+    strategy:
+      matrix:
+        server: ${{ fromJson(needs.create-deployment-artifacts.outputs.DEPLOYMENT_MATRIX) }}
+    steps:
+      - name: Run after hooks
+        uses: appleboy/ssh-action@master
+        env:
+          RELEASES_PATH: ${{ matrix.server.gitDownFolder }}/releases
+          ARTIFACTS_PATH: ${{ matrix.server.gitDownFolder }}/artifacts
+        with:
+          host: ${{ matrix.server.ip }}
+          username: ${{ matrix.server.username }}
+          password: ${{ secrets.SSH_PW }}
+          port: ${{ matrix.server.port }}
+          envs: RELEASES_PATH,ARTIFACTS_PATH
+          script: |
+            cd $RELEASES_PATH && ls -t -1 | tail -n +6 | xargs rm -rf
+            cd $ARTIFACTS_PATH && ls -t -1 | tail -n +6 | xargs rm -rf
