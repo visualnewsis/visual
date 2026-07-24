@@ -5,7 +5,7 @@
     "username": "newsis",
     "port": "22",
     "beforeHooks": "",
-    "afterHooks": ""
+    "afterHooks": "",
     "backbeforeHooks": "",
     "backafterHooks": "",
     "path": "/home/newsis/sites/visual/htdocs",
