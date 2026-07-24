@@ -180,7 +180,7 @@ jobs:
         server: ${{ fromJson(needs.create-deployment-artifacts.outputs.DEPLOYMENT_MATRIX) }}
     steps:
       - name: Sleep to avoid SSH rate limit
-        run: sleep 10
+        run: sleep 4
 
       - name: Run after hooks
         uses: appleboy/ssh-action@master
