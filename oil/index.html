@@ -54,8 +54,17 @@ a{color:inherit}
   transition:.25s;
 }
 .topbar.scrolled{background:rgba(4,7,8,.92);backdrop-filter:blur(12px);border-bottom:1px solid rgba(255,255,255,.12)}
-.brand{font-size:12px;font-weight:900;letter-spacing:.22em}
-.issue{font-size:12px;font-weight:800;color:var(--accent);letter-spacing:.12em}
+.brand{position:relative;z-index:2;font-size:12px;font-weight:900;letter-spacing:.22em;text-decoration:none}
+.issue{position:relative;z-index:2;font-size:12px;font-weight:800;color:var(--accent);letter-spacing:.12em}
+.newsis-logo{
+  position:absolute;z-index:3;left:50%;top:50%;
+  width:112px;height:40px;transform:translate(-50%,-50%);
+  transition:opacity .2s ease,transform .2s ease;
+}
+.newsis-logo:hover,.newsis-logo:focus-visible{opacity:.78;transform:translate(-50%,-50%) scale(1.03)}
+.newsis-logo img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain}
+.newsis-logo .white-layer{filter:brightness(0) invert(1)}
+.newsis-logo .mint-layer{clip-path:inset(0 0 0 78%)}
 
 .hero{
   min-height:100svh;position:relative;overflow:hidden;color:white;
@@ -287,6 +296,11 @@ input[type=range]{width:100%;accent-color:var(--accent)}
   .choice-grid{grid-template-columns:1fr 1fr}
 }
 @media(max-width:560px){
+  .topbar{padding:0 14px}
+  .brand{font-size:10px;letter-spacing:.13em}
+  .newsis-logo{width:84px;height:31px}
+  .issue{font-size:9px;letter-spacing:.06em}
+  .issue-series{display:none}
   .hero h1{font-size:50px}
   .impact-grid,.choice-grid{grid-template-columns:1fr}
   .end{min-height:760px;background-position:62% center}
@@ -408,8 +422,12 @@ input[type=range]{width:100%;accent-color:var(--accent)}
 <body>
 <div class="progress" id="progress"></div>
 <header class="topbar" id="topbar">
-  <div class="brand">VISUAL NEWSIS</div>
-  <div class="issue">편집# 001 · INTERACTIVE SERIES</div>
+  <a class="brand" href="https://visual.newsis.com/" aria-label="비주얼 뉴시스 홈">VISUAL NEWSIS</a>
+  <a class="newsis-logo" href="https://www.newsis.com/" aria-label="뉴시스 홈페이지로 이동">
+    <img class="white-layer" src="../assets/logo2024.png" alt="">
+    <img class="mint-layer" src="../assets/logo2024.png" alt="공감언론 뉴시스">
+  </a>
+  <div class="issue"><span>편집# 001</span><span class="issue-series"> · INTERACTIVE SERIES</span></div>
 </header>
 
 <section class="hero">
