@@ -791,12 +791,20 @@ renderScenario();
 </script>
 
 <script>
-const photoObserver = new IntersectionObserver((entries)=>{
-  entries.forEach(entry=>{
-    if(entry.isIntersecting) entry.target.classList.add('visible');
-  });
-},{threshold:.28});
-document.querySelectorAll('.photo-story').forEach(el=>photoObserver.observe(el));
+const photoStories = document.querySelectorAll('.photo-story');
+if('IntersectionObserver' in window){
+  const photoObserver = new IntersectionObserver((entries)=>{
+    entries.forEach(entry=>{
+      if(entry.isIntersecting){
+        entry.target.classList.add('visible');
+        photoObserver.unobserve(entry.target);
+      }
+    });
+  },{threshold:.08,rootMargin:'0px 0px -8% 0px'});
+  photoStories.forEach(el=>photoObserver.observe(el));
+}else{
+  photoStories.forEach(el=>el.classList.add('visible'));
+}
 </script>
 
 <script>
@@ -829,20 +837,28 @@ document.querySelectorAll('.photo-story').forEach(el=>photoObserver.observe(el))
 
   let metricsPlayed=false;
   const choke=document.querySelector('.choke');
-  const metricsObserver=new IntersectionObserver(entries=>{
-    entries.forEach(entry=>{
-      if(entry.isIntersecting && !metricsPlayed){
-        metricsPlayed=true;
-        choke.classList.add('motion-visible');
-        choke.querySelectorAll('.count-up').forEach((el,i)=>{
-          animateNumber(el,0,Number(el.dataset.count),1050+i*160,Number(el.dataset.decimals||0),el.dataset.suffix||'');
-        });
-        choke.querySelectorAll('.count-range').forEach(el=>animateRange(el,Number(el.dataset.from),Number(el.dataset.to),1450,Number(el.dataset.decimals||1)));
-        metricsObserver.disconnect();
-      }
+  const playMetrics=()=>{
+    if(!choke || metricsPlayed) return;
+    metricsPlayed=true;
+    choke.classList.add('motion-visible');
+    choke.querySelectorAll('.count-up').forEach((el,i)=>{
+      animateNumber(el,0,Number(el.dataset.count),1050+i*160,Number(el.dataset.decimals||0),el.dataset.suffix||'');
     });
-  },{threshold:.34});
-  if(choke) metricsObserver.observe(choke);
+    choke.querySelectorAll('.count-range').forEach(el=>animateRange(el,Number(el.dataset.from),Number(el.dataset.to),1450,Number(el.dataset.decimals||1)));
+  };
+  if(choke && 'IntersectionObserver' in window){
+    const metricsObserver=new IntersectionObserver(entries=>{
+      entries.forEach(entry=>{
+        if(entry.isIntersecting){
+          playMetrics();
+          metricsObserver.disconnect();
+        }
+      });
+    },{threshold:.08,rootMargin:'0px 0px -8% 0px'});
+    metricsObserver.observe(choke);
+  }else{
+    playMetrics();
+  }
 
   let sliderPlayed=false, sliderRAF=0;
   const sim=document.querySelector('.sim');
@@ -873,12 +889,21 @@ document.querySelectorAll('.photo-story').forEach(el=>photoObserver.observe(el))
   if(slider){
     slider.addEventListener('pointerdown',()=>{ if(sliderRAF) cancelAnimationFrame(sliderRAF); slider.classList.remove('auto-running'); sliderPlayed=true; },{once:true});
   }
-  const simObserver=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.isIntersecting){sim.classList.add('motion-visible');playSlider();simObserver.disconnect();}}),{threshold:.28});
-  if(sim) simObserver.observe(sim);
+  if(sim && 'IntersectionObserver' in window){
+    const simObserver=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.isIntersecting){sim.classList.add('motion-visible');playSlider();simObserver.disconnect();}}),{threshold:.08,rootMargin:'0px 0px -8% 0px'});
+    simObserver.observe(sim);
+  }else if(sim){
+    sim.classList.add('motion-visible');
+    playSlider();
+  }
 
   const korea=document.querySelector('.korea');
-  const koreaObserver=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.isIntersecting){korea.classList.add('motion-visible');koreaObserver.disconnect();}}),{threshold:.3});
-  if(korea) koreaObserver.observe(korea);
+  if(korea && 'IntersectionObserver' in window){
+    const koreaObserver=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.isIntersecting){korea.classList.add('motion-visible');koreaObserver.disconnect();}}),{threshold:.08,rootMargin:'0px 0px -8% 0px'});
+    koreaObserver.observe(korea);
+  }else if(korea){
+    korea.classList.add('motion-visible');
+  }
 })();
 </script>
 
