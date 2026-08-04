@@ -136,7 +136,7 @@
         </div>
       </div>
       <div class="thumb" aria-hidden="true"></div>
-      <div class="start" id="start"><button type="button">화면을 켜고 시작</button><p>실제 재난문자가 아닌 시각화입니다</p></div>
+      <div class="start" id="start"><button type="button">소리와 함께 시작</button><p>소리·진동이 재생되는 가상 체험입니다</p></div>
       <div class="scroll-cue" id="scrollCue">천천히 스크롤하세요</div>
     </section>
 
@@ -180,7 +180,8 @@
     const $=(s,c=document)=>c.querySelector(s), $$=(s,c=document)=>[...c.querySelectorAll(s)];
     const intro=$('#intro'),phone=$('#phone'),notice=$('#notice'),start=$('#start'),cue=$('#scrollCue'),timer=$('#timer'),bar=$('#bar');
     let begun=false, audioCtx, countdownStart=0;
-    function buzz(){try{audioCtx=new (window.AudioContext||window.webkitAudioContext)();const gain=audioCtx.createGain(),osc=audioCtx.createOscillator();osc.type='sawtooth';osc.frequency.value=72;gain.gain.setValueAtTime(.0001,audioCtx.currentTime);gain.gain.exponentialRampToValueAtTime(.055,audioCtx.currentTime+.03);gain.gain.exponentialRampToValueAtTime(.0001,audioCtx.currentTime+.42);osc.connect(gain).connect(audioCtx.destination);osc.start();osc.stop(audioCtx.currentTime+.45)}catch(e){} if(navigator.vibrate)navigator.vibrate([160,70,220])}
+    function soundContext(){try{if(!audioCtx)audioCtx=new (window.AudioContext||window.webkitAudioContext)();if(audioCtx.state==='suspended')audioCtx.resume();return audioCtx}catch(e){return null}}
+    function buzz(){const c=soundContext();try{if(c){const master=c.createGain(),low=c.createOscillator(),rumble=c.createOscillator(),now=c.currentTime;low.type='square';low.frequency.value=78;rumble.type='sawtooth';rumble.frequency.value=116;master.gain.setValueAtTime(.0001,now);[[0,.075],[.16,.0001],[.23,.085],[.46,.0001],[.54,.09],[.92,.0001]].forEach(([t,v])=>master.gain.linearRampToValueAtTime(v,now+t));low.connect(master);rumble.connect(master);master.connect(c.destination);low.start(now);rumble.start(now);low.stop(now+.95);rumble.stop(now+.95)}}catch(e){}if(navigator.vibrate)navigator.vibrate([220,80,260,80,360])}
     start.querySelector('button').addEventListener('click',()=>{if(begun)return;begun=true;intro.classList.add('started');setTimeout(()=>{intro.classList.add('freeze');phone.classList.add('vibrate');notice.classList.add('show');buzz()},1500);setTimeout(()=>{intro.classList.add('zoom');cue.classList.add('on')},3900)});
     const copies=$$('[data-copy]');
     function update(){const y=scrollY,h=document.documentElement.scrollHeight-innerHeight,p=Math.max(0,Math.min(1,y/h));bar.style.width=(p*100)+'%';
@@ -199,7 +200,7 @@
     addEventListener('wheel',blockGate,{passive:false});addEventListener('touchmove',blockGate,{passive:false});addEventListener('keydown',blockGate,{passive:false});
     const gateObserver=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.isIntersecting&&!e.target.dataset.resolved&&!gateActive){activeChapter=e.target;gateActive=true;document.documentElement.classList.add('gate-lock');activeChapter.scrollIntoView({behavior:'smooth',block:'start'})}}),{threshold:.72});$$('.decision-chapter').forEach(ch=>gateObserver.observe(ch));
     function openGate(chapter){chapter.dataset.resolved='true';gateActive=false;activeChapter=null;document.documentElement.classList.remove('gate-lock')}
-    function failTone(){try{const c=audioCtx||new (window.AudioContext||window.webkitAudioContext)(),g=c.createGain(),o=c.createOscillator();o.type='square';o.frequency.value=182;g.gain.setValueAtTime(.035,c.currentTime);g.gain.setValueAtTime(.035,c.currentTime+1.3);g.gain.exponentialRampToValueAtTime(.0001,c.currentTime+1.55);o.connect(g).connect(c.destination);o.start();o.stop(c.currentTime+1.6)}catch(e){} if(navigator.vibrate)navigator.vibrate([500,80,700])}
+    function failTone(){const c=soundContext();try{if(c){const g=c.createGain(),o=c.createOscillator(),now=c.currentTime;o.type='sine';o.frequency.setValueAtTime(760,now);o.frequency.linearRampToValueAtTime(690,now+2.8);g.gain.setValueAtTime(.0001,now);g.gain.linearRampToValueAtTime(.075,now+.04);g.gain.setValueAtTime(.075,now+2.55);g.gain.exponentialRampToValueAtTime(.0001,now+2.9);o.connect(g).connect(c.destination);o.start(now);o.stop(now+2.95)}}catch(e){}if(navigator.vibrate)navigator.vibrate([650,100,900])}
     function showExperience(chapter){
       overlayTimers.forEach(clearTimeout);overlayTimers=[];
       $('#failTitle').innerHTML=chapter.dataset.failTitle.replace('재난 행동요령과','재난 행동요령과<br>');$('#failCopy').textContent=chapter.dataset.failCopy;
