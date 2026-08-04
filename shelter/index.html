@@ -207,7 +207,7 @@
     function fmt(s){return String(Math.floor(s/60)).padStart(2,'0')+':'+String(s%60).padStart(2,'0')}
     addEventListener('scroll',update,{passive:true});addEventListener('resize',update);setInterval(update,250);update();
     const windowChapter=$$('.decision-chapter')[1];windowChapter.classList.add('window-chapter');
-    const io=new IntersectionObserver(es=>es.forEach(e=>{e.target.classList.toggle(e.target.classList.contains('cinematic')?'inview':'in',e.isIntersecting);if(e.isIntersecting&&e.target===windowChapter&&!e.target.dataset.impacted){e.target.dataset.impacted='true';impactTone()}}),{threshold:.28});$$('.chapter,.cinematic,.aftermath,.thesis').forEach(x=>io.observe(x));
+    const io=new IntersectionObserver(es=>es.forEach(e=>{e.target.classList.toggle(e.target.classList.contains('cinematic')?'inview':'in',e.isIntersecting)}),{threshold:.28});$$('.chapter,.cinematic,.aftermath,.thesis').forEach(x=>io.observe(x));
     const fail=$('#failOverlay'),rewind=$('#rewind');
     let gateActive=false,activeChapter=null,overlayTimers=[];
     const blockKeys=new Set(['ArrowDown','ArrowUp','PageDown','PageUp',' ','Home','End']);
