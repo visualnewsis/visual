@@ -68,14 +68,20 @@
     .story-copy h3{margin:auto 0 18px;font-size:clamp(35px,4.6vw,70px);line-height:1.05;letter-spacing:-.065em}
     .story-copy p{margin:0;color:#656b69;font-size:13px;line-height:1.8}
     .enter{margin-top:32px;padding-top:18px;border-top:1px solid var(--line);display:flex;justify-content:space-between;align-items:center;font-size:12px;font-weight:800}.enter i{width:46px;height:46px;border-radius:50%;display:grid;place-items:center;background:var(--ink);color:var(--white);font-style:normal;transition:background .25s,transform .25s}.story:hover .enter i{background:var(--cyan);color:var(--ink);transform:translate(4px,-4px)}
+    .play-break{margin:0 var(--pad) clamp(80px,11vw,150px);min-height:300px;display:grid;grid-template-columns:minmax(0,1fr) minmax(280px,.7fr);background:#17231c;color:var(--white);overflow:hidden}
+    .play-break-copy{padding:clamp(38px,6vw,78px);display:flex;flex-direction:column;align-items:flex-start}.play-break-kicker{font-size:10px;font-weight:800;letter-spacing:.18em;color:var(--cyan)}
+    .play-break h3{margin:28px 0 18px;font-size:clamp(36px,5vw,68px);line-height:1.05;letter-spacing:-.06em}.play-break p{margin:0;color:#b7c1bb;font-size:13px;line-height:1.8}.play-break-link{margin-top:auto;padding:18px 0 8px;min-width:min(100%,260px);display:flex;justify-content:space-between;border-bottom:1px solid var(--cyan);font-size:12px;font-weight:800}
+    .play-break-art{position:relative;background:#b38a56;overflow:hidden}.play-break-art::before{content:"";position:absolute;inset:0;background-image:linear-gradient(rgba(46,28,14,.34) 1px,transparent 1px),linear-gradient(90deg,rgba(46,28,14,.34) 1px,transparent 1px);background-size:12.5% 12.5%;transform:rotate(-7deg) scale(1.25)}
+    .play-stone{position:absolute;width:42px;aspect-ratio:1;border-radius:50%;box-shadow:0 8px 12px rgba(47,29,13,.35)}.play-stone.one{left:24%;top:30%;background:radial-gradient(circle at 30% 25%,#667068,#101512 55%,#000)}.play-stone.two{left:38%;top:45%;background:radial-gradient(circle at 30% 25%,#fff,#dedbd1 58%,#aaa)}
+    .play-card{position:absolute;right:14%;bottom:-10%;width:31%;aspect-ratio:2/3;border:1px solid #d6b36a;background:#0b0907;transform:rotate(12deg);box-shadow:0 22px 34px rgba(42,25,11,.45)}.play-card::before{content:"✦";position:absolute;inset:9px;border:1px solid rgba(214,179,106,.6);display:grid;place-items:center;color:#d6b36a;font-size:30px}
     .signature{padding:clamp(90px,12vw,175px) var(--pad);background:var(--cyan);display:grid;grid-template-columns:1fr 1fr;gap:7vw}
     .signature h2{margin:0;font-size:clamp(52px,9vw,140px);line-height:.82;letter-spacing:-.095em}.signature h2 span{display:block;margin-left:12%}
     .signature-copy{display:flex;flex-direction:column;justify-content:space-between;gap:72px}.signature-copy>p{margin:0;font-size:clamp(21px,2.4vw,34px);font-weight:800;line-height:1.55;letter-spacing:-.04em}
     .principles{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}.principles div{border-top:1px solid var(--ink);padding-top:15px;font-size:12px;font-weight:800}.principles small{display:block;margin-bottom:7px;font-size:10px;opacity:.55}
     footer{padding:34px var(--pad);background:var(--ink);color:var(--white);display:flex;align-items:end;justify-content:space-between}.foot-title{font-size:25px;font-weight:900;letter-spacing:-.04em}.foot-title em{font-style:normal;color:var(--cyan)}footer p{margin:6px 0 0;color:#737b79;font-size:10px;letter-spacing:.12em}.back{font-size:11px;font-weight:800;color:var(--cyan)}
     .reveal{opacity:0;transform:translateY(34px);transition:opacity .8s ease,transform .8s cubic-bezier(.2,.8,.2,1)}.reveal.visible{opacity:1;transform:none}
-    @media(max-width:900px){.hero{grid-template-columns:1fr}.hero-copy{max-width:610px}.manifesto{grid-template-columns:1fr}.manifesto-text{grid-column:1}.story{grid-template-columns:64px 1fr}.story-copy{grid-column:2}.signature{grid-template-columns:1fr}.archive-head span{display:none}}
-    @media(max-width:580px){.masthead{height:64px;padding:0 18px}.visual-brand{font-size:10px}.newsis{width:82px}.mast-right{font-size:9px}.hero{min-height:calc(100svh - 64px);padding-left:22px;padding-right:22px}.hero h1{font-size:clamp(88px,28vw,144px)}.hero-credit{margin-top:58px}.scroll-cue span:last-child{display:none}.manifesto,.archive,.signature{padding-left:22px;padding-right:22px}.story{grid-template-columns:1fr;padding:28px 0;gap:18px}.story-num{font-size:11px}.story-image{min-height:270px}.story-copy{grid-column:1;min-height:300px}.principles{grid-template-columns:1fr}.principles div{padding-bottom:16px}footer{align-items:start;gap:25px;flex-direction:column}}
+    @media(max-width:900px){.hero{grid-template-columns:1fr}.hero-copy{max-width:610px}.manifesto{grid-template-columns:1fr}.manifesto-text{grid-column:1}.story{grid-template-columns:64px 1fr}.story-copy{grid-column:2}.signature{grid-template-columns:1fr}.archive-head span{display:none}.play-break{grid-template-columns:1fr}.play-break-art{min-height:280px}}
+    @media(max-width:580px){.masthead{height:64px;padding:0 18px}.visual-brand{font-size:10px}.newsis{width:82px}.mast-right{font-size:9px}.hero{min-height:calc(100svh - 64px);padding-left:22px;padding-right:22px}.hero h1{font-size:clamp(88px,28vw,144px)}.hero-credit{margin-top:58px}.scroll-cue span:last-child{display:none}.manifesto,.archive,.signature{padding-left:22px;padding-right:22px}.story{grid-template-columns:1fr;padding:28px 0;gap:18px}.story-num{font-size:11px}.story-image{min-height:270px}.story-copy{grid-column:1;min-height:300px}.principles{grid-template-columns:1fr}.principles div{padding-bottom:16px}.play-break{margin-inline:0}.play-break-copy{min-height:330px}.play-break-art{min-height:230px}footer{align-items:start;gap:25px;flex-direction:column}}
     @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*::before,*::after{animation:none!important;transition:none!important}.reveal{opacity:1;transform:none}}
   </style>
 </head>
@@ -142,6 +148,11 @@
         </div>
       </a>
     </section>
+
+    <aside class="play-break reveal" aria-labelledby="play-break-title">
+      <div class="play-break-copy"><span class="play-break-kicker">쉬어가는 곳 · CHUNGMURO PLAYGROUND</span><h3 id="play-break-title">잠깐,<br>놀다가기</h3><p>놀다보면 보입니다.</p><a class="play-break-link" href="../arcade/"><span>충무로 놀이마당 입장</span><span aria-hidden="true">↗</span></a></div>
+      <div class="play-break-art" aria-hidden="true"><i class="play-stone one"></i><i class="play-stone two"></i><i class="play-card"></i></div>
+    </aside>
 
     <section class="signature reveal" aria-labelledby="signature-title">
       <h2 id="signature-title">팩트<span>너머로.</span></h2>

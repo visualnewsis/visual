@@ -7,6 +7,14 @@
   align-items: center;
 }
 
+.theme-printshop .site-header {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  position: relative;
+  z-index: 30;
+}
+
 .newsis-logo {
   display: block;
   justify-self: center;
@@ -70,22 +78,32 @@
   text-shadow: 0 1px 0 rgba(255,255,255,.25);
 }
 
+.theme-landing .game-list { grid-template-columns: repeat(3, 1fr); }
+.theme-landing .game-card--printshop { background: #15221b; }
+.theme-landing .visual--printshop { background: #17231c url("./assets/printshop-hunminjeongeum.jpg") center/cover no-repeat; overflow: hidden; transform: rotate(2deg); box-shadow: 0 25px 45px #080b09; }
+.theme-landing .visual--printshop::before { content: ""; position: absolute; inset: 0; background: linear-gradient(145deg,transparent 50%,rgba(9,15,11,.22)); }
+.theme-landing .visual--printshop i,.theme-landing .visual--printshop em { display: none; }
+
 @media (max-width: 760px) {
   .theme-landing > header,
   .theme-omok .site-header,
   .theme-tarot .site-header {
     grid-template-columns: 1fr auto 1fr;
   }
+  .theme-printshop .site-header { grid-template-columns: 1fr auto 1fr; }
 
   .newsis-logo img { width: 84px; }
   .theme-landing .brand,
   .theme-omok .brand,
   .theme-tarot .brand { font-size: 12px; }
+  .theme-printshop .brand { font-size: 12px; }
   .visual-newsis { font-size: 8px; letter-spacing: .04em; }
   .visual-newsis { right: 20px; }
   .theme-omok .visual-newsis { right: 16px; }
   .theme-tarot .visual-newsis { right: 20px; }
+  .theme-printshop .visual-newsis { right: 16px; }
   .theme-omok .house-note { height: 36px; padding: 0 16px; font-size: 9px; }
   .theme-omok .view { min-height: calc(100svh - 100px); }
   .theme-landing .hero h1 strong { margin-left: 4vw; }
+  .theme-landing .game-list { grid-template-columns: 1fr; }
 }
