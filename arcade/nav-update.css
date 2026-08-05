@@ -96,6 +96,69 @@
   text-shadow: 0 1px 0 rgba(255,255,255,.25);
 }
 
+.theme-landing .lead-key {
+  display: inline-block;
+  color: var(--red);
+  font-size: 1.3em;
+  font-weight: 700;
+  letter-spacing: -.07em;
+  line-height: 1;
+}
+
+.theme-landing .arcade-stick {
+  position: absolute;
+  z-index: 0;
+  right: clamp(7vw, 11vw, 160px);
+  bottom: clamp(55px, 9vh, 110px);
+  width: clamp(190px, 25vw, 370px);
+  height: clamp(170px, 23vw, 340px);
+  opacity: .16;
+  transform: rotate(-8deg);
+  pointer-events: none;
+}
+
+.theme-landing .arcade-stick::before {
+  content: "";
+  position: absolute;
+  left: 3%;
+  right: 3%;
+  bottom: 0;
+  height: 34%;
+  border: clamp(8px, 1vw, 14px) solid var(--ink);
+  border-radius: 50% 50% 38% 38%;
+  background: rgba(165,66,47,.2);
+  box-shadow: 18px 20px 0 rgba(16,23,18,.12);
+}
+
+.theme-landing .arcade-stick i {
+  position: absolute;
+  left: 50%;
+  bottom: 28%;
+  width: 9%;
+  height: 52%;
+  border-radius: 999px;
+  background: var(--ink);
+  transform: translateX(-50%) rotate(10deg);
+  transform-origin: 50% 100%;
+}
+
+.theme-landing .arcade-stick b {
+  position: absolute;
+  z-index: 1;
+  left: 58%;
+  top: 1%;
+  width: 27%;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: var(--red);
+  box-shadow: inset -12px -14px 0 rgba(16,23,18,.16);
+}
+
+.theme-landing .hero > :not(.arcade-stick) {
+  position: relative;
+  z-index: 1;
+}
+
 .theme-landing .game-list { grid-template-columns: repeat(3, 1fr); }
 .theme-landing .game-card--printshop { background: #15221b; }
 .theme-landing .visual--printshop { background: #17231c url("./assets/printshop-hunminjeongeum.jpg") center/cover no-repeat; overflow: hidden; transform: rotate(2deg); box-shadow: 0 25px 45px #080b09; }
@@ -124,5 +187,6 @@
   .theme-omok .house-note { height: 36px; padding: 0 16px; font-size: 9px; }
   .theme-omok .view { min-height: calc(100svh - 100px); }
   .theme-landing .hero h1 strong { margin-left: 4vw; }
+  .theme-landing .arcade-stick { right: -70px; bottom: 120px; width: 240px; height: 220px; opacity: .1; }
   .theme-landing .game-list { grid-template-columns: 1fr; }
 }
