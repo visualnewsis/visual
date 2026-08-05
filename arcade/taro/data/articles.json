@@ -1,0 +1,5 @@
+[
+  {"id":"shelter","label":"안전 · 인터랙티브","issue":"VISUAL NEWSIS 003","title":"대한민국, 준비됐나요?","description":"경보가 울린 뒤 첫 5분, 우리는 어디로 가고 무엇을 선택해야 할까요?","image":"../../shelter/images/seoul.webp","url":"../../shelter/index.html?v=20260804"},
+  {"id":"interest","label":"경제 · 데이터","issue":"VISUAL NEWSIS 002","title":"이자가 범인입니다","description":"숫자 뒤에 숨은 금리의 움직임이 우리의 생활비가 되는 과정을 따라갑니다.","image":"../../thief/images/visual-01.png","url":"../../thief/index.html"},
+  {"id":"oil","label":"국제 · 에너지","issue":"VISUAL NEWSIS 001","title":"호르무즈가 멈추면","description":"먼 바다의 긴장이 주유소와 장바구니에 도착하는 경로를 데이터로 읽습니다.","image":"../../oil/images/visual-01.jpg","url":"../../oil/index.html"}
+]

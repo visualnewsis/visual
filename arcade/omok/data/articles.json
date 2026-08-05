@@ -1,0 +1,5 @@
+[
+  {"id":"shelter","profile":"center","issue":"VISUAL NEWSIS 003 · 안전","title":"대한민국, 준비됐나요?","description":"당신은 중심을 지키며 다음 상황에 대비했습니다. 경보가 울린 뒤 우리가 향해야 할 곳을 직접 확인해보세요.","image":"../../shelter/images/seoul.webp","url":"../../shelter/index.html?v=20260804"},
+  {"id":"interest","profile":"attack","issue":"VISUAL NEWSIS 002 · 경제","title":"이자가 범인입니다","description":"당신은 작은 변화가 판 전체를 움직이는 순간을 놓치지 않았습니다. 금리의 한 수가 생활비에 닿는 경로를 따라가 보세요.","image":"../../thief/images/visual-01.png","url":"../../thief/index.html"},
+  {"id":"oil","profile":"edge","issue":"VISUAL NEWSIS 001 · 국제","title":"호르무즈가 멈추면","description":"당신은 가장자리에서 시작된 움직임이 중심까지 번지는 흐름을 읽었습니다. 먼 바다의 긴장이 우리 일상에 도착하는 길을 살펴보세요.","image":"../../oil/images/visual-01.jpg","url":"../../oil/index.html"}
+]

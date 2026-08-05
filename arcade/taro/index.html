@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#090909">
+  <title>충무로 타로# | 오늘의 타로 | 충무로 아케이드 | VISUAL NEWSIS</title>
+  <meta name="description" content="충무로 타로샵에서 오늘의 타로를 확인하세요. 카드를 두 장 선택하면 오늘의 해석과 오늘 읽어야 할 이야기를 만나게 됩니다.">
+  <meta name="robots" content="index,follow,max-image-preview:large">
+  <link rel="canonical" href="https://visual.newsis.com/arcade/tarot/">
+  <meta name="keywords" content="충무로 타로샵, 충무로 타로, 오늘의 타로, 서울 타로">
+  <meta property="og:type" content="website"><meta property="og:locale" content="ko_KR">
+  <meta property="og:title" content="충무로 타로# — 오늘 읽어야 할 이야기">
+  <meta property="og:description" content="카드 두 장이 오늘의 당신과, 오늘 읽어야 할 이야기를 보여드립니다.">
+  <meta property="og:url" content="https://visual.newsis.com/arcade/tarot/"><meta property="og:site_name" content="VISUAL NEWSIS">
+  <meta property="og:image" content="https://visual.newsis.com/arcade/tarot/assets/master/tarot-master.png"><meta property="og:image:width" content="1024"><meta property="og:image:height" content="1536">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./css/style.css"><link rel="stylesheet" href="./css/animation.css"><link rel="stylesheet" href="./css/responsive.css"><link rel="stylesheet" href="./css/tarot-upgrade.css">
+  <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebApplication","name":"충무로 타로#","url":"https://visual.newsis.com/arcade/tarot/","description":"카드 두 장으로 오늘의 해석과 읽어야 할 뉴스를 추천하는 인터랙티브 경험","applicationCategory":"EntertainmentApplication","inLanguage":"ko-KR","isAccessibleForFree":true,"publisher":{"@type":"NewsMediaOrganization","name":"뉴시스","url":"https://www.newsis.com/"}},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"VISUAL NEWSIS","item":"https://visual.newsis.com/"},{"@type":"ListItem","position":2,"name":"충무로 아케이드","item":"https://visual.newsis.com/arcade/"},{"@type":"ListItem","position":3,"name":"충무로 타로#","item":"https://visual.newsis.com/arcade/tarot/"}]}]}</script>
+</head>
+<body>
+  <a class="skip-link" href="#experience">콘텐츠로 바로가기</a>
+  <div class="noise" aria-hidden="true"></div>
+  <header class="site-header">
+    <a class="brand" href="./" aria-label="충무로 타로샵 처음으로">충무로 타로<span aria-hidden="true">#</span></a>
+    <a class="edition" href="https://visual.newsis.com/" aria-label="VISUAL NEWSIS 새 창에서 열기">VISUAL NEWSIS ↗</a>
+  </header>
+
+  <main id="experience">
+    <section class="scene scene--intro is-active" id="intro" aria-labelledby="intro-title">
+      <div class="intro-candle" aria-hidden="true"><i class="flame"></i><i class="wick"></i><i class="wax"></i></div>
+      <div class="intro-copy">
+        <p class="overline">CHUNGMURO · SEOUL</p>
+        <h1 id="intro-title">충무로 타로<span>#</span></h1>
+        <p class="intro-message">카드는 미래를<br>예언하지 않습니다.</p>
+        <p class="intro-message intro-message--sub">오늘 당신이 읽어야 할<br>이야기를 보여드립니다.</p>
+        <button class="button button--enter" id="enterButton" type="button"><span>입장하기</span><i aria-hidden="true">↘</i></button>
+      </div>
+      <p class="intro-index" aria-hidden="true">37°33′N · 126°59′E</p>
+    </section>
+
+    <section class="scene scene--reading" id="reading" aria-labelledby="reading-title" hidden>
+      <div class="master" aria-hidden="true"><div class="master-image"></div><div class="master-vignette"></div></div>
+      <div class="reading-content">
+        <div class="reading-intro">
+          <p class="overline">TODAY'S READING · CHUNGMURO</p>
+          <h2 id="reading-title">오늘, 무엇을<br>놓치고 있습니까?</h2>
+          <p>열 장 중 시선이 머무는 두 장을 선택하세요.<br>오래 고민하지 않아도 됩니다.</p>
+        </div>
+        <div class="selection-status" id="selectionStatus" aria-live="polite"><span>고른 카드</span><strong><b id="selectionCount">0</b> / 2</strong></div>
+        <div class="card-grid" id="cardGrid" role="group" aria-label="열 장의 타로 카드"></div>
+        <button class="button button--reveal" id="revealButton" type="button" disabled>카드 해석 <span aria-hidden="true">→</span></button>
+      </div>
+    </section>
+
+    <section class="scene scene--result" id="result" aria-labelledby="resultTitle" hidden>
+      <div class="result-header"><p class="overline">YOUR READING · TODAY</p><span id="resultDate"></span></div>
+      <div class="chosen-cards" id="chosenCards" aria-label="선택한 카드"></div>
+      <article class="interpretation">
+        <p class="result-label">오늘의 해석</p>
+        <h2 id="resultTitle"></h2>
+        <div id="resultText" class="reading-detail"></div>
+      </article>
+      <div class="closing-dialog" id="closingDialog"><span>THE READING ENDS HERE</span><p>카드의 이야기는 여기까지입니다.<br>이제 오늘의 세상을 읽어보세요.</p></div>
+      <section class="daily-story" aria-labelledby="storyHeading">
+        <div class="story-heading"><p class="overline">READ THE WORLD</p><h3 id="storyHeading">오늘의 추천 기사</h3><p>당신의 카드가 가리킨 주제와 이어지는 오늘의 이야기를 준비했습니다.</p></div>
+        <article class="recommended-story" id="articleFace"></article>
+      </section>
+      <div class="result-actions">
+        <button class="text-button" id="restartButton" type="button">↺ 다시 카드 보기</button>
+        <button class="text-button" id="shareButton" type="button">↗ 링크 복사</button>
+      </div>
+      <p class="toast" id="toast" role="status" aria-live="polite"></p>
+    </section>
+  </main>
+  <footer><span>충무로 타로#</span><small>카드는 미래가 아닌 오늘을 비춥니다.</small><a href="https://visual.newsis.com/">VISUAL NEWSIS ↗</a></footer>
+  <script type="module" src="./js/app.js?v=20260805-7"></script>
+</body>
+</html>

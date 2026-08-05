@@ -1,0 +1,145 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#101712">
+  <title>뉴스 오목 | 충무로 아케이드 | VISUAL NEWSIS</title>
+  <meta name="description" content="AI와 오목 한 판을 두고, 오늘 나의 수와 닮은 VISUAL NEWSIS 기사를 만나보세요.">
+  <meta name="robots" content="index,follow,max-image-preview:large">
+  <link rel="canonical" href="https://visual.newsis.com/arcade/omok/">
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="ko_KR">
+  <meta property="og:title" content="뉴스 오목 — 한 수 앞의 뉴스">
+  <meta property="og:description" content="당신이 놓은 수에는 오늘 읽을 이야기가 숨어 있습니다.">
+  <meta property="og:url" content="https://visual.newsis.com/arcade/omok/"><meta property="og:site_name" content="VISUAL NEWSIS">
+  <meta property="og:image" content="https://visual.newsis.com/arcade/omok/assets/og-news-omok.jpg"><meta property="og:image:width" content="1536"><meta property="og:image:height" content="1024">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./css/style.css">
+  <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"Game","name":"뉴스 오목 — 한 수 앞의 뉴스","url":"https://visual.newsis.com/arcade/omok/","description":"오목 플레이 성향으로 오늘 읽을 뉴스를 추천하는 인터랙티브 게임","genre":"Board game","inLanguage":"ko-KR","isAccessibleForFree":true,"publisher":{"@type":"NewsMediaOrganization","name":"뉴시스","url":"https://www.newsis.com/"}},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"VISUAL NEWSIS","item":"https://visual.newsis.com/"},{"@type":"ListItem","position":2,"name":"충무로 아케이드","item":"https://visual.newsis.com/arcade/"},{"@type":"ListItem","position":3,"name":"뉴스 오목","item":"https://visual.newsis.com/arcade/omok/"}]}]}</script>
+</head>
+<body>
+  <a class="skip-link" href="#main">게임으로 바로가기</a>
+  <div class="paper-noise" aria-hidden="true"></div>
+
+  <header class="site-header">
+    <a class="brand" href="../" aria-label="충무로 아케이드 처음으로">
+      <span>충무로 아케이드</span><b>#</b>
+    </a>
+    <p class="house-name">한 수 앞의 뉴스</p>
+    <a class="newsis-link" href="https://visual.newsis.com/" target="_blank" rel="noopener">VISUAL NEWSIS <span aria-hidden="true">↗</span></a>
+  </header>
+
+  <main id="main">
+    <section class="intro-view view is-active" id="introView" aria-labelledby="introTitle">
+      <div class="intro-copy">
+        <p class="eyebrow">CHUNGMURO ARCADE · TABLE 01</p>
+        <h1 id="introTitle"><span>뉴스</span> 오목</h1>
+        <p class="intro-lead">당신이 놓은 수에는<br>오늘 읽을 이야기가 숨어 있습니다.</p>
+        <button class="primary-button" id="startButton" type="button">대국 시작 <span aria-hidden="true">●</span></button>
+        <p class="intro-note">흑돌 · 15 × 15 · AI 대국 · 약 3분</p>
+      </div>
+      <div class="intro-board" aria-hidden="true">
+        <div class="board-preview">
+          <i class="preview-stone black s1"></i><i class="preview-stone white s2"></i>
+          <i class="preview-stone black s3"></i><i class="preview-stone white s4"></i>
+          <i class="preview-stone black s5"></i><i class="preview-stone white s6"></i>
+          <span class="board-stamp">棋院<br>忠武路</span>
+        </div>
+        <p>盤上에서 세상을 읽다</p>
+      </div>
+    </section>
+
+    <section class="game-view view" id="gameView" hidden aria-labelledby="gameTitle">
+      <div class="game-heading">
+        <div>
+          <p class="eyebrow">NEWS OMOK · MATCH 01</p>
+          <h2 id="gameTitle">한 수 앞을 읽어보세요.</h2>
+        </div>
+        <div class="turn-indicator" id="turnIndicator" aria-live="polite">
+          <i aria-hidden="true"></i><span>당신의 차례</span>
+        </div>
+      </div>
+
+      <div class="game-layout">
+        <section class="board-panel" aria-label="오목판">
+          <div class="board-wrap">
+            <canvas id="board" width="900" height="900" tabindex="0" role="grid" aria-label="15줄 오목판. 방향키로 이동하고 Enter 또는 Space 키로 돌을 놓으세요."></canvas>
+            <div class="thinking" id="thinking" hidden><span></span><b>수를 읽는 중</b></div>
+          </div>
+          <p class="keyboard-help">키보드: 방향키로 이동 · Enter로 착수</p>
+        </section>
+
+        <aside class="match-panel">
+          <div class="players">
+            <div class="player is-current" id="humanPlayer"><i class="stone stone--black"></i><span><b>당신</b><small>BLACK</small></span></div>
+            <span class="versus">대</span>
+            <div class="player" id="aiPlayer"><i class="stone stone--white"></i><span><b>충무로 기사</b><small>WHITE · AI</small></span></div>
+          </div>
+
+          <div class="match-data">
+            <div><span>놓은 돌</span><strong id="moveCount">0</strong></div>
+            <div><span>경과</span><strong id="elapsedTime">00:00</strong></div>
+          </div>
+
+          <div class="game-message" id="gameMessage" aria-live="polite">
+            <span>오늘의 첫 수</span>
+            <p>중앙과 가장자리, 어느 쪽에서 이야기를 시작하시겠습니까?</p>
+          </div>
+
+          <button class="reading-button" id="finishButton" type="button" disabled>
+            <span>오늘의 수 읽기</span><small id="finishHint">10수 뒤에 열립니다</small>
+          </button>
+          <button class="text-button" id="resignButton" type="button">새 대국</button>
+        </aside>
+      </div>
+    </section>
+
+    <section class="result-view view" id="resultView" hidden aria-labelledby="resultTitle">
+      <div class="result-intro">
+        <p class="eyebrow">MATCH ANALYSIS · TODAY</p>
+        <p class="result-state" id="resultState"></p>
+        <h2 id="resultTitle"></h2>
+        <p class="result-summary" id="resultSummary"></p>
+      </div>
+
+      <div class="analysis-grid">
+        <article class="move-map">
+          <div class="mini-board" id="miniBoard" aria-hidden="true"></div>
+          <div><span>당신의 수</span><strong id="styleName"></strong><p id="styleDescription"></p></div>
+        </article>
+        <dl class="style-stats">
+          <div><dt>중앙 집중</dt><dd><span id="centerBar"></span></dd><b id="centerValue">0%</b></div>
+          <div><dt>공격 성향</dt><dd><span id="attackBar"></span></dd><b id="attackValue">0%</b></div>
+          <div><dt>확장 성향</dt><dd><span id="edgeBar"></span></dd><b id="edgeValue">0%</b></div>
+        </dl>
+      </div>
+
+      <section class="story-section" aria-labelledby="storyTitle">
+        <div class="story-label"><span>당신의 다음 수</span><h3 id="storyTitle">오늘 읽을 뉴스</h3></div>
+        <a class="story-card" id="storyCard" href="#">
+          <span class="story-image" id="storyImage" aria-hidden="true"></span>
+          <span class="story-copy">
+            <small id="storyIssue"></small>
+            <strong id="storyHeadline"></strong>
+            <p id="storyDescription"></p>
+            <b>기사에서 다음 수 읽기 <i aria-hidden="true">↗</i></b>
+          </span>
+        </a>
+      </section>
+
+      <div class="result-actions">
+        <button class="secondary-button" id="replayButton" type="button">한 판 더</button>
+        <button class="secondary-button" id="shareButton" type="button">결과 공유</button>
+      </div>
+      <p class="toast" id="toast" role="status" aria-live="polite"></p>
+    </section>
+  </main>
+
+  <footer><span>충무로 아케이드#</span><p>한 판의 끝에서 오늘의 뉴스를 만납니다.</p><a href="https://visual.newsis.com/">VISUAL NEWSIS ↗</a></footer>
+  <script type="module" src="./js/app.js"></script>
+</body>
+</html>
