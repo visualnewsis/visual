@@ -55,7 +55,7 @@
         <div class="proof-status"><span>HEADLINE PROOF</span><b id="status">조판 대기</b></div>
       </div>
       <div class="typecase"><div class="typecase-label"><span>활자함</span><span>TYPE CASE · CLICK TO SET</span></div><div class="pieces" id="pieces"></div></div>
-      <div class="controls"><button class="control" id="undo" type="button">한 칸 빼기</button><button class="control" id="reset" type="button">다시 놓기</button><button class="control primary" id="print" type="button" disabled>인쇄하기</button></div>
+      <div class="controls"><button class="control" id="undo" type="button">한 칸 빼기</button><button class="control" id="reset" type="button">다시 놓기</button><button class="control" id="chooseOther" type="button">다른 기사 고르기</button><button class="control primary" id="print" type="button" disabled>인쇄하기</button></div>
     </section>
   </main>
   <div class="press-overlay" id="result" role="dialog" aria-modal="true" aria-labelledby="printed-title">
@@ -76,8 +76,9 @@
     function removeAt(index){const [item]=chosen.splice(index,1);const source=document.querySelector(`.piece[data-id="${item.id}"]`);if(source)source.disabled=false;renderSlots();syncButtons()}
     function syncButtons(){$('#print').disabled=chosen.length!==jobs[current].chunks.length;$('#undo').disabled=!chosen.length;$('#reset').disabled=!chosen.length}
     function reset(){chosen=[];document.querySelectorAll('.piece').forEach(b=>b.disabled=false);renderSlots();syncButtons();$('#status').textContent='조판 대기'}
+    function chooseOther(){current=(current+1+Math.floor(Math.random()*(jobs.length-1)))%jobs.length;render()}
     function print(){const correct=chosen.every((x,i)=>x.text===jobs[current].chunks[i]);if(!correct){$('#status').textContent='배열 불일치';$('#proof').classList.remove('wrong');void $('#proof').offsetWidth;$('#proof').classList.add('wrong');return}document.body.insertAdjacentHTML('beforeend','<i class="flash" aria-hidden="true"></i>');setTimeout(()=>document.querySelector('.flash')?.remove(),400);const job=jobs[current];$('#printed-title').textContent=job.title;$('#summary').textContent=job.summary;$('#articleLink').href=job.url;$('#next').textContent=current===jobs.length-1?'처음부터 다시':'다음 조판으로';$('#result').classList.add('show');$('#next').focus()}
-    $('#undo').addEventListener('click',()=>chosen.length&&removeAt(chosen.length-1));$('#reset').addEventListener('click',reset);$('#print').addEventListener('click',print);$('#next').addEventListener('click',()=>{$('#result').classList.remove('show');current=(current+1)%jobs.length;render()});document.addEventListener('keydown',e=>{if(e.key==='Escape'&&$('#result').classList.contains('show'))$('#result').classList.remove('show')});render();
+    $('#undo').addEventListener('click',()=>chosen.length&&removeAt(chosen.length-1));$('#reset').addEventListener('click',reset);$('#chooseOther').addEventListener('click',chooseOther);$('#print').addEventListener('click',print);$('#next').addEventListener('click',()=>{$('#result').classList.remove('show');current=(current+1)%jobs.length;render()});document.addEventListener('keydown',e=>{if(e.key==='Escape'&&$('#result').classList.contains('show'))$('#result').classList.remove('show')});render();
   </script>
 </body>
 </html>
