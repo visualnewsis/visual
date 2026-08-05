@@ -21,6 +21,8 @@
 
 .visual-newsis {
   justify-self: end;
+  position: absolute;
+  right: clamp(20px, 4vw, 64px);
   color: inherit;
   font-family: Pretendard, "Noto Sans KR", sans-serif;
   font-size: 10px;
@@ -33,6 +35,10 @@
 .theme-tarot .newsis-logo img {
   filter: grayscale(1) brightness(0) invert(1);
   opacity: .88;
+}
+
+.theme-tarot .visual-newsis {
+  right: clamp(20px, 5vw, 72px);
 }
 
 .theme-omok .house-note {
@@ -64,17 +70,6 @@
   text-shadow: 0 1px 0 rgba(255,255,255,.25);
 }
 
-.theme-landing .manifesto {
-  min-height: 180px;
-  padding: clamp(70px, 9vw, 120px) clamp(24px, 8vw, 130px);
-  justify-content: flex-end;
-}
-
-.theme-landing .manifesto a {
-  margin: 0;
-  font-size: clamp(14px, 1.4vw, 18px);
-}
-
 @media (max-width: 760px) {
   .theme-landing > header,
   .theme-omok .site-header,
@@ -87,9 +82,10 @@
   .theme-omok .brand,
   .theme-tarot .brand { font-size: 12px; }
   .visual-newsis { font-size: 8px; letter-spacing: .04em; }
+  .visual-newsis { right: 20px; }
+  .theme-omok .visual-newsis { right: 16px; }
+  .theme-tarot .visual-newsis { right: 20px; }
   .theme-omok .house-note { height: 36px; padding: 0 16px; font-size: 9px; }
   .theme-omok .view { min-height: calc(100svh - 100px); }
   .theme-landing .hero h1 strong { margin-left: 4vw; }
-  .theme-landing .manifesto { min-height: 140px; padding: 54px 22px; }
-  .theme-landing .manifesto a { margin: 0; }
 }
