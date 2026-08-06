@@ -144,6 +144,12 @@
 }
 
 .theme-landing .game-list { grid-template-columns: repeat(3, 1fr); }
+.theme-landing .arcade-about { padding: clamp(80px,11vw,150px) clamp(24px,8vw,130px); background: var(--paper); color: var(--ink); }
+.theme-landing .arcade-about h2 { max-width: 920px; margin: 22px 0 28px; font: 600 clamp(34px,5vw,68px)/1.25 var(--serif); letter-spacing: -.06em; }
+.theme-landing .arcade-about > p:not(.eyebrow) { max-width: 700px; margin: 0; font: 500 clamp(15px,1.5vw,20px)/1.8 var(--serif); }
+.theme-landing .arcade-about nav { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 38px; }
+.theme-landing .arcade-about nav a { padding: 11px 15px; border: 1px solid var(--line); font-size: 11px; font-weight: 700; }
+.theme-landing .arcade-about nav a:hover,.theme-landing .arcade-about nav a:focus-visible { background: var(--red); border-color: var(--red); color: #fff; outline: 0; }
 .theme-landing .game-card--printshop { background: #15221b; }
 .theme-landing .visual--printshop { background: #17231c url("./assets/printshop-hunminjeongeum.jpg") center/cover no-repeat; overflow: hidden; transform: rotate(2deg); box-shadow: 0 25px 45px #080b09; }
 .theme-landing .visual--printshop::before { content: ""; position: absolute; inset: 0; background: linear-gradient(145deg,transparent 50%,rgba(9,15,11,.22)); }
