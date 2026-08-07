@@ -1,1 +1,49 @@
-.game-card--puzzle{background:#111c19}.visual--puzzle{display:grid;grid-template-columns:repeat(3,1fr);grid-template-rows:repeat(3,1fr);gap:5px;aspect-ratio:3/2;margin-top:90px;margin-bottom:90px;transform:rotate(2deg);box-shadow:0 24px 50px #070c09}.visual--puzzle i{background-color:#7d9a88;background-image:linear-gradient(135deg,rgba(255,255,255,.16),transparent 48%),radial-gradient(circle at 70% 30%,#d6b36a 0 5%,transparent 6%),linear-gradient(160deg,#233e35 0 42%,#967250 43% 62%,#c6b287 63%);background-size:300% 300%;border:1px solid rgba(255,255,255,.16)}.visual--puzzle i:nth-child(1){background-position:0 0}.visual--puzzle i:nth-child(2){background-position:50% 0}.visual--puzzle i:nth-child(3){background-position:100% 0}.visual--puzzle i:nth-child(4){background-position:0 50%}.visual--puzzle i:nth-child(5){background-position:50% 50%}.visual--puzzle i:nth-child(6){background-position:100% 50%}.visual--puzzle i:nth-child(7){background-position:0 100%}.visual--puzzle i:nth-child(8){background-position:50% 100%}.visual--puzzle i:nth-child(9){background-position:100% 100%}
+.game-card--puzzle {
+  background: #111c19;
+}
+
+.visual--puzzle {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(3, 1fr);
+  gap: 4px;
+  width: min(88%, 500px);
+  aspect-ratio: 3 / 2;
+  margin-top: 54px;
+  margin-bottom: 54px;
+  background: url("../puzzle/assets/piece-photo-studio-hero.png?v=20260807-2") center / cover no-repeat;
+  transform: rotate(-1deg);
+  box-shadow: 0 24px 50px #070c09;
+}
+
+.visual--puzzle i {
+  border: 1px solid rgba(255, 255, 255, .2);
+  background: rgba(8, 14, 11, .04);
+  box-shadow: inset 0 0 12px rgba(0, 0, 0, .09);
+}
+
+.game-card--pending {
+  min-height: 430px;
+  background: #121914;
+  color: rgba(236, 231, 217, .5);
+}
+
+.game-card--pending-alt {
+  background: #171a16;
+}
+
+.pending-mark {
+  display: grid;
+  place-items: center;
+  width: 78px;
+  aspect-ratio: 1;
+  margin: auto;
+  border: 1px solid rgba(236, 231, 217, .16);
+  border-radius: 50%;
+  font: 500 26px "Noto Serif KR", serif;
+  opacity: .45;
+}
+
+.game-card--pending .copy strong {
+  color: rgba(236, 231, 217, .7);
+}
