@@ -89,7 +89,7 @@ function choosePuzzle() {
   moves = 0;
   movesElement.textContent = '0';
   result.hidden = true;
-  puzzleMeta.textContent = `${current.category} · 최신 사진 · 9조각`;
+  puzzleMeta.textContent = '뉴시스 사진 · 9조각';
   hintImage.style.backgroundImage = `url('${current.image}')`;
   loading.hidden = true;
   renderBoard();

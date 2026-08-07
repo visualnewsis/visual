@@ -20,13 +20,14 @@
   <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@500;600;700;900&family=Noto+Sans+KR:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="./style.css">
+  <link rel="stylesheet" href="./hero.css">
   <style>.result[hidden]{display:none!important}</style>
   <script type="application/ld+json">{"@context":"https://schema.org","@type":"Game","name":"조각 사진관","alternateName":["뉴스 조각맞춤","뉴스 사진 퍼즐"],"url":"https://visual.newsis.com/arcade/puzzle/","description":"뉴시스 기자가 촬영한 최신 뉴스 사진을 맞추고 관련 기사를 읽는 사진 퍼즐","genre":["Picture puzzle","News game"],"inLanguage":"ko-KR","isAccessibleForFree":true,"publisher":{"@type":"NewsMediaOrganization","name":"뉴시스","url":"https://www.newsis.com/"}}</script>
 </head>
 <body>
   <a class="skip" href="#puzzleBoard">퍼즐로 바로가기</a><div class="grain" aria-hidden="true"></div>
   <header class="site-header">
-    <a class="brand" href="../">충무로딩</a>
+    <a class="brand brand--logo" href="../" aria-label="충무로딩으로 이동"><img src="../assets/chungmuroading-logo-transparent-v2.png" alt="충무로딩 — 충무로 보고 듣고 즐기기"></a>
     <a class="newsis-logo" href="https://www.newsis.com/" target="_blank" rel="noopener" aria-label="뉴시스 홈페이지 새 창에서 열기"><img src="../../assets/logo2024.png" alt="뉴시스"></a>
     <a class="visual-newsis" href="https://visual.newsis.com/">VISUAL NEWSIS</a>
   </header>
@@ -35,13 +36,12 @@
     <section class="intro" aria-labelledby="pageTitle">
       <p class="kicker">NEWS PHOTO PUZZLE · UPDATED TODAY</p>
       <h1 id="pageTitle"><span>조각</span><strong>사진관</strong></h1>
-      <p class="intro-copy">흩어진 오늘의 장면을 맞춰보세요.<br>마지막 조각 뒤에 기사가 기다립니다.</p>
-      <span class="coordinate" aria-hidden="true">37°33′39.2″N · 126°59′37.7″E</span>
+      <span class="coordinate" aria-hidden="true">37.561827°N · 126.991076°E</span>
     </section>
 
     <section class="play" aria-labelledby="playTitle">
       <div class="play-head">
-        <div><p id="puzzleMeta">최신 사진을 불러오는 중</p><h2 id="playTitle">사진이 무엇을 말하는지는<br>아직 보여드리지 않습니다.</h2></div>
+        <div><p id="puzzleMeta">뉴시스 사진 · 9조각</p><h2 id="playTitle">조각난 사진을 맞춰보세요</h2></div>
         <dl class="score" aria-label="게임 기록"><div><dt>시간</dt><dd id="timer">00:00</dd></div><div><dt>이동</dt><dd id="moves">0</dd></div></dl>
       </div>
 

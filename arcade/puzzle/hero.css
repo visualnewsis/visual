@@ -1,0 +1,70 @@
+.brand--logo {
+  display: flex;
+  align-items: center;
+  width: clamp(92px, 8vw, 126px);
+  height: 58px;
+}
+
+.brand--logo img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.intro {
+  min-height: min(76vw, 760px);
+  padding-top: clamp(86px, 12vw, 150px);
+  background:
+    linear-gradient(90deg, rgba(7, 11, 9, .2), transparent 32%, transparent 68%, rgba(7, 11, 9, .15)),
+    linear-gradient(0deg, rgba(7, 11, 9, .42), transparent 38%),
+    url("./assets/piece-photo-studio-hero.png") center / cover no-repeat;
+  color: #f5f0e4;
+}
+
+.intro::after {
+  display: none;
+}
+
+.intro .kicker {
+  position: relative;
+  z-index: 2;
+  color: #f6a36d;
+  text-shadow: 0 1px 10px rgba(0, 0, 0, .8);
+}
+
+.intro h1 {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.coordinate {
+  z-index: 2;
+  color: rgba(255, 249, 236, .78);
+  text-shadow: 0 1px 8px rgba(0, 0, 0, .9);
+}
+
+@media (max-width: 760px) {
+  .brand--logo {
+    width: 88px;
+    height: 48px;
+  }
+
+  .intro {
+    min-height: 580px;
+    background-position: 50% center;
+  }
+
+  .coordinate {
+    display: block;
+    right: 20px;
+    bottom: 22px;
+  }
+}
