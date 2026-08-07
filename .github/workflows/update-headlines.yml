@@ -19,16 +19,21 @@ jobs:
       - uses: actions/checkout@v4
         with:
           ref: main
+      - name: Install image tools
+        run: python -m pip install --disable-pip-version-check pillow
       - name: Collect latest NEWSIS headlines
         run: python .github/scripts/update_headlines.py
+      - name: Collect latest NEWSIS staff photographs
+        continue-on-error: true
+        run: python .github/scripts/update_photo_puzzles.py
       - name: Commit changed question bank
         run: |
-          if git diff --quiet -- arcade/output/data/headlines.json; then
-            echo "No headline changes"
+          if git diff --quiet -- arcade/output/data/headlines.json arcade/puzzle/data/puzzles.json arcade/puzzle/assets/photos; then
+            echo "No game data changes"
             exit 0
           fi
           git config user.name "visual-newsis-bot"
           git config user.email "visual-newsis-bot@users.noreply.github.com"
-          git add arcade/output/data/headlines.json
-          git commit -m "Refresh headline game data"
+          git add arcade/output/data/headlines.json arcade/puzzle/data/puzzles.json arcade/puzzle/assets/photos
+          git commit -m "Refresh arcade news game data"
           git push origin HEAD:main
