@@ -1,0 +1,78 @@
+.other-games {
+  position: relative;
+  z-index: 2;
+  display: grid;
+  grid-template-columns: minmax(220px, .72fr) 1.28fr;
+  gap: clamp(44px, 8vw, 130px);
+  padding: clamp(72px, 9vw, 130px) clamp(22px, 6vw, 96px);
+  background: #101712;
+  color: #eee9dc;
+  border-top: 1px solid rgba(255, 255, 255, .16);
+}
+
+.other-games p {
+  margin: 0 0 24px;
+  color: #7da48e;
+  font: 700 9px/1.4 Pretendard, "Noto Sans KR", sans-serif;
+  letter-spacing: .2em;
+}
+
+.other-games h2 {
+  margin: 0;
+  color: #eee9dc;
+  font: 600 clamp(35px, 5vw, 68px)/1.22 "Noto Serif KR", serif;
+  letter-spacing: -.06em;
+}
+
+.other-games nav {
+  border-top: 1px solid rgba(255, 255, 255, .25);
+}
+
+.other-games nav a {
+  display: grid;
+  grid-template-columns: 52px 1fr auto;
+  align-items: center;
+  min-height: 96px;
+  border-bottom: 1px solid rgba(255, 255, 255, .16);
+  color: #eee9dc;
+  text-decoration: none;
+  transition: padding .22s ease, background .22s ease;
+}
+
+.other-games nav a::after {
+  content: "↗";
+  font-size: 13px;
+}
+
+.other-games nav a:hover,
+.other-games nav a:focus-visible {
+  padding: 0 18px;
+  background: rgba(255, 255, 255, .06);
+}
+
+.other-games nav span {
+  color: #7d887f;
+  font: 500 10px "Noto Serif KR", serif;
+}
+
+.other-games nav b {
+  font: 600 clamp(20px, 2.3vw, 32px) "Noto Serif KR", serif;
+}
+
+@media (max-width: 700px) {
+  .other-games {
+    grid-template-columns: 1fr;
+    gap: 42px;
+    padding: 64px 20px;
+  }
+
+  .other-games nav a {
+    min-height: 82px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .other-games nav a {
+    transition: none;
+  }
+}
