@@ -180,9 +180,10 @@
       display:flex;justify-content:space-between;align-items:end;padding-bottom:18px;border-bottom:1px solid var(--ink);
     }
     .archive-title h3{font-size:clamp(27px,4vw,54px);margin:0;letter-spacing:-.06em}
-    .archive-title span{font-size:12px;color:var(--muted)}
-    .archive-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line);border-bottom:1px solid var(--line)}
-    .archive-card{min-height:290px;padding:28px;background:var(--paper);display:flex;flex-direction:column}
+    .archive-title-meta{display:flex;align-items:center;gap:18px}.archive-title-meta>span{font-size:12px;color:var(--muted)}
+    .archive-controls{display:flex;gap:6px}.archive-arrow{width:42px;height:42px;border:1px solid var(--ink);border-radius:50%;background:transparent;color:var(--ink);font-size:20px;cursor:pointer;transition:.2s ease}.archive-arrow:hover,.archive-arrow:focus-visible{background:var(--ink);color:var(--paper)}.archive-arrow:disabled{opacity:.25;cursor:default}
+    .archive-viewport{overflow:hidden;border-bottom:1px solid var(--line);touch-action:pan-y}.archive-grid{display:flex;gap:1px;background:var(--line);transition:transform .55s cubic-bezier(.22,.8,.22,1);will-change:transform}.archive-grid.dragging{transition:none;cursor:grabbing}
+    .archive-card{flex:0 0 calc((100% - 2px)/3);min-height:290px;padding:28px;background:var(--paper);display:flex;flex-direction:column}
     .archive-card.latest-story{background:var(--mint)}
     .archive-card .num{font:12px/1 "Archivo Black";color:var(--muted)}
     .archive-card strong{margin:auto 0 12px;font-size:clamp(22px,2.4vw,34px);line-height:1.3;letter-spacing:-.04em}
@@ -235,8 +236,7 @@
       .section-head p{justify-self:start}
       .feature-copy{min-height:480px;border-left:0;border-top:1px solid rgba(255,255,255,.18)}
       .about-title{border-right:0;border-bottom:1px solid rgba(11,14,15,.22)}
-      .archive-grid{grid-template-columns:1fr}
-      .archive-card{min-height:230px}
+      .archive-card{flex-basis:calc((100% - 1px)/2);min-height:230px}
     }
     @media (max-width:520px){
       body{padding-top:64px}
@@ -249,6 +249,7 @@
       h1{font-size:clamp(52px,18vw,92px)}
       h1 .outline{margin-left:0;margin-top:8px}
       .feature-art{min-height:390px}
+      .archive-title{align-items:flex-start}.archive-title-meta{flex-direction:column;align-items:flex-end;gap:9px}.archive-card{flex-basis:100%}
       .play-break{margin-inline:0}.play-break-copy{min-height:330px}.play-break-art{min-height:230px}
       .principles{grid-template-columns:1fr}
       footer{align-items:start;gap:30px;flex-direction:column}
@@ -327,9 +328,9 @@
     <section class="archive" aria-labelledby="archive-title">
       <div class="archive-title">
         <h3 id="archive-title">ALL STORIES</h3>
-        <span>4 STORIES PUBLISHED</span>
+        <div class="archive-title-meta"><span>4 STORIES PUBLISHED</span><div class="archive-controls" aria-label="스토리 슬라이더"><button class="archive-arrow prev" type="button" aria-label="이전 스토리">←</button><button class="archive-arrow next" type="button" aria-label="다음 스토리">→</button></div></div>
       </div>
-      <div class="archive-grid">
+      <div class="archive-viewport"><div class="archive-grid">
         <a class="archive-card" href="./oil/">
           <span class="num">001</span>
           <strong>호르무즈가<br>멈추면</strong>
@@ -363,7 +364,7 @@
         <h3 id="play-break-title">잠깐,<br>놀다가기</h3>
         <p>뉴스 오목, 충무로 타로#, 제목있음. 놀다 보면 오늘의 뉴스가 보입니다.</p>
         <a class="play-break-link" href="./arcade/"><span>충무로딩 · 충무로 놀이마당 입장</span><span aria-hidden="true">↗</span></a>
-      </div>
+      </div></div>
       <div class="play-break-art" aria-hidden="true"><i class="play-stone one"></i><i class="play-stone two"></i><i class="play-card"></i></div>
     </aside>
 
@@ -390,5 +391,21 @@
     </div>
     <a class="top-link" href="#">BACK TO TOP ↑</a>
   </footer>
+  <script>
+    (()=>{
+      const viewport=document.querySelector('.archive-viewport'),track=document.querySelector('.archive-grid'),cards=[...document.querySelectorAll('.archive-card')],prev=document.querySelector('.archive-arrow.prev'),next=document.querySelector('.archive-arrow.next');
+      if(!viewport||!track||!cards.length)return;
+      let index=0,startX=0,dragX=0,dragging=false;
+      const visible=()=>innerWidth<=520?1:innerWidth<=850?2:3;
+      const max=()=>Math.max(0,cards.length-visible());
+      const cardStep=()=>cards[0].getBoundingClientRect().width+1;
+      function render(animate=true){index=Math.max(0,Math.min(index,max()));track.classList.toggle('dragging',!animate);track.style.transform=`translate3d(${-index*cardStep()}px,0,0)`;prev.disabled=index===0;next.disabled=index===max()}
+      prev.addEventListener('click',()=>{index--;render()});next.addEventListener('click',()=>{index++;render()});
+      viewport.addEventListener('pointerdown',e=>{dragging=true;startX=e.clientX;dragX=0;viewport.setPointerCapture(e.pointerId);track.classList.add('dragging')});
+      viewport.addEventListener('pointermove',e=>{if(!dragging)return;dragX=e.clientX-startX;track.style.transform=`translate3d(${(-index*cardStep())+dragX}px,0,0)`});
+      function endDrag(){if(!dragging)return;dragging=false;if(Math.abs(dragX)>cardStep()*.18)index+=dragX<0?1:-1;render()}
+      viewport.addEventListener('pointerup',endDrag);viewport.addEventListener('pointercancel',endDrag);addEventListener('resize',()=>render(false));render(false);
+    })();
+  </script>
 </body>
 </html>
