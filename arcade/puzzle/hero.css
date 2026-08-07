@@ -19,7 +19,7 @@
   background:
     linear-gradient(90deg, rgba(7, 11, 9, .2), transparent 32%, transparent 68%, rgba(7, 11, 9, .15)),
     linear-gradient(0deg, rgba(7, 11, 9, .42), transparent 38%),
-    url("./assets/piece-photo-studio-hero.png") center top / 100% auto no-repeat,
+    url("./assets/piece-photo-studio-hero.png?v=20260807-2") center top / 100% auto no-repeat,
     #171714;
   color: #f5f0e4;
 }
