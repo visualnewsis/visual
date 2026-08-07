@@ -23,6 +23,7 @@ OUTPUT = GAME_ROOT / "data" / "puzzles.json"
 IMAGE_DIR = GAME_ROOT / "assets" / "photos"
 MAX_PUZZLES = 12
 USER_AGENT = "VisualNewsis-PhotoPuzzle/1.0"
+BLOCKED_TITLE_FRAGMENTS = ("소식]",)
 
 FEEDS = {
     "속보": "https://www.newsis.com/RSS/sokbo.xml",
@@ -95,7 +96,11 @@ def feed_items(category: str, url: str) -> list[dict[str, str]]:
         title = clean(item.findtext("title"))
         link = clean(item.findtext("link"))
         summary = clean(item.findtext("description"))
-        if 12 <= len(title) <= 100 and link.startswith("https://www.newsis.com/"):
+        if (
+            12 <= len(title) <= 100
+            and link.startswith("https://www.newsis.com/")
+            and not any(fragment in title for fragment in BLOCKED_TITLE_FRAGMENTS)
+        ):
             items.append({"category": category, "title": title, "summary": summary, "url": link})
         if len(items) >= 24:
             break
