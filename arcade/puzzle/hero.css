@@ -13,12 +13,14 @@
 }
 
 .intro {
-  min-height: min(76vw, 760px);
-  padding-top: clamp(86px, 12vw, 150px);
+  height: min(51vw, 760px);
+  min-height: 500px;
+  padding-top: 0;
   background:
     linear-gradient(90deg, rgba(7, 11, 9, .2), transparent 32%, transparent 68%, rgba(7, 11, 9, .15)),
     linear-gradient(0deg, rgba(7, 11, 9, .42), transparent 38%),
-    url("./assets/piece-photo-studio-hero.png") center / cover no-repeat;
+    url("./assets/piece-photo-studio-hero.png") center top / 100% auto no-repeat,
+    #171714;
   color: #f5f0e4;
 }
 
@@ -27,9 +29,13 @@
 }
 
 .intro .kicker {
-  position: relative;
+  position: absolute;
+  top: clamp(98px, 6.7vw,128px);
+  left: calc(50% + clamp(210px, 18vw, 350px));
   z-index: 2;
+  margin: 0;
   color: #f6a36d;
+  white-space: nowrap;
   text-shadow: 0 1px 10px rgba(0, 0, 0, .8);
 }
 
@@ -59,7 +65,19 @@
 
   .intro {
     min-height: 580px;
-    background-position: 50% center;
+    height: 580px;
+    background-position: 50% top;
+    background-size: auto 100%;
+  }
+
+  .intro .kicker {
+    top: 118px;
+    left: auto;
+    right: 18px;
+    max-width: 42vw;
+    white-space: normal;
+    text-align: right;
+    line-height: 1.5;
   }
 
   .coordinate {
