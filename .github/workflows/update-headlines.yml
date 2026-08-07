@@ -1,0 +1,34 @@
+name: Update headline game
+
+on:
+  schedule:
+    - cron: "17 */6 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: headline-data-update
+  cancel-in-progress: true
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - name: Collect latest NEWSIS headlines
+        run: python .github/scripts/update_headlines.py
+      - name: Commit changed question bank
+        run: |
+          if git diff --quiet -- arcade/output/data/headlines.json; then
+            echo "No headline changes"
+            exit 0
+          fi
+          git config user.name "visual-newsis-bot"
+          git config user.email "visual-newsis-bot@users.noreply.github.com"
+          git add arcade/output/data/headlines.json
+          git commit -m "Refresh headline game data"
+          git push origin HEAD:main
