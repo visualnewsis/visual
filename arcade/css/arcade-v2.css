@@ -2,12 +2,12 @@
 .theme-landing .hero{
   background:
     linear-gradient(90deg,rgba(7,12,10,.95) 0 31%,rgba(7,12,10,.63) 44%,rgba(7,12,10,.08) 72%),
-    url("../assets/arcade-machines-v2-1920x1080.jpg") 58% center/cover no-repeat;
+    url("../assets/arcade-machines-v2-1920x1080.jpg?v=e683583") 58% center/cover no-repeat;
 }
 .theme-landing .games{
   background:
     linear-gradient(rgba(6,13,9,.82),rgba(6,13,9,.94)),
-    url("../assets/arcade-machines-v2-1920x1080.jpg") center top/cover fixed no-repeat;
+    url("../assets/arcade-machines-v2-1920x1080.jpg?v=e683583") center top/cover fixed no-repeat;
 }
 .theme-landing .games:before{display:none}
 .theme-landing .game-card--printshop{background:linear-gradient(90deg,#d5ccb8,#f0eadc 16%,#d7cfbd 84%,#9f9582);color:#17231c}
