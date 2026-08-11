@@ -160,8 +160,13 @@ def can_place(grid: list[list[str]], word: str, row: int, col: int, direction: s
             return False, 0
         if existing == letter:
             crossings += 1
-        # Korean newspaper crosswords commonly allow neighbouring answer cells.
-        # Conflicts and word-boundary collisions are still rejected above.
+            continue
+        # A new letter may only touch this word along its own direction.
+        # Perpendicular neighbours must stay empty unless this is a crossing.
+        neighbours = ((rr - 1, cc), (rr + 1, cc)) if direction == "across" else ((rr, cc - 1), (rr, cc + 1))
+        for near_r, near_c in neighbours:
+            if 0 <= near_r < size and 0 <= near_c < size and grid[near_r][near_c]:
+                return False, 0
     return crossings > 0, crossings
 
 

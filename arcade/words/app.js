@@ -44,8 +44,13 @@ function commitCell(input,row,col){
 function focusCell(row,col){
   const options=memberships(row,col);
   if(!options.length)return;
-  if(options.length===2&&activeWord===options[0])selectWord(options[1],false);
-  else if(!activeWord||!options.includes(activeWord))selectWord(options[0],false);
+  if(!activeWord||!options.includes(activeWord))selectWord(options[0],false);
+}
+
+function cycleCell(row,col){
+  const options=memberships(row,col);
+  if(options.length<2)return;
+  selectWord(activeWord===options[0]?options[1]:options[0],false);
 }
 
 function renderBoard(){
@@ -62,6 +67,7 @@ function renderBoard(){
       input.inputMode='text';input.autocomplete='off';input.autocapitalize='off';input.spellcheck=false;
       input.setAttribute('aria-label',`${row+1}행 ${col+1}열`);
       input.addEventListener('focus',()=>focusCell(row,col));
+      cell.addEventListener('click',()=>cycleCell(row,col));
       input.addEventListener('compositionstart',()=>{composing=true});
       input.addEventListener('compositionend',()=>{composing=false;commitCell(input,row,col)});
       input.addEventListener('input',()=>{if(!composing)commitCell(input,row,col)});
@@ -80,18 +86,16 @@ function renderBoard(){
 }
 
 function renderClues(){
-  for(const direction of ['across','down']){
-    const list=$(`#${direction}`);
-    words.filter(word=>word.direction===direction).forEach(word=>{
-      const item=document.createElement('li'),row=document.createElement('div'),button=document.createElement('button'),link=document.createElement('a');
-      row.className='clue-row';button.className='clue-button';button.type='button';button.dataset.number=word.number;
-      button.innerHTML=`<b>${word.number}</b><span>${word.clue}</span>`;
-      button.addEventListener('click',()=>selectWord(word));
-      link.className='article-link';link.href=word.url;link.target='_blank';link.rel='noopener';link.textContent='힌트 보기';
-      link.addEventListener('click',()=>window.gtag?.('event','crossword_article_click',{word:word.answer,title:word.title}));
-      row.append(button,link);item.append(row);list.append(item);
-    });
-  }
+  const list=$('#clueList');
+  [...words].sort((a,b)=>a.number-b.number).forEach(word=>{
+    const item=document.createElement('li'),row=document.createElement('div'),button=document.createElement('button'),link=document.createElement('a');
+    row.className='clue-row';button.className='clue-button';button.type='button';button.dataset.number=word.number;
+    button.innerHTML=`<b>${word.number}</b><span>${word.clue}</span>`;
+    button.addEventListener('click',()=>selectWord(word));
+    link.className='article-link';link.href=word.url;link.target='_blank';link.rel='noopener';link.textContent='힌트 보기';
+    link.addEventListener('click',()=>window.gtag?.('event','crossword_article_click',{word:word.answer,title:word.title}));
+    row.append(button,link);item.append(row);list.append(item);
+  });
 }
 
 function hint(){
