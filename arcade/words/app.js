@@ -87,7 +87,7 @@ function renderClues(){
       row.className='clue-row';button.className='clue-button';button.type='button';button.dataset.number=word.number;
       button.innerHTML=`<b>${word.number}</b><span>${word.clue}</span>`;
       button.addEventListener('click',()=>selectWord(word));
-      link.className='article-link';link.href=word.url;link.target='_blank';link.rel='noopener';link.textContent='기사 보기';
+      link.className='article-link';link.href=word.url;link.target='_blank';link.rel='noopener';link.textContent='힌트 보기';
       link.addEventListener('click',()=>window.gtag?.('event','crossword_article_click',{word:word.answer,title:word.title}));
       row.append(button,link);item.append(row);list.append(item);
     });
