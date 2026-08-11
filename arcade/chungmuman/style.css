@@ -39,3 +39,4 @@
 @media(max-width:720px){.runner.is-sliding{width:185px;height:110px}.runner.is-pushed{width:125px;height:145px}.result--text{grid-template-columns:1fr;padding:38px 22px}.result--text>img{max-height:210px}.result--text>div{width:100%}}
 .runner.is-double-jumping{filter:none!important}.runner.is-pushed{filter:none!important;animation:wallPush .18s linear infinite alternate!important}@keyframes wallPush{from{translate:0 0}to{translate:8px 0}}
 @media(max-width:720px){.runner{left:14%;bottom:20%;width:92px;height:108px}.runner.is-sliding{left:12%;bottom:19%;width:138px;height:82px}.runner.is-pushed{left:14%;width:92px;height:108px}.deadline{width:92px}.object{scale:.84}.object.gap,.object.wide-gap{scale:1}.game-note{font-size:9px;right:9px}}
+.start-panel p span{display:inline-block;margin-top:9px;font-family:"Noto Sans KR",sans-serif;font-size:12px;font-weight:500;color:#d7e2df;letter-spacing:.04em}
