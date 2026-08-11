@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Build 낱말수선소 crosswords from current NEWSIS article bodies."""
+"""Build 낱말수선소 crosswords from current NEWSIS headlines and leads."""
 
 from __future__ import annotations
 
@@ -34,7 +34,7 @@ STOP = {
     "기준", "내용", "대상", "상황", "시작", "사실", "분야", "모두", "크게", "다시", "계속", "가장",
     "최대한", "사회", "경제", "정치", "국제", "문화", "통신사", "기자단", "재판매", "금지", "등록",
 }
-PARTICLES = ("으로부터", "에서는", "에게서", "이라고", "이라며", "에서도", "까지는", "부터는", "으로", "에서", "에게", "보다", "처럼", "까지", "부터", "라고", "이며", "에는", "으로", "의", "을", "를", "이", "가", "은", "는", "에", "와", "과", "도", "만")
+PARTICLES = ("으로부터", "에서는", "에게서", "이라고", "이라며", "에서도", "까지는", "부터는", "으로", "에서", "에게", "보다", "처럼", "까지", "부터", "라고", "이며", "에는", "으로", "로", "서", "의", "을", "를", "이", "가", "은", "는", "에", "와", "과", "도", "만")
 BAD_ENDINGS = ("한다", "했다", "된다", "됐다", "하고", "하며", "하고는", "이라고", "라고", "이라며", "하면서", "된다면", "해진다", "이었다", "입니다", "있다", "없다")
 
 
@@ -120,36 +120,25 @@ def article_words(article: dict[str, str]) -> list[dict[str, object]]:
     parser = BodyParser()
     parser.feed(request_text(article["url"]))
     body = parser.text[:9000]
-    if len(body) < 150:
-        return []
-    sentences = []
-    for sentence in SENTENCE_RE.split(body):
-        line = clean(sentence)
-        if not 18 <= len(line) <= 150:
-            continue
-        if any(noise in line for noise in ("@newsis.com", "재판매", "DB 금지", "구글에서", "등록 20", "기자단", "뉴시스Pic")):
-            continue
-        sentences.append(line)
-    title_words = {normalize_word(word) for word in WORD_RE.findall(article["title"])}
+    title = article["title"]
+    title_words = [normalize_word(word) for word in WORD_RE.findall(title)]
     tokens = [normalize_word(word) for word in WORD_RE.findall(body)]
     counts = Counter(word for word in tokens if 2 <= len(word) <= 6 and word not in STOP)
     output: list[dict[str, object]] = []
-    for word, count in counts.most_common(60):
+    seen: set[str] = set()
+    for word in title_words:
+        count = counts[word]
+        if word in seen:
+            continue
+        seen.add(word)
         if word in STOP or len(set(word)) == 1 or word.endswith(BAD_ENDINGS):
             continue
-        if word not in title_words and count < 2:
+        if not 2 <= len(word) <= 6:
             continue
-        sentence = next((line for line in sentences if word in line), "")
-        if not sentence:
-            continue
-        position = sentence.find(word)
-        start = max(0, position - 48)
-        end = min(len(sentence), position + len(word) + 48)
-        excerpt = sentence[start:end].strip()
-        clue = ("…" if start else "") + excerpt.replace(word, "○" * len(word), 1) + ("…" if end < len(sentence) else "")
-        score = count + (6 if word in title_words else 0) + min(len(word), 4)
+        clue = title.replace(word, "○" * len(word))
+        score = 20 + count + min(len(word), 4)
         output.append({"answer": word, "clue": clue, "score": score, **article})
-    return output[:16]
+    return output[:10]
 
 
 def can_place(grid: list[list[str]], word: str, row: int, col: int, direction: str) -> tuple[bool, int]:
@@ -264,7 +253,7 @@ def main() -> None:
         raise RuntimeError(f"Could not build a crossword from {len(deduped)} candidates; preserving previous data. {errors[:3]}")
     payload = {
         "updatedAt": datetime.now(timezone.utc).isoformat(timespec="seconds"),
-        "source": "NEWSIS official RSS and article bodies",
+        "source": "NEWSIS official RSS headlines and article leads",
         "title": "오늘의 낱말",
         **puzzle,
     }
