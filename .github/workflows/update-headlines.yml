@@ -23,17 +23,19 @@ jobs:
         run: python -m pip install --disable-pip-version-check pillow
       - name: Collect latest NEWSIS headlines
         run: python .github/scripts/update_headlines.py
+      - name: Build latest NEWSIS crossword
+        run: python .github/scripts/update_crossword.py
       - name: Collect latest NEWSIS staff photographs
         continue-on-error: true
         run: python .github/scripts/update_photo_puzzles.py
       - name: Commit changed question bank
         run: |
-          if git diff --quiet -- arcade/output/data/headlines.json arcade/puzzle/data/puzzles.json arcade/puzzle/assets/photos; then
+          if git diff --quiet -- arcade/output/data/headlines.json arcade/puzzle/data/puzzles.json arcade/puzzle/assets/photos arcade/words/data/crossword.json; then
             echo "No game data changes"
             exit 0
           fi
           git config user.name "visual-newsis-bot"
           git config user.email "visual-newsis-bot@users.noreply.github.com"
-          git add arcade/output/data/headlines.json arcade/puzzle/data/puzzles.json arcade/puzzle/assets/photos
+          git add arcade/output/data/headlines.json arcade/puzzle/data/puzzles.json arcade/puzzle/assets/photos arcade/words/data/crossword.json
           git commit -m "Refresh arcade news game data"
           git push origin HEAD:main

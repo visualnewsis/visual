@@ -1,0 +1,119 @@
+{
+  "updatedAt": "2026-08-11T07:35:20+00:00",
+  "source": "NEWSIS official RSS and article bodies",
+  "title": "오늘의 낱말",
+  "rows": 8,
+  "cols": 7,
+  "words": [
+    {
+      "answer": "협의체",
+      "clue": "…서울=뉴시스] 한양대학교 ERICA가 개최한 '에리카 스페이스(ERICA-SPACE) ○○○ 발족식'에서 참석자들이 기념 사진을 촬영하고 있다.",
+      "category": "사회",
+      "title": "한양대 우주공학과, 우주 산·학·연 협력체 'ERICA-SPACE' 출범",
+      "url": "https://www.newsis.com/view/NISX20260811_0003744816",
+      "row": 0,
+      "col": 3,
+      "direction": "down",
+      "number": 1
+    },
+    {
+      "answer": "변호사",
+      "clue": "法 \"'성폭력 누명' 폭로자 측 ○○○, 기성용 측 변호사에 1500만원 배상\"",
+      "category": "사회",
+      "title": "法 \"'성폭력 누명' 폭로자 측 변호사, 기성용 측 변호사에 1500만원 배상\"",
+      "url": "https://www.newsis.com/view/NISX20260811_0003744733",
+      "row": 1,
+      "col": 0,
+      "direction": "down",
+      "number": 2
+    },
+    {
+      "answer": "위스콘신주",
+      "clue": "[밀워키=AP/뉴시스] AP통신 등에 따르면 미국 ○○○○○ 주지사 민주당 예비선거가 11일(현지시간) 치러진다.",
+      "category": "국제",
+      "title": "한국계 프란체스카 홍, 오늘 美주지사 후보 경선…진보 돌풍 이어갈까",
+      "url": "https://www.newsis.com/view/NISX20260811_0003744690",
+      "row": 1,
+      "col": 4,
+      "direction": "down",
+      "number": 3
+    },
+    {
+      "answer": "프란체스카",
+      "clue": "한국계 ○○○○○ 홍, 오늘 美주지사 후보 경선…진보 돌풍 이어갈까",
+      "category": "국제",
+      "title": "한국계 프란체스카 홍, 오늘 美주지사 후보 경선…진보 돌풍 이어갈까",
+      "url": "https://www.newsis.com/view/NISX20260811_0003744690",
+      "row": 2,
+      "col": 1,
+      "direction": "across",
+      "number": 4
+    },
+    {
+      "answer": "프랑스",
+      "clue": "올해 기대 성장률 상쇄…○○○는 1.4%P↓",
+      "category": "국제",
+      "title": "유럽 올해 폭염 경제손실 295조원… GDP 1% 증발",
+      "url": "https://www.newsis.com/view/NISX20260811_0003744500",
+      "row": 2,
+      "col": 1,
+      "direction": "down",
+      "number": 5
+    },
+    {
+      "answer": "사랑",
+      "clue": "…작인 '갈매기'는 새로운 예술을 추구하는 뜨레쁠레프와 무대를 동경하는 니나 등을 통해 ○○과 예술, 성공을 갈망하는 인간의 욕망과 좌절을 다룬 작품이다.",
+      "category": "문화",
+      "title": "전미도가 다시 펼쳐낸 니나의 날갯짓…연극 '갈매기'[객석에서]",
+      "url": "https://www.newsis.com/view/NISX20260811_0003744669",
+      "row": 3,
+      "col": 0,
+      "direction": "across",
+      "number": 6
+    },
+    {
+      "answer": "발주사",
+      "clue": "플랜트 일용직 노동자도 ○○○ 교섭 테이블에 참석",
+      "category": "경제",
+      "title": "플랜트건설노조, 포스코와 첫 원청교섭…노조법 개정 후 첫 사례",
+      "url": "https://www.newsis.com/view/NISX20260811_0003744863",
+      "row": 3,
+      "col": 6,
+      "direction": "down",
+      "number": 7
+    },
+    {
+      "answer": "게스트",
+      "clue": "9월24일 오디블 공개…6부작, 매회 ○○○와 한 권씩 대화",
+      "category": "국제",
+      "title": "오바마, 아마존과 손잡고 팟캐스트…인생책 6권 들고 마이크 잡는다",
+      "url": "https://www.newsis.com/view/NISX20260811_0003744699",
+      "row": 4,
+      "col": 0,
+      "direction": "across",
+      "number": 8
+    },
+    {
+      "answer": "현지시간",
+      "clue": "…=AP/뉴시스] AP통신 등에 따르면 미국 위스콘신주 주지사 민주당 예비선거가 11일(○○○○) 치러진다.",
+      "category": "국제",
+      "title": "한국계 프란체스카 홍, 오늘 美주지사 후보 경선…진보 돌풍 이어갈까",
+      "url": "https://www.newsis.com/view/NISX20260811_0003744690",
+      "row": 4,
+      "col": 5,
+      "direction": "down",
+      "number": 9
+    },
+    {
+      "answer": "주지사",
+      "clue": "한국계 프란체스카 홍, 오늘 美○○○ 후보 경선…진보 돌풍 이어갈까",
+      "category": "국제",
+      "title": "한국계 프란체스카 홍, 오늘 美주지사 후보 경선…진보 돌풍 이어갈까",
+      "url": "https://www.newsis.com/view/NISX20260811_0003744690",
+      "row": 5,
+      "col": 4,
+      "direction": "across",
+      "number": 10
+    }
+  ]
+}

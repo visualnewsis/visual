@@ -53,6 +53,8 @@
   object-fit: cover;
 }
 
+.game-card--words{background:#222017}.visual--words{width:min(72%,410px);aspect-ratio:1;display:grid;grid-template-columns:1fr 1fr;gap:6px;padding:12%;background:#17231c;border:12px solid #8b6b43;box-shadow:0 25px 45px #080b09;transform:rotate(-2deg)}.visual--words i{display:grid;place-items:center;background:#f3ecdc;color:#17231c;font:700 clamp(34px,5vw,68px) "Noto Serif KR",serif;font-style:normal}.game-card--words:hover .visual--words{transform:translateY(-8px) rotate(0)}
+
 .pending-mark {
   display: grid;
   place-items: center;
