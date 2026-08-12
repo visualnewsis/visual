@@ -57,6 +57,7 @@ function cycleCell(row,col){
 function renderBoard(){
   board.style.gridTemplateColumns=`repeat(${data.cols},1fr)`;
   board.style.gridTemplateRows=`repeat(${data.rows},1fr)`;
+  board.style.aspectRatio=`${data.cols} / ${data.rows}`;
   const numbers=new Map();
   words.forEach(word=>numbers.set(key(word.row,word.col),numbers.has(key(word.row,word.col))?Math.min(numbers.get(key(word.row,word.col)),word.number):word.number));
   for(let row=0;row<data.rows;row++)for(let col=0;col<data.cols;col++){
