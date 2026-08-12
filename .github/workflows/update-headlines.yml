@@ -28,14 +28,16 @@ jobs:
       - name: Collect latest NEWSIS staff photographs
         continue-on-error: true
         run: python .github/scripts/update_photo_puzzles.py
+      - name: Build latest editshop recommendations
+        run: python .github/scripts/update_editshop_recommendations.py
       - name: Commit changed question bank
         run: |
-          if git diff --quiet -- arcade/output/data/headlines.json arcade/puzzle/data/puzzles.json arcade/puzzle/assets/photos arcade/words/data/crossword.json; then
+          if git diff --quiet -- arcade/output/data/headlines.json arcade/puzzle/data/puzzles.json arcade/puzzle/assets/photos arcade/words/data/crossword.json arcade/data/editshop-articles.json; then
             echo "No game data changes"
             exit 0
           fi
           git config user.name "visual-newsis-bot"
           git config user.email "visual-newsis-bot@users.noreply.github.com"
-          git add arcade/output/data/headlines.json arcade/puzzle/data/puzzles.json arcade/puzzle/assets/photos arcade/words/data/crossword.json
+          git add arcade/output/data/headlines.json arcade/puzzle/data/puzzles.json arcade/puzzle/assets/photos arcade/words/data/crossword.json arcade/data/editshop-articles.json
           git commit -m "Refresh arcade news game data"
           git push origin HEAD:main

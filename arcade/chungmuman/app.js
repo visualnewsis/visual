@@ -9,11 +9,14 @@ const distanceEl=document.querySelector('#distance');
 const shieldEl=document.querySelector('#shield');
 const result=document.querySelector('#result');
 
-const articles=[
+let articles=[
   {url:'https://www.newsis.com/',label:'오늘의 주요 뉴스'},
   {url:'https://visual.newsis.com/',label:'오늘의 비주얼 뉴스'},
   {url:'https://www.newsis.com/realnews/',label:'팩트체크 뉴스'}
 ];
+fetch('../data/editshop-articles.json',{cache:'no-store'}).then(response=>response.json()).then(data=>{
+  if(Array.isArray(data.articles)&&data.articles.length)articles=data.articles.map(article=>({url:article.url,label:article.title}));
+}).catch(()=>{});
 
 const patterns=[
   {type:'beat',label:'취재거리',action:'jump',effect:'good',wall:32},

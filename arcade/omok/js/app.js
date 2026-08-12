@@ -23,7 +23,14 @@ let timer = null;
 let keyboardCursor = { x: 7, y: 7 };
 let articles = [];
 
-fetch('./data/articles.json').then(response => response.json()).then(data => { articles = data; }).catch(() => {});
+Promise.allSettled([
+  fetch('../data/editshop-articles.json',{cache:'no-store'}).then(response=>response.json()),
+  fetch('./data/articles.json').then(response=>response.json())
+]).then(results=>{
+  const shared=results[0].status==='fulfilled'?results[0].value.articles:[];
+  const fallback=results[1].status==='fulfilled'?results[1].value:[];
+  articles=Array.isArray(shared)&&shared.length?shared:fallback;
+});
 
 function createBoard() { return Array.from({ length: SIZE }, () => Array(SIZE).fill(EMPTY)); }
 
@@ -162,7 +169,7 @@ function renderResult(state){
 
 function setStat(name,value){document.querySelector(`#${name}Value`).textContent=`${value}%`;requestAnimationFrame(()=>{document.querySelector(`#${name}Bar`).style.width=`${value}%`;});}
 function renderMiniBoard(){const el=document.querySelector('#miniBoard');el.innerHTML='';humanMoves.forEach(({x,y})=>{const stone=document.createElement('i');stone.className='mini-stone';stone.style.left=`${x/14*100}%`;stone.style.top=`${y/14*100}%`;el.append(stone);});}
-function renderArticle(profile){const article=articles.find(item=>item.profile===profile)||articles[0];if(!article)return;const card=document.querySelector('#storyCard');card.href=article.url;document.querySelector('#storyImage').style.backgroundImage=`linear-gradient(90deg,rgba(10,15,12,.08),rgba(10,15,12,.18)),url('${article.image}')`;document.querySelector('#storyIssue').textContent=article.issue;document.querySelector('#storyHeadline').textContent=article.title;document.querySelector('#storyDescription').textContent=article.description;}
+function renderArticle(profile){const matched=articles.filter(item=>item.profile===profile),pool=matched.length?matched:articles;const article=pool[Math.floor(Math.random()*pool.length)];if(!article)return;const card=document.querySelector('#storyCard');card.href=article.url;document.querySelector('#storyImage').style.backgroundImage=`linear-gradient(90deg,rgba(10,15,12,.08),rgba(10,15,12,.18)),url('${article.image}')`;document.querySelector('#storyIssue').textContent=article.issue;document.querySelector('#storyHeadline').textContent=article.title;document.querySelector('#storyDescription').textContent=article.description;}
 
 async function shareResult(){const text=`뉴스 오목에서 오늘의 수를 읽었습니다. ${document.querySelector('#resultTitle').textContent}`;try{if(navigator.share){await navigator.share({title:'뉴스 오목 — 한 수 앞의 뉴스',text,url:location.href});}else{await navigator.clipboard.writeText(`${text}\n${location.href}`);showToast('결과 링크를 복사했습니다.');}}catch(error){if(error.name!=='AbortError')showToast('공유하지 못했습니다. 다시 시도해주세요.');}}
 function showToast(text){elements.toast.textContent=text;setTimeout(()=>elements.toast.textContent='',2400);}
