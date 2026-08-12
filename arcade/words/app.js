@@ -3,6 +3,7 @@ const board=$('#board'),loading=$('#loading'),game=$('#game'),error=$('#error'),
 let data,words=[],cells=new Map(),activeWord=null,solved=new Set();
 
 function key(row,col){return `${row}-${col}`}
+function escapeHtml(value){return String(value??'').replace(/[&<>"']/g,character=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[character]))}
 function wordCells(word){return Array.from({length:[...word.answer].length},(_,index)=>({row:word.row+(word.direction==='down'?index:0),col:word.col+(word.direction==='across'?index:0)}))}
 function memberships(row,col){return words.filter(word=>wordCells(word).some(cell=>cell.row===row&&cell.col===col))}
 
@@ -90,7 +91,7 @@ function renderClues(){
   [...words].sort((a,b)=>a.number-b.number).forEach(word=>{
     const item=document.createElement('li'),row=document.createElement('div'),button=document.createElement('button'),link=document.createElement('a');
     row.className='clue-row';button.className='clue-button';button.type='button';button.dataset.number=word.number;
-    button.innerHTML=`<b>${word.number}</b><span>${word.clue}</span>`;
+    button.innerHTML=`<b>${word.number}</b><span class="clue-copy"><strong>${escapeHtml(word.definition||'오늘의 기사에서 핵심 내용을 나타내는 낱말.')}</strong><small><em>${escapeHtml(word.definitionSource||'뜻풀이')}</em><span>기사 속 문장 · ${escapeHtml(word.clue)}</span></small></span>`;
     button.addEventListener('click',()=>selectWord(word));
     link.className='article-link';link.href=word.url;link.target='_blank';link.rel='noopener';link.textContent='힌트 보기';
     link.addEventListener('click',()=>window.gtag?.('event','crossword_article_click',{word:word.answer,title:word.title}));
