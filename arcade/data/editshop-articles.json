@@ -1,0 +1,46 @@
+{
+  "updatedAt": "2026-08-12T07:22:25+00:00",
+  "source": "VISUAL NEWSIS editshop landing page",
+  "articles": [
+    {
+      "id": "oil",
+      "issue": "편집#001",
+      "label": "ENERGY / SHIPPING / PRICES",
+      "title": "호르무즈가 멈추면",
+      "description": "유조선에서 세계 석유로, 다시 한국의 물가로. 멀리 있는 바다가 우리의 하루에 도착하는 경로를 따라갑니다.",
+      "image": "https://visual.newsis.com/oil/images/visual-01.jpg",
+      "url": "https://visual.newsis.com/oil/",
+      "profile": "attack"
+    },
+    {
+      "id": "thief",
+      "issue": "편집#002",
+      "label": "RATE / HOUSEHOLD / MONEY",
+      "title": "이자가 범인입니다",
+      "description": "기준금리가 움직인 뒤 내 통장에서 무슨 일이 벌어지는지, 매달 빠져나가는 이자의 흐름으로 확인합니다.",
+      "image": "https://visual.newsis.com/thief/images/visual-01.png",
+      "url": "https://visual.newsis.com/thief/",
+      "profile": "attack"
+    },
+    {
+      "id": "shelter",
+      "issue": "편집#003",
+      "label": "ALERT / SHELTER / DECISION",
+      "title": "대한민국, 준비됐나요?",
+      "description": "경보 이후의 5분. 엘리베이터와 계단, 창문과 건물 안쪽, 자동차와 대피시설 사이에서 직접 선택합니다.",
+      "image": "https://visual.newsis.com/shelter/images/thumbnail-emergency-bg-v1.png",
+      "url": "https://visual.newsis.com/shelter/",
+      "profile": "center"
+    },
+    {
+      "id": "temperature",
+      "issue": "편집#004",
+      "label": "HEAT / HOME / WORK",
+      "title": "당신의 온도",
+      "description": "집에서 일터까지, 주거와 냉방, 이동과 노동 조건에 따라 달라지는 폭염의 하루를 직접 계산합니다.",
+      "image": "https://visual.newsis.com/temperature/images/thermometer.jpg",
+      "url": "https://visual.newsis.com/temperature/",
+      "profile": "center"
+    }
+  ]
+}

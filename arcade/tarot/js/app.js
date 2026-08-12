@@ -8,10 +8,14 @@ const $ = selector => document.querySelector(selector);
 const elements = { intro:$('#intro'), reading:$('#reading'), result:$('#result'), enter:$('#enterButton'), candle:$('.intro-candle'), grid:$('#cardGrid'), count:$('#selectionCount'), reveal:$('#revealButton'), title:$('#resultTitle'), text:$('#resultText'), chosen:$('#chosenCards'), articleFace:$('#articleFace'), restart:$('#restartButton'), share:$('#shareButton'), toast:$('#toast'), date:$('#resultDate') };
 
 async function loadData() {
-  const paths = ['cards','results','articles'];
-  const responses = await Promise.all(paths.map(path => fetch(`./data/${path}.json`)));
-  if (responses.some(response => !response.ok)) throw new Error('데이터를 불러오지 못했습니다.');
-  return Promise.all(responses.map(response => response.json()));
+  const [cardsResponse, resultsResponse, fallbackResponse] = await Promise.all(['cards','results','articles'].map(path => fetch(`./data/${path}.json`)));
+  if (![cardsResponse, resultsResponse, fallbackResponse].every(response => response.ok)) throw new Error('데이터를 불러오지 못했습니다.');
+  const [cards, results, fallback] = await Promise.all([cardsResponse.json(), resultsResponse.json(), fallbackResponse.json()]);
+  try {
+    const response = await fetch('../data/editshop-articles.json', { cache:'no-store' });
+    const data = await response.json();
+    return [cards, results, Array.isArray(data.articles) && data.articles.length ? data.articles : fallback];
+  } catch { return [cards, results, fallback]; }
 }
 
 let engine, articles, selected = [], shuffledCards = [], currentArticle;
