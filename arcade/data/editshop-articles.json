@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-08-12T07:22:25+00:00",
+  "updatedAt": "2026-08-12T09:49:26+00:00",
   "source": "VISUAL NEWSIS editshop landing page",
   "articles": [
     {
@@ -40,6 +40,16 @@
       "description": "집에서 일터까지, 주거와 냉방, 이동과 노동 조건에 따라 달라지는 폭염의 하루를 직접 계산합니다.",
       "image": "https://visual.newsis.com/temperature/images/thermometer.jpg",
       "url": "https://visual.newsis.com/temperature/",
+      "profile": "center"
+    },
+    {
+      "id": "kangin",
+      "issue": "편집#005",
+      "label": "FOOTBALL / TACTICS / INTERACTIVE",
+      "title": "120%의 이강인",
+      "description": "어디서 뛰든 팀을 위해 120%. 이강인을 직접 배치하고 위치에 따라 달라지는 공격의 길을 살펴봅니다.",
+      "image": "https://visual.newsis.com/kangin/images/hero.jpg",
+      "url": "https://visual.newsis.com/kangin/",
       "profile": "center"
     }
   ]
