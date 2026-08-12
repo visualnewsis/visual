@@ -3,6 +3,12 @@ const EMPTY = 0;
 const HUMAN = 1;
 const AI = 2;
 const DIRECTIONS = [[1,0],[0,1],[1,1],[1,-1]];
+const RECORD_KEY = 'newsis-omok-adaptive-record-v1';
+const AI_STYLES = {
+  balanced:{name:'균형형',attack:1.06,defense:.98,center:.8},
+  attack:{name:'공격형',attack:1.2,defense:.88,center:.72},
+  defense:{name:'수비형',attack:.94,defense:1.18,center:.86}
+};
 
 const elements = {
   intro: document.querySelector('#introView'), game: document.querySelector('#gameView'), result: document.querySelector('#resultView'),
@@ -10,7 +16,8 @@ const elements = {
   finish: document.querySelector('#finishButton'), finishHint: document.querySelector('#finishHint'), share: document.querySelector('#shareButton'),
   canvas: document.querySelector('#board'), thinking: document.querySelector('#thinking'), turn: document.querySelector('#turnIndicator'),
   humanPlayer: document.querySelector('#humanPlayer'), aiPlayer: document.querySelector('#aiPlayer'), moveCount: document.querySelector('#moveCount'),
-  elapsed: document.querySelector('#elapsedTime'), message: document.querySelector('#gameMessage'), toast: document.querySelector('#toast')
+  elapsed: document.querySelector('#elapsedTime'), message: document.querySelector('#gameMessage'), toast: document.querySelector('#toast'),
+  adaptiveStatus:document.querySelector('#adaptiveStatus'),aiLevel:document.querySelector('#aiLevel')
 };
 
 let board = createBoard();
@@ -22,6 +29,31 @@ let startedAt = 0;
 let timer = null;
 let keyboardCursor = { x: 7, y: 7 };
 let articles = [];
+let record=loadRecord(),difficulty=getDifficulty(record),aiStyle=AI_STYLES.balanced;
+
+function loadRecord(){
+  try{return {...{wins:0,losses:0,draws:0,streak:0,last:''},...JSON.parse(localStorage.getItem(RECORD_KEY)||'{}')}}catch{return {wins:0,losses:0,draws:0,streak:0,last:''}}
+}
+function saveRecord(){try{localStorage.setItem(RECORD_KEY,JSON.stringify(record))}catch{}}
+function getDifficulty(value){
+  const score=value.wins-value.losses+(value.streak>0?Math.min(value.streak,3):Math.max(value.streak,-3));
+  if(score>=3)return {id:'advanced',name:'심화',top:1,noise:.35,depth:true};
+  if(score<=-2)return {id:'beginner',name:'입문',top:5,noise:18,depth:false};
+  return {id:'standard',name:'균형',top:2,noise:5,depth:false};
+}
+function updateAdaptiveStatus(){
+  const total=record.wins+record.losses+record.draws;
+  elements.adaptiveStatus.textContent=`흑돌 · 15 × 15 · AI ${difficulty.name} · 전적 ${record.wins}승 ${record.losses}패 ${record.draws}무`;
+  elements.aiLevel.textContent=`WHITE · ${difficulty.name} · ${aiStyle.name}`;
+  if(!total)elements.adaptiveStatus.textContent='흑돌 · 15 × 15 · 적응형 AI 균형 · 첫 대국';
+}
+function updateRecord(state){
+  if(state==='win'){record.wins++;record.streak=record.last==='win'?record.streak+1:1;record.last='win'}
+  else if(state==='lose'){record.losses++;record.streak=record.last==='lose'?record.streak-1:-1;record.last='lose'}
+  else if(state==='draw'){record.draws++;record.streak=0;record.last='draw'}
+  else return;
+  saveRecord();difficulty=getDifficulty(record);updateAdaptiveStatus();
+}
 
 Promise.allSettled([
   fetch('../data/editshop-articles.json',{cache:'no-store'}).then(response=>response.json()),
@@ -40,6 +72,7 @@ function showView(target) {
 }
 
 function startGame() {
+  difficulty=getDifficulty(record);aiStyle=Object.values(AI_STYLES)[(record.wins+record.losses+record.draws)%3];updateAdaptiveStatus();
   board = createBoard(); moves = []; humanMoves = []; gameOver = false; aiThinking = false; keyboardCursor = { x: 7, y: 7 };
   startedAt = Date.now(); clearInterval(timer); timer = setInterval(updateTimer, 1000);
   elements.moveCount.textContent = '0'; elements.finish.disabled = true; elements.finishHint.textContent = '10수 뒤에 열립니다';
@@ -116,9 +149,20 @@ function chooseAiMove() {
   const candidates=[];
   for(let y=0;y<SIZE;y++) for(let x=0;x<SIZE;x++) if(board[y][x]===EMPTY && hasNeighbor(x,y,2)) {
     const win=scorePoint(x,y,AI), block=scorePoint(x,y,HUMAN); const center=14-(Math.abs(x-7)+Math.abs(y-7));
-    candidates.push({x,y,score:win*1.06+block*.98+center*.8+Math.random()*4});
+    let score=win*aiStyle.attack+block*aiStyle.defense+center*aiStyle.center+Math.random()*difficulty.noise;
+    if(win>=100000)score+=1000000;if(block>=100000)score+=900000;
+    if(difficulty.depth){board[y][x]=AI;score+=futurePotential(x,y)*.22;board[y][x]=EMPTY;}
+    candidates.push({x,y,score});
   }
-  candidates.sort((a,b)=>b.score-a.score); return candidates[0] || {x:7,y:7};
+  candidates.sort((a,b)=>b.score-a.score);const pool=candidates.slice(0,Math.min(difficulty.top,candidates.length));return pool[Math.floor(Math.random()*pool.length)]||{x:7,y:7};
+}
+
+function futurePotential(x,y){
+  let best=0;
+  for(let yy=Math.max(0,y-2);yy<=Math.min(SIZE-1,y+2);yy++)for(let xx=Math.max(0,x-2);xx<=Math.min(SIZE-1,x+2);xx++){
+    if(board[yy][xx]===EMPTY)best=Math.max(best,scorePoint(xx,yy,AI),scorePoint(xx,yy,HUMAN)*.9);
+  }
+  return best;
 }
 
 function hasNeighbor(x,y,distance) { for(let yy=Math.max(0,y-distance);yy<=Math.min(SIZE-1,y+distance);yy++) for(let xx=Math.max(0,x-distance);xx<=Math.min(SIZE-1,x+distance);xx++) if(board[yy][xx]!==EMPTY) return true; return false; }
@@ -143,7 +187,7 @@ function updateProgress(){ const count=humanMoves.length; if(count>=10){elements
 function updateTimer(){ const sec=Math.floor((Date.now()-startedAt)/1000); elements.elapsed.textContent=`${String(Math.floor(sec/60)).padStart(2,'0')}:${String(sec%60).padStart(2,'0')}`; }
 
 function endGame(state='read') {
-  if(gameOver) return; gameOver=true; aiThinking=false; clearInterval(timer); elements.thinking.hidden=true; drawBoard(); renderResult(state);
+  if(gameOver) return; gameOver=true; aiThinking=false; clearInterval(timer); elements.thinking.hidden=true;updateRecord(state);drawBoard();renderResult(state);
 }
 
 function analyzePlay(){
@@ -178,3 +222,4 @@ elements.start.addEventListener('click',startGame);elements.replay.addEventListe
 elements.canvas.addEventListener('pointerup',event=>{const {x,y}=positionFromPointer(event);placeHuman(x,y);});
 elements.canvas.addEventListener('keydown',event=>{if(gameOver||aiThinking)return;const keys={ArrowLeft:[-1,0],ArrowRight:[1,0],ArrowUp:[0,-1],ArrowDown:[0,1]};if(keys[event.key]){event.preventDefault();keyboardCursor.x=Math.max(0,Math.min(14,keyboardCursor.x+keys[event.key][0]));keyboardCursor.y=Math.max(0,Math.min(14,keyboardCursor.y+keys[event.key][1]));drawBoard();}else if(event.key==='Enter'||event.key===' '){event.preventDefault();placeHuman(keyboardCursor.x,keyboardCursor.y);}});
 window.addEventListener('resize',()=>{if(!elements.game.hidden)resizeCanvas();});
+updateAdaptiveStatus();
