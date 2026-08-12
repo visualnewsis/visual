@@ -35,7 +35,49 @@ STOP = {
     "최대한", "사회", "경제", "정치", "국제", "문화", "통신사", "기자단", "재판매", "금지", "등록",
 }
 PARTICLES = ("으로부터", "에서는", "에게서", "이라고", "이라며", "에서도", "까지는", "부터는", "으로", "에서", "에게", "보다", "처럼", "까지", "부터", "라고", "이며", "에는", "으로", "로", "서", "의", "을", "를", "이", "가", "은", "는", "에", "와", "과", "도", "만")
-BAD_ENDINGS = ("한다", "했다", "된다", "됐다", "하고", "하며", "하고는", "이라고", "라고", "이라며", "하면서", "된다면", "해진다", "이었다", "입니다", "있다", "없다")
+BAD_ENDINGS = ("한다", "했다", "된다", "됐다", "하고", "하며", "하고는", "이라고", "라고", "이라며", "하면서", "된다면", "해진다", "이었다", "였던", "했던", "입니다", "있다", "없다")
+GLOSSARY = {
+    "중국": "동아시아에 있는 나라로, 정식 명칭은 중화인민공화국.",
+    "혁신": "낡은 제도나 방식 등을 완전히 새롭게 고치는 일.",
+    "조국혁신당": "대한민국의 정당 이름.",
+    "대규모": "범위나 크기, 인원 따위가 매우 큰 규모.",
+    "국가대표": "국가를 대표해 국제 경기나 대회에 참가하는 사람이나 단체.",
+    "가스레인지": "가스를 연료로 불을 피워 음식을 조리하는 기구.",
+    "인공지능": "컴퓨터가 학습·추론·판단 등 인간의 지적 능력을 수행하게 하는 기술.",
+    "공모전": "작품이나 아이디어 등을 공개적으로 모집해 우수한 것을 뽑는 대회.",
+    "국가안보실": "대통령을 보좌해 국가 안보와 위기 대응 정책을 총괄하는 대통령실 조직.",
+    "중동전쟁": "서아시아와 북아프리카를 아우르는 중동 지역에서 벌어진 전쟁.",
+    "동해안": "한반도의 동쪽 바다와 맞닿아 있는 해안 지역.",
+    "주지사": "미국 등 연방제 국가에서 한 주의 행정을 책임지는 최고 책임자.",
+    "사회공헌": "기업이나 개인이 사회에 도움이 되도록 기부·봉사·지원 등을 하는 활동.",
+    "회고전": "한 작가의 활동을 되돌아볼 수 있도록 주요 작품을 모아 여는 전시.",
+    "후반기": "전체 기간을 둘로 나누었을 때 뒤쪽에 해당하는 기간.",
+    "대기업": "자본금과 종업원 수, 매출 규모 등이 큰 기업.",
+    "계열사": "한 기업 집단에 속해 서로 관계를 맺고 있는 회사.",
+    "자사주": "회사가 자기 회사의 주식을 사서 보유한 주식.",
+    "사망자": "목숨을 잃은 사람.",
+    "미사일": "목표물을 향해 스스로 날아가도록 유도되는 무기.",
+    "최대주주": "한 회사의 주식을 가장 많이 보유한 주주.",
+    "기후장관": "기후·에너지·환경 정책을 맡는 정부 부처의 장관.",
+    "전기본": "국가의 장기 전력 수급 방향을 정하는 ‘전력수급기본계획’의 줄임말.",
+    "민주노총": "여러 산업별 노동조합이 모여 만든 전국 단위 노동조합 연합 단체.",
+    "쟁의대상": "노동조합이 사용자와 다투며 단체행동을 할 수 있는 사안의 범위.",
+    "리움미술관": "서울 용산구에 있는 사립 미술관의 이름.",
+    "외통위": "국회의 외교통일위원회를 줄여 이르는 말.",
+    "후보": "어떤 자격이나 지위를 얻기 위해 심사나 선거의 대상이 된 사람.",
+    "경선": "정당 안에서 선거에 나갈 후보자를 고르는 경쟁.",
+    "철탑": "송전선 등을 높이 설치하기 위해 세우는 철제 구조물.",
+    "교섭": "어떤 일을 이루기 위해 상대와 조건을 주고받으며 의논하는 일.",
+    "협상": "서로 다른 의견을 조정해 합의에 이르기 위해 의논하는 일.",
+    "국가배상": "공무원의 위법한 직무 행위 등으로 생긴 손해를 국가가 갚는 일.",
+    "재판": "법원이 사건의 사실관계와 법률관계를 판단하는 절차.",
+    "예비선거": "본선거에 나갈 정당 후보를 미리 뽑는 선거.",
+    "고속철도": "열차가 매우 빠른 속도로 달릴 수 있도록 만든 철도.",
+    "미술관": "미술 작품을 모아 보존하고 전시하는 시설.",
+    "무용수": "춤을 전문적으로 추는 사람.",
+    "기본기": "어떤 일을 하는 데 바탕이 되는 기초적인 기술이나 능력.",
+    "컬렉션": "일정한 기준에 따라 모은 작품이나 물건의 묶음.",
+}
 
 
 def clean(value: str | None) -> str:
@@ -116,6 +158,21 @@ def normalize_word(raw: str) -> str:
     return word
 
 
+def contextual_definition(word: str, article: dict[str, str], body: str) -> str:
+    special = {
+        "김대식": "기사에서 국회 외교통일위원회 야당 간사로 언급된 정치인의 이름.",
+        "라트만스키": "기사에서 한국 무용수의 수준을 평가한 안무가의 이름.",
+    }
+    if word in special:
+        return special[word]
+    category = article["category"]
+    sentence = next((clean(line) for line in SENTENCE_RE.split(body) if word in line and 20 <= len(clean(line)) <= 110), "")
+    if sentence:
+        context = sentence.replace(word, "○" * len(word))
+        return f"{category} 기사에서 ‘{context[:72]}’의 핵심 대상으로 언급된 {len(word)}글자 말."
+    return f"오늘의 {category} 기사 제목에서 핵심 내용을 나타내는 {len(word)}글자 낱말."
+
+
 def article_words(article: dict[str, str]) -> list[dict[str, object]]:
     parser = BodyParser()
     parser.feed(request_text(article["url"]))
@@ -136,8 +193,9 @@ def article_words(article: dict[str, str]) -> list[dict[str, object]]:
         if not 2 <= len(word) <= 6:
             continue
         clue = title.replace(word, "○" * len(word))
-        score = 20 + count + min(len(word), 4)
-        output.append({"answer": word, "clue": clue, "score": score, **article})
+        definition = GLOSSARY.get(word) or contextual_definition(word, article, body)
+        score = 20 + count + min(len(word), 4) + (30 if word in GLOSSARY else 0)
+        output.append({"answer": word, "definition": definition, "definitionSource": "사전 뜻풀이" if word in GLOSSARY else "기사 맥락", "clue": clue, "score": score, **article})
     return output[:10]
 
 
@@ -171,7 +229,7 @@ def can_place(grid: list[list[str]], word: str, row: int, col: int, direction: s
 
 
 def layout(candidates: list[dict[str, object]], size: int = 13) -> dict[str, object] | None:
-    for attempt in range(40):
+    for attempt in range(160):
         rng = random.Random(20260811 + attempt)
         letter_frequency = Counter("".join(str(item["answer"]) for item in candidates))
         pool = sorted(
@@ -253,7 +311,7 @@ def main() -> None:
     deduped: dict[str, dict[str, object]] = {}
     for item in sorted(candidates, key=lambda entry: int(entry["score"]), reverse=True):
         deduped.setdefault(str(item["answer"]), item)
-    puzzle = layout(list(deduped.values()))
+    puzzle = layout(list(deduped.values()), size=15)
     if not puzzle:
         raise RuntimeError(f"Could not build a crossword from {len(deduped)} candidates; preserving previous data. {errors[:3]}")
     payload = {
