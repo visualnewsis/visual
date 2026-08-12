@@ -183,8 +183,8 @@
     .archive-title-meta{display:flex;align-items:center;gap:18px}.archive-title-meta>span{font-size:12px;color:var(--muted)}
     .archive-controls{display:flex;gap:6px}.archive-arrow{width:42px;height:42px;border:1px solid var(--ink);border-radius:50%;background:transparent;color:var(--ink);font-size:20px;cursor:pointer;transition:.2s ease}.archive-arrow:hover,.archive-arrow:focus-visible{background:var(--ink);color:var(--paper)}.archive-arrow:disabled{opacity:.25;cursor:default}
     .archive-viewport{overflow:hidden;border-bottom:1px solid var(--line);touch-action:pan-y}.archive-grid{display:flex;gap:1px;background:var(--line);transition:transform .55s cubic-bezier(.22,.8,.22,1);will-change:transform}.archive-grid.dragging{transition:none;cursor:grabbing}
-    .archive-card{flex:0 0 calc((100% - 2px)/3);min-height:290px;padding:28px;background:var(--paper);display:flex;flex-direction:column}
-    .archive-card.latest-story{background:var(--mint)}
+    .archive-card{flex:0 0 calc((100% - 2px)/3);min-height:290px;padding:28px;background:var(--paper);display:flex;flex-direction:column;transition:background-color .22s ease}
+    .archive-card:hover,.archive-card:focus-visible{background:var(--mint)}
     .archive-card .num{font:12px/1 "Archivo Black";color:var(--muted)}
     .archive-card strong{margin:auto 0 12px;font-size:clamp(22px,2.4vw,34px);line-height:1.3;letter-spacing:-.04em}
     .archive-card p{margin:0;color:#666b6a;font-size:12px;line-height:1.7}
@@ -401,15 +401,16 @@
     (()=>{
       const viewport=document.querySelector('.archive-viewport'),track=document.querySelector('.archive-grid'),cards=[...document.querySelectorAll('.archive-card')],prev=document.querySelector('.archive-arrow.prev'),next=document.querySelector('.archive-arrow.next');
       if(!viewport||!track||!cards.length)return;
-      let index=0,startX=0,dragX=0,dragging=false;
+      let index=0,startX=0,dragX=0,pointerDown=false,dragging=false,suppressClick=false,activePointer=null;
       const visible=()=>innerWidth<=520?1:innerWidth<=850?2:3;
       const max=()=>Math.max(0,cards.length-visible());
       const cardStep=()=>cards[0].getBoundingClientRect().width+1;
       function render(animate=true){index=Math.max(0,Math.min(index,max()));track.classList.toggle('dragging',!animate);track.style.transform=`translate3d(${-index*cardStep()}px,0,0)`;prev.disabled=index===0;next.disabled=index===max()}
       prev.addEventListener('click',()=>{index--;render()});next.addEventListener('click',()=>{index++;render()});
-      viewport.addEventListener('pointerdown',e=>{dragging=true;startX=e.clientX;dragX=0;viewport.setPointerCapture(e.pointerId);track.classList.add('dragging')});
-      viewport.addEventListener('pointermove',e=>{if(!dragging)return;dragX=e.clientX-startX;track.style.transform=`translate3d(${(-index*cardStep())+dragX}px,0,0)`});
-      function endDrag(){if(!dragging)return;dragging=false;if(Math.abs(dragX)>cardStep()*.18)index+=dragX<0?1:-1;render()}
+      viewport.addEventListener('pointerdown',e=>{if(e.pointerType==='mouse'&&e.button!==0)return;pointerDown=true;dragging=false;suppressClick=false;activePointer=e.pointerId;startX=e.clientX;dragX=0});
+      viewport.addEventListener('pointermove',e=>{if(!pointerDown||e.pointerId!==activePointer)return;dragX=e.clientX-startX;if(!dragging&&Math.abs(dragX)>8){dragging=true;suppressClick=true;viewport.setPointerCapture(e.pointerId);track.classList.add('dragging')}if(!dragging)return;e.preventDefault();track.style.transform=`translate3d(${(-index*cardStep())+dragX}px,0,0)`});
+      function endDrag(e){if(!pointerDown||e.pointerId!==activePointer)return;pointerDown=false;if(dragging&&Math.abs(dragX)>cardStep()*.18)index+=dragX<0?1:-1;dragging=false;activePointer=null;render();setTimeout(()=>{suppressClick=false},0)}
+      viewport.addEventListener('click',e=>{if(suppressClick){e.preventDefault();e.stopPropagation()}},true);
       viewport.addEventListener('pointerup',endDrag);viewport.addEventListener('pointercancel',endDrag);addEventListener('resize',()=>render(false));render(false);
     })();
   </script>
