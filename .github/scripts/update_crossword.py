@@ -229,8 +229,9 @@ def can_place(grid: list[list[str]], word: str, row: int, col: int, direction: s
 
 
 def layout(candidates: list[dict[str, object]], size: int = 13) -> dict[str, object] | None:
+    daily_seed = int(datetime.now(timezone.utc).strftime("%Y%m%d"))
     for attempt in range(160):
-        rng = random.Random(20260811 + attempt)
+        rng = random.Random(daily_seed + attempt)
         letter_frequency = Counter("".join(str(item["answer"]) for item in candidates))
         pool = sorted(
             candidates,
@@ -275,6 +276,9 @@ def layout(candidates: list[dict[str, object]], size: int = 13) -> dict[str, obj
                             cross_c = int(existing["col"]) + (old_i if existing["direction"] == "across" else 0)
                             test_r = cross_r - (new_i if new_direction == "down" else 0)
                             test_c = cross_c - (new_i if new_direction == "across" else 0)
+                            # Every clue needs its own visible start square/number.
+                            if not (0 <= test_r < size and 0 <= test_c < size) or grid[test_r][test_c]:
+                                continue
                             ok, crossings = can_place(grid, word, test_r, test_c, new_direction)
                             if ok and (best is None or crossings > best[0]):
                                 best = (crossings, candidate, test_r, test_c, new_direction)
@@ -289,6 +293,9 @@ def layout(candidates: list[dict[str, object]], size: int = 13) -> dict[str, obj
             used.add(word)
             pool.remove(candidate)
         if len(placed) >= 7:
+            starts = [(int(item["row"]), int(item["col"])) for item in placed]
+            if len(starts) != len(set(starts)):
+                continue
             rows = [int(item["row"]) + (len(str(item["answer"])) - 1 if item["direction"] == "down" else 0) for item in placed]
             cols = [int(item["col"]) + (len(str(item["answer"])) - 1 if item["direction"] == "across" else 0) for item in placed]
             min_r, max_r = min(int(item["row"]) for item in placed), max(rows)
