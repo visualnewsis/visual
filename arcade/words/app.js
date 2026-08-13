@@ -65,14 +65,22 @@ function renderBoard(){
     if(memberships(row,col).length){
       cell.classList.add('active');
       const input=document.createElement('input');
-      let composing=false;
+      let composing=false,ignoreFinalInput=false;
       input.inputMode='text';input.autocomplete='off';input.autocapitalize='off';input.spellcheck=false;
       input.setAttribute('aria-label',`${row+1}행 ${col+1}열`);
       input.addEventListener('focus',()=>focusCell(row,col));
-      cell.addEventListener('click',()=>cycleCell(row,col));
       input.addEventListener('compositionstart',()=>{composing=true});
-      input.addEventListener('compositionend',()=>{composing=false;commitCell(input,row,col)});
-      input.addEventListener('input',()=>{if(!composing)commitCell(input,row,col)});
+      input.addEventListener('compositionend',event=>{
+        composing=false;
+        input.value=event.data||input.value;
+        commitCell(input,row,col);
+        ignoreFinalInput=true;
+        queueMicrotask(()=>{ignoreFinalInput=false});
+      });
+      input.addEventListener('input',event=>{
+        if(composing||event.isComposing||ignoreFinalInput)return;
+        commitCell(input,row,col);
+      });
       input.addEventListener('keydown',event=>{
         if(event.isComposing)return;
         if(event.key==='Backspace'&&!input.value&&activeWord){

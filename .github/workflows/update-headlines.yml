@@ -1,8 +1,13 @@
 name: Update headline game
 
 on:
+  push:
+    branches: [main]
+    paths:
+      - ".github/scripts/update_crossword.py"
+      - ".github/workflows/update-headlines.yml"
   schedule:
-    - cron: "17 */6 * * *"
+    - cron: "17 */4 * * *"
   workflow_dispatch:
 
 permissions:
