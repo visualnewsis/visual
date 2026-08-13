@@ -59,7 +59,10 @@ function renderBoard(){
   board.style.gridTemplateRows=`repeat(${data.rows},1fr)`;
   board.style.aspectRatio=`${data.cols} / ${data.rows}`;
   const numbers=new Map();
-  words.forEach(word=>numbers.set(key(word.row,word.col),numbers.has(key(word.row,word.col))?Math.min(numbers.get(key(word.row,word.col)),word.number):word.number));
+  words.forEach(word=>{
+    const start=key(word.row,word.col),list=numbers.get(start)||[];
+    numbers.set(start,[...list,word.number]);
+  });
   for(let row=0;row<data.rows;row++)for(let col=0;col<data.cols;col++){
     const cell=document.createElement('div');cell.className='cell';cell.setAttribute('role','gridcell');
     if(memberships(row,col).length){
@@ -69,6 +72,7 @@ function renderBoard(){
       input.inputMode='text';input.autocomplete='off';input.autocapitalize='off';input.spellcheck=false;
       input.setAttribute('aria-label',`${row+1}행 ${col+1}열`);
       input.addEventListener('focus',()=>focusCell(row,col));
+      cell.addEventListener('click',()=>cycleCell(row,col));
       input.addEventListener('compositionstart',()=>{composing=true});
       input.addEventListener('compositionend',event=>{
         composing=false;
@@ -89,7 +93,7 @@ function renderBoard(){
         }
       });
       cell.append(input);
-      if(numbers.has(key(row,col))){const sup=document.createElement('sup');sup.textContent=numbers.get(key(row,col));cell.append(sup)}
+      if(numbers.has(key(row,col))){const sup=document.createElement('sup');sup.textContent=numbers.get(key(row,col)).join('·');cell.append(sup)}
     }
     cells.set(key(row,col),cell);board.append(cell);
   }
