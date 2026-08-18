@@ -139,7 +139,7 @@ jobs:
           envs: GITHUB_SHA,RELEASE_PATH,BASE_PATH,BACK_PATH,BACK_OK,BRANCH_NAME
           script: |
             echo $BRANCH_NAME
-            rsync -avz --exclude=.git $RELEASE_PATH $BASE_PATH
+            rsync -avz --exclude=.git --exclude=.github --exclude=.gitignore $RELEASE_PATH $BASE_PATH
             cd $BASE_PATH
 
   # ssh-action을 통하여 json에 설정된 서버 실행 이후 처리할 작업을 진행합니다..
