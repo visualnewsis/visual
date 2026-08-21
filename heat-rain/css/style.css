@@ -75,6 +75,22 @@ h3 {
   font-size: 11px;
   letter-spacing: 0.12em;
 }
+.visual-newsis-brand {
+  position: absolute;
+  left: clamp(18px, 3.8vw, 72px);
+  top: 50%;
+  transform: translateY(-50%);
+  color: #edf4f5;
+  font-family: "Archivo Black", "Pretendard Variable", "Noto Sans KR", sans-serif;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  white-space: nowrap;
+}
+.visual-newsis-brand:hover,
+.visual-newsis-brand:focus-visible {
+  color: #67d8e8;
+}
 .newsis-logo {
   --newsis-logo-width: 98px;
   position: relative;
