@@ -162,11 +162,18 @@ def dictionary_definition(word: str) -> str | None:
             if item_word != normalized:
                 continue
 
-            sense = item.get("sense") or {}
-            definition = clean(str(sense.get("definition") or ""))
+            senses = item.get("sense") or []
+            if isinstance(senses, dict):
+                senses = [senses]
 
-            if definition:
-                return definition
+            for sense in senses:
+                if not isinstance(sense, dict):
+                    continue
+
+                definition = clean(str(sense.get("definition") or ""))
+
+                if definition:
+                    return definition
 
     except Exception as exc:
         print(f"Dictionary lookup failed for {word}: {exc}")
