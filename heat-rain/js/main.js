@@ -123,8 +123,42 @@ function initHeroSlider() {
     divider.style.left = `${val}%`;
   };
 
+  updateSplit(slider.value);
+
   slider.addEventListener("input", (e) => {
     updateSplit(e.target.value);
+  });
+  slider.addEventListener("change", (e) => {
+    updateSplit(e.target.value);
+  });
+
+  let isDragging = false;
+  const onPointerMove = (clientX) => {
+    const rect = slider.getBoundingClientRect();
+    if (rect.width <= 0) return;
+    const min = parseFloat(slider.min) || 0;
+    const max = parseFloat(slider.max) || 100;
+    const percent = ((clientX - rect.left) / rect.width) * 100;
+    const clamped = Math.min(max, Math.max(min, percent));
+    slider.value = clamped;
+    updateSplit(clamped);
+  };
+
+  slider.addEventListener("pointerdown", (e) => {
+    isDragging = true;
+    onPointerMove(e.clientX);
+  });
+
+  window.addEventListener("pointermove", (e) => {
+    if (!isDragging) return;
+    onPointerMove(e.clientX);
+  });
+
+  window.addEventListener("pointerup", () => {
+    isDragging = false;
+  });
+  window.addEventListener("pointercancel", () => {
+    isDragging = false;
   });
 }
 
@@ -136,8 +170,46 @@ function initHeatDroughtSlider() {
   const container = document.getElementById("heat-drought-interactive");
   if (!slider || !container) return;
 
+  const updateSplit = (val) => {
+    container.style.setProperty("--heat-dry-split", `${val}%`);
+  };
+
+  updateSplit(slider.value);
+
   slider.addEventListener("input", (e) => {
-    container.style.setProperty("--heat-dry-split", `${e.target.value}%`);
+    updateSplit(e.target.value);
+  });
+  slider.addEventListener("change", (e) => {
+    updateSplit(e.target.value);
+  });
+
+  let isDragging = false;
+  const onPointerMove = (clientX) => {
+    const rect = slider.getBoundingClientRect();
+    if (rect.width <= 0) return;
+    const min = parseFloat(slider.min) || 0;
+    const max = parseFloat(slider.max) || 100;
+    const percent = ((clientX - rect.left) / rect.width) * 100;
+    const clamped = Math.min(max, Math.max(min, percent));
+    slider.value = clamped;
+    updateSplit(clamped);
+  };
+
+  slider.addEventListener("pointerdown", (e) => {
+    isDragging = true;
+    onPointerMove(e.clientX);
+  });
+
+  window.addEventListener("pointermove", (e) => {
+    if (!isDragging) return;
+    onPointerMove(e.clientX);
+  });
+
+  window.addEventListener("pointerup", () => {
+    isDragging = false;
+  });
+  window.addEventListener("pointercancel", () => {
+    isDragging = false;
   });
 }
 
