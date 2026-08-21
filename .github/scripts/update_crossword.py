@@ -385,7 +385,7 @@ def layout(candidates: list[dict[str, object]], size: int = 13) -> dict[str, obj
             placed.append({**candidate, "row": row, "col": col, "direction": direction})
             used.add(word)
             pool.remove(candidate)
-        if len(placed) >= 7:
+        if len(placed) >= 6:
             starts = [(int(item["row"]), int(item["col"])) for item in placed]
             if len(starts) != len(set(starts)):
                 continue
