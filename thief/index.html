@@ -153,6 +153,21 @@
       .issue-series{display:none}
     }
     @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*:before,*:after{animation:none!important;transition:none!important}.reveal{opacity:1;transform:none}}
+/* 상단 오른쪽 글씨를 왼쪽 VISUAL NEWSIS와 동일하게 */
+.topbar > .issue {
+  font-size: 12px !important;
+  font-weight: 900 !important;
+  letter-spacing: .22em !important;
+  line-height: 1 !important;
+  color: #fff !important;
+}
+
+@media (max-width: 800px) {
+  .topbar > .issue {
+    font-size: 10px !important;
+    letter-spacing: .13em !important;
+  }
+}
   </style>
   <link rel="stylesheet" href="../assets/editshop-next.css?v=20260804-2">
 </head>

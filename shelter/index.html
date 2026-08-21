@@ -123,19 +123,73 @@
     .start{bottom:7vh}.start button{position:relative;min-width:230px;padding:17px 28px;border:1px solid rgba(94,217,231,.8);border-radius:999px;background:rgba(0,12,15,.78);backdrop-filter:blur(12px);box-shadow:0 0 0 0 rgba(0,180,201,.42),0 0 32px rgba(0,180,201,.22);font-size:14px;font-weight:800;color:#fff;animation:startPulse 1.8s ease-out infinite}.start button:before{content:"▶";margin-right:10px;color:var(--mint);font-size:11px}.start button:after{display:none}.start button:hover,.start button:focus-visible{background:var(--mint);color:#001417;transform:translateY(-2px);outline:none}.start button:hover:before,.start button:focus-visible:before{color:#001417}.start p{margin-top:13px;color:#a9b4b7;font-size:11px}@keyframes startPulse{0%{box-shadow:0 0 0 0 rgba(0,180,201,.46),0 0 30px rgba(0,180,201,.25)}70%{box-shadow:0 0 0 18px rgba(0,180,201,0),0 0 48px rgba(0,180,201,.38)}100%{box-shadow:0 0 0 0 rgba(0,180,201,0),0 0 30px rgba(0,180,201,.2)}}.hero-credit{margin-top:30px;padding-top:18px;border-top:1px solid rgba(255,255,255,.2);font-size:12px;font-weight:700;letter-spacing:.08em;color:#fff}
     @media(max-width:640px){.decision-chapter h2{margin-bottom:30px}.decision-chapter .choice{font-size:24px;padding:28px 10px}.fail-overlay .beep{font-size:36px}.settings-phone{padding:32px 20px}.aftermath .line{font-size:12vw}}
     @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*:before,*:after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}.article{transform:translateY(-60px)}html.impacting body,.window-chapter.impact .window-scene,.window-chapter.impact .scene-copy,.window-chapter.impact .scene:before{animation-duration:.82s!important}}
+/* 쉘터 상단바를 나이테 형식으로 통일 */
+.shelter-brand,
+.shelter-issue {
+  position: relative;
+  z-index: 2;
+  color: #fff;
+  text-decoration: none;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: .18em;
+  white-space: nowrap;
+}
+
+.shelter-brand {
+  margin-right: auto;
+}
+
+.shelter-issue {
+  margin-left: auto;
+}
+
+/* 오른쪽 시리즈명과 타이머가 겹치지 않도록 */
+.topbar .timer {
+  top: 72px;
+  right: var(--safe);
+  padding: 7px 10px;
+  border-radius: 999px;
+  background: rgba(4,7,8,.78);
+  backdrop-filter: blur(8px);
+}
+
+@media (max-width: 800px) {
+  .shelter-brand,
+  .shelter-issue {
+    font-size: 10px;
+    letter-spacing: .1em;
+  }
+}
   </style>
   <link rel="stylesheet" href="../assets/editshop-next.css?v=20260804-2">
 </head>
 <body>
   <div class="progress" aria-hidden="true"><i id="bar"></i></div>
   <header class="topbar">
-    <div class="mast"><a href="https://visual.newsis.com/" aria-label="비주얼 뉴시스 홈">VISUAL NEWSIS</a><span>|</span><a href="https://visual.newsis.com/editshop/" aria-label="편집# 시리즈 보기">편집# 003</a></div>
-    <a class="newsis-logo" href="https://www.newsis.com/" aria-label="뉴시스 홈페이지로 이동">
-      <img class="white-layer" src="../assets/logo2024.png" alt="">
-      <img class="mint-layer" src="../assets/logo2024.png" alt="공감언론 뉴시스">
-    </a>
-    <div class="timer" id="timer" aria-live="polite"><b>05:00</b> / 경보 이후</div>
-  </header>
+  <a class="shelter-brand"
+     href="https://visual.newsis.com/"
+     aria-label="VISUAL NEWSIS home">
+    VISUAL NEWSIS
+  </a>
+
+  <a class="newsis-logo"
+     href="https://www.newsis.com/"
+     aria-label="뉴시스 홈페이지로 이동">
+    <img class="white-layer" src="../assets/logo2024.png" alt="">
+    <img class="mint-layer" src="../assets/logo2024.png" alt="공감언론 뉴시스">
+  </a>
+
+  <a class="shelter-issue"
+     href="https://visual.newsis.com/editshop/"
+     aria-label="편집# 시리즈 보기">
+    편집# 003 · INTERACTIVE SERIES
+  </a>
+
+  <div class="timer" id="timer" aria-live="polite">
+    <b>05:00</b> / 경보 이후
+  </div>
+</header>
 
   <main>
     <section class="intro" id="intro" aria-label="인터랙티브 도입부">
