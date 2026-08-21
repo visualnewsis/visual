@@ -325,8 +325,8 @@ def can_place(grid: list[list[str]], word: str, row: int, col: int, direction: s
                 return False, 0
     return crossings > 0, crossings
 
-def layout(candidates: list[dict[str, object]], size: int = 13) -> dict[str, object] | None:
-    daily_seed = int(datetime.now(timezone.utc).strftime("%Y%m%d"))
+def layout(candidates: list[dict[str, object]], size: int = 13, seed_offset: int = 0) -> dict[str, object] | None:
+    daily_seed = int(datetime.now(timezone.utc).strftime("%Y%m%d")) + seed_offset * 1009
     letter_frequency = Counter("".join(str(item["answer"]) for item in candidates))
 
     ranked = sorted(
@@ -561,26 +561,78 @@ def layout(candidates: list[dict[str, object]], size: int = 13) -> dict[str, obj
 def main() -> None:
     candidates: list[dict[str, object]] = []
     errors: list[str] = []
+
     for article in feed_articles()[:22]:
         try:
             candidates.extend(article_words(article))
         except Exception as exc:
             errors.append(f"{article['url']}: {exc}")
+
     deduped: dict[str, dict[str, object]] = {}
-    for item in sorted(candidates, key=lambda entry: int(entry["score"]), reverse=True):
+    for item in sorted(
+        candidates,
+        key=lambda entry: int(entry["score"]),
+        reverse=True,
+    ):
         deduped.setdefault(str(item["answer"]), item)
-    puzzle = layout(list(deduped.values()), size=17)
-    if not puzzle:
-        raise RuntimeError(f"Could not build a crossword from {len(deduped)} candidates; preserving previous data. {errors[:3]}")
+
+    candidate_list = list(deduped.values())
+
+    puzzles: list[dict[str, object]] = []
+    signatures: set[tuple[str, ...]] = set()
+
+    # Try several deterministic seeds and keep up to five distinct boards.
+    for seed_offset in range(20):
+        puzzle = layout(
+            candidate_list,
+            size=17,
+            seed_offset=seed_offset,
+        )
+
+        if not puzzle:
+            continue
+
+        signature = tuple(
+            sorted(str(word["answer"]) for word in puzzle["words"])
+        )
+
+        if signature in signatures:
+            continue
+
+        signatures.add(signature)
+        puzzles.append(puzzle)
+
+        if len(puzzles) >= 5:
+            break
+
+    if not puzzles:
+        raise RuntimeError(
+            f"Could not build a crossword from {len(deduped)} candidates; "
+            f"preserving previous data. {errors[:3]}"
+        )
+
     payload = {
         "updatedAt": datetime.now(timezone.utc).isoformat(timespec="seconds"),
         "source": "NEWSIS official RSS headlines and article leads",
         "title": "오늘의 낱말",
-        **puzzle,
+        "puzzles": puzzles,
+
+        # Backward compatibility: the current frontend can still use
+        # the first puzzle until multi-board UI is deployed.
+        **puzzles[0],
     }
+
     OUTPUT.parent.mkdir(parents=True, exist_ok=True)
-    OUTPUT.write_text(json.dumps(payload, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
-    print(f"Wrote {len(payload['words'])} crossword words to {OUTPUT}")
+    OUTPUT.write_text(
+        json.dumps(payload, ensure_ascii=False, indent=2) + "\n",
+        encoding="utf-8",
+    )
+
+    print(
+        f"Wrote {len(puzzles)} crossword puzzles "
+        f"({sum(len(puzzle['words']) for puzzle in puzzles)} words) "
+        f"to {OUTPUT}"
+    )
 
 
 if __name__ == "__main__":
