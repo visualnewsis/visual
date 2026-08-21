@@ -369,8 +369,9 @@ def layout(candidates: list[dict[str, object]], size: int = 13) -> dict[str, obj
                             cross_c = int(existing["col"]) + (old_i if existing["direction"] == "across" else 0)
                             test_r = cross_r - (new_i if new_direction == "down" else 0)
                             test_c = cross_c - (new_i if new_direction == "across" else 0)
-                            # Every clue needs its own visible start square/number.
-                            if not (0 <= test_r < size and 0 <= test_c < size) or grid[test_r][test_c]:
+                            if not (0 <= test_r < size and 0 <= test_c < size):
+                                continue
+                            if grid[test_r][test_c] and grid[test_r][test_c] != word[0]:
                                 continue
                             ok, crossings = can_place(grid, word, test_r, test_c, new_direction)
                             if ok and (best is None or crossings > best[0]):
@@ -385,10 +386,7 @@ def layout(candidates: list[dict[str, object]], size: int = 13) -> dict[str, obj
             placed.append({**candidate, "row": row, "col": col, "direction": direction})
             used.add(word)
             pool.remove(candidate)
-        if len(placed) >= 6:
-            starts = [(int(item["row"]), int(item["col"])) for item in placed]
-            if len(starts) != len(set(starts)):
-                continue
+        if len(placed) >= 7:
             rows = [int(item["row"]) + (len(str(item["answer"])) - 1 if item["direction"] == "down" else 0) for item in placed]
             cols = [int(item["col"]) + (len(str(item["answer"])) - 1 if item["direction"] == "across" else 0) for item in placed]
             min_r, max_r = min(int(item["row"]) for item in placed), max(rows)
