@@ -340,17 +340,12 @@ def layout(candidates: list[dict[str, object]], size: int = 13) -> dict[str, obj
             ),
             reverse=True,
         )[:52]
+        first_index = rng.randrange(min(12, len(pool)))
+        first = pool.pop(first_index)
         rng.shuffle(pool)
-        pool.sort(
-            key=lambda item: (
-                sum(letter_frequency[letter] for letter in set(str(item["answer"]))),
-                len(str(item["answer"])),
-            ),
-            reverse=True,
-        )
+
         grid = [["" for _ in range(size)] for _ in range(size)]
         placed: list[dict[str, object]] = []
-        first = pool.pop(0)
         answer = str(first["answer"])
         row, col = size // 2, (size - len(answer)) // 2
         for offset, letter in enumerate(answer):
