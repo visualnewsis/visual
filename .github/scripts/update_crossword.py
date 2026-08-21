@@ -5,8 +5,10 @@ from __future__ import annotations
 
 import html
 import json
+import os
 import random
 import re
+import urllib.parse
 import urllib.request
 import xml.etree.ElementTree as ET
 from collections import Counter
@@ -24,6 +26,8 @@ FEEDS = {
     "문화": "https://www.newsis.com/RSS/culture.xml",
 }
 USER_AGENT = "VisualNewsis-Crossword/1.0"
+WOORIMAL_API_KEY = os.environ.get("WOORIMAL_API_KEY", "").strip()
+WOORIMAL_API_URL = "https://opendict.korean.go.kr/api/search"
 WORD_RE = re.compile(r"(?<![가-힣])[가-힣]{2,6}(?![가-힣])")
 SPACE_RE = re.compile(r"\s+")
 SENTENCE_RE = re.compile(r"(?<=[.!?])\s+|\n+")
@@ -129,6 +133,45 @@ def request_text(url: str) -> str:
     with urllib.request.urlopen(request, timeout=20) as response:
         return response.read().decode("utf-8", errors="replace")
 
+def dictionary_definition(word: str) -> str | None:
+    if not WOORIMAL_API_KEY:
+        return None
+
+    params = urllib.parse.urlencode({
+        "key": WOORIMAL_API_KEY,
+        "q": word,
+        "req_type": "json",
+        "method": "exact",
+        "part": "word",
+        "num": 10,
+    })
+
+    try:
+        raw = request_text(f"{WOORIMAL_API_URL}?{params}")
+        data = json.loads(raw)
+        channel = data.get("channel") or {}
+
+        items = channel.get("item") or []
+        if isinstance(items, dict):
+            items = [items]
+
+        normalized = word.replace("^", "").replace("-", "")
+
+        for item in items:
+            item_word = str(item.get("word") or "").replace("^", "").replace("-", "")
+            if item_word != normalized:
+                continue
+
+            sense = item.get("sense") or {}
+            definition = clean(str(sense.get("definition") or ""))
+
+            if definition:
+                return definition
+
+    except Exception as exc:
+        print(f"Dictionary lookup failed for {word}: {exc}")
+
+    return None
 
 def feed_articles() -> list[dict[str, str]]:
     articles: list[dict[str, str]] = []
@@ -178,24 +221,72 @@ def article_words(article: dict[str, str]) -> list[dict[str, object]]:
     parser.feed(request_text(article["url"]))
     body = parser.text[:9000]
     title = article["title"]
+
     title_words = [normalize_word(word) for word in WORD_RE.findall(title)]
     tokens = [normalize_word(word) for word in WORD_RE.findall(body)]
-    counts = Counter(word for word in tokens if 2 <= len(word) <= 6 and word not in STOP)
+    counts = Counter(
+        word for word in tokens
+        if 2 <= len(word) <= 6 and word not in STOP
+    )
+
     output: list[dict[str, object]] = []
     seen: set[str] = set()
+
     for word in title_words:
         count = counts[word]
+
         if word in seen:
             continue
         seen.add(word)
+
         if word in STOP or len(set(word)) == 1 or word.endswith(BAD_ENDINGS):
             continue
+
         if not 2 <= len(word) <= 6:
             continue
-        clue = title.replace(word, "○" * len(word))
-        definition = GLOSSARY.get(word) or contextual_definition(word, article, body)
-        score = 20 + count + min(len(word), 4) + (30 if word in GLOSSARY else 0)
-        output.append({"answer": word, "definition": definition, "definitionSource": "사전 뜻풀이" if word in GLOSSARY else "기사 맥락", "clue": clue, "score": score, **article})
+
+        # 우리말샘 또는 기존 검수 사전에서 뜻풀이 조회
+        if word in GLOSSARY:
+            definition = GLOSSARY[word]
+            definition_source = "사전 뜻풀이"
+        else:
+            definition = dictionary_definition(word)
+            definition_source = "우리말샘"
+
+        # 사전 뜻을 확보할 수 없는 단어는 문제 후보에서 제외
+        if not definition:
+            continue
+
+        # 기사 속에서 해당 단어가 실제 사용된 문장을 찾음
+        context_sentence = next(
+            (
+                clean(sentence)
+                for sentence in SENTENCE_RE.split(body)
+                if word in sentence
+                and 15 <= len(clean(sentence)) <= 140
+            ),
+            title,
+        )
+
+        # 정답이 기사 맥락에서 그대로 노출되지 않도록 빈칸 처리
+        clue = context_sentence.replace(word, "□" * len(word))
+
+        score = (
+            20
+            + count
+            + min(len(word), 4)
+            + (30 if word in GLOSSARY else 20)
+        )
+
+        output.append({
+            "answer": word,
+            "definition": definition,
+            "definitionSource": definition_source,
+            "clue": clue,
+            "score": score,
+            **article,
+        })
+
     return output[:10]
 
 
