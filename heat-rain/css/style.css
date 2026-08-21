@@ -77,8 +77,10 @@ h3 {
 }
 .visual-newsis-brand {
   position: absolute;
-  left: clamp(18px, 3.8vw, 72px);
+  left: 0;
   top: 50%;
+  z-index: 2;
+  padding-left: clamp(18px, 3.8vw, 72px);
   transform: translateY(-50%);
   color: #edf4f5;
   font-family: "Archivo Black", "Pretendard Variable", "Noto Sans KR", sans-serif;
