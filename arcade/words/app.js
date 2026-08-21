@@ -182,7 +182,11 @@ async function init(){
 
     if(!puzzles.length)throw new Error('invalid crossword');
 
-    currentPuzzleIndex=Math.floor(Math.random()*puzzles.length);
+    const storageKey=`crossword-puzzle-${payload.updatedAt||'current'}`;
+    const previous=Number(sessionStorage.getItem(storageKey));
+    const choices=puzzles.map((_,i)=>i).filter(i=>i!==previous);
+    currentPuzzleIndex=choices[Math.floor(Math.random()*choices.length)];
+    sessionStorage.setItem(storageKey,String(currentPuzzleIndex));
     data=puzzles[currentPuzzleIndex];
     words=data.words;
 
