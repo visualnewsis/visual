@@ -112,54 +112,107 @@ function initHeroVideo() {
 /* -------------------------------------------------------------------------- */
 function initHeroSlider() {
   const slider = document.getElementById("extreme-slider");
+  const stage = document.getElementById("extreme-stage");
   const heatPanel = document.getElementById("extreme-heat");
   const floodPanel = document.getElementById("extreme-flood-panel");
   const divider = document.getElementById("extreme-divider");
   if (!slider || !heatPanel || !floodPanel || !divider) return;
 
+  const min = parseFloat(slider.min) || 18;
+  const max = parseFloat(slider.max) || 82;
+
   const updateSplit = (val) => {
-    heatPanel.style.width = `${val}%`;
-    floodPanel.style.left = `${val}%`;
-    divider.style.left = `${val}%`;
+    const num = parseFloat(val);
+    const clamped = Math.min(max, Math.max(min, isNaN(num) ? 50 : num));
+    slider.value = clamped;
+    heatPanel.style.width = `${clamped}%`;
+    floodPanel.style.left = `${clamped}%`;
+    divider.style.left = `${clamped}%`;
   };
 
   updateSplit(slider.value);
 
-  slider.addEventListener("input", (e) => {
-    updateSplit(e.target.value);
-  });
-  slider.addEventListener("change", (e) => {
-    updateSplit(e.target.value);
-  });
+  // Native input & change listeners
+  slider.addEventListener("input", (e) => updateSplit(e.target.value));
+  slider.addEventListener("change", (e) => updateSplit(e.target.value));
 
-  let isDragging = false;
-  const onPointerMove = (clientX) => {
-    const rect = slider.getBoundingClientRect();
-    if (rect.width <= 0) return;
-    const min = parseFloat(slider.min) || 0;
-    const max = parseFloat(slider.max) || 100;
+  const getPercentFromClientX = (clientX) => {
+    const container = stage || slider;
+    const rect = container.getBoundingClientRect();
+    if (rect.width <= 0) return 50;
     const percent = ((clientX - rect.left) / rect.width) * 100;
-    const clamped = Math.min(max, Math.max(min, percent));
-    slider.value = clamped;
-    updateSplit(clamped);
+    return Math.min(max, Math.max(min, percent));
   };
 
-  slider.addEventListener("pointerdown", (e) => {
+  let isDragging = false;
+  let startX = 0;
+  let startY = 0;
+  let isHorizontal = false;
+
+  // Pointer Events (Desktop mouse / stylus / standard pointer)
+  const onPointerDown = (e) => {
+    if (e.pointerType === "mouse" && e.button !== 0) return;
     isDragging = true;
-    onPointerMove(e.clientX);
-  });
+    if (e.target && e.target.setPointerCapture && e.pointerId !== undefined) {
+      try { e.target.setPointerCapture(e.pointerId); } catch (_) {}
+    }
+    updateSplit(getPercentFromClientX(e.clientX));
+  };
 
-  window.addEventListener("pointermove", (e) => {
+  const onPointerMove = (e) => {
     if (!isDragging) return;
-    onPointerMove(e.clientX);
-  });
+    updateSplit(getPercentFromClientX(e.clientX));
+  };
 
-  window.addEventListener("pointerup", () => {
+  const onPointerUp = (e) => {
+    if (!isDragging) return;
     isDragging = false;
-  });
-  window.addEventListener("pointercancel", () => {
+    if (e.target && e.target.releasePointerCapture && e.pointerId !== undefined) {
+      try { e.target.releasePointerCapture(e.pointerId); } catch (_) {}
+    }
+  };
+
+  slider.addEventListener("pointerdown", onPointerDown);
+  window.addEventListener("pointermove", onPointerMove);
+  window.addEventListener("pointerup", onPointerUp);
+  window.addEventListener("pointercancel", onPointerUp);
+
+  // Touch Events for Mobile Safari (iOS) / Android Chrome
+  const onTouchStart = (e) => {
+    if (!e.touches || e.touches.length === 0) return;
+    const touch = e.touches[0];
+    startX = touch.clientX;
+    startY = touch.clientY;
+    isHorizontal = false;
+    isDragging = true;
+    updateSplit(getPercentFromClientX(touch.clientX));
+  };
+
+  const onTouchMove = (e) => {
+    if (!isDragging || !e.touches || e.touches.length === 0) return;
+    const touch = e.touches[0];
+    const dx = Math.abs(touch.clientX - startX);
+    const dy = Math.abs(touch.clientY - startY);
+
+    if (!isHorizontal && (dx > 4 || dy > 4)) {
+      isHorizontal = dx >= dy;
+    }
+
+    if (isHorizontal) {
+      if (e.cancelable) e.preventDefault();
+      updateSplit(getPercentFromClientX(touch.clientX));
+    }
+  };
+
+  const onTouchEnd = () => {
     isDragging = false;
-  });
+    isHorizontal = false;
+  };
+
+  slider.addEventListener("touchstart", onTouchStart, { passive: false });
+  slider.addEventListener("touchmove", onTouchMove, { passive: false });
+  slider.addEventListener("touchend", onTouchEnd, { passive: true });
+  slider.addEventListener("touchcancel", onTouchEnd, { passive: true });
 }
 
 /* -------------------------------------------------------------------------- */
@@ -170,47 +223,98 @@ function initHeatDroughtSlider() {
   const container = document.getElementById("heat-drought-interactive");
   if (!slider || !container) return;
 
+  const min = parseFloat(slider.min) || 22;
+  const max = parseFloat(slider.max) || 78;
+
   const updateSplit = (val) => {
-    container.style.setProperty("--heat-dry-split", `${val}%`);
+    const num = parseFloat(val);
+    const clamped = Math.min(max, Math.max(min, isNaN(num) ? 50 : num));
+    slider.value = clamped;
+    container.style.setProperty("--heat-dry-split", `${clamped}%`);
   };
 
   updateSplit(slider.value);
 
-  slider.addEventListener("input", (e) => {
-    updateSplit(e.target.value);
-  });
-  slider.addEventListener("change", (e) => {
-    updateSplit(e.target.value);
-  });
+  // Native input & change listeners
+  slider.addEventListener("input", (e) => updateSplit(e.target.value));
+  slider.addEventListener("change", (e) => updateSplit(e.target.value));
 
-  let isDragging = false;
-  const onPointerMove = (clientX) => {
-    const rect = slider.getBoundingClientRect();
-    if (rect.width <= 0) return;
-    const min = parseFloat(slider.min) || 0;
-    const max = parseFloat(slider.max) || 100;
+  const getPercentFromClientX = (clientX) => {
+    const rect = container.getBoundingClientRect();
+    if (rect.width <= 0) return 50;
     const percent = ((clientX - rect.left) / rect.width) * 100;
-    const clamped = Math.min(max, Math.max(min, percent));
-    slider.value = clamped;
-    updateSplit(clamped);
+    return Math.min(max, Math.max(min, percent));
   };
 
-  slider.addEventListener("pointerdown", (e) => {
+  let isDragging = false;
+  let startX = 0;
+  let startY = 0;
+  let isHorizontal = false;
+
+  // Pointer Events
+  const onPointerDown = (e) => {
+    if (e.pointerType === "mouse" && e.button !== 0) return;
     isDragging = true;
-    onPointerMove(e.clientX);
-  });
+    if (e.target && e.target.setPointerCapture && e.pointerId !== undefined) {
+      try { e.target.setPointerCapture(e.pointerId); } catch (_) {}
+    }
+    updateSplit(getPercentFromClientX(e.clientX));
+  };
 
-  window.addEventListener("pointermove", (e) => {
+  const onPointerMove = (e) => {
     if (!isDragging) return;
-    onPointerMove(e.clientX);
-  });
+    updateSplit(getPercentFromClientX(e.clientX));
+  };
 
-  window.addEventListener("pointerup", () => {
+  const onPointerUp = (e) => {
+    if (!isDragging) return;
     isDragging = false;
-  });
-  window.addEventListener("pointercancel", () => {
+    if (e.target && e.target.releasePointerCapture && e.pointerId !== undefined) {
+      try { e.target.releasePointerCapture(e.pointerId); } catch (_) {}
+    }
+  };
+
+  slider.addEventListener("pointerdown", onPointerDown);
+  window.addEventListener("pointermove", onPointerMove);
+  window.addEventListener("pointerup", onPointerUp);
+  window.addEventListener("pointercancel", onPointerUp);
+
+  // Touch Events for Mobile Safari / Android Chrome
+  const onTouchStart = (e) => {
+    if (!e.touches || e.touches.length === 0) return;
+    const touch = e.touches[0];
+    startX = touch.clientX;
+    startY = touch.clientY;
+    isHorizontal = false;
+    isDragging = true;
+    updateSplit(getPercentFromClientX(touch.clientX));
+  };
+
+  const onTouchMove = (e) => {
+    if (!isDragging || !e.touches || e.touches.length === 0) return;
+    const touch = e.touches[0];
+    const dx = Math.abs(touch.clientX - startX);
+    const dy = Math.abs(touch.clientY - startY);
+
+    if (!isHorizontal && (dx > 4 || dy > 4)) {
+      isHorizontal = dx >= dy;
+    }
+
+    if (isHorizontal) {
+      if (e.cancelable) e.preventDefault();
+      updateSplit(getPercentFromClientX(touch.clientX));
+    }
+  };
+
+  const onTouchEnd = () => {
     isDragging = false;
-  });
+    isHorizontal = false;
+  };
+
+  slider.addEventListener("touchstart", onTouchStart, { passive: false });
+  slider.addEventListener("touchmove", onTouchMove, { passive: false });
+  slider.addEventListener("touchend", onTouchEnd, { passive: true });
+  slider.addEventListener("touchcancel", onTouchEnd, { passive: true });
 }
 
 /* -------------------------------------------------------------------------- */

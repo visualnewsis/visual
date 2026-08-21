@@ -434,13 +434,19 @@ h3 {
   position: absolute;
   z-index: 10;
   left: 0;
-  top: calc(66% - 42px);
+  top: calc(66% - 50px);
   width: 100%;
-  height: 84px;
+  height: 100px;
   margin: 0;
   opacity: 0;
   cursor: ew-resize;
-  touch-action: none;
+  touch-action: pan-y;
+  -webkit-appearance: none;
+  appearance: none;
+  background: transparent;
+  outline: none;
+  user-select: none;
+  -webkit-user-select: none;
   -webkit-tap-highlight-color: transparent;
 }
 .extreme-label {
@@ -1092,13 +1098,19 @@ h3 {
   position: absolute;
   z-index: 16;
   left: 0;
-  top: calc(50% - 46px);
+  top: calc(50% - 50px);
   width: 100%;
-  height: 92px;
+  height: 100px;
   margin: 0;
   opacity: 0;
   cursor: ew-resize;
-  touch-action: none;
+  touch-action: pan-y;
+  -webkit-appearance: none;
+  appearance: none;
+  background: transparent;
+  outline: none;
+  user-select: none;
+  -webkit-user-select: none;
   -webkit-tap-highlight-color: transparent;
 }
 .heat-gallery.compact {
@@ -3497,9 +3509,9 @@ h3 {
     top: calc(66% + 29px);
   }
   .extreme-slider {
-    top: calc(66% - 38px);
-    height: 76px;
-    touch-action: none;
+    top: calc(66% - 48px);
+    height: 96px;
+    touch-action: pan-y;
   }
   .hero-metrics {
     left: 16px;
