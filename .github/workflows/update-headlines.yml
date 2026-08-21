@@ -36,6 +36,7 @@ jobs:
         continue-on-error: true
         run: python .github/scripts/update_photo_puzzles.py
       - name: Build latest editshop recommendations
+        continue-on-error: true
         run: python .github/scripts/update_editshop_recommendations.py
       - name: Commit changed question bank
         run: |
