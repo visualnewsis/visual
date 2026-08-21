@@ -69,6 +69,93 @@
     .section-head p,.voices-head>p{margin:0;font-size:16px;line-height:1.9;color:#555}
     .data{position:relative;background:#fff}
     .data-grid{display:grid;grid-template-columns:.85fr 1.15fr;gap:9vw;align-items:end;margin-top:90px}
+.school-drop{
+  width:100%;
+  max-width:620px;
+  margin:0 0 8px 0;
+}
+
+.school-drop svg{
+  display:block;
+  width:100%;
+  height:auto;
+  overflow:visible;
+}
+
+.school-drop .drop-line{
+  fill:none;
+  stroke:#3273dc;
+  stroke-width:7;
+  stroke-linecap:round;
+  stroke-dasharray:100;
+  stroke-dashoffset:100;
+}
+
+.school-drop .drop-start{
+  fill:#111;
+}
+
+.school-drop .drop-end{
+  fill:#ffd23f;
+  stroke:#111;
+  stroke-width:3;
+}
+
+#schoolDropEnd,
+#schoolDropValue,
+#schoolDropChange{
+  opacity:0;
+  transition:opacity .35s ease, transform .35s ease;
+}
+
+#schoolDropValue,
+#schoolDropChange{
+  transform:translateY(8px);
+}
+
+.school-drop.is-near-end #schoolDropChange{
+  opacity:1;
+  transform:translateY(0);
+}
+
+.school-drop.is-complete #schoolDropEnd,
+.school-drop.is-complete #schoolDropValue{
+  opacity:1;
+}
+
+.school-drop.is-complete #schoolDropValue{
+  transform:translateY(0);
+}
+
+.school-drop .drop-note{
+  fill:#888;
+  font-size:15px;
+}
+
+.school-drop .drop-value{
+  fill:#111;
+  font-size:23px;
+  font-weight:800;
+}
+
+.school-drop .drop-value.end{
+  fill:#3273dc;
+}
+
+.school-drop .drop-year{
+  fill:#777;
+  font-size:14px;
+}
+
+.school-drop .drop-change{
+  fill:#3273dc;
+  font-size:21px;
+  font-weight:800;
+}
+.school-drop .drop-source{
+  fill:#999;
+  font-size:11px;
+}
     .big-number{font-size:clamp(112px,18vw,300px);font-weight:900;line-height:.72;letter-spacing:-.1em;color:var(--blue)}
     .big-number span{font-size:.25em;letter-spacing:0}
     .data-copy h3{margin:44px 0 12px;font-size:clamp(25px,3vw,45px)}
@@ -256,7 +343,27 @@
     <section class="hero" id="top"><img class="hero-gif" src="images/opening.gif" alt="아이들이 원을 이루어 카메라를 내려다보는 일러스트"><div class="hero-copy"><div class="series"><span class="series-ring" aria-hidden="true">@</span><strong>나이테 上</strong><small>아이와 나, 그리고 대한민국의 나이테</small></div><h1><span>아이가 자라는 동안</span><span>주변은 얼마나 사라질까요</span></h1><p class="sub">오늘도 아이들은 태어납니다. 이 아이는 어떻게 자랄까요.</p><div class="byline">기획·취재·편집 = 안재현 기자</div></div><button class="sound" type="button" aria-pressed="false"><i></i><span>아이들 웃음 켜기</span></button><div class="audio-credit">음원 출처 = The Sounds · <a href="https://the-sounds.tistory.com" target="_blank" rel="noopener noreferrer">the-sounds.tistory.com</a> / <a href="https://thesoundsforfree.blogspot.com" target="_blank" rel="noopener noreferrer">thesoundsforfree.blogspot.com</a><br>개인·상업적 사용 무료 · 재배포·수정 금지</div></section>
     <section class="lead"><div class="lead-inner"><p>아이들이 다시,<br><em>조금 더 태어나기 시작했습니다.</em><br><br>하지만 그 아이들이 자랄 교실<br>보호 받을 병원, 같이 놀 친구들은<br>똑같이 늘고 있을까요?</p></div></section>
     <section class="zoom-story"><div class="zoom-sticky"><div class="world"><img src="images/children-running.jpg" alt="태극기를 들고 뛰는 어린이들"></div><div class="child-focus" aria-hidden="true"></div><div class="rings" aria-hidden="true"><i class="ring"></i><i class="ring"></i><i class="ring"></i></div><div class="facility f1"><small>01</small>어린이집</div><div class="facility f2"><small>02</small>소아과</div><div class="facility f3"><small>03</small>놀이터</div><div class="facility f4"><small>04</small>학교</div><div class="zoom-copy"><h2>아이 하나<br>그리고 주변</h2><p>스크롤을 내릴수록 시야가 넓어집니다. 아이를 둘러싼 네 개의 생활권도 함께 보입니다.</p></div></div></section>
-    <section class="data data-hold"><div class="data-hold-inner"><div class="section-head"><div><h2><em>태어남</em>은 늘었지만<br><em>자라남</em>은 줄었습니다</h2></div><p>국가데이터처에 따르면 2026년 5월 출생아 수는 1년 전보다 13.6% 늘었습니다. 출생아 증가는 23개월째 이어졌습니다. 반가운 변화입니다.</p></div><div class="data-grid"><div class="data-copy"><div class="big-number" data-count="13.6">0.0<span>%</span></div><h3>23개월째 이어진 출생아 증가</h3><p>다만 출생아 증가가 아이의 생활권 회복을 곧바로 뜻하지는 않습니다. 아이가 자랄 여섯 해 동안 학교와 병원, 돌봄 공간은 다른 방향으로 움직일 수 있습니다.</p></div><div class="data-copy"><h3>태어난 뒤의 여섯 해</h3><p>출생아 수의 반등과 이미 학령기에 들어선 아이 수의 변화는 서로 다른 시간대의 지표입니다. 반등이 생활 기반의 회복으로 이어지는지 따로 살펴봐야 합니다.</p><div class="source">자료=국가데이터처<br>그래픽=안지혜 기자<br>인터랙티브 재구성=안재현 기자</div></div></div></div></section>
+    <section class="data data-hold"><div class="data-hold-inner"><div class="section-head"><div><h2><em>태어남</em>은 늘었지만<br><em>자라남</em>은 줄었습니다</h2></div><p>국가데이터처에 따르면 2026년 5월 출생아 수는 1년 전보다 13.6% 늘었습니다. 출생아 증가는 23개월째 이어졌습니다. 반가운 변화입니다.</p></div><div class="data-grid"><div class="data-copy"><div class="big-number" data-count="13.6">0.0<span>%</span></div><h3>23개월째 이어진 출생아 증가</h3><p>다만 출생아 증가가 아이의 생활권 회복을 곧바로 뜻하지는 않습니다. 아이가 자랄 여섯 해 동안 학교와 병원, 돌봄 공간은 다른 방향으로 움직일 수 있습니다.</p></div><div class="data-copy"><div class="school-drop">
+  <svg viewBox="0 0 560 230" role="img" aria-label="2025년부터 2031년까지 초등학생 수 감소 전망">
+    <text x="30" y="10" class="drop-note">초등학생 수 전망 · 단위 만명</text>
+
+<path id="schoolDropLine" class="drop-line"
+  d="M30 65 C145 78, 255 115, 350 145 S470 185, 525 195"
+  pathLength="100"/>
+
+    <circle class="drop-start" cx="30" cy="65" r="7"/>
+    <circle id="schoolDropEnd" class="drop-end" cx="525" cy="195" r="9"/>
+
+    <text x="30" y="52" class="drop-value" text-anchor="middle">234.5</text>
+    <text id="schoolDropValue" x="525" y="178" class="drop-value end" text-anchor="middle">152.8</text>
+
+<text x="30" y="215" class="drop-year" text-anchor="middle">2025</text>
+<text x="525" y="225" class="drop-year" text-anchor="middle">2031</text>
+
+<text id="schoolDropChange" x="330" y="125" class="drop-change">−81.7만명</text>
+<text x="555" y="250" class="drop-source" text-anchor="end">자료=교육부</text>
+  </svg>
+</div><h3>태어난 뒤의 여섯 해</h3><p>출생아 수의 반등과 이미 학령기에 들어선 아이 수의 변화는 서로 다른 시간대의 지표입니다. 반등이 생활 기반의 회복으로 이어지는지 따로 살펴봐야 합니다.</p><div class="source">자료=국가데이터처<br>그래픽=안지혜 기자<br>인터랙티브 재구성=안재현 기자</div></div></div></div></section>
     <section class="graphic-spread"><div class="graphic-head"><div><h2>23개월째 이어진<br>출생아 증가</h2></div><p>출생아 반등은 반가운 변화입니다. 다만 아이가 생활하는 환경까지 같은 속도로 회복된다는 뜻은 아닙니다.</p></div><div class="graphic-grid"><figure class="graphic-card wide"><img loading="lazy" src="images/graphic-birth-growth.jpg" alt="2025년 5월부터 2026년 5월까지 출생아 증가율 추이 그래픽"><figcaption><b>출생아 증가율 추이</b><span>그래픽=안지혜 기자</span></figcaption></figure><p class="graphic-note">출생아 반등이 생활권 회복으로 이어지는지는 아이 곁의 병원, 돌봄 공간과 학교를 따로 살펴봐야 알 수 있습니다.</p></div></section>
     <section class="voices"><div class="voices-head"><h2>아이 곁의 거리는<br>모두 달랐습니다</h2><p>서울과 경기, 충북과 전북에 사는 부모 12명에게 직접 물었습니다.<br><br>“아이 곁에 마지막까지 반드시 남았으면 하는 것은 무엇인가요?”<br><br>사는 곳과 아이의 나이는 달랐지만, 대답은 세 개의 생활권으로 모였습니다.</p></div><div class="voice-grid">
       <article class="voice"><div class="place">충북 청주시 이선영(39)씨 · 자녀 6세·2세</div><blockquote>“다른 구의 아동병원까지 차로 20분을 갑니다.”</blockquote><p>어린이집을 구하기 어려워 결국 이사를 결정했습니다. 아이 곁에 마음껏 뛰어놀 놀이터와 안심하고 맡길 보육 공간이 남기를 바랐습니다.</p></article>
@@ -458,5 +565,44 @@
       requestAnimationFrame(holdRender);
     })();
   </script>
+<script>
+(function () {
+  const line = document.getElementById('schoolDropLine');
+  if (!line) return;
+
+  const graph = line.closest('.school-drop');
+  if (!graph) return;
+
+  function drawSchoolDrop() {
+    const rect = graph.getBoundingClientRect();
+    const windowH = window.innerHeight;
+
+    /* 그래프가 화면 아래쪽으로 들어오기 시작하면 0,
+       화면 중앙 부근까지 올라오면 100 */
+    const start = windowH * 0.92;
+    const end = windowH * 0.42;
+
+    let progress = (start - rect.top) / (start - end);
+    progress = Math.max(0, Math.min(1, progress));
+
+    line.style.strokeDashoffset = 100 - (progress * 100);
+if (progress >= 0.72) {
+  graph.classList.add('is-near-end');
+} else {
+  graph.classList.remove('is-near-end');
+}
+
+if (progress >= 0.96) {
+  graph.classList.add('is-complete');
+} else {
+  graph.classList.remove('is-complete');
+}
+  }
+
+  window.addEventListener('scroll', drawSchoolDrop, { passive: true });
+  window.addEventListener('resize', drawSchoolDrop);
+  drawSchoolDrop();
+})();
+</script>
 </body>
 </html>
