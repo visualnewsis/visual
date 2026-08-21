@@ -325,78 +325,238 @@ def can_place(grid: list[list[str]], word: str, row: int, col: int, direction: s
                 return False, 0
     return crossings > 0, crossings
 
-
 def layout(candidates: list[dict[str, object]], size: int = 13) -> dict[str, object] | None:
     daily_seed = int(datetime.now(timezone.utc).strftime("%Y%m%d"))
-    for attempt in range(600):
-        rng = random.Random(daily_seed + attempt)
-        letter_frequency = Counter("".join(str(item["answer"]) for item in candidates))
-        pool = sorted(
-            candidates,
-            key=lambda item: (
-                sum(letter_frequency[letter] for letter in set(str(item["answer"]))),
-                int(item["score"]),
-                len(str(item["answer"])),
-            ),
-            reverse=True,
-        )[:52]
-        first_index = rng.randrange(min(12, len(pool)))
-        first = pool.pop(first_index)
-        rng.shuffle(pool)
+    letter_frequency = Counter("".join(str(item["answer"]) for item in candidates))
 
+    ranked = sorted(
+        candidates,
+        key=lambda item: (
+            sum(letter_frequency[letter] for letter in set(str(item["answer"]))),
+            int(item["score"]),
+            len(str(item["answer"])),
+        ),
+        reverse=True,
+    )
+
+    # Keep a wider candidate pool. The old 52-word cutoff could discard
+    # useful bridge words needed to reach a seven-word crossword.
+    base_pool = ranked[:100]
+
+    def write_word(
+        grid: list[list[str]],
+        word: str,
+        row: int,
+        col: int,
+        direction: str,
+    ) -> None:
+        dr, dc = (0, 1) if direction == "across" else (1, 0)
+        for index, letter in enumerate(word):
+            grid[row + dr * index][col + dc * index] = letter
+
+    def rebuild_grid(placed: list[dict[str, object]]) -> list[list[str]]:
         grid = [["" for _ in range(size)] for _ in range(size)]
-        placed: list[dict[str, object]] = []
-        answer = str(first["answer"])
-        row, col = size // 2, (size - len(answer)) // 2
-        for offset, letter in enumerate(answer):
-            grid[row][col + offset] = letter
-        placed.append({**first, "row": row, "col": col, "direction": "across"})
-        used = {answer}
-        while pool and len(placed) < 10:
-            best = None
-            for candidate in pool:
-                word = str(candidate["answer"])
-                if word in used:
-                    continue
-                for existing in placed:
-                    existing_word = str(existing["answer"])
-                    new_direction = "down" if existing["direction"] == "across" else "across"
-                    for new_i, letter in enumerate(word):
-                        for old_i, old_letter in enumerate(existing_word):
-                            if letter != old_letter:
-                                continue
-                            cross_r = int(existing["row"]) + (old_i if existing["direction"] == "down" else 0)
-                            cross_c = int(existing["col"]) + (old_i if existing["direction"] == "across" else 0)
-                            test_r = cross_r - (new_i if new_direction == "down" else 0)
-                            test_c = cross_c - (new_i if new_direction == "across" else 0)
-                            if not (0 <= test_r < size and 0 <= test_c < size):
-                                continue
-                            if grid[test_r][test_c] and grid[test_r][test_c] != word[0]:
-                                continue
-                            ok, crossings = can_place(grid, word, test_r, test_c, new_direction)
-                            if ok and (best is None or crossings > best[0]):
-                                best = (crossings, candidate, test_r, test_c, new_direction)
-            if not best:
-                break
-            _, candidate, row, col, direction = best
-            word = str(candidate["answer"])
-            dr, dc = (0, 1) if direction == "across" else (1, 0)
-            for index, letter in enumerate(word):
-                grid[row + dr * index][col + dc * index] = letter
-            placed.append({**candidate, "row": row, "col": col, "direction": direction})
-            used.add(word)
-            pool.remove(candidate)
-        if len(placed) >= 7:
-            rows = [int(item["row"]) + (len(str(item["answer"])) - 1 if item["direction"] == "down" else 0) for item in placed]
-            cols = [int(item["col"]) + (len(str(item["answer"])) - 1 if item["direction"] == "across" else 0) for item in placed]
-            min_r, max_r = min(int(item["row"]) for item in placed), max(rows)
-            min_c, max_c = min(int(item["col"]) for item in placed), max(cols)
-            words = []
-            for number, item in enumerate(sorted(placed, key=lambda x: (int(x["row"]), int(x["col"]), x["direction"])), 1):
-                words.append({key: value for key, value in item.items() if key != "score"} | {"number": number, "row": int(item["row"]) - min_r, "col": int(item["col"]) - min_c})
-            return {"rows": max_r - min_r + 1, "cols": max_c - min_c + 1, "words": words}
-    return None
+        for item in placed:
+            write_word(
+                grid,
+                str(item["answer"]),
+                int(item["row"]),
+                int(item["col"]),
+                str(item["direction"]),
+            )
+        return grid
 
+    def placements_for(
+        grid: list[list[str]],
+        placed: list[dict[str, object]],
+        candidate: dict[str, object],
+    ) -> list[tuple[int, int, int, str]]:
+        word = str(candidate["answer"])
+        options: list[tuple[int, int, int, str]] = []
+        seen_positions: set[tuple[int, int, str]] = set()
+
+        for existing in placed:
+            existing_word = str(existing["answer"])
+            new_direction = "down" if existing["direction"] == "across" else "across"
+
+            for new_i, letter in enumerate(word):
+                for old_i, old_letter in enumerate(existing_word):
+                    if letter != old_letter:
+                        continue
+
+                    cross_r = int(existing["row"]) + (
+                        old_i if existing["direction"] == "down" else 0
+                    )
+                    cross_c = int(existing["col"]) + (
+                        old_i if existing["direction"] == "across" else 0
+                    )
+
+                    test_r = cross_r - (new_i if new_direction == "down" else 0)
+                    test_c = cross_c - (new_i if new_direction == "across" else 0)
+
+                    position = (test_r, test_c, new_direction)
+                    if position in seen_positions:
+                        continue
+                    seen_positions.add(position)
+
+                    ok, crossings = can_place(
+                        grid, word, test_r, test_c, new_direction
+                    )
+                    if ok:
+                        options.append(
+                            (crossings, test_r, test_c, new_direction)
+                        )
+
+        options.sort(key=lambda option: option[0], reverse=True)
+        return options
+
+    def search(
+        placed: list[dict[str, object]],
+        remaining: list[dict[str, object]],
+        target: int = 7,
+        depth_limit: int = 7,
+    ) -> list[dict[str, object]] | None:
+        if len(placed) >= target:
+            return placed
+
+        if len(placed) >= depth_limit or not remaining:
+            return None
+
+        grid = rebuild_grid(placed)
+        choices: list[
+            tuple[int, dict[str, object], int, int, str]
+        ] = []
+
+        for candidate in remaining:
+            for crossings, row, col, direction in placements_for(
+                grid, placed, candidate
+            )[:4]:
+                choices.append(
+                    (crossings, candidate, row, col, direction)
+                )
+
+        if not choices:
+            return None
+
+        # Try strong crossings first, but backtrack if they lead to a dead end.
+        choices.sort(key=lambda choice: choice[0], reverse=True)
+
+        for _, candidate, row, col, direction in choices[:40]:
+            answer = str(candidate["answer"])
+            next_placed = placed + [
+                {
+                    **candidate,
+                    "row": row,
+                    "col": col,
+                    "direction": direction,
+                }
+            ]
+            next_remaining = [
+                item
+                for item in remaining
+                if str(item["answer"]) != answer
+            ]
+
+            result = search(
+                next_placed,
+                next_remaining,
+                target=target,
+                depth_limit=depth_limit,
+            )
+            if result is not None:
+                return result
+
+        return None
+
+    # Different starting words still matter, but each attempt now backtracks
+    # instead of permanently committing to one greedy path.
+    for attempt in range(min(30, len(base_pool))):
+        rng = random.Random(daily_seed + attempt)
+
+        first_choices = base_pool[: min(30, len(base_pool))]
+        first = first_choices[attempt % len(first_choices)]
+        answer = str(first["answer"])
+
+        row = size // 2
+        col = (size - len(answer)) // 2
+
+        first_placed = [
+            {
+                **first,
+                "row": row,
+                "col": col,
+                "direction": "across",
+            }
+        ]
+
+        remaining = [
+            item
+            for item in base_pool
+            if str(item["answer"]) != answer
+        ]
+        rng.shuffle(remaining)
+
+        placed = search(first_placed, remaining)
+
+        if placed is None:
+            continue
+
+        rows = [
+            int(item["row"])
+            + (
+                len(str(item["answer"])) - 1
+                if item["direction"] == "down"
+                else 0
+            )
+            for item in placed
+        ]
+        cols = [
+            int(item["col"])
+            + (
+                len(str(item["answer"])) - 1
+                if item["direction"] == "across"
+                else 0
+            )
+            for item in placed
+        ]
+
+        min_r = min(int(item["row"]) for item in placed)
+        max_r = max(rows)
+        min_c = min(int(item["col"]) for item in placed)
+        max_c = max(cols)
+
+        words = []
+        for number, item in enumerate(
+            sorted(
+                placed,
+                key=lambda x: (
+                    int(x["row"]),
+                    int(x["col"]),
+                    x["direction"],
+                ),
+            ),
+            1,
+        ):
+            words.append(
+                {
+                    key: value
+                    for key, value in item.items()
+                    if key != "score"
+                }
+                | {
+                    "number": number,
+                    "row": int(item["row"]) - min_r,
+                    "col": int(item["col"]) - min_c,
+                }
+            )
+
+        return {
+            "rows": max_r - min_r + 1,
+            "cols": max_c - min_c + 1,
+            "words": words,
+        }
+
+    return None
 
 def main() -> None:
     candidates: list[dict[str, object]] = []
