@@ -142,7 +142,7 @@
       content:"";position:absolute;inset:0;
       background:
         linear-gradient(90deg,rgba(7,16,17,.18),rgba(7,16,17,.02)),
-        url("./temperature/images/thermometer.jpg") center/cover no-repeat;
+          url("./children/images/children-running.jpg") center/cover no-repeat;
       transform:scale(1.05);transition:transform .7s ease;
     }
     .feature:hover .feature-art::before{transform:scale(1.1)}
@@ -183,8 +183,8 @@
     .archive-title-meta{display:flex;align-items:center;gap:18px}.archive-title-meta>span{font-size:12px;color:var(--muted)}
     .archive-controls{display:flex;gap:6px}.archive-arrow{width:42px;height:42px;border:1px solid var(--ink);border-radius:50%;background:transparent;color:var(--ink);font-size:20px;cursor:pointer;transition:.2s ease}.archive-arrow:hover,.archive-arrow:focus-visible{background:var(--ink);color:var(--paper)}.archive-arrow:disabled{opacity:.25;cursor:default}
     .archive-viewport{overflow:hidden;border-bottom:1px solid var(--line);touch-action:pan-y}.archive-grid{display:flex;gap:1px;background:var(--line);transition:transform .55s cubic-bezier(.22,.8,.22,1);will-change:transform}.archive-grid.dragging{transition:none;cursor:grabbing}
-    .archive-card{flex:0 0 calc((100% - 2px)/3);min-height:290px;padding:28px;background:var(--paper);display:flex;flex-direction:column}
-    .archive-card.latest-story{background:var(--mint)}
+    .archive-card{flex:0 0 calc((100% - 2px)/3);min-height:290px;padding:28px;background:var(--paper);display:flex;flex-direction:column;transition:background-color .22s ease}
+    .archive-card:hover,.archive-card:focus-visible,.archive-card.latest-story{background:var(--mint)}
     .archive-card .num{font:12px/1 "Archivo Black";color:var(--muted)}
     .archive-card strong{margin:auto 0 12px;font-size:clamp(22px,2.4vw,34px);line-height:1.3;letter-spacing:-.04em}
     .archive-card p{margin:0;color:#666b6a;font-size:12px;line-height:1.7}
@@ -276,7 +276,6 @@
       <a href="#latest">최신 기사</a>
       <a href="#about">우리가 하는 일</a>
       <a href="./editshop/">편집#</a>
-      <span class="issue">ISSUE 004</span>
     </nav>
   </header>
 
@@ -303,23 +302,23 @@
     <section class="latest" id="latest" aria-labelledby="latest-title">
       <div class="section-head">
         <div>
-          <div class="section-kicker">LATEST STORY · 004</div>
+          <div class="section-kicker">LATEST STORY · 007</div>
           <h2 id="latest-title">지금, 이 이야기</h2>
         </div>
-        <p>같은 40.2도라도 집과 출근길, 일터에서 견디는 더위는 다릅니다. 네 번째 비주얼 스토리는 당신이 통과한 하루의 열 노출을 따라갑니다.</p>
+        <p>조금 더 태어나기 시작한 아이들. 그 아이가 자라는 동안 곁의 병원과 놀이터, 학교는 얼마나 남아 있을지 따라갑니다.</p>
       </div>
 
-      <a class="feature" href="./temperature/" aria-label="당신의 온도 기사 읽기">
+      <a class="feature" href="./children/" aria-label="아이가 자라는 동안 주변은 얼마나 사라질까요 기사 읽기">
         <div class="feature-art" aria-hidden="true"></div>
         <div class="feature-copy">
           <div class="tag-row">
-            <span class="tag">HEAT WAVE</span>
-            <span class="tag">CLIMATE</span>
+            <span class="tag">CHILDREN</span>
+            <span class="tag">COMMUNITY</span>
             <span class="tag">INTERACTIVE</span>
           </div>
-          <h3>당신의<br>온도</h3>
-          <p>집에서 일터까지, 주거와 냉방, 이동과 노동 조건에 따라 달라지는 폭염의 하루를 직접 계산합니다.</p>
-          <div class="meta"><span>2026. 08. 07</span><span>편집#004</span></div>
+          <h3>아이가 자라는 동안<br>주변은 얼마나 사라질까요</h3>
+          <p>부모 10명의 목소리와 인구 통계로 아이 곁의 놀 공간, 병원, 돌봄과 교육을 살펴봅니다.</p>
+          <div class="meta"><span>2026. 08. 21</span><span>안재현 기자 · 나이테 上</span></div>
           <div class="read"><span>인터랙티브 기사 보기</span><span class="arrow" aria-hidden="true">↗</span></div>
         </div>
       </a>
@@ -328,7 +327,7 @@
     <section class="archive" aria-labelledby="archive-title">
       <div class="archive-title">
         <h3 id="archive-title">ALL STORIES</h3>
-        <div class="archive-title-meta"><span>4 STORIES PUBLISHED</span><div class="archive-controls" aria-label="스토리 슬라이더"><button class="archive-arrow prev" type="button" aria-label="이전 스토리">←</button><button class="archive-arrow next" type="button" aria-label="다음 스토리">→</button></div></div>
+        <div class="archive-title-meta"><span>7 STORIES PUBLISHED</span><div class="archive-controls" aria-label="스토리 슬라이더"><button class="archive-arrow prev" type="button" aria-label="이전 스토리">←</button><button class="archive-arrow next" type="button" aria-label="다음 스토리">→</button></div></div>
       </div>
       <div class="archive-viewport"><div class="archive-grid">
         <a class="archive-card" href="./oil/">
@@ -349,10 +348,28 @@
           <p>민방위 · 재난대응 · 인터랙티브</p>
           <span class="state">READ STORY ↗</span>
         </a>
-        <a class="archive-card latest-story" href="./temperature/">
+        <a class="archive-card" href="./temperature/">
           <span class="num">004</span>
           <strong>당신의<br>온도</strong>
           <p>폭염 · 열 노출 · 인터랙티브</p>
+          <span class="state">READ STORY ↗</span>
+        </a>
+        <a class="archive-card" href="./kangin/">
+          <span class="num">005</span>
+          <strong>120%의<br>이강인</strong>
+          <p>축구 · 전술 · 인터랙티브</p>
+          <span class="state">READ STORY ↗</span>
+        </a>
+        <a class="archive-card" href="./heat-rain/">
+          <span class="num">006</span>
+          <strong>폭염 사이 폭우<br>중간이 없다</strong>
+          <p>폭염 · 폭우 · 기후재난</p>
+          <span class="state">READ STORY ↗</span>
+        </a>
+        <a class="archive-card latest-story" href="./children/">
+          <span class="num">007</span>
+          <strong>아이가 자라는 동안<br>주변은 얼마나 사라질까요</strong>
+          <p>아이 · 생활권 · 인터랙티브</p>
           <span class="state">READ STORY ↗</span>
         </a>
       </div>
@@ -395,15 +412,16 @@
     (()=>{
       const viewport=document.querySelector('.archive-viewport'),track=document.querySelector('.archive-grid'),cards=[...document.querySelectorAll('.archive-card')],prev=document.querySelector('.archive-arrow.prev'),next=document.querySelector('.archive-arrow.next');
       if(!viewport||!track||!cards.length)return;
-      let index=0,startX=0,dragX=0,dragging=false;
+      let index=0,startX=0,dragX=0,pointerDown=false,dragging=false,suppressClick=false,activePointer=null;
       const visible=()=>innerWidth<=520?1:innerWidth<=850?2:3;
       const max=()=>Math.max(0,cards.length-visible());
       const cardStep=()=>cards[0].getBoundingClientRect().width+1;
       function render(animate=true){index=Math.max(0,Math.min(index,max()));track.classList.toggle('dragging',!animate);track.style.transform=`translate3d(${-index*cardStep()}px,0,0)`;prev.disabled=index===0;next.disabled=index===max()}
       prev.addEventListener('click',()=>{index--;render()});next.addEventListener('click',()=>{index++;render()});
-      viewport.addEventListener('pointerdown',e=>{dragging=true;startX=e.clientX;dragX=0;viewport.setPointerCapture(e.pointerId);track.classList.add('dragging')});
-      viewport.addEventListener('pointermove',e=>{if(!dragging)return;dragX=e.clientX-startX;track.style.transform=`translate3d(${(-index*cardStep())+dragX}px,0,0)`});
-      function endDrag(){if(!dragging)return;dragging=false;if(Math.abs(dragX)>cardStep()*.18)index+=dragX<0?1:-1;render()}
+      viewport.addEventListener('pointerdown',e=>{if(e.pointerType==='mouse'&&e.button!==0)return;pointerDown=true;dragging=false;suppressClick=false;activePointer=e.pointerId;startX=e.clientX;dragX=0});
+      viewport.addEventListener('pointermove',e=>{if(!pointerDown||e.pointerId!==activePointer)return;dragX=e.clientX-startX;if(!dragging&&Math.abs(dragX)>8){dragging=true;suppressClick=true;viewport.setPointerCapture(e.pointerId);track.classList.add('dragging')}if(!dragging)return;e.preventDefault();track.style.transform=`translate3d(${(-index*cardStep())+dragX}px,0,0)`});
+      function endDrag(e){if(!pointerDown||e.pointerId!==activePointer)return;pointerDown=false;if(dragging&&Math.abs(dragX)>cardStep()*.18)index+=dragX<0?1:-1;dragging=false;activePointer=null;render();setTimeout(()=>{suppressClick=false},0)}
+      viewport.addEventListener('click',e=>{if(suppressClick){e.preventDefault();e.stopPropagation()}},true);
       viewport.addEventListener('pointerup',endDrag);viewport.addEventListener('pointercancel',endDrag);addEventListener('resize',()=>render(false));render(false);
     })();
   </script>

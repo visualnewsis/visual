@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=900, initial-scale=1">
+  <title>나이테 上 · 포털 이미지</title>
+  <style>
+    *{box-sizing:border-box}html,body{margin:0;width:900px;height:1100px;overflow:hidden;background:#071426;font-family:Pretendard,"Noto Sans KR",Arial,sans-serif}.panel{position:absolute;inset:0;display:none;color:#fff;background:#071426}.panel.on{display:block}.photo{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}.shade{position:absolute;inset:0;background:linear-gradient(180deg,rgba(4,15,31,.08) 15%,rgba(4,15,31,.25) 48%,rgba(4,15,31,.94) 100%)}.top{position:absolute;top:42px;left:48px;right:48px;display:flex;justify-content:space-between;font-size:18px;font-weight:800;letter-spacing:.12em}.copy{position:absolute;left:52px;right:52px;bottom:70px}.series{color:#ffd43b;font-size:22px;font-weight:900;letter-spacing:.08em;margin-bottom:20px}.title{font-size:76px;line-height:1.08;letter-spacing:-.055em;font-weight:900;text-wrap:balance}.desc{margin-top:26px;max-width:720px;font-size:26px;line-height:1.55;font-weight:650}.two .photo{object-position:50% 50%;filter:saturate(.8)}.two .shade{background:linear-gradient(180deg,rgba(5,17,30,.25),rgba(5,17,30,.34) 38%,rgba(5,17,30,.96))}.chips{display:flex;gap:12px;flex-wrap:wrap;margin-top:28px}.chip{padding:11px 17px;border:1px solid rgba(255,255,255,.65);border-radius:999px;background:rgba(5,17,30,.36);font-size:22px;font-weight:800}.three .photo{object-position:55% 50%;filter:saturate(.72)}.three .shade{background:linear-gradient(180deg,rgba(4,12,22,.18),rgba(4,12,22,.4) 44%,rgba(4,12,22,.97))}.number{font-size:112px;line-height:.95;font-weight:950;color:#ffd43b;letter-spacing:-.065em;margin:12px 0 18px}.cta{margin-top:30px;padding-top:22px;border-top:2px solid rgba(255,255,255,.65);font-size:22px;font-weight:850;letter-spacing:.02em}
+  </style>
+</head>
+<body>
+  <section class="panel one" data-panel="1">
+    <img class="photo" src="../../children/images/children-running.jpg" alt="달리는 아이들">
+    <div class="shade"></div><div class="top"><span>VISUAL NEWSIS</span><span>편집# 006</span></div>
+    <div class="copy"><div class="series">나이테 上</div><div class="title">아이가 자라는 동안,<br>주변은 얼마나<br>사라질까요</div><div class="desc">아이와 나, 그리고 대한민국의 나이테</div></div>
+  </section>
+  <section class="panel two" data-panel="2">
+    <img class="photo" src="../../children/images/neighborhood.jpg" alt="도시의 주거 지역">
+    <div class="shade"></div><div class="top"><span>VISUAL NEWSIS</span><span>부모 10명 취재</span></div>
+    <div class="copy"><div class="series">아이 곁의 생활권</div><div class="title">부모 10명에게<br>직접 물었습니다</div><div class="desc">사는 곳과 아이의 나이는 달랐지만, 대답은 세 개의 생활권으로 모였습니다.</div><div class="chips"><span class="chip">놀 공간</span><span class="chip">병원</span><span class="chip">돌봄과 교육</span></div></div>
+  </section>
+  <section class="panel three" data-panel="3">
+    <img class="photo" src="../../children/images/empty-classroom.jpg" alt="비어 있는 교실">
+    <div class="shade"></div><div class="top"><span>VISUAL NEWSIS</span><span>나이테 上</span></div>
+    <div class="copy"><div class="series">여섯 해 뒤</div><div class="number">81만7000명</div><div class="title">초등학생 감소 전망</div><div class="desc">중요한 건 아이의 수를 세는 것이 아닌, 아이 곁에 무엇을 남겨줄 수 있느냐입니다.</div><div class="cta">visual.newsis.com/children/</div></div>
+  </section>
+  <script>const n=new URLSearchParams(location.search).get('panel')||'1';document.querySelector(`[data-panel="${n}"]`)?.classList.add('on');</script>
+</body>
+</html>
