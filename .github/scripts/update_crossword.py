@@ -328,7 +328,7 @@ def can_place(grid: list[list[str]], word: str, row: int, col: int, direction: s
 
 def layout(candidates: list[dict[str, object]], size: int = 13) -> dict[str, object] | None:
     daily_seed = int(datetime.now(timezone.utc).strftime("%Y%m%d"))
-    for attempt in range(160):
+    for attempt in range(600):
         rng = random.Random(daily_seed + attempt)
         letter_frequency = Counter("".join(str(item["answer"]) for item in candidates))
         pool = sorted(
@@ -416,7 +416,7 @@ def main() -> None:
     deduped: dict[str, dict[str, object]] = {}
     for item in sorted(candidates, key=lambda entry: int(entry["score"]), reverse=True):
         deduped.setdefault(str(item["answer"]), item)
-    puzzle = layout(list(deduped.values()), size=15)
+    puzzle = layout(list(deduped.values()), size=17)
     if not puzzle:
         raise RuntimeError(f"Could not build a crossword from {len(deduped)} candidates; preserving previous data. {errors[:3]}")
     payload = {
