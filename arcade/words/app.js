@@ -1,6 +1,6 @@
 const $=selector=>document.querySelector(selector);
 const board=$('#board'),loading=$('#loading'),game=$('#game'),error=$('#error'),progress=$('#progress');
-let data,words=[],cells=new Map(),activeWord=null,solved=new Set();
+let data,words=[],cells=new Map(),activeWord=null,solved=new Set(),puzzles=[],currentPuzzleIndex=0;
 
 function key(row,col){return `${row}-${col}`}
 function escapeHtml(value){return String(value??'').replace(/[&<>"']/g,character=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[character]))}
@@ -121,18 +121,83 @@ function hint(){
   input.value=letters[index];input.focus();checkWords();window.gtag?.('event','crossword_hint');
 }
 
+function loadPuzzle(index){
+  currentPuzzleIndex=index;
+  data=puzzles[index];
+  words=data.words;
+  cells=new Map();
+  activeWord=null;
+  solved=new Set();
+
+  board.innerHTML='';
+  $('#clueList').innerHTML='';
+  $('#articles').innerHTML='';
+  $('#result').hidden=true;
+
+  renderBoard();
+  renderClues();
+  progress.textContent=`0 / ${words.length}`;
+  selectWord(words[0],false);
+  window.scrollTo({top:document.querySelector('#puzzle').offsetTop,behavior:'smooth'});
+}
+
+function nextPuzzle(){
+  if(puzzles.length<2)return;
+  let next=currentPuzzleIndex;
+  while(next===currentPuzzleIndex){
+    next=Math.floor(Math.random()*puzzles.length);
+  }
+  loadPuzzle(next);
+  window.gtag?.('event','crossword_next_puzzle',{puzzle:next+1});
+}
+
 function finish(){
   const unique=[...new Map(words.map(word=>[word.url,word])).values()].slice(0,6);
-  $('#articles').innerHTML=unique.map(word=>`<a href="${word.url}" target="_blank" rel="noopener"><small>${word.category} · ${word.answer}</small><b>${word.title} ↗</b></a>`).join('');
-  $('#result').hidden=false;$('#result').scrollIntoView({behavior:'smooth'});window.gtag?.('event','crossword_complete',{words:words.length});
+  $('#articles').innerHTML=
+    unique.map(word=>`<a href="${word.url}" target="_blank" rel="noopener"><small>${word.category} · ${word.answer}</small><b>${word.title} ↗</b></a>`).join('')
+    + (puzzles.length>1?'<button id="nextPuzzle" type="button">다른 문제 풀기</button>':'');
+
+  $('#result').hidden=false;
+
+  document.querySelector('#nextPuzzle')?.addEventListener('click',nextPuzzle);
+
+  $('#result').scrollIntoView({behavior:'smooth'});
+  window.gtag?.('event','crossword_complete',{words:words.length});
 }
 
 async function init(){
   try{
-    const response=await fetch('./data/crossword.json',{cache:'no-store'});if(!response.ok)throw new Error(response.status);
-    data=await response.json();words=data.words;if(!Array.isArray(words)||words.length<7)throw new Error('invalid crossword');
-    renderBoard();renderClues();progress.textContent=`0 / ${words.length}`;loading.hidden=true;game.hidden=false;selectWord(words[0],false);
-  }catch(reason){console.error(reason);loading.hidden=true;error.hidden=false}
+    const response=await fetch('./data/crossword.json',{cache:'no-store'});
+    if(!response.ok)throw new Error(response.status);
+
+    const payload=await response.json();
+
+    puzzles=Array.isArray(payload.puzzles)&&payload.puzzles.length
+      ? payload.puzzles
+      : [payload];
+
+    puzzles=puzzles.filter(puzzle=>
+      Array.isArray(puzzle.words)&&puzzle.words.length>=7
+    );
+
+    if(!puzzles.length)throw new Error('invalid crossword');
+
+    currentPuzzleIndex=Math.floor(Math.random()*puzzles.length);
+    data=puzzles[currentPuzzleIndex];
+    words=data.words;
+
+    renderBoard();
+    renderClues();
+    progress.textContent=`0 / ${words.length}`;
+    loading.hidden=true;
+    game.hidden=false;
+    selectWord(words[0],false);
+
+  }catch(reason){
+    console.error(reason);
+    loading.hidden=true;
+    error.hidden=false;
+  }
 }
 
 $('#hint').addEventListener('click',hint);
