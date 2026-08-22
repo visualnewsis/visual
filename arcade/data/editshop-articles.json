@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-08-20T14:21:49+00:00",
+  "updatedAt": "2026-08-22T13:07:07+00:00",
   "source": "VISUAL NEWSIS editshop landing page",
   "articles": [
     {
@@ -50,6 +50,16 @@
       "description": "어디서 뛰든 팀을 위해 120%. 이강인을 직접 배치하고 위치에 따라 달라지는 공격의 길을 살펴봅니다.",
       "image": "https://visual.newsis.com/kangin/images/hero.jpg",
       "url": "https://visual.newsis.com/kangin/",
+      "profile": "center"
+    },
+    {
+      "id": "children",
+      "issue": "편집#006",
+      "label": "CHILDREN / COMMUNITY / CARE",
+      "title": "아이가 자라는 동안 주변은 얼마나 사라질까요",
+      "description": "부모 10명의 목소리와 인구 통계로 아이 곁의 놀 공간, 병원, 돌봄과 교육을 살펴봅니다.",
+      "image": "https://visual.newsis.com/children/images/children-running.jpg",
+      "url": "https://visual.newsis.com/children/",
       "profile": "center"
     }
   ]
