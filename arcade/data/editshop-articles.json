@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-08-24T05:08:55+00:00",
+  "updatedAt": "2026-08-24T09:12:03+00:00",
   "source": "VISUAL NEWSIS editshop landing page",
   "articles": [
     {
@@ -60,6 +60,16 @@
       "description": "부모 10명의 목소리와 인구 통계로 아이 곁의 놀 공간, 병원, 돌봄과 교육을 살펴봅니다.",
       "image": "https://visual.newsis.com/children/images/children-running.jpg",
       "url": "https://visual.newsis.com/children/",
+      "profile": "center"
+    },
+    {
+      "id": "buy-live",
+      "issue": "편집#007",
+      "label": "HOUSING / LOAN / LIFE",
+      "title": "이 집, 살 수 있겠습니까?",
+      "description": "가진 돈과 소득으로 살 수 있는 집의 범위를 확인하고, 집을 산 뒤 매달 남는 생활비까지 계산합니다.",
+      "image": "https://visual.newsis.com/buy-live/images/hero.jpg",
+      "url": "https://visual.newsis.com/buy-live/",
       "profile": "center"
     }
   ]
