@@ -46,15 +46,9 @@
   .hot{position:absolute;z-index:6;border:0;background:rgba(0,0,0,0);cursor:pointer;border-radius:7px}
   .hot:hover{background:rgba(0,160,180,.08);box-shadow:inset 0 0 0 2px rgba(0,160,180,.4)}
   .hot:focus-visible{outline:3px solid #00a2b6;outline-offset:2px}
-  /* bottom-card calculator rows */
-  .labor1{left:3.4%;top:75.3%;width:20.2%;height:2.5%}
-  .labor2{left:3.4%;top:77.9%;width:20.2%;height:2.5%}
-  .labor3{left:3.4%;top:80.5%;width:20.2%;height:2.5%}
-  .bank1{left:27.0%;top:75.3%;width:20.2%;height:2.5%}
-  .bank2{left:27.0%;top:77.9%;width:20.2%;height:2.5%}
-  .stock1{left:50.8%;top:75.3%;width:20.0%;height:2.5%}
-  .stock2{left:50.8%;top:77.9%;width:20.0%;height:2.5%}
-  .mart1{left:74.5%;top:75.3%;width:20.0%;height:2.5%}
+  /* one generous click target per calculator shop card */
+  .card-hot{top:72.05%;height:12.2%;border-radius:12px}
+  .card-labor{left:1.8%;width:22.7%}.card-bank{left:25.8%;width:22.7%}.card-stock{left:50%;width:22.7%}.card-mart{left:74.1%;width:22.7%}
   /* storefront signs are also clickable */
   .store-labor{left:7.2%;top:34.4%;width:19.5%;height:12.9%}
   .store-bank{left:28.0%;top:33.7%;width:20.2%;height:13.6%}
@@ -120,15 +114,11 @@
   <button class="hot store-stock" aria-label="계산증권 열기" onclick="openCalc('stock','average')"></button>
   <button class="hot store-mart" aria-label="계산마트 열기" onclick="openCalc('mart','discount')"></button>
 
-  <!-- calculator row hotspots -->
-  <button class="hot labor1" aria-label="연봉 실수령액 계산기" onclick="openCalc('labor','salary')"></button>
-  <button class="hot labor2" aria-label="시급 계산기" onclick="openCalc('labor','hourly')"></button>
-  <button class="hot labor3" aria-label="퇴직금 계산기" onclick="openCalc('labor','severance')"></button>
-  <button class="hot bank1" aria-label="대출이자 계산기" onclick="openCalc('bank','loan')"></button>
-  <button class="hot bank2" aria-label="예적금 계산기" onclick="openCalc('bank','deposit')"></button>
-  <button class="hot stock1" aria-label="물타기 불타기 계산기" onclick="openCalc('stock','average')"></button>
-  <button class="hot stock2" aria-label="주식 수익률 계산기" onclick="openCalc('stock','return')"></button>
-  <button class="hot mart1" aria-label="할인율 계산기" onclick="openCalc('mart','discount')"></button>
+  <!-- one large shortcut per shop; detailed calculators are selected inside the popup -->
+  <button class="hot card-hot card-labor" aria-label="계산인력소 계산기 열기" onclick="openCalc('labor','salary')"></button>
+  <button class="hot card-hot card-bank" aria-label="계산은행 계산기 열기" onclick="openCalc('bank','loan')"></button>
+  <button class="hot card-hot card-stock" aria-label="계산증권 계산기 열기" onclick="openCalc('stock','average')"></button>
+  <button class="hot card-hot card-mart" aria-label="계산마트 계산기 열기" onclick="openCalc('mart','discount')"></button>
 
   <a class="news-link news-labor" href="https://www.newsis.com/society/list/?cid=10200&amp;scid=10221"><span>NEWSIS · 노동</span><strong>노동 기사 보러 가기 ↗</strong></a>
   <a class="news-link news-bank" href="https://www.newsis.com/money/?cid=15000"><span>NEWSIS · 금융</span><strong>금융 기사 보러 가기 ↗</strong></a>
