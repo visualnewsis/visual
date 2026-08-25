@@ -39,10 +39,10 @@
   .wrap{width:min(1024px,100%);margin:0 auto;background:white;position:relative;box-shadow:0 0 28px rgba(0,0,0,.05);overflow:hidden}
   .art{display:none}
   .art-clean{display:block;width:100%;height:auto;margin-top:-19%}
-  .hint{position:fixed;left:50%;bottom:12px;transform:translateX(-50%);
-    background:rgba(17,17,17,.9);color:#fff;padding:10px 14px;border-radius:999px;
-    font-size:13px;text-align:center;z-index:20;backdrop-filter:blur(8px);box-shadow:0 6px 24px rgba(0,0,0,.16)}
-  .hint small{display:block;margin-top:3px;font-size:7px;font-weight:400;letter-spacing:.05em;opacity:.34}
+  .hint{position:relative;width:max-content;max-width:calc(100% - 32px);margin:24px auto 18px;
+    background:rgba(17,17,17,.9);color:#fff;padding:12px 18px;border-radius:999px;
+    font-size:13px;text-align:center;z-index:20;box-shadow:0 6px 24px rgba(0,0,0,.16)}
+  .page-credit{padding:0 18px 28px;text-align:center;color:#aaa49a;font-size:8px;letter-spacing:.05em}
   .hot{position:absolute;z-index:6;border:0;background:rgba(0,0,0,0);cursor:pointer;border-radius:7px}
   .hot:hover{background:rgba(0,160,180,.08);box-shadow:inset 0 0 0 2px rgba(0,160,180,.4)}
   .hot:focus-visible{outline:3px solid #00a2b6;outline-offset:2px}
@@ -86,7 +86,7 @@
     .visual-brand{height:58px;font-size:11px}.visual-brand::before{display:none}.visual-brand small{display:none}
     .visual-logo{top:29px;width:94px;height:34px}
     .visual-nav{position:absolute;left:0;right:0;bottom:0;height:44px;justify-content:center;gap:20px;border-top:1px solid #eee;font-size:11px}
-    .hint{font-size:11px;bottom:10px;max-width:92%;text-align:center}
+    .hint{font-size:11px;max-width:92%;margin:18px auto 16px;padding:11px 15px;text-align:center}
   }
 </style>
 </head>
@@ -134,8 +134,8 @@
   <section class="sr-only" aria-label="계산대로 계산기 목록"><h2>계산인력소</h2><p>연봉 실수령액 계산기, 시급 계산기, 퇴직금 계산기</p><h2>계산은행</h2><p>대출이자 계산기, 예적금 계산기</p><h2>계산증권</h2><p>물타기·불타기 계산기, 주식 수익률 계산기</p><h2>계산마트</h2><p>할인율 계산기</p></section>
 </div>
 
-<footer class="page-credit" style="padding:18px;text-align:center;color:#b8b6b0;font-size:8px;letter-spacing:.04em">크리에이티브 디렉터 = 안재현 · © NEWSIS</footer>
-<div class="hint">가게 간판이나 아래 계산기 이름을 눌러보세요 · 팝업 안에서도 같은 점포의 계산기를 바꿀 수 있습니다<small>크리에이티브 디렉터 = 안재현</small></div>
+<div class="hint">가게 간판이나 계산기 이름을 눌러보세요</div>
+<footer class="page-credit">크리에이티브 디렉터 = 안재현</footer>
 
 <script>
 const shops = {
@@ -220,7 +220,7 @@ const shops = {
 function openCalc(shopKey, itemId) {
   const mobile = window.matchMedia('(max-width: 700px)').matches;
   const features = mobile ? '' : 'popup=yes,width=470,height=760,resizable=yes,scrollbars=yes';
-  const w = window.open('', 'calcStreetTool', features);
+  const w = window.open('', `calcStreetTool_${shopKey}_${itemId}`, features);
   if(!w) {
     alert('팝업이 차단되었습니다. 브라우저에서 팝업 허용 후 다시 눌러주세요.');
     return;
