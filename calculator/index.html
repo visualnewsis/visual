@@ -39,9 +39,10 @@
   .wrap{width:min(1024px,100%);margin:0 auto;background:white;position:relative;box-shadow:0 0 28px rgba(0,0,0,.05);overflow:hidden}
   .art{display:none}
   .art-clean{display:block;width:100%;height:auto;margin-top:-19%}
-  .hint{position:fixed;left:50%;bottom:18px;transform:translateX(-50%);
+  .hint{position:fixed;left:50%;bottom:12px;transform:translateX(-50%);
     background:rgba(17,17,17,.9);color:#fff;padding:10px 14px;border-radius:999px;
-    font-size:13px;z-index:20;backdrop-filter:blur(8px);box-shadow:0 6px 24px rgba(0,0,0,.16)}
+    font-size:13px;text-align:center;z-index:20;backdrop-filter:blur(8px);box-shadow:0 6px 24px rgba(0,0,0,.16)}
+  .hint small{display:block;margin-top:3px;font-size:7px;font-weight:400;letter-spacing:.05em;opacity:.34}
   .hot{position:absolute;z-index:6;border:0;background:rgba(0,0,0,0);cursor:pointer;border-radius:7px}
   .hot:hover{background:rgba(0,160,180,.08);box-shadow:inset 0 0 0 2px rgba(0,160,180,.4)}
   .hot:focus-visible{outline:3px solid #00a2b6;outline-offset:2px}
@@ -63,18 +64,19 @@
   .sign-copy strong{font-size:clamp(12px,3.05vw,34px);font-weight:950;letter-spacing:-.08em;white-space:nowrap}
   .sign-copy span{margin-top:.12em;font-size:clamp(6px,1.15vw,13px);font-weight:900;white-space:nowrap}
   .labor-sign{left:7.6%;top:36.1%;width:16.1%;height:6.5%}
-  .bank-sign{left:28.4%;top:34.05%;width:18.9%;height:7.6%;color:#082742;text-shadow:0 1px 1px rgba(255,255,255,.8)}
-  .stock-sign{left:49.2%;top:33.95%;width:20.2%;height:7.8%}
+  .bank-sign{left:28.4%;top:33.85%;width:18.9%;height:7.6%;color:#082742;text-shadow:0 1px 1px rgba(255,255,255,.8)}
+  .stock-sign{left:49.2%;top:33.75%;width:20.2%;height:7.8%}
   .mart-sign{left:72.15%;top:36.0%;width:16.4%;height:6.7%}
   .board-copy{position:absolute;z-index:5;pointer-events:none;text-align:center;color:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;line-height:1.12;text-shadow:0 1px 2px #000}
   .board-copy small{font-size:clamp(6px,.95vw,11px);font-weight:800}.board-copy strong{font-size:clamp(9px,1.75vw,21px);margin-top:.2em}
-  .labor-board{left:9.9%;top:43.4%;width:12.3%;height:5.2%}.labor-board small{color:#ffd84c}
-  .bank-board{left:31.3%;top:42.9%;width:12.0%;height:5.6%}.bank-board small{color:#51a8ff}
+  .labor-board{left:9.65%;top:43.15%;width:12.3%;height:5.2%}.labor-board small{color:#ffd84c}
+  .bank-board{left:31.55%;top:42.65%;width:12.0%;height:5.6%}.bank-board small{color:#51a8ff}
   .stock-board{left:51.7%;top:42.7%;width:14.5%;height:6.2%}.stock-board strong{color:#ff3b23}
   .mart-board{left:74.9%;top:43.7%;width:13.0%;height:5.2%}
   .bank-sign span,.stock-sign span{transform:none}
-  .news-link{position:absolute;z-index:8;top:84.4%;bottom:2.1%;width:22.7%;display:flex;flex-direction:column;justify-content:center;gap:8%;padding:3%;border-top:1px solid currentColor;font-weight:900}
-  .news-link span,.news-link strong{transform:translateY(clamp(4px,1vw,11px))}.news-link span{font-size:clamp(6px,.9vw,10px);font-weight:750;opacity:.72}.news-link strong{font-size:clamp(8px,1.18vw,14px)}.news-link:hover strong{text-decoration:underline}
+  .news-link{position:absolute;z-index:8;top:90.1%;bottom:2.1%;width:22.7%;display:flex;flex-direction:column;justify-content:center;gap:clamp(3px,.55vw,7px);padding:1.4% 3%;border-top:1px solid currentColor;font-weight:900}
+  .news-link::before{content:"";position:absolute;z-index:-1;left:0;right:0;top:-73%;height:73%;background:#fff}
+  .news-link span{font-size:clamp(6px,.9vw,10px);font-weight:750;opacity:.72}.news-link strong{font-size:clamp(8px,1.18vw,14px)}.news-link:hover strong{text-decoration:underline}
   .news-labor{left:1.8%;color:#2f7d50;background:linear-gradient(145deg,#f3faf6,#fff)}.news-bank{left:25.8%;color:#2968a3;background:linear-gradient(145deg,#f2f7fb,#fff)}.news-stock{left:50%;color:#d4462f;background:linear-gradient(145deg,#fff4f1,#fff)}.news-mart{left:74.1%;color:#ee8a20;background:linear-gradient(145deg,#fff8ef,#fff)}
   .sr-only{position:absolute!important;width:1px!important;height:1px!important;padding:0!important;margin:-1px!important;overflow:hidden!important;clip:rect(0,0,0,0)!important;white-space:nowrap!important;border:0!important}
 
@@ -133,7 +135,7 @@
 </div>
 
 <footer class="page-credit" style="padding:18px;text-align:center;color:#b8b6b0;font-size:8px;letter-spacing:.04em">크리에이티브 디렉터 = 안재현 · © NEWSIS</footer>
-<div class="hint">가게 간판이나 아래 계산기 이름을 눌러보세요 · 팝업 안에서도 같은 점포의 계산기를 바꿀 수 있습니다</div>
+<div class="hint">가게 간판이나 아래 계산기 이름을 눌러보세요 · 팝업 안에서도 같은 점포의 계산기를 바꿀 수 있습니다<small>크리에이티브 디렉터 = 안재현</small></div>
 
 <script>
 const shops = {
@@ -145,22 +147,22 @@ const shops = {
           ['연봉','만원','5000'], ['비과세액','만원 / 월','20'],
           ['부양가족 수','명','1'], ['20세 이하 자녀','명','0']
         ],
-        result:'예상 월 실수령액', sample:'약 3,580,000원',
-        note:'실제 계산 단계에서는 국민연금·건강보험·장기요양·고용보험·소득세·지방소득세를 반영합니다. 기준 연도 표시를 함께 둡니다.'},
+        result:'예상 월 실수령액',
+        note:'국민연금·건강보험·장기요양보험·고용보험과 근로소득세·지방소득세를 반영한 예상치입니다. 실제 급여명세서는 회사와 개인별 공제 조건에 따라 달라질 수 있습니다.'},
       {id:'hourly', label:'시급', title:'시급 계산기', kicker:'내 한 시간은 얼마짜리일까요?',
         fields:[
           ['월급 또는 연봉','원','4000000'], ['급여 기준','월급 / 연봉','월급'],
           ['주당 근무시간','시간','40'], ['주휴시간 포함','선택','포함']
         ],
-        result:'나의 실질 시급', sample:'약 23,900원',
-        note:'시급→월급뿐 아니라 월급·연봉→시급 역산도 가능한 양방향 계산기로 구현합니다.'},
+        result:'나의 실질 시급',
+        note:'월급 또는 연봉을 월 환산 근로시간으로 나눕니다. 주휴시간 포함 여부에 따라 결과가 달라집니다.'},
       {id:'severance', label:'퇴직금', title:'퇴직금 계산기', kicker:'오늘 그만두면, 얼마를 받을까요?',
         fields:[
           ['입사일','날짜','2021-03-02'], ['퇴사 예정일','날짜','2026-08-31'],
           ['최근 3개월 임금 합계','원','10500000'], ['최근 1년 상여금','원','3000000']
         ],
-        result:'예상 퇴직금', sample:'약 18,420,000원',
-        note:'실제 구현에서는 평균임금 산정 기준과 재직일수 등 법정 계산식을 반영하고 안내 문구를 둡니다.'}
+        result:'예상 퇴직금',
+        note:'1일 평균임금 × 30일 × 재직일수 ÷ 365 방식의 예상치입니다. 미사용 연차수당 등 실제 평균임금 포함 항목에 따라 달라질 수 있습니다.'}
     ]
   },
   bank: {
@@ -171,14 +173,14 @@ const shops = {
           ['대출금','원','300000000'], ['연이율','%','4.2'],
           ['기간','년','30'], ['상환 방식','선택','원리금균등']
         ],
-        result:'예상 월 상환액', sample:'약 1,467,000원',
+        result:'예상 월 상환액',
         note:'원리금균등·원금균등·만기일시 상환을 선택하게 하고 총 이자와 총 상환액도 함께 보여줍니다.'},
       {id:'deposit', label:'예·적금', title:'예·적금 계산기', kicker:'금리보다 중요한 건, 만기에 얼마냐는 것.',
         fields:[
           ['상품','예금 / 적금','예금'], ['원금 또는 월 납입액','원','10000000'],
           ['연이율','%','3.2'], ['기간','개월','12']
         ],
-        result:'예상 만기 수령액', sample:'약 10,270,720원',
+        result:'예상 만기 수령액',
         note:'예금/적금 전환 탭을 두고 세전 이자·이자과세·세후 이자·만기 수령액을 나눠 보여줍니다.'}
     ]
   },
@@ -190,14 +192,14 @@ const shops = {
           ['현재 평단','원','72300'], ['보유 수량','주','120'],
           ['추가 매수가','원','65000'], ['추가 수량','주','50']
         ],
-        result:'새로운 평균단가', sample:'70,153원',
+        result:'새로운 평균단가',
         note:'추가 매수가가 기존 평단보다 낮으면 💧 물타기, 높으면 🔥 불타기로 결과 문구와 아이콘이 바뀌게 합니다.'},
       {id:'return', label:'주식 수익률', title:'주식 수익률 계산기', kicker:'그래서 얼마 벌고, 얼마 잃었나요?',
         fields:[
           ['매수가','원','68000'], ['매도가 또는 현재가','원','74000'],
           ['수량','주','100'], ['매매 수수료','%','0']
         ],
-        result:'예상 수익률', sample:'+8.82% · +600,000원',
+        result:'예상 수익률',
         note:'수익률과 손익금액을 동시에 보여주고, 손실일 경우 본전까지 필요한 상승률도 함께 표시합니다.'}
     ]
   },
@@ -209,8 +211,8 @@ const shops = {
           ['정가','원','189000'], ['1차 할인','%','30'],
           ['추가 할인','%','20'], ['금액 쿠폰','원','5000']
         ],
-        result:'최종 결제금액', sample:'100,840원',
-        note:'연속 할인은 단순 합산하지 않고 실제 할인율을 계산합니다. 정가↔판매가 역산 모드도 추가할 수 있습니다.'}
+        result:'최종 결제금액',
+        note:'연속 할인은 각 할인율을 순서대로 적용하고 마지막에 금액 쿠폰을 차감해 실제 할인율을 계산합니다.'}
     ]
   }
 };
@@ -226,6 +228,82 @@ function openCalc(shopKey, itemId) {
   renderPopup(w, shopKey, itemId);
 }
 
+function calculateItem(id, raw) {
+  const n = v => Number(String(v ?? '').replace(/[^0-9.-]/g,'')) || 0;
+  const won = v => `${Math.round(v).toLocaleString('ko-KR')}원`;
+  const pct = v => `${v >= 0 ? '+' : ''}${v.toFixed(2)}%`;
+  const need = (ok, msg) => { if(!ok) throw new Error(msg); };
+  const v = raw.map(n);
+
+  if(id === 'salary') {
+    const annual = v[0] * 10000, taxFreeMonthly = v[1] * 10000;
+    need(annual > 0, '연봉을 입력해 주세요.');
+    const monthly = annual / 12, taxableMonthly = Math.max(0, monthly - taxFreeMonthly);
+    const pension = Math.min(taxableMonthly, 6370000) * .045;
+    const health = taxableMonthly * .03545, care = health * .1295, employment = taxableMonthly * .009;
+    const grossTaxable = taxableMonthly * 12;
+    const earnedDeduction = grossTaxable<=5000000?grossTaxable*.7:grossTaxable<=15000000?3500000+(grossTaxable-5000000)*.4:grossTaxable<=45000000?7500000+(grossTaxable-15000000)*.15:grossTaxable<=100000000?12000000+(grossTaxable-45000000)*.05:14750000+(grossTaxable-100000000)*.02;
+    const annualInsurance = (pension+health+care+employment)*12;
+    const taxableAnnual = Math.max(0, grossTaxable-earnedDeduction-annualInsurance-Math.max(1,v[2])*1500000-v[3]*1500000);
+    const brackets = [[14000000,.06,0],[50000000,.15,1260000],[88000000,.24,5760000],[150000000,.35,15440000],[300000000,.38,19940000],[500000000,.40,25940000],[1000000000,.42,35940000],[Infinity,.45,65940000]];
+    const b = brackets.find(x => taxableAnnual <= x[0]);
+    const calculatedTax = Math.max(0, taxableAnnual * b[1] - b[2]);
+    const taxCredit = Math.min(660000, calculatedTax<=1300000?calculatedTax*.55:715000+(calculatedTax-1300000)*.3);
+    const incomeTax = Math.max(0,calculatedTax-taxCredit)/12, localTax = incomeTax * .1;
+    const deductions = pension + health + care + employment + incomeTax + localTax;
+    return {big:`약 ${won(monthly-deductions)}`, detail:`월 급여 ${won(monthly)} · 예상 공제 ${won(deductions)}\n국민연금 ${won(pension)} · 건강·장기요양 ${won(health+care)} · 고용보험 ${won(employment)} · 소득·지방세 ${won(incomeTax+localTax)}`};
+  }
+  if(id === 'hourly') {
+    need(v[0] > 0 && v[2] > 0, '급여와 주당 근무시간을 입력해 주세요.');
+    const monthlyPay = raw[1] === '연봉' ? v[0]/12 : v[0];
+    const monthlyHours = raw[3] === '포함' ? v[2] * 4.345 + Math.min(v[2]/5*4.345, 8*4.345) : v[2] * 4.345;
+    const hourly = monthlyPay / monthlyHours;
+    return {big:`약 ${won(hourly)}`, detail:`월 환산 근로시간 ${monthlyHours.toFixed(1)}시간 · 월 급여 ${won(monthlyPay)}`};
+  }
+  if(id === 'severance') {
+    const start = new Date(raw[0]), end = new Date(raw[1]);
+    need(!isNaN(start) && !isNaN(end) && end > start, '입사일과 퇴사 예정일을 확인해 주세요.');
+    const serviceDays = Math.floor((end-start)/86400000)+1;
+    need(serviceDays >= 365, '퇴직금은 계속근로기간 1년 이상을 기준으로 계산합니다.');
+    const threeMonthsAgo = new Date(end); threeMonthsAgo.setMonth(threeMonthsAgo.getMonth()-3);
+    const periodDays = Math.max(1, Math.round((end-threeMonthsAgo)/86400000));
+    const avgDaily = (v[2] + v[3]*3/12) / periodDays;
+    const total = avgDaily * 30 * serviceDays / 365;
+    return {big:`약 ${won(total)}`, detail:`재직 ${serviceDays.toLocaleString('ko-KR')}일 · 1일 평균임금 ${won(avgDaily)} · 산정기간 ${periodDays}일`};
+  }
+  if(id === 'loan') {
+    const principal=v[0], rate=v[1]/100/12, months=Math.round(v[2]*12); need(principal>0&&months>0,'대출금과 기간을 입력해 주세요.');
+    let first, total;
+    if(raw[3]==='원금균등'){const principalPart=principal/months; first=principalPart+principal*rate; total=principal+principal*rate*(months+1)/2;}
+    else if(raw[3]==='만기일시'){first=principal*rate; total=principal+first*months;}
+    else {first=rate===0?principal/months:principal*rate*Math.pow(1+rate,months)/(Math.pow(1+rate,months)-1); total=first*months;}
+    return {big:`약 ${won(first)}`,detail:`${raw[3]} · 총 이자 ${won(total-principal)} · 총 상환액 ${won(total)}`};
+  }
+  if(id === 'deposit') {
+    const amount=v[1], annual=v[2]/100, months=Math.round(v[3]); need(amount>0&&months>0,'금액과 기간을 입력해 주세요.');
+    const principal=raw[0]==='적금'?amount*months:amount;
+    const interest=raw[0]==='적금'?amount*annual/12*(months*(months+1)/2):amount*annual*months/12;
+    const tax=interest*.154, maturity=principal+interest-tax;
+    return {big:`약 ${won(maturity)}`,detail:`원금 ${won(principal)} · 세전 이자 ${won(interest)} · 이자과세 ${won(tax)} · 세후 이자 ${won(interest-tax)}`};
+  }
+  if(id === 'average') {
+    need(v[0]>0&&v[1]>=0&&v[2]>0&&v[3]>0,'가격과 수량을 입력해 주세요.');
+    const avg=(v[0]*v[1]+v[2]*v[3])/(v[1]+v[3]);
+    return {big:won(avg),detail:`${v[2]<v[0]?'💧 물타기':v[2]>v[0]?'🔥 불타기':'같은 가격 추가매수'} · 총 ${Math.round(v[1]+v[3]).toLocaleString('ko-KR')}주 · 총 매입금 ${won(v[0]*v[1]+v[2]*v[3])}`};
+  }
+  if(id === 'return') {
+    need(v[0]>0&&v[1]>=0&&v[2]>0,'매수가·현재가·수량을 입력해 주세요.');
+    const buy=v[0]*v[2], sell=v[1]*v[2], fee=(buy+sell)*v[3]/100, profit=sell-buy-fee, rate=profit/buy*100;
+    return {big:`${pct(rate)} · ${profit>=0?'+':''}${won(profit)}`,detail:`매입금 ${won(buy)} · 평가/매도금 ${won(sell)} · 수수료 ${won(fee)}${profit<0?` · 본전까지 약 ${(-profit/(sell-fee)*100).toFixed(2)}% 상승 필요`:''}`};
+  }
+  if(id === 'discount') {
+    need(v[0]>0,'정가를 입력해 주세요.');
+    const final=Math.max(0,v[0]*(1-v[1]/100)*(1-v[2]/100)-v[3]), saved=v[0]-final;
+    return {big:won(final),detail:`총 할인액 ${won(saved)} · 실제 할인율 ${(saved/v[0]*100).toFixed(2)}%`};
+  }
+  throw new Error('계산식을 찾지 못했습니다.');
+}
+
 function renderPopup(w, shopKey, itemId) {
   const shop = shops[shopKey];
   const item = shop.items.find(x=>x.id===itemId) || shop.items[0];
@@ -238,10 +316,12 @@ function renderPopup(w, shopKey, itemId) {
     const isDate = unit==='날짜';
     const isSelectish = unit.includes('/') || unit==='선택';
     if(isSelectish) {
-      const opts = value.split(' / ').map(v=>`<option>${v}</option>`).join('');
-      return `<label class="field"><span>${label}</span><select><option>${value}</option>${opts}</select></label>`;
+      const special = {'급여 기준':['월급','연봉'],'주휴시간 포함':['포함','미포함'],'상환 방식':['원리금균등','원금균등','만기일시'],'상품':['예금','적금']};
+      const choices = special[label] || unit.split(' / ');
+      const opts = choices.map(v=>`<option ${v===value?'selected':''}>${v}</option>`).join('');
+      return `<label class="field"><span>${label}</span><select data-field="${i}">${opts}</select></label>`;
     }
-    return `<label class="field"><span>${label}</span><div class="inputbox"><input type="${isDate?'date':'text'}" value="${value}"><em>${isDate?'':unit}</em></div></label>`;
+    return `<label class="field"><span>${label}</span><div class="inputbox"><input data-field="${i}" type="${isDate?'date':'text'}" inputmode="${isDate?'':'decimal'}" value="${value}"><em>${isDate?'':unit}</em></div></label>`;
   }).join('');
 
   w.document.open();
@@ -266,8 +346,8 @@ function renderPopup(w, shopKey, itemId) {
     .inputbox em{font-style:normal;color:#777;font-size:12px;white-space:nowrap}
     .calc{width:100%;border:0;border-radius:12px;background:#111;color:#fff;font-weight:900;padding:14px;margin-top:16px;cursor:pointer}
     .result{margin-top:20px;padding:18px;border:1px solid #e0ddd5;border-radius:15px;background:#fff}
-    .rlabel{font-size:12px;color:#777} .big{font-size:29px;font-weight:950;letter-spacing:-1.2px;margin:6px 0}
-    .fake{font-size:12px;color:#999;margin-top:2px} .note{margin-top:15px;font-size:11px;line-height:1.55;color:#777}
+    .rlabel{font-size:12px;color:#777} .big{font-size:29px;font-weight:950;letter-spacing:-1.2px;margin:6px 0}.detail{font-size:12px;line-height:1.55;color:#666;white-space:pre-line}
+    .result[hidden]{display:none}.note{margin-top:15px;font-size:11px;line-height:1.55;color:#777}
     .foot{margin-top:22px;border-top:1px solid #e7e4dc;padding-top:13px;color:#888;font-size:11px;text-align:center}
     .egg{margin-top:5px;color:#d0cdc5;font-size:7px;letter-spacing:.03em}
   </style></head><body>
@@ -276,14 +356,21 @@ function renderPopup(w, shopKey, itemId) {
   <main>
     <h1>${item.title}</h1><div class="kicker">${item.kicker}</div>
     <div class="fields">${fields}</div>
-    <button class="calc" onclick="document.getElementById('r').style.opacity='1'">계산하기</button>
-    <div class="result" id="r">
-      <div class="rlabel">${item.result}</div><div class="big">${item.sample}</div>
-      <div class="fake">※ 현재는 디자인 확인용 예시 결과입니다.</div>
+    <button class="calc" id="calculate">계산하기</button>
+    <div class="result" id="r" hidden>
+      <div class="rlabel">${item.result}</div><div class="big" id="resultBig"></div>
+      <div class="detail" id="resultDetail"></div>
     </div>
     <div class="note">${item.note}</div>
     <div class="foot">계산기는 가볍게, 뉴스는 계속 보세요. · 계산대로 3가<div class="egg">크리에이티브 디렉터 = 안재현</div></div>
-  </main></body></html>`);
+  </main><script>
+    document.getElementById('calculate').addEventListener('click',function(){
+      const values=[...document.querySelectorAll('[data-field]')].sort((a,b)=>a.dataset.field-b.dataset.field).map(el=>el.value);
+      const box=document.getElementById('r');
+      try{const out=opener.calculateItem('${item.id}',values);document.getElementById('resultBig').textContent=out.big;document.getElementById('resultDetail').textContent=out.detail;box.hidden=false;}
+      catch(err){document.getElementById('resultBig').textContent='입력값을 확인해 주세요';document.getElementById('resultDetail').textContent=err.message;box.hidden=false;}
+    });
+  <\/script></body></html>`);
   w.document.close();
   try{ w.focus(); }catch(e){}
 }
