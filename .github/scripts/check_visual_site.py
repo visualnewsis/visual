@@ -22,6 +22,7 @@ PAGES = {
     "heat-rain/index.html": ("최종판", False),
     "calculator/index.html": ("계산대로", True),
 }
+EDITSHOP_STORIES = {"oil", "thief", "shelter", "temperature", "kangin", "children", "buy-live"}
 JSON_LD_RE = re.compile(
     r'<script[^>]+type=["\']application/ld\+json["\'][^>]*>([\s\S]*?)</script>',
     re.IGNORECASE,
@@ -58,6 +59,12 @@ def main() -> int:
                 json.loads(block)
             except json.JSONDecodeError as exc:
                 fail(errors, f"invalid JSON-LD in {relative} block {block_number}: {exc}")
+        slug = Path(relative).parts[0] if "/" in relative else ""
+        if slug in EDITSHOP_STORIES:
+            if "editshop-carousel.css" not in html or "editshop-carousel.js" not in html:
+                fail(errors, f"editshop carousel assets missing: {relative}")
+            if f'data-current="{slug}"' not in html:
+                fail(errors, f"wrong editshop carousel current story: {relative}")
 
     arcade = ROOT / "arcade" / "index.html"
     if not arcade.is_file():
