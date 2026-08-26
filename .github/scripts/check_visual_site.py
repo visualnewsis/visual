@@ -35,6 +35,12 @@ def fail(errors: list[str], message: str) -> None:
 
 def main() -> int:
     errors: list[str] = []
+    carousel_js = (ROOT / "assets" / "editshop-carousel.js").read_text(encoding="utf-8")
+    carousel_css = (ROOT / "assets" / "editshop-carousel.css").read_text(encoding="utf-8")
+    if 'node.textContent.includes("편집#이 끌어올립니다")' not in carousel_js or "banner.before(section)" not in carousel_js:
+        fail(errors, "editshop carousel must be placed immediately before the common bottom banner")
+    if '<span>다른</span> <em>편집#</em>' not in carousel_js or "#00a9ba" not in carousel_css:
+        fail(errors, "editshop carousel heading color treatment is missing")
     shared_css = ROOT / "assets" / "visual-header.css"
     shared_js = ROOT / "assets" / "visual-header.js"
     for required in (ROOT / "AGENTS.md", ROOT / "CLAUDE.md", shared_css, shared_js, ROOT / "assets" / "logo2024.png"):
