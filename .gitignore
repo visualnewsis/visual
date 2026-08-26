@@ -134,6 +134,7 @@ nb-configuration.xml
 
 # python add
 node_modules/
+.pnpm-store/
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
@@ -149,3 +150,7 @@ mcp-bridge.js
 .mcp.json
 package.json
 package-lock.json
+
+# Local agent state and logs
+CLAUDE.local.md
+.codex-log/
