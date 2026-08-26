@@ -14,9 +14,11 @@
     const section=document.querySelector("section.more,section.editshop-next");
     if(!section)return;
     const visible=stories.filter(story=>story.slug!==current);
+    const banner=[...document.querySelectorAll("main section,main aside,body>section,body>aside")].reverse().find(node=>node!==section&&node.textContent.includes("편집#이 끌어올립니다"));
+    if(banner)banner.before(section);
     section.className="ves-carousel";
     section.setAttribute("aria-labelledby","ves-carousel-title");
-    section.innerHTML=`<div class="ves-carousel-inner"><div class="ves-carousel-head"><div><div class="ves-carousel-kicker">편집# · MORE STORIES</div><h2 id="ves-carousel-title">다른 편집#</h2></div><div class="ves-carousel-tools"><a class="ves-carousel-all" href="/editshop/">편집# 전체 시리즈 보기 ↗</a><button class="ves-carousel-button ves-prev" type="button" aria-label="이전 편집# 보기">‹</button><button class="ves-carousel-button ves-next" type="button" aria-label="다음 편집# 보기">›</button></div></div><div class="ves-carousel-track">${visible.map(story=>`<a class="ves-carousel-card" href="/${story.slug}/"><img src="${story.image}" alt="${story.alt}" loading="lazy"><span class="ves-carousel-copy"><small>편집#${story.num} · ${story.meta}</small><strong>${story.title}</strong><i>기사 보러가기 ↗</i></span></a>`).join("")}</div></div>`;
+    section.innerHTML=`<div class="ves-carousel-inner"><div class="ves-carousel-head"><div><div class="ves-carousel-kicker">편집# · MORE STORIES</div><h2 id="ves-carousel-title"><span>다른</span> <em>편집#</em></h2></div><div class="ves-carousel-tools"><a class="ves-carousel-all" href="/editshop/">편집# 전체 시리즈 보기 ↗</a><button class="ves-carousel-button ves-prev" type="button" aria-label="이전 편집# 보기">‹</button><button class="ves-carousel-button ves-next" type="button" aria-label="다음 편집# 보기">›</button></div></div><div class="ves-carousel-track">${visible.map(story=>`<a class="ves-carousel-card" href="/${story.slug}/"><img src="${story.image}" alt="${story.alt}" loading="lazy"><span class="ves-carousel-copy"><small>편집#${story.num} · ${story.meta}</small><strong>${story.title}</strong><i>기사 보러가기 ↗</i></span></a>`).join("")}</div></div>`;
     const track=section.querySelector(".ves-carousel-track");
     const prev=section.querySelector(".ves-prev");
     const next=section.querySelector(".ves-next");
