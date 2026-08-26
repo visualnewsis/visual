@@ -23,6 +23,7 @@ PAGES = {
     "calculator/index.html": ("계산대로", True),
 }
 EDITSHOP_STORIES = {"oil", "thief", "shelter", "temperature", "kangin", "children", "buy-live"}
+VISUAL_STORIES_CAROUSEL_PAGES = {"heat-rain"}
 JSON_LD_RE = re.compile(
     r'<script[^>]+type=["\']application/ld\+json["\'][^>]*>([\s\S]*?)</script>',
     re.IGNORECASE,
@@ -41,6 +42,15 @@ def main() -> int:
         fail(errors, "editshop carousel must be placed immediately before the common bottom banner")
     if '<span>다른</span> <em>편집#</em>' not in carousel_js or "#00a9ba" not in carousel_css:
         fail(errors, "editshop carousel heading color treatment is missing")
+    visual_carousel_js = (ROOT / "assets" / "visual-stories-carousel.js").read_text(encoding="utf-8")
+    visual_carousel_css = (ROOT / "assets" / "visual-stories-carousel.css").read_text(encoding="utf-8")
+    archive_html = (ROOT / "index.html").read_text(encoding="utf-8")
+    archive_slugs = set(re.findall(r'class="archive-card[^\"]*" href="\./([^/\"]+)', archive_html))
+    carousel_slugs = set(re.findall(r'\{slug:"([^"]+)"', visual_carousel_js))
+    if archive_slugs != carousel_slugs:
+        fail(errors, "VISUAL NEWSIS carousel stories must match the main ALL STORIES archive")
+    if "비주얼 뉴시스" not in visual_carousel_js or "#00a9ba" not in visual_carousel_css:
+        fail(errors, "VISUAL NEWSIS more-stories heading treatment is missing")
     shared_css = ROOT / "assets" / "visual-header.css"
     shared_js = ROOT / "assets" / "visual-header.js"
     for required in (ROOT / "AGENTS.md", ROOT / "CLAUDE.md", shared_css, shared_js, ROOT / "assets" / "logo2024.png"):
@@ -71,6 +81,11 @@ def main() -> int:
                 fail(errors, f"editshop carousel assets missing: {relative}")
             if f'data-current="{slug}"' not in html:
                 fail(errors, f"wrong editshop carousel current story: {relative}")
+        if slug in VISUAL_STORIES_CAROUSEL_PAGES:
+            if "visual-stories-carousel.css" not in html or "visual-stories-carousel.js" not in html:
+                fail(errors, f"VISUAL NEWSIS carousel assets missing: {relative}")
+            if f'data-current="{slug}"' not in html:
+                fail(errors, f"wrong VISUAL NEWSIS carousel current story: {relative}")
 
     arcade = ROOT / "arcade" / "index.html"
     if not arcade.is_file():
