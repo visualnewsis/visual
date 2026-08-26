@@ -1,6 +1,7 @@
 (()=>{
   const script=document.currentScript;
   const section=script?.dataset.section||"최신 기사";
+  const theme=script?.dataset.headerTheme==="dark"?"dark":"light";
   const sectionHref=script?.dataset.sectionHref||"";
   const current=script?.dataset.current||"";
   const labels={latest:"최신 기사",editshop:"편집#",arcade:"충무로딩",calculator:"계산대로"};
@@ -11,19 +12,21 @@
     const header=document.createElement("header");
     header.className="vnh-header";
     header.dataset.open="false";
+    header.dataset.theme=theme;
     const sectionNode=sectionHref?`<a class="vnh-section" href="${sectionHref}">${section}</a>`:`<span class="vnh-section">${section}</span>`;
     header.innerHTML=`<a class="vnh-brand" href="https://visual.newsis.com/">VISUAL NEWSIS</a><a class="vnh-newsis" href="https://www.newsis.com/" aria-label="뉴시스 홈페이지"><img src="https://visual.newsis.com/assets/logo2024.png" alt="NEWSIS"></a><div class="vnh-right">${sectionNode}<button class="vnh-toggle" type="button" aria-label="전체 메뉴 열기" aria-expanded="false" aria-controls="vnh-menu"><span class="vnh-toggle-lines" aria-hidden="true"></span></button></div>`;
     const overlay=document.createElement("div");
     overlay.className="vnh-overlay";
     overlay.id="vnh-menu";
     overlay.dataset.open="false";
+    overlay.dataset.theme=theme;
     overlay.innerHTML=`<div class="vnh-panel" role="dialog" aria-modal="true" aria-label="VISUAL NEWSIS 전체 메뉴"><nav class="vnh-nav">${Object.keys(labels).map(key=>`<a href="${links[key]}"${current===key?' aria-current="page"':''}>${labels[key]}</a>`).join("")}</nav></div>`;
     document.body.prepend(overlay);
     document.body.prepend(header);
     document.body.classList.add("vnh-ready");
     const button=header.querySelector(".vnh-toggle");
-    const close=()=>{header.dataset.open="false";overlay.dataset.open="false";button.setAttribute("aria-expanded","false");button.setAttribute("aria-label","전체 메뉴 열기");document.body.classList.remove("vnh-lock")};
-    const open=()=>{header.dataset.open="true";overlay.dataset.open="true";button.setAttribute("aria-expanded","true");button.setAttribute("aria-label","전체 메뉴 닫기");document.body.classList.add("vnh-lock");overlay.querySelector("a")?.focus()};
+    const close=()=>{header.dataset.open="false";overlay.dataset.open="false";button.setAttribute("aria-expanded","false");button.setAttribute("aria-label","전체 메뉴 열기")};
+    const open=()=>{header.dataset.open="true";overlay.dataset.open="true";button.setAttribute("aria-expanded","true");button.setAttribute("aria-label","전체 메뉴 닫기")};
     button.addEventListener("click",()=>header.dataset.open==="true"?close():open());
     overlay.addEventListener("click",event=>{if(event.target===overlay||event.target.closest("a")) close()});
     document.addEventListener("keydown",event=>{if(event.key==="Escape"&&header.dataset.open==="true"){close();button.focus()}});
