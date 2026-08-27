@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>뉴린이의 하루 | 8월 27일 NEWS-log</title>
+<meta name="description" content="갓생 뉴린이의 8월 27일 NEWS-log. 시간대별 오늘의 뉴스를 한눈에 확인하세요.">
+<meta name="robots" content="noindex, nofollow">
+<meta property="og:title" content="뉴린이의 하루 | 8월 27일 NEWS-log">
+<meta property="og:description" content="갓생 뉴린이의 8월 27일 NEWS-log. 시간대별 오늘의 뉴스를 한눈에 확인하세요.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://visual.newsis.com/grass">
+<link rel="canonical" href="https://visual.newsis.com/grass">
+<style>
+  :root{
+    color-scheme: light;
+    --bg: #bcd9dc;
+  }
+  *{ box-sizing: border-box; }
+  html, body{
+    margin:0;
+    padding:0;
+    height:100%;
+    background:var(--bg);
+    font-family:-apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+    overscroll-behavior:none;
+  }
+  .viewer{
+    position:relative;
+    width:100%;
+    height:100dvh;
+    overflow:hidden;
+    background:var(--bg);
+  }
+  .track{
+    display:flex;
+    width:100%;
+    height:100%;
+    overflow-x:auto;
+    overflow-y:hidden;
+    scroll-snap-type:x mandatory;
+    -webkit-overflow-scrolling:touch;
+    scrollbar-width:none;
+  }
+  .track::-webkit-scrollbar{ display:none; }
+  .slide{
+    position:relative;
+    flex:0 0 100%;
+    width:100%;
+    height:100%;
+    scroll-snap-align:center;
+    scroll-snap-stop:always;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+  }
+  .slide img{
+    width:100%;
+    height:100%;
+    object-fit:contain;
+    display:block;
+    -webkit-user-drag:none;
+    user-select:none;
+  }
+  .hot{
+    position:absolute;
+    left:4%;
+    width:92%;
+    display:block;
+    -webkit-tap-highlight-color:rgba(0,0,0,0.08);
+  }
+  .hot-label{
+    position:absolute;
+    right:6%;
+    bottom:6%;
+    background:rgba(0,0,0,0.55);
+    color:#fff;
+    font-size:12px;
+    font-weight:600;
+    padding:5px 10px;
+    border-radius:999px;
+    pointer-events:none;
+    letter-spacing:-0.2px;
+  }
+  .dots{
+    position:absolute;
+    top:calc(env(safe-area-inset-top, 0px) + 12px);
+    left:0;
+    right:0;
+    display:flex;
+    justify-content:center;
+    gap:6px;
+    z-index:5;
+    pointer-events:none;
+  }
+  .dots span{
+    width:6px;
+    height:6px;
+    border-radius:50%;
+    background:rgba(0,0,0,0.18);
+    transition:background .2s ease, transform .2s ease;
+  }
+  .dots span.active{
+    background:#0aa6a6;
+    transform:scale(1.15);
+  }
+  .nav-btn{
+    position:absolute;
+    top:50%;
+    transform:translateY(-50%);
+    width:40px;
+    height:40px;
+    border-radius:50%;
+    border:none;
+    background:rgba(255,255,255,0.85);
+    box-shadow:0 2px 8px rgba(0,0,0,0.15);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    cursor:pointer;
+    z-index:5;
+    font-size:18px;
+    color:#222;
+  }
+  .nav-btn.prev{ left:14px; }
+  .nav-btn.next{ right:14px; }
+  @media (max-width: 680px){
+    .nav-btn{ display:none; }
+  }
+  .swipe-hint{
+    position:absolute;
+    bottom:calc(env(safe-area-inset-bottom, 0px) + 14px);
+    left:0;
+    right:0;
+    text-align:center;
+    color:rgba(0,0,0,0.45);
+    font-size:12px;
+    letter-spacing:-0.2px;
+    z-index:5;
+    pointer-events:none;
+    transition:opacity .3s ease;
+  }
+</style>
+</head>
+<body>
+
+<div class="viewer">
+  <div class="dots" id="dots"></div>
+
+  <button class="nav-btn prev" id="prevBtn" aria-label="이전 슬라이드">‹</button>
+  <button class="nav-btn next" id="nextBtn" aria-label="다음 슬라이드">›</button>
+
+  <div class="track" id="track">
+
+    <div class="slide">
+      <img src="assets/01-cover.png" alt="갓생 뉴린이의 8월 27일 NEWS-log">
+    </div>
+
+    <div class="slide">
+      <img src="assets/02-slide-0809.png" alt="08시 진흙으로 뒤덮인 네팔 국경, 09시 엔비디아 실적에 투심 활활">
+      <a class="hot" style="top:17%;height:36%"
+         href="https://www.newsis.com/view/NISX20260827_0003764542" target="_blank" rel="noopener">
+        <span class="hot-label">기사 보기 ›</span>
+      </a>
+      <a class="hot" style="top:57%;height:36.5%"
+         href="https://www.newsis.com/view/NISX20260827_0003764610" target="_blank" rel="noopener">
+        <span class="hot-label">기사 보기 ›</span>
+      </a>
+    </div>
+
+    <div class="slide">
+      <img src="assets/03-slide-1011.png" alt="10시 한국은행 기준금리 인상, 11시 장미란씨 실종 허위종결 사건 사과">
+      <a class="hot" style="top:17%;height:36%"
+         href="https://www.newsis.com/view/NISX20260827_0003764941" target="_blank" rel="noopener">
+        <span class="hot-label">기사 보기 ›</span>
+      </a>
+      <a class="hot" style="top:57%;height:36.5%"
+         href="https://www.newsis.com/view/NISX20260827_0003765043" target="_blank" rel="noopener">
+        <span class="hot-label">기사 보기 ›</span>
+      </a>
+    </div>
+
+    <div class="slide">
+      <img src="assets/04-slide-1213.png" alt="12시 일부 스쿨존 속도규제 완화, 13시 스페인 라 토마티나 축제">
+      <a class="hot" style="top:17%;height:36%"
+         href="https://www.newsis.com/view/NISX20260827_0003764771" target="_blank" rel="noopener">
+        <span class="hot-label">기사 보기 ›</span>
+      </a>
+      <a class="hot" style="top:57%;height:36.5%"
+         href="https://www.newsis.com/view/NISX20260827_0003765326" target="_blank" rel="noopener">
+        <span class="hot-label">기사 보기 ›</span>
+      </a>
+    </div>
+
+    <div class="slide">
+      <img src="assets/05-slide-14.png" alt="14시 이재명 대통령 수도권 집중 완화를 위한 간담회 진행">
+      <a class="hot" style="top:17%;height:36%"
+         href="https://www.newsis.com/view/NISX20260827_0003765424" target="_blank" rel="noopener">
+        <span class="hot-label">기사 보기 ›</span>
+      </a>
+    </div>
+
+    <div class="slide">
+      <img src="assets/06-summary.png" alt="뉴린이의 하루 오늘의 핵심 뉴로그 요약">
+    </div>
+
+  </div>
+
+  <div class="swipe-hint" id="swipeHint">옆으로 넘겨보세요 ›</div>
+</div>
+
+<script>
+(function(){
+  var track = document.getElementById('track');
+  var slides = Array.prototype.slice.call(track.children);
+  var dotsWrap = document.getElementById('dots');
+  var prevBtn = document.getElementById('prevBtn');
+  var nextBtn = document.getElementById('nextBtn');
+  var swipeHint = document.getElementById('swipeHint');
+
+  slides.forEach(function(_, i){
+    var d = document.createElement('span');
+    if(i === 0) d.classList.add('active');
+    dotsWrap.appendChild(d);
+  });
+  var dots = Array.prototype.slice.call(dotsWrap.children);
+
+  function currentIndex(){
+    return Math.round(track.scrollLeft / track.clientWidth);
+  }
+
+  function updateDots(){
+    var idx = currentIndex();
+    dots.forEach(function(d, i){
+      d.classList.toggle('active', i === idx);
+    });
+    if(idx > 0 && swipeHint){
+      swipeHint.style.opacity = '0';
+    }
+  }
+
+  function goTo(idx){
+    idx = Math.max(0, Math.min(slides.length - 1, idx));
+    track.scrollTo({ left: idx * track.clientWidth, behavior:'smooth' });
+  }
+
+  var scrollTimer;
+  track.addEventListener('scroll', function(){
+    clearTimeout(scrollTimer);
+    scrollTimer = setTimeout(updateDots, 60);
+  });
+
+  prevBtn.addEventListener('click', function(){ goTo(currentIndex() - 1); });
+  nextBtn.addEventListener('click', function(){ goTo(currentIndex() + 1); });
+
+  window.addEventListener('resize', function(){
+    track.scrollLeft = currentIndex() * track.clientWidth;
+  });
+
+  updateDots();
+})();
+</script>
+
+</body>
+</html>
