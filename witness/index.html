@@ -189,7 +189,8 @@ section{position:relative}
  .answers button{text-align:center}
  .shelf{width:53%} .shelf.left{left:-23%} .shelf.right{right:-23%}
  .photo-scene{height:62vh}
- .dep-copy{left:6vw}
+ .dep-copy{left:50%;width:calc(100% - 40px);padding-inline:4px;transform:translate(-50%,-50%)}
+ .dep-copy h2{font-size:clamp(38px,11vw,54px);line-height:1.22}
 }
 @media(prefers-reduced-motion:reduce){
  html{scroll-behavior:auto} *{transition:none!important}
@@ -719,7 +720,19 @@ body{font-family:"Noto Sans KR","Malgun Gothic","Apple SD Gothic Neo",sans-serif
  .date-stage .date-caption,.restore-stage .date-caption{top:calc(50% + 68px)}
  .final{height:1050svh}.final-bg img{left:50%;width:auto;min-width:100%;height:100%;object-fit:cover;transform:translate3d(-50%,0,0)}.final-word{font-size:clamp(62px,17vw,92px)}
 }
-@media(prefers-reduced-motion:reduce){.language-shift.alarm-active{animation:none}.today-photo{transition:none}}
+@media(max-width:760px){
+ html,body{max-width:100%;overflow-x:clip}
+ .date-sticky,.open-sticky,.title-sticky,.handoff-sticky,.archive-view,.dep-sticky,.erase-sticky,.language-sticky,.before815-sticky,.restore-sticky,.today-sticky,.keep-sticky,.read-sticky,.final-sticky{height:100dvh;min-height:100svh}
+ .title .inner{width:88vw}.title .hero-type{font-size:clamp(48px,15vw,76px);line-height:1.02}.title .note{font-size:15px;line-height:1.72}.title .note br{display:none}
+ .handoff-clean{width:88vw}.handoff-clean h2{font-size:clamp(31px,9vw,48px)}
+ .dep-copy{left:50%!important;right:auto!important;width:calc(100% - 40px)!important;max-width:520px;transform:translate(-50%,-50%)!important;text-align:center!important}
+ .dep-copy h2{margin:0 auto;font-size:clamp(38px,11vw,54px)!important;line-height:1.22;letter-spacing:-.055em;text-align:center;word-break:keep-all;overflow-wrap:normal}
+ .dep-img img{object-position:center center}
+ .erase-under{font-size:clamp(48px,18vw,78px)}
+ .restore-copy{width:90vw;font-size:clamp(34px,10vw,54px)}
+ .today-heading{max-width:88vw}.today-heading h2{word-break:keep-all;overflow-wrap:normal}
+}
+@media(max-width:370px){.opening-quote .opening-line{white-space:normal}.opening-quote{font-size:27px}.story-identity{font-size:9px}.story-identity b{font-size:11px}}@media(prefers-reduced-motion:reduce){.language-shift.alarm-active{animation:none}.today-photo{transition:none}}
 
 </style>
 <style id="witness-editshop-frame">
@@ -1015,7 +1028,7 @@ body{font-family:"Noto Sans KR","Malgun Gothic","Apple SD Gothic Neo",sans-serif
   <div class="final-sticky"><div class="final-bg" aria-hidden="true"><img src="images/final-march.jpg" alt=""></div>
     <div class="inner final-sequence">
       <div class="final-word final-i">내가</div>
-      <div class="final-word final-witness">증인입니다.</div><div class="final-hold-note" aria-live="polite">이 문장에 잠시 머물러 주세요<span class="final-hold-track"><span class="final-hold-fill" id="finalHoldFill"></span></span></div>
+      <div class="final-word final-witness">증인입니다.</div><div class="final-hold-note" aria-live="polite">몇 번이고 되새겨 주세요.<br>우리는 증인입니다.<span class="final-hold-track"><span class="final-hold-fill" id="finalHoldFill"></span></span></div>
     </div>
   </div>
 </section>
