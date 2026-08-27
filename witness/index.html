@@ -107,6 +107,8 @@ section{position:relative}
 .record q{quotes:"“" "”";font-size:clamp(25px,4.2vw,49px);line-height:1.5;letter-spacing:-.04em;font-weight:500}
 .record .who{margin-top:20px;font-size:13px;color:#aaa}
 .record .src{margin-top:8px;font-size:11px;color:#666}
+.record .src a{color:inherit;text-decoration:none;border-bottom:1px solid rgba(255,255,255,.22);transition:color .2s,border-color .2s}
+.record .src a:hover,.record .src a:focus-visible{color:#d8d7d1;border-color:#d8d7d1}
 .record.passed .record-card{filter:blur(.2px);opacity:.1}
 
 .echo{position:absolute;z-index:15;left:50%;transform:translateX(-50%);width:min(950px,90vw);text-align:center;
@@ -660,6 +662,11 @@ body{font-family:"Noto Sans KR","Malgun Gothic","Apple SD Gothic Neo",sans-serif
 .answers{gap:12px}.answers button{position:relative;padding:18px 20px 18px 52px;background:#080808;color:#d9d8d2;border:1px solid #343431;font-size:15px}
 .answers button::before{content:"";position:absolute;left:19px;top:50%;width:17px;height:17px;transform:translateY(-50%);border:1px solid #6c6c67}
 .answers button:hover:not(:disabled){border-color:#aaa;transform:none}.answers button.on{background:#f0efea;color:#080808;border-color:#f0efea}.answers button.on::after{content:"✓";position:absolute;left:17px;top:45%;transform:translateY(-50%);font:bold 25px/1 sans-serif;color:#a51f27}
+.answers button:not(:disabled):not(.on){animation:answerFocus 1.35s ease-in-out infinite}
+.answers button:not(:disabled):not(.on)::before{animation:answerBoxFocus 1.35s ease-in-out infinite}
+@keyframes answerFocus{0%,100%{border-color:#343431;box-shadow:0 0 0 0 rgba(240,239,234,0)}50%{border-color:#d8d7d1;box-shadow:0 0 24px rgba(240,239,234,.13)}}
+@keyframes answerBoxFocus{0%,100%{border-color:#6c6c67;box-shadow:0 0 0 0 rgba(240,239,234,.34)}50%{border-color:#f0efea;box-shadow:0 0 0 9px rgba(240,239,234,0)}}
+@media(prefers-reduced-motion:reduce){.answers button:not(:disabled):not(.on),.answers button:not(:disabled):not(.on)::before{animation:none}.answers button:not(:disabled):not(.on){border-color:#d8d7d1}.answers button:not(:disabled):not(.on)::before{border-color:#f0efea}}
 
 /* erase scene: pure black, date fully visible before lock */
 .erase-day{display:block;background:#050505;min-height:220svh}.erase-wrap{width:min(980px,92vw);padding:0;background:none;color:var(--fg);transform:none;clip-path:none;box-shadow:none}
@@ -818,7 +825,7 @@ body{font-family:"Noto Sans KR","Malgun Gothic","Apple SD Gothic Neo",sans-serif
         <div class="archive-stamp">2011.08</div><div class="record-no">증언 01 · 이옥선</div>
         <q>남자 둘이서 나를 납치하는 거야.<br>대낮에 말이야.<br>그렇게 중국으로 끌려갔지.</q>
         <div class="who">일본군 ‘위안부’ 피해자 이옥선 할머니</div>
-        <div class="src">뉴시스 인터뷰 · 2011</div>
+        <div class="src"><a href="https://www.newsis.com/view/NISX20110813_0008973690" target="_blank" rel="noopener noreferrer">뉴시스 인터뷰 · 2011 · 원문 보기 ↗</a></div>
       </div>
     </article>
 
@@ -837,7 +844,7 @@ body{font-family:"Noto Sans KR","Malgun Gothic","Apple SD Gothic Neo",sans-serif
         <div class="archive-stamp">2020.05</div><div class="record-no">증언 02 · 이용수</div>
         <q>우리 인류에게 다시는 이러한 일들이<br>반복되지 않도록 문제 해결과<br>인권 운동을 시작했습니다.</q>
         <div class="who">일본군 ‘위안부’ 피해자 이용수 할머니</div>
-        <div class="src">뉴시스 공개 기자회견문 · 2020</div>
+        <div class="src"><a href="https://www.newsis.com/view/NISX20200525_0001036245" target="_blank" rel="noopener noreferrer">뉴시스 공개 기자회견문 · 2020 · 원문 보기 ↗</a></div>
       </div>
     </article>
 
@@ -846,9 +853,9 @@ body{font-family:"Noto Sans KR","Malgun Gothic","Apple SD Gothic Neo",sans-serif
     <article class="record" id="rec3">
       <div class="record-card">
         <div class="archive-stamp">2025.05</div><div class="record-no">기록 03 · 이옥선</div>
-        <div class="record-statement">일본과 미국·호주·독일 등 전 세계를 찾아<br>피해를 증언하고 일본의 사과를 촉구했습니다.</div>
+        <div class="record-statement">“일본과 미국·호주·독일 등 전 세계를 찾아<br>피해를 증언하고 일본의 사과를 촉구했습니다.”</div>
         <div class="who">이옥선 할머니의 생전 활동 기록</div>
-        <div class="src">뉴시스 · 2025</div>
+        <div class="src"><a href="https://www.newsis.com/view/NISX20250512_0003172123" target="_blank" rel="noopener noreferrer">뉴시스 · 2025 · 원문 보기 ↗</a></div>
       </div>
     </article>
 
@@ -986,9 +993,10 @@ body{font-family:"Noto Sans KR","Malgun Gothic","Apple SD Gothic Neo",sans-serif
     </div>
     <div class="restore-stage" id="restoreMessage">
       <div class="restore-copy">
-        <span class="dim">우리가 되찾은 것은</span>
-        <span class="bright">8월 15일 하루가 아니었습니다.</span>
-        <span class="bright">그 이후의 모든 날이었습니다.</span>
+        <span class="dim">45년 8월 15일,</span>
+        <span class="bright">우리가 그 날 되찾은 것은</span>
+        <span class="bright">단 하루가 아닙니다.</span>
+        <span class="bright">그 이후 우리가 누려온 모든 날입니다.</span>
       </div>
     </div>
   </div>
@@ -1240,7 +1248,7 @@ function erasedRatio(){
 function checkErase(){
   const ratio=erasedRatio();
   if(eraseProgress) eraseProgress.textContent=Math.min(100,Math.round(ratio*100/0.68))+"%";
-  if(ratio>=.68 && !eraseDone){
+  if(ratio>=.612 && !eraseDone){
     eraseDone=true;
     eraseDay.classList.add("done");
     eraseDay.classList.remove("locked","interacting");
