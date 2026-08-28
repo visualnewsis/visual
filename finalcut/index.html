@@ -87,9 +87,9 @@
   </script>
 
   <link rel="stylesheet" href="../assets/visual-header.css?v=20260828-5">
-  <link rel="stylesheet" href="css/style.css?v=20260828_02" />
+  <link rel="stylesheet" href="css/style.css?v=20260828_03" />
   <script defer src="../assets/visual-header.js?v=20260828-5" data-section="최종판" data-section-href="https://visual.newsis.com/finalcut/" data-header-theme="dark"></script>
-  <script defer src="js/main.js?v=20260828_01"></script>
+  <script defer src="js/main.js?v=20260828_02"></script>
 </head>
 <body>
   <main>
@@ -108,10 +108,10 @@
         </p>
         <p class="hero-credit"><span>기획·디렉터</span> 최승훈 기자</p>
       </div>
-      <div class="tuner" aria-label="뉴스 신호 선명도 조절">
+      <div class="tuner" aria-label="현재 신호 강도">
         <div class="tuner-head">
           <span>잡음</span>
-          <strong>신호 <span id="tuner-value">36</span>%</strong>
+          <strong>신호 <span id="tuner-value">42</span>%</strong>
           <span>이야기</span>
         </div>
         <input
@@ -119,13 +119,14 @@
           type="range"
           min="0"
           max="100"
-          value="36"
-          aria-label="신호 선명도"
-          style="--clarity: 36%"
+          value="42"
+          disabled
+          aria-label="현재 신호 강도(고정값)"
+          style="--clarity: 42%"
         />
-        <div class="tuner-message" id="tuner-message" style="--blur: 4.57px">
+        <div class="tuner-message" id="tuner-message" style="--blur: 4.14px">
           <span aria-hidden="true">░ 기사 927 42.5 구조 101일 ▒</span>
-          <b style="opacity: 0.36">흩어진 사실이 연결되면 하나의 판이 완성됩니다.</b>
+          <b style="opacity: 0.42">흩어진 사실이 연결되면 하나의 판이 완성됩니다.</b>
         </div>
       </div>
       <a class="scroll-cue" href="#work">
@@ -206,7 +207,7 @@
       <div class="footer-bottom">
         <a href="https://visual.newsis.com/">VISUAL NEWSIS</a>
         <a href="#top">TOP ↑</a>
-        <span>FINAL CUT</span>
+        <a href="https://visual.newsis.com/finalcut/">FINAL CUT</a>
       </div>
     </footer>
   </main>
