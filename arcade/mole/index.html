@@ -19,7 +19,7 @@
   </script>
   <meta name="theme-color" content="#f4f1ea">
   <title>이슈 훔친 두더지 | 헤드라인 두더지 잡기 | 충무로딩</title>
-  <meta name="description" content="두더지가 물고 도망 다니는 오늘의 헤드라인을 뿅망치로 잡아채는 충무로딩의 미니게임 프로토타입입니다.">
+  <meta name="description" content="두더지가 물고 도망 다니는 오늘의 헤드라인을 뿅망치로 잡아채는 충무로딩의 미니게임입니다.">
   <meta name="keywords" content="크리에이티브 디렉터 안재현, 두더지잡기, 헤드라인 게임, 충무로딩, 충무로 놀이마당">
   <meta name="author" content="크리에이티브 디렉터 안재현">
   <link rel="shortcut icon" href="https://image.newsis.com/n_www/images/ci/2024/favicon.png">
@@ -42,6 +42,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Noto+Sans+KR:wght@700;800;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="../credit.css">
+  <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"Game","name":"이슈 훔친 두더지","alternateName":["헤드라인 두더지 잡기","충무로딩 두더지 게임"],"url":"https://visual.newsis.com/arcade/mole/","description":"두더지가 물고 도망 다니는 오늘의 헤드라인을 뿅망치로 잡아채는 충무로딩의 미니게임","genre":["Arcade game","Whack-a-mole"],"inLanguage":"ko-KR","isAccessibleForFree":true,"creator":{"@type":"Person","name":"안재현","alternateName":["크리에이티브 디렉터 안재현","크리에이티브 디렉터 = 안재현","크리에이티브 안재현","디렉터 안재현","JAEHYEON AN","Creative Director Jaehyeon An"],"jobTitle":["크리에이티브 디렉터","뉴시스 기자"],"description":"뉴시스 기자이자 비주얼 저널리스트. 비주얼 뉴시스의 편집#, 충무로딩, 계산대로의 기획·취재·디자인·개발을 모두 맡고 있습니다.","worksFor":{"@type":"NewsMediaOrganization","name":"뉴시스","url":"https://www.newsis.com/"}},"isPartOf":{"@type":"CollectionPage","name":"충무로딩","alternateName":"충무로 놀이마당","url":"https://visual.newsis.com/arcade/"},"publisher":{"@type":"NewsMediaOrganization","name":"뉴시스","url":"https://www.newsis.com/"}},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"VISUAL NEWSIS","item":"https://visual.newsis.com/"},{"@type":"ListItem","position":2,"name":"충무로딩","item":"https://visual.newsis.com/arcade/"},{"@type":"ListItem","position":3,"name":"이슈 훔친 두더지","item":"https://visual.newsis.com/arcade/mole/"}]}]}</script>
 <style>
 :root{
   --bg:#f4f1ea; --ink:#111; --sub:#666; --card:#fff;
@@ -280,7 +281,7 @@ h1{
     </div>
   </div>
 
-  <div class="foot">데모 · newsis.com 실제 헤드라인(2026.08.28) 기반 — 실전에선 실시간 헤드라인과 연동됩니다</div>
+  <div class="foot">newsis.com 실시간 헤드라인 연동 — 4시간마다 자동으로 새로고침됩니다</div>
 </div>
 
   <footer class="game-footer">
@@ -289,24 +290,59 @@ h1{
   </footer>
 
 <script>
-(() => {
-  // 2026.08.28 newsis.com 헤드라인에서 뽑은 짧은 태그 (재난·사망·정치 등은 제외)
-  const KEYWORDS = [
-    "한류엑스포","기준금리 3%","SK하이닉스","갤럭시Z폴드8","암표 과징금",
-    "편의점 점장","애플 폴더블폰","리센느 매출","트와이스 나연","젠슨 황"
+(async () => {
+  // 실시간 newsis.com 헤드라인(arcade/output/data/headlines.json, 4시간마다 자동 갱신)에서
+  // 태그를 뽑는다. 재난·사망·정치 등 무거운 소재는 이 게임 톤에 안 맞아서 걸러낸다.
+  const BLOCKLIST = [
+    "사망","숨졌","숨진","실종","화재","붕괴","참사","부상","사고","자살","피살","살해","전사",
+    "구속","검거","징역","특검","대통령","국회","여야","탄핵","의원","정당","선거","총리",
+    "지지","출마","당선","낙선","여당","야당","정치권","정계","국민의힘","민주당","공천","대선"
   ];
-  const KEYWORD_LINKS = {
-    "한류엑스포":"https://www.newsis.com/view/NISX20260827_0003765261",
-    "기준금리 3%":"https://www.newsis.com/view/NISX20260827_0003765834",
-    "SK하이닉스":"https://www.newsis.com/view/NISX20260828_0003766487",
-    "갤럭시Z폴드8":"https://www.newsis.com/view/NISX20260827_0003765854",
-    "암표 과징금":"https://www.newsis.com/view/NISX20260828_0003766846",
-    "편의점 점장":"https://www.newsis.com/view/NISX20260827_0003765693",
-    "애플 폴더블폰":"https://www.newsis.com/view/NISX20260827_0003765854",
-    "리센느 매출":"https://www.newsis.com/view/NISX20260827_0003765581",
-    "트와이스 나연":"https://www.newsis.com/view/NISX20260828_0003767018",
-    "젠슨 황":"https://www.newsis.com/view/NISX20260828_0003766571"
-  };
+  const FALLBACK = [
+    {tag:"한류엑스포",url:"https://www.newsis.com/view/NISX20260827_0003765261"},
+    {tag:"기준금리 3%",url:"https://www.newsis.com/view/NISX20260827_0003765834"},
+    {tag:"SK하이닉스",url:"https://www.newsis.com/view/NISX20260828_0003766487"},
+    {tag:"갤럭시Z폴드8",url:"https://www.newsis.com/view/NISX20260827_0003765854"},
+    {tag:"암표 과징금",url:"https://www.newsis.com/view/NISX20260828_0003766846"},
+    {tag:"편의점 점장",url:"https://www.newsis.com/view/NISX20260827_0003765693"},
+    {tag:"애플 폴더블폰",url:"https://www.newsis.com/view/NISX20260827_0003765854"},
+    {tag:"리센느 매출",url:"https://www.newsis.com/view/NISX20260827_0003765581"},
+    {tag:"트와이스 나연",url:"https://www.newsis.com/view/NISX20260828_0003767018"},
+    {tag:"젠슨 황",url:"https://www.newsis.com/view/NISX20260828_0003766571"}
+  ];
+
+  let KEYWORDS = [];
+  let KEYWORD_LINKS = {};
+  function usePairs(pairs) {
+    KEYWORDS = pairs.map(p => p.tag);
+    KEYWORD_LINKS = {};
+    pairs.forEach(p => { KEYWORD_LINKS[p.tag] = p.url; });
+  }
+  async function loadHeadlines() {
+    try {
+      const res = await fetch('../output/data/headlines.json', {cache:'no-store'});
+      if (!res.ok) throw new Error('bad status ' + res.status);
+      const data = await res.json();
+      const jobs = Array.isArray(data.jobs) ? data.jobs : [];
+      const clean = jobs.filter(j => {
+        const text = (j.title || '') + (j.summary || '');
+        return !BLOCKLIST.some(w => text.includes(w));
+      });
+      const pool = clean.length >= 6 ? clean : jobs;
+      const pairs = pool.slice(0, 14)
+        .map(j => ({
+          tag: (j.chunks && j.chunks[0]) ? j.chunks[0] : (j.title || '').slice(0, 12),
+          url: j.url
+        }))
+        .filter(p => p.tag && p.url);
+      if (pairs.length >= 6) usePairs(pairs);
+      else usePairs(FALLBACK);
+    } catch (e) {
+      usePairs(FALLBACK);
+    }
+  }
+  await loadHeadlines();
+
   const HOLE_COUNT = 9;
   const GAME_TIME = 20;
 
