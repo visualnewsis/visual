@@ -8614,12 +8614,12 @@ footer strong {
   height: 100%;
   aspect-ratio: auto;
   border-radius: 0;
-  background-image: url(../images/newsis-location-map.png);
-  background-position: 10% 55%;
-  background-size: 110% auto;
+  background-image: url(../images/ending-newsis-map.jpg);
+  background-position: 54.6% 0%;
+  background-size: auto 145%;
   background-repeat: no-repeat;
-  filter: grayscale(.18) saturate(.68) contrast(.82) brightness(1.08) blur(1.2px);
-  opacity: .48;
+  filter: saturate(.72) contrast(.9) brightness(.76) blur(1.6px);
+  opacity: .62;
   -webkit-mask-image:
     radial-gradient(
       circle at 24% 64%,
@@ -8659,10 +8659,10 @@ footer strong {
 }
 @media (max-width: 700px) {
   .ending-brand::before {
-    background-position: 21% 17%;
-    background-size: auto 112%;
-    filter: grayscale(.2) saturate(.64) contrast(.8) brightness(1.1) blur(1px);
-    opacity: .46;
+    background-position: 45% 0%;
+    background-size: auto 120%;
+    filter: saturate(.7) contrast(.88) brightness(.76) blur(1.4px);
+    opacity: .6;
     -webkit-mask-image:
       radial-gradient(
         circle at 25.6% 66.7%,
