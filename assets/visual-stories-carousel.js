@@ -13,9 +13,7 @@
     {slug:"adult-missing",num:"009",meta:"성인 실종 · 경찰 초동대응 · 인터랙티브",title:"사람은 사라지고 확인도 실종됐다",image:"/adult-missing/images/chapter-hero.jpg",alt:"성인 실종자를 찾는 초동 대응 화면"},
     {slug:"battery",num:"010",meta:"리튬이온배터리 · 배터리 구조 · 인터랙티브",title:"한눈에 알아볼지도",image:"/battery/images/battery-model-v10.png",alt:"리튬이온배터리 내부 구조를 표현한 3D 렌더링"}
   ];
-  const start=()=>{
-    const host=document.querySelector("main");
-    if(!host)return;
+  const mount=host=>{
     const visible=stories.filter(story=>story.slug!==current);
     const section=document.createElement("section");
     section.className="vns-carousel";
@@ -32,6 +30,16 @@
     track.addEventListener("scroll",update,{passive:true});
     addEventListener("resize",update,{passive:true});
     update();
+  };
+  const start=()=>{
+    const existing=document.querySelector("main");
+    if(existing){mount(existing);return}
+    const observer=new MutationObserver(()=>{
+      const host=document.querySelector("main");
+      if(host){observer.disconnect();mount(host)}
+    });
+    observer.observe(document.body,{childList:true,subtree:true});
+    setTimeout(()=>observer.disconnect(),10000);
   };
   document.readyState==="loading"?document.addEventListener("DOMContentLoaded",start):start();
 })();
