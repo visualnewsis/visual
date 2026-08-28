@@ -3,7 +3,8 @@ const fallback=[
   {category:'사회',title:'오늘의 뉴스는 제목에서 시작됩니다',url:'https://www.newsis.com/'},
   {category:'문화',title:'읽는 속도와 쓰는 속도 사이',url:'https://www.newsis.com/'}
 ];
-let articles=[],currentIndex=0,current=null,startedAt=0,composing=false,audioContext=null;
+const SESSION_SIZE=12;
+let articles=[],currentIndex=0,current=null,startedAt=0,composing=false,audioContext=null,completed=[],advancing=false;
 const input=$('#typingInput'),target=$('#target');
 
 const chars=value=>Array.from(String(value||'').normalize('NFC'));
@@ -43,12 +44,19 @@ function renderTyping(){
   if(complete)finish();
 }
 function loadArticle(index){
-  currentIndex=index%articles.length;current=articles[currentIndex];startedAt=0;input.value='';input.disabled=false;
+  currentIndex=index%articles.length;current=articles[currentIndex];startedAt=0;advancing=false;input.value='';input.disabled=false;
   $('#category').textContent=current.category||'오늘의 뉴스';$('#count').textContent=`${String(currentIndex+1).padStart(2,'0')} / ${String(articles.length).padStart(2,'0')}`;$('#headline').textContent=current.title;$('#result').hidden=true;
-  renderTyping();window.gtag?.('event','dododok_article_start',{article_title:current.title});
+  const sheet=$('.copy-sheet'),length=chars(current.title).length;sheet.classList.toggle('long-title',length>36);sheet.classList.toggle('very-long-title',length>50);
+  renderTyping();if(completed.length)requestAnimationFrame(()=>input.focus({preventScroll:true}));window.gtag?.('event','dododok_article_start',{article_title:current.title});
 }
 function finish(){
-  input.disabled=true;const result=metrics();$('#finalAccuracy').textContent=`${result.accuracy}%`;$('#finalSpeed').textContent=result.speed;$('#resultTitle').textContent=current.title;$('#articleLink').href=current.url;$('#result').hidden=false;$('#result').scrollIntoView({behavior:'smooth',block:'center'});window.gtag?.('event','dododok_complete',{accuracy:result.accuracy,speed:result.speed,article_title:current.title});
+  if(advancing)return;advancing=true;const score=metrics();completed.push({...current,accuracy:score.accuracy,speed:score.speed});window.gtag?.('event','dododok_title_complete',{accuracy:score.accuracy,speed:score.speed,article_title:current.title,question_number:completed.length});
+  if(completed.length<articles.length){$('#status').textContent=`${completed.length}번째 제목 완성! 다음 제목을 불러옵니다.`;setTimeout(()=>loadArticle(currentIndex+1),650);return}
+  input.disabled=true;showFinal();
+}
+function showFinal(){
+  const averageAccuracy=Math.round(completed.reduce((sum,item)=>sum+item.accuracy,0)/completed.length),averageSpeed=Math.round(completed.reduce((sum,item)=>sum+item.speed,0)/completed.length);$('#finalAccuracy').textContent=`${averageAccuracy}%`;$('#finalSpeed').textContent=averageSpeed;
+  $('#sessionArticles').innerHTML=completed.map((item,index)=>`<a href="${escapeHtml(item.url)}" target="_blank" rel="noopener"><span>${String(index+1).padStart(2,'0')}</span><b>${escapeHtml(item.title)}</b><i>기사 보기 ↗</i></a>`).join('');$('#result').hidden=false;$('#result').scrollIntoView({behavior:'smooth',block:'start'});window.gtag?.('event','dododok_session_complete',{average_accuracy:averageAccuracy,average_speed:averageSpeed,article_count:completed.length});
 }
 input.addEventListener('compositionstart',()=>{composing=true});
 input.addEventListener('compositionend',()=>{
@@ -61,8 +69,8 @@ input.addEventListener('input',event=>{
   const typed=chars(input.value),expected=chars(typingTitle(current.title)),ok=!typed.length||typed.at(-1)===expected[typed.length-1];keySound(ok);typingBurst(ok);const keys=document.querySelectorAll('.key-row i'),key=keys.length?keys[Math.floor(Math.random()*keys.length)]:null;if(key){key.classList.add('hit');setTimeout(()=>key.classList.remove('hit'),70)}renderTyping();
 });
 input.addEventListener('paste',event=>event.preventDefault());
-$('#nextButton').addEventListener('click',()=>loadArticle(currentIndex+1));
-$('#articleLink').addEventListener('click',()=>window.gtag?.('event','dododok_article_click',{article_title:current.title}));
+$('#nextButton').addEventListener('click',()=>{completed=[];articles=shuffle(articles);loadArticle(0)});
+$('#sessionArticles').addEventListener('click',event=>{const link=event.target.closest('a');if(link)window.gtag?.('event','dododok_article_click',{article_url:link.href})});
 $('.start-link').addEventListener('click',()=>setTimeout(()=>input.focus(),280));
 
 async function init(){
@@ -70,6 +78,6 @@ async function init(){
     const response=await fetch('../puzzle/data/puzzles.json',{cache:'no-store'});if(!response.ok)throw new Error(response.status);const data=await response.json();
     articles=(data.puzzles||[]).map(item=>({category:item.category,title:String(item.title||'').trim(),url:item.url})).filter(item=>item.title.length>=8&&item.title.length<=60&&item.url).slice(0,20);
   }catch(error){console.warn('최신 제목을 불러오지 못해 기본 문장을 사용합니다.',error)}
-  if(!articles.length)articles=fallback;articles=shuffle(articles);loadArticle(0);
+  if(!articles.length)articles=fallback;articles=shuffle(articles).slice(0,Math.min(SESSION_SIZE,articles.length));loadArticle(0);
 }
 init();
