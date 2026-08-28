@@ -81,7 +81,7 @@ section{position:relative}
 .title .note{margin-top:30px;color:#a3a39d;font-size:clamp(15px,1.35vw,19px);line-height:1.8;max-width:720px;word-break:keep-all}.title .title-byline{margin-top:22px;color:#777772;font-size:11px;font-weight:700;letter-spacing:.03em}
 
 /* WALKING ARCHIVE */
-.archive{height:680svh;background:linear-gradient(#050505,#0b0a08 9%,#0a0907 78%,#050505)}
+.archive{height:980svh;background:linear-gradient(#050505,#0b0a08 9%,#0a0907 78%,#050505)}
 .archive-view{position:sticky;top:0;height:100svh;overflow:hidden;perspective:1050px}
 .world{position:absolute;inset:-12%;transform-style:preserve-3d;will-change:transform}
 .floor{position:absolute;left:12%;right:12%;bottom:-2%;height:56%;clip-path:polygon(31% 0,69% 0,100% 100%,0 100%);
@@ -111,8 +111,8 @@ section{position:relative}
 .record .src a:hover,.record .src a:focus-visible{color:#d8d7d1;border-color:#d8d7d1}
 .record.passed .record-card{filter:blur(.2px);opacity:.1}
 
-.echo{position:absolute;z-index:15;left:50%;transform:translateX(-50%);width:min(950px,90vw);text-align:center;
- font-size:clamp(18px,2.5vw,30px);line-height:1.6;letter-spacing:-.03em;color:rgba(255,255,255,.10);opacity:0;transition:.45s}
+.echo{position:absolute;z-index:15;left:50%;transform:translateX(-50%);width:min(820px,86vw);text-align:center;
+ font-size:clamp(16px,2vw,24px);line-height:1.65;letter-spacing:-.02em;color:rgba(255,255,255,.08);opacity:0;transition:opacity .7s}
 .e1{top:16%} .e2{top:68%} .e3{top:42%}
 
 .photo-scene{position:absolute;z-index:35;left:50%;top:50%;width:min(1030px,90vw);height:min(68vh,680px);
@@ -140,14 +140,14 @@ section{position:relative}
 .answer-final.show{opacity:1;transform:none}
 
 /* DEPARTURE */
-.departure{height:620svh;background:#050505}
+.departure{height:760svh;background:#050505}
 .dep-sticky{position:sticky;top:0;height:100svh;overflow:hidden}
-.dep-img{position:absolute;inset:0;opacity:0;transition:opacity .7s}
+.dep-img{position:absolute;inset:0;opacity:0;transition:opacity 1.15s}
 .dep-img.active{opacity:1}
-.dep-img img{width:100%;height:100%;object-fit:cover;filter:grayscale(.1) brightness(.45)}
-.dep-img:after{content:"";position:absolute;inset:0;background:linear-gradient(0deg,#050505 2%,rgba(5,5,5,.2) 55%,rgba(5,5,5,.5))}
+.dep-img img{width:100%;height:100%;object-fit:cover;filter:grayscale(.12) brightness(.38)}
+.dep-img:after{content:"";position:absolute;inset:0;background:linear-gradient(0deg,#050505 2%,rgba(5,5,5,.34) 55%,rgba(5,5,5,.62)),radial-gradient(circle at 50% 50%,transparent 20%,rgba(5,5,5,.28) 90%)}
 .dep-copy{position:absolute;z-index:5;left:50%;top:50%;transform:translate(-50%,-50%);width:min(900px,88vw);text-align:center}
-.dep-copy h2{font-size:clamp(42px,6.8vw,86px);line-height:1.18;letter-spacing:-.055em;margin:0;text-align:center}
+.dep-copy h2{font-size:clamp(42px,6.8vw,86px);line-height:1.18;letter-spacing:-.055em;margin:0;text-align:center;text-shadow:0 3px 24px #000,0 0 70px rgba(0,0,0,.85)}
 .dep-copy p{margin:18px 0 0;color:#91918c;font-size:14px;line-height:1.8}
 
 /* KEEP */
@@ -1082,20 +1082,21 @@ function update(){
   world.style.transform=`scale(${zoom}) translate(${mx*8}px,${my*4+p*6}%)`;
 
   const items=[
-    [rec1,.10,.065],[street,.25,.065],[rec2,.40,.065],[rec3,.56,.065],[statue,.69,.055],[question,.84,.115]
+    [rec1,.12,.095],[street,.275,.045],[rec2,.43,.095],[rec3,.625,.095],[statue,.775,.045],[question,.91,.085]
   ];
   items.forEach(([el,c,w])=>el.classList.toggle("active",near(p,c,w)));
 
   [rec1,rec2,rec3].forEach((r,i)=>{
-    const c=[.10,.40,.56][i]; r.classList.toggle("passed",p>c+.085)
+    const c=[.12,.43,.625][i]; r.classList.toggle("passed",p>c+.11)
   });
 
-  e1.style.opacity=clamp((p-.16)*2.3,0,.48);
-  e2.style.opacity=clamp((p-.46)*2.3,0,.43);
-  e3.style.opacity=clamp((p-.62)*2.1,0,.40);
-  year2011.classList.toggle("active",p>.03 && p<.22);
-  year2020.classList.toggle("active",p>.31 && p<.49);
-  year2025.classList.toggle("active",p>.49 && p<.65);
+  const echoPulse=(center,width,max)=>clamp(1-Math.abs(p-center)/width,0,1)*max;
+  e1.style.opacity=echoPulse(.245,.035,.18);
+  e2.style.opacity=echoPulse(.545,.035,.16);
+  e3.style.opacity=echoPulse(.745,.035,.15);
+  year2011.classList.toggle("active",p>.025 && p<.255);
+  year2020.classList.toggle("active",p>.325 && p<.555);
+  year2025.classList.toggle("active",p>.52 && p<.75);
 
   const dp=lp(departure);
   const depImgs=[dep1,dep2,dep3,dep4,dep5,dep6].filter(Boolean);
