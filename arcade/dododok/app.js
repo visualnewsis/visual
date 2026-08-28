@@ -45,24 +45,25 @@ function renderTyping(){
 function loadArticle(index){
   currentIndex=index%articles.length;current=articles[currentIndex];startedAt=0;input.value='';input.disabled=false;
   $('#category').textContent=current.category||'오늘의 뉴스';$('#count').textContent=`${String(currentIndex+1).padStart(2,'0')} / ${String(articles.length).padStart(2,'0')}`;$('#headline').textContent=current.title;$('#result').hidden=true;
-  renderTyping();setTimeout(()=>input.focus(),120);window.gtag?.('event','dododok_article_start',{article_title:current.title});
+  renderTyping();window.gtag?.('event','dododok_article_start',{article_title:current.title});
 }
 function finish(){
   input.disabled=true;const result=metrics();$('#finalAccuracy').textContent=`${result.accuracy}%`;$('#finalSpeed').textContent=result.speed;$('#resultTitle').textContent=current.title;$('#articleLink').href=current.url;$('#result').hidden=false;$('#result').scrollIntoView({behavior:'smooth',block:'center'});window.gtag?.('event','dododok_complete',{accuracy:result.accuracy,speed:result.speed,article_title:current.title});
 }
 input.addEventListener('compositionstart',()=>{composing=true});
 input.addEventListener('compositionend',()=>{
-  composing=false;input.value=typingTitle(input.value);if(!startedAt&&input.value)startedAt=Date.now();
+  composing=false;if(!startedAt&&input.value)startedAt=Date.now();
   const typed=chars(input.value),expected=chars(typingTitle(current.title)),ok=!typed.length||typed.at(-1)===expected[typed.length-1];keySound(ok);typingBurst(ok);renderTyping();
 });
 input.addEventListener('input',event=>{
   if(composing||event.isComposing)return;if(!startedAt&&input.value)startedAt=Date.now();
-  input.value=typingTitle(input.value);const limit=chars(typingTitle(current.title)).length;if(chars(input.value).length>limit)input.value=chars(input.value).slice(0,limit).join('');
-  const typed=chars(input.value),expected=chars(typingTitle(current.title)),ok=!typed.length||typed.at(-1)===expected[typed.length-1];keySound(ok);typingBurst(ok);const keys=document.querySelectorAll('.key-row i'),key=keys[Math.floor(Math.random()*keys.length)];key.classList.add('hit');setTimeout(()=>key.classList.remove('hit'),70);renderTyping();
+  const limit=chars(typingTitle(current.title)).length;if(chars(input.value).length>limit)input.value=chars(input.value).slice(0,limit).join('');
+  const typed=chars(input.value),expected=chars(typingTitle(current.title)),ok=!typed.length||typed.at(-1)===expected[typed.length-1];keySound(ok);typingBurst(ok);const keys=document.querySelectorAll('.key-row i'),key=keys.length?keys[Math.floor(Math.random()*keys.length)]:null;if(key){key.classList.add('hit');setTimeout(()=>key.classList.remove('hit'),70)}renderTyping();
 });
 input.addEventListener('paste',event=>event.preventDefault());
 $('#nextButton').addEventListener('click',()=>loadArticle(currentIndex+1));
 $('#articleLink').addEventListener('click',()=>window.gtag?.('event','dododok_article_click',{article_title:current.title}));
+$('.start-link').addEventListener('click',()=>setTimeout(()=>input.focus(),280));
 
 async function init(){
   try{
