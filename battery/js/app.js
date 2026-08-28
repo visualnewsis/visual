@@ -21974,7 +21974,10 @@
         const story = storyRef.current;
         if (!story) return false;
         const rect = story.getBoundingClientRect();
-        return rect.top <= 2 && rect.bottom >= window.innerHeight * 0.55;
+        const masthead = document.querySelector(".vnh-header, .masthead");
+        const mastheadBottom = masthead?.getBoundingClientRect().bottom ?? 0;
+        const activeTop = Math.max(2, Math.min(96, mastheadBottom));
+        return rect.top <= activeTop + 2 && rect.bottom >= window.innerHeight * 0.55;
       };
       const changeStage = (direction) => {
         if (stageLockRef.current || materialRef.current) return false;
