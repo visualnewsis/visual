@@ -7,8 +7,8 @@ let articles=[],currentIndex=0,current=null,startedAt=0,composing=false,audioCon
 const input=$('#typingInput'),target=$('#target');
 
 const chars=value=>Array.from(String(value||'').normalize('NFC'));
-const typingTitle=value=>String(value||'').normalize('NFC').replace(/[^\p{L}\p{N}\x21-\x7E]/gu,'');
-const isTypingCharacter=value=>/[\p{L}\p{N}\x21-\x7E]/u.test(value);
+const typingTitle=value=>String(value||'').normalize('NFC');
+const isTypingCharacter=()=>true;
 function escapeHtml(value){return String(value??'').replace(/[&<>"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]))}
 function shuffle(items){return [...items].sort(()=>Math.random()-.5)}
 function keySound(ok=true){
