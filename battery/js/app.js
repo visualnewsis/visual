@@ -22176,6 +22176,9 @@
     const runCycle = (nextMode) => {
       if (cycleRunningRef.current) return;
       setCycleMode(nextMode);
+      setOperationLogs([]);
+      operationLogAtBottom.current = true;
+      setHasUnreadLog(false);
       cycleRunningRef.current = true;
       if (plugTimer.current) window.clearTimeout(plugTimer.current);
       if (cycleTimer.current) window.clearTimeout(cycleTimer.current);
