@@ -86,11 +86,11 @@
 
 /* Character and echo are one scalable lockup; their internal geometry never changes. */
 .character-stage{height:auto!important;margin:0!important;overflow:visible!important;display:grid;place-items:center}
-.character-lockup{position:relative;z-index:3;width:min(65vw,1100px);min-width:700px;visibility:visible;opacity:1}
+.character-lockup{position:relative;z-index:3;width:min(72vw,1250px);min-width:760px;visibility:visible;opacity:1}
 .character-composite{display:block;width:100%;height:auto;overflow:visible}
-.composite-echo{font:400 190px/1 "East Sea Dokdo",cursive;letter-spacing:-8px;fill:#f2f4f3;pointer-events:none}
+.composite-echo{font:400 235px/1 "East Sea Dokdo",cursive;letter-spacing:-10px;fill:#f2f4f3;pointer-events:none}
 .composite-echo-back{opacity:.16;filter:blur(10px)}.composite-echo-mid{opacity:.34;filter:blur(4px)}.composite-echo-front{opacity:.9;filter:drop-shadow(8px 5px 7px rgba(150,157,160,.58))}
-@media(max-width:820px){.character-lockup{width:min(62vw,340px);min-width:170px}}
+@media(max-width:820px){.character-lockup{width:min(70vw,390px);min-width:190px}}
 
 /* Portrait mobile stays compact: title and lockup share one row. */
 @media(max-width:820px){
@@ -101,7 +101,7 @@
   .hero .subtitle{font-size:11px;line-height:1.45}
   .start-link{width:120px;gap:24px;padding:10px 0 7px;font-size:9px}
   .character-stage{min-width:0}
-  .character-lockup{width:min(62vw,340px);min-width:170px}
+  .character-lockup{width:min(70vw,390px);min-width:190px}
   .typing-section{margin-top:-96px;padding:0 10px 48px}
   .copy-sheet{min-height:260px;padding:20px 18px}
   .copy-sheet h3{margin-top:21px}
