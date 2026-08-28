@@ -1,0 +1,541 @@
+<!doctype html>
+<!--
+  VISUAL NEWSIS · 편집# / 충무로딩 / 계산대로
+  기획·취재·디자인·개발 = 안재현 (Visual Journalist & Creative Director = JAEHYEON AN)
+  이 페이지는 기획부터 코드까지 안재현이 직접 만들었습니다.
+  ⚠ 프로토타입 · 아직 충무로딩 메인 랜딩(게임 목록)에는 노출하지 않은 상태입니다.
+-->
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-6BKMWE02W5"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-6BKMWE02W5');
+  </script>
+  <meta name="theme-color" content="#f4f1ea">
+  <title>이슈 훔친 두더지 | 헤드라인 두더지 잡기 | 충무로딩</title>
+  <meta name="description" content="두더지가 물고 도망 다니는 오늘의 헤드라인을 뿅망치로 잡아채는 충무로딩의 미니게임 프로토타입입니다.">
+  <meta name="keywords" content="크리에이티브 디렉터 안재현, 두더지잡기, 헤드라인 게임, 충무로딩, 충무로 놀이마당">
+  <meta name="author" content="크리에이티브 디렉터 안재현">
+  <link rel="shortcut icon" href="https://image.newsis.com/n_www/images/ci/2024/favicon.png">
+  <link rel="icon" type="image/png" href="https://image.newsis.com/n_www/images/ci/2024/favicon.png">
+  <meta name="robots" content="noindex,follow">
+  <link rel="canonical" href="https://visual.newsis.com/arcade/mole/">
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="ko_KR">
+  <meta property="og:title" content="이슈 훔친 두더지 — 헤드라인 두더지 잡기">
+  <meta property="og:description" content="두더지가 물고 도망 다니는 오늘의 헤드라인을 뿅망치로 잡아채 보세요.">
+  <meta property="og:url" content="https://visual.newsis.com/arcade/mole/">
+  <meta property="og:site_name" content="비주얼 뉴시스 (VISUAL NEWSIS)">
+  <meta name="twitter:card" content="summary">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Noto+Sans+KR:wght@700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../credit.css">
+<style>
+:root{
+  --bg:#f4f1ea; --ink:#111; --sub:#666; --card:#fff;
+  --mint:#00c2a8; --red:#e6292f; --dirt:#3a2a20; --dirt-lip:#5a4433;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){ --bg:#0b0d0c; --ink:#f2f2f0; --sub:#9a9d9a; --card:#151816; }
+}
+:root[data-theme="dark"]{ --bg:#0b0d0c; --ink:#f2f2f0; --sub:#9a9d9a; --card:#151816; }
+
+*{box-sizing:border-box}
+body{
+  margin:0; min-height:100vh; background:var(--bg); color:var(--ink);
+  font-family:"Noto Sans KR",Arial,sans-serif;
+  display:flex; flex-direction:column; align-items:center; padding:16px 0 0;
+}
+
+.site-header{
+  width:100%; max-width:640px; margin:0 auto; padding:2px 16px 0;
+  display:grid; grid-template-columns:1fr auto 1fr; align-items:center;
+}
+.site-header a{color:inherit;text-decoration:none}
+.site-header .brand--logo{justify-self:start;line-height:0}
+.site-header .brand--logo img{display:block;height:24px;width:auto}
+.site-header .newsis-logo{justify-self:center;line-height:0}
+.site-header .newsis-logo img{display:block;height:18px;width:auto}
+.site-header .visual-newsis{justify-self:end;font:800 11px/1 "Noto Sans KR",sans-serif;letter-spacing:.04em;white-space:nowrap}
+
+.stage{width:100%;max-width:520px;padding:20px 16px 28px}
+.head{text-align:center;margin-bottom:16px}
+.kicker{font:800 11px/1 "Noto Sans KR",sans-serif;letter-spacing:.18em;color:var(--mint);margin-bottom:6px}
+h1{
+  font-family:"Black Han Sans","Noto Sans KR",sans-serif;
+  font-size:clamp(28px,7vw,38px); margin:0; letter-spacing:-.01em;
+}
+.sub{color:var(--sub);font-size:13px;margin-top:8px;line-height:1.6}
+
+.hud{
+  display:flex; justify-content:space-between; align-items:center;
+  margin:20px 0 14px; padding:0 4px;
+}
+.hud-item{display:flex;flex-direction:column;gap:2px}
+.hud-label{font-size:10px;letter-spacing:.1em;color:var(--sub);font-weight:700}
+.hud-value{font-family:"Black Han Sans","Noto Sans KR",sans-serif;font-size:26px;line-height:1}
+.hud-value.time{color:var(--red)}
+.hud-value.score{color:var(--mint)}
+
+.board-wrap{position:relative; perspective:1100px}
+.cabinet{
+  position:relative; border-radius:26px; padding:14px;
+  background:linear-gradient(160deg,#e6292f 0%,#b81420 55%,#8f0f18 100%);
+  box-shadow:0 22px 40px -14px rgba(0,0,0,.45), inset 0 2px 0 rgba(255,255,255,.25);
+  transform:rotateX(10deg); transform-origin:50% 100%;
+}
+.cabinet::before{
+  content:""; position:absolute; inset:0; border-radius:26px; pointer-events:none;
+  box-shadow:inset 0 0 0 2px rgba(0,0,0,.25);
+}
+.bolt{position:absolute; width:9px; height:9px; border-radius:50%; z-index:2;
+  background:radial-gradient(circle at 35% 30%, #fff7 0%, #cbb98a 35%, #6b5c3c 100%);
+  box-shadow:0 1px 2px rgba(0,0,0,.5);
+}
+.bolt.tl{left:9px;top:9px}.bolt.tr{right:9px;top:9px}
+.bolt.bl{left:9px;bottom:9px}.bolt.br{right:9px;bottom:9px}
+.board{
+  position:relative; border-radius:16px;
+  background:
+    radial-gradient(120% 90% at 50% -10%, rgba(255,255,255,.14), transparent 60%),
+    linear-gradient(155deg,#f6ead0 0%,#e4d2a8 100%);
+  padding:20px; box-shadow:inset 0 2px 6px rgba(255,255,255,.5), inset 0 -10px 18px rgba(0,0,0,.18);
+  display:grid; grid-template-columns:repeat(3,1fr); gap:16px;
+  touch-action:manipulation; -webkit-tap-highlight-color:transparent;
+  cursor:
+    url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='90' height='108' viewBox='0 0 100 120'><g transform='rotate(-18 50 60)'><rect x='42' y='20' width='16' height='95' rx='8' fill='%23f7f3e8' stroke='%23151515' stroke-width='3'/><rect x='10' y='8' width='80' height='32' rx='16' fill='%23e6292f' stroke='%23151515' stroke-width='3'/><line x1='22' y1='8' x2='22' y2='40' stroke='%23151515' stroke-width='2'/><line x1='32' y1='8' x2='32' y2='40' stroke='%23151515' stroke-width='2'/><line x1='68' y1='8' x2='68' y2='40' stroke='%23151515' stroke-width='2'/><line x1='78' y1='8' x2='78' y2='40' stroke='%23151515' stroke-width='2'/><rect x='38' y='8' width='24' height='32' rx='3' fill='%23181818' stroke='%23151515' stroke-width='2'/></g></svg>") 36 20,
+    pointer;
+}
+.hole{
+  position:relative; aspect-ratio:1/0.92; border-radius:50%;
+  -webkit-tap-highlight-color:transparent;
+}
+.hole::before{
+  content:""; position:absolute; inset:-9%; border-radius:50%; z-index:0;
+  background:
+    linear-gradient(155deg,#fff6df 0%,#c7a465 38%,#8a6a3c 60%,#3c2c18 100%);
+  box-shadow:0 3px 4px rgba(0,0,0,.3), inset 0 -2px 3px rgba(255,255,255,.35);
+}
+.pit{
+  position:absolute; inset:0; border-radius:50%; z-index:1; overflow:hidden;
+  background:radial-gradient(ellipse at 50% 38%, var(--dirt-lip) 0%, var(--dirt) 72%);
+  box-shadow:inset 0 10px 16px rgba(0,0,0,.6), inset 0 -3px 6px rgba(0,0,0,.4);
+}
+.mole{
+  position:absolute; left:50%; bottom:-105%; width:78%; height:96%;
+  transform:translateX(-50%);
+  transition:bottom .12s cubic-bezier(.34,1.56,.64,1);
+}
+.hole.up .mole{bottom:2%}
+.hole.hit .mole{
+  transition:transform .18s ease .3s, opacity .18s ease .3s;
+  transform:translateX(-50%) scale(.4) rotate(12deg); opacity:0;
+}
+
+.mole svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
+
+.face-idle,.face-hit{transition:opacity .08s ease}
+.face-hit{opacity:0}
+.hole.hit .face-idle{opacity:0}
+.hole.hit .face-hit{opacity:1}
+
+.paw{transform-box:fill-box; transform-origin:50% 50%; transition:transform .16s cubic-bezier(.3,1.5,.4,1)}
+.hole.hit .paw-l{transform:translate(9px,-38px) rotate(-24deg)}
+.hole.hit .paw-r{transform:translate(-9px,-38px) rotate(24deg)}
+
+.tag{
+  position:absolute; left:52%; top:47%; transform:translate(-50%,0) rotate(-7deg);
+  background:var(--mint); color:#04211d; font-weight:800; font-size:10.5px;
+  padding:4px 9px 3px; border-radius:7px 7px 7px 2px; white-space:nowrap;
+  letter-spacing:-.02em; box-shadow:0 3px 0 rgba(0,0,0,.2); z-index:4;
+  max-width:92%; overflow:hidden; text-overflow:ellipsis; opacity:1;
+}
+.tag::after{
+  content:"";position:absolute; left:14px; top:-6px; width:0; height:0;
+  border-left:4px solid transparent; border-right:4px solid transparent;
+  border-bottom:6px solid var(--mint);
+}
+.hole.hit .tag{animation:tagFly .5s cubic-bezier(.2,.85,.3,1) .05s forwards}
+@keyframes tagFly{
+  0%{opacity:1; transform:translate(-50%,0) rotate(-7deg) scale(1)}
+  100%{opacity:0; transform:translate(-125%,-95%) rotate(-32deg) scale(.8)}
+}
+
+.burst{
+  position:absolute; left:50%; top:18%; transform:translate(-50%,10px) scale(.5);
+  pointer-events:none; opacity:0; z-index:6; text-align:center; white-space:nowrap;
+  font-family:"Black Han Sans",sans-serif; font-size:14px; color:#fff204;
+  text-shadow:0 2px 0 rgba(0,0,0,.4);
+}
+.hole.hit .burst{animation:burstPop .5s ease .1s forwards}
+@keyframes burstPop{
+  0%{opacity:0; transform:translate(-50%,10px) scale(.5)}
+  30%{opacity:1; transform:translate(-50%,-6px) scale(1.05)}
+  100%{opacity:0; transform:translate(-50%,-30px) scale(1)}
+}
+
+.miss-flash{
+  position:absolute; inset:14px; border-radius:16px; background:#ff1e1e;
+  opacity:0; pointer-events:none; z-index:5;
+}
+.miss-flash.go{animation:missBlink .35s steps(1,end) 2}
+@keyframes missBlink{0%,100%{opacity:0}25%,75%{opacity:.55}}
+
+.panel{
+  position:absolute; inset:0; background:rgba(10,12,11,.92); color:#fff;
+  border-radius:20px; display:flex; flex-direction:column; align-items:center;
+  justify-content:center; text-align:center; padding:32px 20px; gap:14px;
+}
+.panel[hidden]{display:none}
+.panel .big{font-family:"Black Han Sans",sans-serif; font-size:30px; line-height:1.25}
+.panel .result-score{font-family:"Black Han Sans",sans-serif; font-size:52px; color:var(--mint); margin:4px 0}
+.panel p{margin:0; color:#c8c8c6; font-size:13px; line-height:1.6; max-width:320px}
+.btn{
+  margin-top:6px; border:0; cursor:pointer; font-weight:800; font-size:14px;
+  padding:13px 26px; border-radius:999px; background:var(--mint); color:#04211d;
+  font-family:"Noto Sans KR",sans-serif;
+}
+.btn:active{transform:scale(.97)}
+.btn.ghost{background:transparent;color:#c8c8c6;border:1px solid rgba(255,255,255,.3);padding:9px 20px;font-size:12px;margin-top:0}
+.btn[hidden]{display:none}
+
+.foot{margin-top:16px;text-align:center;color:var(--sub);font-size:11px;line-height:1.7}
+
+.hammer-fx{
+  position:fixed; left:0; top:0; width:92px; height:92px; z-index:9999;
+  pointer-events:none; transform:translate(-50%,-62%) rotate(-55deg) scale(.7);
+  opacity:0; transition:transform .16s cubic-bezier(.2,.9,.3,1.2), opacity .22s ease;
+}
+.hammer-fx.go{transform:translate(-50%,-62%) rotate(-12deg) scale(1); opacity:1}
+.hammer-fx.out{transition:opacity .18s ease; opacity:0}
+
+.game-footer{
+  width:100%; max-width:520px; margin:8px auto 0; padding:0 16px 30px;
+  display:flex; justify-content:space-between; align-items:center; gap:12px;
+  font-size:11px; color:var(--sub);
+}
+.game-footer a{color:inherit;text-decoration:none}
+</style>
+</head>
+<body>
+
+  <header class="site-header">
+    <a class="brand brand--logo" href="../" aria-label="충무로딩 처음으로">
+      <img src="../assets/chungmuroading-logo-transparent-v2.png" alt="충무로딩 — 충무로 보고 듣고 즐기기">
+    </a>
+    <a class="newsis-logo" href="http://www.newsis.com" target="_blank" rel="noopener" aria-label="뉴시스 홈페이지 새 창에서 열기"><img src="../../assets/logo2024.png" alt="뉴시스"></a>
+    <a class="visual-newsis" href="https://visual.newsis.com/">VISUAL NEWSIS</a>
+  </header>
+
+<div class="stage">
+  <div class="head">
+    <div class="kicker">CHUNGMUROADING · PROTOTYPE</div>
+    <h1>이슈 훔친 두더지</h1>
+    <p class="sub">빼앗긴 단어를 찾아라! 두더지가 물고 있는 오늘의 헤드라인을 뿅망치로 잡아채세요. 20초 동안 최대한 많이!</p>
+  </div>
+
+  <div class="hud">
+    <div class="hud-item">
+      <span class="hud-label">SCORE</span>
+      <span class="hud-value score" id="score">0</span>
+    </div>
+    <div class="hud-item" style="align-items:flex-end">
+      <span class="hud-label">TIME</span>
+      <span class="hud-value time" id="time">20</span>
+    </div>
+  </div>
+
+  <div class="board-wrap">
+    <div class="cabinet">
+      <span class="bolt tl"></span><span class="bolt tr"></span>
+      <span class="bolt bl"></span><span class="bolt br"></span>
+      <div class="board" id="board" aria-hidden="true"></div>
+      <div class="miss-flash" id="missFlash"></div>
+    </div>
+
+    <div class="panel" id="startPanel">
+      <div class="big">시작할 준비<br>되셨나요?</div>
+      <p>두더지가 오늘의 헤드라인을 몰래 물고 도망 다녀요. 뿅망치로 잡아채 보세요!</p>
+      <button class="btn" id="startBtn">시작하기 ↗</button>
+    </div>
+
+    <div class="panel" id="endPanel" hidden>
+      <div class="big">타임 아웃!</div>
+      <div class="result-score" id="finalScore">0</div>
+      <p id="topKeyword">오늘 가장 많이 잡은 헤드라인을 알려드릴게요.</p>
+      <a class="btn" id="readBtn" href="#" target="_blank" rel="noopener" hidden></a>
+      <button class="btn ghost" id="retryBtn">다시하기 ↻</button>
+    </div>
+  </div>
+
+  <div class="foot">데모 · newsis.com 실제 헤드라인(2026.08.28) 기반 — 실전에선 실시간 헤드라인과 연동됩니다</div>
+</div>
+
+  <footer class="game-footer">
+    <a href="../">충무로딩 · 충무로 놀이마당</a>
+    <small class="arcade-credit">크리에이티브 디렉터 = 안재현</small>
+  </footer>
+
+<script>
+(() => {
+  // 2026.08.28 newsis.com 헤드라인에서 뽑은 짧은 태그 (재난·사망·정치 등은 제외)
+  const KEYWORDS = [
+    "한류엑스포","기준금리 3%","SK하이닉스","갤럭시Z폴드8","암표 과징금",
+    "편의점 점장","애플 폴더블폰","리센느 매출","트와이스 나연","젠슨 황"
+  ];
+  const KEYWORD_LINKS = {
+    "한류엑스포":"https://www.newsis.com/view/NISX20260827_0003765261",
+    "기준금리 3%":"https://www.newsis.com/view/NISX20260827_0003765834",
+    "SK하이닉스":"https://www.newsis.com/view/NISX20260828_0003766487",
+    "갤럭시Z폴드8":"https://www.newsis.com/view/NISX20260827_0003765854",
+    "암표 과징금":"https://www.newsis.com/view/NISX20260828_0003766846",
+    "편의점 점장":"https://www.newsis.com/view/NISX20260827_0003765693",
+    "애플 폴더블폰":"https://www.newsis.com/view/NISX20260827_0003765854",
+    "리센느 매출":"https://www.newsis.com/view/NISX20260827_0003765581",
+    "트와이스 나연":"https://www.newsis.com/view/NISX20260828_0003767018",
+    "젠슨 황":"https://www.newsis.com/view/NISX20260828_0003766571"
+  };
+  const HOLE_COUNT = 9;
+  const GAME_TIME = 20;
+
+  const MOLE_SVG = `
+    <svg viewBox="0 0 100 108" xmlns="http://www.w3.org/2000/svg">
+      <ellipse cx="50" cy="80" rx="36" ry="30" fill="#8a6b4f"/>
+      <ellipse cx="50" cy="90" rx="20" ry="14" fill="#ecdcc4"/>
+      <circle cx="27" cy="30" r="9" fill="#8a6b4f"/>
+      <circle cx="73" cy="30" r="9" fill="#8a6b4f"/>
+      <circle cx="27" cy="30" r="4.5" fill="#5c4a3a"/>
+      <circle cx="73" cy="30" r="4.5" fill="#5c4a3a"/>
+      <circle cx="50" cy="42" r="32" fill="#9a7a5c"/>
+      <ellipse cx="50" cy="58" rx="15" ry="11" fill="#f0cda4"/>
+      <line x1="24" y1="54" x2="8" y2="50" stroke="#5c4a3a" stroke-width="1.6" stroke-linecap="round"/>
+      <line x1="24" y1="59" x2="7" y2="60" stroke="#5c4a3a" stroke-width="1.6" stroke-linecap="round"/>
+      <line x1="76" y1="54" x2="92" y2="50" stroke="#5c4a3a" stroke-width="1.6" stroke-linecap="round"/>
+      <line x1="76" y1="59" x2="93" y2="60" stroke="#5c4a3a" stroke-width="1.6" stroke-linecap="round"/>
+      <circle cx="50" cy="58" r="5" fill="#d4708f"/>
+      <g class="face-idle">
+        <circle cx="38" cy="36" r="8" fill="#fff"/>
+        <circle cx="62" cy="36" r="8" fill="#fff"/>
+        <circle cx="40" cy="37" r="4.6" fill="#191512"/>
+        <circle cx="64" cy="37" r="4.6" fill="#191512"/>
+        <circle cx="41.5" cy="35.5" r="1.5" fill="#fff"/>
+        <circle cx="65.5" cy="35.5" r="1.5" fill="#fff"/>
+        <path d="M42 66 Q50 71 58 66" stroke="#4a3626" stroke-width="2" fill="none" stroke-linecap="round"/>
+        <path d="M33 66 Q50 78 67 66 L64 62 Q50 71 36 62 Z" fill="#fff"/>
+      </g>
+      <g class="face-hit">
+        <path d="M32 37 Q38 30 44 37" stroke="#191512" stroke-width="2.6" fill="none" stroke-linecap="round"/>
+        <path d="M56 37 Q62 30 68 37" stroke="#191512" stroke-width="2.6" fill="none" stroke-linecap="round"/>
+        <ellipse cx="50" cy="68" rx="12" ry="10" fill="#4a2130"/>
+        <ellipse cx="50" cy="72" rx="7" ry="4" fill="#ff8fa8"/>
+      </g>
+      <g class="paw paw-l"><ellipse cx="20" cy="96" rx="10" ry="8" fill="#8a6b4f"/><ellipse cx="14" cy="91" rx="3.4" ry="2.6" fill="#6b5238"/></g>
+      <g class="paw paw-r"><ellipse cx="80" cy="96" rx="10" ry="8" fill="#8a6b4f"/><ellipse cx="86" cy="91" rx="3.4" ry="2.6" fill="#6b5238"/></g>
+    </svg>
+  `;
+
+  const HAMMER_SVG = `<svg viewBox="0 0 100 120" xmlns="http://www.w3.org/2000/svg">
+    <g transform="rotate(-18 50 60)">
+      <rect x="42" y="20" width="16" height="95" rx="8" fill="#f7f3e8" stroke="#151515" stroke-width="3"/>
+      <rect x="10" y="8" width="80" height="32" rx="16" fill="#e6292f" stroke="#151515" stroke-width="3"/>
+      <line x1="22" y1="8" x2="22" y2="40" stroke="#151515" stroke-width="2"/>
+      <line x1="32" y1="8" x2="32" y2="40" stroke="#151515" stroke-width="2"/>
+      <line x1="68" y1="8" x2="68" y2="40" stroke="#151515" stroke-width="2"/>
+      <line x1="78" y1="8" x2="78" y2="40" stroke="#151515" stroke-width="2"/>
+      <rect x="38" y="8" width="24" height="32" rx="3" fill="#181818" stroke="#151515" stroke-width="2"/>
+    </g>
+  </svg>`;
+
+  const board = document.getElementById('board');
+  const scoreEl = document.getElementById('score');
+  const timeEl = document.getElementById('time');
+  const startPanel = document.getElementById('startPanel');
+  const endPanel = document.getElementById('endPanel');
+  const finalScoreEl = document.getElementById('finalScore');
+  const topKeywordEl = document.getElementById('topKeyword');
+  const readBtn = document.getElementById('readBtn');
+
+  let holes = [];
+  let score = 0;
+  let timeLeft = GAME_TIME;
+  let running = false;
+  let spawnTimer = null;
+  let countdownTimer = null;
+  let hitCounts = {};
+
+  for (let i = 0; i < HOLE_COUNT; i++) {
+    const hole = document.createElement('div');
+    hole.className = 'hole';
+    hole.innerHTML = `
+      <div class="pit">
+        <div class="mole">
+          ${MOLE_SVG}
+          <div class="tag"></div>
+        </div>
+        <div class="burst"></div>
+      </div>
+    `;
+    hole.dataset.state = 'down';
+    board.appendChild(hole);
+    holes.push(hole);
+  }
+
+  // 마우스+터치 공용: 탭 위치에 뿅망치 이펙트를 띄우고, 두더지가 있으면 잡고 없으면 헛스윙 처리
+  board.addEventListener('pointerdown', e => {
+    spawnHammerFx(e.clientX, e.clientY);
+    const holeEl = e.target.closest('.hole');
+    if (!holeEl) return;
+    if (holeEl.dataset.state === 'up') whack(holeEl);
+    else missSwing();
+  });
+
+  let audioCtx = null;
+  function ensureAudio() {
+    if (!audioCtx) {
+      const Ctx = window.AudioContext || window.webkitAudioContext;
+      if (Ctx) audioCtx = new Ctx();
+    }
+    if (audioCtx && audioCtx.state === 'suspended') audioCtx.resume();
+  }
+  function beep({freq, duration, type, gain, glideTo}) {
+    if (!audioCtx) return;
+    const t0 = audioCtx.currentTime;
+    const osc = audioCtx.createOscillator();
+    const g = audioCtx.createGain();
+    osc.type = type;
+    osc.frequency.setValueAtTime(freq, t0);
+    if (glideTo) osc.frequency.exponentialRampToValueAtTime(glideTo, t0 + duration / 1000);
+    g.gain.setValueAtTime(gain, t0);
+    g.gain.exponentialRampToValueAtTime(0.001, t0 + duration / 1000);
+    osc.connect(g).connect(audioCtx.destination);
+    osc.start(t0);
+    osc.stop(t0 + duration / 1000 + 0.03);
+  }
+  function playHitSound() { beep({freq:880, duration:110, type:'square', gain:.12}); }
+  function playMissSound() { beep({freq:260, duration:180, type:'sawtooth', gain:.14, glideTo:110}); }
+
+  const missFlash = document.getElementById('missFlash');
+  function missSwing() {
+    if (!running) return;
+    playMissSound();
+    missFlash.classList.remove('go');
+    void missFlash.offsetWidth;
+    missFlash.classList.add('go');
+  }
+
+  function spawnHammerFx(x, y) {
+    const fx = document.createElement('div');
+    fx.className = 'hammer-fx';
+    fx.innerHTML = HAMMER_SVG;
+    fx.style.left = x + 'px';
+    fx.style.top = y + 'px';
+    document.body.appendChild(fx);
+    requestAnimationFrame(() => fx.classList.add('go'));
+    setTimeout(() => {
+      fx.classList.add('out');
+      setTimeout(() => fx.remove(), 200);
+    }, 140);
+  }
+
+  function randomHole() {
+    const idle = holes.filter(h => h.dataset.state === 'down');
+    if (!idle.length) return null;
+    return idle[Math.floor(Math.random() * idle.length)];
+  }
+
+  function spawnMole() {
+    if (!running) return;
+    const hole = randomHole();
+    if (hole) {
+      const kw = KEYWORDS[Math.floor(Math.random() * KEYWORDS.length)];
+      hole.querySelector('.tag').textContent = kw;
+      hole.dataset.keyword = kw;
+      hole.dataset.state = 'up';
+      hole.classList.add('up');
+      hole.classList.remove('hit');
+      const upTime = Math.max(1000, 1600 - (GAME_TIME - timeLeft) * 15);
+      hole._downTimeout = setTimeout(() => {
+        if (hole.dataset.state === 'up') {
+          hole.dataset.state = 'down';
+          hole.classList.remove('up');
+        }
+      }, upTime);
+    }
+    const nextIn = Math.max(750, 1100 - (GAME_TIME - timeLeft) * 8);
+    spawnTimer = setTimeout(spawnMole, nextIn);
+  }
+
+  const PRAISE = ["GREAT!!","NICE!!","PERFECT!!","AWESOME!!"];
+  function whack(hole) {
+    if (!running || hole.dataset.state !== 'up') return;
+    clearTimeout(hole._downTimeout);
+    hole.dataset.state = 'down';
+    const kw = hole.dataset.keyword;
+    hole.querySelector('.burst').textContent = PRAISE[Math.floor(Math.random() * PRAISE.length)];
+    hole.classList.add('hit');
+    // 'up'을 바로 빼면 구멍이 즉시 원위치로 내려가며 잘려서 리액션이 안 보이므로,
+    // 리액션+튕겨나가는 애니메이션이 끝난 뒤 hit과 함께 같이 제거한다.
+    setTimeout(() => { hole.classList.remove('hit'); hole.classList.remove('up'); }, 650);
+    playHitSound();
+    score += 10;
+    scoreEl.textContent = score;
+    if (kw) hitCounts[kw] = (hitCounts[kw] || 0) + 1;
+  }
+
+  function startGame() {
+    ensureAudio();
+    score = 0;
+    timeLeft = GAME_TIME;
+    hitCounts = {};
+    scoreEl.textContent = '0';
+    timeEl.textContent = String(GAME_TIME);
+    startPanel.hidden = true;
+    endPanel.hidden = true;
+    running = true;
+    holes.forEach(h => { h.dataset.state = 'down'; h.classList.remove('up','hit'); });
+    spawnMole();
+    countdownTimer = setInterval(() => {
+      timeLeft -= 1;
+      timeEl.textContent = String(Math.max(0, timeLeft));
+      if (timeLeft <= 0) endGame();
+    }, 1000);
+  }
+
+  function endGame() {
+    running = false;
+    clearTimeout(spawnTimer);
+    clearInterval(countdownTimer);
+    holes.forEach(h => { h.dataset.state = 'down'; h.classList.remove('up'); });
+    finalScoreEl.textContent = score;
+    let top = null, topCount = 0;
+    for (const k in hitCounts) if (hitCounts[k] > topCount) { top = k; topCount = hitCounts[k]; }
+    if (top) {
+      topKeywordEl.textContent = `오늘 가장 많이 잡은 헤드라인은 "${top}"였습니다.`;
+      const url = KEYWORD_LINKS[top];
+      if (url) {
+        readBtn.href = url;
+        readBtn.textContent = `${top} 기사 보러가기 ↗`;
+        readBtn.hidden = false;
+      } else {
+        readBtn.hidden = true;
+      }
+    } else {
+      topKeywordEl.textContent = '하나도 못 잡으셨네요, 다시 도전해보세요!';
+      readBtn.hidden = true;
+    }
+    endPanel.hidden = false;
+  }
+
+  document.getElementById('startBtn').addEventListener('click', startGame);
+  document.getElementById('retryBtn').addEventListener('click', startGame);
+})();
+</script>
+</body>
+</html>
