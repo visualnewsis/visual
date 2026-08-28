@@ -7,6 +7,7 @@ let articles=[],currentIndex=0,current=null,startedAt=0,composing=false,audioCon
 const input=$('#typingInput'),target=$('#target');
 
 const chars=value=>Array.from(String(value||'').normalize('NFC'));
+const typingTitle=value=>String(value||'').normalize('NFC').replace(/[^\p{L}\p{N}]/gu,'');
 function escapeHtml(value){return String(value??'').replace(/[&<>"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]))}
 function shuffle(items){return [...items].sort(()=>Math.random()-.5)}
 function keySound(ok=true){
@@ -20,7 +21,7 @@ function typingBurst(ok=true){
   burst.classList.remove('pop');void burst.offsetWidth;burst.classList.add('pop');
 }
 function metrics(){
-  const expected=chars(current.title),typed=chars(input.value),matches=typed.filter((letter,index)=>letter===expected[index]).length;
+  const expected=chars(typingTitle(current.title)),typed=chars(typingTitle(input.value)),matches=typed.filter((letter,index)=>letter===expected[index]).length;
   const accuracy=typed.length?Math.round(matches/typed.length*100):100,progress=Math.min(100,Math.round(typed.length/expected.length*100));
   const elapsed=startedAt?(Date.now()-startedAt)/60000:0,speed=elapsed?Math.round(typed.length/elapsed):0;
   return{expected,typed,matches,accuracy,progress,speed};
@@ -39,7 +40,7 @@ function renderTyping(){
 }
 function loadArticle(index){
   currentIndex=index%articles.length;current=articles[currentIndex];startedAt=0;input.value='';input.disabled=false;
-  $('#category').textContent=current.category||'오늘의 뉴스';$('#count').textContent=`${String(currentIndex+1).padStart(2,'0')} / ${String(articles.length).padStart(2,'0')}`;$('#headline').textContent='오늘의 제목을 그대로 입력해보세요';$('#result').hidden=true;
+  $('#category').textContent=current.category||'오늘의 뉴스';$('#count').textContent=`${String(currentIndex+1).padStart(2,'0')} / ${String(articles.length).padStart(2,'0')}`;$('#headline').textContent=current.title;$('#result').hidden=true;
   renderTyping();setTimeout(()=>input.focus(),120);window.gtag?.('event','dododok_article_start',{article_title:current.title});
 }
 function finish(){
@@ -47,13 +48,13 @@ function finish(){
 }
 input.addEventListener('compositionstart',()=>{composing=true});
 input.addEventListener('compositionend',()=>{
-  composing=false;input.value=input.value.normalize('NFC');if(!startedAt&&input.value)startedAt=Date.now();
-  const typed=chars(input.value),expected=chars(current.title),ok=!typed.length||typed.at(-1)===expected[typed.length-1];keySound(ok);typingBurst(ok);renderTyping();
+  composing=false;input.value=typingTitle(input.value);if(!startedAt&&input.value)startedAt=Date.now();
+  const typed=chars(input.value),expected=chars(typingTitle(current.title)),ok=!typed.length||typed.at(-1)===expected[typed.length-1];keySound(ok);typingBurst(ok);renderTyping();
 });
 input.addEventListener('input',event=>{
   if(composing||event.isComposing)return;if(!startedAt&&input.value)startedAt=Date.now();
-  const limit=chars(current.title).length;if(chars(input.value).length>limit)input.value=chars(input.value).slice(0,limit).join('');
-  const typed=chars(input.value),expected=chars(current.title),ok=!typed.length||typed.at(-1)===expected[typed.length-1];keySound(ok);typingBurst(ok);const keys=document.querySelectorAll('.key-row i'),key=keys[Math.floor(Math.random()*keys.length)];key.classList.add('hit');setTimeout(()=>key.classList.remove('hit'),70);renderTyping();
+  input.value=typingTitle(input.value);const limit=chars(typingTitle(current.title)).length;if(chars(input.value).length>limit)input.value=chars(input.value).slice(0,limit).join('');
+  const typed=chars(input.value),expected=chars(typingTitle(current.title)),ok=!typed.length||typed.at(-1)===expected[typed.length-1];keySound(ok);typingBurst(ok);const keys=document.querySelectorAll('.key-row i'),key=keys[Math.floor(Math.random()*keys.length)];key.classList.add('hit');setTimeout(()=>key.classList.remove('hit'),70);renderTyping();
 });
 input.addEventListener('paste',event=>event.preventDefault());
 $('#nextButton').addEventListener('click',()=>loadArticle(currentIndex+1));

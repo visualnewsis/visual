@@ -27,5 +27,6 @@
 .typing-character img{display:block;width:100%;height:auto;max-width:none;transform:translateY(-1%);-webkit-mask-image:linear-gradient(to bottom,#000 0 88%,transparent 100%);mask-image:linear-gradient(to bottom,#000 0 88%,transparent 100%)}
 .typing-burst{position:absolute;left:49%;top:54%;font:400 62px/.8 "East Sea Dokdo",cursive;color:rgba(238,241,240,.8);white-space:nowrap;transform:translate(-42%,-50%) rotate(-5deg);text-shadow:7px 4px 8px rgba(150,157,160,.55);opacity:0}
 .typing-burst.pop{animation:typingBurst .38s ease-out}
+.symbol-guide{position:relative;margin:0 0 16px;color:#899195;font-size:12px;line-height:1.7;letter-spacing:-.02em}.symbol-guide b{font-weight:800;color:#6f777b}.target{color:#9ba0a1}.target .cursor{color:var(--ink);font-weight:900}
 @keyframes typingBurst{0%{opacity:0;transform:translate(-48%,-44%) rotate(-8deg) scale(.82)}35%{opacity:.9}100%{opacity:0;transform:translate(-30%,-62%) rotate(-3deg) scale(1.13)}}
 @media(max-width:820px){.character-stage img{width:126%;transform:translate(-3%,0)}.echo{font-size:clamp(88px,27vw,124px)}.typewriter{padding-top:0}.typing-character{height:230px;width:116%;margin:0 0 0 -8%}.typing-character img{width:100%;transform:translateY(0)}.typing-burst{font-size:52px}}
