@@ -71,7 +71,6 @@
   const messageText = message ? message.querySelector("b") : null;
   if (range) {
     const update = (value) => {
-      range.value = String(value);
       range.style.setProperty("--clarity", `${value}%`);
       if (valueLabel) valueLabel.textContent = String(value);
       if (message) message.style.setProperty("--blur", `${(100 - value) / 14}px`);
@@ -80,7 +79,8 @@
     const AGE_BASE_YEAR = 2026;
     const AGE_BASE_VALUE = 42;
     const age = AGE_BASE_VALUE + (new Date().getFullYear() - AGE_BASE_YEAR);
-    range.disabled = true;
+    range.value = String(age);
     update(age);
+    range.addEventListener("input", (event) => update(Number(event.target.value)));
   }
 })();
