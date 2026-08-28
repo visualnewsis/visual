@@ -8578,11 +8578,14 @@ footer strong {
   }
 }
 @media (max-width: 700px) {
+  .operation-guide {
+    top: 45px;
+  }
   .operation-log-panel {
-    top: 150px;
+    top: 170px;
   }
   .operation-log {
-    height: 100px;
+    height: 80px;
     overflow-y: scroll;
     scrollbar-gutter: stable;
     scrollbar-width: thin;
@@ -8610,11 +8613,14 @@ footer strong {
 /* Any short mobile viewport (not just very narrow ones) needs the same compact
    log panel so it never grows down into the battery illustration below it. */
 @media (max-width: 700px) and (max-height: 700px) {
+  .operation-guide {
+    top: 10px;
+  }
   .operation-log-panel {
-    top: 108px;
+    top: 130px;
   }
   .operation-log {
-    height: 70px;
+    height: 48px;
   }
 }
 .ending-brand::before {
@@ -8625,7 +8631,7 @@ footer strong {
   height: 100%;
   aspect-ratio: auto;
   border-radius: 0;
-  background-image: url(../images/ending-newsis-map.jpg);
+  background-image: url(../images/ending-original-city-map-v1.jpg);
   background-position: 54.6% 0%;
   background-size: auto 145%;
   background-repeat: no-repeat;
