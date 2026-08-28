@@ -25,7 +25,7 @@ PAGES = {
     "calculator/index.html": ("계산대로", True),
 }
 EDITSHOP_STORIES = {"oil", "thief", "shelter", "temperature", "kangin", "children", "buy-live"}
-VISUAL_STORIES_CAROUSEL_PAGES = {"heat-rain", "battery", "adult-missing"}
+VISUAL_STORIES_CAROUSEL_PAGES = {"heat-rain", "battery"}
 JSON_LD_RE = re.compile(
     r'<script[^>]+type=["\']application/ld\+json["\'][^>]*>([\s\S]*?)</script>',
     re.IGNORECASE,
