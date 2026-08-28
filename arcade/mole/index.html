@@ -224,10 +224,11 @@ h1{
 
 .game-footer{
   width:100%; max-width:520px; margin:8px auto 0; padding:0 16px 30px;
-  display:flex; justify-content:space-between; align-items:center; gap:12px;
   font-size:11px; color:var(--sub);
 }
+.game-footer-row{display:flex; justify-content:space-between; align-items:center; gap:12px}
 .game-footer a{color:inherit;text-decoration:none}
+.game-footer .arcade-credit{display:block;margin-top:8px}
 </style>
 </head>
 <body>
@@ -285,9 +286,11 @@ h1{
 </div>
 
   <footer class="game-footer">
-    <a href="../">충무로딩 · 충무로 놀이마당</a>
+    <div class="game-footer-row">
+      <a href="../">충무로딩 · 충무로 놀이마당</a>
+      <small class="coordinates">37.561827°N · 126.991076°E</small>
+    </div>
     <small class="arcade-credit">크리에이티브 디렉터 = 안재현</small>
-    <small class="coordinates">37.561827°N · 126.991076°E</small>
   </footer>
 
 <script>
