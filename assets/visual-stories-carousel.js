@@ -11,7 +11,7 @@
     {slug:"children",num:"007",meta:"아이 · 생활권 · 인터랙티브",title:"아이가 자라는 동안",image:"/children/images/children-running.jpg",alt:"함께 달리는 아이들"},
     {slug:"buy-live",num:"008",meta:"주택 · 대출 · 생활비 · 인터랙티브",title:"이 집, 살 수 있겠습니까?",image:"/buy-live/images/hero.jpg",alt:"도시의 주택과 아파트"},
     {slug:"adult-missing",num:"009",meta:"성인 실종 · 경찰 초동대응 · 인터랙티브",title:"사람은 사라지고 확인도 실종됐다",image:"/adult-missing/images/chapter-hero.jpg",alt:"성인 실종자를 찾는 초동 대응 화면"},
-    {slug:"battery",num:"010",meta:"리튬이온배터리 · 배터리 구조 · 인터랙티브",title:"한눈에 알아볼지도",image:"/battery/images/battery-model-v10.png",alt:"리튬이온배터리 내부 구조를 표현한 3D 렌더링"}
+    {slug:"battery",num:"010",meta:"리튬이온배터리 · 배터리 구조 · 인터랙티브",title:"리튬이온배터리, 정체가 뭐야?",image:"/battery/images/battery-model-v10.png",alt:"리튬이온배터리 내부 구조를 표현한 3D 렌더링"}
   ];
   const mount=host=>{
     const visible=stories.filter(story=>story.slug!==current);
