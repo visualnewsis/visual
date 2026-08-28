@@ -69,7 +69,7 @@ section{position:relative}
  linear-gradient(0deg,#050505 0%,transparent 30%)}
 .open .copy-xl{max-width:830px}
 .word-live{display:inline-block;position:relative}
-.word-live:after{content:"";position:absolute;left:0;right:0;bottom:-7px;height:2px;background:var(--cyan);transform:scaleX(0);transform-origin:left;transition:1s}
+.word-live:after{content:"";position:absolute;left:0;right:0;bottom:-7px;height:2px;background:var(--cyan);transform:scaleX(0);transform-origin:left;transition:transform .45s ease-out}
 .open.active .word-live:after{transform:scaleX(1)}
 
 /* TITLE */
@@ -81,7 +81,7 @@ section{position:relative}
 .title .note{margin-top:30px;color:#a3a39d;font-size:clamp(15px,1.35vw,19px);line-height:1.8;max-width:720px;word-break:keep-all}.title .title-byline{margin-top:22px;color:#777772;font-size:11px;font-weight:700;letter-spacing:.03em}
 
 /* WALKING ARCHIVE */
-.archive{height:980svh;background:linear-gradient(#050505,#0b0a08 9%,#0a0907 78%,#050505)}
+.archive{height:1120svh;background:linear-gradient(#050505,#0b0a08 9%,#0a0907 78%,#050505)}
 .archive-view{position:sticky;top:0;height:100svh;overflow:hidden;perspective:1050px}
 .world{position:absolute;inset:-12%;transform-style:preserve-3d;will-change:transform}
 .floor{position:absolute;left:12%;right:12%;bottom:-2%;height:56%;clip-path:polygon(31% 0,69% 0,100% 100%,0 100%);
@@ -542,53 +542,25 @@ section{position:relative}
 }
 
 
-/* sequential pre-8/15 facts */
-.before815{
-  position:relative;
-  min-height:430svh;
-  padding:0;
-  background:#070707;
-}
-.before815-sticky{
-  position:sticky;
-  top:0;
-  height:100svh;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  overflow:hidden;
-}
-.before815-stage{
-  position:absolute;
-  inset:0;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  padding:8vh 6vw;
-  opacity:0;
-  transform:translateY(22px);
-  transition:opacity .8s ease, transform .9s ease;
-  pointer-events:none;
-}
-.before815-stage.active{
-  opacity:1;
-  transform:none;
-}
+/* pre-8/15 facts: a continuous historical timeline */
+.before815{position:relative;min-height:0;padding:18vh 0 20vh;background:#070707}
+.before815-flow{width:min(1080px,88vw);margin:0 auto}
 .before815-intro{
-  text-align:center;
+  margin-bottom:14vh;text-align:left;
   font-size:clamp(42px,6.8vw,88px);
   line-height:1.18;
   letter-spacing:-.055em;
   font-weight:700;
 }
 .before815-fact{
-  width:min(980px,88vw);
-  text-align:left;
+  display:grid;grid-template-columns:clamp(110px,14vw,180px) 1fr;gap:clamp(24px,5vw,72px);
+  min-height:64vh;padding:10vh 0;border-top:1px solid rgba(255,255,255,.13);text-align:left;
 }
+.before815-fact:last-child{min-height:0;border-bottom:1px solid rgba(255,255,255,.13)}
 .before815-fact .fact-year{
-  margin-bottom:18px;
-  color:#777;
+  margin:0;color:#a8a7a1;
 }
+.before815-fact-copy{align-self:start}
 .before815-fact h3{
   margin:0 0 18px;
   font-size:clamp(32px,5vw,66px);
@@ -606,8 +578,11 @@ section{position:relative}
   margin-top:16px;
 }
 @media(max-width:760px){
-  .before815{min-height:470svh}
-  .before815-fact{text-align:left}
+  .before815{padding:14vh 0 16vh}
+  .before815-flow{width:88vw}
+  .before815-intro{margin-bottom:10vh;font-size:clamp(38px,11vw,58px)}
+  .before815-fact{grid-template-columns:1fr;gap:22px;min-height:0;padding:10vh 0 12vh}
+  .before815-fact h3{font-size:clamp(31px,9vw,48px);line-height:1.28}
 }
 
 
@@ -938,42 +913,35 @@ body{font-family:"Noto Sans KR","Malgun Gothic","Apple SD Gothic Neo",sans-serif
 </section>
 
 <section class="before815" id="before815">
-  <div class="before815-sticky">
+  <div class="before815-flow">
+    <div class="before815-intro">1945년 8월 15일 이전,<br>실제로 있었던 일입니다.</div>
 
-    <div class="before815-stage active" id="beforeIntro">
-      <div class="before815-intro">
-        1945년 8월 15일 이전,<br>
-        실제로 있었던 일입니다.
-      </div>
-    </div>
-
-    <div class="before815-stage" id="beforeFact1">
-      <div class="before815-fact">
-        <div class="fact-year">1940</div>
+    <article class="before815-fact" id="beforeFact1">
+      <div class="fact-year">1940</div>
+      <div class="before815-fact-copy">
         <h3>이름을 바꾸도록 강요했습니다.</h3>
         <p>조선총독부는 개정 조선민사령을 1940년 2월 11일부터 시행해 조선인에게 일본식 씨(氏)를 설정·신고하도록 강요했습니다.</p>
         <div class="fact-source">국사편찬위원회 우리역사넷 · 창씨개명</div>
       </div>
-    </div>
+    </article>
 
-    <div class="before815-stage" id="beforeFact2">
-      <div class="before815-fact">
-        <div class="fact-year">1943</div>
+    <article class="before815-fact" id="beforeFact2">
+      <div class="fact-year">1943</div>
+      <div class="before815-fact-copy">
         <h3>학교에서 조선어 교과가 사라졌습니다.</h3>
         <p>1943년 제4차 조선교육령 아래 교육은 전시체제에 맞춰 재편됐고, 조선어 교과는 완전히 폐지됐습니다.</p>
         <div class="fact-source">서울교육박물관 · 민족저항기 교육제도</div>
       </div>
-    </div>
+    </article>
 
-    <div class="before815-stage" id="beforeFact3">
-      <div class="before815-fact">
-        <div class="fact-year">1943</div>
+    <article class="before815-fact" id="beforeFact3">
+      <div class="fact-year">1943</div>
+      <div class="before815-fact-copy">
         <h3>조선인에게 징병제가 시행됐습니다.</h3>
         <p>1943년 징병제가 공포·시행됐고, 국민징용령 개정으로 조선인에게 일반징용도 적용됐습니다.</p>
         <div class="fact-source">일제강제동원피해자지원재단 · 강제동원 연표</div>
       </div>
-    </div>
-
+    </article>
   </div>
 </section>
 
@@ -1056,7 +1024,6 @@ const e1=$("#e1"), e2=$("#e2"), e3=$("#e3");
 const street=$("#street"), statue=$("#statueScene"), question=$("#question");
 const departure=$("#departure"), dep1=$("#dep1"), dep2=$("#dep2"), dep3=$("#dep3"), dep4=$("#dep4"), dep5=$("#dep5"), dep6=$("#dep6"), eraseDay=$("#eraseDay"), restore=$("#restore"), keep=$("#keep");
 const dateNow=$("#dateNow"), datePast=$("#datePast"), dateSeventeen=$("#dateSeventeen"), date815=$("#date815");
-const before815=$("#before815"), beforeIntro=$("#beforeIntro"), beforeFact1=$("#beforeFact1"), beforeFact2=$("#beforeFact2"), beforeFact3=$("#beforeFact3");
 const restore815=$("#restore815"), restoreSep=$("#restoreSep"), restoreNow=$("#restoreNow"), restoreMessage=$("#restoreMessage");
 const finalSection=$("#final"), finalI=$(".final-i"), finalWitness=$(".final-witness"), finalHoldFill=$("#finalHoldFill");
 let finalHoldActive=false,finalHoldReleased=false,finalHoldDistance=0,finalHoldStarted=0,finalHoldY=0;
@@ -1074,7 +1041,7 @@ function update(){
   ];
   dateStages.forEach(([el,a,b])=>el.classList.toggle("active",pp>=a && pp<b));
 
-  open.classList.toggle("active",lp(open)>.20);
+  open.classList.toggle("active",open.getBoundingClientRect().top<innerHeight*.70);
   title.classList.toggle("active",lp(title)>.18);
 
   const p=lp(archive);
@@ -1082,35 +1049,26 @@ function update(){
   world.style.transform=`scale(${zoom}) translate(${mx*8}px,${my*4+p*6}%)`;
 
   const items=[
-    [rec1,.12,.095],[street,.275,.045],[rec2,.43,.095],[rec3,.625,.095],[statue,.775,.045],[question,.91,.085]
+    [rec1,.13,.11],[street,.285,.035],[rec2,.43,.105],[rec3,.64,.105],[statue,.78,.03],[question,.91,.085]
   ];
   items.forEach(([el,c,w])=>el.classList.toggle("active",near(p,c,w)));
 
   [rec1,rec2,rec3].forEach((r,i)=>{
-    const c=[.12,.43,.625][i]; r.classList.toggle("passed",p>c+.11)
+    const c=[.13,.43,.64][i]; r.classList.toggle("passed",p>c+.12)
   });
 
   const echoPulse=(center,width,max)=>clamp(1-Math.abs(p-center)/width,0,1)*max;
-  e1.style.opacity=echoPulse(.245,.035,.18);
-  e2.style.opacity=echoPulse(.545,.035,.16);
-  e3.style.opacity=echoPulse(.745,.035,.15);
-  year2011.classList.toggle("active",p>.025 && p<.255);
-  year2020.classList.toggle("active",p>.325 && p<.555);
-  year2025.classList.toggle("active",p>.52 && p<.75);
+  e1.style.opacity=echoPulse(.255,.025,.18);
+  e2.style.opacity=echoPulse(.55,.02,.16);
+  e3.style.opacity=echoPulse(.755,.02,.15);
+  year2011.classList.toggle("active",p>.015 && p<.255);
+  year2020.classList.toggle("active",p>.315 && p<.555);
+  year2025.classList.toggle("active",p>.525 && p<.76);
 
   const dp=lp(departure);
   const depImgs=[dep1,dep2,dep3,dep4,dep5,dep6].filter(Boolean);
   const idx=Math.min(depImgs.length-1, Math.floor(dp*depImgs.length));
   depImgs.forEach((el,i)=>el.classList.toggle("active",i===idx));
-  const bp=lp(before815);
-  const beforeStages=[
-    [beforeIntro,0,.20],
-    [beforeFact1,.20,.45],
-    [beforeFact2,.45,.70],
-    [beforeFact3,.70,1.01]
-  ];
-  beforeStages.forEach(([el,a,b])=>el.classList.toggle("active",bp>=a && bp<b));
-
   const rp=lp(restore);
   const restoreStages=[
     [restore815,0,.24],[restoreSep,.24,.48],[restoreNow,.48,.72],[restoreMessage,.72,1.01]
