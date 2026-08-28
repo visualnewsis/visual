@@ -3100,6 +3100,20 @@ h3 {
   color: rgba(243, 247, 248, 0.66);
   font-weight: 550;
 }
+.ending .finalcut-link {
+  margin: 14px 0 0;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+.ending .finalcut-link a {
+  color: #67d8e8;
+  border-bottom: 1px solid rgba(103, 216, 232, 0.4);
+  padding-bottom: 1px;
+}
+.ending .finalcut-link a:hover {
+  border-bottom-color: #67d8e8;
+}
 
 .related-stories {
   position: relative;
