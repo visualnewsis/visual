@@ -95,11 +95,18 @@ def main() -> int:
 
     if shared_js.is_file():
         script = shared_js.read_text(encoding="utf-8")
-        expected = ['latest:"최신 기사"', 'editshop:"편집#"', 'arcade:"충무로딩"', 'calculator:"계산대로"']
+        expected = [
+            'latest:"최신 기사"', 'editshop:"편집#"', 'finalcut:"최종판"',
+            'mapguide:"알아볼지도"', 'arcade:"충무로딩"', 'calculator:"계산대로"',
+        ]
         if any(item not in script for item in expected):
-            fail(errors, "global header menu must contain exactly the four approved labels")
-        if "최종판" in script or "알아볼지도" in script:
-            fail(errors, "unapproved no-landing section found in global menu source")
+            fail(errors, "global header menu must contain exactly the six approved labels")
+        links_match = re.search(r'const links=\{([^}]*)\}', script)
+        links_body = links_match.group(1) if links_match else ""
+        if 'finalcut:"https://visual.newsis.com/finalcut/"' not in links_body:
+            fail(errors, "최종판 global menu link is missing or incorrect")
+        if "mapguide:" in links_body:
+            fail(errors, "알아볼지도 must stay link-disabled in the global menu until its own landing exists")
 
     if errors:
         print("VISUAL NEWSIS checks failed:", file=sys.stderr)
