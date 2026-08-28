@@ -4,8 +4,9 @@
   const theme=script?.dataset.headerTheme==="dark"?"dark":"light";
   const sectionHref=script?.dataset.sectionHref||"";
   const current=script?.dataset.current||"";
-  const labels={latest:"최신 기사",editshop:"편집#",arcade:"충무로딩",calculator:"계산대로"};
-  const links={latest:"https://visual.newsis.com/#latest",editshop:"https://visual.newsis.com/editshop/",arcade:"https://visual.newsis.com/arcade/",calculator:"https://visual.newsis.com/calculator/index.html"};
+  const labels={latest:"최신 기사",editshop:"편집#",finalcut:"최종판",mapguide:"알아볼지도",arcade:"충무로딩",calculator:"계산대로"};
+  const links={latest:"https://visual.newsis.com/#latest",editshop:"https://visual.newsis.com/editshop/",finalcut:"https://visual.newsis.com/finalcut/",arcade:"https://visual.newsis.com/arcade/",calculator:"https://visual.newsis.com/calculator/index.html"};
+  const icons={arcade:"https://visual.newsis.com/assets/menu-icon-arcade.png",calculator:"https://visual.newsis.com/assets/menu-icon-calculator.png"};
   const start=()=>{
     const old=document.querySelector("body > header.masthead,body > header.topbar,body > header.visual-head");
     if(old) old.remove();
@@ -13,14 +14,20 @@
     header.className="vnh-header";
     header.dataset.open="false";
     header.dataset.theme=theme;
-    const sectionNode=sectionHref?`<a class="vnh-section" href="${sectionHref}">${section}</a>`:`<span class="vnh-section">${section}</span>`;
+    const sectionIcon=icons[current]?`<img class="vnh-icon" src="${icons[current]}" alt="">`:"";
+    const sectionNode=sectionHref?`<a class="vnh-section" href="${sectionHref}">${sectionIcon}${section}</a>`:`<span class="vnh-section">${sectionIcon}${section}</span>`;
     header.innerHTML=`<a class="vnh-brand" href="https://visual.newsis.com/">VISUAL NEWSIS</a><a class="vnh-newsis" href="https://www.newsis.com/" aria-label="뉴시스 홈페이지"><img src="https://visual.newsis.com/assets/logo2024.png" alt="NEWSIS"></a><div class="vnh-right">${sectionNode}<button class="vnh-toggle" type="button" aria-label="전체 메뉴 열기" aria-expanded="false" aria-controls="vnh-menu"><span class="vnh-toggle-lines" aria-hidden="true"></span></button></div>`;
     const overlay=document.createElement("div");
     overlay.className="vnh-overlay";
     overlay.id="vnh-menu";
     overlay.dataset.open="false";
     overlay.dataset.theme=theme;
-    overlay.innerHTML=`<div class="vnh-panel" role="dialog" aria-modal="true" aria-label="VISUAL NEWSIS 전체 메뉴"><nav class="vnh-nav">${Object.keys(labels).map(key=>`<a href="${links[key]}"${current===key?' aria-current="page"':''}>${labels[key]}</a>`).join("")}</nav></div>`;
+    const navItems=Object.keys(labels).map(key=>{
+      const icon=icons[key]?`<img class="vnh-nav-icon" src="${icons[key]}" alt="">`:"";
+      if(!links[key]) return `<span class="vnh-nav-disabled" aria-disabled="true">${icon}${labels[key]}</span>`;
+      return `<a href="${links[key]}"${current===key?' aria-current="page"':''}>${icon}${labels[key]}</a>`;
+    }).join("");
+    overlay.innerHTML=`<div class="vnh-panel" role="dialog" aria-modal="true" aria-label="VISUAL NEWSIS 전체 메뉴"><nav class="vnh-nav">${navItems}</nav></div>`;
     document.body.prepend(overlay);
     document.body.prepend(header);
     document.body.classList.add("vnh-ready");
