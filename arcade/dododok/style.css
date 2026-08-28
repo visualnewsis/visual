@@ -63,8 +63,11 @@
 /* Black-mode arcade header for the uninterrupted opening stage. */
 .site-header{background:#090b0c;color:#f5f0e5;border-bottom-color:rgba(255,255,255,.14)}
 .newsis-logo img{filter:brightness(0) invert(1)}
-.other-games nav b{font:600 15px/1.4 "Noto Serif KR",serif;letter-spacing:-.04em}.other-games a{gap:14px;padding:21px 18px}
-@media(max-width:820px){.hero h1 .title-line{font-size:1em}.other-games nav b{font-size:13px}.other-games a{padding:18px 14px}}
+.other-games a{gap:14px;padding:21px 18px}
+@media(max-width:820px){.hero h1 .title-line{font-size:1em}.other-games a{padding:18px 14px}}
+/* cross-game-nav.css loads after this file and its .other-games nav b clamp
+   floors at 20px regardless of viewport; add a type selector to out-specificity it. */
+.other-games nav a b{font:600 clamp(13px,3.6vw,20px) "Noto Serif KR",serif;letter-spacing:-.04em}
 
 /* Mobile: keep the character secondary and restore a compact, centered header. */
 @media(max-width:820px){
