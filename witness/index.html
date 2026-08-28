@@ -554,13 +554,14 @@ section{position:relative}
 }
 .before815-fact{
   display:grid;grid-template-columns:clamp(110px,14vw,180px) 1fr;gap:clamp(24px,5vw,72px);
-  min-height:64vh;padding:10vh 0;border-top:1px solid rgba(255,255,255,.13);text-align:left;
+  min-height:64vh;padding:10vh 0;border-top:1px solid rgba(255,255,255,.13);align-items:center;text-align:left;
 }
-.before815-fact:last-child{min-height:0;border-bottom:1px solid rgba(255,255,255,.13)}
+.before815-fact:last-child{border-bottom:1px solid rgba(255,255,255,.13)}
 .before815-fact .fact-year{
-  margin:0;color:#a8a7a1;
+  position:relative;margin:0;color:#a8a7a1;
 }
-.before815-fact-copy{align-self:start}
+.before815-fact .fact-year::before{content:"";position:absolute;left:-24px;top:50%;width:7px;height:7px;border-radius:50%;background:#a8a7a1;transform:translateY(-50%)}
+.before815-fact-copy{align-self:center}
 .before815-fact h3{
   margin:0 0 18px;
   font-size:clamp(32px,5vw,66px);
@@ -581,7 +582,8 @@ section{position:relative}
   .before815{padding:14vh 0 16vh}
   .before815-flow{width:88vw}
   .before815-intro{margin-bottom:10vh;font-size:clamp(38px,11vw,58px)}
-  .before815-fact{grid-template-columns:1fr;gap:22px;min-height:0;padding:10vh 0 12vh}
+  .before815-fact{grid-template-columns:1fr;gap:22px;min-height:52svh;padding:10vh 0 12vh}
+  .before815-fact .fact-year::before{left:-17px;width:6px;height:6px}
   .before815-fact h3{font-size:clamp(31px,9vw,48px);line-height:1.28}
 }
 
