@@ -32,7 +32,12 @@
   <meta property="og:description" content="두더지가 물고 도망 다니는 오늘의 헤드라인을 뿅망치로 잡아채 보세요.">
   <meta property="og:url" content="https://visual.newsis.com/arcade/mole/">
   <meta property="og:site_name" content="비주얼 뉴시스 (VISUAL NEWSIS)">
-  <meta name="twitter:card" content="summary">
+  <meta property="og:image" content="https://visual.newsis.com/arcade/mole/assets/og-mole.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="이슈 훔친 두더지 — 빼앗긴 단어를 찾아라!">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="https://visual.newsis.com/arcade/mole/assets/og-mole.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Noto+Sans+KR:wght@700;800;900&display=swap" rel="stylesheet">
@@ -69,8 +74,8 @@ body{
 .head{text-align:center;margin-bottom:16px}
 .kicker{font:800 11px/1 "Noto Sans KR",sans-serif;letter-spacing:.18em;color:var(--mint);margin-bottom:6px}
 h1{
-  font-family:"Black Han Sans","Noto Sans KR",sans-serif;
-  font-size:clamp(28px,7vw,38px); margin:0; letter-spacing:-.01em;
+  font-family:"Noto Sans KR",sans-serif; font-weight:900;
+  font-size:clamp(28px,7vw,38px); margin:0; letter-spacing:-.02em;
 }
 .sub{color:var(--sub);font-size:13px;margin-top:8px;line-height:1.6}
 
@@ -236,7 +241,7 @@ h1{
 
 <div class="stage">
   <div class="head">
-    <div class="kicker">CHUNGMUROADING · PROTOTYPE</div>
+    <div class="kicker">CHUNGMUROADING</div>
     <h1>이슈 훔친 두더지</h1>
     <p class="sub">빼앗긴 단어를 찾아라! 두더지가 물고 있는 오늘의 헤드라인을 뿅망치로 잡아채세요. 20초 동안 최대한 많이!</p>
   </div>
@@ -450,26 +455,33 @@ h1{
     return idle[Math.floor(Math.random() * idle.length)];
   }
 
+  // 한 번에 하나씩만 튀어나오도록: 다음 두더지는 이번 두더지가 내려가거나
+  // 맞은 뒤에만 예약한다 (독립적인 타이머가 겹쳐서 갑자기 여러 마리가
+  // 동시에 튀어나오는 문제를 막는다).
+  function scheduleNext() {
+    if (!running) return;
+    const gapTime = Math.max(400, 700 - (GAME_TIME - timeLeft) * 5);
+    spawnTimer = setTimeout(spawnMole, gapTime);
+  }
+
   function spawnMole() {
     if (!running) return;
     const hole = randomHole();
-    if (hole) {
-      const kw = KEYWORDS[Math.floor(Math.random() * KEYWORDS.length)];
-      hole.querySelector('.tag').textContent = kw;
-      hole.dataset.keyword = kw;
-      hole.dataset.state = 'up';
-      hole.classList.add('up');
-      hole.classList.remove('hit');
-      const upTime = Math.max(1000, 1600 - (GAME_TIME - timeLeft) * 15);
-      hole._downTimeout = setTimeout(() => {
-        if (hole.dataset.state === 'up') {
-          hole.dataset.state = 'down';
-          hole.classList.remove('up');
-        }
-      }, upTime);
-    }
-    const nextIn = Math.max(750, 1100 - (GAME_TIME - timeLeft) * 8);
-    spawnTimer = setTimeout(spawnMole, nextIn);
+    if (!hole) { scheduleNext(); return; }
+    const kw = KEYWORDS[Math.floor(Math.random() * KEYWORDS.length)];
+    hole.querySelector('.tag').textContent = kw;
+    hole.dataset.keyword = kw;
+    hole.dataset.state = 'up';
+    hole.classList.add('up');
+    hole.classList.remove('hit');
+    const upTime = Math.max(1000, 1600 - (GAME_TIME - timeLeft) * 15);
+    hole._downTimeout = setTimeout(() => {
+      if (hole.dataset.state === 'up') {
+        hole.dataset.state = 'down';
+        hole.classList.remove('up');
+      }
+      scheduleNext();
+    }, upTime);
   }
 
   const PRAISE = ["GREAT!!","NICE!!","PERFECT!!","AWESOME!!"];
@@ -484,6 +496,7 @@ h1{
     // 리액션+튕겨나가는 애니메이션이 끝난 뒤 hit과 함께 같이 제거한다.
     setTimeout(() => { hole.classList.remove('hit'); hole.classList.remove('up'); }, 650);
     playHitSound();
+    scheduleNext();
     score += 10;
     scoreEl.textContent = score;
     if (kw) hitCounts[kw] = (hitCounts[kw] || 0) + 1;
