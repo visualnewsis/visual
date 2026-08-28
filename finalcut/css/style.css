@@ -40,6 +40,7 @@ img,svg,video,canvas{display:block;max-width:100%}
 .featured{padding:96px 3vw 4vw}
 .section-label.light{margin:0 2vw 42px}
 .feature-stage{position:relative;display:grid;grid-template-columns:1fr 1fr;height:min(78vw,830px);min-height:600px;overflow:hidden;background:#111}
+.feature-stage+.feature-stage{margin-top:30px}
 .feature-image{position:absolute;inset:0 50% 0 0;background-position:50%;background-size:cover;filter:saturate(.86);transition:transform .8s,filter .8s}
 .feature-image.rain{inset:0 0 0 50%}
 .feature-stage:hover .feature-image{filter:saturate(1.05);transform:scale(1.025)}
@@ -66,7 +67,7 @@ img,svg,video,canvas{display:block;max-width:100%}
 .screen-stats small{color:rgba(255,255,255,.56);font-size:8px}
 .screen-stats>i{width:1px;height:48px;background:rgba(255,255,255,.25)}
 .screen-enter{position:absolute;bottom:6%;left:4%;z-index:4;padding-bottom:8px;border-bottom:1px solid rgba(255,255,255,.6);font-size:10px;letter-spacing:.13em}
-.missing-feature{height:min(66vw,740px);min-height:600px;margin-top:30px;background:radial-gradient(circle at 50% 45%,#14221f 0,#0a100f 42%,#050707 82%);cursor:pointer}
+.missing-feature{height:min(66vw,740px);min-height:600px;background:radial-gradient(circle at 50% 45%,#14221f 0,#0a100f 42%,#050707 82%);cursor:pointer}
 .missing-feature .feature-shade{background:radial-gradient(circle,transparent 10%,rgba(0,0,0,.08) 48%,rgba(0,0,0,.7) 100%)}
 .missing-radar{position:absolute;top:49%;left:50%;z-index:1;width:min(68vw,680px);aspect-ratio:1;opacity:.72;transform:translate(-50%,-50%)}
 .missing-radar:before,.missing-radar:after{content:"";position:absolute;inset:50% auto auto 50%;transform-origin:0 0;background:rgba(125,255,207,.28)}
@@ -160,7 +161,8 @@ footer:before{content:"";position:absolute;inset:0;opacity:.48;background:radial
   .screen-stats b{font-size:1.8rem}
   .screen-stats small{max-width:90px;text-align:center}
   .screen-enter{display:none}
-  .missing-feature{height:640px;min-height:0;margin-top:16px}
+  .feature-stage+.feature-stage{margin-top:16px}
+  .missing-feature{height:640px;min-height:0}
   .missing-radar,.missing-sweep{width:130vw;opacity:.52}
   .missing-route{bottom:26px;right:18px}
   .missing-lockup h2{font-size:10.6vw}
