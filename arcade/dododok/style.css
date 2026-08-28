@@ -18,15 +18,15 @@
 @media(max-width:820px){.hero{background:linear-gradient(155deg,#f7f2e8 0 48%,#090b0c 48.2% 100%)}}
 
 /* Brush-letter echo and in-game character crop. */
-.echo{left:50%;top:42%;font:400 clamp(112px,13vw,194px)/.82 "East Sea Dokdo",cursive;color:#f2f4f3;letter-spacing:-.12em;mix-blend-mode:screen;text-shadow:5px 3px 0 rgba(255,255,255,.22),12px 7px 14px rgba(148,155,158,.7)}
+.echo{left:50%;top:57%;font:400 clamp(112px,13vw,194px)/.82 "East Sea Dokdo",cursive;color:#f2f4f3;letter-spacing:-.12em;mix-blend-mode:screen;text-shadow:5px 3px 0 rgba(255,255,255,.22),12px 7px 14px rgba(148,155,158,.7)}
 .echo-1{opacity:.88;transform:translate(-50%,-50%) rotate(-5deg)}
 .echo-2{opacity:.34;filter:blur(3px);transform:translate(-44%,-57%) rotate(-7deg) scale(1.04)}
 .echo-3{opacity:.16;filter:blur(8px);transform:translate(-38%,-64%) rotate(-9deg) scale(1.08)}
 .typewriter{padding-top:12px;overflow:hidden;background:#090b0c}
-.typing-character{height:270px;margin:-8px 0 0 -15%;width:130%;position:relative;overflow:hidden;background:#090b0c}
-.typing-character img{display:block;width:100%;height:auto;max-width:none;transform:translateY(-1%);-webkit-mask-image:linear-gradient(to bottom,#000 0 88%,transparent 100%);mask-image:linear-gradient(to bottom,#000 0 88%,transparent 100%)}
-.typing-burst{position:absolute;left:49%;top:54%;font:400 62px/.8 "East Sea Dokdo",cursive;color:rgba(238,241,240,.8);white-space:nowrap;transform:translate(-42%,-50%) rotate(-5deg);text-shadow:7px 4px 8px rgba(150,157,160,.55);opacity:0}
+.typing-character{height:340px;margin:-8px 0 0 -15%;width:130%;position:relative;overflow:hidden;background:#090b0c}
+.typing-character img{display:block;width:86%;height:auto;max-width:none;margin:0 auto;transform:translateY(0);-webkit-mask-image:linear-gradient(to bottom,#000 0 91%,transparent 100%);mask-image:linear-gradient(to bottom,#000 0 91%,transparent 100%)}
+.typing-burst{position:absolute;left:49%;top:60%;font:400 62px/.8 "East Sea Dokdo",cursive;color:rgba(238,241,240,.8);white-space:nowrap;transform:translate(-42%,-50%) rotate(-5deg);text-shadow:7px 4px 8px rgba(150,157,160,.55);opacity:0}
 .typing-burst.pop{animation:typingBurst .38s ease-out}
 .symbol-guide{position:relative;margin:0 0 16px;color:#899195;font-size:12px;line-height:1.7;letter-spacing:-.02em}.symbol-guide b{font-weight:800;color:#6f777b}.target{color:#9ba0a1}.target .cursor{color:var(--ink);font-weight:900}
 @keyframes typingBurst{0%{opacity:0;transform:translate(-48%,-44%) rotate(-8deg) scale(.82)}35%{opacity:.9}100%{opacity:0;transform:translate(-30%,-62%) rotate(-3deg) scale(1.13)}}
-@media(max-width:820px){.character-stage img{width:126%;transform:translate(-3%,0)}.echo{font-size:clamp(88px,27vw,124px)}.typewriter{padding-top:0}.typing-character{height:230px;width:116%;margin:0 0 0 -8%}.typing-character img{width:100%;transform:translateY(0)}.typing-burst{font-size:52px}}
+@media(max-width:820px){.character-stage img{width:126%;transform:translate(-3%,0)}.echo{font-size:clamp(88px,27vw,124px)}.typewriter{padding-top:0}.typing-character{height:285px;width:116%;margin:0 0 0 -8%}.typing-character img{width:90%;margin:0 auto;transform:translateY(0)}.typing-burst{font-size:52px}}
