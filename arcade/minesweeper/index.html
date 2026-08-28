@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <title>가짜뉴스 지뢰찾기 | 클래식 지뢰찾기로 만나는 오늘의 진짜 뉴스 | 충무로딩</title>
+  <meta name="description" content="클래식 지뢰찾기 그대로, 지뢰를 피해 클리어하면 오늘 실제로 발행된 진짜 뉴스를 확인할 수 있는 미니게임.">
+  <meta name="keywords" content="가짜뉴스 지뢰찾기,지뢰찾기,오보,팩트체크,뉴스 게임,충무로딩,비주얼 뉴시스,VISUAL NEWSIS,뉴시스,안재현">
+  <meta name="robots" content="noindex,follow">
+  <link rel="canonical" href="https://visual.newsis.com/arcade/minesweeper/">
+  <meta property="og:type" content="website"><meta property="og:locale" content="ko_KR">
+  <meta property="og:title" content="가짜뉴스 지뢰찾기"><meta property="og:description" content="지뢰를 피해 클리어하면 오늘의 진짜 뉴스가 열립니다.">
+  <meta property="og:url" content="https://visual.newsis.com/arcade/minesweeper/"><meta property="og:site_name" content="VISUAL NEWSIS">
+  <meta property="og:image" content="https://visual.newsis.com/assets/logo2024.png">
+  <meta name="twitter:card" content="summary"><meta name="twitter:title" content="가짜뉴스 지뢰찾기"><meta name="twitter:description" content="지뢰를 피해 클리어하면 오늘의 진짜 뉴스가 열립니다."><meta name="twitter:image" content="https://visual.newsis.com/assets/logo2024.png">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-6BKMWE02W5"></script>
+  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','G-6BKMWE02W5');</script>
+  <link rel="stylesheet" href="./style.css?v=20260828-1">
+  <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"Game","name":"가짜뉴스 지뢰찾기","alternateName":["지뢰찾기","오보 지뢰찾기"],"url":"https://visual.newsis.com/arcade/minesweeper/","description":"클래식 지뢰찾기를 클리어하면 오늘 실제로 발행된 진짜 뉴스를 확인할 수 있는 무료 미니게임","genre":["Puzzle game","News game"],"inLanguage":"ko-KR","isAccessibleForFree":true,"creator":{"@type":"Person","name":"안재현","jobTitle":["크리에이티브 디렉터","뉴시스 기자"],"worksFor":{"@type":"NewsMediaOrganization","name":"뉴시스","url":"https://www.newsis.com/"}},"isPartOf":{"@type":"CollectionPage","name":"충무로딩","url":"https://visual.newsis.com/arcade/"},"publisher":{"@type":"NewsMediaOrganization","name":"뉴시스","url":"https://www.newsis.com/"}},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"VISUAL NEWSIS","item":"https://visual.newsis.com/"},{"@type":"ListItem","position":2,"name":"충무로딩","item":"https://visual.newsis.com/arcade/"},{"@type":"ListItem","position":3,"name":"가짜뉴스 지뢰찾기","item":"https://visual.newsis.com/arcade/minesweeper/"}]}]}</script>
+</head>
+<body>
+  <header class="site-header">
+    <a class="brand" href="../"><img src="../assets/chungmuroading-logo-transparent-v2.png" alt="충무로딩"></a>
+    <a class="newsis-logo" href="https://www.newsis.com/" target="_blank" rel="noopener"><img src="../../assets/logo2024.png" alt="뉴시스"></a>
+    <a class="visual-newsis" href="https://visual.newsis.com/">VISUAL NEWSIS</a>
+  </header>
+
+  <main>
+    <section class="game-hero">
+      <p class="eyebrow">CLASSIC MINESWEEPER · REAL NEWS INSIDE</p>
+      <h1>가짜뉴스<br><em>지뢰찾기</em></h1>
+      <p class="subtitle">지뢰를 피해 클리어하면, 오늘의 진짜 뉴스가 열립니다</p>
+
+      <div class="ms-wrap">
+        <div class="ms-panel">
+          <div class="ms-titlebar">CHUNGMUROADING · MINESWEEPER</div>
+          <div class="ms-hud">
+            <div id="mineCounter" class="ms-lcd">010</div>
+            <button id="faceBtn" class="ms-face" aria-label="다시 시작">
+              <svg id="faceSvg" viewBox="0 0 36 36" width="28" height="28"><circle cx="18" cy="18" r="16" fill="#ffd700" stroke="#000" stroke-width="1.5"/><g id="faceParts"></g></svg>
+            </button>
+            <div id="timer" class="ms-lcd">000</div>
+          </div>
+          <div class="ms-mode-row">
+            <button id="flagModeBtn" class="ms-mode-btn" aria-pressed="false">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 3v18M5 4h13l-3 4 3 4H5"/></svg> 깃발 모드
+            </button>
+            <span class="ms-hint">모바일에서는 깃발 모드를 켜고 지뢰라고 생각되는 칸을 눌러 표시하세요</span>
+          </div>
+          <div id="board" class="ms-board"></div>
+        </div>
+
+        <div id="newsPanel" class="ms-news" hidden>
+          <p id="newsTitle" class="ms-news-title"></p>
+          <p id="newsSubtitle" class="ms-news-subtitle"></p>
+          <p class="ms-news-label">오늘의 주요기사</p>
+          <div id="newsList" class="ms-news-list"></div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <section class="other-games"><div><p>PLAY ANOTHER</p><h2>다른 게임도<br>하러가기</h2></div><nav><a href="/arcade/puzzle/"><span>01</span><b>조각 사진관</b></a><a href="/arcade/omok/"><span>02</span><b>뉴스 오목</b></a><a href="/arcade/tarot/"><span>03</span><b>충무로 타로#</b></a><a href="/arcade/output/"><span>04</span><b>제목있음</b></a><a href="/arcade/chungmuman/"><span>05</span><b>충무맨</b></a><a href="/arcade/words/"><span>06</span><b>낱말수선소</b></a></nav></section>
+  <footer><a href="../">충무로딩</a><small>크리에이티브 디렉터 = 안재현</small><span>© NEWSIS</span></footer>
+  <script type="module" src="./app.js?v=20260828-1"></script>
+</body>
+</html>
