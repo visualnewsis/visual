@@ -7,7 +7,8 @@ let articles=[],currentIndex=0,current=null,startedAt=0,composing=false,audioCon
 const input=$('#typingInput'),target=$('#target');
 
 const chars=value=>Array.from(String(value||'').normalize('NFC'));
-const typingTitle=value=>String(value||'').normalize('NFC').replace(/[^\p{L}\p{N}]/gu,'');
+const typingTitle=value=>String(value||'').normalize('NFC').replace(/[^\p{L}\p{N}%]/gu,'');
+const isTypingCharacter=value=>/[\p{L}\p{N}%]/u.test(value);
 function escapeHtml(value){return String(value??'').replace(/[&<>"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]))}
 function shuffle(items){return [...items].sort(()=>Math.random()-.5)}
 function keySound(ok=true){
@@ -28,10 +29,13 @@ function metrics(){
 }
 function renderTyping(){
   const {expected,typed,accuracy,progress,speed}=metrics();
-  target.innerHTML=expected.map((letter,index)=>{
-    if(index<typed.length)return `<span class="${typed[index]===letter?'done':'wrong'}">${escapeHtml(letter)}</span>`;
+  let typingIndex=0;
+  target.innerHTML=chars(current.title).map(letter=>{
+    if(!isTypingCharacter(letter))return `<span class="ignored">${escapeHtml(letter)}</span>`;
+    const index=typingIndex++;
+    if(index<typed.length)return `<span class="${typed[index]===expected[index]?'done':'wrong'}">${escapeHtml(letter)}</span>`;
     if(index===typed.length)return `<span class="cursor">${escapeHtml(letter)}</span>`;
-    return escapeHtml(letter);
+    return `<span>${escapeHtml(letter)}</span>`;
   }).join('');
   $('#accuracy').textContent=`${accuracy}%`;$('#progress').textContent=`${progress}%`;$('#speed').textContent=speed;
   const complete=typed.length===expected.length&&typed.every((letter,index)=>letter===expected[index]);
