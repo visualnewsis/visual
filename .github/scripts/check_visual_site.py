@@ -107,8 +107,10 @@ def main() -> int:
         links_body = links_match.group(1) if links_match else ""
         if 'finalcut:"https://visual.newsis.com/finalcut/"' not in links_body:
             fail(errors, "최종판 global menu link is missing or incorrect")
-        if "mapguide:" in links_body:
-            fail(errors, "알아볼지도 must stay link-disabled in the global menu until its own landing exists")
+        # 알아볼지도 has no hub landing yet; it's temporarily pointed at its one
+        # published story (battery) until a real hub replaces this link.
+        if 'mapguide:"https://visual.newsis.com/battery/"' not in links_body:
+            fail(errors, "알아볼지도 temporary menu link is missing or incorrect (expected the battery story)")
 
     if errors:
         print("VISUAL NEWSIS checks failed:", file=sys.stderr)
