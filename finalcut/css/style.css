@@ -29,6 +29,9 @@ img,svg,video,canvas{display:block;max-width:100%}
 .tuner input{appearance:none;width:100%;height:2px;margin:24px 0 19px;background:linear-gradient(90deg,var(--signal) var(--clarity),rgba(255,255,255,.2) var(--clarity))}
 .tuner input::-webkit-slider-thumb{appearance:none;width:15px;height:15px;border-radius:50%;background:var(--signal);box-shadow:0 0 17px var(--signal);cursor:ew-resize}
 .tuner input::-moz-range-thumb{border:0;width:15px;height:15px;border-radius:50%;background:var(--signal);box-shadow:0 0 17px var(--signal);cursor:ew-resize}
+.tuner input:disabled{cursor:default}
+.tuner input:disabled::-webkit-slider-thumb{cursor:default}
+.tuner input:disabled::-moz-range-thumb{cursor:default}
 .tuner-message{position:relative;height:36px;overflow:hidden;font-size:11px;line-height:1.45;white-space:nowrap}
 .tuner-message span{position:absolute;color:rgba(255,255,255,.16);letter-spacing:.16em;filter:blur(1px)}
 .tuner-message b{position:absolute;color:#fff;filter:blur(var(--blur));transition:opacity .15s,filter .15s}
