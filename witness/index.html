@@ -664,8 +664,8 @@ body{font-family:"Noto Sans KR","Malgun Gothic","Apple SD Gothic Neo",sans-serif
 .language-copy small{display:block;margin-bottom:28px;color:#777772;font:600 10px/1.5 sans-serif;letter-spacing:.2em}.language-record{width:min(980px,90vw);text-align:left}.language-record .year{margin-bottom:22px;color:#8a8983;font:800 clamp(38px,6vw,78px)/1 sans-serif;letter-spacing:-.05em}.language-record .statement{font-family:"Yu Mincho","MS Mincho",serif;font-size:clamp(31px,4.8vw,64px);font-weight:600;line-height:1.48;letter-spacing:.01em;word-break:normal}.language-record .record-note{margin-top:28px;padding-top:18px;border-top:1px solid rgba(255,255,255,.13);color:#6d6d68;font-size:11px;letter-spacing:.08em}
 .language-question{width:min(1060px,92vw);font-size:clamp(38px,6.2vw,82px);line-height:1.28;letter-spacing:-.055em;font-weight:620;text-wrap:balance}
 .language-return .label{margin-bottom:28px;color:#6b6b66;font-size:11px;letter-spacing:.16em}.language-return h2{margin:0;font-size:clamp(42px,7vw,92px);line-height:1.22;letter-spacing:-.06em;font-weight:620}
-.language-shift.alarm-active{animation:screenAlarm .12s steps(2,end) 9}
-.language-shift.alarm-active::after{content:"";position:fixed;inset:0;z-index:50;pointer-events:none;background:rgba(158,10,18,.12);animation:alarmFlash .18s steps(2,end) 6}
+.language-shift.alarm-active{animation:screenAlarm .11s steps(2,end) 4}
+.language-shift.alarm-active::after{content:"";position:fixed;inset:0;z-index:50;pointer-events:none;background:rgba(158,10,18,.09);animation:alarmFlash .14s steps(2,end) 3}
 @keyframes screenAlarm{0%{transform:translate(0,0)}25%{transform:translate(-7px,3px)}50%{transform:translate(6px,-3px)}75%{transform:translate(-4px,-2px)}100%{transform:translate(0,0)}}
 @keyframes alarmFlash{0%,100%{opacity:0}50%{opacity:1}}
 
@@ -1126,31 +1126,36 @@ const eraseProgress=$("#eraseProgress");
 const eraserDebris=$("#eraserDebris");
 let eraseDrawing=false, eraseDone=false;
 let lastPoint=null, sampleTick=0;
-let audioCtx=null, noiseNode=null, noiseGain=null;
+let audioCtx=null, noiseNode=null, noiseGain=null, noiseFilter=null;
+let lastSoundPoint=null,lastSoundAt=0;
 
 function ensureAudio(){
   if(audioCtx) return;
   try{
     audioCtx=new (window.AudioContext||window.webkitAudioContext)();
-    const buffer=audioCtx.createBuffer(1,audioCtx.sampleRate*.35,audioCtx.sampleRate);
+    const buffer=audioCtx.createBuffer(1,audioCtx.sampleRate*1.2,audioCtx.sampleRate);
     const data=buffer.getChannelData(0);
+    let grain=0;
     for(let i=0;i<data.length;i++){
-      data[i]=(Math.random()*2-1)*(1-i/data.length);
+      grain=grain*.82+(Math.random()*2-1)*.18;
+      data[i]=grain;
     }
     noiseNode=audioCtx.createBufferSource();
     noiseNode.buffer=buffer; noiseNode.loop=true;
-    const filter=audioCtx.createBiquadFilter();
-    filter.type="bandpass"; filter.frequency.value=1700; filter.Q.value=.65;
+    noiseFilter=audioCtx.createBiquadFilter();
+    noiseFilter.type="bandpass"; noiseFilter.frequency.value=780; noiseFilter.Q.value=.48;
     noiseGain=audioCtx.createGain(); noiseGain.gain.value=0;
-    noiseNode.connect(filter).connect(noiseGain).connect(audioCtx.destination);
+    noiseNode.connect(noiseFilter).connect(noiseGain).connect(audioCtx.destination);
     noiseNode.start();
   }catch(e){}
 }
-function rubSound(on){
+function rubSound(level=0){
   if(!audioCtx||!noiseGain) return;
   const t=audioCtx.currentTime;
   noiseGain.gain.cancelScheduledValues(t);
-  noiseGain.gain.linearRampToValueAtTime(on?0.016:0,t+.035);
+  const amount=clamp(level,0,1);
+  noiseGain.gain.setTargetAtTime(amount?(.0025+amount*.0105):0,t,amount?.045:.07);
+  if(noiseFilter) noiseFilter.frequency.setTargetAtTime(620+amount*720,t,.06);
 }
 
 function sizeEraseCanvas(){
@@ -1255,20 +1260,28 @@ eraseCanvas.addEventListener("pointerdown",e=>{
   if(eraseDone) return;
   ensureAudio();
   if(audioCtx && audioCtx.state==="suspended") audioCtx.resume();
-  rubSound(true);
+  rubSound(.16);
   eraseDrawing=true;
   eraseDay.classList.add("interacting","locked");
   eraseCanvas.setPointerCapture(e.pointerId);
+  lastSoundPoint={x:e.clientX,y:e.clientY};lastSoundAt=performance.now();
   lastPoint=null;
   eraseAt(e);
 });
 eraseCanvas.addEventListener("pointermove",e=>{
   if(!eraseDrawing||eraseDone) return;
   e.preventDefault();
+  const soundNow=performance.now();
+  if(lastSoundPoint){
+    const distance=Math.hypot(e.clientX-lastSoundPoint.x,e.clientY-lastSoundPoint.y);
+    const speed=distance/Math.max(8,soundNow-lastSoundAt);
+    rubSound(clamp(speed/1.15,.08,1));
+  }
+  lastSoundPoint={x:e.clientX,y:e.clientY};lastSoundAt=soundNow;
   eraseAt(e);
 });
 ["pointerup","pointercancel"].forEach(ev=>eraseCanvas.addEventListener(ev,()=>{
-  eraseDrawing=false; lastPoint=null; rubSound(false); checkErase();
+  eraseDrawing=false;lastPoint=null;lastSoundPoint=null;lastSoundAt=0;rubSound(0);checkErase();
 }));
 
 /* do not allow scrolling beyond the erase scene until enough of the date is removed */
@@ -1335,13 +1348,22 @@ const finalBgImage=document.querySelector(".final-bg img");
 let languageAlarmPlayed=false;
 function playLanguageAlarm(){
   if(languageAlarmPlayed) return;languageAlarmPlayed=true;
-  languageShift.classList.add("alarm-active");setTimeout(()=>languageShift.classList.remove("alarm-active"),1300);
-  if(!audioCtx) return;
-  const now=audioCtx.currentTime,osc=audioCtx.createOscillator(),gain=audioCtx.createGain();
-  osc.type="sawtooth";osc.frequency.setValueAtTime(790,now);osc.frequency.exponentialRampToValueAtTime(540,now+2.25);
-  gain.gain.setValueAtTime(.0001,now);gain.gain.exponentialRampToValueAtTime(.045,now+.06);gain.gain.setValueAtTime(.045,now+1.85);gain.gain.exponentialRampToValueAtTime(.0001,now+2.35);
-  osc.connect(gain).connect(audioCtx.destination);osc.start(now);osc.stop(now+2.4);
-  const thud=audioCtx.createOscillator(),thudGain=audioCtx.createGain();thud.type="sine";thud.frequency.setValueAtTime(88,now+2.1);thud.frequency.exponentialRampToValueAtTime(34,now+2.65);thudGain.gain.setValueAtTime(.0001,now);thudGain.gain.setValueAtTime(.19,now+2.1);thudGain.gain.exponentialRampToValueAtTime(.0001,now+2.7);thud.connect(thudGain).connect(audioCtx.destination);thud.start(now);thud.stop(now+2.75);
+  setTimeout(()=>{
+    languageShift.classList.add("alarm-active");
+    setTimeout(()=>languageShift.classList.remove("alarm-active"),560);
+    if(!audioCtx) return;
+    if(audioCtx.state==="suspended") audioCtx.resume();
+    const now=audioCtx.currentTime,osc=audioCtx.createOscillator(),gain=audioCtx.createGain();
+    osc.type="triangle";
+    osc.frequency.setValueAtTime(185,now);
+    osc.frequency.exponentialRampToValueAtTime(128,now+.82);
+    gain.gain.setValueAtTime(.0001,now);
+    gain.gain.exponentialRampToValueAtTime(.055,now+.045);
+    gain.gain.setValueAtTime(.055,now+.46);
+    gain.gain.exponentialRampToValueAtTime(.0001,now+.86);
+    osc.connect(gain).connect(audioCtx.destination);
+    osc.start(now);osc.stop(now+.9);
+  },220);
 }
 function updateCleanScenes(){
   const l=lp(languageShift);
