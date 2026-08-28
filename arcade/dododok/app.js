@@ -14,6 +14,11 @@ function keySound(ok=true){
   const oscillator=audioContext.createOscillator(),gain=audioContext.createGain(),now=audioContext.currentTime;
   oscillator.type='square';oscillator.frequency.setValueAtTime(ok?170:95,now);gain.gain.setValueAtTime(.025,now);gain.gain.exponentialRampToValueAtTime(.001,now+.035);oscillator.connect(gain).connect(audioContext.destination);oscillator.start(now);oscillator.stop(now+.04);
 }
+function typingBurst(ok=true){
+  const burst=$('#typingBurst');if(!burst)return;
+  burst.textContent=ok?(Math.random()>.5?'도도독':'도독'):'도도...';
+  burst.classList.remove('pop');void burst.offsetWidth;burst.classList.add('pop');
+}
 function metrics(){
   const expected=chars(current.title),typed=chars(input.value),matches=typed.filter((letter,index)=>letter===expected[index]).length;
   const accuracy=typed.length?Math.round(matches/typed.length*100):100,progress=Math.min(100,Math.round(typed.length/expected.length*100));
@@ -43,12 +48,12 @@ function finish(){
 input.addEventListener('compositionstart',()=>{composing=true});
 input.addEventListener('compositionend',()=>{
   composing=false;input.value=input.value.normalize('NFC');if(!startedAt&&input.value)startedAt=Date.now();
-  const typed=chars(input.value),expected=chars(current.title),ok=!typed.length||typed.at(-1)===expected[typed.length-1];keySound(ok);renderTyping();
+  const typed=chars(input.value),expected=chars(current.title),ok=!typed.length||typed.at(-1)===expected[typed.length-1];keySound(ok);typingBurst(ok);renderTyping();
 });
 input.addEventListener('input',event=>{
   if(composing||event.isComposing)return;if(!startedAt&&input.value)startedAt=Date.now();
   const limit=chars(current.title).length;if(chars(input.value).length>limit)input.value=chars(input.value).slice(0,limit).join('');
-  const typed=chars(input.value),expected=chars(current.title),ok=!typed.length||typed.at(-1)===expected[typed.length-1];keySound(ok);const keys=document.querySelectorAll('.key-row i'),key=keys[Math.floor(Math.random()*keys.length)];key.classList.add('hit');setTimeout(()=>key.classList.remove('hit'),70);renderTyping();
+  const typed=chars(input.value),expected=chars(current.title),ok=!typed.length||typed.at(-1)===expected[typed.length-1];keySound(ok);typingBurst(ok);const keys=document.querySelectorAll('.key-row i'),key=keys[Math.floor(Math.random()*keys.length)];key.classList.add('hit');setTimeout(()=>key.classList.remove('hit'),70);renderTyping();
 });
 input.addEventListener('paste',event=>event.preventDefault());
 $('#nextButton').addEventListener('click',()=>loadArticle(currentIndex+1));
