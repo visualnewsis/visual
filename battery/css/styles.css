@@ -8072,11 +8072,12 @@ footer strong {
     transform: translateY(6%);
   }
   .ending-brand-tagline {
-    left: 50%;
-    top: 72px;
+    left: 18px;
+    top: calc(88px + env(safe-area-inset-top, 0px));
+    right: auto;
     width: max-content;
     max-width: calc(100vw - 36px);
-    transform: translateX(-50%);
+    transform: none;
   }
   .ending-brand-tagline strong {
     font-size: 1.28rem;
@@ -8824,10 +8825,11 @@ footer strong {
 /* Keep the ending lockup fixed; move only its map and strengthen copy contrast. */
 .ending-brand::before {
   background-position: 51.8% 10%;
+  background-size: cover;
   filter: saturate(.72) contrast(1.02) brightness(.72) blur(1.6px);
   opacity: .96;
-  -webkit-mask-image: none;
-  mask-image: none;
+  -webkit-mask-image: radial-gradient(ellipse 82% 84% at 50% 42%, #000 0%, #000 58%, rgba(0, 0, 0, .6) 78%, rgba(0, 0, 0, .15) 92%, transparent 100%);
+  mask-image: radial-gradient(ellipse 82% 84% at 50% 42%, #000 0%, #000 58%, rgba(0, 0, 0, .6) 78%, rgba(0, 0, 0, .15) 92%, transparent 100%);
 }
 .ending-brand-inner::before {
   display: none;
@@ -8852,8 +8854,14 @@ footer strong {
 .ending-brand-tagline strong {
   color: #f7fbfc !important;
 }
+.ending-brand-tagline-accent {
+  color: #00b4c9 !important;
+}
 .ending-brand-tagline p {
   color: #dcebed !important;
+}
+.ending-brand-character {
+  filter: contrast(1.2) saturate(1.05) drop-shadow(0 12px 18px rgba(42, 59, 60, .18));
 }
 .ending-brand-credit-row small {
   color: #eef7f8;
@@ -8922,8 +8930,11 @@ footer strong {
   }
   .ending-brand::before {
     background-position: 42% 8%;
+    background-size: cover;
     filter: saturate(.7) contrast(1) brightness(.72) blur(1.4px);
     opacity: .94;
+    -webkit-mask-image: radial-gradient(ellipse 90% 88% at 45% 38%, #000 0%, #000 55%, rgba(0, 0, 0, .55) 76%, rgba(0, 0, 0, .12) 92%, transparent 100%);
+    mask-image: radial-gradient(ellipse 90% 88% at 45% 38%, #000 0%, #000 55%, rgba(0, 0, 0, .55) 76%, rgba(0, 0, 0, .12) 92%, transparent 100%);
   }
   .ending-brand-tagline {
     padding: 0;

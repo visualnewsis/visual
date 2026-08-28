@@ -21934,6 +21934,9 @@
     const operationBackReadyRef = (0, import_react.useRef)(false);
     const operationBackWheelLockedRef = (0, import_react.useRef)(false);
     const operationBackWheelTimer = (0, import_react.useRef)(null);
+    const operationEnterReadyRef = (0, import_react.useRef)(false);
+    const operationEnterWheelLockedRef = (0, import_react.useRef)(false);
+    const operationEnterWheelTimer = (0, import_react.useRef)(null);
     const operationGestureTimer = (0, import_react.useRef)(null);
     const stageTimer = (0, import_react.useRef)(null);
     const touchStartY = (0, import_react.useRef)(null);
@@ -21992,6 +21995,12 @@
           window.clearTimeout(operationBackWheelTimer.current);
           operationBackWheelTimer.current = null;
         }
+        operationEnterReadyRef.current = false;
+        operationEnterWheelLockedRef.current = false;
+        if (operationEnterWheelTimer.current) {
+          window.clearTimeout(operationEnterWheelTimer.current);
+          operationEnterWheelTimer.current = null;
+        }
         operationExitReadyRef.current = nextStage === 2 && operationLockConsumedRef.current;
         if (operationGestureTimer.current) window.clearTimeout(operationGestureTimer.current);
         if (nextStage === 2 && direction > 0 && !operationLockConsumedRef.current) {
@@ -22025,6 +22034,18 @@
         }
         if (event.deltaY > 8 && visualStageRef.current < 2) {
           event.preventDefault();
+          if (visualStageRef.current === 1) {
+            if (!operationEnterReadyRef.current) {
+              operationEnterReadyRef.current = true;
+              operationEnterWheelLockedRef.current = true;
+              operationEnterWheelTimer.current = window.setTimeout(() => {
+                operationEnterWheelLockedRef.current = false;
+                operationEnterWheelTimer.current = null;
+              }, 420);
+              return;
+            }
+            if (operationEnterWheelLockedRef.current) return;
+          }
           changeStage(1);
         } else if (event.deltaY < -8 && visualStageRef.current > 0) {
           event.preventDefault();
@@ -22078,8 +22099,13 @@
         if (distance > 35 && visualStageRef.current === 2 && !operationExitReadyRef.current) {
           return;
         }
-        if (distance > 35) changeStage(1);
-        else if (distance < -35) {
+        if (distance > 35) {
+          if (visualStageRef.current === 1 && !operationEnterReadyRef.current) {
+            operationEnterReadyRef.current = true;
+            return;
+          }
+          changeStage(1);
+        } else if (distance < -35) {
           if (visualStageRef.current === 2 && !operationBackReadyRef.current) {
             operationBackReadyRef.current = true;
             return;
@@ -22101,6 +22127,10 @@
         }
         if (["ArrowDown", "PageDown", " "].includes(event.key) && visualStageRef.current < 2) {
           event.preventDefault();
+          if (visualStageRef.current === 1 && !operationEnterReadyRef.current) {
+            operationEnterReadyRef.current = true;
+            return;
+          }
           changeStage(1);
         } else if (["ArrowUp", "PageUp"].includes(event.key) && visualStageRef.current > 0) {
           event.preventDefault();
@@ -22130,6 +22160,7 @@
       if (stageTimer.current) window.clearTimeout(stageTimer.current);
       if (operationGestureTimer.current) window.clearTimeout(operationGestureTimer.current);
       if (operationBackWheelTimer.current) window.clearTimeout(operationBackWheelTimer.current);
+      if (operationEnterWheelTimer.current) window.clearTimeout(operationEnterWheelTimer.current);
       stepTimers.current.forEach((timer) => window.clearTimeout(timer));
     }, []);
     (0, import_react.useEffect)(() => {
@@ -22547,7 +22578,11 @@
             ] })
           ] }) }),
           /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { className: "ending-brand-tagline", children: [
-            /* @__PURE__ */ (0, import_jsx_runtime.jsx)("strong", { children: "척하면 척!" }),
+            /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("strong", { children: [
+              "척하면 ",
+              /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { className: "ending-brand-tagline-accent", children: "척" }),
+              "!"
+            ] }),
             /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("p", { children: [
               "어렵고 복잡한 뉴스",
               /* @__PURE__ */ (0, import_jsx_runtime.jsx)("br", {}),
