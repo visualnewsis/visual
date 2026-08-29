@@ -140,6 +140,7 @@ jobs:
           script: |
             echo $BRANCH_NAME
             rsync -avz --exclude=.git --exclude=.github --exclude=.gitignore $RELEASE_PATH $BASE_PATH
+            rm -rf $BASE_PATH/arcade/arkanoid
             cd $BASE_PATH
 
   # ssh-action을 통하여 json에 설정된 서버 실행 이후 처리할 작업을 진행합니다..
