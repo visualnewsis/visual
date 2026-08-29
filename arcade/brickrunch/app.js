@@ -5,9 +5,9 @@ const W=canvas.width,H=canvas.height;
 const ROWS=6,COLS=8,BRICK_W=54,BRICK_H=24,BRICK_GAP=4;
 const GRID_LEFT=(W-(COLS*BRICK_W+(COLS-1)*BRICK_GAP))/2,GRID_TOP=70;
 const ROW_COLORS=['#e6292f','#f07852','#f5b942','#00b4c9','#3d6cf0','#8a5cf0'];
-const CLICKBAIT=['충격','단독','경악','발칵','소름','헉','실화냐','대박','레전드','미쳤다','이럴수가','역대급','충격주의','단독입수','특종','헐'];
+const CLICKBAIT=['충격','결국 터졌다','경악','모두 놀랐다','소름','헉','실화냐','대박','레전드','이럴 수가','손해 주의','역대급','충격 주의','단독 입수','특종','발칵'];
 
-let bricks=[],ball,paddle,score=0,lives=3,running=false,animId=null;
+let bricks=[],ball,paddle,score=0,lives=3,running=false,animId=null,hasStarted=false,lastMilestone=0,audioCtx=null;
 let todayNews=[],prizeTitle='오늘의 뉴스는 벽돌 뒤에 숨어있습니다';
 
 const FALLBACK_NEWS=[
@@ -17,6 +17,27 @@ const FALLBACK_NEWS=[
 ];
 
 function shuffle(items){return [...items].sort(()=>Math.random()-.5)}
+
+function announce(message){$('#gameStatus').textContent=message}
+
+function pulse(className){
+  const cabinet=$('.ak-cabinet');
+  cabinet.classList.remove(className);
+  void cabinet.offsetWidth;
+  cabinet.classList.add(className);
+  window.setTimeout(()=>cabinet.classList.remove(className),320);
+}
+
+function tone(frequency,duration=.045,type='square'){
+  try{
+    audioCtx ||= new (window.AudioContext||window.webkitAudioContext)();
+    const oscillator=audioCtx.createOscillator(),gain=audioCtx.createGain();
+    oscillator.type=type;oscillator.frequency.value=frequency;gain.gain.value=.035;
+    oscillator.connect(gain);gain.connect(audioCtx.destination);oscillator.start();
+    gain.gain.exponentialRampToValueAtTime(.0001,audioCtx.currentTime+duration);
+    oscillator.stop(audioCtx.currentTime+duration);
+  }catch{}
+}
 
 function wrapLines(text,maxWidth,font){
   ctx.font=font;
@@ -53,6 +74,7 @@ function launchBall(){
   const angle=(-70-Math.random()*40)*Math.PI/180;
   ball.dx=ball.speed*Math.cos(angle);
   ball.dy=ball.speed*Math.sin(angle);
+  announce('공을 발사했습니다.');tone(420,.05,'sine');
 }
 
 function updateHud(){
@@ -128,7 +150,8 @@ function step(){
     for(const b of bricks){
       if(!b.alive)continue;
       if(ball.x+ball.r>b.x&&ball.x-ball.r<b.x+b.w&&ball.y+ball.r>b.y&&ball.y-ball.r<b.y+b.h){
-        b.alive=false;score+=10;updateHud();
+        b.alive=false;score+=10;updateHud();pulse('is-hit');tone(180+score*1.8,.035);
+        if(score>=lastMilestone+100){lastMilestone=score;window.gtag?.('event','brickrunch_score_milestone',{score})}
         const overlapLeft=ball.x+ball.r-b.x,overlapRight=b.x+b.w-(ball.x-ball.r);
         const overlapTop=ball.y+ball.r-b.y,overlapBottom=b.y+b.h-(ball.y-ball.r);
         const minOverlap=Math.min(overlapLeft,overlapRight,overlapTop,overlapBottom);
@@ -144,6 +167,8 @@ function step(){
 
 function loseLife(){
   lives--;updateHud();
+  pulse('is-miss');tone(95,.16,'sawtooth');announce(`공을 놓쳤습니다. 남은 기회 ${Math.max(0,lives)}개.`);
+  window.gtag?.('event','brickrunch_life_lost',{score,lives_remaining:lives});
   if(lives<=0){endGame(false);return}
   resetBallAndPaddle();
 }
@@ -160,6 +185,7 @@ function endGame(won){
   $('#overlay').querySelector('.ak-overlay-sub').innerHTML=won?'낚시성 벽돌 뒤에 숨어있던<br>오늘의 진짜 헤드라인을 확인하세요':'그래도 뉴스만큼은<br>진짜만 보여드릴게요';
   showNews(won?'승리! 벽돌을 모두 깼어요':'게임 오버',won?'낚시성 벽돌 뒤에 숨어있던 오늘의 진짜 헤드라인입니다':'낚시성 벽돌엔 졌지만 뉴스만큼은 진짜만 보여드릴게요');
   window.gtag?.('event',won?'brickrunch_win':'brickrunch_lose',{score});
+  announce(won?'승리했습니다. 오늘의 주요 기사가 열렸습니다.':'게임이 끝났습니다. 오늘의 주요 기사가 열렸습니다.');
 }
 
 function showNews(title,subtitle){
@@ -178,13 +204,18 @@ function showNews(title,subtitle){
 }
 
 function startGame(){
-  score=0;lives=3;updateHud();
+  const replay=hasStarted;hasStarted=true;
+  score=0;lives=3;lastMilestone=0;updateHud();
   buildBricks();resetBallAndPaddle();
   $('#overlay').hidden=true;
+  $('#startBtn').hidden=false;
   $('#newsPanel').hidden=true;
   $('#newsPanel').removeAttribute('data-show');
   running=true;
   window.gtag?.('event','brickrunch_start');
+  if(replay)window.gtag?.('event','brickrunch_restart');
+  announce('게임을 시작했습니다. 방향키나 마우스로 패들을 움직이고 스페이스바로 공을 발사하세요.');
+  canvas.focus({preventScroll:true});
   cancelAnimationFrame(animId);
   animId=requestAnimationFrame(step);
 }
@@ -218,11 +249,21 @@ $('#overlayStart').addEventListener('click',startGame);
 
 async function loadNews(){
   try{
-    const res=await fetch('../puzzle/data/puzzles.json',{cache:'no-store'});
-    if(!res.ok)throw new Error(res.status);
-    const data=await res.json();
-    const items=(data.puzzles||[]).filter(p=>p.title&&p.url);
-    todayNews=shuffle(items).slice(0,3);
+    const sources=await Promise.allSettled([
+      fetch('../puzzle/data/puzzles.json',{cache:'no-store'}).then(r=>{if(!r.ok)throw new Error(r.status);return r.json()}),
+      fetch('../words/data/crossword.json',{cache:'no-store'}).then(r=>{if(!r.ok)throw new Error(r.status);return r.json()})
+    ]);
+    const candidates=[];
+    sources.forEach(result=>{
+      if(result.status!=='fulfilled')return;
+      const data=result.value;
+      (data.puzzles||[]).forEach(p=>{
+        if(p.title&&p.url)candidates.push({title:p.title,url:p.url});
+        (p.words||[]).forEach(w=>{if(w.title&&w.url)candidates.push({title:w.title,url:w.url})});
+      });
+    });
+    const unique=[...new Map(candidates.map(item=>[item.url,item])).values()];
+    todayNews=shuffle(unique).slice(0,3);
     if(todayNews.length)prizeTitle=todayNews[0].title;
   }catch(e){
     console.warn('오늘의 뉴스를 불러오지 못해 기본 문장을 사용합니다.',e);
