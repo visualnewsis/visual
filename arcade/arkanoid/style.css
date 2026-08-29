@@ -1,0 +1,61 @@
+@import url('https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Noto+Sans+KR:wght@400;600;800;900&family=Noto+Serif+KR:wght@500;700;900&display=swap');
+:root{--ink:#0d2028;--mint:#00b4c9;--coral:#f07852;--paper:#f5f0e5;--line:rgba(13,32,40,.2)}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--paper);color:var(--ink);font-family:"Noto Sans KR",sans-serif}
+.site-header{height:80px;padding:0 clamp(20px,4vw,64px);display:grid;grid-template-columns:1fr auto 1fr;align-items:center;border-bottom:1px solid var(--line);background:rgba(245,240,229,.94);position:relative;z-index:10}
+.site-header a{color:inherit;text-decoration:none}.brand{justify-self:start;line-height:0}.brand img{height:28px;width:auto}
+.newsis-logo{position:absolute;left:50%;transform:translateX(-50%);line-height:0}.newsis-logo img{height:29px;width:auto}
+.visual-newsis{grid-column:3;justify-self:end;font-size:11px;font-weight:900;letter-spacing:.08em}
+
+.game-hero{padding:clamp(48px,7vw,90px) clamp(20px,6vw,64px);text-align:center}
+.eyebrow{font-size:10px;font-weight:900;letter-spacing:.22em;color:#b34431;margin:0}
+.game-hero h1{font:400 clamp(48px,7vw,96px)/.95 "Black Han Sans",sans-serif;letter-spacing:-.03em;margin:20px 0 18px}
+.game-hero h1 em{font-style:normal;color:var(--mint);text-shadow:4px 4px 0 var(--ink)}
+.subtitle{font:700 clamp(15px,1.6vw,20px)/1.5 "Noto Serif KR",serif;margin:0 0 40px}
+
+.ak-wrap{display:flex;flex-direction:column;align-items:center;gap:14px}
+.ak-hud{width:100%;max-width:480px;display:flex;justify-content:space-between;align-items:center;gap:16px}
+.ak-hud-item{display:flex;flex-direction:column;align-items:flex-start;gap:2px}
+.ak-hud-item span{font-size:10px;font-weight:900;letter-spacing:.14em;color:#8b8f8c}
+.ak-hud-item b{font:900 22px/1 "Noto Sans KR",sans-serif}
+#lives{color:var(--coral);letter-spacing:2px}
+.ak-start{border:2px solid var(--ink);background:var(--ink);color:#fff;padding:12px 20px;font:900 13px/1 "Noto Sans KR",sans-serif;cursor:pointer;border-radius:24px}
+.ak-start:hover{background:var(--coral);border-color:var(--coral)}
+
+.ak-cabinet{position:relative;border-radius:20px;padding:10px;background:linear-gradient(160deg,#1b2733,#0a1016);box-shadow:0 20px 40px -16px rgba(0,0,0,.5)}
+#canvas{display:block;border-radius:10px;max-width:100%;height:auto;touch-action:none}
+.ak-overlay{position:absolute;inset:10px;border-radius:10px;background:rgba(10,16,22,.92);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;color:#f5f0e5;text-align:center;padding:20px}
+.ak-overlay[hidden]{display:none}
+.ak-overlay-title{font:900 clamp(22px,4vw,30px)/1.2 "Noto Serif KR",serif;margin:0;color:var(--mint)}
+.ak-overlay-sub{font-size:13px;line-height:1.6;color:#c7ccc9;margin:0}
+
+.ak-hint{font-size:11.5px;color:#5f5e5a;max-width:420px;line-height:1.5}
+
+.ak-news{display:none;background:#fffaf0;border:4px solid var(--ink);box-shadow:8px 8px 0 var(--mint);padding:22px 26px;max-width:420px;text-align:left;margin-top:8px}
+.ak-news[data-show]{display:block}
+.ak-news-title{font:900 20px/1.3 "Noto Serif KR",serif;margin:0 0 8px}
+.ak-news-subtitle{font-size:13px;color:#444441;line-height:1.6;margin:0 0 18px}
+.ak-news-label{font-size:11px;font-weight:900;letter-spacing:.12em;color:#b34431;margin:0 0 10px}
+.ak-news-list{display:flex;flex-direction:column;gap:9px}
+.ak-news-list a{font:600 13.5px/1.5 "Noto Serif KR",serif;color:var(--ink);text-decoration:none;border-bottom:1px solid var(--line);padding-bottom:9px}
+.ak-news-list a:last-child{border-bottom:0;padding-bottom:0}
+
+.coordinates{display:block;margin-top:32px;font:500 10px/1 monospace;letter-spacing:.08em;color:#5f5e5a}
+
+.other-games,footer{background:#0c211d;color:#f5f0e5}
+.other-games{padding:80px clamp(20px,6vw,110px);display:grid;grid-template-columns:.4fr 1fr;gap:40px}
+.other-games p{color:var(--mint);font-size:10px;letter-spacing:.18em;font-weight:900}
+.other-games h2{font:700 34px/1.3 "Noto Serif KR",serif}
+.other-games nav{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1px;background:rgba(255,255,255,.18)}
+.other-games a{display:flex;flex-direction:column;gap:25px;background:#0c211d;color:inherit;text-decoration:none;padding:25px}
+.other-games a:hover{background:#12362f}
+.other-games span{color:var(--mint);font-size:10px}
+footer{border-top:1px solid rgba(255,255,255,.18);padding:25px clamp(20px,6vw,110px);display:flex;justify-content:space-between;font-size:10px}
+footer a{color:inherit;text-decoration:none}
+
+@media(max-width:480px){
+  .site-header{height:64px;padding:0 16px}.brand img{height:21px}.newsis-logo img{height:23px}.visual-newsis{font-size:9px}
+  .game-hero{padding:36px 16px 60px}
+  .ak-news{max-width:none;width:100%;padding:20px}
+  .other-games{grid-template-columns:1fr}.other-games nav{grid-template-columns:repeat(2,1fr)}
+  footer{gap:14px;flex-wrap:wrap}
+}
