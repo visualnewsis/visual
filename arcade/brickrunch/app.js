@@ -159,7 +159,7 @@ function endGame(won){
   $('#overlay').querySelector('.ak-overlay-title').textContent=won?'승리! 벽돌을 다 깼어요':'게임 오버';
   $('#overlay').querySelector('.ak-overlay-sub').innerHTML=won?'낚시성 벽돌 뒤에 숨어있던<br>오늘의 진짜 헤드라인을 확인하세요':'그래도 뉴스만큼은<br>진짜만 보여드릴게요';
   showNews(won?'승리! 벽돌을 모두 깼어요':'게임 오버',won?'낚시성 벽돌 뒤에 숨어있던 오늘의 진짜 헤드라인입니다':'낚시성 벽돌엔 졌지만 뉴스만큼은 진짜만 보여드릴게요');
-  window.gtag?.('event',won?'arkanoid_win':'arkanoid_lose',{score});
+  window.gtag?.('event',won?'brickrunch_win':'brickrunch_lose',{score});
 }
 
 function showNews(title,subtitle){
@@ -170,7 +170,7 @@ function showNews(title,subtitle){
   todayNews.forEach(n=>{
     const a=document.createElement('a');
     a.href=n.url;a.textContent=n.title;a.target='_blank';a.rel='noopener';
-    a.addEventListener('click',()=>window.gtag?.('event','arkanoid_article_click',{article_url:n.url}));
+    a.addEventListener('click',()=>window.gtag?.('event','brickrunch_article_click',{article_url:n.url}));
     list.appendChild(a);
   });
   $('#newsPanel').hidden=false;
@@ -184,7 +184,7 @@ function startGame(){
   $('#newsPanel').hidden=true;
   $('#newsPanel').removeAttribute('data-show');
   running=true;
-  window.gtag?.('event','arkanoid_start');
+  window.gtag?.('event','brickrunch_start');
   cancelAnimationFrame(animId);
   animId=requestAnimationFrame(step);
 }
