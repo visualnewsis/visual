@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <title>벽크크 | 낚시성 제목을 부수면 드러나는 진짜 뉴스 | 충무로딩</title>
+  <meta name="description" content="낚시성 제목이 적힌 벽돌을 벽크크 부수면 그 뒤에 숨어있던 오늘의 진짜 헤드라인이 드러나는 충무로딩의 벽돌깨기 미니게임.">
+  <meta name="keywords" content="벽크크,뿌셔뿌셔,벽돌깨기,아르카노이드,클릭베이트,팩트체크,뉴스 게임,충무로딩,비주얼 뉴시스,VISUAL NEWSIS,뉴시스,안재현,크리에이티브 디렉터 안재현,크리에이티브 안재현,디렉터 안재현">
+  <meta name="author" content="크리에이티브 디렉터 안재현">
+  <meta name="robots" content="noindex,follow">
+  <link rel="canonical" href="https://visual.newsis.com/arcade/arkanoid/">
+  <meta property="og:type" content="website"><meta property="og:locale" content="ko_KR">
+  <meta property="og:title" content="벽크크"><meta property="og:description" content="낚시성 제목 벽돌을 벽크크 부수면 오늘의 진짜 뉴스가 드러납니다.">
+  <meta property="og:url" content="https://visual.newsis.com/arcade/arkanoid/"><meta property="og:site_name" content="VISUAL NEWSIS">
+  <meta property="og:image" content="https://visual.newsis.com/assets/logo2024.png">
+  <meta name="twitter:card" content="summary"><meta name="twitter:title" content="벽크크"><meta name="twitter:description" content="낚시성 제목 벽돌을 벽크크 부수면 오늘의 진짜 뉴스가 드러납니다."><meta name="twitter:image" content="https://visual.newsis.com/assets/logo2024.png">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-6BKMWE02W5"></script>
+  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','G-6BKMWE02W5');</script>
+  <link rel="stylesheet" href="./style.css?v=20260829-1">
+  <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"Game","name":"벽크크","alternateName":["벽돌깨기","아르카노이드","클릭베이트 벽돌깨기","뿌셔뿌셔"],"url":"https://visual.newsis.com/arcade/arkanoid/","description":"낚시성 제목이 적힌 벽돌을 깨면 오늘 실제로 발행된 진짜 헤드라인이 드러나는 무료 미니게임","genre":["Arcade game","Breakout","News game"],"inLanguage":"ko-KR","isAccessibleForFree":true,"creator":{"@type":"Person","name":"안재현","jobTitle":["크리에이티브 디렉터","뉴시스 기자"],"worksFor":{"@type":"NewsMediaOrganization","name":"뉴시스","url":"https://www.newsis.com/"}},"isPartOf":{"@type":"CollectionPage","name":"충무로딩","url":"https://visual.newsis.com/arcade/"},"publisher":{"@type":"NewsMediaOrganization","name":"뉴시스","url":"https://www.newsis.com/"}},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"VISUAL NEWSIS","item":"https://visual.newsis.com/"},{"@type":"ListItem","position":2,"name":"충무로딩","item":"https://visual.newsis.com/arcade/"},{"@type":"ListItem","position":3,"name":"벽크크","item":"https://visual.newsis.com/arcade/arkanoid/"}]}]}</script>
+</head>
+<body>
+  <header class="site-header">
+    <a class="brand" href="../"><img src="../assets/chungmuroading-logo-transparent-v2.png" alt="충무로딩"></a>
+    <a class="newsis-logo" href="https://www.newsis.com/" target="_blank" rel="noopener"><img src="../../assets/logo2024.png" alt="뉴시스"></a>
+    <a class="visual-newsis" href="https://visual.newsis.com/">VISUAL NEWSIS</a>
+  </header>
+
+  <main>
+    <section class="game-hero">
+      <p class="eyebrow">BREAK THE CLICKBAIT · REAL NEWS INSIDE</p>
+      <h1>낚시성 제목<br><em>벽크크</em></h1>
+      <p class="subtitle">부수면 부술수록, 그 뒤에 숨은 오늘의 진짜 뉴스가 드러납니다</p>
+
+      <div class="ak-wrap">
+        <div class="ak-hud">
+          <div class="ak-hud-item"><span>SCORE</span><b id="score">0</b></div>
+          <div class="ak-hud-item"><span>LIVES</span><b id="lives">●●●</b></div>
+          <button id="startBtn" class="ak-start">시작하기 ↗</button>
+        </div>
+        <div class="ak-cabinet">
+          <canvas id="canvas" width="480" height="600"></canvas>
+          <div id="overlay" class="ak-overlay">
+            <p class="ak-overlay-title">벽크크</p>
+            <p class="ak-overlay-sub">패들을 움직여 공을 튕기고<br>낚시성 벽돌을 모두 깨보세요</p>
+            <button id="overlayStart" class="ak-start">시작하기 ↗</button>
+          </div>
+        </div>
+        <p class="ak-hint">PC는 마우스나 ←→ 키, 모바일은 화면을 좌우로 드래그해서 패들을 움직이세요</p>
+
+        <div id="newsPanel" class="ak-news" hidden>
+          <p id="newsTitle" class="ak-news-title"></p>
+          <p id="newsSubtitle" class="ak-news-subtitle"></p>
+          <p class="ak-news-label">오늘의 주요기사</p>
+          <div id="newsList" class="ak-news-list"></div>
+        </div>
+      </div>
+      <small class="coordinates">37.561827°N · 126.991076°E</small>
+    </section>
+  </main>
+
+  <section class="other-games"><div><p>PLAY ANOTHER</p><h2>다른 게임도<br>하러가기</h2></div><nav><a href="/arcade/puzzle/"><span>01</span><b>조각 사진관</b></a><a href="/arcade/omok/"><span>02</span><b>뉴스 오목</b></a><a href="/arcade/tarot/"><span>03</span><b>충무로 타로#</b></a><a href="/arcade/output/"><span>04</span><b>제목있음</b></a><a href="/arcade/chungmuman/"><span>05</span><b>충무맨</b></a><a href="/arcade/words/"><span>06</span><b>낱말수선소</b></a></nav></section>
+  <footer><a href="../">충무로딩</a><small>크리에이티브 디렉터 = 안재현</small><span>© NEWSIS</span></footer>
+  <script type="module" src="./app.js?v=20260829-1"></script>
+</body>
+</html>
