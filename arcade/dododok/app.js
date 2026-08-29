@@ -40,8 +40,8 @@ function renderTyping(){
   }).join('');
   $('#accuracy').textContent=`${accuracy}%`;$('#progress').textContent=`${progress}%`;$('#speed').textContent=speed;
   const complete=typed.length===expected.length&&typed.every((letter,index)=>letter===expected[index]);
-  $('#status').textContent=typed.length?complete?'도도독, 제목을 완성했습니다.':`${typed.length} / ${expected.length}자 입력 중`:'첫 글자를 입력하면 측정이 시작됩니다.';
-  if(complete)finish();
+  $('#status').textContent=typed.length?complete?'도도독, 제목을 완성했습니다.':`${typed.length} / ${expected.length}자 입력 중 · Enter로 기사 획득`:'첫 글자를 입력하고 Enter를 누르면 다음 기사로 넘어갑니다.';
+  if(complete)submitCurrent();
 }
 function loadArticle(index){
   currentIndex=index%articles.length;current=articles[currentIndex];startedAt=0;advancing=false;input.value='';input.disabled=false;
@@ -49,10 +49,20 @@ function loadArticle(index){
   const sheet=$('.copy-sheet'),length=chars(current.title).length;sheet.classList.toggle('long-title',length>36);sheet.classList.toggle('very-long-title',length>50);
   renderTyping();if(completed.length)requestAnimationFrame(()=>input.focus({preventScroll:true}));window.gtag?.('event','dododok_article_start',{article_title:current.title});
 }
-function finish(){
-  if(advancing)return;advancing=true;const score=metrics();completed.push({...current,accuracy:score.accuracy,speed:score.speed});window.gtag?.('event','dododok_title_complete',{accuracy:score.accuracy,speed:score.speed,article_title:current.title,question_number:completed.length});
-  if(completed.length<articles.length){$('#status').textContent=`${completed.length}번째 제목 완성! 다음 제목을 불러옵니다.`;setTimeout(()=>loadArticle(currentIndex+1),650);return}
-  input.disabled=true;showFinal();
+function feedbackFor(accuracy){
+  if(accuracy>=95)return['GREAT!','거의 원문 그대로, 읽을 기사 한 장 획득!'];
+  if(accuracy>=80)return['GOOD!','좋은 리듬이에요. 기사 한 장 획득!'];
+  if(accuracy>=60)return['아슬아슬!','조금 달라도 괜찮아요. 기사 한 장 획득!'];
+  return['다시 도도독!','많이 달랐지만 읽을 기사는 놓치지 않았어요.'];
+}
+function submitCurrent(){
+  if(advancing)return;advancing=true;
+  const score=metrics(),submittedAccuracy=score.typed.length?score.accuracy:0,feedback=feedbackFor(submittedAccuracy),panel=$('#roundFeedback'),stack=$('#articleStack');
+  completed.push({...current,accuracy:submittedAccuracy,speed:score.speed});input.disabled=true;
+  $('#acquiredCount').textContent=completed.length;stack.setAttribute('aria-label',`획득한 읽을 기사 ${completed.length}장`);stack.classList.remove('gain');void stack.offsetWidth;stack.classList.add('gain');
+  panel.querySelector('strong').textContent=feedback[0];panel.querySelector('span').textContent=feedback[1];panel.hidden=false;panel.classList.remove('show');void panel.offsetWidth;panel.classList.add('show');
+  window.gtag?.('event','dododok_title_complete',{accuracy:submittedAccuracy,speed:score.speed,article_title:current.title,question_number:completed.length,submitted_by:score.typed.length===score.expected.length?'complete':'enter'});
+  setTimeout(()=>{panel.hidden=true;panel.classList.remove('show');if(completed.length<articles.length)loadArticle(currentIndex+1);else showFinal()},800);
 }
 function showFinal(){
   const averageAccuracy=Math.round(completed.reduce((sum,item)=>sum+item.accuracy,0)/completed.length),averageSpeed=Math.round(completed.reduce((sum,item)=>sum+item.speed,0)/completed.length);$('#finalAccuracy').textContent=`${averageAccuracy}%`;$('#finalSpeed').textContent=averageSpeed;
@@ -68,8 +78,19 @@ input.addEventListener('input',event=>{
   const limit=chars(typingTitle(current.title)).length;if(chars(input.value).length>limit)input.value=chars(input.value).slice(0,limit).join('');
   const typed=chars(input.value),expected=chars(typingTitle(current.title)),ok=!typed.length||typed.at(-1)===expected[typed.length-1];keySound(ok);typingBurst(ok);const keys=document.querySelectorAll('.key-row i'),key=keys.length?keys[Math.floor(Math.random()*keys.length)]:null;if(key){key.classList.add('hit');setTimeout(()=>key.classList.remove('hit'),70)}renderTyping();
 });
+input.addEventListener('keydown',event=>{
+  if(event.key!=='Enter'||event.isComposing||composing)return;
+  event.preventDefault();submitCurrent();
+});
 input.addEventListener('paste',event=>event.preventDefault());
-$('#nextButton').addEventListener('click',()=>{completed=[];articles=shuffle(articles);loadArticle(0)});
+document.querySelectorAll('.symbol-tools button[data-symbol]').forEach(button=>button.addEventListener('click',()=>{
+  if(input.disabled)return;
+  const symbol=button.dataset.symbol||'',start=input.selectionStart??input.value.length,end=input.selectionEnd??start;
+  input.setRangeText(symbol,start,end,'end');
+  input.dispatchEvent(new InputEvent('input',{bubbles:true,inputType:'insertText',data:symbol}));
+  input.focus({preventScroll:true});
+}));
+$('#nextButton').addEventListener('click',()=>{completed=[];$('#acquiredCount').textContent='0';$('#articleStack').setAttribute('aria-label','획득한 읽을 기사 0장');articles=shuffle(articles);loadArticle(0)});
 $('#sessionArticles').addEventListener('click',event=>{const link=event.target.closest('a');if(link)window.gtag?.('event','dododok_article_click',{article_url:link.href})});
 $('.start-link').addEventListener('click',()=>setTimeout(()=>input.focus(),280));
 

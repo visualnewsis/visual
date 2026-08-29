@@ -110,23 +110,38 @@
   .key-row i{padding:7px 2px}
 }
 
-/* The grey guide is the input surface; remove the duplicate typewriter panel. */
+/* The problem, grey progress guide and visible input share one typographic grid. */
 .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
 .typing-section{padding-left:clamp(16px,3vw,54px);padding-right:clamp(16px,3vw,54px)}
 .typing-desk{display:block;width:100%;max-width:none}
 .copy-sheet{width:100%;min-height:300px;padding-left:clamp(42px,5vw,78px);padding-right:clamp(42px,5vw,78px)}
-.target-input-wrap{position:relative;margin-top:0;transition:background .15s}
-.target-input-wrap:focus-within{background:rgba(0,180,201,.035);outline:2px solid var(--mint);outline-offset:4px}
+.symbol-tools{position:relative;display:flex;align-items:center;gap:8px;margin:22px 0 14px}
+.symbol-tools>span{margin-right:4px;color:#747c7f;font:800 11px/1 sans-serif;letter-spacing:.12em}
+.symbol-tools button{min-width:42px;height:34px;border:1px solid rgba(13,32,40,.4);background:#fffaf0;color:var(--ink);font:800 20px/1 "Noto Serif KR",serif;cursor:pointer}
+.symbol-tools button:hover,.symbol-tools button:focus-visible{border-color:var(--mint);background:rgba(0,180,201,.08);outline:2px solid var(--mint);outline-offset:2px}
+.target-input-wrap{position:relative;margin-top:0}
 .target-input-wrap .target{padding:0;min-height:78px;pointer-events:none}
-.target-input-wrap textarea{position:absolute;inset:0;z-index:2;width:100%;height:100%;margin:0;padding:0;border:0;resize:none;opacity:0;cursor:text;color:transparent;background:transparent;caret-color:transparent}
-.target-input-wrap textarea:focus{outline:0;box-shadow:none}
+.input-label{position:relative;display:block;margin:16px 0 8px;color:#b34431;font:900 10px/1 sans-serif;letter-spacing:.12em}
+.typed-input{position:relative;display:block;width:100%;min-height:78px;margin:0;padding:0 0 7px;border:0;border-bottom:2px solid rgba(13,32,40,.3);resize:none;overflow:hidden;background:transparent;color:var(--ink);caret-color:var(--coral);outline:0;font:800 clamp(23px,2.2vw,34px)/1.35 "Noto Serif KR",serif;letter-spacing:-.055em;word-break:keep-all;overflow-wrap:anywhere;white-space:pre-wrap}
+.typed-input::placeholder{color:#c1c1bb;opacity:1}
+.typed-input:focus{border-bottom-color:var(--mint);box-shadow:0 3px 0 rgba(0,180,201,.18)}
+.article-stack{position:absolute;z-index:3;right:clamp(28px,4vw,64px);top:74px;width:92px;height:48px;pointer-events:none}
+.article-stack i{position:absolute;right:0;bottom:0;width:66px;height:38px;border:1px solid rgba(13,32,40,.45);background:#fffaf0;box-shadow:2px 2px 0 rgba(13,32,40,.18);transform-origin:80% 100%}
+.article-stack i:nth-child(1){transform:rotate(-7deg) translate(-8px,-3px)}.article-stack i:nth-child(2){transform:rotate(4deg) translate(5px,-1px)}.article-stack i:nth-child(3){transform:rotate(-1deg)}
+.article-stack b{position:absolute;right:4px;bottom:10px;z-index:2;color:#b34431;font:900 10px/1 sans-serif;white-space:nowrap}
+.article-stack.gain{animation:stackGain .45s ease both}
+.round-feedback{position:absolute;z-index:6;inset:50% auto auto 50%;min-width:min(360px,78%);padding:18px 24px;border:3px solid var(--ink);background:var(--mint);color:var(--ink);box-shadow:8px 8px 0 var(--coral);text-align:center;transform:translate(-50%,-50%) rotate(-1deg)}
+.round-feedback strong{display:block;font:900 clamp(25px,3vw,42px)/1 "Noto Serif KR",serif}.round-feedback span{display:block;margin-top:8px;font:800 12px/1.4 sans-serif}
+.round-feedback.show{animation:feedbackIn .5s ease both}
+@keyframes stackGain{50%{transform:translateY(-12px) rotate(2deg)}100%{transform:none}}
+@keyframes feedbackIn{0%{opacity:0;transform:translate(-50%,-42%) scale(.86) rotate(-3deg)}100%{opacity:1;transform:translate(-50%,-50%) scale(1) rotate(-1deg)}}
 .typewriter{display:none!important}
 @media(min-width:821px){
-  .copy-sheet h3,.copy-sheet .target,.copy-sheet.long-title h3,.copy-sheet.long-title .target,.copy-sheet.very-long-title h3,.copy-sheet.very-long-title .target{font-size:27px;line-height:1.4;letter-spacing:-.055em;white-space:pre;overflow-wrap:normal;word-break:normal}
+  .copy-sheet h3,.copy-sheet .target,.copy-sheet .typed-input,.copy-sheet.long-title h3,.copy-sheet.long-title .target,.copy-sheet.long-title .typed-input,.copy-sheet.very-long-title h3,.copy-sheet.very-long-title .target,.copy-sheet.very-long-title .typed-input{font-size:27px;line-height:1.4;letter-spacing:-.055em;white-space:pre-wrap;overflow-wrap:anywhere;word-break:keep-all}
 }
 .session-articles{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));border-top:2px solid var(--ink);margin:34px 0 28px}
 .session-articles a{display:grid;grid-template-columns:34px minmax(0,1fr) auto;gap:12px;align-items:center;min-height:72px;padding:14px 12px;border-bottom:1px solid rgba(13,32,40,.35);color:var(--ink);text-decoration:none}
 .session-articles a:nth-child(odd){border-right:1px solid rgba(13,32,40,.35)}
 .session-articles span{font:800 11px/1 monospace;color:#a53e2f}.session-articles b{font:700 15px/1.45 "Noto Serif KR",serif;word-break:keep-all}.session-articles i{font:800 11px/1 sans-serif;font-style:normal;white-space:nowrap}
 .session-articles a:hover b,.session-articles a:focus-visible b{text-decoration:underline}
-@media(max-width:820px){.hero{min-height:430px;padding-bottom:38px}.typing-section{margin-top:0;padding-top:24px}.typing-desk{max-width:none}.copy-sheet{min-height:285px;padding-left:22px;padding-right:22px}.copy-sheet h3,.copy-sheet .target,.copy-sheet.long-title h3,.copy-sheet.long-title .target,.copy-sheet.very-long-title h3,.copy-sheet.very-long-title .target{font-size:22px;line-height:1.4;letter-spacing:-.055em;white-space:pre-wrap;overflow-wrap:anywhere;word-break:keep-all}.target-input-wrap .target{min-height:70px;padding:0}.session-articles{grid-template-columns:1fr}.session-articles a:nth-child(odd){border-right:0}}
+@media(max-width:820px){.hero{min-height:430px;padding-bottom:38px}.typing-section{margin-top:0;padding-top:24px}.typing-desk{max-width:none}.copy-sheet{min-height:285px;padding-left:22px;padding-right:22px}.copy-sheet h3,.copy-sheet .target,.copy-sheet .typed-input,.copy-sheet.long-title h3,.copy-sheet.long-title .target,.copy-sheet.long-title .typed-input,.copy-sheet.very-long-title h3,.copy-sheet.very-long-title .target,.copy-sheet.very-long-title .typed-input{font-size:22px;line-height:1.4;letter-spacing:-.055em;white-space:pre-wrap;overflow-wrap:anywhere;word-break:keep-all}.target-input-wrap .target,.typed-input{min-height:70px;padding-left:0;padding-right:0}.symbol-tools{margin-top:18px}.article-stack{right:20px;top:68px;transform:scale(.82);transform-origin:100% 0}.round-feedback{min-width:75%;padding:15px 18px}.session-articles{grid-template-columns:1fr}.session-articles a:nth-child(odd){border-right:0}}
