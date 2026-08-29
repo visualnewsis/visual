@@ -55,9 +55,13 @@ function placeMines(excludeIdx){
 function render(){
   board.innerHTML='';
   cells.forEach((cell,i)=>{
-    const btn=document.createElement('div');
+    const btn=document.createElement('button');
+    btn.type='button';
     btn.className='ms-cell';
+    btn.setAttribute('role','gridcell');
+    btn.setAttribute('aria-label',`${Math.floor(i/COLS)+1}행 ${i%COLS+1}열 닫힌 칸`);
     btn.addEventListener('click',()=>onCellTap(i));
+    btn.addEventListener('keydown',event=>{if(event.key==='Enter'||event.key===' '){event.preventDefault();onCellTap(i)}});
     btn.addEventListener('contextmenu',e=>{e.preventDefault();onFlag(i)});
     cell.el=btn;
     board.appendChild(btn);
@@ -86,11 +90,13 @@ function onFlag(i){
   flagCount+=cell.flagged?1:-1;
   updateMineCounter();
   cell.el.innerHTML=cell.flagged?'<span class="ms-flag"></span>':'';
+  cell.el.setAttribute('aria-label',`${Math.floor(i/COLS)+1}행 ${i%COLS+1}열 ${cell.flagged?'깃발 표시':'닫힌 칸'}`);
+  window.gtag?.('event','minesweeper_flag',{flagged:cell.flagged,remaining_mines:MINES-flagCount});
 }
 
 function onOpen(i){
   if(gameOver||cells[i].flagged||cells[i].revealed)return;
-  if(firstClick){placeMines(i);firstClick=false;startTimer()}
+  if(firstClick){placeMines(i);firstClick=false;startTimer();window.gtag?.('event','minesweeper_game_start')}
   if(cells[i].mine){loseGame(i);return}
   floodOpen(i);
   checkWin();
@@ -104,6 +110,7 @@ function floodOpen(start){
     if(cell.revealed||cell.flagged)continue;
     cell.revealed=true;revealedCount++;
     cell.el.classList.add('revealed');
+    cell.el.setAttribute('aria-label',`${Math.floor(i/COLS)+1}행 ${i%COLS+1}열 ${cell.adj?`주변 지뢰 ${cell.adj}개`:'빈 칸'}`);
     if(cell.adj>0){
       cell.el.textContent=cell.adj;
       cell.el.style.color=numColors[cell.adj];
@@ -122,6 +129,7 @@ function loseGame(clickedIdx){
       cell.el.classList.add('revealed');
       if(i===clickedIdx)cell.el.classList.add('mine-hit');
       cell.el.innerHTML='<span class="ms-mine-dot"></span>';
+      cell.el.setAttribute('aria-label',`${Math.floor(i/COLS)+1}행 ${i%COLS+1}열 지뢰`);
     }
   });
   showNews('지뢰를 밟았어요.','뉴스만큼은 (지뢰)가짜뉴스가 아닌\n진짜 뉴스를 확인하세요');
@@ -162,7 +170,7 @@ function resetGame(){
   buildCells();render();
 }
 
-faceBtn.addEventListener('click',resetGame);
+faceBtn.addEventListener('click',()=>{window.gtag?.('event','minesweeper_reset',{elapsed_time:seconds});resetGame()});
 faceBtn.addEventListener('mousedown',()=>{if(!gameOver)faceWorried()});
 faceBtn.addEventListener('mouseup',()=>{if(!gameOver)faceNormal()});
 
@@ -170,6 +178,7 @@ flagModeBtn.addEventListener('click',()=>{
   flagMode=!flagMode;
   flagModeBtn.setAttribute('aria-pressed',String(flagMode));
 });
+newsList.addEventListener('click',event=>{const link=event.target.closest('a');if(link)window.gtag?.('event','minesweeper_article_click',{article_url:link.href,game_result:faceParts.innerHTML.includes('rect')?'win':'lose'})});
 
 async function loadNews(){
   try{
