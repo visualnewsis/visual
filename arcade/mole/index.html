@@ -24,7 +24,7 @@
   <meta name="author" content="크리에이티브 디렉터 안재현">
   <link rel="shortcut icon" href="https://image.newsis.com/n_www/images/ci/2024/favicon.png">
   <link rel="icon" type="image/png" href="https://image.newsis.com/n_www/images/ci/2024/favicon.png">
-  <meta name="robots" content="noindex,follow">
+  <meta name="robots" content="index,follow,max-image-preview:large">
   <link rel="canonical" href="https://visual.newsis.com/arcade/mole/">
   <meta property="og:type" content="website">
   <meta property="og:locale" content="ko_KR">
@@ -121,8 +121,9 @@ h1{
 }
 .hole{
   position:relative; aspect-ratio:1/0.92; border-radius:50%;
-  -webkit-tap-highlight-color:transparent;
+  -webkit-tap-highlight-color:transparent;border:0;padding:0;background:transparent;font:inherit;
 }
+.hole:focus-visible{outline:4px solid var(--mint);outline-offset:5px}
 .hole::before{
   content:""; position:absolute; inset:-9%; border-radius:50%; z-index:0;
   background:
@@ -197,7 +198,7 @@ h1{
 .panel{
   position:absolute; inset:0; background:rgba(10,12,11,.92); color:#fff;
   border-radius:20px; display:flex; flex-direction:column; align-items:center;
-  justify-content:center; text-align:center; padding:32px 20px; gap:14px;
+  justify-content:center; text-align:center; padding:32px 20px; gap:14px;z-index:20;
 }
 .panel[hidden]{display:none}
 .panel .big{font-family:"Black Han Sans",sans-serif; font-size:30px; line-height:1.25}
@@ -229,6 +230,18 @@ h1{
 .game-footer-row{display:flex; justify-content:space-between; align-items:center; gap:12px}
 .game-footer a{color:inherit;text-decoration:none}
 .game-footer .arcade-credit{display:block;margin-top:8px}
+.other-games{width:100%;margin-top:24px;padding:54px max(16px,calc((100vw - 640px)/2));background:#10251f;color:#f4f1ea;display:grid;grid-template-columns:.42fr 1fr;gap:26px}
+.other-games p{margin:0 0 8px;color:var(--mint);font-size:9px;font-weight:900;letter-spacing:.18em}.other-games h2{margin:0;font-size:25px;line-height:1.3}.other-games nav{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:1px;background:rgba(255,255,255,.16)}.other-games a{min-width:0;padding:16px 13px;background:#10251f;color:inherit;text-decoration:none}.other-games a:hover,.other-games a:focus-visible{background:#17382f}.other-games span{display:block;margin-bottom:9px;color:var(--mint);font-size:8px}.other-games b{font-size:11px;line-height:1.35;word-break:keep-all}
+@media(max-width:480px){
+  body{padding-top:8px;overflow-x:hidden}
+  .site-header{width:100%;padding:4px 12px 0;grid-template-columns:minmax(70px,1fr) auto minmax(70px,1fr)}
+  .site-header .brand--logo img{height:19px;max-width:78px;object-fit:contain}.site-header .newsis-logo img{height:17px}.site-header .visual-newsis{font-size:7px;letter-spacing:0}
+  .stage{padding:14px 12px 22px;max-width:100%}.head{margin-bottom:10px}.sub{font-size:11px;word-break:keep-all}.hud{margin:14px 0 10px}.hud-value{font-size:23px}
+  .board-wrap{perspective:none}.cabinet{padding:9px;border-radius:18px;transform:none}.board{padding:11px;gap:8px;border-radius:12px}.tag{font-size:8px;padding:3px 5px}.panel{border-radius:14px;padding:22px 14px}.panel .big{font-size:25px}
+  .game-footer{max-width:100%;padding:0 12px 24px}.game-footer-row{align-items:flex-start}.game-footer-row a{font-size:9px}.coordinates{font-size:7px;letter-spacing:0;white-space:nowrap}
+  .other-games{grid-template-columns:1fr;padding:38px 14px}.other-games nav{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media(prefers-reduced-motion:reduce){.mole,.hammer-fx{transition:none}.hole.hit .tag,.hole.hit .burst,.miss-flash.go{animation:none}}
 </style>
 </head>
 <body>
@@ -263,7 +276,7 @@ h1{
     <div class="cabinet">
       <span class="bolt tl"></span><span class="bolt tr"></span>
       <span class="bolt bl"></span><span class="bolt br"></span>
-      <div class="board" id="board" aria-hidden="true"></div>
+      <div class="board" id="board" role="group" aria-label="두더지 잡기 게임판"></div>
       <div class="miss-flash" id="missFlash"></div>
     </div>
 
@@ -284,6 +297,8 @@ h1{
 
   <div class="foot">newsis.com 실시간 헤드라인 연동 — 4시간마다 자동으로 새로고침됩니다</div>
 </div>
+
+  <section class="other-games" aria-labelledby="otherGamesTitle"><div><p>PLAY ANOTHER</p><h2 id="otherGamesTitle">다른 게임도<br>하러가기</h2></div><nav><a href="/arcade/puzzle/"><span>01</span><b>조각 사진관</b></a><a href="/arcade/omok/"><span>02</span><b>뉴스 오목</b></a><a href="/arcade/tarot/"><span>03</span><b>충무로 타로#</b></a><a href="/arcade/output/"><span>04</span><b>제목있음</b></a><a href="/arcade/chungmuman/"><span>05</span><b>충무맨</b></a><a href="/arcade/words/"><span>06</span><b>낱말수선소</b></a><a href="/arcade/dododok/"><span>07</span><b>도도독</b></a><a href="/arcade/minesweeper/"><span>08</span><b>지뢰찾기</b></a></nav></section>
 
   <footer class="game-footer">
     <div class="game-footer-row">
@@ -416,8 +431,10 @@ h1{
   let hitCounts = {};
 
   for (let i = 0; i < HOLE_COUNT; i++) {
-    const hole = document.createElement('div');
+    const hole = document.createElement('button');
+    hole.type = 'button';
     hole.className = 'hole';
+    hole.setAttribute('aria-label', `${i + 1}번 두더지 구멍`);
     hole.innerHTML = `
       <div class="pit">
         <div class="mole">
@@ -437,6 +454,14 @@ h1{
     spawnHammerFx(e.clientX, e.clientY);
     const holeEl = e.target.closest('.hole');
     if (!holeEl) return;
+    if (holeEl.dataset.state === 'up') whack(holeEl);
+    else missSwing();
+  });
+  board.addEventListener('keydown', e => {
+    if (e.key !== 'Enter' && e.key !== ' ') return;
+    const holeEl = e.target.closest('.hole');
+    if (!holeEl) return;
+    e.preventDefault();
     if (holeEl.dataset.state === 'up') whack(holeEl);
     else missSwing();
   });
@@ -512,12 +537,14 @@ h1{
     hole.querySelector('.tag').textContent = kw;
     hole.dataset.keyword = kw;
     hole.dataset.state = 'up';
+    hole.setAttribute('aria-label', `${kw} 두더지 잡기`);
     hole.classList.add('up');
     hole.classList.remove('hit');
     const upTime = Math.max(1000, 1600 - (GAME_TIME - timeLeft) * 15);
     hole._downTimeout = setTimeout(() => {
       if (hole.dataset.state === 'up') {
         hole.dataset.state = 'down';
+        hole.setAttribute('aria-label', '빈 두더지 구멍');
         hole.classList.remove('up');
       }
       scheduleNext();
@@ -540,6 +567,7 @@ h1{
     score += 10;
     scoreEl.textContent = score;
     if (kw) hitCounts[kw] = (hitCounts[kw] || 0) + 1;
+    window.gtag?.('event','mole_hit',{keyword:kw||'',score});
   }
 
   function startGame() {
@@ -552,6 +580,7 @@ h1{
     startPanel.hidden = true;
     endPanel.hidden = true;
     running = true;
+    window.gtag?.('event','mole_game_start');
     holes.forEach(h => { h.dataset.state = 'down'; h.classList.remove('up','hit'); });
     spawnMole();
     countdownTimer = setInterval(() => {
@@ -584,10 +613,12 @@ h1{
       readBtn.hidden = true;
     }
     endPanel.hidden = false;
+    window.gtag?.('event','mole_game_complete',{score,top_keyword:top||''});
   }
 
   document.getElementById('startBtn').addEventListener('click', startGame);
   document.getElementById('retryBtn').addEventListener('click', startGame);
+  readBtn.addEventListener('click',()=>window.gtag?.('event','mole_article_click',{article_url:readBtn.href}));
 })();
 </script>
 </body>
