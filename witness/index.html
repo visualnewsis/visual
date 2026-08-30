@@ -721,6 +721,7 @@ body{font-family:"Noto Sans KR","Malgun Gothic","Apple SD Gothic Neo",sans-serif
 </style>
 <style id="witness-editshop-frame">
 .story-identity{position:absolute;z-index:60;top:calc(50% - clamp(105px,11vw,160px));left:50%;transform:translateX(-50%);display:flex;align-items:center;justify-content:center;gap:12px;color:#aaa;font:800 10px/1 "Noto Sans KR",sans-serif;letter-spacing:.15em}.story-identity b{color:#fff;font-size:12px;letter-spacing:.08em}.story-identity span{padding-left:12px;border-left:1px solid rgba(255,255,255,.24)}
+.witness-share{padding:clamp(72px,9vw,120px) 24px;background:#050505;color:#f4f3ef;text-align:center;border-top:1px solid rgba(255,255,255,.1)}.witness-share small{display:block;margin-bottom:20px;color:#777772;font-size:10px;font-weight:700;letter-spacing:.18em}.witness-share h2{margin:0 0 34px;font-size:clamp(30px,4.2vw,56px);line-height:1.25;letter-spacing:-.05em}.witness-share-button{min-width:min(320px,82vw);padding:18px 28px;border:1px solid rgba(255,255,255,.4);border-radius:999px;background:#f4f3ef;color:#090909;font:800 14px/1 "Noto Sans KR",sans-serif;cursor:pointer;transition:background .2s,color .2s,transform .2s}.witness-share-button:hover,.witness-share-button:focus-visible{background:#00b4c9;color:#030405;transform:translateY(-2px);outline:none}.witness-share-button span{margin-left:12px}.witness-share-status{min-height:20px;margin:14px 0 0;color:#8d8d87;font-size:11px}
 .editor-note{position:relative;min-height:max(760px,100svh);padding:clamp(72px,8vw,120px) clamp(22px,5vw,76px);display:flex;align-items:center;overflow:hidden;background:#030608 url('../shelter/images/ending.webp') center/cover no-repeat;color:#fff}.editor-note::before{content:"";position:absolute;inset:0;background:linear-gradient(90deg,#000 0 34%,rgba(0,0,0,.84) 48%,rgba(0,0,0,.18) 78%,rgba(0,0,0,.34))}.editor-note-copy{position:relative;z-index:2;width:min(590px,48vw)}.editor-note-kicker{font-size:clamp(15px,1.3vw,20px);line-height:1.8;color:#b7bbbd}.editor-note-kicker strong{display:block;color:#fff;font-size:1.08em}.editor-note-title{margin:clamp(40px,6vh,70px) 0 0;font-size:clamp(66px,7vw,118px);font-weight:900;line-height:.8;letter-spacing:-.08em}.editor-note-title span{display:block}.editor-note-title .mint{color:#00b4c9}.editor-note-body{margin-top:clamp(42px,7vh,72px);font-size:clamp(14px,1.25vw,19px);line-height:2;color:#c5c7c8}.editor-note-body strong{color:#fff}.editor-note-byline{margin-top:28px;font-size:11px;color:#a4a7a8}.editor-note-link{display:inline-block;margin-top:clamp(48px,9vh,110px);color:#a0a5a6;text-decoration:none;font-size:9px;letter-spacing:.2em}.editor-note-mark{position:absolute;z-index:1;right:-2vw;bottom:-.15em;font-size:clamp(130px,20vw,360px);font-weight:900;letter-spacing:-.1em;color:rgba(255,255,255,.04);white-space:nowrap}
 .witness-footer{display:flex;justify-content:space-between;gap:22px;padding:28px clamp(20px,5vw,76px);background:#030405;color:#85898a;font:700 9px/1.5 "Noto Sans KR",sans-serif;letter-spacing:.1em}
 @media(max-width:760px){.story-identity{top:calc(50% - 100px);left:50%;width:100%;transform:translateX(-50%)}.editor-note{min-height:820px;padding-inline:24px;background-position:64% center}.editor-note::before{background:linear-gradient(180deg,#000 0,rgba(0,0,0,.9) 55%,rgba(0,0,0,.38))}.editor-note-copy{width:100%}.editor-note-title{font-size:clamp(62px,20vw,92px)}.witness-footer{flex-direction:column;gap:8px}}
@@ -1011,7 +1012,12 @@ body{font-family:"Noto Sans KR","Malgun Gothic","Apple SD Gothic Neo",sans-serif
   </div>
 </section>
 
-
+<section class="witness-share" aria-labelledby="witness-share-title">
+  <small>SHARE THIS STORY</small>
+  <h2 id="witness-share-title">기억을 다음 증인에게<br>전해주세요.</h2>
+  <button class="witness-share-button" id="witnessShareButton" type="button">이 기사 공유하기 <span aria-hidden="true">↗</span></button>
+  <p class="witness-share-status" id="witnessShareStatus" role="status" aria-live="polite"></p>
+</section>
 
 <section class="more" aria-label="다른 편집# 기사"></section><aside class="editor-note" aria-labelledby="editor-note-title"><div class="editor-note-copy"><div class="editor-note-kicker">팩트 너머의 공감<strong>사실을 넘어 이야기로</strong></div><h2 class="editor-note-title" id="editor-note-title"><span>뉴스를,</span><span class="mint">한 걸음 더</span></h2><div class="editor-note-body">매일 쏟아지는 기사<br>놓치고 있는 가치를 찾고<br>더 깊이, 더 쉽게, 더 오래<br><strong>편집#이 끌어올립니다.</strong><div class="editor-note-byline">기획·디렉터 = 안재현 기자</div></div><a class="editor-note-link" href="https://visual.newsis.com/editshop/">VISUAL NEWSIS · INTERACTIVE SERIES</a></div><div class="editor-note-mark" aria-hidden="true">편집#008</div></aside>
 <footer class="witness-footer"><span>VISUAL NEWSIS · 편집#008 · INTERACTIVE SERIES</span><span>기획·디렉터 = 안재현 기자</span><span>© NEWSIS. ALL RIGHTS RESERVED.</span></footer><script>
@@ -1028,6 +1034,14 @@ const departure=$("#departure"), dep1=$("#dep1"), dep2=$("#dep2"), dep3=$("#dep3
 const dateNow=$("#dateNow"), datePast=$("#datePast"), dateSeventeen=$("#dateSeventeen"), date815=$("#date815");
 const restore815=$("#restore815"), restoreSep=$("#restoreSep"), restoreNow=$("#restoreNow"), restoreMessage=$("#restoreMessage");
 const finalSection=$("#final"), finalI=$(".final-i"), finalWitness=$(".final-witness"), finalHoldFill=$("#finalHoldFill");
+const witnessShareButton=$("#witnessShareButton"),witnessShareStatus=$("#witnessShareStatus");
+if(witnessShareButton)witnessShareButton.addEventListener("click",async()=>{
+  const shareData={title:"내가 증인입니다 | 편집#008",text:"증언과 기록을 따라 광복의 의미와 기억의 책임을 체험합니다.",url:"https://visual.newsis.com/witness/"};
+  try{
+    if(navigator.share){await navigator.share(shareData);witnessShareStatus.textContent="공유했습니다."}
+    else{await navigator.clipboard.writeText(shareData.url);witnessShareStatus.textContent="기사 주소를 복사했습니다."}
+  }catch(error){if(error.name!=="AbortError")witnessShareStatus.textContent="공유하지 못했습니다. 잠시 후 다시 시도해 주세요."}
+});
 let finalHoldActive=false,finalHoldReleased=false,finalHoldDistance=0,finalHoldStarted=0,finalHoldY=0;
 let mx=0,my=0;
 addEventListener("mousemove",e=>{mx=e.clientX/innerWidth-.5;my=e.clientY/innerHeight-.5},{passive:true});
