@@ -8,7 +8,8 @@
     {slug:"temperature",num:"004",meta:"폭염과 열 노출",title:"당신의 온도",image:"/temperature/images/thermometer.jpg",alt:"폭염 속 온도계"},
     {slug:"kangin",num:"005",meta:"축구와 전술",title:"120%의 이강인",image:"/kangin/images/hero.jpg",alt:"경기장에서 달리는 이강인"},
     {slug:"children",num:"006",meta:"아이와 생활권",title:"아이가 자라는 동안",image:"/children/images/children-running.jpg",alt:"함께 달리는 아이들"},
-    {slug:"buy-live",num:"007",meta:"주택과 생활비",title:"이 집, 살 수 있겠습니까?",image:"/buy-live/images/hero.jpg",alt:"도시의 주택과 아파트"}
+    {slug:"buy-live",num:"007",meta:"주택과 생활비",title:"이 집, 살 수 있겠습니까?",image:"/buy-live/images/hero.jpg",alt:"도시의 주택과 아파트"},
+    {slug:"witness",num:"008",meta:"광복과 기억",title:"내가 증인입니다.",image:"/witness/images/thumbnail-360x240.png",alt:"태극기를 든 시민들과 내가 증인입니다 제목"}
   ];
   const start=()=>{
     const section=document.querySelector("section.more,section.editshop-next");
