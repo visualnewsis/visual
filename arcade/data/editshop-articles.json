@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-08-30T22:53:59+00:00",
+  "updatedAt": "2026-08-31T05:49:29+00:00",
   "source": "VISUAL NEWSIS editshop landing page",
   "articles": [
     {
@@ -70,6 +70,16 @@
       "description": "가진 돈과 소득으로 살 수 있는 집의 범위를 확인하고, 집을 산 뒤 매달 남는 생활비까지 계산합니다.",
       "image": "https://visual.newsis.com/buy-live/images/hero.jpg",
       "url": "https://visual.newsis.com/buy-live/",
+      "profile": "center"
+    },
+    {
+      "id": "witness",
+      "issue": "편집#008",
+      "label": "LIBERATION / TESTIMONY / MEMORY",
+      "title": "내가 증인입니다.",
+      "description": "광복 전후의 날짜와 피해자들의 증언, 식민지 기록을 따라 기억의 의미를 직접 경험합니다.",
+      "image": "https://visual.newsis.com/witness/images/final-march.jpg",
+      "url": "https://visual.newsis.com/witness/",
       "profile": "center"
     }
   ]
