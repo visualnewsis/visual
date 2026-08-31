@@ -1,0 +1,143 @@
+.other-games.arcade-more-games {
+  box-sizing: border-box !important;
+  width: 100% !important;
+  max-width: none !important;
+  margin: 0 !important;
+  padding: clamp(42px, 6vw, 76px) max(20px, calc((100vw - 1180px) / 2)) !important;
+  display: grid !important;
+  grid-template-columns: minmax(210px, .36fr) minmax(0, 1fr) !important;
+  align-items: start !important;
+  gap: clamp(28px, 5vw, 72px) !important;
+  background: #10251f !important;
+  color: #f4f1ea !important;
+  font-family: Pretendard, "Noto Sans KR", sans-serif !important;
+}
+
+.arcade-more-games__intro p {
+  margin: 0 0 12px !important;
+  color: #18bfd0 !important;
+  font-size: 10px !important;
+  font-weight: 800 !important;
+  line-height: 1 !important;
+  letter-spacing: .18em !important;
+}
+
+.arcade-more-games__intro h2 {
+  margin: 0 !important;
+  color: inherit !important;
+  font-family: "Noto Serif KR", serif !important;
+  font-size: clamp(28px, 3vw, 46px) !important;
+  font-weight: 700 !important;
+  line-height: 1.25 !important;
+  letter-spacing: -.04em !important;
+  word-break: keep-all !important;
+}
+
+.other-games.arcade-more-games nav {
+  min-width: 0 !important;
+  display: grid !important;
+  grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+  gap: 1px !important;
+  background: rgba(244, 241, 234, .2) !important;
+}
+
+.other-games.arcade-more-games nav a {
+  box-sizing: border-box !important;
+  min-width: 0 !important;
+  min-height: 86px !important;
+  padding: 15px 14px !important;
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: space-between !important;
+  gap: 12px !important;
+  background: #10251f !important;
+  color: #f4f1ea !important;
+  text-decoration: none !important;
+  transition: background-color .2s ease, color .2s ease !important;
+}
+
+.other-games.arcade-more-games nav a:hover,
+.other-games.arcade-more-games nav a:focus-visible {
+  background: #17382f !important;
+  color: #fff !important;
+  outline: 2px solid #18bfd0 !important;
+  outline-offset: -2px !important;
+}
+
+.arcade-more-games__meta {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  gap: 8px !important;
+}
+
+.other-games.arcade-more-games nav span {
+  display: block !important;
+  margin: 0 !important;
+  color: #18bfd0 !important;
+  font-size: 9px !important;
+  font-weight: 800 !important;
+  line-height: 1 !important;
+  letter-spacing: .1em !important;
+}
+
+.arcade-more-games__new {
+  padding: 3px 6px !important;
+  border: 1px solid #f1784f !important;
+  color: #f1784f !important;
+  font-size: 8px !important;
+  font-style: normal !important;
+  font-weight: 900 !important;
+  line-height: 1 !important;
+  letter-spacing: .08em !important;
+}
+
+.other-games.arcade-more-games nav b {
+  min-width: 0 !important;
+  color: inherit !important;
+  font-size: clamp(12px, 1vw, 15px) !important;
+  font-weight: 700 !important;
+  line-height: 1.25 !important;
+  letter-spacing: -.03em !important;
+  white-space: nowrap !important;
+  word-break: keep-all !important;
+}
+
+@media (max-width: 760px) {
+  .other-games.arcade-more-games {
+    padding: 38px 14px 46px !important;
+    grid-template-columns: 1fr !important;
+    gap: 24px !important;
+  }
+
+  .arcade-more-games__intro h2 {
+    font-size: 30px !important;
+  }
+
+  .other-games.arcade-more-games nav {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+
+  .other-games.arcade-more-games nav a {
+    min-height: 74px !important;
+    padding: 13px 11px !important;
+  }
+
+  .other-games.arcade-more-games nav b {
+    font-size: 12px !important;
+  }
+}
+
+@media (max-width: 350px) {
+  .other-games.arcade-more-games nav a {
+    padding-inline: 9px !important;
+  }
+
+  .other-games.arcade-more-games nav b {
+    font-size: 11px !important;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .other-games.arcade-more-games nav a { transition: none !important; }
+}
