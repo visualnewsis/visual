@@ -1,13 +1,13 @@
 const ARCADE_GAMES = Object.freeze([
   { number: '01', name: '조각 사진관', path: '/arcade/puzzle/' },
   { number: '02', name: '뉴스 오목', path: '/arcade/omok/' },
-  { number: '03', name: '충무로 타로#', path: '/arcade/tarot/' },
-  { number: '04', name: '제목있음', path: '/arcade/output/' },
+  { number: '03', name: '벽크크', path: '/arcade/brickrunch/', isNew: true },
+  { number: '04', name: '넌 내 도도독', path: '/arcade/dododok/', isNew: true },
   { number: '05', name: '충무맨', path: '/arcade/chungmuman/' },
-  { number: '06', name: '낱말수선소', path: '/arcade/words/' },
+  { number: '06', name: '제목있음', path: '/arcade/output/' },
   { number: '07', name: '이슈 훔친 두더지', path: '/arcade/mole/', isNew: true },
-  { number: '08', name: '넌 내 도도독', path: '/arcade/dododok/', isNew: true },
-  { number: '09', name: '벽크크', path: '/arcade/brickrunch/', isNew: true }
+  { number: '08', name: '충무로 타로#', path: '/arcade/tarot/' },
+  { number: '09', name: '낱말수선소', path: '/arcade/words/' }
 ]);
 
 function normalizeArcadePath(pathname) {
