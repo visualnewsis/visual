@@ -13,6 +13,20 @@
 .theme-landing .game-card--printshop{background:linear-gradient(90deg,#d5ccb8,#f0eadc 16%,#d7cfbd 84%,#9f9582);color:#17231c}
 .theme-landing .game-card--printshop .copy strong{color:#17231c}
 .theme-landing .game-card--printshop .copy p{color:#554f45}
+.theme-landing .new-badge{
+  position:absolute;
+  z-index:7;
+  top:27px;
+  right:30px;
+  padding:7px 10px 6px;
+  border:1px solid rgba(0,0,0,.28);
+  background:#00b8c8;
+  color:#07110d;
+  box-shadow:3px 3px 0 #a5422f;
+  font:900 10px/1 Pretendard,"Noto Sans KR",sans-serif;
+  letter-spacing:.14em;
+  transform:rotate(2deg);
+}
 
 /* Convex CRT glass, subtle scan lines and a reflected highlight. */
 .theme-landing .visual{
@@ -42,5 +56,6 @@
 @media(max-width:640px){
   .theme-landing .hero{background-position:66% center}
   .theme-landing .games{background-attachment:scroll}
+  .theme-landing .new-badge{top:25px;right:26px}
 }
 @media(prefers-reduced-motion:reduce){.theme-landing .game-card:hover{translate:none}}
