@@ -71,7 +71,7 @@
   gap: 8px !important;
 }
 
-.other-games.arcade-more-games nav span {
+.other-games.arcade-more-games nav span:not(.arcade-more-games__meta) {
   display: block !important;
   margin: 0 !important;
   color: #18bfd0 !important;
