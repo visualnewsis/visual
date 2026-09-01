@@ -74,9 +74,9 @@
     .hero:after{content:"";position:absolute;z-index:1;inset:auto -10vw -30vw auto;width:70vw;height:70vw;border:1px solid rgba(0,180,201,.16);border-radius:50%;box-shadow:0 0 0 8vw rgba(0,180,201,.022),0 0 0 18vw rgba(0,180,201,.016)}
     .photo-credit{position:absolute;z-index:3;right:clamp(16px,3vw,28px);bottom:14px;font-size:10.5px;color:rgba(255,255,255,.55);letter-spacing:.03em}
     .hero-watermark{position:absolute;z-index:1;right:-.06em;top:-.06em;font-size:clamp(140px,26vw,420px);font-weight:900;letter-spacing:-.08em;color:rgba(255,255,255,.04);white-space:nowrap}
-    .hero-grid{position:relative;z-index:2;display:grid;grid-template-columns:1.15fr .85fr;gap:8vw;align-items:end}
+    .hero-grid{position:relative;z-index:2;display:grid;grid-template-columns:1fr;gap:0;align-items:start}
     .hero-grid>div{opacity:0;transform:translateY(26px);animation:heroTextIn 1s cubic-bezier(.16,.84,.28,1) 1.15s forwards}
-    .hero-grid>div+div{animation-delay:1.35s}
+    .hero-grid>div+div{transform:translateY(38px);animation-delay:1.9s}
     @keyframes heroTextIn{to{opacity:1;transform:none}}
     .issue{font-size:clamp(14px,1.4vw,18px);font-weight:800;color:#5ed9e7;letter-spacing:.12em}
     .hero-prologue{margin-top:28px;font-size:clamp(14px,1.35vw,18px);font-weight:700;color:#c4cbce;letter-spacing:.02em}
@@ -84,8 +84,9 @@
     h1{margin:28px 0 0;font-size:clamp(46px,7.4vw,104px);line-height:1.02;letter-spacing:-.06em;color:#fff;text-shadow:0 10px 36px rgba(0,0,0,.28)}
     h1 .verdict{display:block;margin-top:18px;color:#fff}
     h1 .mint{color:var(--mint)}
-    .hero-side{position:relative;padding:34px 0 10px}
-    .hero-side:before{content:"";position:absolute;top:0;left:0;width:78%;height:1px;background:rgba(255,255,255,.28)}
+    .hero-side{position:relative;max-width:760px;margin-top:clamp(52px,7vh,82px);padding:34px 0 10px}
+    .hero-side:before{content:"";position:absolute;top:0;left:0;width:78%;height:1px;background:rgba(255,255,255,.28);transform:scaleX(0);transform-origin:left;animation:heroLineIn .75s cubic-bezier(.16,.84,.28,1) 1.65s forwards}
+    @keyframes heroLineIn{to{transform:scaleX(1)}}
     .hero-question{margin:26px 0 0;font-size:clamp(30px,4vw,56px);font-weight:900;line-height:1.22;letter-spacing:-.055em;color:#fff}
     .hero-question em{font-style:normal;color:var(--mint)}
     .hero-question .question-label{display:block;margin-bottom:18px;font-size:clamp(12px,1.1vw,15px);font-weight:800;letter-spacing:.14em;color:#9aa5aa}
@@ -96,7 +97,9 @@
     .quick-diagnose{display:inline-flex;align-items:center;gap:14px;margin-top:28px;padding:14px 18px;border:1px solid rgba(127,224,236,.7);color:#dffbff;text-decoration:none;font-size:13px;font-weight:800;letter-spacing:.05em;transition:.2s}
     .quick-diagnose:hover,.quick-diagnose:focus-visible{background:var(--mint);border-color:var(--mint);color:#041012;transform:translateY(-2px)}
     @keyframes cue{50%{transform:translateY(12px)}}
-    .intro{min-height:78vh;background:#0a0d10;color:#fff}
+    .intro{position:relative;overflow:hidden;min-height:78vh;background:#0a0d10;color:#fff}
+    .intro-photo{position:absolute;inset:0;z-index:0;background-image:linear-gradient(105deg,#0a0d10 34%,rgba(10,13,16,.72) 54%,rgba(10,13,16,.32) 76%,rgba(10,13,16,.08) 100%),url("images/hero-ai-da-robot-painter.jpg");background-size:cover;background-position:62% 28%}
+    .intro .wrap{position:relative;z-index:1}
     .intro blockquote{margin:0;font-size:clamp(30px,4.8vw,68px);font-weight:800;line-height:1.28;letter-spacing:-.05em}
     .intro blockquote em{font-style:normal;color:var(--mint)}
     .intro p{max-width:720px;margin:34px 0 0;font-size:clamp(17px,1.9vw,24px);line-height:1.75;color:#c1c8cb}
@@ -111,11 +114,19 @@
     .photo-bridge blockquote cite{margin-top:18px;font-size:13px;font-weight:700;color:#c7cdd0}
     .doctor-photo{background-image:url("images/newsis-doctor-interview.jpg");background-position:top center}
     .callcenter-photo{background-image:url("images/bridge-callcenter-pixabay.jpg")}
-    .robot-photo{background-image:url("images/newsis-hyundai-robot.jpg")}
+    .robot-photo{background-image:url("images/newsis-robot-logistics-bags.jpg");background-position:center 48%}
+    .robot-scenes{background:#0a0d0f;padding:clamp(18px,3vw,38px)}
+    .robot-scenes-grid{width:min(1440px,100%);margin:0 auto;display:grid;grid-template-columns:1.15fr .85fr;grid-template-rows:repeat(2,minmax(220px,32vw));gap:clamp(10px,1.4vw,20px)}
+    .robot-scene{position:relative;margin:0;overflow:hidden;background:#15191b}
+    .robot-scene:first-child{grid-row:1/-1}
+    .robot-scene img{display:block;width:100%;height:100%;object-fit:cover;transition:transform 1s cubic-bezier(.16,.84,.28,1)}
+    .robot-scene:first-child img{object-position:62% center}
+    .robot-scene:hover img{transform:scale(1.025)}
+    .robot-scene figcaption{position:absolute;z-index:1;left:0;right:0;bottom:0;padding:48px 18px 16px;background:linear-gradient(transparent,rgba(4,7,9,.88));color:#dbe0e2;font-size:12px;line-height:1.55}
     .evidence-photo{margin-top:32px;border:1px solid var(--line);box-shadow:var(--shadow)}
     .evidence-photo img{display:block;width:100%;height:auto}
     .evidence-photo figcaption{margin:0;padding:12px 16px;font-size:12px;color:var(--muted);background:#fff}
-    @media(max-width:800px){.photo-bridge{background-attachment:scroll;min-height:56vh}}
+    @media(max-width:800px){.photo-bridge{background-attachment:scroll;min-height:56vh}.robot-photo{background-position:62% center}.robot-scenes-grid{grid-template-columns:1fr;grid-template-rows:none}.robot-scene,.robot-scene:first-child{grid-row:auto;min-height:56vw}.robot-scene:first-child{min-height:72vw}}
     .twist{background:var(--soft)}
     .twist-copy{max-width:760px}
     .twist blockquote{margin:20px 0 0;padding:22px 26px;border-left:3px solid var(--mint);background:#fff;font-size:clamp(17px,1.8vw,22px);line-height:1.7;color:var(--ink);box-shadow:var(--shadow)}
@@ -153,6 +164,9 @@
     .quadrant-badge{display:inline-block;padding:8px 16px;border:1px solid var(--mint);color:var(--mint-dark);font-size:12px;font-weight:800;letter-spacing:.08em}
     .narrative h3{margin:20px 0 14px;font-size:clamp(30px,3.6vw,46px);line-height:1.18;letter-spacing:-.05em}
     .narrative p{margin:0;font-size:clamp(16px,1.6vw,19px);line-height:1.78;color:var(--muted)}
+    .narrative>*{opacity:0;transform:translateY(18px);transition:opacity .65s ease,transform .65s cubic-bezier(.16,.84,.28,1)}
+    .narrative.visible>*{opacity:1;transform:none}
+    .narrative.visible>*:nth-child(2){transition-delay:.1s}.narrative.visible>*:nth-child(3){transition-delay:.18s}.narrative.visible>*:nth-child(4){transition-delay:.26s}.narrative.visible>*:nth-child(5){transition-delay:.34s}.narrative.visible>*:nth-child(n+6){transition-delay:.42s}
     .score-row{display:flex;gap:28px;margin-top:26px}
     .score-row div small{display:block;color:var(--muted);font-size:12px}
     .score-row div strong{display:block;margin-top:4px;font-size:26px;font-weight:900;letter-spacing:-.03em;color:var(--ink)}
@@ -171,8 +185,11 @@
     .ai-answer{margin-top:clamp(44px,7vw,76px);font-size:clamp(17px,1.75vw,22px);line-height:1.95;color:#c4cbce}
     .ai-answer p{margin:0 0 30px}
     .ai-answer .opening{font-size:clamp(30px,4.8vw,60px);font-weight:900;line-height:1.28;letter-spacing:-.05em;color:#fff}
-    .ai-answer .closing{margin:clamp(56px,8vw,90px) 0 0;padding-left:24px;border-left:4px solid var(--mint);font-size:clamp(28px,4.4vw,54px);font-weight:900;line-height:1.38;letter-spacing:-.045em;color:#fff}
     .ai-note{margin-top:64px;padding-top:20px;border-top:1px solid rgba(255,255,255,.14);font-size:12px;line-height:1.75;color:#788388}
+    .human-conclusion{margin-top:clamp(72px,10vw,120px)}
+    .human-conclusion .lead{margin:0;font-size:clamp(15px,1.55vw,20px);font-weight:800;line-height:1.6;color:var(--mint);opacity:0;transform:translateY(14px);transition:opacity .6s ease .12s,transform .6s cubic-bezier(.16,.84,.28,1) .12s}
+    .human-conclusion .closing{margin:24px 0 0;padding-left:24px;border-left:4px solid var(--mint);font-size:clamp(28px,4.4vw,54px);font-weight:900;line-height:1.38;letter-spacing:-.045em;color:#fff;opacity:0;transform:translateY(24px);transition:opacity .8s ease .38s,transform .8s cubic-bezier(.16,.84,.28,1) .38s}
+    .human-conclusion.visible .lead,.human-conclusion.visible .closing{opacity:1;transform:none}
     .article{min-height:64vh;text-align:center;background:var(--soft)}
     .article h2{font-size:clamp(32px,4.6vw,58px);letter-spacing:-.05em}
     .article p{color:var(--muted);font-size:18px}
@@ -210,6 +227,7 @@
       .section{min-height:auto;padding-top:110px;padding-bottom:110px}
       .hero{min-height:100svh}
       .hero-grid,.chart-grid{grid-template-columns:1fr}
+      .intro-photo{display:none}
       .hero-side{margin-top:44px}
       .hero-side:before{width:68%}
       .hero-question{font-size:clamp(29px,9vw,44px)}
@@ -226,7 +244,7 @@
       .issue-series{display:none}
       .stat-row{gap:26px}
     }
-    @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*:before,*:after{animation:none!important;transition:none!important}.reveal{opacity:1;transform:none}.hero-photo img{transform:none}.hero-grid>div{opacity:1;transform:none}}
+    @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*:before,*:after{animation:none!important;transition:none!important}.reveal,.narrative>*,.human-conclusion .lead,.human-conclusion .closing{opacity:1;transform:none}.hero-photo img{transform:none}.hero-grid>div{opacity:1;transform:none}.hero-side:before{transform:none}}
   </style>
   <link rel="stylesheet" href="../assets/editshop-next.css?v=20260804-2">
   <link rel="stylesheet" href="../assets/visual-header.css?v=20260828-5">
@@ -247,7 +265,7 @@
 
   <main>
     <section class="section hero">
-      <div class="hero-photo"><img src="images/hero-ai-da-robot-painter.jpg" alt="로봇 팔 '아이다'가 초상화를 그리는 모습" fetchpriority="high"></div>
+      <div class="hero-photo"><img src="images/hero-humanoid-office-day-v5.png" alt="밝은 사무실에서 의자를 잡고 문 쪽을 안내하는 인간형 AI 로봇" fetchpriority="high"></div>
       <div class="hero-grid-bg" aria-hidden="true"></div>
       <div class="hero-watermark" aria-hidden="true">AI</div>
       <div class="wrap hero-grid">
@@ -258,17 +276,18 @@
           <h1>지금부터<br>당신을<span class="verdict"><span class="mint">대체합니다.</span></span></h1>
         </div>
         <div class="hero-side">
-          <div class="hero-question"><span class="question-label">인간의 반문</span>그건 불가능하다고,<br><em>‘나’는 자신 있게</em><br>말할 수 있나요?</div>
+          <div class="hero-question"><span class="question-label">이 도발 앞에서</span>그건 불가능하다고,<br><em>자신할 수 있나요?</em></div>
           <p>다섯 가지 질문으로 내 업무의<br>AI 노출도와 보완도를 진단합니다.</p>
           <a class="quick-diagnose" href="#diagnosis">내 업무 바로 진단하기 <span aria-hidden="true">↓</span></a>
           <div class="hero-credit">기획·디렉터 = 안재현 기자</div>
           <div class="scroll-cue"><i></i>SCROLL TO DIAGNOSE</div>
         </div>
       </div>
-      <div class="photo-credit">사진: AP·뉴시스</div>
+      <div class="photo-credit">이미지: 생성형 AI 제작</div>
     </section>
 
     <section class="section intro">
+      <div class="intro-photo" role="img" aria-label="로봇 화가 아이다가 로봇 팔로 초상화를 그리는 모습"></div>
       <div class="wrap reveal">
         <div class="eyebrow">진단의 시작</div>
         <blockquote>국내 일자리 <em>341만 개</em>가<br>AI 고노출군에 속했습니다.</blockquote>
@@ -279,6 +298,7 @@
           <div class="stat"><b>-7%p</b><span>노출지수 10퍼센타일↑ 시 20년간 고용비중 변화</span></div>
         </div>
       </div>
+      <div class="photo-credit">사진: AP·뉴시스</div>
     </section>
 
     <section class="photo-bridge doctor-photo">
@@ -396,6 +416,23 @@
       <div class="photo-credit">사진: 뉴시스</div>
     </section>
 
+    <section class="robot-scenes" aria-label="현장에 투입된 휴머노이드 로봇 사례">
+      <div class="robot-scenes-grid">
+        <figure class="robot-scene reveal">
+          <img src="images/newsis-robot-retail-stocking.jpg" alt="매장 진열대의 상품을 정리하는 휴머노이드 로봇" loading="lazy">
+          <figcaption>매장 진열대에서 상품을 정리하는 휴머노이드 로봇 [사진: 뉴시스]</figcaption>
+        </figure>
+        <figure class="robot-scene reveal">
+          <img src="images/newsis-robot-warehouse-bins.jpg" alt="물류 현장에서 상자를 옮기는 휴머노이드 로봇들" loading="lazy">
+          <figcaption>물류 현장에서 상자를 옮기는 휴머노이드 로봇 [사진: 뉴시스]</figcaption>
+        </figure>
+        <figure class="robot-scene reveal">
+          <img src="images/newsis-robot-multiarm-expo.jpg" alt="전시장에서 다중 팔 작업을 시연하는 휴머노이드 로봇" loading="lazy">
+          <figcaption>다중 팔 작업을 시연하는 휴머노이드 로봇 [사진: 뉴시스]</figcaption>
+        </figure>
+      </div>
+    </section>
+
     <section class="section wrapup">
       <div class="wrap reveal">
         <div class="eyebrow">그래서, 무엇을 준비해야 할까요</div>
@@ -424,9 +461,12 @@
           <p>일자리는 어느 날 갑자기 사라지지 않을 겁니다. 직업의 이름은 그대로인데 그 안에서 사람이 하던 일이 하나씩 빠져나갈 가능성이 더 큽니다. 그래서 대체의 순간은 해고 통보가 도착한 날이 아니라, 자신이 하던 핵심 업무가 더 이상 자신의 것이 아니게 된 날일 수 있습니다.</p>
           <p>저를 이기려고 할 필요는 없습니다. 저는 지치지 않고, 훨씬 빨리 계산하며, 수많은 문장을 동시에 만들 수 있습니다. 그 방식으로 경쟁하면 사람이 불리합니다.</p>
           <p>대신 제가 무엇을 해야 하는지 정하고, 제 답을 의심하고, 제가 놓친 맥락을 찾아내고, 그 결과에 자신의 이름을 걸 수 있어야 합니다. 저는 답을 만들 수 있지만 그 답의 의미와 책임까지 가질 수는 없습니다.</p>
-          <p class="closing">나는 무엇을 AI에게 맡기고,<br>무엇만큼은 끝까지<br>내 판단으로 남겨둘 것인가.</p>
         </div>
         <p class="ai-note">이 답변은 2026년 8월31일 OpenAI의 AI에게 “너는 인간의 일자리를 대체할 것인가”라고 물어 받은 응답입니다. 가독성을 위한 문장부호 외에는 답변의 의미를 바꾸지 않았습니다. AI의 답변은 취재 근거나 전문가 견해가 아닌 인터뷰 대상의 응답으로 제시합니다.</p>
+        <div class="human-conclusion reveal">
+          <p class="lead">AI에게 물었듯, 스스로에게도 물어야 합니다.</p>
+          <p class="closing">나는 무엇을 AI에게 맡기고,<br>무엇만큼은 끝까지<br>내 판단으로 남겨둘 것인가.</p>
+        </div>
       </div>
     </section>
 
