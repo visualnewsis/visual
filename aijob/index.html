@@ -232,7 +232,7 @@
       .hero-side:before{width:68%}
       .hero-question{font-size:clamp(29px,9vw,44px)}
       h1{font-size:clamp(43px,14vw,72px)}
-      .hero-photo img{object-position:62% center}
+      .hero-photo img{object-position:72% 22%}
       .panel{grid-template-columns:1fr;gap:38px}
       .control:last-child,.result-jump{grid-column:auto}
       .chart-grid{gap:44px}
@@ -541,7 +541,7 @@
         scoreE.textContent=Math.round(E);
         scoreC.textContent=Math.round(C);
         const pressure=E-.55*C;
-        yearsLeft.textContent=pressure>=45?'2~5년':pressure>=25?'5~10년':pressure>=5?'10년 이상':'대체보다 보완';
+        yearsLeft.textContent=pressure>=45?'2~5년':pressure>=25?'5~10년':'10년 이상';
         const key=(E>=50?'h':'l')+(C>=50?'h':'l');
         const n=NARRATIVE[key];
         quadBadge.textContent=n.badge;
