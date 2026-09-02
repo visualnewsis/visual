@@ -8,7 +8,8 @@ const ARCADE_GAMES = Object.freeze([
   { number: '07', name: '이슈 훔친 두더지', path: '/arcade/mole/', isNew: true },
   { number: '08', name: '제목있음', path: '/arcade/output/' },
   { number: '09', name: '낱말수선소', path: '/arcade/words/' },
-  { number: '10', name: '충무로 타로#', path: '/arcade/tarot/' }
+  { number: '10', name: '충무로 타로#', path: '/arcade/tarot/' },
+  { number: '11', name: '카드 프리셀', path: '/arcade/freecell/', isNew: true }
 ]);
 
 function normalizeArcadePath(pathname) {
