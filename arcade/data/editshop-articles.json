@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-09-02T04:47:04+00:00",
+  "updatedAt": "2026-09-02T12:53:23+00:00",
   "source": "VISUAL NEWSIS editshop landing page",
   "articles": [
     {
@@ -80,6 +80,16 @@
       "description": "광복 전후의 날짜와 피해자들의 증언, 식민지 기록을 따라 기억의 의미를 직접 경험합니다.",
       "image": "https://visual.newsis.com/witness/images/final-march.jpg",
       "url": "https://visual.newsis.com/witness/",
+      "profile": "center"
+    },
+    {
+      "id": "aijob",
+      "issue": "편집#009",
+      "label": "AI / LABOR / INTERACTIVE",
+      "title": "지금부터 당신을 대체합니다.",
+      "description": "한국은행·한국고용정보원 자료를 바탕으로, 내 업무의 AI 노출도와 보완도를 5가지 질문으로 직접 진단합니다.",
+      "image": "https://visual.newsis.com/aijob/images/hero-humanoid-office-day-v6.png",
+      "url": "https://visual.newsis.com/aijob/",
       "profile": "center"
     }
   ]
