@@ -12,7 +12,8 @@
     {slug:"buy-live",num:"008",meta:"주택 · 대출 · 생활비 · 인터랙티브",title:"이 집, 살 수 있겠습니까?",image:"/buy-live/images/hero.jpg",alt:"도시의 주택과 아파트"},
     {slug:"adult-missing",num:"009",meta:"성인 실종 · 경찰 초동대응 · 인터랙티브",title:"사람은 사라지고 확인도 실종됐다",image:"/adult-missing/images/chapter-hero.jpg",alt:"성인 실종자를 찾는 초동 대응 화면"},
     {slug:"battery",num:"010",meta:"리튬이온배터리 · 배터리 구조 · 인터랙티브",title:"알아볼지도 리튬이온 배터리편",image:"/battery/images/battery-model-v10.png",alt:"리튬이온배터리 내부 구조를 표현한 3D 렌더링"},
-    {slug:"witness",num:"011",meta:"광복 · 증언 · 기억 · 인터랙티브",title:"내가 증인입니다.",image:"/witness/images/thumbnail-carousel-1600x948.jpg",alt:"태극기를 든 시민들의 3·1 만세운동 재현행사"}
+    {slug:"witness",num:"011",meta:"광복 · 증언 · 기억 · 인터랙티브",title:"내가 증인입니다.",image:"/witness/images/thumbnail-carousel-1600x948.jpg",alt:"태극기를 든 시민들의 3·1 만세운동 재현행사"},
+    {slug:"aijob",num:"012",meta:"AI · 노동시장 · 인터랙티브",title:"삐빅— 지금부터 당신을 대체합니다",image:"/aijob/images/hero-humanoid-office-day-v6.png",alt:"밝은 사무실에서 의자를 잡고 왼쪽을 안내하는 여성형 AI 휴머노이드"}
   ];
   const mount=host=>{
     const visible=stories.filter(story=>story.slug!==current);
