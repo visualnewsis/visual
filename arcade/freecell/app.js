@@ -114,18 +114,17 @@ document.addEventListener('pointermove',e=>{
 function endDrag(e){
   if(!drag)return;
   const d=drag;drag=null;
-  d.hoverEl?.classList.remove('drop-ready');
+  const target=d.hoverEl;
+  target?.classList.remove('drop-ready');
   if(!d.moved)return;
   d.els.forEach(el=>{el.style.transform='';el.style.zIndex='';el.style.pointerEvents='';el.classList.remove('dragging')});
   document.body.classList.remove('is-dragging-card');
-  const point=document.elementFromPoint(e.clientX,e.clientY);
   state.selected={source:d.source,index:d.index,cardIndex:d.cardIndex};
-  const colEl=point&&point.closest('.column');
-  const freeEl=point&&point.closest('.free');
-  const foundationEl=point&&point.closest('.foundation');
-  if(colEl)moveToColumn(+colEl.dataset.column);
-  else if(freeEl)moveToFree(+freeEl.dataset.free);
-  else if(foundationEl)moveToFoundation(+foundationEl.dataset.foundation);
+  if(target){
+    if(target.classList.contains('column'))moveToColumn(+target.dataset.column);
+    else if(target.classList.contains('free'))moveToFree(+target.dataset.free);
+    else if(target.classList.contains('foundation'))moveToFoundation(+target.dataset.foundation);
+  }
   state.selected=null;render();
   justDragged=true;
 }
