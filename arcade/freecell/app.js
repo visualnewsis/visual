@@ -16,7 +16,7 @@ function restore(raw){const data=JSON.parse(raw);Object.assign(state,data,{selec
 
 function dailySeed(){const d=new Date(),key=Number(`${d.getFullYear()}${String(d.getMonth()+1).padStart(2,'0')}${String(d.getDate()).padStart(2,'0')}`);return key%99999||1}
 function newGame(seed=Math.floor(Math.random()*99999)+1){state.deal=seed;state.moves=0;state.history=[];state.selected=null;state.rewardOpen=false;state.free=[null,null,null,null];state.foundations=[[],[],[],[]];state.columns=Array.from({length:8},()=>[]);shuffle(buildDeck(),seed).forEach((card,i)=>state.columns[i%8].push(card));$('#prizeCard').classList.remove('is-open');$('#stuckBtn').hidden=false;$('#drawAgainBtn').hidden=true;$('#status').textContent=seed===dailySeed()?'오늘 모두에게 같은 카드가 배정됐습니다. 첫 이동에 뉴스가 당첨됩니다.':'옮길 카드를 선택하세요. 첫 이동에 오늘의 뉴스가 당첨됩니다.';render();updateHud();}
-function cardHtml(card,top=0,source='column',index=0,cardIndex=0){const topStyle=source==='column'?'':`top:${typeof top==='number'?`${top}px`:top};`;return `<button class="card${card.red?' red':''}" style="${topStyle}z-index:${cardIndex+1}" data-source="${source}" data-index="${index}" data-card-index="${cardIndex}" aria-label="${card.label} ${card.symbol}"><img src="./assets/cards/${card.label}${card.file}.png" alt="" draggable="false" loading="lazy"></button>`}
+function cardHtml(card,top=0,source='column',index=0,cardIndex=0){const topStyle=`top:${typeof top==='number'?`${top}px`:top};`;return `<button class="card${card.red?' red':''}" style="${topStyle}z-index:${cardIndex+1}" data-source="${source}" data-index="${index}" data-card-index="${cardIndex}" aria-label="${card.label} ${card.symbol}"><img src="./assets/cards/${card.label}${card.file}.png" alt="" draggable="false" width="300" height="436" decoding="sync"></button>`}
 function render(){
   $('#tableau').innerHTML=state.columns.map((col,ci)=>`<div class="column" data-column="${ci}" style="height:calc(var(--card-h) + ${Math.max(0,col.length-1)} * var(--stack))">${col.map((c,i)=>cardHtml(c,`calc(${i} * var(--stack))`,'column',ci,i)).join('')}</div>`).join('');
   document.querySelectorAll('.free').forEach((el,i)=>{el.querySelector('.card')?.remove();if(state.free[i])el.insertAdjacentHTML('beforeend',cardHtml(state.free[i],0,'free',i,0))});
@@ -48,13 +48,87 @@ function drawCategoryNews(fi){const category=state.categories[fi],pool=state.new
 function drawNews(){state.newsIndex=(state.newsIndex+1)%Math.max(1,state.news.length);showNews(state.news[state.newsIndex]||FALLBACK[0]);$('#prizeCard').classList.remove('is-open');requestAnimationFrame(()=>requestAnimationFrame(()=>$('#prizeCard').classList.add('is-open')));tone(720)}
 function tone(freq){if(!state.sound)return;const C=window.AudioContext||window.webkitAudioContext;if(!C)return;const ctx=new C(),osc=ctx.createOscillator(),gain=ctx.createGain();osc.frequency.value=freq;gain.gain.setValueAtTime(.06,ctx.currentTime);gain.gain.exponentialRampToValueAtTime(.001,ctx.currentTime+.12);osc.connect(gain).connect(ctx.destination);osc.start();osc.stop(ctx.currentTime+.12)}
 
+let justDragged=false;
 document.addEventListener('click',e=>{
+  if(justDragged){justDragged=false;return}
   const card=e.target.closest('.card');
   if(card){const source=card.dataset.source,index=+card.dataset.index,cardIndex=+card.dataset.cardIndex;if(state.selected){if(source==='column')moveToColumn(index);else if(source==='free')moveToFree(index)}else select(source,index,cardIndex);return}
   const col=e.target.closest('.column');if(col&&state.selected){moveToColumn(+col.dataset.column);return}
   const free=e.target.closest('.free');if(free&&state.selected){moveToFree(+free.dataset.free);return}
   const foundation=e.target.closest('.foundation');if(foundation&&state.selected)moveToFoundation(+foundation.dataset.foundation)
 });
+
+let drag=null;
+const DRAG_THRESHOLD=6;
+function cardEls(source,index,cardIndex){
+  if(source==='column'){const col=document.querySelector(`.column[data-column="${index}"]`);return col?[...col.children].slice(cardIndex):[]}
+  const el=document.querySelector(`.card[data-source="${source}"][data-index="${index}"][data-card-index="${cardIndex}"]`);
+  return el?[el]:[];
+}
+document.addEventListener('pointerdown',e=>{
+  if(e.button>0)return;
+  const card=e.target.closest('.card');
+  if(!card)return;
+  const source=card.dataset.source,index=+card.dataset.index,cardIndex=+card.dataset.cardIndex;
+  if(source==='foundation')return;
+  const cards=source==='column'?state.columns[index].slice(cardIndex):(state.free[index]?[state.free[index]]:[]);
+  if(!cards.length||!isSequence(cards))return;
+  const els=cardEls(source,index,cardIndex);
+  if(!els.length)return;
+  drag={source,index,cardIndex,els,startX:e.clientX,startY:e.clientY,moved:false,pointerId:e.pointerId};
+});
+function dropZoneFor(source,index,cardIndex,el){
+  if(!el)return null;
+  const cards=source==='column'?state.columns[index].slice(cardIndex):(state.free[index]?[state.free[index]]:[]);
+  if(!cards.length)return null;
+  const colEl=el.closest('.column');
+  if(colEl){
+    const ci=+colEl.dataset.column;
+    if(source==='column'&&index===ci)return null;
+    const target=state.columns[ci].at(-1);
+    return(canPlace(cards[0],target)&&cards.length<=movableCount(!target))?colEl:null;
+  }
+  const freeEl=el.closest('.free');
+  if(freeEl){const fi=+freeEl.dataset.free;return(!state.free[fi]&&cards.length===1)?freeEl:null}
+  const foundationEl=el.closest('.foundation');
+  if(foundationEl){const fi=+foundationEl.dataset.foundation;return(cards.length===1&&fi===foundationIndex(cards[0])&&canFoundation(cards[0]))?foundationEl:null}
+  return null;
+}
+document.addEventListener('pointermove',e=>{
+  if(!drag||e.pointerId!==drag.pointerId)return;
+  const dx=e.clientX-drag.startX,dy=e.clientY-drag.startY;
+  if(!drag.moved&&Math.hypot(dx,dy)<DRAG_THRESHOLD)return;
+  if(!drag.moved){
+    drag.moved=true;
+    drag.els.forEach((el,i)=>{el.classList.add('dragging');el.style.zIndex=1000+i;el.style.pointerEvents='none'});
+    document.body.classList.add('is-dragging-card');
+  }
+  e.preventDefault();
+  drag.els.forEach(el=>{el.style.transform=`translate(${dx}px,${dy}px)`});
+  const under=document.elementFromPoint(e.clientX,e.clientY);
+  const zone=dropZoneFor(drag.source,drag.index,drag.cardIndex,under);
+  if(zone!==drag.hoverEl){drag.hoverEl?.classList.remove('drop-ready');zone?.classList.add('drop-ready');drag.hoverEl=zone}
+},{passive:false});
+function endDrag(e){
+  if(!drag)return;
+  const d=drag;drag=null;
+  d.hoverEl?.classList.remove('drop-ready');
+  if(!d.moved)return;
+  d.els.forEach(el=>{el.style.transform='';el.style.zIndex='';el.style.pointerEvents='';el.classList.remove('dragging')});
+  document.body.classList.remove('is-dragging-card');
+  const point=document.elementFromPoint(e.clientX,e.clientY);
+  state.selected={source:d.source,index:d.index,cardIndex:d.cardIndex};
+  const colEl=point&&point.closest('.column');
+  const freeEl=point&&point.closest('.free');
+  const foundationEl=point&&point.closest('.foundation');
+  if(colEl)moveToColumn(+colEl.dataset.column);
+  else if(freeEl)moveToFree(+freeEl.dataset.free);
+  else if(foundationEl)moveToFoundation(+foundationEl.dataset.foundation);
+  state.selected=null;render();
+  justDragged=true;
+}
+document.addEventListener('pointerup',endDrag);
+document.addEventListener('pointercancel',endDrag);
 document.addEventListener('dblclick',e=>{const card=e.target.closest('.card');if(card)autoFoundation(card.dataset.source,+card.dataset.index,+card.dataset.cardIndex)});
 $('#newBtn').addEventListener('click',()=>newGame());
 $('#dailyBtn').addEventListener('click',()=>newGame(dailySeed()));
