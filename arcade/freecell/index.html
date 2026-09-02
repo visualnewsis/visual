@@ -24,7 +24,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&family=Noto+Serif+KR:wght@500;600;700;900&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="./style.css?v=20260902-2">
+  <link rel="stylesheet" href="./style.css?v=20260902-3">
   <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"Game","name":"NEWSIS FREECELL","alternateName":["뉴스 카드 프리셀","뉴시스 프리셀","뉴스 프리셀"],"url":"https://visual.newsis.com/arcade/freecell/","description":"클래식 프리셀을 플레이하면 오늘의 뉴스를 확인할 수 있는 무료 뉴스 카드게임","genre":["Card game","News game"],"gamePlatform":"Web browser","inLanguage":"ko-KR","isAccessibleForFree":true,"creator":{"@type":"Person","name":"안재현","jobTitle":["크리에이티브 디렉터","뉴시스 기자"],"worksFor":{"@type":"NewsMediaOrganization","name":"뉴시스","url":"https://www.newsis.com/"}},"isPartOf":{"@type":"CollectionPage","name":"충무로딩","url":"https://visual.newsis.com/arcade/"},"publisher":{"@type":"NewsMediaOrganization","name":"뉴시스","url":"https://www.newsis.com/"}},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"VISUAL NEWSIS","item":"https://visual.newsis.com/"},{"@type":"ListItem","position":2,"name":"충무로딩","item":"https://visual.newsis.com/arcade/"},{"@type":"ListItem","position":3,"name":"NEWSIS FREECELL","item":"https://visual.newsis.com/arcade/freecell/"}]}]}</script>
 </head>
 <body>
@@ -45,6 +45,8 @@
         </div>
         <p class="intro">카드를 한 번만 제대로 옮기면 오늘의 뉴스가 열립니다.</p>
       </div>
+
+      <button id="newsBanner" class="news-banner" type="button" hidden><span id="newsBannerText">아래에 오늘의 뉴스가 열렸습니다</span><i aria-hidden="true">↓</i></button>
 
       <div class="game-shell">
         <div class="titlebar">
@@ -79,7 +81,7 @@
           <div id="tableau" class="tableau" aria-label="프리셀 카드 배열"></div>
         </div>
 
-        <p id="status" class="status" aria-live="polite">옮길 카드를 선택하세요. 첫 이동에 오늘의 뉴스가 당첨됩니다.</p>
+        <p id="status" class="status" aria-live="polite">카드를 선택하세요.</p>
       </div>
     </section>
 
@@ -99,7 +101,6 @@
         </div>
         <button id="stuckBtn" class="draw-again">카드가 막혔어요 — 뉴스 보기</button>
         <button id="drawAgainBtn" class="draw-again" hidden>다른 뉴스 한 장</button>
-        <p class="prize-note">※ 당첨 상품은 오늘의 뉴스입니다. 금전적 가치가 있는 경품은 제공하지 않습니다.</p>
       </div>
     </section>
   </main>
@@ -113,6 +114,6 @@
   </dialog>
 
   <footer><a href="../">충무로딩</a><small>크리에이티브 디렉터 = 안재현</small><span>© NEWSIS</span></footer>
-  <script type="module" src="./app.js?v=20260902-1"></script>
+  <script type="module" src="./app.js?v=20260902-3"></script>
 </body>
 </html>
