@@ -8,9 +8,9 @@
 .visual-newsis{grid-column:3;justify-self:end;font-size:11px;font-weight:900;letter-spacing:.08em}
 
 .game-hero{padding:clamp(48px,7vw,90px) clamp(20px,6vw,64px);text-align:center}
-.eyebrow{font-size:10px;font-weight:900;letter-spacing:.22em;color:#b34431;margin:0}
+.eyebrow{font-size:10px;font-weight:900;letter-spacing:.22em;color:#b34431;margin:0 0 10px;opacity:.55}
 .hero-title-lockup{position:relative;display:inline-block;padding-top:clamp(24px,3vw,38px)}
-.yodel-copy{position:absolute;z-index:2;top:0;left:50%;margin:0;white-space:nowrap;transform:translateX(-50%) rotate(-4deg);font:400 clamp(38px,6.2vw,76px)/.8 "Nanum Brush Script",cursive;letter-spacing:-.07em;color:rgba(13,32,40,.9);text-shadow:2px 2px 0 rgba(0,180,201,.22);pointer-events:none}
+.yodel-copy{position:absolute;z-index:2;top:clamp(-22px,-2.4vw,-12px);left:50%;margin:0;white-space:nowrap;transform:translateX(-50%) rotate(-4deg);font:400 clamp(38px,6.2vw,76px)/.8 "Nanum Brush Script",cursive;letter-spacing:-.07em;color:rgba(13,32,40,.9);text-shadow:2px 2px 0 rgba(0,180,201,.22);pointer-events:none}
 .yodel-copy small{font:inherit;font-size:.58em;letter-spacing:-.04em}
 .game-hero h1{font:400 clamp(64px,11vw,140px)/.95 "Black Han Sans",sans-serif;letter-spacing:-.03em;margin:20px 0 16px}
 .game-hero h1 em{font-style:normal;color:var(--mint);text-shadow:4px 4px 0 var(--ink)}
