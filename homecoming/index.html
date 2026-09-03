@@ -7,7 +7,7 @@
   [작업 메모 — 배포 전 확인 필요]
   0) 이 페이지의 메인 뿌리는 뉴시스 원문 「6·25 당시 19세에 산화한 김하동 일병, 75년 만에 가족 품으로」(2026.08.31, https://www.newsis.com/view/NISX20260831_0003769722)입니다. 이 기사 기준으로 "75년"이 맞고(원문 표기), 이전에 검토했던 국군의날 프레이밍·기술발전 앵글 등은 이 원문에 살을 더 붙이는 게 아니라 보조 장치(여정 지도, 아카이브 월, 김익장 일병 사례, 국방부 입장)로만 유지합니다.
   1) og:image, twitter:image용 images/og-homecoming-1200x630.jpg 제작 완료 — images/NISI20260831_0021417256.jpg(귀환행사 컷) 기준으로 배너·인물이 온전히 보이게 세로 크롭.
-  2) 히어로·귀환행사 콜백 사진은 images/NISI20260831_0021417256.jpg(김하동 일병 귀환행사 실제 컷)로 교체 완료 — 이 행사의 다른 각도 사진은 현재 확보된 게 없습니다. 발굴 장면(text-bridge)은 김하동 일병 현장이 아닌 국유단의 다른 발굴 현장 자료사진(images/NISI20230531_0019907576.jpg)이라 캡션에 "자료사진"임을 명시했습니다.
+  2) 히어로는 images/NISI20260831_0021417256.jpg(함 전달 장면), 귀환행사 섹션 콜백 사진은 images/NISI20260831_0002225933.jpg(전병희 국유단장이 김하준 옹에게 설명하는 장면 — 뉴시스 원문 기사의 실제 대표 사진, img1.newsis.com CDN에서 재확보)로 서로 다른 컷을 씁니다. 발굴 장면(text-bridge)은 김하동 일병 현장이 아닌 국유단의 다른 발굴 현장 자료사진(images/NISI20230531_0019907576.jpg)이라 캡션에 "자료사진"임을 명시했습니다.
   3) 김하동 일병 유전자 재확인 시점(정확한 월)은 여전히 "최근"으로 처리돼 있습니다. 뉴시스 원문에도 월 단위까지는 안 나와 있어, 정확한 날짜가 필요하면 국유단에 별도 확인이 필요합니다.
   4) sources 섹션에 뉴시스 원문 링크를 넣었습니다(위 0번 URL). 김하준 옹 인터뷰 인용도 이 원문에서 가져온 실제 발언입니다.
   5) 편집# 010번은 잠정 번호입니다. aijob(009번) 발행 확정 후 최종 확정하세요. 확정 전엔 assets/editshop-carousel.js의 공용 목록에 이 페이지를 추가하지 마세요.
@@ -181,6 +181,9 @@
     .homecoming-scene .wrap{max-width:820px}
     .homecoming-scene blockquote{margin:24px 0 0;font-size:clamp(24px,3.2vw,40px);line-height:1.44;font-weight:800;letter-spacing:-.03em}
     .homecoming-scene p{margin:26px 0 0;font-size:clamp(15px,1.5vw,19px);line-height:1.85;color:#b7bfc2}
+    .callback-photo{margin:32px 0 0;border:1px solid rgba(255,255,255,.14);box-shadow:var(--shadow)}
+    .callback-photo img{display:block;width:100%;height:auto}
+    .callback-photo figcaption{margin:0;padding:12px 16px;font-size:12px;color:#9aa2a6;background:#05070a}
     .voice-quote{margin:30px 0 0;padding:24px 28px;border-left:3px solid var(--mint);background:rgba(255,255,255,.04);font-size:clamp(18px,2.1vw,24px);line-height:1.7;font-weight:700;color:#fff;letter-spacing:-.01em}
     .voice-quote cite{display:block;margin-top:16px;font-style:normal;font-size:13px;font-weight:700;letter-spacing:.02em;color:#8fa0a5}
 
@@ -409,6 +412,10 @@
         <div class="eyebrow on-dark">2026년 8월 31일, 경기 용인</div>
         <blockquote>여든일곱 살 동생의 집 현관에,<br>국방부 유해발굴감식단이 도착했습니다.</blockquote>
         <p>국유단은 이날 오전 김하동 일병의 동생 김하준 옹(87)의 자택에서 '호국의 영웅 귀환행사'를 열고, 신원확인 통지서와 유품을 유가족에게 전달했습니다. 75년 전 전장으로 떠난 형이, 뼈 몇 조각과 한 장의 통지서로 동생 앞에 돌아온 순간이었습니다.</p>
+        <figure class="callback-photo">
+          <img src="images/NISI20260831_0002225933.jpg" alt="전병희 국방부 유해발굴감식단장이 김하준 옹에게 발굴 및 신원확인 과정을 설명하는 모습" loading="lazy">
+          <figcaption>31일 오전, 전병희 국방부 유해발굴감식단장(오른쪽)이 김하동 일병의 유가족에게 유해발굴 및 신원확인 과정을 설명하고 있다 — 사진: 국방부 유해발굴감식단</figcaption>
+        </figure>
         <blockquote class="voice-quote">형님을 유전자 검사로 찾았다고 하니 우리나라가 선진국이 된 것을 새삼 느낀다.<br>이제 한이 내려앉는 것 같다.<cite>김하준 옹(87) · 김하동 일병의 동생</cite></blockquote>
       </div>
     </section>
