@@ -32,7 +32,7 @@ let board=Array.from({length:ROWS},()=>Array(COLS).fill(0));
 let current,nextType,bag=[],score=0,lines=0,level=1,dropInterval=700,lastDrop=0;
 let running=false,animId=null,hasStarted=false,highScore=0,audioCtx=null;
 let todayNews=[];
-let newsUnlocked=0,rewardTimer=null,resumeAfterVisibility=false;
+let newsUnlocked=0,rewardTimer=null,resumeAfterVisibility=false,speedUpNextRound=false;
 
 const FALLBACK_NEWS=[
   {title:'오늘의 뉴스는 여기에 있습니다',url:'https://www.newsis.com/'},
@@ -336,7 +336,8 @@ function completeGame(){
   $('#overlay').hidden=false;
   $('#overlay').querySelector('.cg-overlay-title').textContent='정리 완료!';
   $('#overlay').querySelector('.cg-overlay-sub').innerHTML='10줄을 말끔히 정리했습니다<br>오늘의 기사 3개를 모두 찾았어요';
-  $('#overlayStart').textContent='한 판 더 ↗';
+  speedUpNextRound=true;
+  $('#overlayStart').textContent='조금 빠르게 한 판 더 ↗';
   showNews('오늘의 스트레스 정리 완료','쌓였던 스트레스가 오늘의 뉴스로 바뀌었습니다',3);
   window.gtag?.('event','chagok_complete',{score,lines,mode:difficulty});
   announce('정리 완료! 10줄을 정리하고 오늘의 기사 3개를 모두 찾았습니다.');
@@ -344,6 +345,7 @@ function completeGame(){
 
 function endGame(){
   running=false;
+  speedUpNextRound=false;
   cancelAnimationFrame(animId);
   if(score>highScore){highScore=score;saveHighScore(highScore);}
   updateHud();
@@ -360,6 +362,7 @@ function endGame(){
 
 function showStartScreen(){
   running=false;
+  speedUpNextRound=false;
   cancelAnimationFrame(animId);
   $('#overlay').hidden=false;
   $('#overlay').querySelector('.cg-overlay-title').textContent='차곡차곡';
@@ -372,8 +375,10 @@ function showStartScreen(){
 
 function startGame(){
   const replay=hasStarted;hasStarted=true;
+  const isFasterRound=speedUpNextRound;
+  speedUpNextRound=false;
   board=Array.from({length:ROWS},()=>Array(COLS).fill(0));
-  score=0;lines=0;level=1;newsUnlocked=0;dropInterval=700;lastDrop=0;
+  score=0;lines=0;level=1;newsUnlocked=0;dropInterval=isFasterRound?610:700;lastDrop=0;
   bag=[];nextType=drawFromBag();
   spawnNext();
   updateHud();
@@ -383,7 +388,7 @@ function startGame(){
   $('#newsPanel').removeAttribute('data-show');
   $('#rewardToast').classList.remove('is-show');
   running=true;
-  window.gtag?.('event','chagok_start');
+  window.gtag?.('event','chagok_start',{faster_round:isFasterRound});
   if(replay)window.gtag?.('event','chagok_restart');
   announce('게임을 시작했습니다. 방향키로 블록을 움직이고 회전시켜 가로줄을 채워보세요.');
   canvas.focus({preventScroll:true});
