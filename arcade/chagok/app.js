@@ -32,7 +32,7 @@ let board=Array.from({length:ROWS},()=>Array(COLS).fill(0));
 let current,nextType,bag=[],score=0,lines=0,level=1,dropInterval=700,lastDrop=0;
 let running=false,animId=null,hasStarted=false,highScore=0,audioCtx=null;
 let todayNews=[];
-let newsUnlocked=0,rewardTimer=null,resumeAfterVisibility=false,speedUpNextRound=false;
+let newsUnlocked=0,rewardTimer=null,speedUpNextRound=false,paused=false;
 
 const FALLBACK_NEWS=[
   {title:'오늘의 뉴스는 여기에 있습니다',url:'https://www.newsis.com/'},
@@ -327,6 +327,7 @@ function showNews(title,subtitle,count=newsUnlocked){
 
 function completeGame(){
   running=false;
+  closePause();
   cancelAnimationFrame(animId);
   newsUnlocked=3;
   if(score>highScore){highScore=score;saveHighScore(highScore)}
@@ -345,6 +346,7 @@ function completeGame(){
 
 function endGame(){
   running=false;
+  closePause();
   speedUpNextRound=false;
   cancelAnimationFrame(animId);
   if(score>highScore){highScore=score;saveHighScore(highScore);}
@@ -362,6 +364,7 @@ function endGame(){
 
 function showStartScreen(){
   running=false;
+  closePause();
   speedUpNextRound=false;
   cancelAnimationFrame(animId);
   $('#overlay').hidden=false;
@@ -384,6 +387,7 @@ function startGame(){
   updateHud();
   $('#overlay').hidden=true;
   $('#startBtn').hidden=false;
+  $('#pauseBtn').hidden=false;
   $('#newsPanel').hidden=true;
   $('#newsPanel').removeAttribute('data-show');
   $('#rewardToast').classList.remove('is-show');
@@ -394,6 +398,38 @@ function startGame(){
   canvas.focus({preventScroll:true});
   cancelAnimationFrame(animId);
   animId=requestAnimationFrame(step);
+}
+
+function closePause(){
+  paused=false;
+  $('#pauseOverlay').hidden=true;
+  $('#pauseBtn').hidden=true;
+  $('#pauseBtn').textContent='멈춤';
+  $('#pauseBtn').setAttribute('aria-pressed','false');
+}
+
+function pauseGame(fromVisibility=false){
+  if(!running)return;
+  running=false;paused=true;
+  cancelAnimationFrame(animId);
+  $('#pauseOverlay').hidden=false;
+  $('#pauseBtn').textContent='계속';
+  $('#pauseBtn').setAttribute('aria-pressed','true');
+  announce(fromVisibility?'화면을 벗어나 게임을 잠시 멈췄습니다. 계속하기 버튼을 눌러주세요.':'게임을 잠시 멈췄습니다.');
+  if(!fromVisibility)window.gtag?.('event','chagok_pause',{score,lines});
+}
+
+function resumeGame(){
+  if(!paused)return;
+  paused=false;running=true;lastDrop=performance.now();
+  $('#pauseOverlay').hidden=true;
+  $('#pauseBtn').textContent='멈춤';
+  $('#pauseBtn').setAttribute('aria-pressed','false');
+  announce('게임을 계속합니다.');
+  window.gtag?.('event','chagok_resume',{score,lines});
+  cancelAnimationFrame(animId);
+  animId=requestAnimationFrame(step);
+  canvas.focus({preventScroll:true});
 }
 
 const HANDLED_KEYS=new Set(['ArrowLeft','ArrowRight','ArrowDown','ArrowUp',' ']);
@@ -409,7 +445,9 @@ document.addEventListener('keydown',e=>{
 },{passive:false});
 
 function bindTouch(){
-  $('.cg-touch').addEventListener('click',e=>{
+  const controls=$('.cg-touch');
+  controls.addEventListener('dblclick',e=>e.preventDefault());
+  controls.addEventListener('click',e=>{
     const button=e.target.closest('button[data-action]');
     if(!button||!running)return;
     const action=button.dataset.action;
@@ -433,19 +471,13 @@ function bindDifficulty(){
 
 $('#startBtn').addEventListener('click',showStartScreen);
 $('#overlayStart').addEventListener('click',startGame);
+$('#pauseBtn').addEventListener('click',()=>paused?resumeGame():pauseGame());
+$('#continueBtn').addEventListener('click',resumeGame);
 bindTouch();
 bindDifficulty();
 
 document.addEventListener('visibilitychange',()=>{
-  if(document.hidden){
-    resumeAfterVisibility=running;
-    if(running){running=false;cancelAnimationFrame(animId);announce('화면을 벗어나 게임을 잠시 멈췄습니다.')}
-  }else if(resumeAfterVisibility){
-    resumeAfterVisibility=false;
-    running=true;lastDrop=performance.now();
-    animId=requestAnimationFrame(step);
-    announce('게임을 계속합니다.');
-  }
+  if(document.hidden&&running)pauseGame(true);
 });
 
 async function loadNews(){
