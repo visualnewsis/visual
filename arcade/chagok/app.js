@@ -10,6 +10,8 @@ const DIFFICULTIES={
 const DIFF_KEY='chagok_difficulty';
 const HS_KEY_PREFIX='chagok_highscore_';
 const LINE_SCORES=[0,100,300,500,800];
+const TARGET_LINES=10;
+const NEWS_THRESHOLDS=[3,6,10];
 
 let difficulty=loadDifficulty();
 let COLS=DIFFICULTIES[difficulty].cols,ROWS=DIFFICULTIES[difficulty].rows;
@@ -30,6 +32,7 @@ let board=Array.from({length:ROWS},()=>Array(COLS).fill(0));
 let current,nextType,bag=[],score=0,lines=0,level=1,dropInterval=700,lastDrop=0;
 let running=false,animId=null,hasStarted=false,highScore=0,audioCtx=null;
 let todayNews=[];
+let newsUnlocked=0,rewardTimer=null,resumeAfterVisibility=false;
 
 const FALLBACK_NEWS=[
   {title:'오늘의 뉴스는 여기에 있습니다',url:'https://www.newsis.com/'},
@@ -174,8 +177,20 @@ function clearLines(){
 function updateHud(){
   $('#score').textContent=score.toLocaleString('ko-KR');
   $('#lines').textContent=lines;
-  $('#level').textContent=level;
+  $('#newsCount').textContent=`${newsUnlocked}/3`;
   $('#highScore').textContent=highScore.toLocaleString('ko-KR');
+}
+
+function unlockedFor(value){return NEWS_THRESHOLDS.filter(threshold=>value>=threshold).length}
+
+function showRewardToast(message){
+  const toast=$('#rewardToast');
+  window.clearTimeout(rewardTimer);
+  toast.textContent=message;
+  toast.classList.remove('is-show');
+  void toast.offsetWidth;
+  toast.classList.add('is-show');
+  rewardTimer=window.setTimeout(()=>toast.classList.remove('is-show'),1100);
 }
 
 function drawCell(context,cx,cy,color,cellSize,ghost=false){
@@ -233,6 +248,8 @@ function lockPiece(){
   if(cleared){
     score+=LINE_SCORES[cleared]*level;
     lines+=cleared;
+    const previousUnlocked=newsUnlocked;
+    newsUnlocked=unlockedFor(lines);
     const newLevel=Math.floor(lines/10)+1;
     if(newLevel!==level){
       level=newLevel;
@@ -241,8 +258,13 @@ function lockPiece(){
     pulse('is-hit');
     tone(240+cleared*80,.09,'sine');
     window.gtag?.('event','chagok_lines_cleared',{cleared,total_lines:lines,level});
+    if(newsUnlocked>previousUnlocked){
+      showRewardToast(`기사 ${newsUnlocked}개 찾았어요`);
+      window.gtag?.('event','chagok_news_unlocked',{articles:newsUnlocked,total_lines:lines});
+    }
   }
   updateHud();
+  if(lines>=TARGET_LINES){completeGame();return}
   spawnNext();
 }
 
@@ -281,19 +303,43 @@ function step(timestamp){
   animId=requestAnimationFrame(step);
 }
 
-function showNews(title,subtitle){
+function showNews(title,subtitle,count=newsUnlocked){
   $('#newsTitle').textContent=title;
   $('#newsSubtitle').textContent=subtitle;
   const list=$('#newsList');
   list.innerHTML='';
-  todayNews.forEach(n=>{
+  $('.cg-news-label').textContent=`찾은 기사 ${count}개`;
+  todayNews.slice(0,count).forEach(n=>{
     const a=document.createElement('a');
     a.href=n.url;a.textContent=n.title;a.target='_blank';a.rel='noopener';
     a.addEventListener('click',()=>window.gtag?.('event','chagok_article_click',{article_url:n.url}));
     list.appendChild(a);
   });
+  if(count===0){
+    const empty=document.createElement('p');
+    empty.className='cg-news-empty';
+    empty.textContent='아직 찾은 기사가 없어요. 한 줄씩 정리해 다시 도전해보세요.';
+    list.appendChild(empty);
+  }
   $('#newsPanel').hidden=false;
   $('#newsPanel').setAttribute('data-show','');
+}
+
+function completeGame(){
+  running=false;
+  cancelAnimationFrame(animId);
+  newsUnlocked=3;
+  if(score>highScore){highScore=score;saveHighScore(highScore)}
+  updateHud();
+  pulse('is-complete');
+  tone(660,.18,'sine');
+  $('#overlay').hidden=false;
+  $('#overlay').querySelector('.cg-overlay-title').textContent='정리 완료!';
+  $('#overlay').querySelector('.cg-overlay-sub').innerHTML='10줄을 말끔히 정리했습니다<br>오늘의 기사 3개를 모두 찾았어요';
+  $('#overlayStart').textContent='한 판 더 ↗';
+  showNews('오늘의 스트레스 정리 완료','쌓였던 스트레스가 오늘의 뉴스로 바뀌었습니다',3);
+  window.gtag?.('event','chagok_complete',{score,lines,mode:difficulty});
+  announce('정리 완료! 10줄을 정리하고 오늘의 기사 3개를 모두 찾았습니다.');
 }
 
 function endGame(){
@@ -306,7 +352,8 @@ function endGame(){
   $('#overlay').hidden=false;
   $('#overlay').querySelector('.cg-overlay-title').textContent='게임 오버';
   $('#overlay').querySelector('.cg-overlay-sub').innerHTML=`이번 점수 ${score.toLocaleString('ko-KR')}점 · 최고 기록 ${highScore.toLocaleString('ko-KR')}점`;
-  showNews('게임 오버','스트레스는 다 못 치웠지만, 오늘의 뉴스만큼은 여기 있습니다');
+  $('#overlayStart').textContent='다시 도전 ↗';
+  showNews('여기까지 정리했어요',newsUnlocked?`이번 판에서 기사 ${newsUnlocked}개를 찾았습니다`:'조금만 더 정리하면 기사를 찾을 수 있어요',newsUnlocked);
   window.gtag?.('event','chagok_game_over',{score,lines,level});
   announce(`게임이 끝났습니다. 점수 ${score}점, 최고 기록 ${highScore}점.`);
 }
@@ -316,7 +363,8 @@ function showStartScreen(){
   cancelAnimationFrame(animId);
   $('#overlay').hidden=false;
   $('#overlay').querySelector('.cg-overlay-title').textContent='차곡차곡';
-  $('#overlay').querySelector('.cg-overlay-sub').innerHTML='블록을 움직이고 회전시켜<br>가로줄을 꽉 채우면 사라집니다';
+  $('#overlay').querySelector('.cg-overlay-sub').innerHTML='10줄을 정리하면 완료<br>3·6·10줄마다 기사 한 개를 찾습니다';
+  $('#overlayStart').textContent='시작하기 ↗';
   $('#newsPanel').hidden=true;
   $('#newsPanel').removeAttribute('data-show');
   announce('난이도를 선택하고 시작하세요.');
@@ -325,7 +373,7 @@ function showStartScreen(){
 function startGame(){
   const replay=hasStarted;hasStarted=true;
   board=Array.from({length:ROWS},()=>Array(COLS).fill(0));
-  score=0;lines=0;level=1;dropInterval=700;lastDrop=0;
+  score=0;lines=0;level=1;newsUnlocked=0;dropInterval=700;lastDrop=0;
   bag=[];nextType=drawFromBag();
   spawnNext();
   updateHud();
@@ -333,6 +381,7 @@ function startGame(){
   $('#startBtn').hidden=false;
   $('#newsPanel').hidden=true;
   $('#newsPanel').removeAttribute('data-show');
+  $('#rewardToast').classList.remove('is-show');
   running=true;
   window.gtag?.('event','chagok_start');
   if(replay)window.gtag?.('event','chagok_restart');
@@ -372,6 +421,7 @@ function bindDifficulty(){
     btn.addEventListener('click',()=>{
       if(running)return;
       setDifficulty(btn.dataset.difficulty);
+      window.gtag?.('event','chagok_mode_select',{mode:btn.dataset.difficulty});
     });
   });
 }
@@ -380,6 +430,18 @@ $('#startBtn').addEventListener('click',showStartScreen);
 $('#overlayStart').addEventListener('click',startGame);
 bindTouch();
 bindDifficulty();
+
+document.addEventListener('visibilitychange',()=>{
+  if(document.hidden){
+    resumeAfterVisibility=running;
+    if(running){running=false;cancelAnimationFrame(animId);announce('화면을 벗어나 게임을 잠시 멈췄습니다.')}
+  }else if(resumeAfterVisibility){
+    resumeAfterVisibility=false;
+    running=true;lastDrop=performance.now();
+    animId=requestAnimationFrame(step);
+    announce('게임을 계속합니다.');
+  }
+});
 
 async function loadNews(){
   try{
