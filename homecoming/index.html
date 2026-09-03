@@ -12,6 +12,7 @@
   4) sources 섹션에 뉴시스 원문 링크를 넣었습니다(위 0번 URL). 김하준 옹 인터뷰 인용도 이 원문에서 가져온 실제 발언입니다.
   5) 편집# 010번은 잠정 번호입니다. aijob(009번) 발행 확정 후 최종 확정하세요. 확정 전엔 assets/editshop-carousel.js의 공용 목록에 이 페이지를 추가하지 마세요.
   6) "국유단이 맞이한 다른 순간들" 아카이브 월 섹션의 인물명·날짜·장소는 각 사진 속 배너·통지서에 실제로 인쇄된 정보를 그대로 옮긴 것입니다. 강대언 경사 사진은 배너가 없어 신원확인통지서에 적힌 발굴 경위(호남지역 전투)로만 표기했습니다.
+  7) 발굴 섹션의 "아군과 적군의 유품이 함께 나오기도 합니다" 문장은 KBS 「"마지막 한 명까지"…6·25 전사자 유해 발굴 구슬땀」(2026.6.24, 기자 이유진) 기사를 근거로 한 일반적 사실입니다. 압곡리 현장에 실제로 적용된다는 뜻은 아니며, 타사 기사라 본문·출처 목록 어디에도 매체명은 노출하지 않았습니다.
 -->
 <html lang="ko">
 <head>
@@ -156,6 +157,7 @@
     .bone-caption{position:relative;z-index:1;margin-top:34px;display:flex;flex-wrap:wrap;gap:14px;align-items:center}
     .bone-chip{padding:9px 16px;border:1px solid rgba(0,180,201,.4);border-radius:999px;font-size:13px;font-weight:700;color:#7fe0ec;letter-spacing:.02em}
     .file-photo-tag{font-size:11.5px;color:#7c8688;letter-spacing:.03em}
+    .dig-context{position:relative;z-index:1;margin:28px 0 0;max-width:600px;font-size:14px;line-height:1.75;color:#aeb7ba}
 
     /* 감식 섹션 */
     .science{background:var(--soft)}
@@ -217,6 +219,21 @@
     .act-copy{display:block;margin-top:14px;padding:11px 20px;border:1px solid var(--ink);border-radius:999px;background:#fff;color:var(--ink);font-size:14px;font-weight:800;cursor:pointer}
     .act-copy:hover{background:var(--ink);color:#fff}
     .act-copy.is-copied{background:var(--mint-dark);border-color:var(--mint-dark);color:#fff}
+
+    /* 헌화 — 예우를 표하는 조용한 제스처, 숫자·보상 없음 */
+    .homage{background:#05070a;color:#fff}
+    .homage-inner{max-width:760px;margin:0 auto;display:flex;flex-direction:column;align-items:center;text-align:center}
+    .homage-title{margin:20px 0 0;font-size:clamp(24px,3.2vw,38px);font-weight:800;line-height:1.4;letter-spacing:-.03em;color:#dfe3e4}
+    .homage-flower{margin-top:48px;background:none;border:none;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:22px;padding:8px}
+    .homage-flower svg{width:clamp(110px,16vw,160px);height:auto}
+    .homage-flower .petals-outer ellipse,.homage-flower .petals-inner ellipse{fill:#3a4145;transition:fill 1.4s ease}
+    .homage-flower .petals-center{fill:#2a3033;transition:fill 1.4s ease}
+    .homage-flower[aria-pressed="true"] .petals-outer ellipse{fill:#f3efe4}
+    .homage-flower[aria-pressed="true"] .petals-inner ellipse{fill:#e4dcc6}
+    .homage-flower[aria-pressed="true"] .petals-center{fill:#b7c68f}
+    .homage-flower[aria-pressed="true"]{cursor:default}
+    .homage-label{font-size:14px;font-weight:700;letter-spacing:.04em;color:#8f9a9f;transition:color .6s ease}
+    .homage-flower[aria-pressed="true"] .homage-label{color:#aeb7ba}
 
     .archive{background:#0a0d10;color:#fff}
     .archive-grid{margin-top:44px;display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:18px}
@@ -379,6 +396,7 @@
           <span class="bone-chip">발목뼈</span>
           <span class="file-photo-tag">사진은 국유단의 다른 발굴 현장 자료사진입니다</span>
         </div>
+        <p class="dig-context">6·25 격전지는 대부분 고지를 뺏고 빼앗기던 자리였습니다. 그래서 땅속에서는 아군과 적군의 유품이 함께 나오기도 합니다. 국유단은 전투화 같은 유품을 대조해가며 국적을 가려냅니다.</p>
       </div>
     </section>
 
@@ -524,6 +542,49 @@
       </div>
     </section>
 
+    <section class="section homage">
+      <div class="wrap reveal">
+        <div class="homage-inner">
+          <div class="eyebrow on-dark">헌화</div>
+          <h2 class="homage-title">잠시, 국화 한 송이를<br>놓아주세요.</h2>
+          <button class="homage-flower" type="button" aria-pressed="false">
+            <svg viewBox="0 0 200 200" aria-hidden="true">
+              <g class="petals-outer">
+                <ellipse cx="100" cy="38" rx="13" ry="32"/>
+                <ellipse cx="100" cy="38" rx="13" ry="32" transform="rotate(30 100 100)"/>
+                <ellipse cx="100" cy="38" rx="13" ry="32" transform="rotate(60 100 100)"/>
+                <ellipse cx="100" cy="38" rx="13" ry="32" transform="rotate(90 100 100)"/>
+                <ellipse cx="100" cy="38" rx="13" ry="32" transform="rotate(120 100 100)"/>
+                <ellipse cx="100" cy="38" rx="13" ry="32" transform="rotate(150 100 100)"/>
+                <ellipse cx="100" cy="38" rx="13" ry="32" transform="rotate(180 100 100)"/>
+                <ellipse cx="100" cy="38" rx="13" ry="32" transform="rotate(210 100 100)"/>
+                <ellipse cx="100" cy="38" rx="13" ry="32" transform="rotate(240 100 100)"/>
+                <ellipse cx="100" cy="38" rx="13" ry="32" transform="rotate(270 100 100)"/>
+                <ellipse cx="100" cy="38" rx="13" ry="32" transform="rotate(300 100 100)"/>
+                <ellipse cx="100" cy="38" rx="13" ry="32" transform="rotate(330 100 100)"/>
+              </g>
+              <g class="petals-inner">
+                <ellipse cx="100" cy="52" rx="10" ry="22" transform="rotate(15 100 100)"/>
+                <ellipse cx="100" cy="52" rx="10" ry="22" transform="rotate(45 100 100)"/>
+                <ellipse cx="100" cy="52" rx="10" ry="22" transform="rotate(75 100 100)"/>
+                <ellipse cx="100" cy="52" rx="10" ry="22" transform="rotate(105 100 100)"/>
+                <ellipse cx="100" cy="52" rx="10" ry="22" transform="rotate(135 100 100)"/>
+                <ellipse cx="100" cy="52" rx="10" ry="22" transform="rotate(165 100 100)"/>
+                <ellipse cx="100" cy="52" rx="10" ry="22" transform="rotate(195 100 100)"/>
+                <ellipse cx="100" cy="52" rx="10" ry="22" transform="rotate(225 100 100)"/>
+                <ellipse cx="100" cy="52" rx="10" ry="22" transform="rotate(255 100 100)"/>
+                <ellipse cx="100" cy="52" rx="10" ry="22" transform="rotate(285 100 100)"/>
+                <ellipse cx="100" cy="52" rx="10" ry="22" transform="rotate(315 100 100)"/>
+                <ellipse cx="100" cy="52" rx="10" ry="22" transform="rotate(345 100 100)"/>
+              </g>
+              <circle class="petals-center" cx="100" cy="100" r="15"/>
+            </svg>
+            <span class="homage-label">국화 놓기</span>
+          </button>
+        </div>
+      </div>
+    </section>
+
     <section class="section sources">
       <div class="wrap reveal">
         <div class="eyebrow">취재 출처</div>
@@ -571,6 +632,18 @@
         const target=document.getElementById(btn.dataset.target);
         if(target)target.classList.add('is-visible');
       }));
+      const flowerBtn=document.querySelector('.homage-flower');
+      if(flowerBtn){
+        const label=flowerBtn.querySelector('.homage-label');
+        const KEY='homecoming-homage-placed';
+        const setPlaced=()=>{flowerBtn.setAttribute('aria-pressed','true');label.textContent='놓았습니다.'};
+        try{if(localStorage.getItem(KEY)==='1')setPlaced();}catch(e){}
+        flowerBtn.addEventListener('click',()=>{
+          if(flowerBtn.getAttribute('aria-pressed')==='true')return;
+          setPlaced();
+          try{localStorage.setItem(KEY,'1');}catch(e){}
+        });
+      }
       const copyBtn=q=>document.querySelector(q);
       const actCopy=copyBtn('.act-copy');
       if(actCopy)actCopy.addEventListener('click',async()=>{
