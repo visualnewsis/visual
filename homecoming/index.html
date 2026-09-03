@@ -12,7 +12,7 @@
   4) sources 섹션에 뉴시스 원문 링크를 넣었습니다(위 0번 URL). 김하준 옹 인터뷰 인용도 이 원문에서 가져온 실제 발언입니다.
   5) 편집# 010번은 잠정 번호입니다. aijob(009번) 발행 확정 후 최종 확정하세요. 확정 전엔 assets/editshop-carousel.js의 공용 목록에 이 페이지를 추가하지 마세요.
   6) "국유단이 맞이한 다른 순간들" 아카이브 월 섹션의 인물명·날짜·장소는 각 사진 속 배너·통지서에 실제로 인쇄된 정보를 그대로 옮긴 것입니다. 강대언 경사 사진은 배너가 없어 신원확인통지서에 적힌 발굴 경위(호남지역 전투)로만 표기했습니다.
-  7) 발굴 섹션의 "아군과 적군의 유품이 함께 나오기도 합니다" 문장은 KBS 「"마지막 한 명까지"…6·25 전사자 유해 발굴 구슬땀」(2026.6.24, 기자 이유진) 기사를 근거로 한 일반적 사실입니다. 압곡리 현장에 실제로 적용된다는 뜻은 아니며, 타사 기사라 본문·출처 목록 어디에도 매체명은 노출하지 않았습니다.
+  7) 발굴 섹션의 백석산·전투화 관련 문장은 KBS 「"마지막 한 명까지"…6·25 전사자 유해 발굴 구슬땀」(2026.6.24, 기자 이유진) 보도를 "KBS에 따르면"으로 출처 밝혀 인용한 것입니다(담당자 지시로 타사 표기 허용). 압곡리 현장에 실제로 적용된다는 뜻은 아닙니다. 해당 리포트의 영상·사진은 KBS 자체 촬영(촬영기자 김남범)이라 재사용 불가 — 발굴 현장 사진은 기존 자료사진을 그대로 씁니다.
 -->
 <html lang="ko">
 <head>
@@ -157,7 +157,7 @@
     .bone-caption{position:relative;z-index:1;margin-top:34px;display:flex;flex-wrap:wrap;gap:14px;align-items:center}
     .bone-chip{padding:9px 16px;border:1px solid rgba(0,180,201,.4);border-radius:999px;font-size:13px;font-weight:700;color:#7fe0ec;letter-spacing:.02em}
     .file-photo-tag{font-size:11.5px;color:#7c8688;letter-spacing:.03em}
-    .dig-context{position:relative;z-index:1;margin:28px 0 0;max-width:600px;font-size:14px;line-height:1.75;color:#aeb7ba}
+    .dig-context{position:relative;z-index:1;margin:32px 0 0;max-width:640px;padding:20px 24px;border-left:3px solid var(--mint);background:rgba(5,7,10,.62);backdrop-filter:blur(2px);font-size:15.5px;font-weight:500;line-height:1.8;color:#e3e7e8}
 
     /* 감식 섹션 */
     .science{background:var(--soft)}
@@ -224,16 +224,11 @@
     .homage{background:#05070a;color:#fff}
     .homage-inner{max-width:760px;margin:0 auto;display:flex;flex-direction:column;align-items:center;text-align:center}
     .homage-title{margin:20px 0 0;font-size:clamp(24px,3.2vw,38px);font-weight:800;line-height:1.4;letter-spacing:-.03em;color:#dfe3e4}
-    .homage-flower{margin-top:48px;background:none;border:none;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:22px;padding:8px}
+    .homage-flower{margin-top:48px}
     .homage-flower svg{width:clamp(110px,16vw,160px);height:auto}
-    .homage-flower .petals-outer ellipse,.homage-flower .petals-inner ellipse{fill:#3a4145;transition:fill 1.4s ease}
-    .homage-flower .petals-center{fill:#2a3033;transition:fill 1.4s ease}
-    .homage-flower[aria-pressed="true"] .petals-outer ellipse{fill:#f3efe4}
-    .homage-flower[aria-pressed="true"] .petals-inner ellipse{fill:#e4dcc6}
-    .homage-flower[aria-pressed="true"] .petals-center{fill:#b7c68f}
-    .homage-flower[aria-pressed="true"]{cursor:default}
-    .homage-label{font-size:14px;font-weight:700;letter-spacing:.04em;color:#8f9a9f;transition:color .6s ease}
-    .homage-flower[aria-pressed="true"] .homage-label{color:#aeb7ba}
+    .homage-flower .petals-outer ellipse,.homage-flower .petals-inner ellipse{fill:#f3efe4}
+    .homage-flower .petals-center{fill:#b7c68f}
+    .homage-note{margin-top:22px;font-size:14px;font-weight:700;letter-spacing:.02em;color:#aeb7ba}
 
     .archive{background:#0a0d10;color:#fff}
     .archive-grid{margin-top:44px;display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:18px}
@@ -396,7 +391,7 @@
           <span class="bone-chip">발목뼈</span>
           <span class="file-photo-tag">사진은 국유단의 다른 발굴 현장 자료사진입니다</span>
         </div>
-        <p class="dig-context">6·25 격전지는 대부분 고지를 뺏고 빼앗기던 자리였습니다. 그래서 땅속에서는 아군과 적군의 유품이 함께 나오기도 합니다. 국유단은 전투화 같은 유품을 대조해가며 국적을 가려냅니다.</p>
+        <p class="dig-context">KBS에 따르면, 강원 백석산 같은 격전지에서는 국군과 북한군의 유품이 뒤섞여 나오기도 합니다. 완전한 형태로 발굴된 유해조차 전투화 같은 유품을 근거로 '국군의 진격 작전 중 전사한 북한군으로 추정'되는 경우가 있을 정도입니다. 국유단은 이런 유품들을 하나하나 대조해가며 국적과 신원을 가려냅니다.</p>
       </div>
     </section>
 
@@ -546,8 +541,8 @@
       <div class="wrap reveal">
         <div class="homage-inner">
           <div class="eyebrow on-dark">헌화</div>
-          <h2 class="homage-title">잠시, 국화 한 송이를<br>놓아주세요.</h2>
-          <button class="homage-flower" type="button" aria-pressed="false">
+          <h2 class="homage-title">잠시, 함께<br>묵념하겠습니다.</h2>
+          <div class="homage-flower">
             <svg viewBox="0 0 200 200" aria-hidden="true">
               <g class="petals-outer">
                 <ellipse cx="100" cy="38" rx="13" ry="32"/>
@@ -579,8 +574,8 @@
               </g>
               <circle class="petals-center" cx="100" cy="100" r="15"/>
             </svg>
-            <span class="homage-label">국화 놓기</span>
-          </button>
+          </div>
+          <p class="homage-note">뉴시스도 삼가 고인의 명복을 빕니다.</p>
         </div>
       </div>
     </section>
@@ -591,6 +586,7 @@
         <ul>
           <li><b>「6·25 당시 19세에 산화한 김하동 일병, 75년 만에 가족 품으로」 (2026.08.31) - 뉴시스</b><span>故 김하동 일병의 출생·입대·전사 경위, 발굴 위치와 수습 부위, 신원확인 경위, 동생 김하준 옹의 인터뷰를 확인.</span><a href="https://www.newsis.com/view/NISX20260831_0003769722" target="_blank" rel="noopener noreferrer">기사 보러가기 ↗</a></li>
           <li><b>「75년 만에 가족의 품으로 돌아간 故김익장 일병」 (2025.03.31) - 뉴시스</b><span>김익장 일병의 생애, 발굴·신원확인 경위, 동생 김삼장씨 관련 사실을 확인.</span><a href="https://www.newsis.com/view/NISX20250331_0003120112" target="_blank" rel="noopener noreferrer">기사 보러가기 ↗</a></li>
+          <li><b>「"마지막 한 명까지"…6·25 전사자 유해 발굴 구슬땀」 (2026.06.24) - KBS</b><span>격전지 발굴 현장에서 국군·북한군 유품이 함께 나오는 사례, 전투화로 국적을 가려내는 방식을 확인.</span><a href="https://v.daum.net/v/YoMTo5qFvR" target="_blank" rel="noopener noreferrer">기사 보러가기 ↗</a></li>
         </ul>
         <p class="disclaimer">이 페이지의 수치와 사실관계는 국방부 유해발굴감식단 발표와 복수의 취재 확인을 거쳐 작성했습니다. 김하동 일병의 유전자 재확인 정확한 시점과 뉴시스 자체 기사·사진은 배포 전 사내 확인을 거쳐 보완합니다.</p>
       </div>
@@ -632,18 +628,6 @@
         const target=document.getElementById(btn.dataset.target);
         if(target)target.classList.add('is-visible');
       }));
-      const flowerBtn=document.querySelector('.homage-flower');
-      if(flowerBtn){
-        const label=flowerBtn.querySelector('.homage-label');
-        const KEY='homecoming-homage-placed';
-        const setPlaced=()=>{flowerBtn.setAttribute('aria-pressed','true');label.textContent='놓았습니다.'};
-        try{if(localStorage.getItem(KEY)==='1')setPlaced();}catch(e){}
-        flowerBtn.addEventListener('click',()=>{
-          if(flowerBtn.getAttribute('aria-pressed')==='true')return;
-          setPlaced();
-          try{localStorage.setItem(KEY,'1');}catch(e){}
-        });
-      }
       const copyBtn=q=>document.querySelector(q);
       const actCopy=copyBtn('.act-copy');
       if(actCopy)actCopy.addEventListener('click',async()=>{
