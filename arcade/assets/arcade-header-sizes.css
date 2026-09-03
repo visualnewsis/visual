@@ -1,8 +1,9 @@
 .site-header{position:relative}
+.site-header .brand{grid-column:1!important;justify-self:start!important}
 .site-header .brand img{display:block;width:auto!important;max-width:none!important;height:43px!important}
 .site-header .newsis-logo{position:absolute!important;left:50%!important;transform:translateX(-50%)!important}
 .site-header .newsis-logo img{display:block;width:auto!important;height:36px!important}
-.site-header .visual-newsis{display:block!important;width:98px!important;font-family:"Noto Sans KR",sans-serif!important;font-size:11px!important;font-weight:900!important;line-height:1.2!important;letter-spacing:.08em!important;text-align:right!important;white-space:nowrap!important}
+.site-header .visual-newsis{display:block!important;grid-column:3!important;justify-self:end!important;width:98px!important;font-family:"Noto Sans KR",sans-serif!important;font-size:11px!important;font-weight:900!important;line-height:1.2!important;letter-spacing:.08em!important;text-align:right!important;white-space:nowrap!important}
 
 @media(max-width:480px){
   .site-header .brand img{height:35px!important}
