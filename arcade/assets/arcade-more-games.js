@@ -1,16 +1,16 @@
 const ARCADE_GAMES = Object.freeze([
   { number: '01', name: '조각 사진관', path: '/arcade/puzzle/' },
-  { number: '02', name: '뉴스 오목', path: '/arcade/omok/' },
-  { number: '03', name: '가짜뉴스 지뢰찾기', path: '/arcade/minesweeper/', isNew: true },
-  { number: '04', name: '카드 프리셀', path: '/arcade/freecell/', isNew: true },
+  { number: '02', name: '차곡차곡', path: '/arcade/chagok/', isNew: true },
+  { number: '03', name: '뉴스 오목', path: '/arcade/omok/' },
+  { number: '04', name: '이슈 훔친 두더지', path: '/arcade/mole/' },
   { number: '05', name: '벽크크', path: '/arcade/brickrunch/', isNew: true },
-  { number: '06', name: '충무맨', path: '/arcade/chungmuman/' },
-  { number: '07', name: '이슈 훔친 두더지', path: '/arcade/mole/' },
-  { number: '08', name: '제목있음', path: '/arcade/output/' },
+  { number: '06', name: '가짜뉴스 지뢰찾기', path: '/arcade/minesweeper/', isNew: true },
+  { number: '07', name: '카드 프리셀', path: '/arcade/freecell/', isNew: true },
+  { number: '08', name: '낱말수선소', path: '/arcade/words/' },
   { number: '09', name: '넌 내 도도독', path: '/arcade/dododok/' },
-  { number: '10', name: '낱말수선소', path: '/arcade/words/' },
-  { number: '11', name: '충무로 타로#', path: '/arcade/tarot/' },
-  { number: '12', name: '차곡차곡', path: '/arcade/chagok/', isNew: true }
+  { number: '10', name: '충무맨', path: '/arcade/chungmuman/' },
+  { number: '11', name: '제목있음', path: '/arcade/output/' },
+  { number: '12', name: '충무로 타로#', path: '/arcade/tarot/' }
 ]);
 
 function normalizeArcadePath(pathname) {
