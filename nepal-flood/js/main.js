@@ -206,17 +206,21 @@
   window.addEventListener("resize", onScroll);
   onScroll();
 
-  // Restore scroll position when returning from an outbound link (e.g. the video)
+  // Restore scroll position when returning from an outbound link (e.g. the video).
+  // Only honored for a few seconds after the click, so a stale leftover key
+  // (browser session restore, revisiting the URL later, etc.) never hijacks
+  // what is actually a fresh visit and jumps straight to the video section.
   if ("scrollRestoration" in history) {
     history.scrollRestoration = "manual";
   }
   const scrollRestoreKey = "nepal-flood-scroll-y";
-  const savedScrollY = sessionStorage.getItem(scrollRestoreKey);
-  if (savedScrollY !== null) {
+  const scrollRestoreMaxAgeMs = 15000;
+  const savedScrollRaw = sessionStorage.getItem(scrollRestoreKey);
+  if (savedScrollRaw !== null) {
     sessionStorage.removeItem(scrollRestoreKey);
-    const y = parseInt(savedScrollY, 10);
-    if (!Number.isNaN(y)) {
-      window.scrollTo({ top: y, left: 0, behavior: "instant" });
+    const [savedY, savedAt] = savedScrollRaw.split(",").map(Number);
+    if (!Number.isNaN(savedY) && !Number.isNaN(savedAt) && Date.now() - savedAt < scrollRestoreMaxAgeMs) {
+      window.scrollTo({ top: savedY, left: 0, behavior: "instant" });
       onScroll();
     }
   }
@@ -225,7 +229,7 @@
   const videoButton = document.getElementById("video-poster-button");
   if (videoButton) {
     videoButton.addEventListener("click", () => {
-      sessionStorage.setItem(scrollRestoreKey, String(window.scrollY));
+      sessionStorage.setItem(scrollRestoreKey, `${window.scrollY},${Date.now()}`);
     });
   }
 
