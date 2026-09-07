@@ -19,9 +19,9 @@ PAGES = {
     "kangin/index.html": ("편집#", True),
     "children/index.html": ("편집#", True),
     "buy-live/index.html": ("편집#", True),
-    "heat-rain/index.html": ("최종판", False),
+    "heat-rain/index.html": ("뉴시스템", False),
     "battery/index.html": ("한눈에 알아볼지도", False),
-    "adult-missing/index.html": ("최종판", False),
+    "adult-missing/index.html": ("뉴시스템", False),
     "calculator/index.html": ("계산대로", True),
 }
 EDITSHOP_STORIES = {"oil", "thief", "shelter", "temperature", "kangin", "children", "buy-live"}
@@ -98,15 +98,15 @@ def main() -> int:
     if shared_js.is_file():
         script = shared_js.read_text(encoding="utf-8")
         expected = [
-            'latest:"최신 기사"', 'editshop:"편집#"', 'finalcut:"최종판"',
+            'latest:"최신 기사"', 'editshop:"편집#"', 'newsystem:"뉴시스템"',
             'mapguide:"알아볼지도"', 'arcade:"충무로딩"', 'calculator:"계산대로"',
         ]
         if any(item not in script for item in expected):
             fail(errors, "global header menu must contain exactly the six approved labels")
         links_match = re.search(r'const links=\{([^}]*)\}', script)
         links_body = links_match.group(1) if links_match else ""
-        if 'finalcut:"https://visual.newsis.com/finalcut/"' not in links_body:
-            fail(errors, "최종판 global menu link is missing or incorrect")
+        if 'newsystem:"https://visual.newsis.com/newsystem/"' not in links_body:
+            fail(errors, "뉴시스템 global menu link is missing or incorrect")
         # 알아볼지도 has no hub landing yet; it's temporarily pointed at its one
         # published story (battery) until a real hub replaces this link.
         if 'mapguide:"https://visual.newsis.com/battery/"' not in links_body:
