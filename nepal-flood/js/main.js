@@ -206,21 +206,6 @@
   window.addEventListener("resize", onScroll);
   onScroll();
 
-  // Video click-to-embed
-  const videoFrame = document.getElementById("video-poster-frame");
-  const videoButton = document.getElementById("video-poster-button");
-  if (videoButton) {
-    videoButton.addEventListener("click", () => {
-      videoFrame.classList.add("is-playing");
-      const iframe = document.createElement("iframe");
-      iframe.src = "https://www.youtube.com/embed/xQ3j2NnvjHA?autoplay=1&rel=0";
-      iframe.title = "TV뉴시스 비 한 방울 안 왔는데 네팔 대홍수 왜 피해 커졌나";
-      iframe.allow = "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture";
-      iframe.allowFullscreen = true;
-      videoButton.replaceWith(iframe);
-    });
-  }
-
   // Share button
   const shareButton = document.getElementById("share-button");
   const shareStatus = document.getElementById("share-status");
