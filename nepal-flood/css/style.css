@@ -207,6 +207,7 @@ button,input{font:inherit}
 .final-reveal{transform-origin:0 center;max-width:1180px;top:30svh}
 .final-reveal h2 span{color:#a4aaa5;letter-spacing:-.055em;font-size:1em;font-weight:inherit;display:inline-block}
 .final-reveal h2 b{color:#f2aa69;text-shadow:rgba(242,161,93,.125) 0 0 32px;margin-top:.16em;display:inline-block}
+.final-reveal h2>span,.final-reveal h2>b{white-space:nowrap;width:max-content;max-width:100%;display:block}
 .final-responsibility{border-top:1px solid rgba(255,255,255,.16);width:min(820px,100%);margin-top:24px}
 .final-responsibility p{color:#d7d9d4;border-bottom:1px solid rgba(255,255,255,.11);grid-template-columns:64px 1fr;gap:20px;margin:0;padding:10px 0;font-size:14px;line-height:1.4;display:grid}
 .final-responsibility p b{color:#f2a15d;letter-spacing:.14em;font-size:10px}
@@ -347,7 +348,7 @@ button,input{font:inherit}
   .final-first h2,.final-reveal h2{white-space:nowrap;font-size:35px;line-height:.98}
   .final-first>p:last-child{font-size:14px;line-height:1.65}
   .final-reveal{bottom:5.5svh}
-  .final-reveal h2{white-space:normal;font-size:32px}
+  .final-reveal h2{white-space:normal;font-size:clamp(20px,6.25vw,28px);line-height:1.04}
   .final-responsibility{margin-top:24px}
   .final-responsibility p{grid-template-columns:48px 1fr;gap:10px;padding:10px 0;font-size:11px;line-height:1.4}
   .final-responsibility p b{font-size:8px}
