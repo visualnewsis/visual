@@ -139,7 +139,6 @@ button,input{font:inherit}
 .evidence-sticky{isolation:isolate;height:100svh;padding:8svh 7vw;position:sticky;top:0;overflow:hidden}
 .evidence-sticky:before{content:"";z-index:-1;background:radial-gradient(145px at 50% 54%,#232525 0%,#0c0d0d 55%,#000 100%);position:absolute;inset:0}
 .evidence-head{z-index:3;position:absolute;top:8svh;left:7vw}
-.evidence-head .eyebrow{color:#484b49;opacity:.72;font-size:7px}
 .evidence-head h2{color:#606461;letter-spacing:-.055em;margin:0;font-size:clamp(16px,1.65vw,24px);line-height:1.08;white-space:nowrap}
 .evidence-head h2 b{color:#606461}
 .evidence-stage{text-align:center;place-items:center;display:grid;position:absolute;inset:0}
@@ -250,7 +249,8 @@ button,input{font:inherit}
 .footer-visual{letter-spacing:.055em;justify-self:start;font-size:13px;font-weight:650}
 .footer-top{letter-spacing:.12em;color:#a6b8b0;justify-self:center;gap:7px;font-size:12px;font-weight:500}
 .footer-top svg{width:14px;height:14px}
-.footer-newsis{letter-spacing:-.055em;color:#f0f4f1;justify-self:end;font-size:18px;font-weight:750}
+.footer-brand{justify-self:end;color:#75f3d1;font-family:Pretendard,"Noto Sans KR","Apple SD Gothic Neo",Arial,sans-serif;font-size:14px;font-weight:800;line-height:1;letter-spacing:.1em;white-space:nowrap}
+.footer-brand .silent-i{color:rgba(237,240,234,.5)}
 
 @keyframes hero-settle{0%{filter:blur(7px) saturate(.4);transform:scale(1.16)}100%{filter:saturate(.72) contrast(1.06) brightness(.64);transform:scale(1.04)}}
 @keyframes pulse{50%{opacity:.5}}
@@ -365,7 +365,7 @@ button,input{font:inherit}
   .related-articles a{gap:16px;padding:20px 0;font-size:16px}
   .article-footer{min-height:90px;padding:16px 18px}
   .footer-visual{letter-spacing:0;font-size:12px}
-  .footer-newsis{font-size:16px}
+  .footer-brand{font-size:clamp(8px,2.5vw,10px)}
 }
 @media(prefers-reduced-motion:reduce){
   html{scroll-behavior:auto}
