@@ -206,6 +206,29 @@
   window.addEventListener("resize", onScroll);
   onScroll();
 
+  // Restore scroll position when returning from an outbound link (e.g. the video)
+  if ("scrollRestoration" in history) {
+    history.scrollRestoration = "manual";
+  }
+  const scrollRestoreKey = "nepal-flood-scroll-y";
+  const savedScrollY = sessionStorage.getItem(scrollRestoreKey);
+  if (savedScrollY !== null) {
+    sessionStorage.removeItem(scrollRestoreKey);
+    const y = parseInt(savedScrollY, 10);
+    if (!Number.isNaN(y)) {
+      window.scrollTo({ top: y, left: 0, behavior: "instant" });
+      onScroll();
+    }
+  }
+
+  // Video: remember scroll position before leaving for YouTube
+  const videoButton = document.getElementById("video-poster-button");
+  if (videoButton) {
+    videoButton.addEventListener("click", () => {
+      sessionStorage.setItem(scrollRestoreKey, String(window.scrollY));
+    });
+  }
+
   // Share button
   const shareButton = document.getElementById("share-button");
   const shareStatus = document.getElementById("share-status");
