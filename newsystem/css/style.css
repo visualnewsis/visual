@@ -102,6 +102,7 @@ img{display:block;max-width:100%}
 .work-missing{color:#ff5964;text-shadow:0 0 24px rgba(255,89,100,.16)}
 .work-heat{color:#ff7668}
 .work-rain{color:#86cfff}
+.work-flood{color:#e7a33e}
 .work-stats{position:absolute;bottom:11%;right:5vw;z-index:2;display:flex;align-items:center;gap:22px}
 .work-stats span{display:flex;flex-direction:column;gap:8px}
 .work-stats b{font-family:Pretendard,"Noto Sans KR","Apple SD Gothic Neo",Arial,sans-serif;font-size:clamp(23px,3vw,42px);font-weight:800;line-height:1;letter-spacing:-.055em}
@@ -109,6 +110,8 @@ img{display:block;max-width:100%}
 .work-stats i{width:34px;height:1px;background:rgba(255,255,255,.6)}
 .work-stage.red .work-copy p{color:#ff756b}
 .work-stage.red .work-scan{background:linear-gradient(90deg,transparent,#ff756b,transparent);box-shadow:0 0 28px #ff756b}
+.work-stage.amber .work-copy p{color:#e7a33e}
+.work-stage.amber .work-scan{background:linear-gradient(90deg,transparent,#e7a33e,transparent);box-shadow:0 0 28px #e7a33e}
 .work-enter{position:absolute;top:50%;right:36px;z-index:2;writing-mode:vertical-rl;color:rgba(255,255,255,.72);font-size:11px;letter-spacing:.12em;transform:translateY(-50%)}
 .work-enter b{margin-top:8px;color:var(--mint)}
 
