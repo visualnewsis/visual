@@ -4,7 +4,7 @@
 
 export const TITLE = {
   brand: "CHUNGMU-LOADING",
-  main: "밤티에이",
+  main: "BTA 밤티에이",
   sub: "회사에서 탈출하라",
 };
 
