@@ -471,6 +471,29 @@ function officeChair(x, z, rotY, color) {
   return g;
 }
 
+// A tiny brass "credit plaque" easter egg, low on a wall corner — the kind
+// of detail most players walk right past.
+function creditPlaque(x, y, z, rotY) {
+  const tex = makeTexture(256, 96, (ctx) => {
+    ctx.fillStyle = "#2a2418";
+    ctx.fillRect(0, 0, 256, 96);
+    ctx.fillStyle = "#d8b878";
+    ctx.font = "bold 15px sans-serif";
+    ctx.textAlign = "center";
+    ctx.fillText("크리에이티브 디렉터 = 안재현", 128, 42);
+    ctx.font = "11px monospace";
+    ctx.fillStyle = "#a4926a";
+    ctx.fillText("37.561827°N · 126.991076°E", 128, 66);
+  });
+  const plaque = new THREE.Mesh(
+    new THREE.BoxGeometry(0.26, 0.1, 0.008),
+    new THREE.MeshStandardMaterial({ map: tex, color: "#ffffff", roughness: 0.4, metalness: 0.3 })
+  );
+  plaque.position.set(x, y, z);
+  plaque.rotation.y = rotY;
+  scene.add(plaque);
+}
+
 function acDiffuser(x, z, size = 0.5) {
   const disc = new THREE.Mesh(
     new THREE.CylinderGeometry(size / 2, size / 2, 0.03, 20),
@@ -566,6 +589,9 @@ function revealable(id, obj) {
 
   // PC tower, dimly visible under the desk shadow
   box(2.95, 0.2, deskZ - 0.15, 0.18, 0.4, 0.42, "#d9d5c8");
+
+  // low in the corner by the door out — easy to walk past without noticing
+  creditPlaque(0.22, 0.14, -halfW + 0.021, 0);
 }
 
 // Zone: cubicle-a (6-16) — mint fabric partitions + water purifier/microwave
@@ -1208,6 +1234,8 @@ animate();
 window.__debug = {
   state,
   camera,
+  renderer,
+  scene,
   teleport(x, z = 0) {
     camera.position.x = x;
     camera.position.z = z;

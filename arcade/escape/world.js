@@ -1,11 +1,11 @@
-// GTA — 회사에서 탈출하라 (working title, replace freely)
+// 밤티에이 — 회사에서 탈출하라 (working title, replace freely)
 // All world dimensions, checkpoints and text live here so the scene and
 // the "escape progress" logic can be edited without touching game.js.
 
 export const TITLE = {
   brand: "CHUNGMU-LOADING",
-  main: "GTA",
-  sub: "GRAND TOUR AROUND — 회사에서 탈출하라",
+  main: "밤티에이",
+  sub: "회사에서 탈출하라",
 };
 
 // Meters. Player eye height ~1.6m.
