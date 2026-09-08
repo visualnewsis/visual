@@ -194,9 +194,39 @@ function marbleTexture() {
 const MARBLE_TEX = marbleTexture();
 MARBLE_TEX.repeat.set(2, 2);
 
-// The office wall map, hand-signed in the corner like a real drawn map.
-// Drawn once immediately with a fallback italic, then redrawn once the
-// Gaegu web font (loaded in index.html) actually finishes loading.
+// Draws text one character at a time with small random jitter in position,
+// rotation and baseline so it reads as scrawled-on rather than neatly typed
+// (a single rotated fillText call just looks like a layout mistake).
+function scribbleText(ctx, text, x, y, { size, color, jitter = 3, seed = 1 }) {
+  ctx.font = `${size}px "Gaegu", cursive`;
+  ctx.textBaseline = "alphabetic";
+  let cx = x;
+  let rand = seed;
+  const next = () => (rand = (rand * 9301 + 49297) % 233280) / 233280;
+  for (const ch of text) {
+    if (ch === " ") {
+      cx += size * 0.32;
+      continue;
+    }
+    const jx = (next() - 0.5) * jitter;
+    const jy = (next() - 0.5) * jitter * 1.4;
+    const rot = (next() - 0.5) * 0.16;
+    ctx.save();
+    ctx.translate(cx + jx, y + jy);
+    ctx.rotate(rot);
+    ctx.fillStyle = color;
+    ctx.fillText(ch, 0, 0);
+    ctx.restore();
+    cx += ctx.measureText(ch).width * (0.92 + next() * 0.1);
+  }
+  return cx;
+}
+
+// The office wall map — a big jokey "내가 만듦 ㅋ" scrawled across the middle
+// like a doodle, a tiny real credit tucked in the bottom-left corner, and a
+// classic 떠든 놈 blackboard bit in the bottom-right. Drawn once immediately
+// with a fallback serif, then redrawn once the Gaegu web font (loaded in
+// index.html) actually finishes loading.
 function mapSignatureTexture() {
   const canvas = document.createElement("canvas");
   canvas.width = 512;
@@ -217,13 +247,67 @@ function mapSignatureTexture() {
       ctx.bezierCurveTo(150, 60 + i * 20, 320, 40 + i * 15, 480 - i * 10, 90 + i * 25);
       ctx.stroke();
     }
+
+    if (!fontReady) {
+      ctx.textAlign = "center";
+      ctx.fillStyle = "rgba(40,45,42,0.75)";
+      ctx.font = "italic 20px Georgia, serif";
+      ctx.fillText("내가 만듦 ㅋ", 256, 190);
+      return;
+    }
+
+    // big jokey graffiti, dead center, leaning like a marker scrawl
     ctx.save();
-    ctx.translate(430, 330);
-    ctx.rotate(-0.05);
-    ctx.textAlign = "right";
-    ctx.fillStyle = "rgba(40,45,42,0.8)";
-    ctx.font = fontReady ? "26px \"Gaegu\", cursive" : "italic 20px Georgia, serif";
-    ctx.fillText("크리에이티브 디렉터 = 안재현", 0, 0);
+    ctx.translate(256, 195);
+    ctx.rotate(-0.09);
+    scribbleText(ctx, "내가 만듦 ㅋ", -145, 20, {
+      size: 56,
+      color: "rgba(30,60,140,0.82)",
+      jitter: 6,
+      seed: 7,
+    });
+    ctx.restore();
+
+    // tiny real credit, bottom-left, small and unceremonious
+    ctx.save();
+    ctx.translate(14, 348);
+    ctx.rotate(-0.03);
+    scribbleText(ctx, "크리에이티브 디렉터 = 안재현", 0, 0, {
+      size: 12,
+      color: "rgba(50,55,52,0.6)",
+      jitter: 1.6,
+      seed: 3,
+    });
+    ctx.restore();
+
+    // 떠든 놈 blackboard bit, bottom-right
+    ctx.save();
+    ctx.translate(500, 300);
+    ctx.rotate(0.02);
+    let ty = scribbleText(ctx, "떠든 놈", -70, 0, {
+      size: 16,
+      color: "rgba(40,45,42,0.75)",
+      jitter: 2,
+      seed: 11,
+    });
+    ctx.restore();
+    ctx.save();
+    ctx.translate(500, 322);
+    scribbleText(ctx, "최승훈", -70, 0, {
+      size: 15,
+      color: "rgba(40,45,42,0.7)",
+      jitter: 2,
+      seed: 17,
+    });
+    ctx.restore();
+    ctx.save();
+    ctx.translate(500, 343);
+    scribbleText(ctx, "성주현", -70, 0, {
+      size: 15,
+      color: "rgba(40,45,42,0.7)",
+      jitter: 2,
+      seed: 23,
+    });
     ctx.restore();
   }
 
