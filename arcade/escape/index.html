@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>GTA — 회사에서 탈출하라 | CHUNGMU-LOADING 프로토타입</title>
+<meta name="robots" content="noindex, nofollow" />
+<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <canvas id="scene"></canvas>
+
+  <div id="hud">
+    <div id="hud-top">
+      <div id="hud-brand-row">
+        <span id="hud-brand">CHUNGMU-LOADING</span>
+        <span id="hud-percent">0%</span>
+      </div>
+      <div id="hud-bar"><div id="hud-bar-fill"></div></div>
+      <div id="hud-title"></div>
+    </div>
+
+    <div id="hud-toast"></div>
+
+    <div id="hud-hint">
+      PC: WASD 이동 · 마우스로 시점 · E 상호작용 · 클릭해서 시작
+    </div>
+
+    <div id="hud-interact">E · 호출 버튼</div>
+
+    <div id="hud-overlay">
+      <div id="hud-overlay-card">
+        <div id="hud-overlay-title"></div>
+        <div id="hud-overlay-copy"></div>
+        <button id="hud-restart">다시 걷기</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="touch-controls" class="hidden">
+    <div id="touch-stick-base"><div id="touch-stick"></div></div>
+    <div id="touch-look"></div>
+  </div>
+  <button id="touch-interact" class="hidden">E</button>
+
+  <script type="module" src="game.js"></script>
+</body>
+</html>
