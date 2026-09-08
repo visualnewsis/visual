@@ -86,10 +86,6 @@ phpunit
 # Composer
 #-------------------------
 vendor/
-# arcade/escape ships its own self-hosted Three.js copy in a folder that
-# happens to be named "vendor" too (per AGENTS.md: no external CDN in the
-# real deploy) — un-ignore just this one so it isn't silently dropped.
-!arcade/escape/vendor/
 
 #-------------------------
 # IDE / Development Files
