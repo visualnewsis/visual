@@ -194,6 +194,49 @@ function marbleTexture() {
 const MARBLE_TEX = marbleTexture();
 MARBLE_TEX.repeat.set(2, 2);
 
+// The office wall map, hand-signed in the corner like a real drawn map.
+// Drawn once immediately with a fallback italic, then redrawn once the
+// Gaegu web font (loaded in index.html) actually finishes loading.
+function mapSignatureTexture() {
+  const canvas = document.createElement("canvas");
+  canvas.width = 512;
+  canvas.height = 366;
+  const texture = new THREE.CanvasTexture(canvas);
+  texture.colorSpace = THREE.SRGBColorSpace;
+
+  function draw(fontReady) {
+    const ctx = canvas.getContext("2d");
+    ctx.clearRect(0, 0, 512, 366);
+    ctx.fillStyle = "#dfe6e0";
+    ctx.fillRect(0, 0, 512, 366);
+    ctx.strokeStyle = "rgba(90,100,95,0.35)";
+    ctx.lineWidth = 1;
+    for (let i = 0; i < 6; i++) {
+      ctx.beginPath();
+      ctx.moveTo(20 + i * 15, 30 + i * 8);
+      ctx.bezierCurveTo(150, 60 + i * 20, 320, 40 + i * 15, 480 - i * 10, 90 + i * 25);
+      ctx.stroke();
+    }
+    ctx.save();
+    ctx.translate(430, 330);
+    ctx.rotate(-0.05);
+    ctx.textAlign = "right";
+    ctx.fillStyle = "rgba(40,45,42,0.8)";
+    ctx.font = fontReady ? "26px \"Gaegu\", cursive" : "italic 20px Georgia, serif";
+    ctx.fillText("크리에이티브 디렉터 = 안재현", 0, 0);
+    ctx.restore();
+  }
+
+  draw(false);
+  document.fonts.load('700 26px "Gaegu"').then(() => {
+    draw(true);
+    texture.needsUpdate = true;
+  }).catch(() => {});
+
+  return texture;
+}
+
+
 const FLOOR_TEX = {
   desk: tileFloorTexture("#cbbfa5", "#a99a76", 6, 3.4),
   "cubicle-a": tileFloorTexture("#d8d2c0", "#b7ab8c", 10, 3.4),
@@ -665,10 +708,11 @@ function revealable(id, obj) {
   // wall map with a placard above it, and a low bookshelf beside it — the
   // backdrop behind the water purifier/microwave shelf in the reference shot
   box(13.4, 1.35, -halfW + 0.03, 1.15, 0.85, 0.02, "#c98a4a"); // frame
-  box(13.4, 1.35, -halfW + 0.045, 1.05, 0.75, 0.005, "#dfe6e0", {
+  const mapFace = box(13.4, 1.35, -halfW + 0.045, 1.05, 0.75, 0.005, "#ffffff", {
+    map: mapSignatureTexture(),
     emissive: "#c7d6cf",
     emissiveIntensity: 0.15,
-  }); // pale map face
+  }); // pale map face, signed in the corner like a real hand-drawn map
   box(13.4, 1.85, -halfW + 0.04, 0.5, 0.14, 0.01, "#e9e6de");
   box(12.55, 0.55, -halfW + 0.15, 0.4, 1.1, 0.3, "#5c4a34"); // bookshelf carcass
   for (let i = 0; i < 3; i++) {
