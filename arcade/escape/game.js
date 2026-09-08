@@ -11,7 +11,7 @@ import {
   CHECKPOINTS,
   CALL_BUTTON,
   ENDING,
-} from "./world.js";
+} from "./world.js?v=20260908-1";
 
 const canvas = document.getElementById("scene");
 const hud = {
