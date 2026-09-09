@@ -6,7 +6,7 @@
 
   [작업 메모 — 배포 전 확인 필요]
   0) 편집# 010번은 2026-09-09 대화에서 안재현 기자가 직접 확정한 번호입니다(기존 잠정 010이던 homecoming은 10/1 발행 예정이라 이 페이지가 먼저 010을 씁니다). VISUAL NEWSIS 메인 STORY 013번, 공용 랜딩(루트 index.html·editshop/index.html·assets/editshop-carousel.js) 반영까지 담당자가 2026-09-09 직접 실배포 승인·지시함.
-  1) 사진 5장 확보 완료(Pixabay, 2026-09-09): images/hero-piggybank-broken.jpg(히어로), calc-calculator-cash.jpg(계산 섹션), amount-cash-fan.jpg(금액 reveal), evidence-coins-dissolve.jpg(근거 섹션), age-elderly-wallet.jpg(수급개시 섹션). og:image는 히어로 사진을 캔버스로 크롭·압축한 images/og-pension-1200x630.jpg(1200x630, 53KB)를 별도 제작해 사용. 미사용 원본(파란저금통.jpg, 점프.jpg, 섞인 지폐.jpg)은 images/ 폴더에 보관 중 — 필요 없으면 삭제해도 됨.
+  1) 사진 확보(Pixabay, 2026-09-09): images/hero-piggybank-broken.jpg(히어로), calc-calculator-cash.jpg(계산 섹션), amount-cash-fan.jpg(금액 reveal), age-elderly-wallet.jpg(수급개시 섹션). og:image는 히어로 사진을 캔버스로 크롭·압축한 images/og-pension-1200x630.jpg(1200x630, 53KB)를 별도 제작해 사용. 2026-09-09 추가: images/evidence-generation-gap.png(생성형 AI 제작, 근거 섹션 — 젊은 세대→노년 세대로 절벽 너머 동전이 건너가는 세대간 이전 비유, photo-credit 명시)로 근거 섹션 배경을 교체하고, 기존 images/quote-coins-dissolve.jpg(구 evidence-coins-dissolve.jpg)는 quote-bridge 섹션(이준석 인용구) 배경으로 재배치함. 미사용 원본(파란저금통.jpg, 점프.jpg, 섞인 지폐.jpg)은 images/ 폴더에 보관 중 — 필요 없으면 삭제해도 됨.
   2) 급여산정식은 국민연금공단 공식 산정식(A값·B값 기반)의 단순화 근사치입니다. "월평균소득 × 소득대체율(43%, 40년 만근 기준) × 가입기간/40"으로 계산하며, 가입 시작연령은 27세로 가정합니다. 실제 개인별 수령액은 소득이력·가입기간에 따라 다르며, 정확한 수치는 국민연금공단 "내 연금 알아보기"를 통해 확인해야 합니다 — 본문에 디스클레이머 명시함.
   3) 재정추계·개혁 수치 출처를 뉴시스 자체 기사 4건으로 교체(2026-09-09, 담당자 요청 — 뉴시스 기사 우선, 없으면 링크 없이 텍스트만 인용하는 원칙): NISX20250320_0003106817(개정안 국회통과·국가지급보장 명문화), NISX20251229_0003457395(보험료율 개인부담 실측), NISX20260620_0003676706(기금소진 2069년 전망·증시호황), NISX20260821_0003758104(2026.08.21, 기관별 추산 차이 — 기획재정처 2064년 vs 보건복지부 2083년). 이 마지막 기사 근거로 본문 낙관 시나리오를 2071년→2083년으로 수정함. 발행 전 최신 수치로 재확인 필요.
   4) 보험료 부담 계산은 직장가입자 기준 본인 부담분(전체 보험료율의 절반)으로 표시합니다. 지역가입자(자영업자)는 전액 본인 부담이라는 점을 본문에 각주로 명시함.
@@ -109,6 +109,10 @@
 
     /* quote bridge */
     .quote-bridge{background:#050708;color:#fff;text-align:center;min-height:auto;padding:clamp(90px,14vw,150px) clamp(22px,7vw,112px)}
+    .quote-photo{position:absolute;inset:0;z-index:0}
+    .quote-photo img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:30% 45%;opacity:.7}
+    .quote-photo:after{content:"";position:absolute;inset:0;background:radial-gradient(ellipse 75% 65% at 50% 45%,rgba(5,7,8,.35),rgba(5,7,8,.88) 85%)}
+    .quote-bridge>.wrap{position:relative;z-index:1}
     .quote-bridge blockquote{margin:0 auto;max-width:760px;font-size:clamp(19px,2.4vw,29px);font-weight:800;line-height:1.6;letter-spacing:-.02em}
     .quote-bridge blockquote em{color:var(--mint);font-style:normal}
     .quote-bridge cite{display:block;margin-top:28px;font-size:12.5px;font-style:normal;color:#8a9296;letter-spacing:.02em}
@@ -168,7 +172,7 @@
     .evidence{background:#0c1013;color:#fff}
     .evidence .eyebrow{color:#5ed9e7}
     .evidence-photo{position:absolute;inset:0;z-index:0}
-    .evidence-photo img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:70% center;opacity:.32;filter:saturate(.6)}
+    .evidence-photo img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 40%;opacity:.34;filter:saturate(.7)}
     .evidence-photo:after{content:"";position:absolute;inset:0;background:linear-gradient(100deg,rgba(12,16,19,.95) 0%,rgba(12,16,19,.86) 46%,rgba(12,16,19,.55) 100%)}
     .evidence>.wrap{position:relative;z-index:1}
     .evidence-title{font-size:clamp(28px,3.6vw,42px);font-weight:900;letter-spacing:-.03em;margin:20px 0 18px}
@@ -332,6 +336,7 @@
     </section>
 
     <section class="section quote-bridge reveal" id="quoteBridge">
+      <div class="quote-photo"><img src="images/quote-coins-dissolve.jpg" alt="동전 탑이 빛의 입자로 부서져 흩어지는 모습" loading="lazy"></div>
       <div class="wrap">
         <blockquote>"오늘 아무것도 모른 채 어린이집, 유치원, 초등학교에 갔을 아이들은<br>50~60년 후에 <em>받을 수 있을지 없을지도 모를 연금</em>을 위해<br>이번에 인상된 요율을 평생 감당해야 한다"</blockquote>
         <cite>이준석 · 개혁신당 의원 (2025.03.21, 국민연금법 개정안 국회 통과 직후 기자회견)</cite>
@@ -351,7 +356,8 @@
     </section>
 
     <section class="section evidence reveal" id="evidence">
-      <div class="evidence-photo"><img src="images/evidence-coins-dissolve.jpg" alt="동전 탑이 빛의 입자로 부서져 흩어지는 모습" loading="lazy"></div>
+      <div class="evidence-photo"><img src="images/evidence-generation-gap.png" alt="젊은 세대가 절벽 너머 노년 세대에게 동전을 건네는 모습, 그 사이로 동전이 떨어지는 장면" loading="lazy"></div>
+      <div class="photo-credit">이미지: 생성형 AI 제작</div>
       <div class="wrap">
         <div class="eyebrow">왜 받을 수 있을까</div>
         <h2 class="evidence-title">기금이 없어져도,<br>연금은 끊기지 않습니다</h2>
