@@ -1,0 +1,720 @@
+<!doctype html>
+<!--
+  편집# / 충무로딩 / 계산대로
+  기획·취재·디자인·개발 = 안재현 (Visual Journalist & Creative Director = JAEHYEON AN)
+  이 페이지는 기획부터 코드까지 안재현이 직접 만들었습니다.
+
+  [작업 메모 — 배포 전 확인 필요]
+  0) 편집# 010번은 2026-09-09 대화에서 안재현 기자가 직접 확정한 번호입니다(기존 잠정 010이던 homecoming은 10/1 발행 예정이라 이 페이지가 먼저 010을 씁니다). VISUAL NEWSIS 메인 STORY 013번, 공용 랜딩(루트 index.html·editshop/index.html·assets/editshop-carousel.js) 반영까지 담당자가 2026-09-09 직접 실배포 승인·지시함.
+  1) 사진 5장 확보 완료(Pixabay, 2026-09-09): images/hero-piggybank-broken.jpg(히어로), calc-calculator-cash.jpg(계산 섹션), amount-cash-fan.jpg(금액 reveal), evidence-coins-dissolve.jpg(근거 섹션), age-elderly-wallet.jpg(수급개시 섹션). og:image는 히어로 사진을 캔버스로 크롭·압축한 images/og-pension-1200x630.jpg(1200x630, 53KB)를 별도 제작해 사용. 미사용 원본(파란저금통.jpg, 점프.jpg, 섞인 지폐.jpg)은 images/ 폴더에 보관 중 — 필요 없으면 삭제해도 됨.
+  2) 급여산정식은 국민연금공단 공식 산정식(A값·B값 기반)의 단순화 근사치입니다. "월평균소득 × 소득대체율(43%, 40년 만근 기준) × 가입기간/40"으로 계산하며, 가입 시작연령은 27세로 가정합니다. 실제 개인별 수령액은 소득이력·가입기간에 따라 다르며, 정확한 수치는 국민연금공단 "내 연금 알아보기"를 통해 확인해야 합니다 — 본문에 디스클레이머 명시함.
+  3) 재정추계·개혁 수치 출처를 뉴시스 자체 기사 4건으로 교체(2026-09-09, 담당자 요청 — 뉴시스 기사 우선, 없으면 링크 없이 텍스트만 인용하는 원칙): NISX20250320_0003106817(개정안 국회통과·국가지급보장 명문화), NISX20251229_0003457395(보험료율 개인부담 실측), NISX20260620_0003676706(기금소진 2069년 전망·증시호황), NISX20260821_0003758104(2026.08.21, 기관별 추산 차이 — 기획재정처 2064년 vs 보건복지부 2083년). 이 마지막 기사 근거로 본문 낙관 시나리오를 2071년→2083년으로 수정함. 발행 전 최신 수치로 재확인 필요.
+  4) 보험료 부담 계산은 직장가입자 기준 본인 부담분(전체 보험료율의 절반)으로 표시합니다. 지역가입자(자영업자)는 전액 본인 부담이라는 점을 본문에 각주로 명시함.
+  5) 2026-09-09 실배포 지시에 따라 assets/editshop-carousel.js·editshop/index.html·루트 index.html(STORY 013)에 모두 반영함.
+  6) 콘텐츠 보강(2026-09-09, 담당자 피드백 — "내용이 빈약하다"): intro 섹션(히어로 직후, 불신 여론조사 55.7%·63.2%·59.2% — 각각 한국경영자총협회 2025.11 「2025 국민연금 현안 대국민 인식조사」, 연금개혁청년행동 2024.10 설문 출처), quote-bridge 섹션(금액 reveal 직후, 이준석 개혁신당 의원 발언 — 뉴시스 NISX20250321_0003108322, 2025.03.21 기자회견, 원문 확인·따옴표 안 원문 그대로 인용함), closing 섹션(수급개시 섹션 직후, 이준석 인용구를 되받아치는 마무리 문단) 3개 신규. 여론조사 수치·인용문 모두 WebFetch로 원문 대조 확인 완료.
+-->
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1">
+  <link rel="canonical" href="https://visual.newsis.com/pension/">
+  <meta property="og:type" content="article">
+  <meta property="og:locale" content="ko_KR">
+  <meta property="og:site_name" content="비주얼 뉴시스">
+  <meta property="og:title" content="국민연금, 사기라던데? 그래서 저는 돌려받을 수 있나요? | 안재현 기자·편집# 010">
+  <meta property="og:description" content="뉴시스 안재현 기자의 비주얼 뉴시스 인터랙티브 뉴스. 출생연도와 월소득을 입력하면 내 국민연금 예상 수령액과 수급 가능 여부, 오르는 보험료 부담을 직접 계산합니다.">
+  <meta property="og:url" content="https://visual.newsis.com/pension/">
+  <meta property="og:image" content="https://visual.newsis.com/pension/images/og-pension-1200x630.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="article:published_time" content="2026-09-09T09:00:00+09:00">
+  <meta property="article:modified_time" content="2026-09-09T09:00:00+09:00">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="국민연금, 사기라던데? 그래서 저는 돌려받을 수 있나요? | 편집# 010">
+  <meta name="twitter:description" content="출생연도와 월소득만 입력하면, 내 국민연금 수령액과 수급 가능 여부, 오르는 보험료 부담을 계산합니다.">
+  <meta name="twitter:image" content="https://visual.newsis.com/pension/images/og-pension-1200x630.jpg">
+  <meta name="theme-color" content="#0a0d10">
+  <meta name="description" content="뉴시스 안재현 기자가 만든 비주얼 뉴시스 편집# 인터랙티브 기사. 출생연도와 월소득으로 내 국민연금 예상 수령액, 수급 가능 여부, 오르는 보험료 부담을 직접 계산합니다.">
+  <link rel="shortcut icon" href="https://image.newsis.com/n_www/images/ci/2024/favicon.png" />
+  <link rel="icon" type="image/png" href="https://image.newsis.com/n_www/images/ci/2024/favicon.png" />
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-6BKMWE02W5"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-6BKMWE02W5');console.log('%c비주얼 저널리즘 · VISUAL NEWSIS','color:#00b4c9;font-weight:900;font-size:14px;');console.log('%c기획·취재·디자인·개발 = 안재현 (Visual Journalist / Creative Director = JAEHYEON AN)','color:#111;font-size:12px;');
+  </script>
+  <title>국민연금, 사기라던데? 그래서 저는 돌려받을 수 있나요? | 안재현 기자·편집# 010 | 비주얼 뉴시스</title>
+  <meta name="author" content="뉴시스 안재현 기자">
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"NewsArticle","mainEntityOfPage":{"@type":"WebPage","@id":"https://visual.newsis.com/pension/"},"headline":"국민연금, 사기라던데? 그래서 저는 돌려받을 수 있나요?","description":"출생연도와 월소득으로 내 국민연금 예상 수령액, 수급 가능 여부, 오르는 보험료 부담을 직접 계산하는 인터랙티브 뉴스","articleSection":"편집#","image":["https://visual.newsis.com/pension/images/og-pension-1200x630.jpg"],"datePublished":"2026-09-09T09:00:00+09:00","dateModified":"2026-09-09T09:00:00+09:00","inLanguage":"ko-KR","isAccessibleForFree":true,"author":{"@type":"Person","name":"안재현","alternateName":["안재현 기자","JAEHYEON AN","Visual Journalist Jaehyeon An"],"jobTitle":["뉴시스 기자","크리에이티브 디렉터"],"description":"뉴시스 기자이자 비주얼 저널리스트. 비주얼 뉴시스의 편집#, 충무로딩, 계산대로의 기획·취재·디자인·개발을 모두 맡고 있습니다.","worksFor":{"@type":"NewsMediaOrganization","name":"뉴시스","url":"https://www.newsis.com/"}},"isPartOf":{"@type":"CollectionPage","name":"편집#","alternateName":"편집샵","url":"https://visual.newsis.com/editshop/"},"publisher":{"@type":"NewsMediaOrganization","name":"뉴시스","alternateName":"NEWSIS","url":"https://www.newsis.com/","logo":{"@type":"ImageObject","url":"https://visual.newsis.com/assets/logo2024.png"}}}
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    :root{--ink:#0b0d10;--paper:#f4f2ea;--white:#fff;--mint:#00b4c9;--mint-dark:#007f91;--gold:#e8b64c;--muted:#6b7278;--line:rgba(11,13,16,.14);--danger:#e0563f;--shadow:0 24px 70px rgba(14,35,40,.12)}
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{margin:0;background:var(--paper);color:var(--ink);font-family:"Noto Sans KR",sans-serif;word-break:keep-all}
+    button,input,a{font:inherit}
+    a{color:inherit}
+    .topbar{position:fixed;inset:0 0 auto;z-index:50;height:62px;display:flex;justify-content:space-between;align-items:center;padding:0 clamp(20px,4vw,64px);background:rgba(4,7,8,.92);backdrop-filter:blur(12px);border-bottom:1px solid rgba(255,255,255,.12);color:#fff}
+    .brand{position:relative;z-index:2;font-size:12px;font-weight:900;letter-spacing:.22em;text-decoration:none}
+    .newsis-logo{position:absolute;z-index:3;left:50%;top:50%;width:112px;height:40px;transform:translate(-50%,-50%);transition:opacity .2s ease,transform .2s ease}
+    .newsis-logo:hover,.newsis-logo:focus-visible{opacity:.78;transform:translate(-50%,-50%) scale(1.03)}
+    .newsis-logo img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain}
+    .newsis-logo .white-layer{filter:brightness(0) invert(1)}
+    .newsis-logo .mint-layer{clip-path:inset(0 0 0 78%)}
+    .topbar > .issue{position:relative;z-index:2;font-size:12px;font-weight:900;letter-spacing:.22em;line-height:1;color:#fff;text-decoration:none}
+    .progress{position:fixed;z-index:60;top:0;left:0;height:3px;width:0;background:var(--mint)}
+    .section{position:relative;min-height:100vh;padding:clamp(84px,11vw,150px) clamp(22px,7vw,112px);display:grid;align-items:center;overflow:hidden}
+    .wrap{width:min(1040px,100%);margin:auto}
+    .eyebrow{display:flex;align-items:center;gap:12px;font-size:13px;font-weight:800;letter-spacing:.15em;text-transform:uppercase}
+    .eyebrow:before{content:"";width:36px;height:2px;background:var(--mint)}
+    .dark{background:var(--ink);color:#fff}
+    .dark .eyebrow{color:#5ed9e7}
+    .dark .muted{color:#9aa2a6}
+    .light .eyebrow{color:var(--mint-dark)}
+    .light .muted{color:var(--muted)}
+
+    /* hero */
+    .hero{background:var(--ink);color:#fff;text-align:center}
+    .hero-photo{position:absolute;inset:0;z-index:0;overflow:hidden}
+    .hero-photo img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 34%;transform:scale(1.16);animation:heroSettle 3.2s cubic-bezier(.16,.84,.28,1) forwards}
+    @keyframes heroSettle{to{transform:scale(1)}}
+    .hero-canvas{position:absolute;inset:0;z-index:1;mix-blend-mode:screen}
+    .hero:before{content:"";position:absolute;inset:0;z-index:2;background:radial-gradient(ellipse 70% 55% at 50% 26%,rgba(0,180,201,.14),transparent 62%),linear-gradient(180deg,rgba(5,8,10,.42),rgba(5,8,10,.94) 92%)}
+    .hero-inner{position:relative;z-index:3;display:flex;flex-direction:column;align-items:center}
+    .photo-credit{position:absolute;z-index:3;right:clamp(16px,3vw,28px);bottom:14px;font-size:10.5px;color:rgba(255,255,255,.55);letter-spacing:.03em}
+    .hero-issue{font-size:13px;font-weight:900;letter-spacing:.24em;color:#5ed9e7}
+    .hero-tag{display:inline-block;margin-top:20px;padding:7px 18px;border:1px solid rgba(224,86,63,.55);border-radius:99px;font-size:13px;font-weight:700;color:#ff8b76;letter-spacing:.02em}
+    h1.hero-title{margin:26px 0 0;font-size:clamp(42px,7vw,92px);line-height:1.14;letter-spacing:-.045em;font-weight:900;color:#fff}
+    h1.hero-title .mint{color:var(--mint)}
+    .hero-sub{margin:26px 0 0;max-width:520px;font-size:clamp(15px,1.6vw,19px);line-height:1.75;color:#c4cbce}
+    .hero-cta{margin-top:44px;display:inline-flex;align-items:center;gap:10px;padding:16px 30px;border-radius:99px;background:var(--mint);color:#04181b;font-weight:800;font-size:15px;text-decoration:none;box-shadow:0 14px 40px rgba(0,180,201,.35);transition:transform .25s ease}
+    .hero-cta:hover{transform:translateY(-2px)}
+    .scroll-cue{margin-top:70px;font-size:11px;letter-spacing:.2em;color:#7f888b}
+
+    /* intro context */
+    .intro{background:var(--ink);color:#fff}
+    .intro-title{font-size:clamp(28px,4vw,44px);font-weight:900;letter-spacing:-.03em;margin:22px 0 20px}
+    .intro-copy{max-width:640px;font-size:15px;line-height:1.85;color:#c4cbce;margin-bottom:14px}
+    .stat-row{display:flex;flex-wrap:wrap;gap:30px;margin-top:38px}
+    .stat{flex:1;min-width:170px}
+    .stat b{display:block;font-size:clamp(30px,3vw,42px);font-weight:900;color:var(--mint);font-variant-numeric:tabular-nums}
+    .stat span{display:block;margin-top:10px;font-size:12.5px;line-height:1.6;color:#9aa2a6}
+
+    /* quote bridge */
+    .quote-bridge{background:#050708;color:#fff;text-align:center;min-height:auto;padding:clamp(90px,14vw,150px) clamp(22px,7vw,112px)}
+    .quote-bridge blockquote{margin:0 auto;max-width:760px;font-size:clamp(19px,2.4vw,29px);font-weight:800;line-height:1.6;letter-spacing:-.02em}
+    .quote-bridge blockquote em{color:var(--mint);font-style:normal}
+    .quote-bridge cite{display:block;margin-top:28px;font-size:12.5px;font-style:normal;color:#8a9296;letter-spacing:.02em}
+
+    /* closing */
+    .closing{background:var(--paper);color:var(--ink)}
+    .closing-tag{display:inline-block;margin-top:20px;padding:7px 18px;border:1px solid rgba(194,59,40,.5);border-radius:99px;background:rgba(224,86,63,.07);font-size:13px;font-weight:700;color:#c23b28;letter-spacing:.02em}
+    .closing-title{font-size:clamp(28px,4vw,42px);font-weight:900;letter-spacing:-.03em;margin:20px 0 24px}
+    .closing-copy{max-width:640px;font-size:15px;line-height:1.9;color:var(--muted);margin-bottom:16px}
+
+    /* calc input */
+    .calc{background:var(--ink);color:#fff}
+    .calc-photo{position:absolute;inset:0;z-index:0}
+    .calc-photo img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 30%;opacity:.4;filter:saturate(.7)}
+    .calc-photo:after{content:"";position:absolute;inset:0;background:linear-gradient(115deg,rgba(11,13,16,.95) 0%,rgba(11,13,16,.88) 42%,rgba(11,13,16,.5) 100%)}
+    .calc>.wrap{position:relative;z-index:1}
+    .calc-title{font-size:clamp(28px,4vw,44px);font-weight:900;letter-spacing:-.03em;margin:22px 0 10px}
+    .calc-copy{max-width:560px;font-size:15px;line-height:1.8;color:#b7bfc2;margin-bottom:44px}
+    .calc-form{display:grid;gap:34px;max-width:560px}
+    .field label{display:block;font-size:13px;font-weight:700;color:#8fe6ef;letter-spacing:.04em;margin-bottom:12px}
+    .field input[type=number]{width:160px;padding:14px 16px;border-radius:10px;border:1px solid rgba(255,255,255,.22);background:rgba(255,255,255,.06);color:#fff;font-size:20px;font-weight:800;font-variant-numeric:tabular-nums}
+    .field input[type=number]:focus{outline:2px solid var(--mint)}
+    .income-row{display:flex;align-items:center;gap:18px}
+    .income-row output{min-width:96px;font-size:20px;font-weight:800;font-variant-numeric:tabular-nums;color:var(--mint)}
+    input[type=range]{-webkit-appearance:none;appearance:none;flex:1;height:6px;border-radius:99px;background:linear-gradient(90deg,var(--mint) var(--fill,50%),rgba(255,255,255,.18) 0)}
+    input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:22px;height:22px;border-radius:50%;background:#fff;border:4px solid var(--mint);cursor:pointer}
+    input[type=range]::-moz-range-thumb{width:22px;height:22px;border-radius:50%;background:#fff;border:4px solid var(--mint);cursor:pointer;border:none}
+    .calc-cta{margin-top:8px;justify-self:start;display:inline-flex;align-items:center;gap:10px;padding:16px 32px;border-radius:99px;background:var(--mint);color:#04181b;font-weight:800;font-size:15px;border:none;cursor:pointer;box-shadow:0 14px 40px rgba(0,180,201,.3)}
+
+    /* amount reveal */
+    .amount{background:#050708;color:#fff;text-align:center}
+    .amount-photo{position:absolute;inset:0;z-index:0}
+    .amount-photo img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 42%;opacity:.28;filter:saturate(.55)}
+    .amount-photo:after{content:"";position:absolute;inset:0;background:radial-gradient(ellipse 60% 55% at 50% 45%,rgba(5,7,8,.68),rgba(5,7,8,.97) 78%)}
+    .amount>.wrap{position:relative;z-index:1}
+    .amount-label{font-size:14px;font-weight:700;letter-spacing:.1em;color:#7f888b}
+    .amount-figure{margin:26px 0 0;font-size:clamp(64px,13vw,180px);font-weight:900;letter-spacing:-.04em;font-variant-numeric:tabular-nums;color:#fff;line-height:1}
+    .amount-figure .unit{font-size:.32em;font-weight:800;color:#7f888b;margin-left:10px}
+    .amount-hush{margin-top:34px;font-size:clamp(17px,2vw,24px);font-weight:700;color:#8fe6ef;opacity:0;transition:opacity 1.1s ease}
+    .amount-hush.show{opacity:1}
+
+    /* verdict */
+    .verdict-sec{background:var(--ink);color:#fff;text-align:center}
+    .verdict-q{font-size:clamp(20px,2.4vw,30px);font-weight:700;color:#c4cbce}
+    .verdict-stage{position:relative;margin:38px auto 0;min-height:180px;display:flex;align-items:center;justify-content:center}
+    .verdict-loading{font-size:15px;letter-spacing:.14em;color:#7f888b;transition:opacity .4s ease}
+    .verdict-loading.hide{opacity:0}
+    .verdict-badge{position:absolute;opacity:0;transform:scale(.5);font-size:clamp(56px,9vw,120px);font-weight:900;color:var(--mint);letter-spacing:-.03em;text-shadow:0 0 60px rgba(0,180,201,.5)}
+    .verdict-badge.pop{animation:badgePop .8s cubic-bezier(.2,1.4,.4,1) forwards}
+    @keyframes badgePop{0%{opacity:0;transform:scale(.4)}60%{opacity:1;transform:scale(1.12)}100%{opacity:1;transform:scale(1)}}
+    .verdict-note{margin:56px auto 0;max-width:620px;text-align:center;font-size:clamp(15px,1.6vw,18px);line-height:1.85;color:#c4cbce;opacity:0;transition:opacity .8s ease .3s}
+    .verdict-note.show{opacity:1}
+    .verdict-note b{color:#fff}
+    .confetti-canvas{position:absolute;inset:-40% -10%;z-index:5;pointer-events:none}
+
+    /* evidence */
+    .evidence{background:#0c1013;color:#fff}
+    .evidence .eyebrow{color:#5ed9e7}
+    .evidence-photo{position:absolute;inset:0;z-index:0}
+    .evidence-photo img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:70% center;opacity:.32;filter:saturate(.6)}
+    .evidence-photo:after{content:"";position:absolute;inset:0;background:linear-gradient(100deg,rgba(12,16,19,.95) 0%,rgba(12,16,19,.86) 46%,rgba(12,16,19,.55) 100%)}
+    .evidence>.wrap{position:relative;z-index:1}
+    .evidence-title{font-size:clamp(28px,3.6vw,42px);font-weight:900;letter-spacing:-.03em;margin:20px 0 18px}
+    .evidence-copy{max-width:640px;font-size:15px;line-height:1.85;color:#b9c0c3;margin-bottom:14px}
+    .chart-wrap{margin-top:38px;background:#fff;border:1px solid var(--line);border-radius:16px;padding:clamp(20px,4vw,40px);box-shadow:var(--shadow)}
+    .chart-caption{display:flex;justify-content:space-between;font-size:12px;color:var(--muted);margin-top:10px}
+    .fund-legend{display:flex;gap:22px;flex-wrap:wrap;font-size:12.5px;color:var(--muted);margin-top:16px}
+    .fund-legend span{display:inline-flex;align-items:center;gap:8px}
+    .fund-legend i{width:14px;height:3px;border-radius:2px;display:inline-block}
+
+    /* myths */
+    .myths-title{font-size:clamp(28px,3.6vw,42px);font-weight:900;letter-spacing:-.03em;margin:20px 0 30px}
+    .myth-list{display:grid;gap:18px}
+    .myth-card{background:#fff;border:1px solid var(--line);border-radius:14px;padding:26px 28px;box-shadow:var(--shadow)}
+    .myth-claim{font-size:16px;font-weight:800;color:var(--ink)}
+    .myth-verdict{display:inline-block;margin-top:10px;padding:4px 12px;border-radius:99px;font-size:12px;font-weight:700}
+    .myth-verdict.false{background:rgba(0,180,201,.1);color:var(--mint-dark)}
+    .myth-verdict.true{background:rgba(224,86,63,.09);color:#c23b28}
+    .myth-verdict.open{background:rgba(232,182,76,.16);color:#8a6412}
+    .myth-body{margin:14px 0 0;font-size:14.5px;line-height:1.75;color:var(--muted)}
+
+    /* burden */
+    .burden{background:#0f1416;color:#fff}
+    .burden-title{font-size:clamp(28px,3.6vw,42px);font-weight:900;letter-spacing:-.03em;margin:20px 0 18px}
+    .burden-copy{max-width:640px;font-size:15px;line-height:1.85;color:#aeb6b9;margin-bottom:8px}
+    .burden-panel{margin-top:34px;display:grid;grid-template-columns:1.1fr .9fr;gap:40px;align-items:center}
+    .burden-bars{display:flex;align-items:flex-end;gap:18px;height:220px;padding:0 6px}
+    .burden-bar{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:100%}
+    .burden-bar .bar{width:100%;max-width:46px;border-radius:8px 8px 0 0;background:linear-gradient(180deg,var(--gold),#b8862c);height:0;transition:height 1.1s cubic-bezier(.2,.9,.3,1)}
+    .burden-bar .yr{margin-top:10px;font-size:12px;color:#8a9296}
+    .burden-bar .rt{margin-top:4px;font-size:13px;font-weight:800;color:var(--gold)}
+    .burden-stat{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.12);border-radius:16px;padding:30px}
+    .burden-stat .row{display:flex;justify-content:space-between;padding:14px 0;border-bottom:1px solid rgba(255,255,255,.1);font-size:14px;color:#c4cbce}
+    .burden-stat .row:last-child{border-bottom:none}
+    .burden-stat .row b{font-size:20px;font-variant-numeric:tabular-nums;color:#fff}
+    .burden-foot{margin-top:16px;font-size:12px;line-height:1.7;color:#7f888b}
+
+    /* age */
+    .age{background:var(--paper);color:var(--ink)}
+    .age-title{font-size:clamp(28px,3.6vw,42px);font-weight:900;letter-spacing:-.03em;margin:20px 0 30px}
+    .age-photo{margin:0 0 30px;border-radius:16px;overflow:hidden;box-shadow:var(--shadow)}
+    .age-photo img{display:block;width:100%;height:260px;object-fit:cover;object-position:center 35%}
+    .age-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
+    .age-card{background:#fff;border:1px solid var(--line);border-radius:16px;padding:30px 24px;box-shadow:var(--shadow)}
+    .age-card span{display:block;font-size:12.5px;font-weight:700;color:var(--mint-dark);letter-spacing:.04em;margin-bottom:10px}
+    .age-card b{display:block;font-size:clamp(30px,3.2vw,44px);font-weight:900;font-variant-numeric:tabular-nums}
+    .age-card i{display:block;margin-top:8px;font-size:12.5px;color:var(--muted);font-style:normal}
+
+    /* sources */
+    .sources-sec{background:var(--ink);color:#fff}
+    .sources-sec h2{font-size:clamp(24px,3vw,32px);font-weight:900;margin:20px 0 26px}
+    .sources{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
+    .sources li{padding:18px 20px;border:1px solid rgba(255,255,255,.16);border-radius:10px}
+    .sources li b{display:block;font-size:14.5px;margin-bottom:6px}
+    .sources li span{display:block;color:#a9b1b5;font-size:12.5px;line-height:1.6}
+    .sources li a{color:var(--mint);text-decoration:none;font-weight:700;font-size:12px}
+    .sources li a:hover{text-decoration:underline}
+    .disclaimer{margin-top:26px;max-width:760px;font-size:12.5px;line-height:1.75;color:#8a9296}
+
+    /* shared editor / footer (기존 편집# 페이지와 동일 패턴) */
+    .editor-note{position:relative;min-height:max(720px,100svh);padding:clamp(42px,5vw,78px) clamp(22px,7vw,112px);display:flex;overflow:hidden;background:#000 url('../shelter/images/ending.webp') center/cover no-repeat;color:#fff}
+    .editor-copy{position:relative;z-index:2;width:min(44vw,560px);display:flex;flex-direction:column;align-items:flex-start}
+    .editor-kicker{font-size:clamp(15px,1.3vw,20px);line-height:1.8;color:#b7bbbd}
+    .editor-title{margin:clamp(42px,6vh,74px) 0 0;font-size:clamp(66px,7vw,118px);font-weight:900;line-height:.78;letter-spacing:-.08em}
+    .editor-title span{display:block}
+    .editor-title .mint{color:var(--mint)}
+    .editor-body{margin-top:clamp(45px,7vh,75px);font-size:clamp(14px,1.25vw,19px);line-height:2;color:#c5c7c8}
+    .editor-byline{margin-top:28px;font-size:11px;color:#a4a7a8}
+    .editor-link{margin-top:auto;padding-top:30px;color:#7f888b;text-decoration:none;font-size:9px;letter-spacing:.2em}
+    .editor-mark{position:absolute;right:-2vw;bottom:-.16em;font-size:clamp(140px,21vw,390px);font-weight:900;letter-spacing:-.1em;color:#ffffff09;white-space:nowrap}
+    .site-footer{padding:26px clamp(22px,7vw,112px);display:flex;flex-wrap:wrap;gap:10px 24px;justify-content:space-between;font-size:11px;letter-spacing:.04em;color:#8a9296;background:#050708}
+    @media(max-width:800px){.editor-note{min-height:820px;background-position:64% center}.editor-copy{width:100%}.editor-title{font-size:clamp(62px,20vw,92px)}}
+
+    .reveal{opacity:0;transform:translateY(38px);transition:opacity .85s ease,transform .85s ease}.reveal.visible{opacity:1;transform:none}
+
+    @media(max-width:800px){
+      .section{min-height:auto;padding-top:100px;padding-bottom:100px}
+      .hero{min-height:100svh}
+      .burden-panel{grid-template-columns:1fr}
+      .age-cards{grid-template-columns:1fr}
+      .sources{grid-template-columns:1fr}
+      .income-row{flex-wrap:wrap}
+    }
+    @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*:before,*:after{animation:none!important;transition:none!important}.reveal{opacity:1;transform:none}}
+  </style>
+  <link rel="stylesheet" href="../assets/editshop-next.css?v=20260804-2">
+  <link rel="stylesheet" href="../assets/visual-header.css?v=20260828-5">
+  <link rel="stylesheet" href="../assets/editshop-carousel.css?v=20260826-3">
+  <script defer src="../assets/visual-header.js?v=20260907-1" data-section="편집#" data-section-href="https://visual.newsis.com/editshop/" data-current="editshop" data-header-theme="dark"></script>
+  <script defer src="../assets/editshop-carousel.js?v=20260909-1" data-current="pension"></script>
+</head>
+<body>
+  <div class="progress" aria-hidden="true"></div>
+  <header class="topbar">
+    <a class="brand" href="https://visual.newsis.com/" aria-label="VISUAL NEWSIS home">VISUAL NEWSIS</a>
+    <a class="newsis-logo" href="https://www.newsis.com/" aria-label="NEWSIS home">
+      <img class="white-layer" src="../assets/logo2024.png" alt="">
+      <img class="mint-layer" src="../assets/logo2024.png" alt="NEWSIS">
+    </a>
+    <a class="issue" href="https://visual.newsis.com/editshop/" aria-label="편집# 시리즈 보기">편집#</a>
+  </header>
+
+  <main>
+    <section class="section hero" id="top">
+      <div class="hero-photo"><img src="images/hero-piggybank-broken.jpg" alt="산산조각 난 돼지저금통에서 동전이 쏟아진 모습" fetchpriority="high"></div>
+      <canvas class="hero-canvas" id="heroCanvas" aria-hidden="true"></canvas>
+      <div class="hero-inner wrap">
+        <div class="hero-issue">편집# 010 · 국민연금과 노후</div>
+        <h1 class="hero-title">"국민연금, 사기라던데?"<br><span class="mint">그래서, 저는<br>돌려받을 수 있나요?</span></h1>
+        <p class="hero-sub">몇 년생인지, 얼마를 버는지만 입력하면<br>실제 계산식으로 당신의 연금을 계산합니다.</p>
+        <a class="hero-cta" href="#calc">내 연금 계산하기 <span aria-hidden="true">↓</span></a>
+        <div class="scroll-cue">SCROLL</div>
+      </div>
+      <div class="photo-credit">사진: Pixabay</div>
+    </section>
+
+    <section class="section intro dark reveal" id="intro">
+      <div class="wrap">
+        <div class="eyebrow">왜 지금 이 얘기인가</div>
+        <h2 class="intro-title">불신은 이미<br>수치로 나타났습니다</h2>
+        <p class="intro-copy">국민 10명 중 6명이 "국민연금을 신뢰하지 않는다"고 답했습니다. 18~20대의 63.2%, 30대의 59.2%는 지금의 국민연금 구조가 "다단계 사기 같다"는 지적에 동의했습니다.</p>
+        <p class="intro-copy">그런데 이 불신을 실제 계산식 위에 올려놓고 확인해본 적은 얼마나 될까요. 그래서 직접 계산해보기로 했습니다.</p>
+        <div class="stat-row">
+          <div class="stat"><b>55.7%</b><span>"국민연금을 신뢰하지 않는다" 응답 비율(2025.11, 한국경영자총협회)</span></div>
+          <div class="stat"><b>63.2%</b><span>18~20대 중 "다단계 사기 같다"는 지적에 동의한 비율(2024.10, 연금개혁청년행동)</span></div>
+          <div class="stat"><b>59.2%</b><span>30대 중 같은 지적에 동의한 비율</span></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section calc dark" id="calc">
+      <div class="calc-photo"><img src="images/calc-calculator-cash.jpg" alt="계산기를 두드리며 통장 옆에서 현금을 세는 손" loading="lazy"></div>
+      <div class="wrap reveal">
+        <div class="eyebrow">계산 시작</div>
+        <h2 class="calc-title">먼저, 두 가지만<br>알려주세요</h2>
+        <p class="calc-copy">국민연금공단 급여산정식을 단순화한 근사치로 계산합니다. 정확한 개인별 수치는 공단의 공식 조회 결과와 다를 수 있습니다.</p>
+        <div class="calc-form">
+          <div class="field">
+            <label for="birthYear">태어난 해</label>
+            <input type="number" id="birthYear" min="1950" max="2009" value="1992" inputmode="numeric">
+          </div>
+          <div class="field">
+            <label for="monthlyIncome">월평균소득(세전)</label>
+            <div class="income-row">
+              <input type="range" id="monthlyIncome" min="150" max="600" step="10" value="300">
+              <output id="incomeOut">300만원</output>
+            </div>
+          </div>
+          <button class="calc-cta" id="startCalc" type="button">내 연금 지금 확인하기 ↓</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="section amount" id="amount">
+      <div class="amount-photo"><img src="images/amount-cash-fan.jpg" alt="5만원권을 부채꼴로 펼쳐 든 손" loading="lazy"></div>
+      <div class="wrap">
+        <div class="amount-label">당신이 은퇴 후 매달 받는 돈</div>
+        <div class="amount-figure" id="amountFigure">0<span class="unit">만원</span></div>
+        <div class="amount-hush" id="amountHush">이 돈, 진짜 받을 수 있을까요?</div>
+      </div>
+    </section>
+
+    <section class="section quote-bridge reveal" id="quoteBridge">
+      <div class="wrap">
+        <blockquote>"오늘 아무것도 모른 채 어린이집, 유치원, 초등학교에 갔을 아이들은<br>50~60년 후에 <em>받을 수 있을지 없을지도 모를 연금</em>을 위해<br>이번에 인상된 요율을 평생 감당해야 한다"</blockquote>
+        <cite>이준석 · 개혁신당 의원 (2025.03.21, 국민연금법 개정안 국회 통과 직후 기자회견)</cite>
+      </div>
+    </section>
+
+    <section class="section verdict-sec" id="verdict">
+      <div class="wrap">
+        <div class="verdict-q">그래서, 받을 수 있나요?</div>
+        <div class="verdict-stage">
+          <canvas class="confetti-canvas" id="confettiCanvas" aria-hidden="true"></canvas>
+          <div class="verdict-loading" id="verdictLoading">확인하는 중…</div>
+          <div class="verdict-badge" id="verdictBadge">있습니다</div>
+        </div>
+        <p class="verdict-note" id="verdictNote"></p>
+      </div>
+    </section>
+
+    <section class="section evidence reveal" id="evidence">
+      <div class="evidence-photo"><img src="images/evidence-coins-dissolve.jpg" alt="동전 탑이 빛의 입자로 부서져 흩어지는 모습" loading="lazy"></div>
+      <div class="wrap">
+        <div class="eyebrow">왜 받을 수 있을까</div>
+        <h2 class="evidence-title">기금이 없어져도,<br>연금은 끊기지 않습니다</h2>
+        <p class="evidence-copy">적립금이 바닥나도 국민연금이 사라지는 건 아닙니다. 그 해 걷은 보험료로 그 해 지급하는 <b>부과식</b>으로 전환할 수 있게 설계돼 있고, 2025년 개정된 국민연금법은 국가가 연금 지급을 반드시 보장한다는 조항을 명문화했습니다.</p>
+        <p class="evidence-copy">마침 18년 만의 연금개혁으로 보험료율과 소득대체율이 함께 조정되면서, 기금 소진 시점도 늦춰졌습니다. 다만 정부 기관마다 추산이 다릅니다 — 기획재정처는 2064년, 보건복지부는 2083년을 제시합니다. 적용하는 수익률과 기준 연도가 다르기 때문인데, 최근 3년(2023~2025년) 기금 운용 성과가 예상보다 좋았던 게 낙관적 추산에 힘을 싣고 있습니다.</p>
+        <div class="chart-wrap">
+          <svg viewBox="0 0 640 260" style="width:100%;height:auto;display:block" role="img" aria-label="국민연금 기금 재정추계 그래프">
+            <line x1="40" y1="210" x2="620" y2="210" stroke="#dde2e5" stroke-width="1"></line>
+            <path id="pathBefore" d="M40,60 C220,90 380,150 560,230" fill="none" stroke="#c7cdd0" stroke-width="3" stroke-linecap="round"></path>
+            <path id="pathAfter" d="M40,50 C260,70 420,120 600,210" fill="none" stroke="#00b4c9" stroke-width="4" stroke-linecap="round"></path>
+            <circle id="retireDot" cx="0" cy="0" r="7" fill="#e8b64c" stroke="#fff" stroke-width="2"></circle>
+            <text id="retireLabel" x="0" y="0" font-size="13" font-weight="700" fill="#0b0d10"></text>
+            <text x="44" y="40" font-size="12" fill="#818886">2025</text>
+            <text x="590" y="248" font-size="12" fill="#818886">2085</text>
+          </svg>
+          <div class="fund-legend">
+            <span><i style="background:#c7cdd0"></i>개혁 전 추계(2056년 고갈)</span>
+            <span><i style="background:#00b4c9"></i>개혁 후 추계(기획재정처 2064년~보건복지부 2083년)</span>
+            <span><i style="background:#e8b64c;border-radius:99px"></i>당신이 연금을 받기 시작하는 해</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section myths light reveal" id="myths">
+      <div class="wrap">
+        <div class="eyebrow">오해 바로잡기</div>
+        <h2 class="myths-title">다단계? 폰지?<br>돌려막기? 하나씩 따져보면</h2>
+        <div class="myth-list">
+          <div class="myth-card">
+            <div class="myth-claim">"폰지·다단계 사기 아니냐"</div>
+            <div class="myth-verdict false">사실과 다름</div>
+            <p class="myth-body">사기는 신규 가입자가 끊기면 반드시 붕괴합니다. 국민연금은 전 국민 의무가입이고, 국가가 법으로 지급을 보장합니다. 신규 유입이 줄어도 붕괴가 아니라 보험료율 조정으로 대응합니다 — 애초에 구조가 다릅니다.</p>
+          </div>
+          <div class="myth-card">
+            <div class="myth-claim">"결국 돌려막기 아니냐"</div>
+            <div class="myth-verdict true">부분적으로 사실</div>
+            <p class="myth-body">이건 맞습니다. 기금이 소진되면 그 해 걷은 보험료로 그 해 지급하는 <b>부과식</b>으로 바뀝니다. 다만 이건 전 세계 대다수 공적연금이 쓰는 정상적인 설계 방식이지, 몰래 감춘 사기 구조가 아닙니다.</p>
+          </div>
+          <div class="myth-card">
+            <div class="myth-claim">"그래도 세대 간 손해 아니냐"</div>
+            <div class="myth-verdict open">아직 진행 중인 논쟁</div>
+            <p class="myth-body">이 부분은 "사기냐 아니냐"가 아니라 "얼마나 공평하게 나누냐"의 문제입니다. 보건복지부도 2028년 6차 재정계산을 준비하며 이 부분을 계속 들여다보고 있다고 밝혔습니다.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section burden reveal" id="burden">
+      <div class="wrap">
+        <div class="eyebrow">그런데, 대가가 있습니다</div>
+        <h2 class="burden-title">받는 대신,<br>내는 돈이 오릅니다</h2>
+        <p class="burden-copy">2026년부터 보험료율이 매년 0.5%p씩 올라 2033년 13%에 도달합니다. 직장가입자는 이 중 절반을 회사가, 절반을 본인이 냅니다 — 아래 금액은 본인 부담분 기준입니다. (지역가입자·자영업자는 전액 본인 부담)</p>
+        <div class="burden-panel">
+          <div class="burden-bars" id="burdenBars"></div>
+          <div class="burden-stat">
+            <div class="row"><span>지금(2025년) 매달 내는 돈</span><b id="burdenNow">-</b></div>
+            <div class="row"><span>2033년, 매달 내는 돈</span><b id="burdenLater">-</b></div>
+            <div class="row"><span>연간 추가 부담</span><b id="burdenDelta">-</b></div>
+            <div class="burden-foot">보험료율 9%→13%(2026~2033년 단계적 인상) × 월평균소득 ÷ 2(본인 부담분) 기준 추정치입니다. 실제 고지 금액은 소득 신고·상한액 등에 따라 달라질 수 있습니다.</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section age light reveal" id="age">
+      <div class="wrap">
+        <div class="eyebrow">그래서 몇 살부터</div>
+        <h2 class="age-title">당신의 수급 개시</h2>
+        <div class="age-photo"><img src="images/age-elderly-wallet.jpg" alt="낡은 동전지갑에서 동전을 꺼내는 노인의 손" loading="lazy"></div>
+        <div class="age-cards">
+          <div class="age-card"><span>수급 개시 연령</span><b id="ageRetireAge">-</b><i>출생연도 기준 국민연금법상 개시 연령</i></div>
+          <div class="age-card"><span>수급 개시 연도</span><b id="ageRetireYear">-</b><i>이 해부터 매달 연금을 받기 시작합니다</i></div>
+          <div class="age-card"><span>가정한 가입 기간</span><b id="ageJoinYears">-</b><i>만 27세 가입 시작 가정(최대 40년)</i></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section closing light reveal" id="closing">
+      <div class="wrap">
+        <div class="eyebrow">그래서, 결론은</div>
+        <div class="closing-tag">국민연금 ≠ 다단계 사기</div>
+        <h2 class="closing-title">돌려받을 수 있냐구요?<br>네, 돌려받을 수 있습니다.</h2>
+        <p class="closing-copy">기금이 사라져도 연금은 사라지지 않습니다. 그 해 걷은 보험료로 그 해 지급하는 구조가 이미 마련돼 있고, 국가의 지급 책임은 법에 명문화돼 있습니다. 하지만 그 대가로 당신이 내는 보험료는 계속 오르고, 그 부담을 세대 간에 어떻게 나눌지를 둘러싼 논쟁은 아직 끝나지 않았습니다.</p>
+        <p class="closing-copy">"받을 수 있을지 없을지도 모를 연금"이라는 말은, 이제 "받을 수는 있지만 얼마나 낼지 모를 연금"으로 바뀌어야 더 정확합니다. 그 차이를 알고 계산기 앞에 앉는 것과, 모르고 앉는 것은 다릅니다.</p>
+      </div>
+    </section>
+
+    <section class="section sources-sec reveal" id="sourcesSec">
+      <div class="wrap">
+        <h2>참고 자료</h2>
+        <ul class="sources">
+          <li><b>뉴시스 (2025.03.20)</b><span>'더 내고 더 받는' 국민연금 개정안 국회 통과…18년 만에 연금개혁(국가지급보장 명문화 포함)</span><a href="https://www.newsis.com/view/NISX20250320_0003106817" target="_blank" rel="noopener">기사 보기 ↗</a></li>
+          <li><b>뉴시스 (2025.12.29)</b><span>월급 309만원 직장인, 내년부터 국민연금 보험료 매달 14만6700원 낸다</span><a href="https://www.newsis.com/view/NISX20251229_0003457395" target="_blank" rel="noopener">기사 보기 ↗</a></li>
+          <li><b>뉴시스 (2026.06.20)</b><span>국민연금 2069년 고갈…증시 호황이 기금소진 4년 늦춰</span><a href="https://www.newsis.com/view/NISX20260620_0003676706" target="_blank" rel="noopener">기사 보기 ↗</a></li>
+          <li><b>뉴시스 (2026.08.21)</b><span>정은경 "연금개혁안, 정확한 재정계산 필요…종합 검토"(기관별 고갈 시점 추산 차이 포함)</span><a href="https://www.newsis.com/view/NISX20260821_0003758104" target="_blank" rel="noopener">기사 보기 ↗</a></li>
+        </ul>
+        <p class="disclaimer">이 페이지의 계산 결과는 국민연금공단 공식 산정식을 단순화한 자가 시뮬레이션이며, 공식 수치를 대체하지 않습니다. 실제 수령액·보험료는 개인 소득 이력, 가입 기간, 향후 제도 변경에 따라 달라질 수 있습니다. 정확한 예상 수령액은 국민연금공단 "내 연금 알아보기" 서비스를 통해 확인하시기 바랍니다.</p>
+      </div>
+    </section>
+
+    <aside class="editor-note"><div class="editor-copy"><div class="editor-kicker">팩트 너머의 공감<strong>사실을 넘어 이야기로</strong></div><h2 class="editor-title"><span>뉴스를,</span><span class="mint">한 걸음 더</span></h2><div class="editor-body">매일 쏟아지는 기사<br>놓치고 있는 가치를 찾고<br>더 깊이, 더 쉽게, 더 오래<br><strong>편집#이 끌어올립니다.</strong><div class="editor-byline">기획·디렉터 = 안재현 기자</div></div><a class="editor-link" href="https://visual.newsis.com/editshop/">VISUAL NEWSIS · INTERACTIVE SERIES</a></div><div class="editor-mark" aria-hidden="true">편집#010</div></aside>
+    <footer class="site-footer"><span>VISUAL NEWSIS · 편집# 010 · INTERACTIVE SERIES</span><span>기획·디렉터 = 안재현 기자</span><span>© NEWSIS. ALL RIGHTS RESERVED.</span></footer>
+    <section class="editshop-next" aria-labelledby="editshop-next-title">
+      <div class="editshop-next-head">
+        <div><div class="editshop-next-kicker">편집# · MORE STORIES</div><h2 id="editshop-next-title">다른 편집#</h2></div>
+        <a class="editshop-series-link" href="../editshop/">편집# 전체 시리즈 보기 ↗</a>
+      </div>
+      <div class="editshop-next-grid"></div>
+    </section>
+  </main>
+
+  <script>
+    (() => {
+      const q=s=>document.querySelector(s), qa=s=>[...document.querySelectorAll(s)];
+
+      /* ---------- 계산 로직 ---------- */
+      const RETIRE_SCHEDULE=[[1952,60],[1956,61],[1960,62],[1964,63],[1968,64],[Infinity,65]];
+      const retireAgeFor=year=>RETIRE_SCHEDULE.find(([max])=>year<=max)[1];
+      const REPLACEMENT=0.43;
+      const JOIN_START_AGE=27;
+      const DEPLETION_BASE=2064, DEPLETION_OPT=2083;
+      const rateForYear=year=>year<=2025?9:year>=2033?13:9+(year-2025)*0.5;
+
+      const state={birthYear:1992,income:300};
+
+      const compute=()=>{
+        const {birthYear,income}=state;
+        const retireAge=retireAgeFor(birthYear);
+        const retireYear=birthYear+retireAge;
+        const joinYears=Math.min(40,Math.max(0,retireAge-JOIN_START_AGE));
+        const monthlyPension=Math.round(income*REPLACEMENT*(joinYears/40));
+        return {retireAge,retireYear,joinYears,monthlyPension};
+      };
+
+      const fmt=n=>n.toLocaleString('ko-KR');
+      const fmtWon=manwon=>fmt(Math.round(manwon))+'만원';
+
+      /* ---------- 입력 바인딩 ---------- */
+      const birthInput=q('#birthYear');
+      const incomeSlider=q('#monthlyIncome');
+      const incomeOut=q('#incomeOut');
+
+      const fillRange=el=>el.style.setProperty('--fill',((el.value-el.min)/(el.max-el.min)*100)+'%');
+
+      const renderBurden=()=>{
+        const bars=q('#burdenBars');
+        const years=[2025,2027,2029,2031,2033];
+        if(!bars.dataset.built){
+          bars.innerHTML=years.map(y=>`<div class="burden-bar" data-year="${y}"><div class="bar"></div><div class="rt"></div><div class="yr">${y}</div></div>`).join('');
+          bars.dataset.built='1';
+        }
+        years.forEach(y=>{
+          const rate=rateForYear(y);
+          const bar=bars.querySelector(`[data-year="${y}"] .bar`);
+          const rt=bars.querySelector(`[data-year="${y}"] .rt`);
+          bar.style.height=(rate/13*100)+'%';
+          rt.textContent=rate.toFixed(1)+'%';
+        });
+        const nowWon=state.income*10000*rateForYear(2025)/100/2;
+        const laterWon=state.income*10000*rateForYear(2033)/100/2;
+        q('#burdenNow').textContent=fmt(Math.round(nowWon))+'원';
+        q('#burdenLater').textContent=fmt(Math.round(laterWon))+'원';
+        q('#burdenDelta').textContent=fmt(Math.round((laterWon-nowWon)*12))+'원';
+      };
+
+      const renderAge=()=>{
+        const {retireAge,retireYear,joinYears}=compute();
+        q('#ageRetireAge').textContent=retireAge+'세';
+        q('#ageRetireYear').textContent=retireYear+'년';
+        q('#ageJoinYears').textContent=joinYears+'년';
+      };
+
+      const placeRetireDot=()=>{
+        const {retireYear}=compute();
+        const svg=q('#evidence svg');
+        const clampYear=Math.max(2025,Math.min(2085,retireYear));
+        const t=(clampYear-2025)/(2085-2025);
+        const x=40+t*(600-40);
+        const path=q('#pathAfter');
+        try{
+          const len=path.getTotalLength();
+          const pt=path.getPointAtLength(len*t);
+          q('#retireDot').setAttribute('cx',pt.x);
+          q('#retireDot').setAttribute('cy',pt.y);
+          q('#retireLabel').setAttribute('x',Math.min(pt.x+12,520));
+          q('#retireLabel').setAttribute('y',Math.max(pt.y-14,20));
+          q('#retireLabel').textContent=retireYear+'년 은퇴';
+        }catch(e){}
+      };
+
+      let amountRevealed=false, verdictRevealed=false;
+
+      const countUp=(el,target,suffix,duration=1700)=>{
+        const begin=performance.now();
+        const frame=now=>{
+          const p=Math.min(1,(now-begin)/duration);
+          const eased=1-Math.pow(1-p,3);
+          el.innerHTML=fmt(Math.round(target*eased))+'<span class="unit">'+suffix+'</span>';
+          if(p<1)requestAnimationFrame(frame);
+        };
+        requestAnimationFrame(frame);
+      };
+
+      const revealAmount=()=>{
+        if(amountRevealed)return;amountRevealed=true;
+        const {monthlyPension}=compute();
+        countUp(q('#amountFigure'),monthlyPension,'만원');
+        setTimeout(()=>q('#amountHush').classList.add('show'),2000);
+      };
+
+      const revealVerdict=()=>{
+        if(verdictRevealed)return;verdictRevealed=true;
+        const {retireYear}=compute();
+        setTimeout(()=>{
+          q('#verdictLoading').classList.add('hide');
+          const badge=q('#verdictBadge');
+          badge.classList.add('pop');
+          burstConfetti();
+          const note=q('#verdictNote');
+          note.innerHTML=retireYear<=DEPLETION_BASE
+            ? `당신이 연금을 받기 시작하는 <b>${retireYear}년</b>에는, 2025년 개혁을 반영해도 기금이 아직 남아 있을 것으로 추산됩니다.`
+            : `${retireYear}년이면 추계상 기금은 이미 바닥난 뒤입니다. 그래도 받는 이유는 — 그 해 걷은 보험료로 그 해 지급하는 <b>부과식</b> 구조로 전환되고, 국가의 지급 책임이 법에 명문화돼 있기 때문입니다.`;
+          note.classList.add('show');
+        },1300);
+      };
+
+      /* ---------- confetti ---------- */
+      const confettiCanvas=q('#confettiCanvas');
+      const burstConfetti=()=>{
+        const ctx=confettiCanvas.getContext('2d');
+        const rect=confettiCanvas.getBoundingClientRect();
+        const dpr=Math.min(2,devicePixelRatio||1);
+        confettiCanvas.width=rect.width*dpr;confettiCanvas.height=rect.height*dpr;
+        ctx.setTransform(dpr,0,0,dpr,0,0);
+        const cx=rect.width/2, cy=rect.height/2;
+        const colors=['#00b4c9','#e8b64c','#ffffff'];
+        const particles=Array.from({length:46},()=>({
+          x:cx,y:cy,
+          vx:(Math.random()-.5)*9,
+          vy:(Math.random()-1.4)*9,
+          size:3+Math.random()*4,
+          color:colors[Math.floor(Math.random()*colors.length)],
+          life:1
+        }));
+        const begin=performance.now();
+        const frame=now=>{
+          const dt=Math.min(32,now-(frame.last||now));frame.last=now;
+          ctx.clearRect(0,0,rect.width,rect.height);
+          let alive=false;
+          particles.forEach(p=>{
+            if(p.life<=0)return;
+            alive=true;
+            p.vy+=.012*dt;
+            p.x+=p.vx*dt/16;p.y+=p.vy*dt/16;
+            p.life-=dt/1400;
+            ctx.globalAlpha=Math.max(0,p.life);
+            ctx.fillStyle=p.color;
+            ctx.beginPath();ctx.arc(p.x,p.y,p.size,0,Math.PI*2);ctx.fill();
+          });
+          ctx.globalAlpha=1;
+          if(alive)requestAnimationFrame(frame);
+        };
+        requestAnimationFrame(frame);
+      };
+
+      /* ---------- hero ambient particles ---------- */
+      const heroCanvas=q('#heroCanvas');
+      const heroCtx=heroCanvas.getContext('2d');
+      let heroParticles=[];
+      const sizeHero=()=>{
+        const rect=heroCanvas.parentElement.getBoundingClientRect();
+        const dpr=Math.min(2,devicePixelRatio||1);
+        heroCanvas.width=rect.width*dpr;heroCanvas.height=rect.height*dpr;
+        heroCanvas.style.width=rect.width+'px';heroCanvas.style.height=rect.height+'px';
+        heroCtx.setTransform(dpr,0,0,dpr,0,0);
+        heroParticles=Array.from({length:34},()=>({
+          x:Math.random()*rect.width,
+          y:Math.random()*rect.height,
+          r:1.4+Math.random()*2.6,
+          s:.18+Math.random()*.42,
+          o:.12+Math.random()*.28,
+          h:rect.height
+        }));
+      };
+      let heroAnim=0, heroVisible=true;
+      const drawHero=()=>{
+        if(!heroVisible)return;
+        const rect=heroCanvas.getBoundingClientRect();
+        heroCtx.clearRect(0,0,rect.width,rect.height);
+        heroParticles.forEach(p=>{
+          p.y-=p.s;
+          if(p.y<-10){p.y=rect.height+10;p.x=Math.random()*rect.width}
+          heroCtx.globalAlpha=p.o;
+          heroCtx.fillStyle='#5ed9e7';
+          heroCtx.beginPath();heroCtx.arc(p.x,p.y,p.r,0,Math.PI*2);heroCtx.fill();
+        });
+        heroCtx.globalAlpha=1;
+        heroAnim=requestAnimationFrame(drawHero);
+      };
+      sizeHero();
+      heroAnim=requestAnimationFrame(drawHero);
+      addEventListener('resize',sizeHero,{passive:true});
+      if('IntersectionObserver' in window){
+        new IntersectionObserver(entries=>entries.forEach(e=>{
+          heroVisible=e.isIntersecting;
+          if(heroVisible){cancelAnimationFrame(heroAnim);heroAnim=requestAnimationFrame(drawHero)}
+        }),{threshold:0}).observe(q('#top'));
+      }
+
+      /* ---------- scroll reveal ---------- */
+      const reveals=qa('.reveal');
+      const evidencePath=q('#pathAfter');
+      if(evidencePath){
+        const len=evidencePath.getTotalLength();
+        evidencePath.style.strokeDasharray=len;
+        evidencePath.style.strokeDashoffset=len;
+        evidencePath.style.transition='stroke-dashoffset 1.6s cubic-bezier(.2,.8,.3,1)';
+        const beforePath=q('#pathBefore');
+        beforePath.style.strokeDasharray=beforePath.getTotalLength();
+        beforePath.style.strokeDashoffset=beforePath.getTotalLength();
+        beforePath.style.transition='stroke-dashoffset 1.6s cubic-bezier(.2,.8,.3,1) .2s';
+      }
+
+      const io=new IntersectionObserver(entries=>entries.forEach(e=>{
+        if(!e.isIntersecting)return;
+        e.target.classList.add('visible');
+        if(e.target.id==='amount')revealAmount();
+        if(e.target.id==='verdict')revealVerdict();
+        if(e.target.id==='evidence'){
+          placeRetireDot();
+          if(evidencePath){evidencePath.style.strokeDashoffset=0;q('#pathBefore').style.strokeDashoffset=0}
+        }
+        if(e.target.id==='burden')renderBurden();
+        io.unobserve(e.target);
+      }),{threshold:.35,rootMargin:'0px 0px -6% 0px'});
+
+      [...reveals,q('#amount'),q('#verdict')].forEach(el=>io.observe(el));
+
+      /* ---------- 입력 변경 시 실시간 반영 ---------- */
+      const syncInputs=()=>{
+        state.birthYear=Math.max(1950,Math.min(2009,+birthInput.value||1992));
+        state.income=+incomeSlider.value;
+        incomeOut.textContent=fmt(state.income)+'만원';
+        fillRange(incomeSlider);
+        renderAge();
+        if(document.getElementById('burdenBars').dataset.built)renderBurden();
+        if(amountRevealed){
+          const {monthlyPension}=compute();
+          q('#amountFigure').innerHTML=fmt(monthlyPension)+'<span class="unit">만원</span>';
+        }
+        if(evidencePath)placeRetireDot();
+      };
+      birthInput.addEventListener('input',syncInputs);
+      incomeSlider.addEventListener('input',syncInputs);
+      q('#startCalc').addEventListener('click',()=>q('#amount').scrollIntoView({behavior:'smooth'}));
+
+      fillRange(incomeSlider);
+      renderAge();
+      renderBurden();
+
+      addEventListener('scroll',()=>{const max=document.documentElement.scrollHeight-innerHeight;q('.progress').style.width=(scrollY/Math.max(1,max)*100)+'%'},{passive:true});
+    })();
+  </script>
+</body>
+</html>
