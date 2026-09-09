@@ -6,7 +6,7 @@
 
   [작업 메모 — 배포 전 확인 필요]
   0) 편집# 010번은 2026-09-09 대화에서 안재현 기자가 직접 확정한 번호입니다(기존 잠정 010이던 homecoming은 10/1 발행 예정이라 이 페이지가 먼저 010을 씁니다). VISUAL NEWSIS 메인 STORY 013번, 공용 랜딩(루트 index.html·editshop/index.html·assets/editshop-carousel.js) 반영까지 담당자가 2026-09-09 직접 실배포 승인·지시함.
-  1) 사진 확보(Pixabay, 2026-09-09): images/hero-piggybank-broken.jpg(히어로), calc-calculator-cash.jpg(계산 섹션), amount-cash-fan.jpg(금액 reveal), age-elderly-wallet.jpg(수급개시 섹션). og:image는 히어로 사진을 캔버스로 크롭·압축한 images/og-pension-1200x630.jpg(1200x630, 53KB)를 별도 제작해 사용. 2026-09-09 추가: images/evidence-generation-gap.png(생성형 AI 제작, 근거 섹션 — 젊은 세대→노년 세대로 절벽 너머 동전이 건너가는 세대간 이전 비유, photo-credit 명시)로 근거 섹션 배경을 교체하고, 기존 images/quote-coins-dissolve.jpg(구 evidence-coins-dissolve.jpg)는 quote-bridge 섹션(이준석 인용구) 배경으로 재배치함. 미사용 원본(파란저금통.jpg, 점프.jpg, 섞인 지폐.jpg)은 images/ 폴더에 보관 중 — 필요 없으면 삭제해도 됨.
+  1) 사진 확보(Pixabay, 2026-09-09): calc-calculator-cash.jpg(계산 섹션), amount-cash-fan.jpg(금액 reveal), age-elderly-wallet.jpg(수급개시 섹션). 히어로는 최초 Pixabay 깨진 돼지저금통(hero-piggybank-broken.jpg)이었으나 2026-09-09 담당자 피드백("사진이 제목보다 더 파탄을 단정하면 안 된다")에 따라 생성형 AI 제작 images/hero-coin-mound.png(「국민연금」 라벨+미세한 실금+반창고, 서울 노을 스카이라인)로 교체 — 완전 파괴가 아니라 "위태롭지만 관리 중"이라는 기사의 실제 결론에 맞춤. og:image도 이 사진 기준으로 og-pension-1200x630.jpg 재생성함. 2026-09-09 추가: images/evidence-generation-gap.png(생성형 AI 제작, 근거 섹션 — 젊은 세대→노년 세대로 절벽 너머 동전이 건너가는 세대간 이전 비유, photo-credit 명시)로 근거 섹션 배경을 교체하고, 기존 images/quote-coins-dissolve.jpg(구 evidence-coins-dissolve.jpg)는 quote-bridge 섹션(이준석 인용구) 배경으로 재배치함. 생성 이미지 전부 실제 원화 액면·도안을 정면 노출하지 않도록 확인함. 미사용 원본(파란저금통.jpg, 점프.jpg, 섞인 지폐.jpg, hero-piggybank-broken.jpg)은 images/ 폴더에 보관 중 — 필요 없으면 삭제해도 됨.
   2) 급여산정식은 국민연금공단 공식 산정식(A값·B값 기반)의 단순화 근사치입니다. "월평균소득 × 소득대체율(43%, 40년 만근 기준) × 가입기간/40"으로 계산하며, 가입 시작연령은 27세로 가정합니다. 실제 개인별 수령액은 소득이력·가입기간에 따라 다르며, 정확한 수치는 국민연금공단 "내 연금 알아보기"를 통해 확인해야 합니다 — 본문에 디스클레이머 명시함.
   3) 재정추계·개혁 수치 출처를 뉴시스 자체 기사 4건으로 교체(2026-09-09, 담당자 요청 — 뉴시스 기사 우선, 없으면 링크 없이 텍스트만 인용하는 원칙): NISX20250320_0003106817(개정안 국회통과·국가지급보장 명문화), NISX20251229_0003457395(보험료율 개인부담 실측), NISX20260620_0003676706(기금소진 2069년 전망·증시호황), NISX20260821_0003758104(2026.08.21, 기관별 추산 차이 — 기획재정처 2064년 vs 보건복지부 2083년). 이 마지막 기사 근거로 본문 낙관 시나리오를 2071년→2083년으로 수정함. 발행 전 최신 수치로 재확인 필요.
   4) 보험료 부담 계산은 직장가입자 기준 본인 부담분(전체 보험료율의 절반)으로 표시합니다. 지역가입자(자영업자)는 전액 본인 부담이라는 점을 본문에 각주로 명시함.
@@ -262,7 +262,7 @@
   <link rel="stylesheet" href="../assets/visual-header.css?v=20260828-5">
   <link rel="stylesheet" href="../assets/editshop-carousel.css?v=20260826-3">
   <script defer src="../assets/visual-header.js?v=20260907-1" data-section="편집#" data-section-href="https://visual.newsis.com/editshop/" data-current="editshop" data-header-theme="dark"></script>
-  <script defer src="../assets/editshop-carousel.js?v=20260909-1" data-current="pension"></script>
+  <script defer src="../assets/editshop-carousel.js?v=20260909-2" data-current="pension"></script>
 </head>
 <body>
   <div class="progress" aria-hidden="true"></div>
@@ -277,7 +277,7 @@
 
   <main>
     <section class="section hero" id="top">
-      <div class="hero-photo"><img src="images/hero-piggybank-broken.jpg" alt="산산조각 난 돼지저금통에서 동전이 쏟아진 모습" fetchpriority="high"></div>
+      <div class="hero-photo"><img src="images/hero-coin-mound.png" alt="「국민연금」이라 적히고 금이 간 뒤 반창고가 붙은 돼지저금통, 뒤로 노을 진 서울 스카이라인" fetchpriority="high"></div>
       <canvas class="hero-canvas" id="heroCanvas" aria-hidden="true"></canvas>
       <div class="hero-inner wrap">
         <div class="hero-issue">편집# 010 · 국민연금과 노후</div>
@@ -286,7 +286,7 @@
         <a class="hero-cta" href="#calc">내 연금 계산하기 <span aria-hidden="true">↓</span></a>
         <div class="scroll-cue">SCROLL</div>
       </div>
-      <div class="photo-credit">사진: Pixabay</div>
+      <div class="photo-credit">이미지: 생성형 AI 제작</div>
     </section>
 
     <section class="section intro dark reveal" id="intro">
