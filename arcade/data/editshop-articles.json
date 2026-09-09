@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-09-08T22:48:32+00:00",
+  "updatedAt": "2026-09-09T04:54:26+00:00",
   "source": "VISUAL NEWSIS editshop landing page",
   "articles": [
     {
@@ -90,6 +90,16 @@
       "description": "한국은행·한국고용정보원 자료를 바탕으로, 내 업무의 AI 노출도와 보완도를 5가지 질문으로 직접 진단합니다.",
       "image": "https://visual.newsis.com/aijob/images/hero-humanoid-office-day-v6.png",
       "url": "https://visual.newsis.com/aijob/",
+      "profile": "center"
+    },
+    {
+      "id": "pension",
+      "issue": "편집#010",
+      "label": "PENSION / RETIREMENT / INTERACTIVE",
+      "title": "\"국민연금, 믿어도 돼?\"",
+      "description": "출생연도와 월소득만 입력하면, 내 국민연금 예상 수령액과 수급 가능 여부, 오르는 보험료 부담을 직접 계산합니다.",
+      "image": "https://visual.newsis.com/pension/images/hero-coin-mound.png",
+      "url": "https://visual.newsis.com/pension/",
       "profile": "center"
     }
   ]
