@@ -10,7 +10,8 @@
     {slug:"children",num:"006",meta:"아이와 생활권",title:"아이가 자라는 동안",image:"/children/images/children-running.jpg",alt:"함께 달리는 아이들"},
     {slug:"buy-live",num:"007",meta:"주택과 생활비",title:"이 집, 살 수 있겠습니까?",image:"/buy-live/images/hero.jpg",alt:"도시의 주택과 아파트"},
     {slug:"witness",num:"008",meta:"광복과 기억",title:"내가 증인입니다.",image:"/witness/images/thumbnail-carousel-1600x948.jpg",alt:"태극기를 든 시민들의 3·1 만세운동 재현행사"},
-    {slug:"aijob",num:"009",meta:"AI와 일자리",title:"삐빅— 지금부터 당신을 대체합니다",image:"/aijob/images/hero-humanoid-office-day-v6.png",alt:"밝은 사무실에서 의자를 잡고 왼쪽을 안내하는 여성형 AI 휴머노이드"}
+    {slug:"aijob",num:"009",meta:"AI와 일자리",title:"삐빅— 지금부터 당신을 대체합니다",image:"/aijob/images/hero-humanoid-office-day-v6.png",alt:"밝은 사무실에서 의자를 잡고 왼쪽을 안내하는 여성형 AI 휴머노이드"},
+    {slug:"pension",num:"010",meta:"국민연금과 노후",title:"국민연금, 사기라던데? 그래서 저는 돌려받을 수 있나요?",image:"/pension/images/hero-piggybank-broken.jpg",alt:"산산조각 난 돼지저금통에서 동전이 쏟아진 모습"}
   ];
   const start=()=>{
     const section=document.querySelector("section.more,section.editshop-next");
