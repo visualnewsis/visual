@@ -8,7 +8,7 @@ const stories = [
  {slug:'brook',title:'졸졸졸 · 줄줄줄',image:'brook-1.png'},
  {slug:'pong',title:'퐁당 · 풍덩',image:'pong-1.png'},
  {slug:'kong',title:'콩콩 · 쿵쿵',image:'kong-1.png'},
- {slug:'bang',title:'방긋 · 빵긋',image:'bang-1.png'},
+ {slug:'bang',title:'방긋 · 빵끗',image:'bang-1.png'},
  {slug:'sallang',title:'살랑살랑 · 설렁설렁',image:'sallang-1.png'},
  {slug:'daldal',title:'달달 · 탈탈',image:'daldal-1.png'},
  {slug:'kkomul',title:'꼬물꼬물 · 꾸물꾸물',image:'kkomul-1.png'},
