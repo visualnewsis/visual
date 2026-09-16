@@ -10,8 +10,7 @@ const stories = [
  {slug:'kong',title:'콩콩 · 쿵쿵',image:'kong-1.png'},
  {slug:'bang',title:'방긋 · 빵끗',image:'bang-1.png'},
  {slug:'sallang',title:'살랑살랑 · 설렁설렁',image:'sallang-1.png'},
- {slug:'daldal',title:'달달 · 탈탈',image:'daldal-1.png'},
- {slug:'ogeul',title:'오글오글 · 우글우글',image:'ogeul-1.png'}
+ {slug:'daldal',title:'달달 · 탈탈',image:'daldal-1.png'}
 ];
 const card = story => `<li><a class="op-card" href="${new URL(story.slug + '/index.html',base).href}"><img src="${new URL('images/' + story.image,base).href}" alt="" width="1448" height="1086" loading="lazy"><h2>${story.title}<span aria-hidden="true">↗</span></h2></a></li>`;
 const start = () => {
