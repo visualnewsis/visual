@@ -17,6 +17,11 @@
 2. 기본으로 열린 `Code.gs`의 내용을 전부 지우고 아래 코드를 붙여넣는다.
 
 ```javascript
+// 짧은 시간에 너무 많은 제출이 몰리면(오작동이든 악의적인 API 직접 호출이든) 막는다.
+// 이 값은 브라우저에서 우회할 수 없다 — Apps Script 안, 서버 쪽에서 세는 값이라서다.
+var RATE_LIMIT_MAX = 20;      // 아래 시간 동안 허용하는 최대 제출 수
+var RATE_LIMIT_WINDOW_MS = 60 * 1000; // 1분
+
 function doPost(e) {
   var sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
   var data = JSON.parse(e.postData.contents);
@@ -37,6 +42,9 @@ function doPost(e) {
   }
 
   // 기본 동작(action 없음 또는 'submit'): 새 답변 추가.
+  if (isRateLimited_()) {
+    return json_({ ok: false, reason: 'rate_limited' });
+  }
   var text = (data.text || '').toString().trim().slice(0, 80);
   var token = (data.token || '').toString();
   if (!text) {
@@ -59,6 +67,21 @@ function doGet(e) {
     }
   }
   return json_({ answers: answers });
+}
+
+// 전체 방문자를 합쳐 RATE_LIMIT_WINDOW_MS 동안 RATE_LIMIT_MAX개보다 많이 제출되면 true.
+// 개인별이 아니라 전체 총량 제한이다(익명 웹앱이라 요청자를 구분할 방법이 마땅치 않다).
+function isRateLimited_() {
+  var cache = CacheService.getScriptCache();
+  var raw = cache.get('submit_window');
+  var now = Date.now();
+  var state = raw ? JSON.parse(raw) : { start: now, count: 0 };
+  if (now - state.start > RATE_LIMIT_WINDOW_MS) {
+    state = { start: now, count: 0 };
+  }
+  state.count++;
+  cache.put('submit_window', JSON.stringify(state), 300); // 캐시 자체는 5분 뒤 소멸
+  return state.count > RATE_LIMIT_MAX;
 }
 
 function json_(obj) {
