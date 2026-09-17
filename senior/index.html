@@ -1188,17 +1188,25 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
           .then(data => { if (data && data.ok) { saveMine(mineList().filter(m => m.id !== id)); loadAndRender(); } });
       }
 
-      const defaultHint = usingServer
-        ? '제출한 답은 다른 독자에게도 바로 공개됩니다. 본인이 쓴 글은 옆의 ×로 지울 수 있고, 부적절한 내용은 편집부가 삭제할 수 있습니다.'
-        : '제출한 답은 서버에 저장되지 않고, 이 브라우저에만 남습니다.';
+      const SHARED_HINT = '제출한 답은 다른 독자에게도 바로 공개됩니다. 본인이 쓴 글은 옆의 ×로 지울 수 있고, 부적절한 내용은 편집부가 삭제할 수 있습니다.';
+      const OFFLINE_HINT = '이 브라우저에만 저장됩니다.';
+      let defaultHint = usingServer ? SHARED_HINT : OFFLINE_HINT;
       if (hint) hint.textContent = defaultHint;
 
       function loadAndRender() {
         if (!usingServer) { renderLocal(localAnswers()); return; }
         fetch(RECALL_ENDPOINT)
           .then(res => res.json())
-          .then(data => renderServer(Array.isArray(data.answers) ? data.answers : []))
-          .catch(() => renderServer([]));
+          .then(data => {
+            defaultHint = SHARED_HINT;
+            if (hint) hint.textContent = defaultHint;
+            renderServer(Array.isArray(data.answers) ? data.answers : []);
+          })
+          .catch(() => {
+            defaultHint = OFFLINE_HINT;
+            if (hint) hint.textContent = defaultHint;
+            renderServer([]);
+          });
       }
 
       submit.addEventListener('click', () => {
@@ -1235,7 +1243,7 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
             const pending = pendingAnswers(); pending.push(value); savePending(pending);
             input.value = '';
             loadAndRender();
-            if (hint) hint.textContent = '다른 독자와 공유되지 않고, 이 브라우저에만 저장됩니다.';
+            if (hint) hint.textContent = OFFLINE_HINT;
           })
           .finally(() => { submit.disabled = false; });
       });
