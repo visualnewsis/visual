@@ -442,8 +442,11 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
     .recall-wall.in-view{opacity:1;transform:none}
     .recall-wall-list{margin:0;padding:0;list-style:none;display:flex;flex-direction:column}
     .recall-wall-list li{padding:14px 0;border-top:1px solid rgba(255,255,255,.12);font-size:16px;line-height:1.6;color:#e7e9ea}
-    .recall-wall-list li.is-reader{color:#fff;font-weight:700}
+    .recall-wall-list li.is-reader{color:#fff;font-weight:700;display:flex;align-items:baseline;gap:10px}
     .recall-wall-list li.is-reader:before{content:"↳ ";color:var(--mint)}
+    .recall-wall-list li.is-reader .recall-wall-text{flex:1}
+    .recall-wall-delete{flex:none;background:none;border:0;padding:2px 6px;font-size:18px;line-height:1;color:#8a9296;cursor:pointer}
+    .recall-wall-delete:hover,.recall-wall-delete:focus-visible{color:#fff}
 
     /* 관련기사 — 뉴시스 링크만 사용 */
     .related{background:var(--paper);color:var(--ink);padding:clamp(48px,8vw,96px) clamp(22px,7vw,112px);text-align:left}
@@ -495,7 +498,7 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
       <img class="photo-following" src="images/NISI20240905_0020511615-1200.webp" srcset="images/NISI20240905_0020511615-700.webp 700w, images/NISI20240905_0020511615-1200.webp 1200w, images/NISI20240905_0020511615-2000.webp 2000w" sizes="100vw" width="2000" height="1430" decoding="async" alt="같은 두 사람의 또 다른 순간. 여성은 정면을 향해 활짝 웃고, 남성은 맞잡은 손을 이어 관객에게 손을 흔든다.">
       </div>
       <div class="scroll-cue" aria-hidden="true"><span>↓</span></div>
-      <figcaption>사진 뉴시스</figcaption>
+      <figcaption>김명년 기자·사진 뉴시스</figcaption>
     </figure>
     <div class="cover-copy" id="cover-copy">
       <p class="hero-edition">편집#011</p>
@@ -570,7 +573,7 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
       <div class="photo-scroll-stage">
         <img class="ps-pan" id="ps-pan-607608" src="images/NISI20240905_0020511608-1200.webp" srcset="images/NISI20240905_0020511608-700.webp 700w, images/NISI20240905_0020511608-1200.webp 1200w, images/NISI20240905_0020511608-2000.webp 2000w" sizes="100vw" width="2000" height="2546" loading="lazy" decoding="async" alt="부부가 서로 마주보며 웃고 있다. 신부는 진주 목걸이와 티아라, 신랑은 뿔테 안경과 도트 보타이 차림이다.">
       </div>
-      <p class="photo-scroll-caption"><strong>당신, 여전히 아름답소</strong><span>사진 뉴시스</span></p>
+      <p class="photo-scroll-caption"><strong>당신, 여전히 아름답소</strong><span>김명년 기자·사진 뉴시스</span></p>
     </div>
   </section>
 
@@ -581,7 +584,7 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
         <img class="ps-a" src="images/NISI20240905_0020511618-1200.webp" srcset="images/NISI20240905_0020511618-700.webp 700w, images/NISI20240905_0020511618-1200.webp 1200w, images/NISI20240905_0020511618-2000.webp 2000w" sizes="100vw" width="2000" height="1355" loading="lazy" decoding="async" alt="두 사람이 손을 맞잡고 걷기 시작하는 순간.">
         <img class="ps-b" src="images/NISI20240905_0020511617-1200.webp" srcset="images/NISI20240905_0020511617-700.webp 700w, images/NISI20240905_0020511617-1200.webp 1200w, images/NISI20240905_0020511617-2000.webp 2000w" sizes="100vw" width="2000" height="1405" loading="lazy" decoding="async" alt="같은 두 사람, 조금 더 가까워진 순간.">
       </div>
-      <p class="photo-scroll-caption"><strong>황혼의 런웨이</strong><span>사진 뉴시스</span></p>
+      <p class="photo-scroll-caption"><strong>황혼의 런웨이</strong><span>김명년 기자·사진 뉴시스</span></p>
     </div>
   </section>
 
@@ -660,20 +663,20 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
     <p class="population-caption">막대의 가로 폭은 연령 구간의 길이, 세로 높이는 그 구간의 인구밀도(연령 1살당 비율)입니다. 폭과 높이를 곱한 면적이 실제 인구 비율에 해당합니다. '75세+'는 열린 구간이라 편의상 100세에서 끊어 표시했습니다. 각 구간 비율은 반올림값이라 합계는 100%가 되지 않을 수 있습니다.<br>(국가데이터처 장래인구추계·통계청 '2025 고령자통계')</p>
   </section>
 
-  <!-- 왜 중요한가: 지금까지는 "당신은 몇 살부터를 고령이라 생각하는가"라는 개인의 기준을 물었다.
-       이 장면은 그 개인적 기준과 무관하게 이미 진행 중인 구조적 수치(노년부양비, 노인빈곤율)를 보여줘,
-       읽는 사람이 "이래서 이 질문이 중요하구나"를 실제 데이터로 느끼게 한다. 통계청 2025 고령자통계,
-       뉴시스 2025.09.29 보도(안호균 기자) 기준. 위기론으로 닫지 않고 마지막 <보기> 회수로 바로 잇는다. -->
+  <!-- 연령별 인구 구조와 개인의 삶을 구분하고, 필요한 기회와 지원으로 질문을 잇는다. -->
   <section class="stakes" id="stakes">
     <p class="stakes-kicker">기준은 저마다 달라도</p>
-    <h2 class="stakes-title">이 숫자는 누구에게나 똑같이 다가옵니다.</h2>
-    <div class="stakes-ratio">
-      <div class="stakes-ratio-row"><span class="stakes-ratio-year">2025년</span><span class="stakes-ratio-value">생산연령인구 <strong>3.4명</strong>이 고령자 1명을 부양</span></div>
-      <div class="stakes-ratio-row"><span class="stakes-ratio-year">2035년</span><span class="stakes-ratio-value">생산연령인구 <strong>2.1명</strong>이 고령자 1명을 부양</span></div>
-      <div class="stakes-ratio-row"><span class="stakes-ratio-year">2050년</span><span class="stakes-ratio-value">생산연령인구 <strong>1.3명</strong>이 고령자 1명을 부양</span></div>
+    <h2 class="stakes-title">같은 나이, 같은 삶은 아닙니다.</h2>
+    <p class="stakes-body">누군가는 일을 이어가고,<br>누군가는 돌봄을 맡습니다.<br>일상에 도움이 필요한 사람도 있습니다.</p>
+    <div class="stakes-ratio" aria-label="65세 이상 인구 1명당 15~64세 인구">
+      <p class="stakes-note">65세 이상 1명당 15~64세 인구</p>
+      <div class="stakes-ratio-row"><span class="stakes-ratio-year">2025년</span><span class="stakes-ratio-value"><strong>3.4명</strong></span></div>
+      <div class="stakes-ratio-row"><span class="stakes-ratio-year">2035년 전망</span><span class="stakes-ratio-value"><strong>2.1명</strong></span></div>
+      <div class="stakes-ratio-row"><span class="stakes-ratio-year">2050년 전망</span><span class="stakes-ratio-value"><strong>1.3명</strong></span></div>
     </div>
-    <p class="stakes-body">당신의 기준이 어떻든,<br>2050년에는 생산연령인구 1.3명이<br>고령자 1명을 부양하게 될 것으로 전망됩니다.<br>2022년 기준 66세 이상 노인의 상대적 빈곤율은 39.8%로,<br>OECD 회원국 중 가장 높습니다.</p>
-    <p class="stakes-note">통계청 '2025 고령자통계' · 뉴시스</p>
+    <p class="stakes-note">연령별 인구의 비율입니다.<br>실제로 누가 누구를 부양하는지를 뜻하지는 않습니다.</p>
+    <p class="stakes-body">2023년 기준 66세 이상 인구의 상대적 빈곤율은 39.8%.<br>나이가 같아도 노후의 형편까지 같지는 않습니다.<br><br>일을 계속하고 싶은 사람에게는 기회가,<br>도움이 필요한 사람에게는 지원이 충분할까요?</p>
+    <p class="stakes-note">통계청 '2025 고령자통계' · 뉴시스<br>인구 비율은 노년부양비의 역수로 계산해 소수 첫째 자리로 반올림했습니다.</p>
   </section>
 
   <!-- <보기> 최종 회수: 지금까지 "<보기>에서 고르시오"를 반복했던 문법을 뒤집는다.
@@ -682,10 +685,10 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
   <section class="recall" id="recall">
     <p class="recall-callback">당신은 <strong class="bogi-age-echo">—</strong>세부터를 '고령'이라고 답했습니다.</p>
     <p class="recall-flip">함께 쓰는 <em class="bogi-tag">&lt;보기&gt;</em></p>
-    <p class="recall-cue">이제 어떻게 나아갈 지<br>우리 스스로 정해야 합니다.</p>
+    <p class="recall-cue">그 나이의 우리에게도<br>각자의 무대가 있기를.</p>
     <div class="recall-essay">
-      <p class="recall-essay-question">어떻게 나아가고 싶나요?</p>
-      <textarea id="recall-input" class="recall-essay-input" rows="2" maxlength="80" placeholder="주관식으로 적어주세요."></textarea>
+      <p class="recall-essay-question">당신은 어떻게 나이 들고 싶나요?</p>
+      <textarea id="recall-input" class="recall-essay-input" rows="2" maxlength="80" placeholder="소망을 주관식으로 적어주세요."></textarea>
       <div class="recall-essay-actions">
         <span class="recall-essay-hint">제출한 답은 서버에 저장되지 않고, 이 브라우저에만 남습니다.</span>
         <button type="button" id="recall-submit" class="recall-essay-submit">제출<span aria-hidden="true"> ↗</span></button>
@@ -1020,79 +1023,149 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
 
     /* ---------- <보기> 최종 회수: 편집부 시드 답변 + 독자가 제출한 답.
        RECALL_ENDPOINT(Google Apps Script Web App URL)가 설정되면 실제로 구글시트에 저장되고,
-       제출 즉시 다른 독자에게도 공개된다(사전 승인 없음). 부적절한 답은 편집부가 시트에서
-       그 행을 지우면 다음 로드부터 사라진다. 설정 방법은 senior/RECALL_ANSWERS_SETUP.md 참고.
-       RECALL_ENDPOINT가 비어 있으면(설정 전) 이 브라우저에만 남는 localStorage로 대체 동작한다. ---------- */
+       제출 즉시 다른 독자에게도 공개된다(사전 승인 없음, 최소 필터만 적용). 본인이 쓴 글은
+       제출 시 이 브라우저에 남기는 토큰으로 본인만 지울 수 있다(로그인 없는 약한 식별이라
+       브라우저 데이터를 지우거나 기기를 바꾸면 본인도 못 지운다). 부적절한 답은 편집부가
+       시트에서 그 행을 지우면 다음 로드부터 사라진다. 설정 방법은 senior/RECALL_ANSWERS_SETUP.md 참고.
+       RECALL_ENDPOINT가 비어 있으면(설정 전) 이 브라우저에만 남는 localStorage로 대체 동작하고,
+       이때는 본인이 쓴 모든 글을 지울 수 있다(어차피 이 브라우저에만 있으므로). ---------- */
     (() => {
-      const RECALL_ENDPOINT = ''; // Apps Script 배포 후 여기에 Web App URL을 넣는다.
+      const RECALL_ENDPOINT = 'https://script.google.com/macros/s/AKfycbxlDC-a09tHl3AFXzJ9Q__fTGSKTOLoRGyaPnVNhpvavJFngCIKIak_Ns0PQ8Jt7Tq6VQ/exec';
       const SEED_ANSWERS = [
         '하고 싶은 일을 계속하면서', '아프지 않게', '나이 눈치 보지 않고', '사랑하면서', '끝까지 일하면서',
         '새로운 걸 배우면서', '친구들과 자주 만나면서', '내 힘으로 움직일 수 있게', '가끔은 철없이', '여행 다니면서',
         '자식들 걱정 덜 하면서', '혼자서도 잘 지내면서', '좋아하는 옷 입으면서', '누군가에게 필요한 사람으로', '오늘처럼 그냥 평범하게'
       ];
       const STORAGE_KEY = 'senior011_recall_answers';
+      const MINE_KEY = 'senior011_recall_mine';
       const list = document.getElementById('recall-wall-list');
       const input = document.getElementById('recall-input');
       const submit = document.getElementById('recall-submit');
       const hint = document.querySelector('.recall-essay-hint');
       if (!list || !input || !submit) return;
       const usingServer = !!RECALL_ENDPOINT;
-      if (hint) {
-        hint.textContent = usingServer
-          ? '제출한 답은 다른 독자에게도 바로 공개됩니다. 부적절한 내용은 편집부가 삭제할 수 있습니다.'
-          : '제출한 답은 서버에 저장되지 않고, 이 브라우저에만 남습니다.';
+
+      /* 최소 1차 필터(완전하지 않음): 링크·전화번호와 흔한 욕설·비속어·음란 표현, 자모만 뗀 회피
+         표기까지 최대한 보수적으로 차단한다. 최종 방어선은 여전히 편집부의 시트 확인·삭제다. */
+      const STRIP_RE = /[\s.,!?~\-_·ㆍ*"'()\[\]{}]+/g;
+      const BLOCK_TERMS = [
+        '시발','씨발','씨팔','시팔','씨바','시바','씨불','ㅅㅂ','ㅅㅍ','ㅆㅂ',
+        '병신','븅신','ㅂㅅ','ㅄ',
+        '개새끼','개새키','개색기','새끼','새키','ㄲㅈ',
+        '지랄','ㅈㄹ','좆','좃','존나','졸라','ㅈㄴ',
+        '미친놈','미친년','또라이','ㅆㅂㄹㅁ',
+        '보지','자지','섹스','성기','자위','야동','av','포르노','음란','성매매','성폭행','강간',
+        '창녀','걸레년','썅','ㅗ',
+      ].map(t => t.replace(STRIP_RE, ''));
+      const BLOCK_PATTERNS = [/https?:\/\//i, /www\./i, /\bwww\b/i, /01[0-9]-?\d{3,4}-?\d{4}/];
+      function isBlocked(raw) {
+        if (BLOCK_PATTERNS.some(re => re.test(raw))) return true;
+        const stripped = raw.toLowerCase().replace(STRIP_RE, '');
+        return BLOCK_TERMS.some(term => term && stripped.includes(term));
+      }
+
+      function mineList() {
+        try { return JSON.parse(localStorage.getItem(MINE_KEY) || '[]'); } catch (e) { return []; }
+      }
+      function saveMine(entries) {
+        try { localStorage.setItem(MINE_KEY, JSON.stringify(entries)); } catch (e) {}
       }
       function localAnswers() {
         try { return JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]'); } catch (e) { return []; }
       }
-      function renderList(readerTexts) {
+
+      function makeLi(text, onDelete) {
+        const li = document.createElement('li');
+        li.className = 'is-reader';
+        const span = document.createElement('span');
+        span.className = 'recall-wall-text';
+        span.textContent = text;
+        li.append(span);
+        if (onDelete) {
+          const btn = document.createElement('button');
+          btn.type = 'button';
+          btn.className = 'recall-wall-delete';
+          btn.setAttribute('aria-label', '내가 쓴 답변 지우기');
+          btn.textContent = '×';
+          btn.addEventListener('click', onDelete);
+          li.append(btn);
+        }
+        return li;
+      }
+
+      function renderLocal(answers) {
         list.innerHTML = '';
         const frag = document.createDocumentFragment();
-        SEED_ANSWERS.forEach(text => {
-          const li = document.createElement('li');
-          li.textContent = text;
-          frag.append(li);
-        });
-        readerTexts.forEach(text => {
-          const li = document.createElement('li');
-          li.className = 'is-reader';
-          li.textContent = text;
-          frag.append(li);
+        SEED_ANSWERS.forEach(text => { const li = document.createElement('li'); li.textContent = text; frag.append(li); });
+        answers.forEach((text, idx) => {
+          frag.append(makeLi(text, () => {
+            const next = localAnswers(); next.splice(idx, 1);
+            try { localStorage.setItem(STORAGE_KEY, JSON.stringify(next)); } catch (e) {}
+            renderLocal(next);
+          }));
         });
         list.append(frag);
       }
-      const defaultHint = hint ? hint.textContent : '';
+
+      function renderServer(entries) {
+        list.innerHTML = '';
+        const frag = document.createDocumentFragment();
+        SEED_ANSWERS.forEach(text => { const li = document.createElement('li'); li.textContent = text; frag.append(li); });
+        const mine = mineList();
+        entries.forEach(entry => {
+          const mineEntry = mine.find(m => m.id === entry.id);
+          frag.append(makeLi(entry.text, mineEntry ? () => deleteServerEntry(entry.id, mineEntry.token) : null));
+        });
+        list.append(frag);
+      }
+
+      function deleteServerEntry(id, token) {
+        fetch(RECALL_ENDPOINT, { method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify({ action: 'delete', id, token }) })
+          .then(res => res.json().catch(() => ({ok:false})))
+          .then(data => { if (data && data.ok) { saveMine(mineList().filter(m => m.id !== id)); loadAndRender(); } });
+      }
+
+      const defaultHint = usingServer
+        ? '제출한 답은 다른 독자에게도 바로 공개됩니다. 본인이 쓴 글은 옆의 ×로 지울 수 있고, 부적절한 내용은 편집부가 삭제할 수 있습니다.'
+        : '제출한 답은 서버에 저장되지 않고, 이 브라우저에만 남습니다.';
+      if (hint) hint.textContent = defaultHint;
+
       function loadAndRender() {
-        if (!usingServer) { renderList(localAnswers()); return; }
+        if (!usingServer) { renderLocal(localAnswers()); return; }
         fetch(RECALL_ENDPOINT)
           .then(res => res.json())
-          .then(data => renderList(Array.isArray(data.answers) ? data.answers : []))
-          .catch(() => renderList(localAnswers()));
+          .then(data => renderServer(Array.isArray(data.answers) ? data.answers : []))
+          .catch(() => renderServer([]));
       }
+
       submit.addEventListener('click', () => {
         const value = input.value.trim().slice(0, 80);
         if (!value || submit.disabled) return;
+        if (isBlocked(value)) {
+          if (hint) hint.textContent = '링크·연락처나 부적절한 표현은 제출할 수 없습니다.';
+          return;
+        }
         if (!usingServer) {
           const answers = localAnswers();
           answers.push(value);
           try { localStorage.setItem(STORAGE_KEY, JSON.stringify(answers)); } catch (e) {}
           input.value = '';
-          renderList(answers);
+          renderLocal(answers);
+          if (hint) hint.textContent = '제출되었습니다. ' + defaultHint;
           return;
         }
         // 서버 응답 확인 전에는 제출 완료로 보여주지 않는다. 실패하면 입력값을 보존해 재시도할 수 있게 한다.
         submit.disabled = true;
         if (hint) hint.textContent = '제출 중입니다…';
-        fetch(RECALL_ENDPOINT, { method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify({ text: value }) })
+        const token = (window.crypto && crypto.randomUUID) ? crypto.randomUUID() : (Date.now() + '-' + Math.random().toString(36).slice(2));
+        fetch(RECALL_ENDPOINT, { method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify({ action: 'submit', text: value, token }) })
           .then(res => res.json().catch(() => ({ok:false})))
           .then(data => {
-            if (!data || data.ok === false) throw new Error('submit failed');
+            if (!data || data.ok === false || data.id == null) throw new Error('submit failed');
             input.value = '';
-            const li = document.createElement('li');
-            li.className = 'is-reader';
-            li.textContent = value;
-            list.append(li);
-            if (hint) { hint.textContent = '제출되었습니다. ' + defaultHint; }
+            const mine = mineList(); mine.push({ id: data.id, token }); saveMine(mine);
+            loadAndRender();
+            if (hint) hint.textContent = '제출되었습니다. ' + defaultHint;
           })
           .catch(() => {
             if (hint) hint.textContent = '제출에 실패했습니다. 연결을 확인하고 다시 시도해 주세요. (입력하신 내용은 그대로 남아 있습니다)';
