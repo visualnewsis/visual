@@ -1067,6 +1067,7 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
       ];
       const STORAGE_KEY = 'senior011_recall_answers';
       const MINE_KEY = 'senior011_recall_mine';
+      const PENDING_KEY = 'senior011_recall_pending';
       const list = document.getElementById('recall-wall-list');
       const input = document.getElementById('recall-input');
       const submit = document.getElementById('recall-submit');
@@ -1155,6 +1156,15 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
         list.append(frag);
       }
 
+      // 서버 연결이 막혀 있을 때(예: CSP·네트워크 문제) 답을 잃어버리지 않도록 이 브라우저에만
+      // 임시로 쌓아두는 대기열. 다른 독자에게 공유되지는 않지만, 최소한 입력한 답은 남는다.
+      function pendingAnswers() {
+        try { return JSON.parse(localStorage.getItem(PENDING_KEY) || '[]'); } catch (e) { return []; }
+      }
+      function savePending(list_) {
+        try { localStorage.setItem(PENDING_KEY, JSON.stringify(list_)); } catch (e) {}
+      }
+
       function renderServer(entries) {
         list.innerHTML = '';
         const frag = document.createDocumentFragment();
@@ -1163,6 +1173,11 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
         entries.forEach(entry => {
           const mineEntry = mine.find(m => m.id === entry.id);
           frag.append(makeLi(entry.text, mineEntry ? () => deleteServerEntry(entry.id, mineEntry.token) : null));
+        });
+        pendingAnswers().forEach((text, idx) => {
+          frag.append(makeLi(text, () => {
+            const next = pendingAnswers(); next.splice(idx, 1); savePending(next); loadAndRender();
+          }));
         });
         list.append(frag);
       }
@@ -1202,7 +1217,8 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
           if (hint) hint.textContent = '제출되었습니다. ' + defaultHint;
           return;
         }
-        // 서버 응답 확인 전에는 제출 완료로 보여주지 않는다. 실패하면 입력값을 보존해 재시도할 수 있게 한다.
+        // 서버 응답 확인 전에는 제출 완료로 보여주지 않는다. 실패하면(연결 차단 등) 이 브라우저에만
+        // 저장해 최소한 입력값은 잃지 않게 한다.
         submit.disabled = true;
         if (hint) hint.textContent = '제출 중입니다…';
         const token = (window.crypto && crypto.randomUUID) ? crypto.randomUUID() : (Date.now() + '-' + Math.random().toString(36).slice(2));
@@ -1216,7 +1232,10 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
             if (hint) hint.textContent = '제출되었습니다. ' + defaultHint;
           })
           .catch(() => {
-            if (hint) hint.textContent = '제출에 실패했습니다. 연결을 확인하고 다시 시도해 주세요. (입력하신 내용은 그대로 남아 있습니다)';
+            const pending = pendingAnswers(); pending.push(value); savePending(pending);
+            input.value = '';
+            loadAndRender();
+            if (hint) hint.textContent = '지금은 다른 독자와 공유가 되지 않아 이 브라우저에만 저장했습니다.';
           })
           .finally(() => { submit.disabled = false; });
       });
