@@ -438,6 +438,27 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
     .recall-flip .bogi-tag{color:var(--mint)}
     .recall-cue{margin:clamp(36px,6vw,56px) 0 0;font-size:clamp(20px,2.8vw,30px);font-weight:700;color:var(--mint);line-height:1.6;opacity:0;transform:translateY(18px);transition:opacity .8s ease .35s,transform .8s ease .35s}
     .recall-cue.in-view{opacity:1;transform:none}
+    .recall-reconsider{margin-top:clamp(32px,5vw,48px);width:min(560px,100%);text-align:left;opacity:0;transform:translateY(18px);transition:opacity .8s ease .42s,transform .8s ease .42s}
+    .recall-reconsider.in-view{opacity:1;transform:none}
+    .recall-reconsider-line{margin:0;font-size:15px;line-height:1.8;color:#c9d0d2}
+    .recall-reconsider-line strong{color:#fff}
+    .recall-reconsider-actions{margin-top:16px;display:flex;gap:12px}
+    .recall-reconsider-btn{padding:10px 18px;font-size:13px;border:1px solid rgba(255,255,255,.3);background:transparent;color:#fff;cursor:pointer;border-radius:2px;font-family:inherit}
+    .recall-reconsider-btn:hover,.recall-reconsider-btn:focus-visible{border-color:var(--mint);color:var(--mint)}
+    .recall-reconsider-picker{margin-top:20px}
+    .recall-reconsider-picker .ruler{height:70px}
+    .recall-reconsider-picker .tick{background:rgba(255,255,255,.28)}
+    .recall-reconsider-picker .tick.major{background:#fff}
+    .recall-reconsider-picker .ruler-rail{background:rgba(255,255,255,.25)}
+    .recall-reconsider-picker .scale-labels{color:#8a9296}
+    .recall-reconsider-picker .handle{background:var(--ink);border-color:#fff}
+    .recall-reconsider-picker .ruler[data-selected=true] .handle{background:var(--mint);border-color:var(--mint)}
+    .recall-reconsider-picker .ruler[data-selected=true] .handle:before{background:var(--ink);box-shadow:6px 0 0 var(--ink),-6px 0 0 var(--ink)}
+    .recall-reconsider-picker .ruler:focus-visible{outline:2px solid var(--mint)}
+    .recall-reconsider-picker .confirm{border-bottom-color:rgba(255,255,255,.35);color:#fff;margin-top:14px}
+    .recall-reconsider-picker .confirm:disabled{color:#6b7274;border-color:rgba(255,255,255,.15)}
+    .recall-reconsider-picker .confirm:not(:disabled):hover{color:var(--mint);border-color:var(--mint)}
+    .recall-reconsider-ack{margin-top:16px;font-size:14px;color:var(--mint)}
     .recall-essay{margin-top:clamp(32px,5vw,48px);width:min(560px,100%);text-align:left;opacity:0;transform:translateY(18px);transition:opacity .8s ease .5s,transform .8s ease .5s}
     .recall-essay.in-view{opacity:1;transform:none}
     .recall-essay-question{margin:0 0 16px;font-size:15px;font-weight:700;color:#c9d0d2}
@@ -715,6 +736,20 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
     <p class="recall-callback">당신은 <strong class="bogi-age-echo">—</strong>세부터를 '고령'이라고 답했습니다.</p>
     <p class="recall-flip">함께 쓰는 <em class="bogi-tag">&lt;보기&gt;</em></p>
     <p class="recall-cue">그 나이의 우리에게도<br>각자의 무대가 있기를.</p>
+    <div class="recall-reconsider" id="recall-reconsider" hidden>
+      <p class="recall-reconsider-line">처음에 당신은 <strong id="recall-reconsider-age">—</strong>세부터를 '고령'이라고 답했습니다.<br>지금도 같은 생각인가요?</p>
+      <div class="recall-reconsider-actions" id="recall-reconsider-actions">
+        <button type="button" id="recall-reconsider-keep" class="recall-reconsider-btn">그대로 두기</button>
+        <button type="button" id="recall-reconsider-redo" class="recall-reconsider-btn">다시 고르기</button>
+      </div>
+      <div class="recall-reconsider-picker" id="recall-reconsider-picker" hidden>
+        <div class="ruler" id="recall-reconsider-ruler" role="slider" tabindex="0" aria-label="다시 놓는 고령 기준" aria-valuemin="50" aria-valuemax="90" aria-valuetext="아직 선택하지 않았습니다" aria-orientation="horizontal" data-selected="false">
+          <div class="ruler-track"><div class="ruler-rail" aria-hidden="true"></div><div class="ticks" aria-hidden="true"></div><div class="scale-labels" aria-hidden="true"><span>50</span><span>60</span><span>70</span><span>80</span><span>90</span></div><span class="handle" aria-hidden="true"></span></div>
+        </div>
+        <button class="confirm" id="recall-reconsider-confirm" disabled><span>이 나이로 다시 놓기</span><span class="arrow" aria-hidden="true">↗</span></button>
+      </div>
+      <p class="recall-reconsider-ack" id="recall-reconsider-ack" hidden></p>
+    </div>
     <div class="recall-essay">
       <p class="recall-essay-question">당신은 어떻게 나이 들고 싶나요?</p>
       <textarea id="recall-input" class="recall-essay-input" rows="2" maxlength="80" placeholder="소망을 주관식으로 적어주세요."></textarea>
@@ -794,7 +829,7 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
       nodes.forEach(node => io.observe(node));
     };
     revealOnce('.payoff-line');
-    revealOnce('.recall-callback, .recall-flip, .recall-cue, .recall-essay, .recall-wall');
+    revealOnce('.recall-callback, .recall-flip, .recall-cue, .recall-reconsider, .recall-essay, .recall-wall');
     /* 고령 기준 질문을 건너뛴 독자에게는 "당신은 —세부터..."처럼 답하지 않은 것을 답한 것처럼
        보여주지 않는다. #recall에 닿는 시점(질문 구간을 이미 지난 뒤)에 실제 선택 여부를 확인한다. */
     new IntersectionObserver((entries, obs) => {
@@ -802,6 +837,7 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
         if (!entry.isIntersecting) return;
         const callback = document.querySelector('.recall-callback');
         if (callback) callback.hidden = (typeof window.__bogiAge !== 'number');
+        setupRecallReconsider();
         obs.disconnect();
       });
     }, {threshold:0}).observe(document.getElementById('recall'));
@@ -920,14 +956,16 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
     }
     initPhotoPan('seq-607608', 'pin-607608', 'ps-pan-607608', .12, .62, .88);
 
-    /* ---------- 고령 기준 질문 (기존 V0 ruler 로직 재사용, Hero에서 분리된 독립 섹션) ---------- */
-    (() => {
-      const ruler = document.getElementById('age-ruler');
+    /* ---------- 고령 기준 눈금 위젯(기존 V0 ruler 로직): age-question-section과
+       엔딩의 recall-reconsider 두 곳에서 재사용하도록 일반화했다. 동작은 원래와 동일하다. ---------- */
+    function initAgeRuler(rulerId, confirmId, outputId, unitId, unsetId, onConfirm) {
+      const ruler = document.getElementById(rulerId);
+      const confirm = document.getElementById(confirmId);
+      if (!ruler || !confirm) return;
       const track = ruler.querySelector('.ruler-track');
-      const output = document.getElementById('age-output');
-      const confirm = document.getElementById('confirm');
-      const questionSection = document.getElementById('age-question-section');
-      const result = document.getElementById('result');
+      const output = outputId ? document.getElementById(outputId) : null;
+      const unitEl = unitId ? document.getElementById(unitId) : null;
+      const unsetEl = unsetId ? document.getElementById(unsetId) : null;
       let age = null, pointer = null;
       for (let i = 0; i <= 40; i++) {
         const tick = document.createElement('span');
@@ -936,9 +974,9 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
       }
       function select(value) {
         age = Math.max(50, Math.min(90, Math.round(value)));
-        output.textContent = age;
-        document.getElementById('age-unit').hidden = false;
-        document.getElementById('unset-note').hidden = true;
+        if (output) output.textContent = age;
+        if (unitEl) unitEl.hidden = false;
+        if (unsetEl) unsetEl.hidden = true;
         ruler.dataset.selected = 'true';
         ruler.style.setProperty('--position', ((age - 50) / 40 * 100) + '%');
         ruler.setAttribute('aria-valuenow', age);
@@ -960,9 +998,16 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
         else if (event.key === 'Home' || event.key === 'End') {event.preventDefault(); select(event.key === 'Home' ? 50 : 90);}
         else if (event.key === 'Enter' && age !== null) {event.preventDefault(); confirm.click();}
       });
-      confirm.addEventListener('click', () => {
-        if (age === null) return;
+      confirm.addEventListener('click', () => { if (age !== null) onConfirm(age); });
+    }
+
+    /* ---------- 고령 기준 질문(Hero에서 분리된 독립 섹션) ---------- */
+    (() => {
+      const questionSection = document.getElementById('age-question-section');
+      const result = document.getElementById('result');
+      initAgeRuler('age-ruler', 'confirm', 'age-output', 'age-unit', 'unset-note', age => {
         window.__bogiAge = age; // <보기>에서 고른 기준. 뒤 장면(지역 선택, 내 자리 찾기)에서 계속 사용한다.
+        if (window.__bogiAgeInitial == null) window.__bogiAgeInitial = age; // 최초 선택값은 이후 재선택과 무관하게 고정 보존.
         document.getElementById('chosen-age').textContent = age;
         document.querySelectorAll('.bogi-age-echo').forEach(el => { el.textContent = age; });
         if (typeof updateAgeChartMarkers === 'function') updateAgeChartMarkers();
@@ -973,9 +1018,41 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
       document.getElementById('retry').addEventListener('click', () => {
         result.hidden = true;
         questionSection.hidden = false;
-        ruler.focus({preventScroll:true});
+        document.getElementById('age-ruler').focus({preventScroll:true});
       });
     })();
+
+    /* ---------- 엔딩: 처음 고른 기준 다시 돌아보기. 최초 선택이 없으면(질문을 건너뛴 경우)
+       자연스럽게 생략한다. 나이를 올리는 쪽이 정답이라는 인상을 주지 않도록 두 선택을
+       동등하게 중립적으로 안내한다. #recall이 뷰포트에 들어오는 시점(위 IntersectionObserver)에
+       호출한다 — 그 전에는 독자가 아직 <보기>에 답했는지 알 수 없기 때문이다. */
+    function setupRecallReconsider() {
+      const block = document.getElementById('recall-reconsider');
+      if (!block) return;
+      const initial = window.__bogiAgeInitial;
+      if (typeof initial !== 'number') { block.hidden = true; return; }
+      block.hidden = false;
+      document.getElementById('recall-reconsider-age').textContent = initial;
+      const actions = document.getElementById('recall-reconsider-actions');
+      const picker = document.getElementById('recall-reconsider-picker');
+      const ack = document.getElementById('recall-reconsider-ack');
+      document.getElementById('recall-reconsider-keep').addEventListener('click', () => {
+        actions.hidden = true;
+        ack.hidden = false;
+        ack.textContent = '기준을 그대로 두셨습니다.';
+      });
+      document.getElementById('recall-reconsider-redo').addEventListener('click', () => {
+        actions.hidden = true;
+        picker.hidden = false;
+        document.getElementById('recall-reconsider-ruler').focus({preventScroll:true});
+      });
+      initAgeRuler('recall-reconsider-ruler', 'recall-reconsider-confirm', null, null, null, age => {
+        window.__bogiAge = age;
+        picker.hidden = true;
+        ack.hidden = false;
+        ack.textContent = age + '세부터로 다시 놓으셨습니다.';
+      });
+    }
 
     /* ---------- 독자 자신의 나이 입력 ---------- */
     (() => {
