@@ -1235,7 +1235,7 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
             const pending = pendingAnswers(); pending.push(value); savePending(pending);
             input.value = '';
             loadAndRender();
-            if (hint) hint.textContent = '지금은 다른 독자와 공유가 되지 않아 이 브라우저에만 저장했습니다.';
+            if (hint) hint.textContent = '다른 독자와 공유되지 않고, 이 브라우저에만 저장됩니다.';
           })
           .finally(() => { submit.disabled = false; });
       });
