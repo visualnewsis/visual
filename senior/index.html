@@ -409,6 +409,16 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
 
     /* 왜 중요한가: 노년부양비·노인빈곤율(통계청 2025 고령자통계, 뉴시스 2025.09.29) */
     .stakes{background:var(--ink);color:#fff}
+    #population-balance{min-height:0;padding-block:clamp(40px,5vw,64px)}
+    #population-balance .stakes-ratio{margin-top:24px}
+    #population-balance .stakes-ratio>.stakes-note{margin-top:0}
+    .work-photo{margin:0;background:var(--ink);padding:40px clamp(22px,7vw,112px) 0}
+    .work-photo img{display:block;width:100%;max-width:1200px;height:auto;margin:auto}
+    .work-photo figcaption{max-width:1200px;margin:12px auto 0;font-size:12px;line-height:1.8;color:#aab1b4;word-break:keep-all}
+    .poverty-graphic{width:min(720px,100%);margin:32px 0 0}
+    .poverty-graphic a{display:block}
+    .poverty-graphic img{display:block;width:100%;height:auto}
+    .poverty-graphic figcaption{margin-top:12px;color:#aab1b4;font-size:12px;line-height:1.8;text-align:left;word-break:keep-all}
     .stakes-kicker{margin:0;font-size:13px;font-weight:700;letter-spacing:.14em;color:var(--mint)}
     .stakes-title{margin:.5em 0 0;font-size:clamp(22px,3vw,32px);font-weight:800;letter-spacing:-.02em;max-width:620px;line-height:1.5}
     .stakes-ratio{margin-top:clamp(32px,5vw,48px);width:min(560px,100%);display:flex;flex-direction:column;gap:14px}
@@ -521,6 +531,19 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
     <p class="payoff-line payoff-line--reveal">65세 이상, 천만 명.</p>
     <p class="payoff-line payoff-body">2025년, 대한민국의 65세 이상 인구는 처음으로 1051만 4000명을 넘었습니다.<br>전체 인구의 20.3%로, 5년 전인 2020년의 15.7%에서<br>빠르게 늘어난 수치입니다.<br>2036년에는 30%,<br>2050년에는 40%를<br>넘어설 것으로 전망됩니다.</p>
     <p class="payoff-line payoff-source">통계청 '2025 고령자통계'</p>
+  </section>
+
+  <!-- 고령인구 증가에 이어 연령별 인구 구조의 변화를 보여준다. -->
+  <section class="stakes" id="population-balance" aria-labelledby="population-balance-title">
+    <p class="stakes-kicker">달라지는 인구 구성</p>
+    <h2 class="stakes-title" id="population-balance-title">연령대 사이의 비율도 달라집니다.</h2>
+    <div class="stakes-ratio" aria-label="65세 이상 인구 1명당 15~64세 인구">
+      <p class="stakes-note">65세 이상 1명당 15~64세 인구</p>
+      <div class="stakes-ratio-row"><span class="stakes-ratio-year">2025년</span><span class="stakes-ratio-value"><strong>3.4명</strong></span></div>
+      <div class="stakes-ratio-row"><span class="stakes-ratio-year">2035년 전망</span><span class="stakes-ratio-value"><strong>2.1명</strong></span></div>
+      <div class="stakes-ratio-row"><span class="stakes-ratio-year">2050년 전망</span><span class="stakes-ratio-value"><strong>1.3명</strong></span></div>
+    </div>
+    <p class="stakes-note">통계청 '2025 고령자통계'<br>표는 연령별 인구 비율이며, 실제 부양 관계를 뜻하지 않습니다.<br>노년부양비의 역수를 소수 첫째 자리로 반올림했습니다.</p>
   </section>
 
   <!-- DATA 2: '천만 명'을 하나의 덩어리로 두지 않고 다시 나눠 본다(65~74세 vs 75세 이상, 통계청 2025 고령자통계). -->
@@ -663,20 +686,26 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
     <p class="population-caption">막대의 가로 폭은 연령 구간의 길이, 세로 높이는 그 구간의 인구밀도(연령 1살당 비율)입니다. 폭과 높이를 곱한 면적이 실제 인구 비율에 해당합니다. '75세+'는 열린 구간이라 편의상 100세에서 끊어 표시했습니다. 각 구간 비율은 반올림값이라 합계는 100%가 되지 않을 수 있습니다.<br>(국가데이터처 장래인구추계·통계청 '2025 고령자통계')</p>
   </section>
 
+  <figure class="work-photo">
+    <img src="./images/NISI20250616_0020853049-1200.webp" srcset="./images/NISI20250616_0020853049-700.webp 700w, ./images/NISI20250616_0020853049-1200.webp 1200w, ./images/NISI20250616_0020853049-2000.webp 2000w" sizes="(min-width: 1424px) 1200px, 86vw" width="5688" height="3717" loading="lazy" decoding="async" alt="과천 시니어 카페 카페나루에서 한 바리스타는 커피를 만들고 다른 바리스타는 결제 단말기를 조작하고 있다.">
+    <figcaption>2025년 6월 16일 경기 과천시노인복지회관 시니어 카페 ‘카페나루’에서 전문 바리스타 어르신들이 커피를 만들고 있다. 뉴시스 김근수 기자</figcaption>
+  </figure>
+
   <!-- 연령별 인구 구조와 개인의 삶을 구분하고, 필요한 기회와 지원으로 질문을 잇는다. -->
   <section class="stakes" id="stakes">
     <p class="stakes-kicker">기준은 저마다 달라도</p>
     <h2 class="stakes-title">같은 나이, 같은 삶은 아닙니다.</h2>
     <p class="stakes-body">누군가는 일을 이어가고,<br>누군가는 돌봄을 맡습니다.<br>일상에 도움이 필요한 사람도 있습니다.</p>
-    <div class="stakes-ratio" aria-label="65세 이상 인구 1명당 15~64세 인구">
-      <p class="stakes-note">65세 이상 1명당 15~64세 인구</p>
-      <div class="stakes-ratio-row"><span class="stakes-ratio-year">2025년</span><span class="stakes-ratio-value"><strong>3.4명</strong></span></div>
-      <div class="stakes-ratio-row"><span class="stakes-ratio-year">2035년 전망</span><span class="stakes-ratio-value"><strong>2.1명</strong></span></div>
-      <div class="stakes-ratio-row"><span class="stakes-ratio-year">2050년 전망</span><span class="stakes-ratio-value"><strong>1.3명</strong></span></div>
-    </div>
-    <p class="stakes-note">연령별 인구의 비율입니다.<br>실제로 누가 누구를 부양하는지를 뜻하지는 않습니다.</p>
-    <p class="stakes-body">2023년 기준 66세 이상 인구의 상대적 빈곤율은 39.8%.<br>나이가 같아도 노후의 형편까지 같지는 않습니다.<br><br>일을 계속하고 싶은 사람에게는 기회가,<br>도움이 필요한 사람에게는 지원이 충분할까요?</p>
-    <p class="stakes-note">통계청 '2025 고령자통계' · 뉴시스<br>인구 비율은 노년부양비의 역수로 계산해 소수 첫째 자리로 반올림했습니다.</p>
+    <p class="stakes-body">2023년 기준 66세 이상 인구의 상대적 빈곤율은 39.8%.<br>나이가 같아도 노후의 형편까지 같지는 않습니다.</p>
+    <p class="stakes-note">통계청 '2025 고령자통계' · 뉴시스</p>
+    <p class="stakes-body">노후의 형편은 사는 곳과 나이에 따라서도 달랐습니다.</p>
+    <figure class="poverty-graphic">
+      <a href="./images/NISI20240307_0001495747.jpg" target="_blank" rel="noopener" aria-label="지역별 노인빈곤율 그래픽 원본 크게 보기 (새 창)">
+        <img src="./images/NISI20240307_0001495747.jpg" width="720" height="457" loading="lazy" alt="2020년 기준 지역별 노인빈곤율. 가처분소득 기준 전체 45.6%, 대도시 42.1%, 중소도시 47.0%, 농어촌 57.6%. 성별·연령별·지역별 비교를 함께 보여주는 뉴시스 그래픽.">
+      </a>
+      <figcaption>2020년 기준 지역·성별·연령별 노인빈곤율. 본문의 2023년 통계와는 조사 기준과 대상이 달라 직접 비교할 수 없습니다.<br>자료=보건복지부 · 그래픽=전진우 기자<br>그래픽을 누르면 원본을 크게 볼 수 있습니다.</figcaption>
+    </figure>
+    <p class="stakes-body">일을 계속하고 싶은 사람에게는 기회가,<br>도움이 필요한 사람에게는 지원이 충분할까요?</p>
   </section>
 
   <!-- <보기> 최종 회수: 지금까지 "<보기>에서 고르시오"를 반복했던 문법을 뒤집는다.
