@@ -431,8 +431,6 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
 
     /* <보기> 최종 회수: 고르는 사람 → 쓰는 사람으로 전환. 정적 사이트이므로 답변은 이 브라우저에만 남는다(거짓 공유/모더레이션 없음). */
     .recall{background:var(--ink);color:#fff;gap:0}
-    .recall-callback{margin:0;font-size:13px;color:#8a9296;opacity:0;transform:translateY(14px);transition:opacity .8s ease,transform .8s ease}
-    .recall-callback.in-view{opacity:1;transform:none}
     .recall-flip{margin:14px 0 0;font-size:clamp(26px,4.2vw,48px);font-weight:800;letter-spacing:-.03em;line-height:1.4;max-width:680px;opacity:0;transform:translateY(18px);transition:opacity .8s ease .15s,transform .8s ease .15s}
     .recall-flip.in-view{opacity:1;transform:none}
     .recall-flip .bogi-tag{color:var(--mint)}
@@ -732,9 +730,6 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
        독자가 <보기>에서 고르는 사람 → 자기 답을 쓰는 사람으로 전환된다.
        정적 사이트라 서버 저장·모더레이션이 없으므로, 제출한 답은 이 브라우저(localStorage)에만 남는다고 정확히 밝힌다. -->
   <section class="recall" id="recall">
-    <p class="recall-callback">당신은 <strong class="bogi-age-echo">—</strong>세부터를 '고령'이라고 답했습니다.</p>
-    <p class="recall-flip">함께 쓰는 <em class="bogi-tag">&lt;보기&gt;</em></p>
-    <p class="recall-cue">그 나이의 우리에게도<br>각자의 무대가 있기를.</p>
     <div class="recall-reconsider" id="recall-reconsider" hidden>
       <p class="recall-reconsider-line">처음에 당신은 <strong id="recall-reconsider-age">—</strong>세부터를 '고령'이라고 답했습니다.<br>지금도 같은 생각인가요?</p>
       <div class="recall-reconsider-actions" id="recall-reconsider-actions">
@@ -749,6 +744,8 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
       </div>
       <p class="recall-reconsider-ack" id="recall-reconsider-ack" hidden></p>
     </div>
+    <p class="recall-flip">함께 쓰는 <em class="bogi-tag">&lt;보기&gt;</em></p>
+    <p class="recall-cue">그 나이의 우리에게도<br>각자의 무대가 있기를.</p>
     <div class="recall-essay">
       <p class="recall-essay-question">당신은 어떻게 나이 들고 싶나요?</p>
       <textarea id="recall-input" class="recall-essay-input" rows="2" maxlength="80" placeholder="소망을 주관식으로 적어주세요."></textarea>
@@ -828,14 +825,12 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
       nodes.forEach(node => io.observe(node));
     };
     revealOnce('.payoff-line');
-    revealOnce('.recall-callback, .recall-flip, .recall-cue, .recall-reconsider, .recall-essay, .recall-wall');
-    /* 고령 기준 질문을 건너뛴 독자에게는 "당신은 —세부터..."처럼 답하지 않은 것을 답한 것처럼
+    revealOnce('.recall-flip, .recall-cue, .recall-reconsider, .recall-essay, .recall-wall');
+    /* 고령 기준 질문을 건너뛴 독자에게 "처음에 당신은 —세부터..."처럼 답하지 않은 것을 답한 것처럼
        보여주지 않는다. #recall에 닿는 시점(질문 구간을 이미 지난 뒤)에 실제 선택 여부를 확인한다. */
     new IntersectionObserver((entries, obs) => {
       entries.forEach(entry => {
         if (!entry.isIntersecting) return;
-        const callback = document.querySelector('.recall-callback');
-        if (callback) callback.hidden = (typeof window.__bogiAge !== 'number');
         setupRecallReconsider();
         obs.disconnect();
       });
