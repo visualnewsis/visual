@@ -673,7 +673,6 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
       <p class="region-headline">
         <strong class="region-age-big bogi-age-echo">—</strong><span class="region-age-unit">세부터 '고령'이라고 대답했습니다.</span>
       </p>
-      <p class="region-doubt">과연, 그럴까요?</p>
       <p class="region-fact" id="region-headline-fact"></p>
       <p class="region-secondary-label">참고 · 공식 기준(65세 이상)으로 본 전국 비교</p>
       <div class="data-split-bars region-compare-bars">
@@ -865,7 +864,7 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
           const bogiAge = window.__bogiAge;
           const hasBogiAge = typeof bogiAge === 'number';
           // 고령 기준 질문을 건너뛴 독자에게는 "—세부터 답했습니다"처럼 안 한 답을 한 것으로 보여주지 않는다.
-          document.querySelectorAll('.region-headline-lead, .region-headline, .region-doubt').forEach(el => { el.hidden = !hasBogiAge; });
+          document.querySelectorAll('.region-headline-lead, .region-headline').forEach(el => { el.hidden = !hasBogiAge; });
           if (hasBogiAge) document.querySelectorAll('.bogi-age-echo').forEach(el => { el.textContent = bogiAge; });
           const bar = document.getElementById('region-result-bar');
           const val = document.getElementById('region-result-value');
