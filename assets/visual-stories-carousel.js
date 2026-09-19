@@ -13,7 +13,7 @@
     {slug:"adult-missing",num:"009",meta:"성인 실종 · 경찰 초동대응 · 인터랙티브",title:"사람은 사라지고 확인도 실종됐다",image:"/adult-missing/images/chapter-hero.jpg",alt:"성인 실종자를 찾는 초동 대응 화면"},
     {slug:"battery",num:"010",meta:"리튬이온배터리 · 배터리 구조 · 인터랙티브",title:"알아볼지도 리튬이온 배터리편",image:"/battery/images/battery-model-v10.png",alt:"리튬이온배터리 내부 구조를 표현한 3D 렌더링"},
     {slug:"witness",num:"011",meta:"광복 · 증언 · 기억 · 인터랙티브",title:"내가 증인입니다.",image:"/witness/images/thumbnail-carousel-1600x948.jpg",alt:"태극기를 든 시민들의 3·1 만세운동 재현행사"},
-    {slug:"aijob",num:"012",meta:"AI · 노동시장 · 인터랙티브",title:"삐빅— 지금부터 당신을 대체합니다",image:"/aijob/images/hero-humanoid-office-day-v6.png",alt:"밝은 사무실에서 의자를 잡고 왼쪽을 안내하는 여성형 AI 휴머노이드"},
+    {slug:"aijob",num:"012",meta:"AI · 노동시장 · 인터랙티브",title:"삐빅— 지금부터 당신을 대체합니다",image:"/aijob/images/hero-newsroom-night-v7.png",alt:"남산타워가 보이는 야간 도심을 배경으로, 사람 없이 재킷만 걸쳐진 의자와 듀얼 모니터가 켜져 있는 편집부 자리"},
     {slug:"pension",num:"013",meta:"국민연금 · 노후 · 인터랙티브",title:"국민연금, 믿어도 돼?",image:"/pension/images/hero-coin-mound.png",alt:"「국민연금」이라 적히고 금이 간 뒤 반창고가 붙은 돼지저금통, 뒤로 노을 진 서울 스카이라인"},
     {slug:"senior",num:"014",meta:"고령화 · 나이 기준 · 인터랙티브",title:"환갑이면 고령? 천만예요",image:"/senior/images/NISI20240905_0020511616.jpg",alt:"웨딩 의상을 입고 붉은 런웨이를 걷는 두 사람"}
   ];
