@@ -476,6 +476,9 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
     .recall-wall-list li.is-reader .recall-wall-text{flex:1}
     .recall-wall-delete{flex:none;background:none;border:0;padding:2px 6px;font-size:18px;line-height:1;color:#8a9296;cursor:pointer}
     .recall-wall-delete:hover,.recall-wall-delete:focus-visible{color:#fff}
+    .recall-closing{margin-top:clamp(56px,8vw,96px);font-size:clamp(22px,3.2vw,34px);font-weight:800;line-height:1.5;letter-spacing:-.02em;opacity:0;transform:translateY(18px);transition:opacity .8s ease .1s,transform .8s ease .1s}
+    .recall-closing.in-view{opacity:1;transform:none}
+    .recall-closing .bogi-tag{color:var(--mint)}
 
     /* 관련기사 — 뉴시스 링크만 사용 */
     .related{background:var(--paper);color:var(--ink);padding:clamp(48px,8vw,96px) clamp(22px,7vw,112px);text-align:left}
@@ -757,6 +760,7 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
     <div class="recall-wall">
       <ul class="recall-wall-list" id="recall-wall-list"></ul>
     </div>
+    <p class="recall-closing">보세요.<br>우리의 인생은<br><em class="bogi-tag">&lt;보기&gt;</em>보다 아름답습니다.</p>
   </section>
 
   <!-- 관련기사: 뉴시스 보도만 사용(다른 언론사·해외 자료는 본문 데이터 취재에만 참고하고 링크로 걸지 않는다).
@@ -825,7 +829,7 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
       nodes.forEach(node => io.observe(node));
     };
     revealOnce('.payoff-line');
-    revealOnce('.recall-flip, .recall-cue, .recall-reconsider, .recall-essay, .recall-wall');
+    revealOnce('.recall-flip, .recall-cue, .recall-reconsider, .recall-essay, .recall-wall, .recall-closing');
     /* 고령 기준 질문을 건너뛴 독자에게 "처음에 당신은 —세부터..."처럼 답하지 않은 것을 답한 것처럼
        보여주지 않는다. #recall에 닿는 시점(질문 구간을 이미 지난 뒤)에 실제 선택 여부를 확인한다. */
     new IntersectionObserver((entries, obs) => {
