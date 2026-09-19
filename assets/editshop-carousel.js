@@ -11,7 +11,7 @@
     {slug:"buy-live",num:"007",meta:"주택과 생활비",title:"이 집, 살 수 있겠습니까?",image:"/buy-live/images/hero.jpg",alt:"도시의 주택과 아파트"},
     {slug:"witness",num:"008",meta:"광복과 기억",title:"내가 증인입니다.",image:"/witness/images/thumbnail-carousel-1600x948.jpg",alt:"태극기를 든 시민들의 3·1 만세운동 재현행사"},
     {slug:"aijob",num:"009",meta:"AI와 일자리",title:"삐빅— 지금부터 당신을 대체합니다",image:"/aijob/images/hero-newsroom-night-v7.png",alt:"남산타워가 보이는 야간 도심을 배경으로, 사람 없이 재킷만 걸쳐진 의자와 듀얼 모니터가 켜져 있는 편집부 자리"},
-    {slug:"pension",num:"010",meta:"국민연금과 노후",title:"국민연금, 믿어도 돼?",image:"/pension/images/hero-coin-mound.png",alt:"「국민연금」이라 적히고 금이 간 뒤 반창고가 붙은 돼지저금통, 뒤로 노을 진 서울 스카이라인"},
+    {slug:"pension",num:"010",meta:"국민연금과 노후",title:"국민연금, 믿어도 돼?",image:"/pension/images/hero-payslip-final.jpg",alt:"어두운 여백 안에 놓인 실제 급여명세서 캡처, 국민연금 공제액 1,579,379원이 강조돼 있음"},
     {slug:"senior",num:"011",meta:"고령화와 나이 기준",title:"환갑이면 고령? 천만예요",image:"/senior/images/NISI20240905_0020511616.jpg",alt:"웨딩 의상을 입고 붉은 런웨이를 걷는 두 사람"}
   ];
   const start=()=>{
