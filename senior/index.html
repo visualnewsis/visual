@@ -14,13 +14,17 @@
   <meta property="og:title" content="환갑이면 고령? '천만'예요 | 안재현 기자·편집# 011">
   <meta property="og:description" content="당신 기준에 '고령'은 몇 살 부터라고 생각하시나요? 당신의 기준에서 시작하는 이야기.">
   <meta property="og:url" content="https://visual.newsis.com/senior/">
-  <meta name="twitter:card" content="summary">
+  <meta property="og:image" content="https://visual.newsis.com/senior/images/og-senior-1200x630.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="환갑이면 고령? '천만'예요 | 편집# 011">
   <meta name="twitter:description" content="당신 기준에 '고령'은 몇 살 부터라고 생각하시나요? 당신의 기준에서 시작하는 이야기.">
+  <meta name="twitter:image" content="https://visual.newsis.com/senior/images/og-senior-1200x630.jpg">
   <meta name="author" content="뉴시스 안재현 기자">
   <link rel="shortcut icon" href="https://image.newsis.com/n_www/images/ci/2024/favicon.png" />
   <link rel="icon" type="image/png" href="https://image.newsis.com/n_www/images/ci/2024/favicon.png" />
-  <script type="application/ld+json">{"@context":"https://schema.org","@type":"CreativeWork","name":"환갑이면 고령? 천만예요","description":"독자가 직접 고령의 기준을 선택하는 편집# 인터랙티브 뉴스","inLanguage":"ko-KR","isAccessibleForFree":true,"publisher":{"@type":"Organization","name":"뉴시스","url":"https://www.newsis.com/"}}</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"CreativeWork","name":"환갑이면 고령? 천만예요","description":"독자가 직접 고령의 기준을 선택하는 편집# 인터랙티브 뉴스","image":["https://visual.newsis.com/senior/images/og-senior-1200x630.jpg"],"inLanguage":"ko-KR","isAccessibleForFree":true,"publisher":{"@type":"Organization","name":"뉴시스","url":"https://www.newsis.com/"}}</script>
   <!-- Google tag (gtag.js) — 기존 편집# 공용 측정 ID와 동일 -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-6BKMWE02W5"></script>
   <script>
@@ -221,8 +225,10 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
     .interaction-heading{font-family:var(--editorial);font-weight:700;letter-spacing:-.035em;line-height:1.6}
     .instruction{font-size:10px}.readout-label,.confirm{font-family:var(--editorial)}
     @media(max-width:760px){
-      .hero-sequence{height:330svh}
-      .cover:not(.is-result){height:calc(100svh - var(--head));grid-template-columns:1fr;grid-template-rows:1fr min(110vw,calc(100svh - 230px));align-content:stretch}
+      /* 모바일 스크롤 불편 신고로 pin+crossfade를 끈다: hero-sequence를 실제 콘텐츠 높이로 줄이고
+         cover를 sticky에서 풀어 그냥 지나가도록 한다(사진 전환 JS도 모바일에서 꺼둔다). PC는 원래대로 유지. */
+      .hero-sequence{height:auto}
+      .cover:not(.is-result){position:static;height:calc(100svh - var(--head));grid-template-columns:1fr;grid-template-rows:1fr min(110vw,calc(100svh - 230px));align-content:stretch}
       .cover:not(.is-result) .cover-copy{grid-column:1;grid-row:1;display:flex;align-items:flex-start;justify-content:center;padding:24px var(--gutter);color:var(--ink)}
       .eyebrow{font-size:16px;gap:11px;margin-bottom:24px}.eyebrow em{font-size:12px;padding-bottom:7px}
       h1 .question-title{font-size:10.2vw;line-height:1.25;letter-spacing:-.06em}
@@ -341,12 +347,33 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
       #pin-617618 .ps-b{object-position:50% 14%}
       /* 압구정은 인물이 화면 가로 전체에 퍼져 있어 모바일 cover 크롭 시 다수가 잘린다. contain으로 전체 구도를 보존한다. */
       #img-3421,#img-3422{object-fit:contain;background:#000}
+      /* 모바일에서 sticky pin + crossfade가 "스크롤이 멈췄다"는 독자 신고를 받아 제거한다(PC는 유지).
+         두 장을 순서대로 세로로 쌓아 둘 다 보이게 하고 그냥 스크롤되게 둔다. */
+      #seq-617618,#seq-apgujeong{height:auto}
+      #pin-617618,#pin-apgujeong{position:static;height:auto;display:block}
+      #pin-617618:before,#pin-apgujeong:before{content:none}
+      #pin-617618 .photo-scroll-stage,#pin-apgujeong .photo-scroll-stage{position:static;display:block}
+      #pin-617618 .ps-a,#pin-617618 .ps-b,#pin-apgujeong .ps-a,#pin-apgujeong .ps-b{position:static;inset:auto;width:100%;height:auto;opacity:1;object-fit:initial;display:block}
+      #pin-617618 .ps-b,#pin-apgujeong .ps-b{margin-top:2px}
+      #pin-617618 .photo-scroll-caption,#pin-apgujeong .photo-scroll-caption{position:static;background:#000;padding:14px clamp(20px,5vw,32px) 18px}
     }
 
     /* 608(원본 세로 사진): sticky pin 안에서 원본 비율 그대로 렌더링해, 천장 조명(맨 위)에서 시작해
        스크롤에 따라 서서히 아래로 pan한다. JS가 --pan-y(px)를 갱신한다. */
     .photo-scroll--tall{height:240svh}
     .ps-pan{position:absolute;top:0;left:0;width:100%;height:auto;transform:translateY(var(--pan-y,0px))}
+    @media(max-width:640px){
+      /* 세로 원본(608)은 모바일 폭 기준 렌더 높이가 100svh보다 훨씬 작아 sticky pin 밑에 큰 검정
+         여백이 생기고 캡션이 거기 붕 떠 보인다는 신고가 있었다. pin을 콘텐츠 높이로 접어 사진 바로
+         밑에 캡션이 붙게 하고 그냥 스크롤되게 둔다(renderedHeight<pinHeight일 때 JS의 panRange는
+         이미 0이라 pan은 원래도 동작하지 않았다). */
+      #seq-607608{height:auto}
+      #pin-607608{position:static;height:auto;display:flex;flex-direction:column}
+      #pin-607608:before{content:none}
+      #pin-607608 .photo-scroll-stage{position:relative;inset:auto}
+      #pin-607608 .ps-pan{position:relative;transform:none}
+      #pin-607608 .photo-scroll-caption{position:relative;left:auto;right:auto;bottom:auto;background:#000;padding:14px clamp(20px,5vw,32px) 18px}
+    }
 
     /* 독자 나이 입력 */
     .reader-age{background:var(--paper);color:var(--ink)}
@@ -800,9 +827,12 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
     (() => {
       const cover = document.getElementById('cover');
       const sequence = document.getElementById('hero-sequence');
+      const mobileQuery = matchMedia('(max-width: 760px)');
       let frame = null;
       function updateScroll() {
         frame = null;
+        // 모바일은 pin+crossfade가 스크롤 정체로 느껴진다는 신고가 있어 첫 사진 고정, 그냥 스크롤되게 둔다(PC는 유지).
+        if (mobileQuery.matches) return;
         const distance = Math.max(1, sequence.offsetHeight - window.innerHeight);
         const progress = clamp(-sequence.getBoundingClientRect().top / distance);
         // 0–40% 1616 HOLD(충분히 오래) / 40–85% 1616→1615 crossfade(느림) / 85–100% 1615 HOLD.
@@ -902,9 +932,12 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
       const section = document.getElementById(sectionId);
       const pin = document.getElementById(pinId);
       if (!section || !pin) return;
+      const mobileQuery = matchMedia('(max-width: 640px)');
       let frame = null;
       function update() {
         frame = null;
+        // 모바일은 pin+crossfade 없이 두 장을 그냥 세로로 쌓아 보여준다(스크롤 정체 신고 반영, PC는 유지).
+        if (mobileQuery.matches) return;
         const distance = Math.max(1, section.offsetHeight - window.innerHeight);
         const progress = clamp(-section.getBoundingClientRect().top / distance);
         const mid = (transStart + transEnd) / 2;
