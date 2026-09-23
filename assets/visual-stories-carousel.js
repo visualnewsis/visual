@@ -14,8 +14,10 @@
     {slug:"battery",num:"010",meta:"리튬이온배터리 · 배터리 구조 · 인터랙티브",title:"알아볼지도 리튬이온 배터리편",image:"/battery/images/battery-model-v10.png",alt:"리튬이온배터리 내부 구조를 표현한 3D 렌더링"},
     {slug:"witness",num:"011",meta:"광복 · 증언 · 기억 · 인터랙티브",title:"내가 증인입니다.",image:"/witness/images/thumbnail-carousel-1600x948.jpg",alt:"태극기를 든 시민들의 3·1 만세운동 재현행사"},
     {slug:"aijob",num:"012",meta:"AI · 노동시장 · 인터랙티브",title:"삐빅— 지금부터 당신을 대체합니다",image:"/aijob/images/hero-newsroom-night-v7.png",alt:"남산타워가 보이는 야간 도심을 배경으로, 사람 없이 재킷만 걸쳐진 의자와 듀얼 모니터가 켜져 있는 편집부 자리"},
-    {slug:"pension",num:"013",meta:"국민연금 · 노후 · 인터랙티브",title:"국민연금, 믿어도 돼?",image:"/pension/images/hero-payslip-final.jpg",alt:"어두운 여백 안에 놓인 실제 급여명세서 캡처, 국민연금 공제액 1,579,379원이 강조돼 있음"},
-    {slug:"senior",num:"014",meta:"고령화 · 나이 기준 · 인터랙티브",title:"환갑이면 고령? 천만예요",image:"/senior/images/NISI20240905_0020511616.jpg",alt:"웨딩 의상을 입고 붉은 런웨이를 걷는 두 사람"}
+    {slug:"nepal-flood",num:"013",meta:"네팔 · 빙하 붕괴 · 기후재난",title:"마른 하늘 대홍수, 뒤집힌 재난 공식",image:"/nepal-flood/images/hero-aftermath.webp",alt:"진흙과 잔해로 뒤덮인 네팔 마을을 바라보는 주민"},
+    {slug:"pension",num:"014",meta:"국민연금 · 노후 · 인터랙티브",title:"국민연금, 믿어도 돼?",image:"/pension/images/hero-payslip-final.jpg",alt:"어두운 여백 안에 놓인 실제 급여명세서 캡처, 국민연금 공제액 1,579,379원이 강조돼 있음"},
+    {slug:"senior",num:"015",meta:"고령화 · 나이 기준 · 인터랙티브",title:"환갑이면 고령? 천만예요",image:"/senior/images/NISI20240905_0020511616.jpg",alt:"웨딩 의상을 입고 붉은 런웨이를 걷는 두 사람"},
+    {slug:"moreno",num:"016",meta:"축구 · 국가대표 · 인터랙티브",title:"눈 앞의 기록, 눈 안의 열망",image:"/moreno/images/taegeukgi-crowd.jpg",alt:"대형 태극기가 펼쳐진 축구 경기장 관중석"}
   ];
   const mount=host=>{
     const visible=stories.filter(story=>story.slug!==current);
