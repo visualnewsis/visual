@@ -1,6 +1,6 @@
 :root { --paper: #f3f0e8; --ink: #172922; --muted: #677269; --red: #ba4f50; --green: #173d32; --line: #d3d6ca; --gold: #e6ce92; }
 * { box-sizing: border-box; }
-html { scroll-behavior: smooth; scroll-padding-top: 65px; }
+html { scroll-behavior: smooth; scroll-padding-top: 65px; -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
 body { margin: 0px; background: var(--paper); color: var(--ink); font-family: Pretendard, "Noto Sans KR", "Apple SD Gothic Neo", "Malgun Gothic", Arial, sans-serif; word-break: keep-all; }
 button, input, a { -webkit-tap-highlight-color: transparent; }
 button { font: inherit; cursor: pointer; touch-action: manipulation; }
