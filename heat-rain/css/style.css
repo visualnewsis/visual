@@ -3203,6 +3203,56 @@ h3 {
   transform: translate(3px, -3px);
 }
 
+.article-footer {
+  letter-spacing: 0;
+  background: #05090c;
+  border-top: 1px solid rgba(255, 255, 255, 0.125);
+  min-height: 100px;
+  padding: 20px 5vw;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+}
+.article-footer a {
+  color: #d4ddd9;
+  white-space: nowrap;
+  align-items: center;
+  min-height: 44px;
+  display: inline-flex;
+  text-decoration: none;
+}
+.article-footer .footer-visual {
+  justify-self: start;
+  font-size: 18px;
+  font-weight: 650;
+  letter-spacing: 0.055em;
+}
+.article-footer .footer-top {
+  justify-self: center;
+  gap: 7px;
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  color: #a6b8b0;
+}
+.article-footer .footer-top svg {
+  width: 14px;
+  height: 14px;
+}
+.article-footer .footer-brand {
+  justify-self: end;
+  color: #75f3d1;
+  font-family: Pretendard, "Noto Sans KR", "Apple SD Gothic Neo", Arial, sans-serif;
+  font-size: 14px;
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: 0.1em;
+  white-space: nowrap;
+}
+.article-footer .silent-i {
+  color: rgba(237, 240, 234, 0.5);
+}
+
 .hero-copy h1,
 .opening-quote blockquote,
 .chapter-head h2,
@@ -3868,6 +3918,17 @@ h3 {
   .related-list i {
     right: 22px;
     bottom: 20px;
+  }
+  .article-footer {
+    min-height: 90px;
+    padding: 16px 18px;
+  }
+  .article-footer .footer-visual {
+    letter-spacing: 0;
+    font-size: 18px;
+  }
+  .article-footer .footer-brand {
+    font-size: clamp(8px, 2.5vw, 10px);
   }
 }
 
