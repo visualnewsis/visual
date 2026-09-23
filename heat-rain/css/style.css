@@ -3927,8 +3927,26 @@ h3 {
     letter-spacing: 0;
     font-size: 18px;
   }
+  .article-footer {
+    column-gap: 10px;
+  }
   .article-footer .footer-brand {
-    font-size: clamp(8px, 2.5vw, 10px);
+    font-size: 11px;
+    letter-spacing: 0.04em;
+    line-height: 1.4;
+    white-space: normal;
+    text-align: right;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 2px;
+  }
+  .article-footer .footer-brand .fb-slash {
+    display: none;
+  }
+  .article-footer .footer-brand .fb-line1,
+  .article-footer .footer-brand .fb-line2 {
+    white-space: nowrap;
   }
 }
 
