@@ -162,7 +162,7 @@ html { scroll-behavior: auto; }
 .opening-frame h1 .headline-line { display: block; }
 .opening-frame h1 i { font-style: normal; color: rgb(162, 219, 203); }
 .opening-frame h1 b { color: rgb(240, 217, 156); font-weight: inherit; }
-.opening-frame h1 em { color: rgb(225, 138, 125); }
+.opening-frame h1 em { color: rgb(225, 138, 125); font-style: normal; }
 .opening-final { font-size: clamp(38px, 5.4vw, 80px); line-height: 1.4; font-weight: 800; letter-spacing: -0.055em; }
 .opening-final em { color: rgb(240, 217, 156); }
 .opening-frame .eyebrow { font-size: 14px; color: rgb(187, 207, 198); letter-spacing: 0.02em; margin-bottom: 25px; }
@@ -247,7 +247,7 @@ html:not(.story-ready) .opening-frame:not(:first-child) { display: none; }
 .skip:focus { top: 70px; }
 .reading-progress { top: calc(64px + env(safe-area-inset-top,0px)); z-index: 9998; }
 .article-byline { margin: 42px auto 0px; color: rgba(235, 240, 236, 0.68); font-size: 12px; letter-spacing: 0.02em; text-align: center; }
-.article-byline b { margin-left: 5px; color: rgb(240, 217, 156); font-weight: 650; }
+.article-byline b { margin-left: 5px; color: var(--paper); font-weight: 650; }
 .article-footer { letter-spacing: 0px; background: rgb(9, 13, 16); border-top: 1px solid rgba(255, 255, 255, 0.125); min-height: 100px; padding: 20px 5vw; display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; color: rgb(244, 242, 236); }
 .article-footer a { color: rgb(212, 221, 217); white-space: nowrap; align-items: center; min-height: 44px; display: inline-flex; text-decoration: none; }
 .article-footer .footer-visual { justify-self: start; font-size: 13px; font-weight: 650; letter-spacing: 0.055em; }
@@ -258,7 +258,7 @@ html:not(.story-ready) .opening-frame:not(:first-child) { display: none; }
 @media (max-width: 700px){
 .article-byline { margin-top: 34px; font-size: 11px; }
 .article-footer { min-height: 92px; padding: 16px 14px; grid-template-columns: 1fr auto 1fr; }
-.article-footer .footer-visual { font-size: 10px; letter-spacing: 0.03em; }
+.article-footer .footer-visual { font-size: 12px; letter-spacing: 0px; }
 .article-footer .footer-top { font-size: 10px; gap: 4px; letter-spacing: 0.06em; }
 .article-footer .footer-brand { font-size: 10px; letter-spacing: 0.045em; white-space: normal; text-align: right; line-height: 1.35; max-width: 122px; }
 }

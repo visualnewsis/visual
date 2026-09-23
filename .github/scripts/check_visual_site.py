@@ -23,10 +23,12 @@ PAGES = {
     "battery/index.html": ("한눈에 알아볼지도", False),
     "adult-missing/index.html": ("뉴시스템", False),
     "nepal-flood/index.html": ("뉴시스템", True),
+    "moreno/index.html": ("뉴시스템", True),
     "calculator/index.html": ("계산대로", True),
 }
 EDITSHOP_STORIES = {"oil", "thief", "shelter", "temperature", "kangin", "children", "buy-live"}
-VISUAL_STORIES_CAROUSEL_PAGES = {"heat-rain", "battery", "adult-missing", "nepal-flood"}
+VISUAL_STORIES_CAROUSEL_PAGES = {"battery"}
+NEWSYSTEM_CAROUSEL_PAGES = {"heat-rain", "adult-missing", "nepal-flood", "moreno"}
 JSON_LD_RE = re.compile(
     r'<script[^>]+type=["\']application/ld\+json["\'][^>]*>([\s\S]*?)</script>',
     re.IGNORECASE,
@@ -54,6 +56,14 @@ def main() -> int:
         fail(errors, "VISUAL NEWSIS carousel stories must match the main ALL STORIES archive")
     if "비주얼 뉴시스" not in visual_carousel_js or "#00a9ba" not in visual_carousel_css:
         fail(errors, "VISUAL NEWSIS more-stories heading treatment is missing")
+    newsystem_carousel_js = (ROOT / "assets" / "newsystem-carousel.js").read_text(encoding="utf-8")
+    newsystem_html = (ROOT / "newsystem" / "index.html").read_text(encoding="utf-8")
+    newsystem_slugs = set(re.findall(r'class="work-stage[^"]*" href="https://visual\.newsis\.com/([^/"]+)/"', newsystem_html))
+    newsystem_carousel_slugs = set(re.findall(r'\{slug:"([^"]+)"', newsystem_carousel_js))
+    if newsystem_slugs != newsystem_carousel_slugs:
+        fail(errors, "뉴시스템 carousel items must match the newsystem hub work list")
+    if "뉴시스템" not in newsystem_carousel_js or "기사 더 보기" not in newsystem_carousel_js:
+        fail(errors, "뉴시스템 more-items heading treatment is missing")
     shared_css = ROOT / "assets" / "visual-header.css"
     shared_js = ROOT / "assets" / "visual-header.js"
     for required in (ROOT / "AGENTS.md", ROOT / "CLAUDE.md", shared_css, shared_js, ROOT / "assets" / "logo2024.png"):
@@ -89,6 +99,11 @@ def main() -> int:
                 fail(errors, f"VISUAL NEWSIS carousel assets missing: {relative}")
             if f'data-current="{slug}"' not in html:
                 fail(errors, f"wrong VISUAL NEWSIS carousel current story: {relative}")
+        if slug in NEWSYSTEM_CAROUSEL_PAGES:
+            if "visual-stories-carousel.css" not in html or "newsystem-carousel.js" not in html:
+                fail(errors, f"뉴시스템 carousel assets missing: {relative}")
+            if f'data-current="{slug}"' not in html:
+                fail(errors, f"wrong 뉴시스템 carousel current item: {relative}")
 
     arcade = ROOT / "arcade" / "index.html"
     if not arcade.is_file():
