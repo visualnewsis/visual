@@ -247,7 +247,7 @@ button,input{font:inherit}
 .related-articles a:hover{color:#365e56}
 .article-footer{letter-spacing:0;background:#090d10;border-top:1px solid rgba(255,255,255,.125);min-height:100px;padding:20px 5vw;display:grid;grid-template-columns:1fr auto 1fr;align-items:center}
 .article-footer a{color:#d4ddd9;white-space:nowrap;align-items:center;min-height:44px;display:inline-flex}
-.footer-visual{letter-spacing:.055em;justify-self:start;font-size:13px;font-weight:650}
+.footer-visual{letter-spacing:.055em;justify-self:start;font-size:18px;font-weight:650}
 .footer-top{letter-spacing:.12em;color:#a6b8b0;justify-self:center;gap:7px;font-size:12px;font-weight:500}
 .footer-top svg{width:14px;height:14px}
 .article-footer .footer-brand{justify-self:end;color:#75f3d1;font-family:Pretendard,"Noto Sans KR","Apple SD Gothic Neo",Arial,sans-serif;font-size:14px;font-weight:800;line-height:1;letter-spacing:.1em;white-space:nowrap}
@@ -365,7 +365,7 @@ button,input{font:inherit}
   .related-articles h2{padding-bottom:18px;font-size:22px}
   .related-articles a{gap:16px;padding:20px 0;font-size:16px}
   .article-footer{min-height:90px;padding:16px 18px}
-  .footer-visual{letter-spacing:0;font-size:12px}
+  .footer-visual{letter-spacing:0;font-size:18px}
   .article-footer .footer-brand{font-size:clamp(8px,2.5vw,10px)}
 }
 @media(prefers-reduced-motion:reduce){
