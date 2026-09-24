@@ -10,7 +10,13 @@ const stories = [
  {slug:'kong',title:'콩콩 · 쿵쿵',image:'kong-1.png'},
  {slug:'bang',title:'방긋 · 빵끗',image:'bang-1.png'},
  {slug:'sallang',title:'살랑살랑 · 설렁설렁',image:'sallang-1.png'},
- {slug:'daldal',title:'달달 · 탈탈',image:'daldal-1.png'}
+ {slug:'daldal',title:'달달 · 탈탈',image:'daldal-1.png'},
+ {slug:'todak-tudak',title:'토닥토닥 · 투닥투닥',image:'todak-tudak-1.png'},
+ {slug:'sogon-sugun',title:'소곤소곤 · 수군수군',image:'sogon-sugun-1.png'},
+ {slug:'tok-tuk',title:'톡톡 · 툭툭',image:'tok-tuk-1.png'},
+ {slug:'ssok-ssuk',title:'쏙 · 쑥',image:'ssok-ssuk-1.png'},
+ {slug:'basak-beoseok',title:'바삭바삭 · 버석버석',image:'basak-beoseok-1.png'},
+ {slug:'kkubeok',title:'꾸벅꾸벅 · 꾸벅',image:'kkubeok-1.png'}
 ];
 const card = story => `<li><a class="op-card" href="${new URL(story.slug + '/index.html',base).href}"><img src="${new URL('images/' + story.image,base).href}" alt="" width="1448" height="1086" loading="lazy"><h2>${story.title}<span aria-hidden="true">↗</span></h2></a></li>`;
 const start = () => {
