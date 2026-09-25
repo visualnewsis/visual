@@ -1,0 +1,1251 @@
+<!doctype html>
+<!--
+  VISUAL NEWSIS · 편집#
+  AT, 라리가 '2강 IN' — interactive prototype (Claude build v1)
+  기획·디렉터 = 안재현 기자
+  구현 기준: AT_2GANG_IN_MASTER_V4 (BUILD_SPEC_V4 / COPY_DECK / SCENARIO_MODEL_V4 / MATCH_STATE_BOARD / SOURCE_LEDGER)
+  사진 교체: 아래 <script> 의 ASSETS 객체 또는 data-slot 이 붙은 <img> 의 src 만 바꾸면 된다.
+-->
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="index,follow,max-image-preview:large">
+<meta name="author" content="안재현 기자">
+<meta name="description" content="이강인을 움직이면 누가 살아날까. 이강인의 자리를 직접 옮기고, 데이비드와 훌리안을 넣고, 12번째 선수를 고르며 아틀레티코 마드리드의 전술 퍼즐을 체험하는 인터랙티브 뉴스입니다.">
+<meta name="keywords" content="이강인,아틀레티코 마드리드,조나선 데이비드,훌리안 알바레스,디에고 시메오네,라리가,축구 전술,편집#,편집샵,비주얼 뉴시스,안재현 기자">
+<link rel="canonical" href="https://visual.newsis.com/atleti-2gang/">
+<link rel="shortcut icon" href="https://image.newsis.com/n_www/images/ci/2024/favicon.png">
+<link rel="icon" type="image/png" href="https://image.newsis.com/n_www/images/ci/2024/favicon.png">
+<meta property="og:type" content="article">
+<meta property="og:locale" content="ko_KR">
+<meta property="og:site_name" content="VISUAL NEWSIS">
+<meta property="og:title" content="AT, 라리가 '2강 IN' | 편집#">
+<meta property="og:description" content="이강인을 움직이면 누가 살아날까? 한 명을 옮기면 팀 전체가 움직입니다.">
+<meta property="og:url" content="https://visual.newsis.com/atleti-2gang/">
+<meta property="og:image" content="https://visual.newsis.com/atleti-2gang/images/hero-derby-bellingham.jpg">
+<meta property="og:image:width" content="2000">
+<meta property="og:image:height" content="1333">
+<meta property="article:published_time" content="2026-09-25T09:00:00+09:00">
+<meta property="article:modified_time" content="2026-09-25T09:00:00+09:00">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="AT, 라리가 '2강 IN' | 편집#">
+<meta name="twitter:description" content="이강인을 움직이면 누가 살아날까?">
+<meta name="twitter:image" content="https://visual.newsis.com/atleti-2gang/images/hero-derby-bellingham.jpg">
+<title>AT, 라리가 '2강 IN' | 이강인·시메오네 전술 인터랙티브 | 편집# | 비주얼 뉴시스</title>
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-6BKMWE02W5"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','G-6BKMWE02W5');</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"NewsArticle","mainEntityOfPage":{"@type":"WebPage","@id":"https://visual.newsis.com/atleti-2gang/"},"headline":"AT, 라리가 '2강 IN'","alternativeHeadline":"이강인을 움직이면 누가 살아날까?","description":"이강인의 자리를 직접 옮기고, 데이비드와 훌리안을 넣고, 12번째 선수를 고르며 아틀레티코 마드리드의 전술 퍼즐을 체험하는 인터랙티브 뉴스","articleSection":"편집#","keywords":["이강인","아틀레티코 마드리드","조나선 데이비드","훌리안 알바레스","디에고 시메오네","축구 전술"],"image":["https://visual.newsis.com/atleti-2gang/images/hero-derby-bellingham.jpg"],"datePublished":"2026-09-25T09:00:00+09:00","dateModified":"2026-09-25T09:00:00+09:00","inLanguage":"ko-KR","isAccessibleForFree":true,"author":{"@type":"Person","name":"안재현","alternateName":["안재현 기자","JAEHYEON AN"],"jobTitle":["뉴시스 기자","크리에이티브 디렉터"],"worksFor":{"@type":"NewsMediaOrganization","name":"뉴시스","url":"https://www.newsis.com/"}},"isPartOf":{"@type":"CollectionPage","name":"편집#","alternateName":"편집샵","url":"https://visual.newsis.com/editshop/"},"publisher":{"@type":"NewsMediaOrganization","name":"뉴시스","alternateName":"NEWSIS","url":"https://www.newsis.com/","logo":{"@type":"ImageObject","url":"https://visual.newsis.com/assets/logo2024.png"}}}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#08090b;--bg2:#0f1114;--card:#13151a;--line:#262a31;--fg:#f4f2ed;--mut:#9ea1a8;--dim:#6b6f77;
+  --red:#e42b32;--red2:#ff5a61;--navy:#1b2a6b;--green:#39d98a;--amber:#f2c45e;--mint:#00b4c9;
+  --p1:#10382a;--p2:#134131;--ease:cubic-bezier(.2,.8,.2,1);--pad:clamp(18px,4.5vw,64px)
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--fg);font-family:'Noto Sans KR',-apple-system,BlinkMacSystemFont,'Apple SD Gothic Neo',sans-serif;word-break:keep-all;overflow-x:hidden;-webkit-font-smoothing:antialiased}
+img{display:block;max-width:100%}
+button{font:inherit;color:inherit;cursor:pointer}
+a{color:inherit}
+em{font-style:normal}
+.sr{position:absolute!important;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.kick{font-size:11px;font-weight:700;letter-spacing:.2em;color:var(--mut)}
+.kick.red{color:var(--red2)}
+.big{font-size:clamp(32px,8.6vw,64px);line-height:1.13;letter-spacing:-.06em;font-weight:900;margin:0}
+.big em{color:var(--red2)}
+.sub{font-size:clamp(15px,1.6vw,18px);line-height:1.8;color:#b9bbc0;margin:22px 0 0}
+.sub b{color:var(--fg)}
+.note{font-size:11px;line-height:1.6;color:var(--dim);margin:14px 0 0}
+.wrap{width:min(1080px,100%);margin:0 auto;padding:0 var(--pad)}
+.cap{font-size:10px;line-height:1.5;color:#8b8f96;margin-top:8px}
+.cap b{color:#c9cbd0;font-weight:700}
+
+/* ---------- HERO ---------- */
+.hero{position:relative;height:clamp(460px,62svh,720px);overflow:hidden;display:flex;align-items:flex-end;padding:0 var(--pad) clamp(26px,5vh,56px);isolation:isolate}
+.hero .ph{position:absolute;inset:-6% 0 0;z-index:-2}
+.hero .ph img{width:100%;height:100%;object-fit:cover;object-position:62% 30%;transform:translate3d(0,calc(var(--hp,0)*40px),0) scale(1.06);filter:saturate(1.05) contrast(1.05)}
+.hero:before{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(180deg,#08090b99 0,#08090b00 26%,#08090b55 52%,#08090bf2 88%,var(--bg) 100%),linear-gradient(90deg,#08090bcc 0,#08090b00 64%)}
+.hero .stripes{position:absolute;right:-8vw;top:14%;width:48vw;max-width:520px;height:70%;z-index:-1;background:repeating-linear-gradient(90deg,#e42b32 0 18px,transparent 18px 36px);opacity:.16;transform:skewX(-12deg);mix-blend-mode:screen}
+.hero-copy{max-width:760px}
+.hero h1{margin:14px 0 0;font-size:clamp(46px,13vw,104px);line-height:1;letter-spacing:-.06em;font-weight:900}
+.hero h1 .l1{display:block;width:max-content}
+.hero h1 em{display:block;width:max-content;color:var(--red);font-size:1.3em;line-height:.86;letter-spacing:-.06em;margin-top:.04em}
+.hero h1 .q{color:var(--red);}
+.hero h2{margin:18px 0 0;font-size:clamp(22px,6vw,40px);line-height:1.2;letter-spacing:-.05em;font-weight:700}
+.hero .cta{display:inline-flex;align-items:center;gap:10px;margin-top:22px;padding:11px 16px;border-radius:999px;background:var(--fg);color:#111;font-size:13px;font-weight:900;text-decoration:none}
+.hero .cta i{font-style:normal;display:inline-block;animation:bob 1.4s ease-in-out infinite}
+.hero .by{margin-top:14px;font-size:11px;color:#a4a7ad}
+@keyframes bob{50%{transform:translateY(4px)}}
+
+.table7{display:inline-flex;gap:0;margin-top:18px;border:1px solid #ffffff2e;border-radius:10px;overflow:hidden;background:#08090bb3;-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);font-size:12px}
+.table7 span{padding:7px 10px;border-left:1px solid #ffffff1f;white-space:nowrap;color:#c9cbd0}
+.table7 span:first-child{border-left:0;color:#8d9097;font-size:10px;letter-spacing:.12em;font-weight:700;display:grid;place-items:center}
+.table7 span b{font-weight:900;color:#fff;margin-right:4px}
+.table7 span.me{background:var(--red);color:#fff}
+.table7 span.me b{color:#fff}
+.src-l{display:inline-block;margin-left:6px;font-size:11px;font-weight:700;color:#9fd3ff;text-decoration:none;border-bottom:1px solid #9fd3ff55;white-space:nowrap}
+.quote{margin:26px 0 0;padding:18px 0 0;border-top:1px solid #ffffff22}
+.quote q{display:block;font-size:clamp(20px,2.6vw,28px);line-height:1.45;font-weight:900;letter-spacing:-.04em;quotes:"“" "”"}
+.quote q:before{content:open-quote;color:var(--red2)}.quote q:after{content:close-quote;color:var(--red2)}
+.quote .who{display:block;margin-top:10px;font-size:12px;color:var(--mut)}
+.quote.small q{font-size:clamp(16px,2vw,20px);font-weight:700;color:#d9dbe0}
+.prev-link{display:inline-flex;gap:8px;align-items:center;margin-top:18px;padding:9px 12px;border:1px solid #ffffff2e;border-radius:999px;font-size:12px;text-decoration:none;background:#08090b99}
+.prev-link b{color:var(--mint)}
+.end-q{font-size:clamp(15px,3.6vw,19px);color:#e0c9ca;margin:0}
+.end-a{font-size:clamp(26px,6.6vw,48px)!important;font-weight:900;line-height:1.25!important;letter-spacing:-.05em!important;margin:12px 0 0!important}
+.end-me{display:inline-block;margin-top:18px!important;padding:14px 18px;border-radius:14px;background:#00000080;border:1px solid #ffffff2e;font-size:clamp(17px,4.6vw,24px)!important;font-weight:700;letter-spacing:-.03em;line-height:1.6!important;color:#f4e6e7}
+.end-me b{color:#fff}.end-me em{color:#ff8f94;font-weight:900}
+.nextgame{display:inline-grid;grid-template-columns:auto auto;gap:4px 14px;align-items:center;margin:26px auto 0;padding:14px 18px;border-radius:14px;background:#08090bcc;border:1px solid #ffffff2a;text-align:left}
+.nextgame small{grid-column:1/3;font-size:10px;letter-spacing:.18em;color:#ff8f94;font-weight:700}
+.nextgame b{font-size:clamp(20px,5vw,28px);letter-spacing:-.04em}
+.nextgame span{font-size:12px;color:#c9cbd0;line-height:1.5}
+
+/* ---------- BOARD (shared engine) ---------- */
+.lab{padding:18px var(--pad) 40px;background:linear-gradient(var(--bg),var(--bg2))}
+.lab-grid{width:min(1080px,100%);margin:0 auto;display:grid;gap:14px}
+.lab-head{display:flex;align-items:flex-end;justify-content:space-between;gap:12px}
+.lab-head h3{margin:0;font-size:clamp(19px,5vw,28px);letter-spacing:-.05em;line-height:1.2}
+.lab-head h3 small{display:block;font-size:11px;letter-spacing:.14em;color:var(--mut);font-weight:700;margin-bottom:4px}
+.board{position:relative;--o-players:1;--o-space:.85;--o-pass:.85}
+.board[data-lens="space"]{--o-players:.45;--o-space:1;--o-pass:.15}
+.board[data-lens="pass"]{--o-players:.7;--o-space:.1;--o-pass:1}
+.board-bar{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:8px;flex-wrap:wrap}
+.count{font-weight:900;font-size:15px;letter-spacing:-.02em;font-variant-numeric:tabular-nums;padding:6px 10px;border-radius:9px;background:#15181d;border:1px solid var(--line);transition:color .3s,background .3s}
+.count.over{color:#fff;background:#8e1a20;border-color:#ff5a61;animation:shake .45s}
+.count.ok{color:#bff0d3}
+@keyframes shake{25%{transform:translateX(-4px)}50%{transform:translateX(4px)}75%{transform:translateX(-2px)}}
+.seg{display:inline-flex;border:1px solid var(--line);border-radius:999px;padding:3px;background:#101216}
+.seg button{border:0;background:transparent;border-radius:999px;padding:6px 10px;font-size:11px;font-weight:700;color:#bdbfc4}
+.seg button[aria-pressed="true"]{background:var(--fg);color:#111}
+.ev-badge{border:1px solid var(--line);background:#15181d;border-radius:999px;padding:6px 10px;font-size:11px;font-weight:700;display:inline-flex;gap:6px;align-items:center}
+.ev-badge i{font-style:normal;width:7px;height:7px;border-radius:50%;background:var(--green)}
+.ev-badge[data-lv="중"] i{background:var(--amber)}
+.ev-badge[data-lv="가설"] i{background:#ff8a4c}
+.pitch-wrap{position:relative;display:flex;justify-content:center}
+.pitch{position:relative;width:min(100%,calc(62svh*68/105),560px);aspect-ratio:68/105;border-radius:14px;overflow:hidden;background:repeating-linear-gradient(180deg,var(--p1) 0 10%,var(--p2) 10% 20%);box-shadow:0 20px 60px #000b,inset 0 0 0 1px #ffffff40;transition:transform .5s var(--ease);-webkit-user-select:none;user-select:none;container-type:size}
+.board.zoomout .pitch{transform:scale(.93)}
+.board.freeze .pitch{filter:saturate(.55)}
+.pitch svg{position:absolute;inset:0;width:100%;height:100%}
+.pitch .marks line,.pitch .marks rect,.pitch .marks circle,.pitch .marks path{fill:none;stroke:#ffffff5c;stroke-width:.28}
+.fx{pointer-events:none}
+.fx .spaces{opacity:var(--o-space);transition:opacity .35s}
+.fx .lines{opacity:var(--o-pass);transition:opacity .35s}
+.sp{opacity:0;transition:opacity .45s}
+.sp.on{opacity:1}
+.sp ellipse{stroke-width:.35;vector-effect:non-scaling-stroke}
+.sp.gain ellipse{fill:url(#hatchG);stroke:#39d98a}
+.sp.share ellipse{fill:url(#hatchA);stroke:#f2c45e;stroke-dasharray:1.2 .8}
+.sp.cost ellipse{fill:url(#hatchR);stroke:#ff5a61;stroke-dasharray:1 .9}
+.sp.zone rect{fill:url(#hatchR);stroke:#ff5a61;stroke-width:.3;stroke-dasharray:1.2 .8}
+.sp text{font-size:2.8px;font-weight:700;fill:#fff;paint-order:stroke;stroke:#0b0d10;stroke-width:.6px;letter-spacing:.02em}
+.sp.gain text{fill:#c9f5dc}.sp.share text{fill:#ffe3a1}.sp.cost text,.sp.zone text{fill:#ffc2c5}
+.ln{fill:none;stroke-linecap:round;vector-effect:non-scaling-stroke}
+.ln.pass{stroke:#fff;stroke-width:1.4;stroke-dasharray:4 4;opacity:.8}
+.ln.run{stroke:var(--green);stroke-width:2;marker-end:url(#arrG)}
+.ln.run.hot{stroke:#ff5a61;marker-end:url(#arrR)}
+.ln.draw{stroke-dasharray:var(--len) var(--len);stroke-dashoffset:var(--len);animation:draw .55s var(--ease) forwards}
+.ln.pass.draw{animation:draw .55s var(--ease) forwards,fadeDash .01s .56s forwards}
+@keyframes draw{to{stroke-dashoffset:0}}
+@keyframes fadeDash{to{stroke-dasharray:4 4}}
+.ghost{stroke:#fff;stroke-width:1;vector-effect:non-scaling-stroke;stroke-dasharray:2 3;opacity:0;animation:ghost 1.4s ease-out forwards}
+@keyframes ghost{15%{opacity:.55}100%{opacity:0}}
+.mk text{font-size:2.6px;font-weight:900;fill:#fff;paint-order:stroke;stroke:#0b0d10;stroke-width:.7px}
+.mk circle{fill:#ff5a61}
+.mk.goal circle{fill:var(--green)}
+.opp{fill:none;stroke:#e9e9ef;stroke-width:.45;opacity:.75}
+.layer{position:absolute;left:0;top:0;width:0;height:0;pointer-events:none;transform:translate(calc(var(--x)*1cqw),calc(var(--y)*1cqh));transition:transform .62s var(--ease) var(--d,0ms),opacity .4s var(--d,0ms)}
+.layer.off{opacity:0}
+@supports not (width:1cqw){.layer{width:100%;height:100%;transform:translate(calc(var(--x)*1%),calc(var(--y)*1%))}}
+.layer.dragging{transition:none}
+.dot{position:absolute;left:0;top:0;transform:translate(-50%,-50%);pointer-events:auto;border:0;padding:0;background:none;display:grid;justify-items:center;gap:2px;opacity:var(--o-players);transition:opacity .35s}
+.layer.off .dot{pointer-events:none}
+.dot .c{width:30px;height:30px;border-radius:50%;background:#1c1f25;border:2px solid #aeb1b8;display:grid;place-items:center;font-size:8px;font-weight:900;letter-spacing:-.02em;color:#e9eaee;box-shadow:0 3px 10px #0008;position:relative;background-size:330% auto;background-repeat:no-repeat}
+.dot .n{font-size:10px;font-weight:900;letter-spacing:.02em;color:#fff;text-shadow:0 1px 3px #000,0 0 6px #000;white-space:nowrap}
+.dot[data-r="mid"] .c{border-color:#efd06f}
+.dot[data-r="wide"] .c,.dot[data-r="fw"] .c{border-color:#ff7a80}
+.dot[data-r="def"] .c{border-color:#8f95a3;width:26px;height:26px}
+.dot[data-r="gen"] .c{border-style:dashed;border-color:#8f95a3;width:26px;height:26px}
+.dot.ava .c{color:transparent!important;font-size:0!important;width:36px;height:36px}
+.dot.lee .c{width:44px;height:44px;background-color:#f6f4ef;color:#111;border:3px solid #fff;box-shadow:0 0 0 6px #ffffff22,0 0 26px #ffffff66;font-size:10px}
+.dot.lee{touch-action:none;cursor:grab}
+.dot.lee:before{content:"";position:absolute;left:50%;top:22px;width:70px;height:70px;transform:translate(-50%,-50%);border-radius:50%}
+.board.can-drag .dot.lee .c:after{content:"";position:absolute;inset:-9px;border-radius:50%;border:2px solid #fff;opacity:0;animation:hint 1.8s ease-out infinite}
+.board.touched .dot.lee .c:after{animation:none}
+@keyframes hint{0%{opacity:.8;transform:scale(.85)}100%{opacity:0;transform:scale(1.5)}}
+.dot:focus-visible{outline:none}
+.dot:focus-visible .c{outline:3px solid var(--mint);outline-offset:3px}
+.dot.react .c{animation:react .7s ease-out}
+@keyframes react{0%{box-shadow:0 0 0 0 #39d98acc}100%{box-shadow:0 0 0 16px #39d98a00}}
+.dot.live .c{border-color:var(--green);box-shadow:0 0 0 5px #39d98a2e,0 0 22px #39d98a88}
+.dot.clash .c{border-color:var(--amber);box-shadow:0 0 0 5px #f2c45e2e,0 0 22px #f2c45e88}
+.dot.dim{opacity:calc(var(--o-players)*.35)}
+.dot.pick .c{animation:pick 1.1s ease-in-out infinite;border-color:#fff}
+.dot.pick .n{color:#ffd9db}
+@keyframes pick{0%,100%{box-shadow:0 0 0 0 #ff5a61aa}50%{box-shadow:0 0 0 10px #ff5a6100}}
+.dot.new .c{border-color:#fff;box-shadow:0 0 0 6px #ffffff30,0 0 24px #fff8}
+.zghost{position:absolute;left:0;top:0;width:64px;height:64px;margin:-32px 0 0 -32px;border-radius:50%;border:1.5px dashed #ffffff55;pointer-events:none;opacity:0;transition:opacity .2s,transform .2s;display:grid;place-items:center}
+.zghost span{position:absolute;top:100%;margin-top:4px;font-size:9px;font-weight:700;letter-spacing:.08em;color:#ffffffb0;white-space:nowrap}
+.zghost.on{opacity:1}
+.zghost.near{border-color:#fff;border-style:solid;background:#ffffff14}
+.pmsg{position:absolute;left:8px;right:8px;bottom:10px;z-index:5;text-align:center;pointer-events:none;opacity:0;transform:translateY(6px);transition:opacity .35s,transform .35s}
+.pmsg.on{opacity:1;transform:none}
+.pmsg b{display:inline-block;background:#08090be6;border:1px solid #ffffff2a;border-radius:12px;padding:10px 14px;font-size:15px;line-height:1.45;letter-spacing:-.03em;font-weight:900}
+.pmsg b em{color:var(--red2)}
+.chain{display:flex;flex-wrap:wrap;align-items:center;gap:5px;margin-top:8px;justify-content:center}
+.chain span{font-size:10px;font-weight:700;padding:5px 8px;border-radius:7px;background:#16191e;color:#8d9097;transition:background .25s,color .25s}
+.chain span.on{background:#e9f9ef;color:#0d1a12}
+.chain i{font-style:normal;color:#50545b;font-size:10px}
+.bench{display:flex;gap:6px;justify-content:center;min-height:0;margin-top:8px;flex-wrap:wrap}
+.bench .b{font-size:10px;font-weight:700;border:1px dashed #555a63;border-radius:999px;padding:6px 10px;color:#c9cbd0;animation:benchIn .45s var(--ease)}
+.bench .b small{color:var(--mut);font-weight:500;margin-left:4px}
+@keyframes benchIn{from{opacity:0;transform:translateY(-8px)}}
+.panel{border:1px solid var(--line);background:var(--card);border-radius:14px;padding:14px 15px}
+.panel .tagline{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:8px}
+.tag{font-size:10px;font-weight:700;border-radius:999px;padding:4px 8px;background:#22252b;color:#d0d2d6}
+.tag.scn{background:#3b2a12;color:#ffd79a}
+.tag.obs{background:#133022;color:#bfeccf}
+.panel .copy{font-size:17px;font-weight:900;line-height:1.45;letter-spacing:-.035em;margin:0}
+.panel .gc{display:grid;grid-template-columns:auto 1fr;gap:6px 10px;margin-top:10px;font-size:12px;line-height:1.5;color:#b9bbc0}
+.panel .gc dt{font-weight:700;color:#e9eaee}
+.panel .gc dd{margin:0}
+.panel .gc dt.g{color:#9ce8bd}.panel .gc dt.k{color:#ffb3b7}
+.panel .hint{font-size:12px;color:#ffd79a;margin:8px 0 0;min-height:0}
+.ctrl{display:flex;gap:8px;flex-wrap:wrap}
+.chip{flex:1;min-width:88px;border:1px solid #33373e;background:#14161a;border-radius:12px;padding:10px 8px;text-align:center;font-size:12px;font-weight:900;letter-spacing:.02em}
+.chip small{display:block;font-size:10px;font-weight:500;opacity:.7;margin-top:2px;letter-spacing:0}
+.chip[aria-pressed="true"]{background:var(--fg);color:#111;border-color:var(--fg)}
+.chip.hot{border-color:var(--red2);background:#2a1215}
+.chip.hot[aria-pressed="true"]{background:var(--red);color:#fff}
+.chip:disabled{opacity:.4;cursor:not-allowed}
+.rolepick{display:flex;gap:6px;flex-wrap:wrap;align-items:center;font-size:11px;color:var(--mut)}
+.rolepick button{border:1px solid #2c3036;background:transparent;border-radius:8px;padding:5px 8px;font-size:11px;color:#c8cace}
+.rolepick button small{display:block;font-size:10px;opacity:.7;font-weight:500;margin-top:2px}
+.jump{display:flex;align-items:center;justify-content:space-between;gap:12px;width:100%;margin-top:14px;padding:14px 16px;border:1px solid #ff5a6166;border-radius:14px;background:linear-gradient(90deg,#2a1215,#16181d);text-align:left;text-decoration:none}
+.jump b{display:block;font-size:16px;letter-spacing:-.03em}.jump span{font-size:12px;color:#c9cbd0}.jump i{font-style:normal;font-size:22px;color:var(--red2)}
+.chip.lock{opacity:.55;border-style:dashed}
+.chip.lock small:after{content:" · 우측에서만"}
+.tag.mix{background:#2a2a12;color:#f1e39b}
+.ev-badge[data-kind="mix"] i{background:var(--amber)}.ev-badge[data-kind="virtual"] i{background:#ff8a4c}
+.panel .fi{display:grid;grid-template-columns:auto 1fr;gap:4px 10px;margin:10px 0 0;font-size:11.5px;line-height:1.5;color:#a9abb1;border-top:1px solid #262a31;padding-top:8px}
+.panel .fi dt{font-weight:700;color:#cfd1d6}
+.rolepick button[aria-pressed="true"]{border-color:#fff;color:#fff;background:#ffffff14}
+.evpop{position:absolute;z-index:8;right:0;top:40px;width:min(320px,100%);background:#0d0f13f5;border:1px solid #3a3e46;border-radius:12px;padding:12px 13px;font-size:12px;line-height:1.55;color:#c9cbd0;box-shadow:0 18px 40px #000a;display:none}
+.evpop.open{display:block}
+.evpop b{color:#fff}
+.evpop .ids{margin:6px 0;display:flex;gap:4px;flex-wrap:wrap}
+.evpop .ids span{font-size:10px;font-weight:700;background:#22252b;border-radius:6px;padding:3px 6px}
+.evpop button{margin-top:8px;border:1px solid #3a3e46;background:transparent;border-radius:8px;padding:6px 9px;font-size:11px}
+.sacbox{display:none;margin-top:10px}
+.sacbox.on{display:block}
+.sacbox h4{margin:0 0 8px;font-size:17px;letter-spacing:-.03em;color:#ffd0d3}
+.sacbox .opts{display:grid;gap:7px}
+.sacbox .opts button{text-align:left;border:1px solid #4a2427;background:#1d1113;border-radius:11px;padding:10px 12px;font-size:12px;line-height:1.5;color:#e6d4d5}
+.sacbox .opts button b{color:#fff;font-size:13px}
+.sacbox .fine{font-size:11px;color:var(--dim);margin-top:8px}
+
+@media(min-width:900px){
+  .lab-grid.two{grid-template-columns:minmax(0,560px) minmax(0,1fr);align-items:start;column-gap:36px}
+  .lab-grid.two .side{position:sticky;top:84px}
+  .pitch{width:min(100%,calc(76svh*68/105),560px)}
+}
+
+/* ---------- STORY SECTIONS ---------- */
+.sec{position:relative;padding:clamp(70px,12vh,130px) 0}
+.photo-bleed{position:relative;min-height:88svh;display:flex;align-items:flex-end;overflow:hidden;isolation:isolate}
+.photo-bleed>img{position:absolute;inset:-5% 0;width:100%;height:110%;object-fit:cover;z-index:-2;transform:translate3d(0,calc((var(--sp,.5) - .5)*-60px),0)}
+.photo-bleed:after{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(180deg,var(--bg) 0,#08090b33 22%,#08090b40 50%,#08090bf0 86%,var(--bg))}
+.photo-bleed .wrap{padding-bottom:clamp(40px,8vh,90px)}
+.counter-row{display:flex;gap:clamp(14px,4vw,34px);margin-top:26px;flex-wrap:wrap}
+.counter-row div{min-width:74px}
+.counter-row b{display:block;font-size:clamp(34px,9vw,58px);font-weight:900;letter-spacing:-.06em;line-height:1}
+.counter-row span{font-size:11px;color:var(--mut)}
+
+/* photo → board */
+.p2b{position:relative;width:min(980px,100%);margin:34px auto 0;border-radius:16px;overflow:hidden;aspect-ratio:3/2;background:#0b2a1f}
+.p2b img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:filter 1.1s ease,opacity 1.2s ease,transform 1.6s var(--ease)}
+.p2b .grid{position:absolute;inset:0;opacity:0;transition:opacity 1.1s ease .9s;background:repeating-linear-gradient(90deg,#10382acc 0 10%,#134131cc 10% 20%)}
+.p2b svg{position:absolute;inset:0;width:100%;height:100%}
+.p2b .ring{fill:none;stroke:#fff;stroke-width:2;opacity:0;transform-box:fill-box;transform-origin:center;transform:scale(1.6);transition:opacity .5s,transform .6s var(--ease)}
+.p2b .ring.opp{stroke:#ffb3b7;stroke-dasharray:6 5}
+.p2b .plab{fill:#fff;font-size:14px;font-weight:900;opacity:0;transition:opacity .5s;paint-order:stroke;stroke:#000;stroke-width:3px;padding:0}
+.p2b .pl{stroke:#fff;stroke-width:1.6;stroke-dasharray:5 6;opacity:0;transition:opacity .5s}
+.p2b .node{opacity:0;transition:opacity .6s}
+.p2b.s1 img{filter:saturate(.35) brightness(.55)}
+.p2b.s1 .ring{opacity:1;transform:scale(1)}
+.p2b.s1 .plab{opacity:1}
+.p2b.s2 .pl{opacity:.9}
+.p2b.s3 img{opacity:.14;transform:scale(1.04)}
+.p2b.s3 .grid{opacity:1}
+.p2b.s3 .node{opacity:1}
+.p2b .stage{position:absolute;left:12px;bottom:10px;font-size:10px;font-weight:700;letter-spacing:.12em;color:#fff;background:#0009;border-radius:999px;padding:5px 9px}
+
+/* focus spotlight */
+.focus{position:relative;border-radius:16px;overflow:hidden;aspect-ratio:3/2;margin-top:30px}
+.focus img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.focus .base{filter:grayscale(.85) brightness(.4)}
+.focus .spot{clip-path:circle(0% at var(--fx) var(--fy));transition:clip-path 1.2s var(--ease)}
+.focus.in .spot{clip-path:circle(var(--fr) at var(--fx) var(--fy))}
+.focus .tagp{position:absolute;left:var(--tx);top:var(--ty);transform:translate(-50%,-50%);font-size:11px;font-weight:900;letter-spacing:.12em;background:#fff;color:#111;border-radius:999px;padding:5px 9px;opacity:0;transition:opacity .5s 1s}
+.focus.in .tagp{opacity:1}
+.duo{display:grid;gap:22px;align-items:center}
+@media(min-width:900px){.duo{grid-template-columns:1fr 1fr;gap:48px}.duo.rev>:first-child{order:2}}
+.portrait{position:relative;border-radius:16px;overflow:hidden;aspect-ratio:4/5}
+.portrait img{width:100%;height:100%;object-fit:cover;transform:scale(1.08);transition:transform 1.6s var(--ease)}
+.portrait.in img{transform:scale(1)}
+.portrait .num{position:absolute;right:-.06em;bottom:-.2em;font-size:clamp(160px,42vw,320px);font-weight:900;letter-spacing:-.08em;color:#fff;opacity:.12;line-height:1;pointer-events:none}
+.portrait:after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,#0000 55%,#08090bcc)}
+.caution{margin-top:18px;border-left:3px solid var(--amber);padding:6px 0 6px 12px;font-size:12px;line-height:1.6;color:#d6c79c}
+.subs{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}
+.subs span{font-size:11px;font-weight:700;border-radius:8px;padding:6px 9px}
+.subs .out{background:#2a1215;color:#ffb3b7}
+.subs .in{background:#12291d;color:#bfeccf}
+.mini .pitch{width:min(100%,380px)}
+
+/* question flip */
+.flip .q1{background:linear-gradient(var(--red2),var(--red2)) 0 58%/0% .08em no-repeat;-webkit-box-decoration-break:clone;box-decoration-break:clone;transition:background-size 1s var(--ease) .4s}
+.flip.in .q1{background-size:100% .08em}
+.flip .q2{opacity:0;transform:translateY(14px);transition:opacity .7s 1.3s,transform .7s 1.3s}
+.flip.in .q2{opacity:1;transform:none}
+
+/* result */
+.result{border:1px solid #33363d;border-radius:18px;background:linear-gradient(160deg,#16181d,#101216);padding:18px;display:grid;gap:16px}
+@media(min-width:900px){.result{grid-template-columns:300px 1fr;padding:26px;gap:30px;align-items:center}}
+.result .mini .pitch{width:100%;max-width:300px}
+.result h3{margin:0;font-size:26px;letter-spacing:-.05em}
+.result h3 em{color:var(--red2)}
+.rrow{display:grid;grid-template-columns:92px 1fr;gap:10px;border-top:1px solid #262930;padding:11px 0;font-size:14px;line-height:1.5}
+.rrow:first-of-type{border-top:0}
+.rrow span:first-child{color:var(--mut);font-size:12px}
+.rrow b{font-weight:900}
+.ractions{display:flex;gap:8px;flex-wrap:wrap;margin-top:6px}
+.ractions button{flex:1;min-width:120px;border:1px solid #3a3e46;background:#16181d;border-radius:11px;padding:11px;font-size:12px;font-weight:900}
+.ractions button.pri{background:var(--fg);color:#111}
+
+/* ending */
+.ending{position:relative;min-height:100svh;display:flex;align-items:flex-end;overflow:hidden;text-align:center;isolation:isolate}
+.ending>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 40%;z-index:-2}
+.ending:after{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(180deg,var(--bg) 0,#08090b55 30%,#3a0c10dd 78%,#1a0608)}
+.ending .wrap{padding-bottom:70px}
+.ending .teams{font-size:12px;letter-spacing:.22em;color:#e0c9ca;font-weight:700}
+.ending h2{font-size:clamp(78px,24vw,190px);letter-spacing:-.08em;margin:12px 0 4px;line-height:.9}
+.ending h2 em{color:var(--red)}
+.ending p.cap{font-size:11px;line-height:1.6;letter-spacing:0}
+.ending p{font-size:clamp(18px,4.6vw,26px);line-height:1.55;letter-spacing:-.03em;margin:14px 0 0}
+.puzzle{width:min(520px,100%);margin:34px auto 0;aspect-ratio:3/2;border-radius:14px;overflow:hidden;opacity:0;transform:translateY(24px) scale(.97);transition:opacity .8s,transform 1s var(--ease);box-shadow:0 24px 60px #0009}
+.puzzle.in{opacity:1;transform:none}
+.puzzle img{width:100%;height:100%;object-fit:cover;object-position:40% 35%}
+
+/* brand banner + footer (편집# 공통 형식) */
+.editor-note{position:relative;min-height:max(620px,90svh);padding:clamp(42px,5vw,78px) var(--pad);display:flex;overflow:hidden;background:#000 url('../shelter/images/ending.webp') center/cover no-repeat}
+.editor-note:before{content:"";position:absolute;inset:0;background:linear-gradient(90deg,#000000e6,#00000080 60%,#0000004d)}
+.editor-copy{position:relative;z-index:2;width:min(560px,100%);display:flex;flex-direction:column;align-items:flex-start}
+.editor-kicker{font-size:clamp(15px,1.3vw,20px);line-height:1.8;color:#b7bbbd}
+.editor-kicker strong{display:block;color:#fff}
+.editor-title{margin:clamp(42px,6vh,74px) 0 0;font-size:clamp(62px,9vw,118px);font-weight:900;line-height:.82;letter-spacing:-.08em;display:flex;flex-direction:column}
+.editor-title .mint{color:var(--mint)}
+.editor-body{margin-top:clamp(40px,6vh,70px);font-size:clamp(14px,1.25vw,19px);line-height:2;color:#c5c7c8}
+.editor-body strong{color:#fff}
+.editor-byline{margin-top:24px;font-size:11px;color:#a4a7a8}
+.editor-link{margin-top:auto;padding-top:30px;color:#7f888b;text-decoration:none;font-size:9px;letter-spacing:.2em}
+.editor-mark{position:absolute;right:-2vw;bottom:-.16em;font-size:clamp(130px,21vw,390px);font-weight:900;letter-spacing:-.1em;color:#ffffff09;white-space:nowrap}
+footer.foot{display:flex;flex-wrap:wrap;gap:10px 24px;justify-content:space-between;padding:22px var(--pad) 90px;font-size:10px;letter-spacing:.08em;color:#6d7178;border-top:1px solid #1a1c20}
+
+/* methodology drawer */
+.mbtn{position:fixed;left:12px;bottom:calc(12px + env(safe-area-inset-bottom));z-index:40;border:1px solid #3d4149;background:#0e1014ee;border-radius:999px;padding:10px 13px;font-size:11px;font-weight:900;box-shadow:0 8px 24px #0008;-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)}
+.mbtn{transition:transform .3s var(--ease),opacity .3s}.mbtn.hide{transform:translateY(90px);opacity:0}
+.drawer-bg{position:fixed;inset:0;z-index:60;background:#000a;opacity:0;pointer-events:none;transition:opacity .3s}
+.drawer-bg.open{opacity:1;pointer-events:auto}
+.drawer{position:fixed;left:0;right:0;bottom:0;z-index:61;max-height:82svh;overflow:auto;-webkit-overflow-scrolling:touch;overscroll-behavior:contain;background:#101216;border-top:1px solid #33363d;border-radius:18px 18px 0 0;padding:18px var(--pad) calc(28px + env(safe-area-inset-bottom));transform:translateY(105%);transition:transform .35s var(--ease)}
+.drawer.open{transform:none}
+.drawer .in{width:min(860px,100%);margin:0 auto}
+.drawer .dh{display:flex;justify-content:space-between;align-items:center;position:sticky;top:-18px;background:#101216;padding:6px 0 10px;z-index:2}
+.drawer h3{margin:0;font-size:21px;letter-spacing:-.04em}
+.drawer h4{margin:22px 0 8px;font-size:14px;color:#e9eaee}
+.drawer p{font-size:13px;line-height:1.7;color:#b9bbc0;margin:0}
+.drawer .x{border:1px solid #3a3e46;background:transparent;border-radius:999px;width:36px;height:36px;font-size:16px}
+.stbl{width:100%;border-collapse:collapse;font-size:12px}
+.stbl td,.stbl th{border-top:1px solid #25282e;padding:8px 6px;text-align:left;vertical-align:top;line-height:1.5}
+.stbl td:nth-child(2){white-space:nowrap}.stbl th{color:var(--mut);font-weight:700;font-size:11px}
+.src{border-top:1px solid #25282e;padding:10px 0;font-size:12px;line-height:1.55;color:#b9bbc0}
+.src b{color:#fff}
+.src a{color:#9fd3ff;word-break:break-all;font-size:11px}
+.src:target,.src.flash{background:#1a2230}
+
+@media(prefers-reduced-motion:reduce){
+  *,*:before,*:after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;transition-delay:0ms!important;scroll-behavior:auto!important}
+  .layer{transition:none!important}
+  .hero .ph img,.photo-bleed>img{transform:none!important}
+}
+</style>
+<link rel="stylesheet" href="../assets/visual-header.css?v=20260828-5">
+<link rel="stylesheet" href="../assets/editshop-carousel.css?v=20260826-3">
+<script defer src="../assets/visual-header.js?v=20260915-onepoint-1" data-section="편집#" data-section-href="https://visual.newsis.com/editshop/" data-current="editshop" data-header-theme="dark"></script>
+<script defer src="../assets/editshop-carousel.js?v=20260919-2" data-current="atleti-2gang"></script>
+</head>
+<body>
+<main>
+
+<!-- ================= HERO ================= -->
+<section class="hero" id="hero">
+  <div class="ph"><img data-slot="hero" src="images/hero-derby-bellingham.jpg" alt="레알 마드리드전에서 상대 선수와 몸싸움하며 공을 지키는 이강인" fetchpriority="high"></div>
+  <div class="stripes" aria-hidden="true"></div>
+  <div class="hero-copy">
+    <div class="kick red">편집# · INTERACTIVE</div>
+    <h1 id="heroTitle"><span class="l1">AT, 라리가</span><em>2강 IN</em></h1>
+    <h2>이강인을 움직이면<br>누가 살아날까?</h2>
+    <a class="cta" href="#lab">이강인을 움직여보세요. <i aria-hidden="true">↓</i></a>
+    <div class="table7" aria-label="라리가 7라운드 뒤 순위"><span>LALIGA 7R</span><span><b>1</b>바르셀로나 21</span><span class="me"><b>2</b>AT 16</span><span><b>3</b>레알 15</span></div>
+    <div class="by">기획·디렉터 = 안재현 기자 · 순위는 9월 20일 레알전 직후 기준</div>
+  </div>
+</section>
+
+<!-- ================= LAB ① ================= -->
+<section class="lab" id="lab" aria-labelledby="labTitle">
+  <div class="lab-grid two">
+    <div>
+      <div class="lab-head"><h3 id="labTitle"><small>직접 해보기 1 · 이강인 자리</small>이강인을 끌어서 옮겨보세요</h3></div>
+      <div id="board1" style="margin-top:10px"></div>
+    </div>
+    <div class="side">
+      <div class="panel" id="panel1" aria-live="polite"></div>
+      <p class="note" style="margin-top:10px">여기서는 <b style="color:#fff">이강인의 자리</b>만 바꿉니다. 최전방은 아래 ‘직접 해보기 2’에서 바꿉니다.</p>
+      <div class="rolepick" style="margin-top:10px" role="group" aria-label="이강인 위치 선택(키보드·보조 조작)">
+        <span>이강인 자리</span>
+        <button data-role="RIGHT" aria-pressed="true">우측 안쪽<small>오른쪽에서 안으로 좁혀 연결</small></button>
+        <button data-role="TEN" aria-pressed="false">중앙 10번<small>가운데서 패스 뿌리기</small></button>
+        <button data-role="SS" aria-pressed="false">세컨드 스트라이커<small>공격수 바로 뒤</small></button>
+      </div>
+      <p class="note">선수 위치는 최근 경기 보도와 감독 발언을 토대로 그린 전술 그림입니다. 실제 위치 추적 데이터는 아닙니다.</p>
+      <a class="jump" href="#both2"><div><b>그럼 데이비드와 훌리안을 둘 다 넣으면?</b><span>12명이 되는 순간, 누군가는 빠져야 합니다</span></div><i>↓</i></a>
+    </div>
+  </div>
+</section>
+
+<!-- ================= FIRST WOW ================= -->
+<section class="photo-bleed" data-par style="min-height:72svh">
+  <img data-slot="wow" src="images/celebrate-barrios.jpg" alt="득점 뒤 동료 바리오스와 기뻐하는 이강인" loading="lazy" style="object-position:38% 40%">
+  <div class="wrap">
+    <p class="big">한 명을 움직이면<br><em>팀 전체</em>가 움직입니다.</p>
+    <p class="sub">이강인이 자리를 옮기면 옆 선수는 빈 곳을 메우고,<br><b>공이 오가는 길도 달라집니다.</b></p>
+    <div class="counter-row" aria-label="세비야전 룩맨 득점 장면">
+      <div><b>9</b><span>명</span></div>
+      <div><b>22</b><span>패스</span></div>
+      <div><b>74</b><span>초</span></div>
+    </div>
+    <p class="note">8월 30일 세비야전(3-1). 룩맨의 골이 나오기까지 아홉 명이 74초 동안 22번 공을 주고받았습니다.<a class="src-l" href="#" data-src="S01">AS ↗</a></p>
+    <a class="prev-link" href="../kangin/"><b>편집# 「120%의 이강인」</b> 8월엔 이강인 한 명이 여는 공격 길을 봤습니다. 이번엔 팀 전체입니다 ↗</a>
+  </div>
+</section>
+
+<section class="sec" style="padding-top:30px">
+  <div class="wrap">
+    <div class="kick">01 · 경기에서 전술판으로</div>
+    <p class="big" style="font-size:clamp(26px,6.4vw,44px);margin-top:10px">리버풀전 한 장면을<br>전술판에 옮겨봤습니다</p>
+    <div class="p2b" id="p2b">
+      <img data-slot="p2b" src="images/board-liverpool-ucl.jpg" alt="리버풀전에서 두 명의 상대 수비 사이에서 공을 지키는 이강인" loading="lazy">
+      <div class="grid" aria-hidden="true"></div>
+      <svg viewBox="0 0 300 200" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+        <line class="pl" x1="155" y1="92" x2="66" y2="110"/>
+        <line class="pl" x1="155" y1="92" x2="226" y2="108"/>
+        <line class="pl" x1="155" y1="92" x2="156" y2="168"/>
+        <circle class="ring" cx="155" cy="80" r="24"/>
+        <circle class="ring opp" cx="66" cy="100" r="20"/>
+        <circle class="ring opp" cx="226" cy="100" r="22"/>
+        <text class="plab" x="155" y="46" text-anchor="middle">LEE</text>
+        <text class="plab" x="66" y="70" text-anchor="middle">상대</text>
+        <text class="plab" x="226" y="68" text-anchor="middle">상대</text>
+        <g class="node"><circle cx="155" cy="92" r="11" fill="#f6f4ef" stroke="#fff" stroke-width="2"/><circle cx="66" cy="110" r="8" fill="none" stroke="#e9e9ef" stroke-width="2"/><circle cx="226" cy="108" r="8" fill="none" stroke="#e9e9ef" stroke-width="2"/><circle cx="156" cy="168" r="4" fill="#fff"/></g>
+      </svg>
+      <div class="stage" id="p2bStage">MATCH</div>
+    </div>
+    <p class="cap"><b>사진</b> 챔피언스리그 리버풀전의 이강인. 사진 위 점과 선은 이해를 돕기 위한 그래픽입니다. 사진=뉴시스</p>
+  </div>
+</section>
+
+<!-- ================= RIGHT / DAVID ================= -->
+<section class="sec">
+  <div class="wrap duo">
+    <div>
+      <div class="kick">02 · 이강인과 9번</div>
+      <p class="big" style="margin-top:10px">이강인은 안으로,<br>9번은 골문 앞으로.<br><em>오른쪽 측면</em>이 빕니다.</p>
+      <p class="note"><span class="tag obs">근거 강</span> 실제 경기에서 확인된 역할로 구성</p>
+      <p class="sub" style="font-size:14px">스페인 AS는 8월 30일 세비야전(3-1) 뒤 이강인·바에나·바리오스·휼만을 '마법의 사각형'이라고 불렀습니다. 이강인은 오른쪽에서 공격을 풀어갔고, 그 바깥으로는 줄리아노가 달렸습니다.<a class="src-l" href="#" data-src="S02">AS 평점 ↗</a></p>
+    </div>
+    <div>
+      <div class="focus" id="focus1" style="--fx:42%;--fy:50%;--fr:26%;--tx:42%;--ty:14%">
+        <img class="base" src="images/villarreal-shield.jpg" alt="" aria-hidden="true" loading="lazy">
+        <img class="spot" data-slot="focus" src="images/villarreal-shield.jpg" alt="상대 선수의 압박을 등지고 공을 지키는 이강인" loading="lazy">
+        <span class="tagp">LEE · INSIDE RIGHT</span>
+      </div>
+      <p class="cap"><b>사진</b> 상대 압박을 버티며 공을 지키는 이강인. 사진=뉴시스</p>
+    </div>
+  </div>
+</section>
+
+<!-- ================= TRUE 9 REVEAL ================= -->
+<section class="photo-bleed" data-par style="min-height:62svh">
+  <img data-slot="chapter-simeone" src="images/simeone-sideline.jpg" alt="터치라인에서 선수들에게 지시하는 디에고 시메오네 감독" loading="lazy" style="object-position:52% 22%">
+  <div class="wrap">
+    <div class="kick red">03 · 새로운 시도</div>
+    <p class="big" style="margin-top:10px">AT는<br>이미 <em>새로운 시도</em>를 해봤습니다.</p>
+    <p class="cap" style="margin-top:14px">디에고 시메오네 감독(자료사진). 사진=뉴시스</p>
+  </div>
+</section>
+
+<section class="sec" style="padding-top:40px">
+  <div class="wrap duo">
+    <div>
+      <p class="sub" style="margin-top:0;font-size:clamp(17px,2vw,21px);color:#e3e4e7;line-height:1.75">9월 13일 <b>레알 소시에다드 원정.</b><br>시메오네는 이강인과 바에나를 빼고<br>조나선 데이비드를 넣었습니다.</p>
+      <div class="quote small"><q>룩맨과 이강인이 함께 뛴 시간이 더 많아서 조나선에게는 선발이 아니라고 말해줬다.</q><span class="who">디에고 시메오네 감독, 9월 13일 경기 뒤<a class="src-l" href="#" data-src="S12">ESPN ↗</a></span></div>
+      <div class="quote"><q>조나선은 우리에게 깊이를 준다. 그게 팀에 다른 무언가를 더해준다.</q><span class="who">같은 날 시메오네 감독. 데이비드는 후반 교체로 들어가 90분에 골을 넣었다. 인용은 ESPN 영문 보도를 우리말로 옮긴 것.<a class="src-l" href="#" data-src="S12">ESPN ↗</a></span></div>
+      <div class="subs" aria-label="9월 13일 레알 소시에다드전 교체">
+        <span class="out">OUT 이강인</span><span class="out">OUT 바에나</span><span class="out">OUT 요렌테</span>
+        <span class="in">IN 코케</span><span class="in">IN 카르도주</span><span class="in">IN 데이비드</span>
+      </div>
+      <p class="caution">※ 이날 교체 세 장이 한꺼번에 나왔습니다. 달라진 경기력을 데이비드 한 명의 효과로 보기는 어렵습니다.</p>
+
+    </div>
+    <div>
+      <div class="portrait" id="socPhoto" style="aspect-ratio:4/5">
+        <img data-slot="sociedad" src="images/sociedad-away.jpg" alt="원정 경기에서 공을 차는 검은 원정 유니폼의 이강인" loading="lazy" style="object-position:50% 38%">
+      </div>
+      <p class="cap"><b>사진</b> 원정 유니폼을 입고 공을 다루는 이강인. 사진=뉴시스</p>
+      <p class="note">레알 소시에다드 0-3 아틀레티코. AS는 교체 뒤 휼만과 카르도주가 뒤를 받치고, 그 앞에 코케, 맨 앞에 '진짜 9번' 데이비드가 선 구조를 짚었습니다.<a class="src-l" href="#" data-src="S04">AS ↗</a></p>
+    </div>
+  </div>
+</section>
+
+<!-- ================= DAVID FORM ================= -->
+<section class="photo-bleed" data-par style="min-height:70svh">
+  <img data-slot="osasuna" src="images/osasuna-duel.jpg" alt="오사수나전에서 상대 수비와 공을 다투는 이강인" loading="lazy" style="object-position:28% 40%">
+  <div class="wrap">
+    <div class="kick red">04 · 데이비드의 세 경기</div>
+    <p class="big" style="margin-top:10px">데이비드는 리그 데뷔 뒤<br><em>세 경기 연속 골</em>을<br>넣었습니다.</p>
+    <div class="counter-row">
+      <div><b>3</b><span>경기 연속 골</span></div>
+      <div><b>7<small style="font-size:.45em">번째</small></b><span>구단 역대 순번</span></div>
+    </div>
+    <p class="sub">리그 첫 세 경기에서 모두 골을 넣은 선수는<br>AT 역사에서 그가 일곱 번째입니다.</p>
+    <p class="note">소시에다드·오사수나·레알전 연속 득점(아틀레티코 마드리드 공식 발표<a class="src-l" href="#" data-src="S10">구단 ↗</a>). 9월 16일 오사수나전(4-0)에선 이강인도 골맛을 봤습니다. 사진은 오사수나전의 이강인. 사진=뉴시스</p>
+  </div>
+</section>
+
+<!-- ================= JULIÁN TURN + BOTH ================= -->
+<section class="sec" id="both">
+  <div class="wrap">
+    <div class="kick">05 · 훌리안이라는 변수</div>
+    <p class="big" style="margin-top:10px">그럼 훌리안은<br><em>벤치에 둬야 할까요?</em></p>
+    <p class="sub">데이비드와 훌리안은 스타일이 다릅니다.<br><b>누가 최전방에 서느냐에 따라 이강인이 뛸 자리도 달라집니다.</b></p>
+  </div>
+  <div class="lab" style="background:none;padding-top:26px">
+    <div class="lab-grid two">
+      <div>
+        <div class="lab-head" id="both2"><h3><small>직접 해보기 2 · 최전방</small>최전방을 바꿔보세요</h3></div>
+        <p class="note" id="b2lock" style="margin-top:6px">이강인은 ‘직접 해보기 1’에서 고른 자리에 있습니다.</p>
+        <div id="board2" style="margin-top:10px"></div>
+      </div>
+      <div class="side">
+        <div class="panel" id="panel2" aria-live="polite"></div>
+        <div class="ctrl" style="margin-top:10px" role="group" aria-label="최전방 선택">
+          <button class="chip" data-front2="DAVID" aria-pressed="true">데이비드<small>골문 앞 마무리</small></button>
+          <button class="chip" data-front2="JULIAN" aria-pressed="false">훌리안<small>내려와서 연결</small></button>
+          <button class="chip hot" data-front2="BOTH" aria-pressed="false">둘 다<small>함께 세우기</small></button>
+        </div>
+        <div class="sacbox" id="sacbox" role="group" aria-labelledby="sacTitle">
+          <h4 id="sacTitle">한 명이 넘칩니다. 누구를 뺄까요?</h4>
+          <div class="opts">
+            <button data-sac="baena"><b>BAENA를 빼면</b><br>공격을 풀어줄 선수가 한 명 줄어듭니다.</button>
+            <button data-sac="giuliano"><b>GIULIANO를 빼면</b><br>오른쪽 측면을 달릴 선수가 없어집니다.</button>
+            <button data-sac="barrios"><b>중원 한 명을 빼면</b><br>공격은 두꺼워지지만 수비 균형이 흔들립니다.</button>
+          </div>
+          <p class="fine">※ 선수 실력을 따지자는 게 아니라, 어떤 역할을 내려놓을지 고르는 겁니다. 깜빡이는 선수를 직접 눌러도 됩니다.</p>
+        </div>
+        <div class="ctrl" style="margin-top:10px"><button class="chip" id="repick2" hidden style="flex:0 0 auto;min-width:0;padding:9px 12px;font-weight:700">↺ 다른 선수로 다시 고르기</button><button class="chip" id="reset2" hidden style="flex:0 0 auto;min-width:0;padding:9px 12px;font-weight:700">11명으로 되돌리기</button></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= REAL MODE ================= -->
+<section class="sec" id="real" style="padding-bottom:40px">
+  <div class="wrap duo rev">
+    <div class="portrait" id="realPhoto">
+      <img data-slot="real" src="images/real-duel-portrait.jpg" alt="레알 마드리드전에서 상대 선수와 엉켜 공을 다투는 이강인" loading="lazy" style="object-position:40% 40%">
+      <span class="num" aria-hidden="true">R</span>
+    </div>
+    <div>
+      <div class="kick red">06 · 상대가 레알이라면</div>
+      <p class="big" style="margin-top:10px">같은 선수들이라도<br>상대가 바뀌면<br><em>공략법이 바뀝니다.</em></p>
+      <p class="sub" style="font-size:14px">9월 20일 메트로폴리타노 더비. AT는 레알을 2-1로 꺾고 2위로 올라섰습니다. 엘파이스는 시메오네가 레알의 왼쪽을 집요하게 노렸다고 분석했습니다.<a class="src-l" href="#" data-src="S08">엘파이스 ↗</a></p>
+      <p class="cap"><b>사진</b> 9월 20일 레알 마드리드전(2-1)의 이강인. 사진=뉴시스</p>
+    </div>
+  </div>
+  <div class="lab" style="background:none;padding-top:30px">
+    <div class="lab-grid two">
+      <div>
+        <div class="board-bar" style="justify-content:flex-start;gap:10px">
+          <span class="kick" style="letter-spacing:.1em">직접 해보기 3 · 상대</span><div class="seg" role="group" aria-label="상대 선택"><button data-opp="mine" aria-pressed="true">나의 AT</button><button data-opp="real" aria-pressed="false">REAL</button></div>
+        </div>
+        <div id="board3"></div>
+      </div>
+      <div class="side">
+        <div class="panel" id="panel3" aria-live="polite"></div>
+        <div class="ctrl" id="realSteps" style="margin-top:10px;display:none">
+          <button class="chip" id="rPrev" style="flex:0 0 auto;min-width:54px">‹</button>
+          <button class="chip" id="rPlay">▶ 처음부터 재생</button>
+          <button class="chip" id="rNext" style="flex:0 0 auto;min-width:54px">›</button>
+        </div>
+        <p class="note">경기를 그대로 재현한 게 아니라 흐름을 풀어 그린 해설입니다. 한 선수의 공으로 돌리지 않고, 상대의 약점과 팀 배치가 함께 만든 장면으로 봤습니다.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= QUESTION FLIP ================= -->
+<section class="photo-bleed flip" id="flip" data-par style="min-height:96svh">
+  <img data-slot="flip" src="images/simeone-lee-touchline.jpg" alt="경기 중 터치라인에서 이강인과 이야기하는 시메오네 감독" loading="lazy" style="object-position:60% 30%">
+  <div class="wrap">
+    <p class="sub" style="margin:0 0 12px;color:#e3e4e7">처음 질문은 이랬습니다.</p>
+    <p class="big"><span class="q1">이강인은 어디에<br>있어야 할까?</span></p>
+    <p class="sub">선수를 한 명씩 넣어보니<br>질문이 달라집니다.</p>
+    <p class="big q2" style="margin-top:14px">누구를 살리고,<br><em>무엇을 내려놓을까.</em></p>
+    <p class="cap" style="margin-top:18px">경기 중 이강인과 이야기하는 시메오네 감독. 사진=뉴시스</p>
+  </div>
+</section>
+
+<!-- ================= RESULT ================= -->
+<section class="sec" id="result">
+  <div class="wrap">
+    <div class="result">
+      <div id="boardRes" class="mini"></div>
+      <div>
+        <div class="kick red">07 · 내가 짠 AT</div>
+        <h3>내가 짠 <em>AT</em></h3>
+        <div style="margin-top:10px">
+          <div class="rrow"><span>이강인</span><b id="rRole">—</b></div>
+          <div class="rrow"><span>최전방</span><b id="rFront">—</b></div>
+          <div class="rrow"><span>얻은 것</span><b id="rGain">—</b></div>
+          <div class="rrow"><span>내려놓은 것</span><b id="rCost">—</b></div>
+          <div class="rrow"><span>근거</span><b id="rConf">—</b></div>
+        </div>
+        <p class="note" id="rNote"></p>
+        <div class="ractions">
+          <button class="pri" id="rShare">결과 공유하기</button>
+          <button id="rRetry">↺ 처음부터 다시</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= ENDING ================= -->
+<section class="ending">
+  <img data-slot="ending" src="images/ending-kangin-back.jpg" alt="등번호 7번 KANG IN 이름이 보이는 이강인이 동료와 포옹하는 뒷모습" loading="lazy">
+  <div class="wrap">
+    <p class="end-q">이강인을 움직이면 누가 살아날까?</p>
+    <p class="end-a">한 명이 아니었습니다.</p>
+    <p class="end-me" id="endMe">위에서 직접 AT를 짜보면, 이 자리에 당신이 내려놓은 것이 남습니다.</p>
+    <div class="teams" style="margin-top:44px">REAL · BARÇA · ATLETI</div>
+    <h2>2강 <em>IN</em></h2>
+    <p>레알을 끌어내리고 2위.<br>선두 바르셀로나와는 승점 5 차이입니다.</p>
+    <div class="nextgame"><small>NEXT · 2강 맞대결</small><b>11월 8일</b><span>바르셀로나전<br>메트로폴리타노 홈경기</span></div>
+    <figure class="puzzle" id="puzzle"><img data-slot="ending-simeone" src="images/simeone-wave-ucl.jpg" alt="관중석을 향해 손을 흔드는 디에고 시메오네 감독" loading="lazy"></figure>
+    <p style="font-size:clamp(16px,4vw,21px);color:#e8d7d8">시메오네의 고민은<br>이제부터 시작입니다.</p>
+    <p class="cap" style="margin-top:22px;color:#b8a4a5">순위=9월 20일 7라운드 직후(S13), 일정=라리가 공식 일정(S14). 디에고 시메오네 감독(자료사진). 사진=뉴시스<br>전술판 선수 얼굴=위키미디어 공용(CC BY-SA), 출처는 '근거·방법론'에 표기</p>
+  </div>
+</section>
+
+<section class="more"><div class="wrap"><a href="../editshop/">편집# 전체 시리즈 보기 ↗</a></div></section>
+
+<aside class="editor-note"><div class="editor-copy"><div class="editor-kicker">팩트 너머의 공감<strong>사실을 넘어 이야기로</strong></div><h2 class="editor-title"><span>뉴스를,</span><span class="mint">한 걸음 더</span></h2><div class="editor-body">매일 쏟아지는 기사<br>놓치고 있는 가치를 찾고<br>더 깊이, 더 쉽게, 더 오래<br><strong>편집#이 끌어올립니다.</strong><div class="editor-byline">기획·디렉터 = 안재현 기자</div></div><a class="editor-link" href="https://visual.newsis.com/editshop/">VISUAL NEWSIS · INTERACTIVE SERIES</a></div><div class="editor-mark" aria-hidden="true">편집#</div></aside>
+</main>
+<footer class="foot"><span>VISUAL NEWSIS · 편집# · INTERACTIVE SERIES</span><span>기획·디렉터 = 안재현 기자</span><span>© NEWSIS. ALL RIGHTS RESERVED.</span></footer>
+
+<!-- ================= METHODOLOGY DRAWER ================= -->
+<button class="mbtn" id="mBtn" aria-controls="drawer" aria-expanded="false">근거 · 방법론</button>
+<div class="drawer-bg" id="drawerBg"></div>
+<div class="drawer" id="drawer" role="dialog" aria-modal="true" aria-labelledby="drawerTitle" tabindex="-1">
+  <div class="in">
+    <div class="dh"><h3 id="drawerTitle">근거 · 방법론</h3><button class="x" id="mClose" aria-label="닫기">✕</button></div>
+    <p>이 기사는 경기 결과를 예측하거나 선수의 우열을 가리지 않습니다. 최근 경기 보도와 감독 발언에서 확인된 배치·역할을 바탕으로 전술을 다시 그렸고, 실제로 함께 뛴 적 없는 조합은 '전술 시나리오'로 따로 표시했습니다.</p>
+    <p style="margin-top:10px">경기장 위 선수 위치, 패스 선, 빗금 영역은 이해를 돕기 위한 그림입니다. 위치 추적 데이터나 히트맵이 아니며, 승률이나 점수 같은 수치도 쓰지 않았습니다.</p>
+    <h4>전술 상태별 근거 수준</h4>
+    <table class="stbl" id="stateTable"><thead><tr><th>상태</th><th>성격 (기획 단계 근거 수준)</th><th>출처</th></tr></thead><tbody></tbody></table>
+    <h4>이강인 출전 기록</h4>
+    <p>리그 7경기·챔피언스리그 1경기, 528분, 2골 1도움 (9월 24일 기준, AS·S11).</p>
+    <h4>출처</h4>
+    <div id="srcList"></div>
+    <h4>사진</h4>
+    <p id="photoCredits"></p>
+  </div>
+</div>
+
+<script>
+(()=>{
+'use strict';
+const $=(s,r=document)=>r.querySelector(s),$$=(s,r=document)=>[...r.querySelectorAll(s)];
+const RM=matchMedia('(prefers-reduced-motion: reduce)');
+const reduced=()=>RM.matches;
+
+/* ---------- ASSETS (사진 슬롯 · 추후 교체 지점) ----------
+   avatars: 선수 노드 안에 들어갈 얼굴 사진. null 이면 이름만 표시된다.
+   사진을 추가하려면 images/ 에 파일을 넣고 여기에 {src,pos} 만 추가하면 된다. */
+const ASSETS={
+  avatars:{
+    lee:{src:'images/faces/lee-newsis.jpg',pos:'50% 50%',size:'cover'},baena:{src:'images/faces/baena.jpg',pos:'50% 50%',size:'cover'},david:{src:'images/faces/david.jpg',pos:'50% 50%',size:'cover'},julian:{src:'images/faces/julian.jpg',pos:'50% 50%',size:'cover'},giuliano:{src:'images/faces/giuliano.jpg',pos:'50% 50%',size:'cover'},
+    llorente:{src:'images/faces/llorente.jpg',pos:'50% 50%',size:'cover'},pubill:{src:'images/faces/pubill.jpg',pos:'50% 50%',size:'cover'},cardoso:{src:'images/faces/cardoso.jpg',pos:'50% 50%',size:'cover'},koke:{src:'images/faces/koke.jpg',pos:'50% 50%',size:'cover'},lookman:{src:'images/faces/lookman.jpg',pos:'50% 50%',size:'cover'},hjulmand:{src:'images/faces/hjulmand.jpg',pos:'50% 50%',size:'cover'},
+    barrios:null
+  },
+  /* 위키미디어 공용 CC 라이선스 얼굴 사진 — 원본에서 얼굴 부분만 잘라 씀 */
+  faces:[
+    ['알렉스 바에나','Alex_Baena_France_v_Spain_7.24.26-024.jpg','Bryan Berlin','CC BY-SA 4.0'],
+    ['조나선 데이비드','Jonathan_David_Canada_v_Qatar_18_June_2026-242_(cropped).jpg','Bryan Berlin','CC BY-SA 4.0'],
+    ['훌리안 알바레스','Julian_Alvarez_Argentina_v_Spain_19_July_2026-052_(cropped).jpg','Bryan Berlin','CC BY-SA 4.0'],
+    ['줄리아노 시메오네','Giuliano_Simeone_Argentina_v_Spain_19_July_2026-268.jpg','Bryan Berlin','CC BY-SA 4.0'],
+    ['마르코스 요렌테','Marcos_Llorente_France_v_Spain_7.24.26-020.jpg','Bryan Berlin','CC BY-SA 4.0'],
+    ['마르크 푸빌','Marc_Pubill_Argentina_v_Spain_19_July_2026-312.jpg','Bryan Berlin','CC BY-SA 4.0'],
+    ['조니 카르도주','Johnny_Cardoso_USMNT_v_Belgium_Mar_28_2026-115_(cropped).jpg','Bryan Berlin','CC BY-SA 4.0'],
+    ['코케','Koke_2019_(cropped).jpg','Анна Нэсси','CC BY-SA 3.0'],
+    ['아데몰라 룩맨','Ademola_Lookman_(2019)_(cropped).jpg','Willibald11','CC BY-SA 4.0'],
+    ['모르텐 휼만','MortenHjulmandSporting24.jpg','Splinter1333','CC BY-SA 4.0']
+  ],
+  photos:[
+    ['hero-derby-bellingham.jpg','NISI20260921_0001594448','히어로 · 레알전'],
+    ['celebrate-barrios.jpg','NISI20260820_0021404596','챕터 전환 · 팀 전체'],
+    ['board-liverpool-ucl.jpg','NISI20260910_0001562760','실제 경기 → 전술판'],
+    ['villarreal-shield.jpg','NISI20260824_0021408286','선수 포커스 · 우측 안쪽'],
+    ['simeone-sideline.jpg','NISI20230730_0019978882','챕터 전환 · 트루 9'],
+    ['sociedad-away.jpg','NISI20260914_0002237854','전술 근거 · 소시에다드전'],
+    ['osasuna-duel.jpg','NISI20260917_0021441884','전술 근거 · 오사수나전'],
+    ['real-duel-portrait.jpg','NISI20260921_0021448028','REAL 모드'],
+    ['simeone-lee-touchline.jpg','NISI20260809_0021392993','질문 전환'],
+    ['ending-kangin-back.jpg','NISI20260820_0021404595','엔딩'],
+    ['simeone-wave-ucl.jpg','NISI20241212_0001701212','엔딩 · 시메오네'],
+  ]
+};
+
+/* ---------- SOURCES (SOURCE_LEDGER.csv) ---------- */
+const SOURCES={
+  S01:['AS','2026-08-30','Sin nueves, pero con dieces','https://as.com/futbol/primera/sin-nueves-pero-con-dieces-f202608-n/','세비야 1-3 AT. 휼만이 내려와 빌드업 시작, 바리오스 조율, 이강인·바에나 전진, 룩맨·줄리아노 침투. 점유율 58.3%, 룩맨 골은 9명·22패스·74초.'],
+  S02:['AS','2026-08-30','1x1 del Atlético: ... cuadrado mágico','https://as.com/futbol/primera/1x1-del-atletico-baena-barrios-kang-in-y-hjulmand-el-cuadrado-magico-f202608-n/','세비야전. 이강인은 오른쪽에서 공격 전개와 도움. 바에나·바리오스·휼만과 함께 조명. 최적 포지션의 증거는 아님.'],
+  S03:['AS','2026-09-13','Real Sociedad 0-3 Atlético live/report','https://as.com/futbol/primera/real-sociedad-atletico-de-madrid-en-directo-laliga-ea-sports-en-vivo-hoy-f202609-d/','시메오네가 바에나·이강인·요렌테를 빼고 코케·카르도주·데이비드 투입. "더 공격수다운 공격수의 위치"가 도움이 됐다고 발언.'],
+  S04:['AS','2026-09-13','Lo mejor, para el final','https://as.com/futbol/primera/lo-mejor-para-el-final-f202609-n/','교체 뒤 경기력 개선. 휼만-카르도주 더블 볼란치, 코케 전진, 데이비드 "진짜 9번". 단독 인과 추정은 아님.'],
+  S05:['AS','2026-09-16','1x1 ... Jonathan David cae de pie','https://as.com/futbol/primera/1x1-del-atletico-jonathan-david-cae-de-pie-y-cuti-es-un-muro-f202609-n/','오사수나 4-0. 데이비드 첫 선발, 룩맨과 투톱, 나흘 새 두 번째 골.'],
+  S06:['AS','2026-09-17','Kang-in Lee ya hace de Griezmann','https://as.com/futbol/primera/kang-in-lee-ya-hace-de-griezmann-f202609-n/','AS의 해석: 이강인이 그리즈만 같은 역할에 적응 중. 객관적 동일시가 아닌 인용 해석으로만 사용.'],
+  S07:['El País','2026-09-20','Atlético-Real Madrid live','https://elpais.com/deportes/futbol/2026-09-20/atletico-real-madrid-en-directo-el-partido-de-la-liga-en-vivo.html','레알전 선발에 줄리아노·요렌테·카르도주·바에나·이강인·데이비드. 데이비드가 훌리안 대신 선발. (다른 라인업 출처와 충돌 가능성 있음)'],
+  S08:['El País','2026-09-21','Así se impuso Simeone a Mourinho…','https://elpais.com/deportes/futbol/2026-09-21/asi-se-impuso-simeone-a-mourinho-en-el-derbi-la-penultima-leccion-de-koke-y-el-rompedor-giuliano-para-aprovechar-que-vinicius-no-baja-a-defender.html','시메오네가 레알의 왼쪽을 공략. 푸빌-요렌테-줄리아노 3인. 이강인은 약한 쪽에서 크로스성 슈팅. 코케가 빌드업을 바꿈. 이강인이 줄리아노의 움직임을 만들었다는 증거는 아님.'],
+  S09:['El País','2026-09-20','Huijsen condena al Madrid…','https://elpais.com/deportes/futbol/2026-09-20/huijsen-condena-al-madrid-en-el-derbi-ante-el-atletico.html','코케 투입 뒤 요렌테가 오른쪽 수비로. 줄리아노의 질주가 페널티킥을 얻었고, 이후 오른쪽 질주로 데이비드의 골을 도움.'],
+  S10:['Atlético official','2026-09-21','Jonathan David: séptimo jugador…','https://www.atleticodemadrid.com/noticias/jonathan-david-septimo-jugador-en-nuestra-historia-en-marcar-en-sus-tres-primeros-partidos-de-liga','데이비드는 AT 리그 첫 세 경기에서 모두 득점. 구단 역사상 일곱 번째.'],
+  S12:['ESPN','2026-09-13','Jonathan David scores first Atlético goal, gives team "something different"','https://www.espn.com/soccer/story/_/id/49933881/david-scores-first-atletico-goal','시메오네: "룩맨과 이강인이 함께 더 많이 뛰어서 조나선에게 선발이 아니라고 말했다", "조나선은 우리에게 깊이를 준다. 그게 팀에 다른 무언가를 준다", "교체 뒤 리듬·압박·전환이 좋아졌다". 데이비드 90분 골.'],
+  S13:['DSN Noticias','2026-09-20','Posiciones de LaLiga tras Atlético 2-1 Real Madrid','https://dsn.pe/posiciones-de-laliga-tras-atletico-2-1-real-madrid-los-rojiblancos-suben-al-segundo-lugar-y-superan-al-madrid/','7라운드 뒤 1위 바르셀로나 21점, 2위 AT 16점, 3위 레알 15점. 하위선 퇴장 뒤 그리말도 PK 선제골, 데이비드 추가골.'],
+  S14:['LALIGA','2026-09-25','Atlético de Madrid — next matches','https://www.laliga.com/en-GB/clubs/atletico-de-madrid/next-matches','라리가 공식 일정: 바르셀로나와 홈경기 2026년 11월 8일(일), 원정 2027년 2월 7일.'],
+  S11:['AS','2026-09-24','Kang-in Lee, empapado del Atlético','https://as.com/futbol/primera/kang-in-lee-empapado-del-atletico-f202609-n/','9월 24일 기준 리그 7경기·UCL 1경기, 528분, 2골 1도움.']
+};
+
+/* ---------- PLAYERS ---------- */
+const P={
+  gk:['GK','def'],cb1:['CB','def'],cb2:['CB','def'],lb:['LB','def'],rb:['RB','def'],
+  hjulmand:['HJULMAND','mid','HJU'],barrios:['BARRIOS','mid','BAR'],baena:['BAENA','mid','BAE'],
+  giuliano:['GIULIANO','wide','GIU'],lee:['LEE','lee'],david:['DAVID','fw','DAV'],julian:['JULIÁN','fw','JUL'],
+  pubill:['PUBILL','def','PUB'],llorente:['LLORENTE','wide','LLO'],cardoso:['CARDOSO','mid','CAR'],koke:['KOKE','mid','KOK'],lookman:['LOOKMAN','fw','LOO'],
+  x1:['','gen'],x2:['','gen']
+};
+
+const KO={lee:'이강인',david:'데이비드',julian:'훌리안',giuliano:'줄리아노',baena:'바에나',barrios:'바리오스',hjulmand:'휼만',llorente:'요렌테',pubill:'푸빌',cardoso:'카르도주',koke:'코케',lookman:'룩맨'};
+/* ---------- STATES (SCENARIO_MODEL_V4 + 위치) ----------
+   좌표: x 0(왼쪽)~100(오른쪽), y 0(상대 골문)~100(우리 골문). 공격 방향은 위쪽. */
+const BASE={gk:[50,93],cb1:[38,83],cb2:[62,83],lb:[16,68],rb:[84,68],hjulmand:[52,65],barrios:[44,53],baena:[29,42],giuliano:[89,32]};
+const ROLEPOS={RIGHT:[69,40],TEN:[50,35],SS:[43,23]};
+const ROLELABEL={RIGHT:'우측 안쪽',TEN:'중앙 10번',SS:'세컨드 스트라이커'};
+const LV={'HIGH-MED':'강','MED':'중','MED-LOW':'중','LOW-MED':'가설','LOW':'가설'};
+const KIND={report:['obs','경기 보도로 재구성'],mix:['mix','보도 + 기자 해석'],virtual:['scn','가상 조합']};
+const SCN={SUPPORTED_SCENARIO:false,EDITORIAL_HYPOTHESIS:true,EDITORIAL_SCENARIO:true,PUZZLE_HYPOTHESIS:true};
+
+const STATES={
+  RIGHT_DAVID:{kind:'report',fact:'오사수나·레알전에 이강인과 데이비드가 함께 선발. 세비야전 이강인의 오른쪽 역할(AS).',interp:'선수별 위치와 움직임은 보도를 토대로 그린 그림.',head:'이강인이 안으로 들어오자<br><em>오른쪽 측면</em>이 줄리아노에게 열렸습니다.',label:'LEE 우측 안쪽 + DAVID 9',status:'SUPPORTED_SCENARIO',conf:'HIGH-MED',src:['S01','S03','S05','S09','S10'],
+    copy:'이강인은 안으로, 데이비드는 골문 앞으로. 오른쪽 측면이 빕니다.',
+    gain:['오른쪽 안쪽에서 공격 전개','골문 앞을 지키는 정통 9번','빈 오른쪽 측면으로 뛰어들 길'],cost:['오른쪽 측면 선수와 이강인의 자리 나누기'],
+    why:'세비야전 이강인의 오른쪽 안쪽 역할(S01), 소시에다드전 시메오네의 "공격수다운 공격수" 발언(S03), 오사수나·레알전 데이비드 선발(S05·S09)을 토대로 그렸습니다.',
+    pos:{...BASE,lee:ROLEPOS.RIGHT,david:[50,13],giuliano:[90,27],rb:[83,64],barrios:[46,53]},
+    passes:[['barrios','lee'],['lee','giuliano'],['lee','david'],['lee','baena']],
+    runs:[['giuliano',[88,9]]],
+    spaces:[{c:[90,17],r:[8,11],k:'gain',t:'빈 오른쪽 측면'},{c:[50,9],r:[13,5],k:'gain',t:'골문 앞 기준점'}],
+    live:['giuliano','david']},
+  RIGHT_JULIAN:{kind:'virtual',fact:'이강인의 오른쪽 안쪽 역할.',interp:'훌리안과 이 모양으로 함께 뛴 기록은 부족함. 가상 조합.',head:'훌리안이 내려오며 패스 길은 늘었지만<br><em>골문 앞</em>이 비었습니다.',label:'LEE 우측 안쪽 + JULIÁN',status:'EDITORIAL_HYPOTHESIS',conf:'LOW-MED',src:['S11'],
+    copy:'패스를 주고받을 곳은 늘어납니다. 다만 골문 앞에 누가 남을지가 문제입니다.',
+    gain:['짧은 패스 연결','자유로운 자리 바꾸기'],cost:['둘 다 내려오면 골문 앞이 빈다'],
+    why:'훌리안과 이강인이 함께 뛴 기록이 아직 충분하지 않습니다. "이렇게 세운다면"이라는 가정으로 그린 그림입니다.',
+    pos:{...BASE,lee:ROLEPOS.RIGHT,julian:[56,27],giuliano:[90,24],rb:[83,64]},
+    passes:[['lee','julian'],['julian','giuliano'],['barrios','lee'],['julian','baena']],
+    runs:[['giuliano',[88,8]]],
+    spaces:[{c:[62,33],r:[8,5],k:'gain',t:'패스 연결',lp:'r'},{c:[50,9],r:[13,5],k:'cost',t:'골문 앞은 누가?'}],
+    live:['julian']},
+  TEN_DAVID:{kind:'mix',fact:'데이비드 투입 뒤 "진짜 9번" 구조(AS).',interp:'이강인의 중앙 배치와 바에나와의 역할 분담은 기자의 해석.',head:'이강인이 가운데로 가자<br><em>바에나</em>와 활동 범위가 겹칩니다.',label:'LEE 중앙 10 + DAVID 9',status:'SUPPORTED_SCENARIO',conf:'MED',src:['S03','S04'],
+    copy:'이강인이 가운데서 공을 뿌리고 데이비드가 앞에 섭니다. 대신 바에나와 활동 범위가 겹칩니다.',
+    gain:['중앙에서 공격 전개','최전방 기준점'],cost:['바에나와 활동 범위 나누기'],
+    why:'데이비드 투입 뒤 "진짜 9번"이 생겼다는 AS 분석(S03·S04)이 근거입니다. 이강인의 중앙 배치와 바에나와의 역할 분담은 기자의 해석입니다.',
+    pos:{...BASE,lee:ROLEPOS.TEN,david:[52,13],baena:[33,40],giuliano:[89,30],barrios:[45,54]},
+    passes:[['barrios','lee'],['lee','david'],['lee','giuliano'],['baena','lee']],
+    runs:[['david',[46,5]]],
+    spaces:[{c:[41,37],r:[11,6.5],k:'share',t:'겹치는 활동 범위'},{c:[50,9],r:[13,5],k:'gain',t:'골문 앞 기준점'}],
+    live:['david'],clash:['baena']},
+  SS_DAVID:{kind:'mix',fact:'AS "이강인이 그리즈만 같은 역할을 맡아간다".',interp:'받는 선수·뛰는 선수 분담은 기자의 해석.',head:'이강인이 받고 데이비드가 뜁니다.<br>대신 <em>중원</em>에 빈자리가 생겼습니다.',label:'LEE 세컨드 스트라이커 + DAVID',status:'EDITORIAL_SCENARIO',conf:'MED-LOW',src:['S03','S06'],
+    copy:'이강인이 공을 받아주고, 데이비드가 뒷공간으로 뜁니다.',
+    gain:['받는 선수와 뛰는 선수로 역할 분담'],cost:['이강인이 올라간 만큼 중원에 빈자리'],
+    why:'AS는 이강인이 그리즈만 같은 역할을 맡아가고 있다고 봤습니다(S06). 받는 선수·뛰는 선수 분담은 가정입니다.',
+    pos:{...BASE,lee:ROLEPOS.SS,david:[57,11],barrios:[48,41],hjulmand:[50,60],baena:[29,44],giuliano:[89,31]},
+    passes:[['barrios','lee'],['lee','david'],['lee','giuliano']],
+    runs:[['david',[62,4]]],
+    spaces:[{c:[43,23],r:[9,6],k:'gain',t:'공 받는 곳',lp:'l'},{c:[46,49],r:[9,3.6],k:'cost',t:'중원 빈자리',lp:'r'}],
+    live:['david','barrios']},
+  DAVID_JULIAN_LEE:{kind:'virtual',fact:'세 명이 함께 뛴 경기는 아직 없음.',interp:'전체가 가상 조합.',head:'',label:'LEE + DAVID + JULIÁN 공존',status:'PUZZLE_HYPOTHESIS',conf:'LOW',src:['S10','S11'],
+    copy:'좋은 선수를 다 넣으면 자리가 모자랍니다. 누군가의 역할 하나는 내려놓아야 합니다.',
+    gain:['성격이 다른 공격수 둘을 한꺼번에'],cost:['바에나·줄리아노·중원·수비 중 한 자리를 비워야 함'],
+    why:'세 명이 동시에 뛴 경기는 아직 없습니다. 최선의 조합을 내놓으려는 게 아니라, 공격수 둘을 함께 쓰면 무엇을 내줘야 하는지 보여주는 그림입니다.'},
+  REAL_MODE:{kind:'report',fact:'레알 왼쪽 공략, 줄리아노 PK 유도, 데이비드 골(엘파이스·경기 보도).',interp:'선수 위치는 흐름을 설명하는 그림.',head:'',label:'REAL 상대 · 오른쪽 공략',status:'SUPPORTED_SCENARIO',conf:'HIGH-MED',src:['S07','S08','S09','S10'],
+    copy:'상대가 바뀌면 같은 자리라도 쓰임새가 달라집니다.',gain:[],cost:[],
+    why:'엘파이스 전술 분석(S08), 경기 보도(S07·S09), 구단 공식 기록(S10)을 바탕으로 했습니다. 상대에 맞춘 계획을 설명한 것이지, 특정 선수가 다른 선수를 살렸다는 뜻은 아닙니다.'}
+};
+
+/* 둘 다 넣었을 때 · 희생 뒤 재배열 (전술 시나리오) */
+function bothLayout(role,sac){
+  const lee=ROLEPOS[role];
+  const jul=role==='RIGHT'?[40,25]:role==='TEN'?[66,24]:[64,22];
+  const pos={...BASE,lee,david:[50,11],julian:jul,giuliano:[90,28]};
+  if(role==='TEN')pos.baena=[31,41];
+  if(!sac){ // 12/11: 좁은 공간에 몰림
+    return {pos,passes:[],runs:[],spaces:[{c:[50,30],r:[26,15],k:'cost',t:'12번째 자리는 없다',lp:'b'}],live:['david','julian','lee']};
+  }
+  const out={[sac]:true};
+  if(sac==='baena'){Object.assign(pos,{julian:role==='RIGHT'?[34,30]:jul,barrios:[42,52],hjulmand:[54,64]});
+    return {pos,out,passes:[['barrios','julian'],['julian','lee'],['lee','david'],['lee','giuliano']],runs:[['giuliano',[88,9]]],spaces:[{c:[26,42],r:[9,7],k:'cost',t:'바에나 자리 비움'}],live:['julian','david']};}
+  if(sac==='giuliano'){Object.assign(pos,{rb:[88,44],lee:role==='RIGHT'?[74,34]:lee});
+    return {pos,out,passes:[['lee','david'],['lee','julian'],['rb','lee'],['barrios','lee']],runs:[['rb',[92,20]]],spaces:[{c:[90,28],r:[8,12],k:'cost',t:'오른쪽 측면 비움'}],live:['rb','david','julian']};}
+  // barrios / hjulmand : 중원 한 자리
+  const keep=sac==='barrios'?'hjulmand':'barrios';
+  Object.assign(pos,{[keep]:[50,60],baena:[32,45]});
+  return {pos,out,passes:[[keep,'lee'],['lee','david'],['lee','julian'],['baena','julian']],runs:[['giuliano',[88,9]]],spaces:[{c:[50,50],r:[16,7],k:'cost',t:'중원 한 자리 비움'}],live:['david','julian']};
+}
+const SAC={
+  baena:{name:'BAENA',cost:'공격을 풀어줄 선수 한 명',line:'바에나를 뺐습니다. 공격을 풀어줄 선수가 한 명 줄었습니다.'},
+  giuliano:{name:'GIULIANO',cost:'오른쪽 측면의 폭과 스피드',line:'줄리아노를 뺐습니다. 이제 오른쪽 측면은 풀백이 올라가 메워야 합니다.'},
+  barrios:{name:'중원 한 자리',cost:'중원의 수비 균형',line:'중원 한 명을 뺐습니다. 공격은 두꺼워졌지만 뒤를 받칠 선수가 줄었습니다.'},
+  hjulmand:{name:'중원 한 자리',cost:'중원의 수비 균형',line:'중원 한 명을 뺐습니다. 공격은 두꺼워졌지만 뒤를 받칠 선수가 줄었습니다.'}
+};
+
+/* REAL 전술 해설 단계 (BUILD_SPEC H) */
+const REALPOS={gk:[50,93],cb1:[38,83],cb2:[58,83],lb:[16,66],pubill:[74,76],llorente:[84,56],cardoso:[48,58],baena:[36,44],giuliano:[89,36],lee:[27,31],david:[52,15]};
+const OPP=[[80,20],[64,16],[44,16],[27,20],[57,33],[82,62]];
+const REAL_STEPS=[
+  {t:'레알전에서 시메오네가 노린 곳은 레알의 왼쪽 측면이었습니다.',s:'S08',pos:{},spaces:[{zone:[74,6,26,40],k:'zone',t:'레알의 왼쪽'}],passes:[],runs:[],live:[],marks:[]},
+  {t:'푸빌, 요렌테, 줄리아노 세 명을 오른쪽에 몰아 세웠습니다.',s:'S08',pos:{llorente:[84,50],giuliano:[90,32]},spaces:[{zone:[74,6,26,40],k:'zone',t:'레알의 왼쪽'},{c:[84,55],r:[12,20],k:'gain',t:'오른쪽 공략',lp:'l'}],passes:[['pubill','llorente'],['llorente','giuliano']],runs:[],live:['pubill','llorente','giuliano'],marks:[]},
+  {t:'줄리아노가 파고들어 페널티킥을 얻어냈고, 그리말도가 차 넣었습니다.',s:'S09 · S13',pos:{llorente:[84,48],giuliano:[73,16]},spaces:[{zone:[74,6,26,40],k:'zone',t:'레알의 왼쪽'}],passes:[['llorente','giuliano']],runs:[['giuliano',[70,12],'hot']],live:['giuliano'],marks:[[64,8,'PK','','end']]},
+  {t:'후반 코케가 들어오자 요렌테가 오른쪽 수비로 내려갔고, 줄리아노는 다시 오른쪽을 뚫었습니다.',s:'S09',pos:{llorente:[86,66],giuliano:[92,15]},spaces:[{zone:[74,6,26,40],k:'zone',t:'레알의 왼쪽'}],passes:[['llorente','giuliano']],runs:[['giuliano',[92,12]]],live:['llorente','giuliano'],marks:[]},
+  {t:'줄리아노의 도움을 데이비드가 골로 마무리했습니다.',s:'S09 · S10',pos:{llorente:[86,66],giuliano:[92,13],david:[54,9]},spaces:[{zone:[74,6,26,40],k:'zone',t:'레알의 왼쪽'},{c:[52,8],r:[10,4.5],k:'gain',t:'마무리 지점',lp:'l'}],passes:[['giuliano','david']],runs:[['david',[54,8]]],live:['giuliano','david'],marks:[[62,4,'GOAL','goal']]}
+];
+
+/* ---------- STORE ---------- */
+const store={role:'RIGHT',front:'DAVID',both:false,sac:null,touched:false};
+const subs=new Set();
+function emit(src){subs.forEach(f=>f(src))}
+function stateKey(){
+  if(store.both)return 'DAVID_JULIAN_LEE';
+  if(store.front==='JULIAN')return 'RIGHT_JULIAN';
+  return {RIGHT:'RIGHT_DAVID',TEN:'TEN_DAVID',SS:'SS_DAVID'}[store.role];
+}
+function baseKey(){return store.front==='JULIAN'?'RIGHT_JULIAN':{RIGHT:'RIGHT_DAVID',TEN:'TEN_DAVID',SS:'SS_DAVID'}[store.role]}
+function layoutFor(key){
+  if(key==='DAVID_JULIAN_LEE')return bothLayout(store.role,store.sac);
+  const s=STATES[key];return {pos:s.pos,passes:s.passes,runs:s.runs,spaces:s.spaces,live:s.live||[],clash:s.clash||[]};
+}
+
+/* ---------- BOARD ENGINE ---------- */
+const NS='http://www.w3.org/2000/svg';
+const SX=.68,SY=1.05; // % → viewBox(68x105)
+function el(tag,attrs,parent){const e=document.createElementNS(NS,tag);for(const k in attrs)e.setAttribute(k,attrs[k]);if(parent)parent.appendChild(e);return e}
+let uid=0;
+class Board{
+  constructor(root,opt={}){
+    this.root=root;this.opt=opt;this.id='b'+(++uid);this.pos={};this.timers=[];this.layers={};this.lens='all';
+    root.classList.add('board');root.dataset.lens='all';
+    const bar=opt.bar!==false?`<div class="board-bar"><span class="count" aria-live="polite">11 / 11</span><span style="display:flex;gap:6px;align-items:center;flex-wrap:wrap"><div class="seg" role="group" aria-label="보기 방식"><button data-lens="all" aria-pressed="true">전체</button><button data-lens="space" aria-pressed="false">공간</button><button data-lens="pass" aria-pressed="false">패스</button></div><button class="ev-badge" aria-expanded="false"><i></i><span>근거</span></button></span><div class="evpop" role="dialog" aria-label="이 상태의 근거"></div></div>`:'';
+    root.innerHTML=bar+`<div class="pitch-wrap"><div class="pitch" role="img" aria-label="${opt.aria||'전술판'}"><svg class="marks" viewBox="0 0 68 105" preserveAspectRatio="none" aria-hidden="true"><rect x="0.5" y="0.5" width="67" height="104"/><line x1="0" y1="52.5" x2="68" y2="52.5"/><circle cx="34" cy="52.5" r="9.15"/><rect x="13.84" y="0" width="40.32" height="16.5"/><rect x="24.84" y="0" width="18.32" height="5.5"/><rect x="13.84" y="88.5" width="40.32" height="16.5"/><rect x="24.84" y="99.5" width="18.32" height="5.5"/><path d="M26.7 16.5 A9.15 9.15 0 0 0 41.3 16.5"/><path d="M26.7 88.5 A9.15 9.15 0 0 1 41.3 88.5"/></svg><svg class="fx" viewBox="0 0 68 105" preserveAspectRatio="none" aria-hidden="true"><defs><pattern id="hatchG${this.id}" width="2" height="2" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="2" height="2" fill="#39d98a14"/><line x1="0" y1="0" x2="0" y2="2" stroke="#39d98a" stroke-width=".35"/></pattern><pattern id="hatchA${this.id}" width="2" height="2" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="2" height="2" fill="#f2c45e14"/><line x1="0" y1="0" x2="0" y2="2" stroke="#f2c45e" stroke-width=".35"/></pattern><pattern id="hatchR${this.id}" width="2" height="2" patternUnits="userSpaceOnUse" patternTransform="rotate(-45)"><rect width="2" height="2" fill="#ff5a611c"/><line x1="0" y1="0" x2="0" y2="2" stroke="#ff5a61" stroke-width=".4" stroke-opacity=".8"/></pattern><marker id="arrG${this.id}" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="4" markerHeight="4" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#39d98a"/></marker><marker id="arrR${this.id}" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="4" markerHeight="4" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#ff5a61"/></marker></defs><g class="opps"></g><g class="spaces"></g><g class="ghosts"></g><g class="lines"></g><g class="mks"></g></svg><div class="players"></div><div class="zghost"><span></span></div><div class="pmsg"><b></b></div></div></div><div class="bench" aria-live="polite"></div>`;
+    // pattern ids are per-board; fix fills referencing generic ids
+    this.pitch=$('.pitch',root);this.fx=$('.fx',root);this.gSp=$('.spaces',root);this.gGh=$('.ghosts',root);this.gLn=$('.lines',root);this.gMk=$('.mks',root);this.gOpp=$('.opps',root);
+    this.playersEl=$('.players',root);this.bench=$('.bench',root);this.zg=$('.zghost',root);this.msg=$('.pmsg',root);this.count=$('.count',root);
+    this.style=document.createElement('style');
+    this.style.textContent=`#${this.id} .sp.gain ellipse{fill:url(#hatchG${this.id})}#${this.id} .sp.share ellipse{fill:url(#hatchA${this.id})}#${this.id} .sp.cost ellipse,#${this.id} .sp.zone rect{fill:url(#hatchR${this.id})}#${this.id} .ln.run{marker-end:url(#arrG${this.id})}#${this.id} .ln.run.hot{marker-end:url(#arrR${this.id})}`;
+    root.id=root.id||this.id;if(root.id!==this.id){this.style.textContent=this.style.textContent.split('#'+this.id+' ').join('#'+root.id+' ')}
+    document.head.appendChild(this.style);
+    // lenses
+    $$('[data-lens]',root).forEach(b=>b.addEventListener('click',()=>this.setLens(b.dataset.lens)));
+    const eb=$('.ev-badge',root),ep=$('.evpop',root);
+    if(eb){eb.addEventListener('click',e=>{e.stopPropagation();const o=!ep.classList.contains('open');ep.classList.toggle('open',o);eb.setAttribute('aria-expanded',o)});
+      document.addEventListener('click',e=>{if(!ep.contains(e.target)){ep.classList.remove('open');eb.setAttribute('aria-expanded','false')}})}
+    this.evBadge=eb;this.evPop=ep;
+    this.ensure(opt.players||Object.keys(P));
+    if(opt.drag)this.enableDrag();
+  }
+  ensure(ids){
+    ids.forEach(id=>{
+      if(this.layers[id])return;
+      const [name,role,short]=P[id];
+      const L=document.createElement('div');L.className='layer off';L.style.setProperty('--x',50);L.style.setProperty('--y',112);
+      const lbl=id==='lee'?'LEE':(short||name);
+      const tag=(id==='lee'&&this.opt.drag)?'button':'div';
+      L.innerHTML=`<${tag} class="dot${id==='lee'?' lee':''}" data-id="${id}" data-r="${role}" ${tag==='button'?'type="button"':''} aria-label="${name||'선수'}"><span class="c">${role==='gen'?'':lbl}</span>${role==='def'||role==='gen'||id==='lee'?'':`<span class="n">${KO[id]||name}</span>`}</${tag}>`;
+      const a=ASSETS.avatars[id];
+      if(a){const d=$('.dot',L);d.classList.add('ava');$('.c',d).style.backgroundImage=`url(${a.src})`;$('.c',d).style.backgroundPosition=a.pos;$('.c',d).style.backgroundSize=a.size||'330% auto';if(!$('.n',d)){d.insertAdjacentHTML('beforeend','<span class="n">'+(KO[id]||name)+'</span>')}}
+      this.playersEl.appendChild(L);this.layers[id]=L;this.pos[id]=null;
+    });
+  }
+  setLens(k){this.lens=k;this.root.dataset.lens=k;$$('[data-lens]',this.root).forEach(b=>b.setAttribute('aria-pressed',b.dataset.lens===k))}
+  clearTimers(){this.timers.forEach(clearTimeout);this.timers=[]}
+  later(ms,f){if(reduced())ms=0;this.timers.push(setTimeout(f,ms))}
+  dot(id){return this.layers[id]&&$('.dot',this.layers[id])}
+  /* render(layout,{cause}) — 원인 순서대로: cause 0ms → 가장 가까운 동료 100 → 중원 200 → 나머지 260 → 선 320 → 공간 450 */
+  render(lay,o={}){
+    this.clearTimers();
+    const cause=o.cause||'lee',prev={...this.pos},next=lay.pos,out=lay.out||{};
+    const ids=Object.keys(this.layers);
+    const moved=ids.filter(id=>next[id]&&!out[id]&&(!prev[id]||Math.hypot(prev[id][0]-next[id][0],prev[id][1]-next[id][1])>.6));
+    let nearest=null,nd=1e9;const cp=next[cause]||[50,50];
+    moved.forEach(id=>{if(id===cause)return;const d=Math.hypot((next[id][0]-cp[0])*SX,(next[id][1]-cp[1])*SY);if(d<nd){nd=d;nearest=id}});
+    const delayOf=id=>id===cause?0:id===nearest?100:P[id][1]==='mid'?200:260;
+    // ghost trails
+    this.gGh.innerHTML='';
+    ids.forEach(id=>{
+      const L=this.layers[id],d=this.dot(id);
+      const isOn=!!next[id]&&!out[id];
+      const dl=reduced()?0:(o.instant?0:delayOf(id));
+      L.style.setProperty('--d',dl+'ms');
+      if(isOn){
+        if(prev[id]&&moved.includes(id)&&!o.instant&&Math.hypot(prev[id][0]-next[id][0],prev[id][1]-next[id][1])>3){
+          el('line',{class:'ghost',x1:prev[id][0]*SX,y1:prev[id][1]*SY,x2:next[id][0]*SX,y2:next[id][1]*SY,style:`animation-delay:${dl}ms`},this.gGh);
+        }
+        if(!prev[id]&&!o.instant&&!this.first){L.style.setProperty('--x',next[id][0]);L.style.setProperty('--y',Math.min(112,next[id][1]+14));}
+        const apply=()=>{L.classList.remove('off');L.style.setProperty('--x',next[id][0]);L.style.setProperty('--y',next[id][1])};
+        if(!prev[id]&&!o.instant&&!this.first){void L.offsetWidth}apply();
+        this.pos[id]=next[id].slice();
+        if(moved.includes(id)&&!o.instant&&!reduced()){this.later(dl,()=>{d.classList.remove('react');void d.offsetWidth;d.classList.add('react')});this.later(dl+750,()=>d.classList.remove('react'))}
+      }else{
+        L.classList.add('off');this.pos[id]=null;
+      }
+      d.classList.toggle('live',(lay.live||[]).includes(id));
+      d.classList.toggle('clash',(lay.clash||[]).includes(id));
+      d.classList.remove('pick','dim','new');
+    });
+    this.first=false;
+    // lines & spaces
+    this.gLn.innerHTML='';this.gSp.innerHTML='';this.gMk.innerHTML='';
+    const P2=id=>next[id]&&[next[id][0]*SX,next[id][1]*SY];
+    this.later(o.instant?0:320,()=>{
+      (lay.passes||[]).forEach(([a,b])=>{const A=P2(a),B=P2(b);if(!A||!B)return;const len=Math.hypot(A[0]-B[0],A[1]-B[1]);el('line',{class:'ln pass'+(o.instant?'':' draw'),x1:A[0],y1:A[1],x2:B[0],y2:B[1],style:`--len:${len}`},this.gLn)});
+      (lay.runs||[]).forEach(([a,t,hot])=>{const A=P2(a);if(!A)return;const B=[t[0]*SX,t[1]*SY],mx=(A[0]+B[0])/2+(B[1]-A[1])*.12,my=(A[1]+B[1])/2-(B[0]-A[0])*.12;const path=el('path',{class:'ln run'+(hot?' hot':'')+(o.instant?'':' draw'),d:`M${A[0]} ${A[1]} Q${mx} ${my} ${B[0]} ${B[1]}`},this.gLn);const len=path.getTotalLength?path.getTotalLength():30;path.style.setProperty('--len',len)});
+      (lay.marks||[]).forEach(([x,y,t,k,a])=>{const g=el('g',{class:'mk '+(k||'')},this.gMk);el('circle',{cx:x*SX,cy:y*SY,r:1.4},g);el('text',{x:x*SX+(a==='end'?-2.2:2.2),y:y*SY+1,'text-anchor':a||'start'},g).textContent=t});
+      if(o.chain)o.chain('lines');
+    });
+    this.later(o.instant?0:450,()=>{
+      (lay.spaces||[]).forEach(s=>{
+        const g=el('g',{class:'sp '+s.k},this.gSp);
+        if(s.zone){const [x,y,w,h]=s.zone;el('rect',{x:x*SX,y:y*SY,width:w*SX,height:h*SY,rx:1.5},g);el('text',{x:(x+w/2)*SX,y:(y+h)*SY-1.6,'text-anchor':'middle'},g).textContent=s.t}
+        else{el('ellipse',{cx:s.c[0]*SX,cy:s.c[1]*SY,rx:s.r[0]*SX,ry:s.r[1]*SY},g);s.lp==='r'?(el('text',{x:(s.c[0]+s.r[0])*SX+1,y:s.c[1]*SY+.9,'text-anchor':'start'},g).textContent=s.t):s.lp==='l'?(el('text',{x:(s.c[0]-s.r[0])*SX-1,y:s.c[1]*SY+.9,'text-anchor':'end'},g).textContent=s.t):el('text',{x:Math.max(1.4*s.t.length,Math.min(68-1.4*s.t.length,s.c[0]*SX)),y:s.lp==='b'?(s.c[1]+s.r[1])*SY+2.8:Math.max(3,(s.c[1]-s.r[1])*SY-1.2),'text-anchor':'middle'},g).textContent=s.t}
+        void g.getBoundingClientRect();g.classList.add('on');
+      });
+      if(o.chain)o.chain('space');
+    });
+    if(o.chain){o.chain('lee');if(nearest)this.later(100,()=>o.chain('mate'));this.later(200,()=>o.chain('mid'))}
+    // opponents
+    this.gOpp.innerHTML='';(lay.opp||[]).forEach(([x,y])=>el('circle',{class:'opp',cx:x*SX,cy:y*SY,r:1.9},this.gOpp));
+  }
+  setCount(n,state){if(!this.count)return;this.count.textContent=n+' / 11';this.count.classList.toggle('over',state==='over');this.count.classList.toggle('ok',state==='ok')}
+  setEvidence(key){
+    if(!this.evBadge)return;const s=STATES[key];const lv=LV[s.conf];
+    this.evBadge.dataset.lv=lv;this.evBadge.dataset.kind=s.kind;$('span',this.evBadge).textContent=KIND[s.kind][1];
+    this.evPop.innerHTML=`<b>${s.label}</b> <span class="tag ${KIND[s.kind][0]}">${KIND[s.kind][1]}</span><div class="ids">${s.src.map(i=>`<span>${i}</span>`).join('')}</div>${s.why}<br><button type="button" data-open-src="${s.src[0]}">전체 출처 보기</button>`;
+    $('[data-open-src]',this.evPop).addEventListener('click',e=>{openDrawer(e.target.dataset.openSrc)});
+  }
+  say(html,ms=2600){const b=$('b',this.msg);b.innerHTML=html;this.msg.classList.add('on');clearTimeout(this._mt);if(ms)this._mt=setTimeout(()=>this.msg.classList.remove('on'),ms)}
+  hush(){this.msg.classList.remove('on')}
+  toPct(e){const r=this.pitch.getBoundingClientRect();return [Math.max(4,Math.min(96,(e.clientX-r.left)/r.width*100)),Math.max(4,Math.min(96,(e.clientY-r.top)/r.height*100))]}
+  nearestZone(p){let best=null,bd=1e9;for(const z in ROLEPOS){const q=ROLEPOS[z],d=Math.hypot((p[0]-q[0])*SX,(p[1]-q[1])*SY);if(d<bd){bd=d;best=z}}return [best,bd]}
+  enableDrag(){
+    this.root.classList.add('can-drag');
+    const L=this.layers.lee,d=this.dot('lee');let drag=false,raf=0,last=null,start=null,movedFar=false;
+    d.addEventListener('pointerdown',e=>{
+      if(!this.dragOK||!this.dragOK())return;
+      drag=true;movedFar=false;start=[e.clientX,e.clientY];d.setPointerCapture(e.pointerId);L.classList.add('dragging');d.style.cursor='grabbing';e.preventDefault();
+    });
+    d.addEventListener('pointermove',e=>{
+      if(!drag)return;last=this.toPct(e);if(Math.hypot(e.clientX-start[0],e.clientY-start[1])>6)movedFar=true;
+      if(!raf)raf=requestAnimationFrame(()=>{raf=0;if(!last)return;L.style.setProperty('--x',last[0]);L.style.setProperty('--y',last[1]);
+        const [z,dist]=this.nearestZone(last);const q=ROLEPOS[z];this.zg.style.transform=`translate(${q[0]/100*this.pitch.clientWidth}px,${q[1]/100*this.pitch.clientHeight}px)`;this.zg.classList.add('on');this.zg.classList.toggle('near',dist<9);$('span',this.zg).textContent=ROLELABEL[z]});
+    });
+    const end=e=>{
+      if(!drag)return;drag=false;L.classList.remove('dragging');d.style.cursor='';this.zg.classList.remove('on','near');
+      let z;
+      if(movedFar&&last){z=this.nearestZone(last)[0]}
+      else{const order=['RIGHT','TEN','SS'];z=order[(order.indexOf(store.role)+1)%3]} // 탭: 다음 자리
+      last=null;this.onDrop&&this.onDrop(z);
+    };
+    d.addEventListener('pointerup',end);d.addEventListener('pointercancel',end);
+    d.addEventListener('click',e=>{if(e.detail===0&&this.dragOK&&this.dragOK()){const order=['RIGHT','TEN','SS'];this.onDrop&&this.onDrop(order[(order.indexOf(store.role)+1)%3])}});
+    d.addEventListener('keydown',e=>{
+      const map={ArrowUp:'SS',ArrowLeft:'TEN',ArrowRight:'RIGHT'};
+      if(map[e.key]){e.preventDefault();this.onDrop&&this.onDrop(map[e.key])}
+    });
+  }
+}
+
+/* ---------- panel copy ---------- */
+function panelHTML(key,extra=''){
+  const s=STATES[key],lv=LV[s.conf],scn=SCN[s.status];
+  const kd=KIND[s.kind];return `<div class="tagline"><span class="tag ${kd[0]}">${kd[1]}</span>${scn?'<span class="tag scn">전술 시나리오</span>':''}</div><p class="copy">${s.copy}</p>${s.gain.length?`<dl class="gc"><dt class="g">얻는 것</dt><dd>${s.gain.join(' · ')}</dd><dt class="k">잃는 것</dt><dd>${s.cost.join(' · ')}</dd></dl>`:''}${extra}<dl class="fi"><dt>확인된 것</dt><dd>${s.fact}</dd><dt>해석한 것</dt><dd>${s.interp}</dd></dl>`;
+}
+
+/* ---------- BOARD 1 · LAB ---------- */
+const MAIN=['gk','cb1','cb2','lb','rb','hjulmand','barrios','baena','giuliano','lee','david','julian'];
+const b1root=$('#board1');
+const b1=new Board(b1root,{players:MAIN,drag:true,aria:'이강인을 끌어 옮길 수 있는 전술판'});
+b1.first=true;
+const chainEl=document.createElement('div');chainEl.className='chain';chainEl.setAttribute('aria-hidden','true');
+chainEl.innerHTML='<span data-c="lee">이강인</span><i>→</i><span data-c="mate">옆 동료</span><i>→</i><span data-c="mid">중원</span><i>→</i><span data-c="lines">패스</span><i>→</i><span data-c="space">빈 공간</span>';
+$('.pitch-wrap',b1root).after(chainEl);
+function chain(step){if(step==='lee')$$('span',chainEl).forEach(s=>s.classList.remove('on'));const s=$(`[data-c="${step}"]`,chainEl);if(s)s.classList.add('on')}
+b1.dragOK=()=>true;
+let firstWow=false;
+const JUL_NOTE='<p class="hint">훌리안과의 조합은 이강인이 우측 안쪽에 있을 때만 그렸습니다. 함께 뛴 기록이 적어서입니다.</p>';
+function setRole(z,src,wow){
+  let notice='';
+  if(store.front==='JULIAN'&&z!=='RIGHT'&&!store.both){store.front='DAVID';notice='<p class="hint">이강인을 옮겨서 최전방이 데이비드로 돌아갔습니다. 훌리안 조합은 우측 안쪽에서만 볼 수 있습니다.</p>'}
+  store.role=z;store.touched=true;
+  emit({from:src,cause:'lee',notice,wow});
+}
+b1.onDrop=z=>{
+  b1.root.classList.add('touched');
+  setRole(z,'b1',!firstWow);
+  if(!firstWow){firstWow=true;b1.later(520,()=>b1.say('한 명을 움직이면<br><em>팀 전체</em>가 움직입니다.',2400));const hd=STATES[baseKey()].head;if(hd)b1.later(3000,()=>b1.say(hd,2800))}
+};
+$$('[data-front]').forEach(b=>b.addEventListener('click',()=>{
+  if(store.both)resetBoth(true);
+  store.front=b.dataset.front;let notice='';
+  if(store.front==='JULIAN'&&store.role!=='RIGHT'){store.role='RIGHT';notice='<p class="hint">훌리안과의 조합은 이강인이 오른쪽에 설 때만 그려뒀습니다. 이강인을 오른쪽으로 옮겼습니다.</p>'}
+  emit({from:'b1',cause:store.front==='JULIAN'?'julian':'david',notice});
+}));
+$$('[data-role]').forEach(b=>b.addEventListener('click',()=>{b1.root.classList.add('touched');setRole(b.dataset.role,'b1')}));
+
+function syncControls(){
+  $$('[data-front]').forEach(b=>b.setAttribute('aria-pressed',!store.both&&b.dataset.front===store.front));
+  $$('[data-role]').forEach(b=>b.setAttribute('aria-pressed',b.dataset.role===store.role));
+  $$('[data-front2]').forEach(b=>b.setAttribute('aria-pressed',store.both?b.dataset.front2==='BOTH':b.dataset.front2===store.front));
+  $('[data-front2="JULIAN"]').classList.toggle('lock',store.role!=='RIGHT');
+  const o=store.front==='JULIAN'?'데이비드':'훌리안';
+  $('#reset2').hidden=!store.both;$('#reset2').textContent='↺ '+o+' 빼고 11명으로';
+  $('#repick2').hidden=!(store.both&&store.sac);
+}
+
+/* ---------- BOARD 2 · BOTH / 12·11 ---------- */
+const b2=new Board($('#board2'),{players:MAIN,drag:false,aria:'데이비드와 훌리안을 넣고 한 명을 고르는 전술판'});
+b2.first=true;
+b2.dragOK=()=>!store.both;
+b2.onDrop=z=>setRole(z,'b2');
+let sacPhase=false;
+function pickables(){return ['baena','giuliano','barrios','hjulmand']}
+function applyPick(){MAIN.forEach(id=>{const d=b2.dot(id);if(!b2.pos[id])return;const p=pickables().includes(id);d.classList.toggle('pick',p);d.classList.toggle('dim',!p&&!['lee','david','julian'].includes(id))})}
+function refreshOthers(){if(typeof oppMode!=='undefined'&&oppMode==='mine')setOpp('mine');emitResult()}
+function startBoth(){
+  if(store.both)return;
+  store.touched=true;store.both=true;store.sac=null;sacPhase=false;syncControls();
+  const lay=bothLayout(store.role,null);
+  b2.render(lay,{cause:'julian'});
+  const jd=b2.dot('julian');jd.classList.add('new');
+  b2.setEvidence('DAVID_JULIAN_LEE');
+  $('#panel2').innerHTML=panelHTML('DAVID_JULIAN_LEE','<p class="hint" style="color:#ffb3b7">데이비드와 훌리안을 함께 세우고, 이강인도 그대로 뒀습니다.</p>');
+  // freeze 500ms → zoom-out → 12/11 → 700ms 후 질문
+  b2.root.classList.add('freeze');
+  b2.later(500,()=>{b2.root.classList.remove('freeze');b2.root.classList.add('zoomout');b2.setCount(12,'over')});
+  b2.later(1200,()=>{
+    sacPhase=true;
+    b2.say('12 / 11<br>한 명이 넘칩니다. <em>누구를 뺄까요?</em>',0);
+    applyPick();
+    $('#sacbox').classList.add('on');
+  });
+  refreshOthers();
+}
+function doSacrifice(id){
+  if(!store.both||!sacPhase)return;
+  sacPhase=false;store.sac=id;
+  b2.hush();$('#sacbox').classList.remove('on');
+  const lay=bothLayout(store.role,id);
+  b2.root.classList.remove('zoomout');
+  b2.render(lay,{cause:id==='giuliano'?'rb':'lee'});
+  b2.bench.innerHTML=`<span class="b">${KO[id]||P[id][0]} <small>내려놓은 것 · ${SAC[id].cost}</small></span>`;
+  b2.setCount(11,'ok');syncControls();
+  $('#panel2').innerHTML=panelHTML('DAVID_JULIAN_LEE',`<p class="hint">${SAC[id].line}</p>`);
+  refreshOthers();
+}
+function resetBoth(silent){
+  store.both=false;store.sac=null;sacPhase=false;b2.clearTimers();
+  b2.root.classList.remove('zoomout','freeze');b2.hush();b2.bench.innerHTML='';$('#sacbox').classList.remove('on');
+  if(!silent){emit({from:'reset',cause:'lee'});b2.say((store.front==='JULIAN'?'데이비드':'훌리안')+' 제외<br>다시 <em>11명</em>이 됐습니다.',2200)}
+}
+function rePick(){
+  if(!store.both||!store.sac)return;
+  store.sac=null;sacPhase=false;b2.bench.innerHTML='';
+  b2.render(bothLayout(store.role,null),{cause:'lee'});
+  b2.root.classList.add('zoomout');b2.setCount(12,'over');
+  $('#panel2').innerHTML=panelHTML('DAVID_JULIAN_LEE','<p class="hint" style="color:#ffb3b7">다시 12명입니다. 이번엔 다른 선수를 빼보세요.</p>');
+  b2.later(350,()=>{sacPhase=true;applyPick();b2.say('12 / 11<br>한 명이 넘칩니다. <em>누구를 뺄까요?</em>',0);$('#sacbox').classList.add('on')});
+  syncControls();refreshOthers();
+}
+$$('[data-front2]').forEach(b=>b.addEventListener('click',()=>{
+  const v=b.dataset.front2;
+  if(v==='BOTH'){startBoth();return}
+  let notice='';
+  if(v==='JULIAN'&&store.role!=='RIGHT'){b2.say('훌리안 조합은 이강인이 <em>우측 안쪽</em>일 때만 볼 수 있습니다.',2600);$('#panel2 .hint')?$('#panel2 .hint').outerHTML=JUL_NOTE+'<p class="hint"><a href="#lab" style="color:#9fd3ff">직접 해보기 1</a>에서 이강인을 우측 안쪽으로 옮긴 뒤 다시 눌러보세요.</p>':$('#panel2').insertAdjacentHTML('beforeend',JUL_NOTE);return}
+  if(store.both)resetBoth(true);
+  store.front=v;store.touched=true;
+  emit({from:'b2',cause:v==='JULIAN'?'julian':'david',notice});
+}));
+$$('[data-sac]').forEach(b=>b.addEventListener('click',()=>doSacrifice(b.dataset.sac)));
+b2.playersEl.addEventListener('click',e=>{const d=e.target.closest('.dot');if(d&&d.classList.contains('pick'))doSacrifice(d.dataset.id)});
+b2.playersEl.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){const d=e.target.closest('.dot');if(d&&d.classList.contains('pick')){e.preventDefault();doSacrifice(d.dataset.id)}}});
+$('#reset2').addEventListener('click',()=>resetBoth());$('#repick2').addEventListener('click',rePick);
+// 선택 가능한 노드를 키보드로도 고를 수 있게
+new MutationObserver(()=>{$$('.dot',b2.playersEl).forEach(d=>{if(d.classList.contains('pick')){d.setAttribute('tabindex','0');d.setAttribute('role','button')}else if(d.tagName!=='BUTTON'){d.removeAttribute('tabindex');d.removeAttribute('role')}})}).observe(b2.playersEl,{subtree:true,attributes:true,attributeFilter:['class']});
+
+/* ---------- sync main boards ---------- */
+subs.add(ev=>{
+  const k1=baseKey(),inst=ev.from==='init';
+  b1.render(layoutFor(k1),{cause:ev.cause,chain:inst?null:chain,instant:inst});
+  b1.setEvidence(k1);b1.setCount(11);
+  $('#panel1').innerHTML=panelHTML(k1,ev.from==='b1'?(ev.notice||''):'');
+  const hd=STATES[k1].head;
+  if(hd&&ev.from==='b1'&&firstWow&&!ev.wow)b1.later(700,()=>b1.say(hd,2800));
+  if(hd&&ev.from==='b2'&&!store.both)b2.later(700,()=>b2.say(hd,2800));
+  if(store.both){
+    b2.render(bothLayout(store.role,store.sac),{cause:ev.cause});
+    if(sacPhase)applyPick();
+    if(store.sac)b2.setCount(11,'ok');
+  }else{
+    b2.render(layoutFor(k1),{cause:ev.cause,instant:inst});b2.setEvidence(k1);b2.setCount(11);
+    $('#panel2').innerHTML=panelHTML(k1,(ev.from==='b2'&&ev.notice)||'<p class="hint">‘둘 다’를 눌러 데이비드와 훌리안을 함께 세워보세요.</p>');
+  }
+  syncControls();emitResult();
+  const lk=$('#b2lock');if(lk)lk.innerHTML='이강인은 ‘직접 해보기 1’에서 고른 <b style="color:#fff">'+ROLELABEL[store.role]+'</b>에 있습니다. 자리를 바꾸려면 <a href="#lab" style="color:#9fd3ff">직접 해보기 1</a>로.';
+});
+
+
+
+/* ---------- BOARD 3 · REAL ---------- */
+const b3=new Board($('#board3'),{players:[...MAIN,'pubill','llorente','cardoso'],aria:'상대에 따라 바뀌는 전술판'});
+b3.first=true;
+let oppMode='mine',rStep=0,rTimer=[];
+function realRender(i,instant){
+  rStep=Math.max(0,Math.min(REAL_STEPS.length-1,i));const st=REAL_STEPS[rStep];
+  const pos={...REALPOS,...st.pos};
+  b3.render({pos,passes:st.passes,runs:st.runs,spaces:st.spaces,live:st.live,marks:st.marks,opp:OPP},{cause:st.live[0]||'giuliano',instant});
+  b3.say(`${rStep+1} / ${REAL_STEPS.length}<br>${st.t}`,0);
+  $('#panel3').innerHTML=panelHTML('REAL_MODE',`<p class="hint" style="color:#e3e4e7">${rStep+1}. ${st.t} <span style="color:var(--mut)">(${st.s})</span></p><p class="note" style="margin-top:6px">이 그림에서 이강인은 반대편 측면에 두었습니다. 엘파이스는 이강인이 반대쪽에서 때린 크로스성 슈팅을 언급했지만(S08), 오른쪽 공략을 이강인 덕으로 보지는 않았습니다.</p>`);
+  b3.setEvidence('REAL_MODE');b3.setCount(11);
+}
+function stopReal(){rTimer.forEach(clearTimeout);rTimer=[]}
+function playReal(){stopReal();realRender(0);for(let i=1;i<REAL_STEPS.length;i++)rTimer.push(setTimeout(()=>realRender(i),i*(reduced()?1200:2300)))}
+function setOpp(m){
+  oppMode=m;stopReal();$$('[data-opp]').forEach(b=>b.setAttribute('aria-pressed',b.dataset.opp===m));
+  $('#realSteps').style.display=m==='real'?'flex':'none';
+  if(m==='real'){playReal()}
+  else{b3.hush();const key=stateKey();const lay=layoutFor(key);b3.render({...lay,opp:[]},{cause:'lee'});b3.setEvidence(key);b3.setCount(store.both&&!store.sac?12:11,store.both&&!store.sac?'over':'');
+    $('#panel3').innerHTML=`<p class="copy">상대가 바뀌면 같은 자리라도 쓰임새가 달라집니다.</p><p class="hint" style="color:#e3e4e7">지금 보이는 건 위에서 직접 짠 AT입니다. <b>REAL</b>을 누르면 레알전 공략법이 나옵니다.</p>`}
+}
+$$('[data-opp]').forEach(b=>b.addEventListener('click',()=>setOpp(b.dataset.opp)));
+$('#rPrev').addEventListener('click',()=>{stopReal();realRender(rStep-1)});
+$('#rNext').addEventListener('click',()=>{stopReal();realRender(rStep+1)});
+$('#rPlay').addEventListener('click',playReal);
+subs.add(()=>{if(oppMode==='mine')setOpp('mine')});
+
+/* ---------- RESULT ---------- */
+const br=new Board($('#boardRes'),{players:MAIN,bar:false,aria:'내가 만든 AT 배치'});
+br.first=true;
+function resultData(){
+  const key=stateKey(),s=STATES[key];
+  const front=store.both?'데이비드 + 훌리안':(store.front==='JULIAN'?'훌리안':'데이비드');
+  let gain,cost,conf;
+  if(store.both){
+    const base=STATES[{RIGHT:'RIGHT_DAVID',TEN:'TEN_DAVID',SS:'SS_DAVID'}[store.role]];
+    gain='성격이 다른 공격수 둘을 한꺼번에 · '+base.gain[0];
+    cost=store.sac?SAC[store.sac].cost:'아직 안 골랐습니다 (12 / 11)';
+    conf='가상 조합 · 전술 시나리오';
+  }else{gain=s.gain.join(' · ');cost=s.cost.join(' · ');conf=KIND[s.kind][1]+(SCN[s.status]?' · 전술 시나리오':'')}
+  return {key,role:ROLELABEL[store.role],front,gain,cost,conf};
+}
+function emitResult(){
+  const r=resultData();
+  $('#rRole').textContent=r.role;$('#rFront').textContent=r.front;$('#rGain').textContent=r.gain;$('#rCost').textContent=r.cost;$('#rConf').textContent=r.conf;
+  $('#rNote').innerHTML=store.both&&!store.sac?'위 ‘직접 해보기 2’에서 한 명을 빼면 \'내려놓은 것\'이 채워집니다. <a href="#both2">12 / 11로 돌아가기 ↑</a>':(!store.both?'\'둘 다\'를 눌러보면 결과가 또 달라집니다. <a href="#both2">해보기 ↑</a>':'정답은 없습니다. 시메오네도 매 경기 고민하는 문제입니다.');
+  br.render(layoutFor(r.key),{instant:true});
+  const em=$('#endMe');if(em){const jo=w=>{const c=w.charCodeAt(w.length-1);return c>=0xAC00&&c<=0xD7A3&&(c-0xAC00)%28?'을':'를'};const kf=store.both?'데이비드와 훌리안':(store.front==='JULIAN'?'훌리안':'데이비드');
+    if(!store.touched&&!store.both)em.innerHTML='위에서 직접 AT를 짜보면, 이 자리에 당신이 내려놓은 것이 남습니다.';
+    else if(store.both&&!store.sac)em.innerHTML='당신은 <b>'+kf+'</b>를 함께 세웠습니다.<br>아직 한 명이 넘칩니다. <a href="#both2" style="color:#9fd3ff">누구를 뺄지 고르러 가기 ↑</a>';
+    else em.innerHTML='이강인을 <b>'+r.role+'</b>에 두고 <b>'+kf+'</b>'+jo(kf)+' 세운 당신은<br><em>'+r.cost+'</em>'+jo(r.cost)+' 내려놓았습니다.'}
+}
+$('#rShare').addEventListener('click',async()=>{
+  const r=resultData(),u=new URL(location.href);u.hash='';u.searchParams.set('at',[store.role,store.front,store.both?1:0,store.sac||'-'].join('.'));const url=u.toString();
+  const text=`내가 짠 AT — 이강인: ${r.role} / 최전방: ${r.front} / 얻은 것: ${r.gain} / 내려놓은 것: ${r.cost}`;
+  try{if(navigator.share){await navigator.share({title:"AT, 라리가 '2강 IN'",text,url})}else if(navigator.clipboard){await navigator.clipboard.writeText(text+' '+url);$('#rShare').textContent='복사했습니다 ✓';setTimeout(()=>$('#rShare').textContent='결과 공유하기',1800)}}catch(e){}
+});
+$('#rRetry').addEventListener('click',()=>{
+  resetBoth(true);store.role='RIGHT';store.front='DAVID';store.touched=false;firstWow=false;b1.root.classList.remove('touched');
+  try{const u=new URL(location.href);if(u.searchParams.has('at')){u.searchParams.delete('at');history.replaceState(null,'',u.toString())}}catch(e){}
+  emit({from:'reset',cause:'lee'});setOpp('mine');
+  $('#lab').scrollIntoView({behavior:reduced()?'auto':'smooth',block:'start'});
+});
+
+/* ---------- hero title: 2강 IN 폭을 윗줄에 맞춤 ---------- */
+function fitTitle(){const h=$('#heroTitle');if(!h)return;const l=$('.l1',h),e=$('em',h);e.style.fontSize='100px';const k=l.getBoundingClientRect().width/e.getBoundingClientRect().width;if(k>0&&isFinite(k))e.style.fontSize=(100*k).toFixed(2)+'px'}
+fitTitle();addEventListener('resize',fitTitle,{passive:true});if(document.fonts&&document.fonts.ready)document.fonts.ready.then(fitTitle);
+
+/* ---------- initial (공유 링크 ?at=역할.최전방.둘다.뺀선수 복원) ---------- */
+let shared=null;try{const q=new URLSearchParams(location.search).get('at');if(q){const [ro,fr,bo,sa]=q.split('.');if(ROLEPOS[ro]&&(fr==='DAVID'||fr==='JULIAN')){shared={ro,fr:(fr==='JULIAN'&&ro!=='RIGHT')?'DAVID':fr,bo:bo==='1',sa:SAC[sa]?sa:null}}}}catch(e){}
+if(shared){store.role=shared.ro;store.front=shared.fr;store.touched=true;firstWow=true;b1.root.classList.add('touched')}
+emit({from:'init',cause:'lee'});
+if(shared&&shared.bo){store.both=true;store.sac=shared.sa;b2.render(bothLayout(store.role,store.sac),{instant:true});b2.setEvidence('DAVID_JULIAN_LEE');
+  if(store.sac){b2.bench.innerHTML='<span class="b">'+(KO[store.sac]||P[store.sac][0])+' <small>내려놓은 것 · '+SAC[store.sac].cost+'</small></span>';b2.setCount(11,'ok');$('#panel2').innerHTML=panelHTML('DAVID_JULIAN_LEE','<p class="hint">'+SAC[store.sac].line+'</p>')}
+  else{b2.setCount(12,'over');b2.root.classList.add('zoomout');sacPhase=true;applyPick();$('#sacbox').classList.add('on');$('#panel2').innerHTML=panelHTML('DAVID_JULIAN_LEE','')}
+  syncControls();emitResult()}
+setOpp('mine');
+if(shared){setTimeout(()=>{const t=$('#result');if(t)t.scrollIntoView({block:'start'})},300)}
+
+/* ---------- drawer ---------- */
+const drawer=$('#drawer'),bg=$('#drawerBg'),mBtn=$('#mBtn');let lastFocus=null;
+function openDrawer(srcId){lastFocus=document.activeElement;drawer.classList.add('open');bg.classList.add('open');mBtn.setAttribute('aria-expanded','true');drawer.focus({preventScroll:true});
+  if(srcId){const t=document.getElementById('src-'+srcId);if(t){setTimeout(()=>{t.scrollIntoView({block:'center',behavior:'smooth'});t.classList.add('flash');setTimeout(()=>t.classList.remove('flash'),1600)},360)}}}
+function closeDrawer(){drawer.classList.remove('open');bg.classList.remove('open');mBtn.setAttribute('aria-expanded','false');if(lastFocus)lastFocus.focus({preventScroll:true})}
+window.openDrawer=openDrawer;
+document.addEventListener('click',e=>{const a=e.target.closest('.src-l');if(!a)return;e.preventDefault();openDrawer(a.dataset.src)});
+mBtn.addEventListener('click',()=>openDrawer());$('#mClose').addEventListener('click',closeDrawer);bg.addEventListener('click',closeDrawer);
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&drawer.classList.contains('open'))closeDrawer()});
+$('#stateTable tbody').innerHTML=Object.entries(STATES).map(([k,s])=>`<tr><td><b>${s.label}</b>${SCN[s.status]?'<br><span class="tag scn" style="display:inline-block;margin-top:4px">전술 시나리오</span>':''}</td><td>${KIND[s.kind][1]}<br><span style="color:var(--dim)">(${LV[s.conf]==='가설'?'가설':'근거 '+LV[s.conf]})</span></td><td>${s.src.join(' ')}</td></tr>`).join('');
+$('#srcList').innerHTML=Object.entries(SOURCES).map(([id,[o,d,t,u,f]])=>`<div class="src" id="src-${id}"><b>${id}</b> · ${o} · ${d}<br><i>${t}</i><br>${f}<br><a href="${u}" target="_blank" rel="noopener">${u}</a></div>`).join('');
+$('#photoCredits').innerHTML='사진=뉴시스.<br><br><b>전술판 선수 얼굴</b> — 이강인은 뉴시스 사진(바리오스와 세리머니 장면)에서, 나머지 선수는 위키미디어 공용(Wikimedia Commons)의 자유 라이선스 사진에서 얼굴 부분만 잘라 썼습니다. 바리오스는 쓸 수 있는 사진이 없어 이름으로만 표시했습니다.<br>'+ASSETS.faces.map(([n,file,by,lic])=>`${n} — <a href="https://commons.wikimedia.org/wiki/File:${encodeURIComponent(file)}" target="_blank" rel="noopener">${by}</a>, ${lic}`).join('<br>')+'<br><br>'+ASSETS.photos.map(([f,id,use])=>`${use} — ${id}`).join('<br>');
+
+/* ---------- scroll-driven light effects (핀 고정 없음) ---------- */
+const par=$$('[data-par]'),hero=$('#hero');let tick=false;
+function onScroll(){tick=false;if(reduced())return;const vh=innerHeight;
+  const hr=hero.getBoundingClientRect();hero.style.setProperty('--hp',Math.max(0,Math.min(1,-hr.top/hr.height)).toFixed(3));
+  par.forEach(s=>{const r=s.getBoundingClientRect();if(r.bottom<0||r.top>vh)return;s.style.setProperty('--sp',((vh-r.top)/(vh+r.height)).toFixed(3))})}
+let lastY=scrollY;addEventListener('scroll',()=>{const y=scrollY;if(Math.abs(y-lastY)>6){mBtn.classList.toggle('hide',y>lastY&&y>200);lastY=y}if(!tick){tick=true;requestAnimationFrame(onScroll)}},{passive:true});onScroll();
+const io=new IntersectionObserver(es=>es.forEach(e=>{if(!e.isIntersecting)return;const t=e.target;io.unobserve(t);
+  if(t.id==='p2b'){const st=$('#p2bStage');const seq=[['s1','MATCH → 선수'],['s2','선수 → 관계'],['s3','TACTICS BOARD']];seq.forEach(([c,l],i)=>setTimeout(()=>{t.classList.add(c);st.textContent=l},reduced()?0:500+i*1300))}
+  else if(t.id==='board2'){if(!store.both){b2.say('이강인은 첫 번째 경기장에서 고른 자리에 있습니다.<br>이번엔 <em>최전방</em>을 바꿔보세요.',3200)}const bb=$('[data-front2="BOTH"]');if(bb.animate&&!reduced())bb.animate([{boxShadow:'0 0 0 0 #ff5a61aa'},{boxShadow:'0 0 0 12px #ff5a6100'}],{duration:1100,iterations:3})}
+  else if(t.id==='board3'){$('[data-opp="real"]').animate&&!reduced()&&$('[data-opp="real"]').animate([{boxShadow:'0 0 0 0 #ff5a61aa'},{boxShadow:'0 0 0 10px #ff5a6100'}],{duration:1100,iterations:3})}
+  else t.classList.add('in');
+}),{threshold:.45});
+['#p2b','#focus1','#socPhoto','#realPhoto','#flip','#puzzle','#board2','#board3'].forEach(s=>{const n=$(s);if(n)io.observe(n)});
+})();
+</script>
+</body>
+</html>
