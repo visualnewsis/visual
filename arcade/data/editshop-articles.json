@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-09-27T23:11:05+00:00",
+  "updatedAt": "2026-09-28T05:36:12+00:00",
   "source": "VISUAL NEWSIS editshop landing page",
   "articles": [
     {
@@ -110,6 +110,16 @@
       "description": "당신이 생각하는 '고령'의 기준을 직접 고르고, 실제 인구 통계와 지역별 데이터 위에서 그 기준이 어디쯤 있는지 확인합니다.",
       "image": "https://visual.newsis.com/senior/images/NISI20240905_0020511616.jpg",
       "url": "https://visual.newsis.com/senior/",
+      "profile": "center"
+    },
+    {
+      "id": "atleti-2gang",
+      "issue": "편집#012",
+      "label": "FOOTBALL / TACTICS / INTERACTIVE",
+      "title": "AT, 라리가 '2강 IN'",
+      "description": "이강인의 자리를 직접 옮기고, 데이비드와 훌리안을 넣고, 함께 뛸 11명을 고르며 아틀레티코 마드리드의 전술 퍼즐을 체험합니다.",
+      "image": "https://visual.newsis.com/atleti-2gang/images/hero-derby-bellingham.jpg",
+      "url": "https://visual.newsis.com/atleti-2gang/",
       "profile": "center"
     }
   ]
