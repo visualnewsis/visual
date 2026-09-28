@@ -15,6 +15,7 @@
   6) "국유단이 맞이한 다른 순간들" 아카이브 월 섹션의 인물명·날짜·장소는 각 사진 속 배너·통지서에 실제로 인쇄된 정보를 그대로 옮긴 것입니다. 강대언 경사 사진은 배너가 없어 신원확인통지서에 적힌 발굴 경위(호남지역 전투)로만 표기했습니다.
   7) 발굴 섹션의 백석산·전투화 관련 문장은 KBS 「"마지막 한 명까지"…6·25 전사자 유해 발굴 구슬땀」(2026.6.24, 기자 이유진) 보도를 "KBS에 따르면"으로 출처 밝혀 인용한 것입니다(담당자 지시로 타사 표기 허용). 압곡리 현장에 실제로 적용된다는 뜻은 아닙니다. 해당 리포트의 영상·사진은 KBS 자체 촬영(촬영기자 김남범)이라 재사용 불가 — 발굴 현장 사진은 기존 자료사진을 그대로 씁니다. 취재 출처 목록에는 KBS를 별도 카드(링크 포함)로 넣지 않고, disclaimer 문장 안에 텍스트로만 언급합니다 — 뉴시스 자체 기사만 "기사 보러가기" 링크 카드로 남겨둡니다(담당자 지시).
   9) [신규, 2026-09-28] 안재현 기자 2차 피드백 반영: ① 발굴 장면 문구에 "고작 뼈 몇 조각" 애도 표현을 복원(현장 세부묘사 "깊은 땅속/겨우 찾았다"는 근거 없어 복원 안 함), 날짜(2025.4)는 발굴 장면 안내로, 이어지는 문장은 75년 전체를 돌아보는 서술로 재배치. ② DNA 문구를 "유해의 DNA와 동생의 DNA를 비교했습니다 → 형제 관계가 확인됐습니다"로 한 번 더 다듬음. ③ 미수습 통계(12만2223명)가 "유해 미수습"만을 뜻하도록 도입 블록쿼트·숫자 섹션 문구를 통일. 출처는 처음에 "네이트뉴스"로 적었으나, 네이트는 유통 포털일 뿐이고 원 매체는 동아일보(2026.6.24, donga.com/news/Politics/article/all/20260624/134175629/1)로 확인돼 "동아일보(2026.6.24), 국유단 집계 인용"으로 수정(2026-09-28). "유가족 유전자 시료 12만여 개" 카드는 집계 시점을 끝내 확인하지 못해, 확인 문구를 남겨두는 대신 카드 자체를 삭제함. ④ 섹션 순서를 발굴→DNA·신원확인→귀환행사·동생의 말→국방부·국유단 입장 순으로 재배치(공식 발언 내용은 원문 그대로 유지). ⑤ 아카이브 31장을 처음 8장 + `<details>`(귀환 기록 더 보기 · 23장) 구조로 변경 — 네이티브 details/summary라 JS 없이도 전체 열람 가능, 열고 닫기 모두 확인함. ⑥ "잘 모르겠다" 패널 문구 교체, "인척" 표현 미복원, 독자 노출 disclaimer에서 "복수의 취재 확인을 거쳐" 같은 과잉 확언 제거. ⑦ 기다림 연출(1400vh, long-wait 섹션)은 지시대로 전혀 손대지 않음 — 표시 오류만 데스크톱·모바일 뷰포트로 확인(가로 넘침 없음), 실제 휴대전화 검증은 아님.
+  10) [신규, 2026-09-28] 통계 출처 수정: "네이트뉴스" → "동아일보(2026.6.24), 국유단 집계 인용"으로 재정정(동아일보가 원 매체, 네이트는 유통 포털이었음을 재확인). 아카이브 마지막에 GPT가 故 한길진 하사(귀환행사 2026.9.22, 국방부 유해발굴감식단 제공 사진) 카드를 추가해 32장 구성이 됨 — 이 카드와 사진 출처 표기는 손대지 않음. 이어서 안재현 기자 3차 피드백 반영: DNA 문단에서 "김하준 옹(87)"의 87세를 2023년 시점 문장에서만 삭제(2026년 표기는 유지), "여든일곱 살 동생의 집 현관에" → "여든일곱 살 동생의 집에서, 형의 귀환행사가 열렸습니다"(미확인 '현관' 묘사 제거), 귀환 사진 캡션 "31일 오전" → "2026년 8월 31일 오전"(날짜 명시), 아카이브 더보기 버튼을 펼침 상태에 따라 "귀환 기록 더 보기(24장)" ↔ "귀환 기록 접기"로 전환(순수 CSS, JS 없이 details[open] 선택자로 처리), disclaimer 통계 출처 문장을 "미수습 통계는 국방부 유해발굴감식단 집계를 인용한 동아일보의 2026년 6월 24일 보도를 따랐습니다"로 축약.
 -->
 <html lang="ko">
 <head>
@@ -245,8 +246,10 @@
     .archive-more-details summary:hover,.archive-more-details summary:focus-visible{border-color:var(--mint);color:var(--mint)}
     .archive-more-details summary:before{content:"+";font-size:16px;line-height:1}
     .archive-more-details[open] summary:before{content:"–"}
-    .archive-more-details[open] summary .archive-more-count{display:none}
     .archive-more-count{color:#7c8688;font-weight:600}
+    .archive-more-label-open{display:none}
+    .archive-more-details[open] .archive-more-label-closed{display:none}
+    .archive-more-details[open] .archive-more-label-open{display:inline}
 
     .sources{background:#0a0d10;color:#fff}
     .sources ul{margin:28px 0 0;padding:0;list-style:none;display:grid;gap:18px;max-width:780px}
@@ -408,7 +411,7 @@
         <div class="science-copy">
           <div class="eyebrow">유전자가 이어준 75년</div>
           <h2 style="margin:20px 0 0;font-size:clamp(28px,3.6vw,42px);line-height:1.28;letter-spacing:-.04em">유해의 DNA와<br>동생의 DNA를 비교했습니다.<br>형제 관계가 확인됐습니다.</h2>
-          <p>2023년 10월, 김하동 일병의 동생 김하준 옹(87)이 유전자 시료를 미리 제공해 뒀습니다. 2025년 4월 압곡리에서 유해가 발굴되자, 국유단은 그 유전자를 김하준 옹의 시료와 비교 분석해 두 사람이 형제 관계임을 2026년 4월 확인했습니다.</p>
+          <p>2023년 10월, 김하동 일병의 동생 김하준 옹이 유전자 시료를 미리 제공해 뒀습니다. 2025년 4월 압곡리에서 유해가 발굴되자, 국유단은 그 유전자를 김하준 옹의 시료와 비교 분석해 두 사람이 형제 관계임을 2026년 4월 확인했습니다.</p>
           <p>수습된 것은 하지골 몇 조각뿐이었지만, 유전자 감식 기술은 그 몇 조각만으로도 75년 전 헤어진 형제를 다시 연결했습니다.</p>
         </div>
         <div class="years-gap">
@@ -424,11 +427,11 @@
     <section class="section homecoming-scene">
       <div class="wrap reveal">
         <div class="eyebrow on-dark">2026년 8월 31일, 경기 용인</div>
-        <blockquote>여든일곱 살 동생의 집 현관에,<br>국방부 유해발굴감식단이 도착했습니다.</blockquote>
+        <blockquote>여든일곱 살 동생의 집에서,<br>형의 귀환행사가 열렸습니다.</blockquote>
         <p>국유단은 이날 오전 김하동 일병의 동생 김하준 옹(87)의 자택에서 '호국의 영웅 귀환행사'를 열고, 신원확인 통지서와 유품을 유가족에게 전달했습니다. 75년 전 전장으로 떠난 형이, 뼈 몇 조각과 한 장의 통지서로 동생 앞에 돌아온 순간이었습니다.</p>
         <figure class="callback-photo">
           <img src="images/NISI20260831_0002225933.jpg" alt="전병희 국방부 유해발굴감식단장이 김하준 옹에게 발굴 및 신원확인 과정을 설명하는 모습" loading="lazy">
-          <figcaption>31일 오전, 전병희 국방부 유해발굴감식단장(오른쪽)이 김하동 일병의 유가족에게 유해발굴 및 신원확인 과정을 설명하고 있다 — 사진: 국방부 유해발굴감식단</figcaption>
+          <figcaption>2026년 8월 31일 오전, 전병희 국방부 유해발굴감식단장(오른쪽)이 김하동 일병의 유가족에게 유해발굴 및 신원확인 과정을 설명하고 있다 — 사진: 국방부 유해발굴감식단</figcaption>
         </figure>
         <blockquote class="voice-quote">형님을 유전자 검사로 찾았다고 하니 우리나라가 선진국이 된 것을 새삼 느낀다.<br>이제 한이 내려앉는 것 같다.<cite>김하준 옹(87) · 김하동 일병의 동생</cite></blockquote>
       </div>
@@ -517,7 +520,7 @@
           <a class="archive-card" href="https://www.newsis.com/view/?id=NISI20190312_0014982586" target="_blank" rel="noopener noreferrer"><img src="images/NISI20190312_0014982586.jpg" alt="故 한병구 일병 귀환행사" loading="lazy"><span class="archive-cap"><b>故 한병구 일병</b>귀환행사 · 2019.3.12 · 서울 은평구</span></a>
         </div>
         <details class="archive-more-details">
-          <summary>귀환 기록 더 보기<span class="archive-more-count">(23장)</span></summary>
+          <summary><span class="archive-more-label-closed">귀환 기록 더 보기<span class="archive-more-count">(24장)</span></span><span class="archive-more-label-open">귀환 기록 접기</span></summary>
           <div class="archive-grid archive-grid-more">
           <a class="archive-card" href="https://www.newsis.com/view/?id=NISI20190905_0015565508" target="_blank" rel="noopener noreferrer"><img src="images/NISI20190905_0015565508.jpg" alt="故 남궁선 이등중사 귀환행사" loading="lazy"><span class="archive-cap"><b>故 남궁선 이등중사</b>귀환행사 · 2019.9.5 · 서울 중랑구</span></a>
           <a class="archive-card" href="https://www.newsis.com/view/?id=NISI20191008_0015682894" target="_blank" rel="noopener noreferrer"><img src="images/NISI20191008_0015682894.jpg" alt="故 김기봉 이등중사 귀환행사" loading="lazy"><span class="archive-cap"><b>故 김기봉 이등중사</b>귀환행사 · 2019.10.8 · 경남 거제</span></a>
@@ -542,9 +545,10 @@
           <a class="archive-card" href="https://www.newsis.com/view/?id=NISI20260428_0002122689" target="_blank" rel="noopener noreferrer"><img src="images/NISI20260428_0002122689.jpg" alt="故 김판성 하사 귀환행사" loading="lazy"><span class="archive-cap"><b>故 김판성 하사</b>귀환행사 · 2026.4.28 · 경기도 부천시</span></a>
           <a class="archive-card" href="https://www.newsis.com/view/?id=NISI20260629_0021341571" target="_blank" rel="noopener noreferrer"><img src="images/NISI20260629_0021341571.jpg" alt="故 최백인 일병·故 하창규 일병 합동안장식" loading="lazy"><span class="archive-cap"><b>故 최백인 일병·故 하창규 일병</b>합동안장식 · 2026.6.29 · 국립대전현충원</span></a>
           <a class="archive-card" href="https://www.newsis.com/view/?id=NISI20260729_0021381257" target="_blank" rel="noopener noreferrer"><img src="images/NISI20260729_0021381257.jpg" alt="故 강대언 경사 신원확인 통지서 전달" loading="lazy"><span class="archive-cap"><b>故 강대언 경사</b>신원확인 통지서 전달 · 2026.7.29 · 호남지역 전투에서 전사</span></a>
+          <a class="archive-card" href="images/han-giljin-homecoming-20260922.jpg" target="_blank" rel="noopener noreferrer"><img src="images/han-giljin-homecoming-20260922.jpg" alt="2026년 9월 22일 오전, 전병희 국방부 유해발굴감식단장(오른쪽)과 故 한길진 하사의 아들 한봉진 씨(왼쪽, 83세)가 기념사진을 촬영하고 있다. 사진=국방부 유해발굴감식단 제공" loading="lazy"><span class="archive-cap"><b>故 한길진 하사</b>귀환행사 · 2026.9.22<br>사진: 국방부 유해발굴감식단 제공</span></a>
           </div>
         </details>
-        <p class="archive-note">사진을 누르면 각 귀환행사를 보도한 뉴시스 포토기사로 연결됩니다.</p>
+        <p class="archive-note">사진을 누르면 각 귀환행사를 보도한 뉴시스 포토기사로 연결됩니다. 故 한길진 하사 사진은 국방부 유해발굴감식단 제공 사진을 크게 엽니다.</p>
       </div>
     </section>
 
@@ -725,7 +729,7 @@
           <li><b>「6·25 당시 19세에 산화한 김하동 일병, 75년 만에 가족 품으로」 (2026.08.31) - 뉴시스</b><span>故 김하동 일병의 출생·입대·전사 경위, 발굴 위치와 수습 부위, 신원확인 경위, 동생 김하준 옹의 인터뷰를 확인.</span><a href="https://www.newsis.com/view/NISX20260831_0003769722" target="_blank" rel="noopener noreferrer">기사 보러가기 ↗</a></li>
           <li><b>「75년 만에 가족의 품으로 돌아간 故김익장 일병」 (2025.03.31) - 뉴시스</b><span>김익장 일병의 생애, 발굴·신원확인 경위, 동생 김삼장씨 관련 사실을 확인.</span><a href="https://www.newsis.com/view/NISX20250331_0003120112" target="_blank" rel="noopener noreferrer">기사 보러가기 ↗</a></li>
         </ul>
-        <p class="disclaimer">이 페이지의 사실관계는 뉴시스 원문, KBS 보도(2026.06.24, 「"마지막 한 명까지"…6·25 전사자 유해 발굴 구슬땀」)를 확인해 작성했습니다. 미수습 통계(전사·실종자 16만2913명 중 12만2223명·75.0%)는 국방부 유해발굴감식단이 직접 발표한 원자료가 아니라, 이를 보도한 동아일보 기사(2026.6.24)를 확인해 인용했습니다.</p>
+        <p class="disclaimer">이 페이지의 사실관계는 뉴시스 원문, KBS 보도(2026.06.24, 「"마지막 한 명까지"…6·25 전사자 유해 발굴 구슬땀」)를 확인해 작성했습니다. 미수습 통계는 국방부 유해발굴감식단 집계를 인용한 동아일보의 2026년 6월 24일 보도를 따랐습니다.</p>
       </div>
     </section>
 
