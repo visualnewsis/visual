@@ -225,7 +225,7 @@ em{font-style:normal}
 .rolepick button small{display:block;font-size:10px;opacity:.7;font-weight:500;margin-top:2px}
 .jump{display:flex;align-items:center;justify-content:space-between;gap:12px;width:100%;margin-top:14px;padding:14px 16px;border:1px solid #ff5a6166;border-radius:14px;background:linear-gradient(90deg,#2a1215,#16181d);text-align:left;text-decoration:none}
 .jump b{display:block;font-size:16px;letter-spacing:-.03em}.jump span{font-size:12px;color:#c9cbd0}.jump i{font-style:normal;font-size:22px;color:var(--red2)}
-.chip.lock{opacity:.55;border-style:dashed}
+.chip.lock{opacity:1;border-style:solid}
 .chip.lock small:after{content:" · 선택 시 우측 이동"}
 .tag.mix{background:#2a2a12;color:#f1e39b}
 .ev-badge[data-kind="mix"] i{background:var(--amber)}.ev-badge[data-kind="virtual"] i{background:#ff8a4c}
@@ -402,7 +402,7 @@ footer.foot{display:flex;flex-wrap:wrap;gap:10px 24px;justify-content:space-betw
     <h2>이강인을 움직이면<br>누가 살아날까?</h2>
     <a class="cta" href="#lab">이강인을 움직여보세요. <i aria-hidden="true">↓</i></a>
     <div class="table7" aria-label="라리가 7라운드 뒤 순위"><span>LALIGA 7R</span><span><b>1</b>바르셀로나 21</span><span class="me"><b>2</b>AT 16</span><span><b>3</b>레알 15</span></div>
-    <div class="by">기획·디렉터 = 안재현 기자 · 순위는 9월 20일 레알전 직후 기준(10월 10일 8라운드 전까지 유지)</div>
+    <div class="by">기획·디렉터 = 안재현 기자 · 순위는 9월 20일 7라운드 종료 기준</div>
   </div>
 </section>
 
@@ -503,7 +503,7 @@ footer.foot{display:flex;flex-wrap:wrap;gap:10px 24px;justify-content:space-betw
 <section class="sec" style="padding-top:40px">
   <div class="wrap duo">
     <div>
-      <p class="sub" style="margin-top:0;font-size:clamp(17px,2vw,21px);color:#e3e4e7;line-height:1.75">9월 13일 <b>레알 소시에다드 원정.</b><br>이강인과 바에나도 함께 빠졌습니다.</p>
+      <p class="sub" style="margin-top:0;font-size:clamp(17px,2vw,21px);color:#e3e4e7;line-height:1.75">9월 13일 <b>레알 소시에다드 원정.</b><br>이강인·바에나·요렌테가 빠지고<br>코케·카르도주·데이비드가 들어갔습니다.</p>
       <div class="quote small"><q>루크먼과 이강인이 함께 뛴 시간이 더 많아서 조나선에게는 선발이 아니라고 말해줬다.</q><span class="who">디에고 시메오네 감독, 9월 13일 경기 뒤<a class="src-l" href="#" data-src="S12">ESPN ↗</a></span></div>
       <div class="quote"><q>조나선은 우리에게 깊이를 준다. 그게 팀에 다른 무언가를 더해준다.</q><span class="who">같은 날 시메오네 감독. 데이비드는 후반 교체로 들어가 90분에 골을 넣었다. 인용은 ESPN 영문 보도를 우리말로 옮긴 것.<a class="src-l" href="#" data-src="S12">ESPN ↗</a></span></div>
       <div class="subs" aria-label="9월 13일 레알 소시에다드전 교체">
@@ -614,7 +614,7 @@ footer.foot{display:flex;flex-wrap:wrap;gap:10px 24px;justify-content:space-betw
   <img data-slot="flip" src="images/simeone-lee-touchline.jpg" alt="경기 중 터치라인에서 이강인과 이야기하는 시메오네 감독" loading="lazy" style="object-position:60% 30%">
   <div class="wrap">
     <p class="big"><span class="q1">이강인은 어디에<br>서야 할까?</span></p>
-    <p class="sub">함께 뛸 선수까지 고르면,<br>빈자리를 메울 선수도 필요합니다.</p>
+    <p class="sub">한 명을 빼면,<br>남은 선수들의 역할도 바뀝니다.</p>
     <p class="big q2" style="margin-top:14px">누구를 넣고,<br><em>누구를 뺄까.</em></p>
     <p class="cap" style="margin-top:18px">경기 중 이강인과 이야기하는 시메오네 감독. 사진=뉴시스</p>
   </div>
@@ -651,7 +651,7 @@ footer.foot{display:flex;flex-wrap:wrap;gap:10px 24px;justify-content:space-betw
   <div class="wrap">
     <p class="end-q">이강인이 자리를 옮기면</p>
     <p class="end-a">동료들의 역할도 달라집니다.</p>
-    <p class="end-me" id="endMe">위에서 직접 AT를 짜보면, 이 자리에 당신이 내려놓은 것이 남습니다.</p>
+    <p class="end-me" id="endMe">이강인의 위치와 최전방 공격수를 고르면 선택한 배치를 여기서 확인할 수 있습니다.</p>
     <div class="teams" style="margin-top:44px">REAL · BARÇA · ATLETI</div>
     <h2>2강 <em>IN</em></h2>
     <p>레알을 끌어내리고 2위.<br>선두 바르셀로나와는 승점 5 차이입니다.</p>
@@ -814,7 +814,7 @@ const STATES={
     live:['david','barrios']},
   DAVID_JULIAN_LEE:{kind:'virtual',fact:'세 명이 함께 뛴 경기는 아직 없음.',interp:'전체가 가상 조합.',head:'',label:'LEE + DAVID + JULIÁN 공존',status:'PUZZLE_HYPOTHESIS',conf:'LOW',src:['S10','S11'],
     copy:'지금 배치에 데이비드와 훌리안을 모두 넣으면 12명입니다. 한 명을 빼고 11명을 맞춰보세요.',
-    gain:['데이비드의 마무리와 훌리안의 패스 연결'],cost:['바에나·줄리아노·중원·수비 중 한 자리를 비워야 함'],
+    gain:['데이비드의 마무리와 훌리안의 패스 연결'],cost:['바에나·줄리아노·바리오스·휼만 중 한 명 제외'],
     why:'세 명이 동시에 뛴 경기는 아직 없습니다. 최선의 조합을 내놓으려는 게 아니라, 공격수 둘을 함께 쓰면 무엇을 내줘야 하는지 보여주는 그림입니다.'},
   REAL_MODE:{kind:'report',fact:'레알 왼쪽 공략, 줄리아노 PK 유도, 데이비드 골(엘파이스·경기 보도).',interp:'선수 위치는 흐름을 설명하는 그림.',head:'',label:'REAL 상대 · 오른쪽 공략',status:'SUPPORTED_SCENARIO',conf:'HIGH-MED',src:['S07','S08','S09','S10'],
     copy:'상대가 바뀌면 같은 자리라도 쓰임새가 달라집니다.',gain:[],cost:[],
@@ -1092,7 +1092,7 @@ function doSacrifice(id){
   const lay=bothLayout(store.role,id);
   b2.root.classList.remove('zoomout');
   b2.render(lay,{cause:id==='giuliano'?'rb':'lee'});
-  b2.bench.innerHTML=`<span class="b">${KO[id]||P[id][0]} <small>내려놓은 것 · ${SAC[id].cost}</small></span>`;
+  b2.bench.innerHTML=`<span class="b">${KO[id]||P[id][0]} <small>보완할 점 · ${SAC[id].cost}</small></span>`;
   b2.setCount(11,'ok');syncControls();
   $('#panel2').innerHTML=panelHTML('DAVID_JULIAN_LEE',`<p class="hint">${SAC[id].line}</p>`);
   refreshOthers();
@@ -1223,7 +1223,7 @@ let shared=null;try{const q=new URLSearchParams(location.search).get('at');if(q)
 if(shared){store.role=shared.ro;store.front=shared.fr;store.touched=true;firstWow=true;b1.root.classList.add('touched')}
 emit({from:'init',cause:'lee'});
 if(shared&&shared.bo){store.both=true;store.sac=shared.sa;b2.render(bothLayout(store.role,store.sac),{instant:true});b2.setEvidence('DAVID_JULIAN_LEE');
-  if(store.sac){b2.bench.innerHTML='<span class="b">'+(KO[store.sac]||P[store.sac][0])+' <small>내려놓은 것 · '+SAC[store.sac].cost+'</small></span>';b2.setCount(11,'ok');$('#panel2').innerHTML=panelHTML('DAVID_JULIAN_LEE','<p class="hint">'+SAC[store.sac].line+'</p>')}
+  if(store.sac){b2.bench.innerHTML='<span class="b">'+(KO[store.sac]||P[store.sac][0])+' <small>보완할 점 · '+SAC[store.sac].cost+'</small></span>';b2.setCount(11,'ok');$('#panel2').innerHTML=panelHTML('DAVID_JULIAN_LEE','<p class="hint">'+SAC[store.sac].line+'</p>')}
   else{b2.setCount(12,'over');b2.root.classList.add('zoomout');sacPhase=true;applyPick();$('#sacbox').classList.add('on');$('#panel2').innerHTML=panelHTML('DAVID_JULIAN_LEE','')}
   syncControls();emitResult()}
 setOpp('mine');
