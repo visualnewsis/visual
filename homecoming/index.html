@@ -14,6 +14,7 @@
   5) 편집# 번호는 013으로 확정(2026-09-28, atleti-2gang=012 다음 순번). 다만 아직 공용 목록(assets/editshop-carousel.js, editshop/index.html, 루트 index.html)에는 등록하지 않았음 — 배포 보류 지시(안재현 기자) 및 위 3번 미해결 사실확인 항목 때문. 공개 노출은 별도 지시 후 진행.
   6) "국유단이 맞이한 다른 순간들" 아카이브 월 섹션의 인물명·날짜·장소는 각 사진 속 배너·통지서에 실제로 인쇄된 정보를 그대로 옮긴 것입니다. 강대언 경사 사진은 배너가 없어 신원확인통지서에 적힌 발굴 경위(호남지역 전투)로만 표기했습니다.
   7) 발굴 섹션의 백석산·전투화 관련 문장은 KBS 「"마지막 한 명까지"…6·25 전사자 유해 발굴 구슬땀」(2026.6.24, 기자 이유진) 보도를 "KBS에 따르면"으로 출처 밝혀 인용한 것입니다(담당자 지시로 타사 표기 허용). 압곡리 현장에 실제로 적용된다는 뜻은 아닙니다. 해당 리포트의 영상·사진은 KBS 자체 촬영(촬영기자 김남범)이라 재사용 불가 — 발굴 현장 사진은 기존 자료사진을 그대로 씁니다. 취재 출처 목록에는 KBS를 별도 카드(링크 포함)로 넣지 않고, disclaimer 문장 안에 텍스트로만 언급합니다 — 뉴시스 자체 기사만 "기사 보러가기" 링크 카드로 남겨둡니다(담당자 지시).
+  9) [신규, 2026-09-28] 안재현 기자 2차 피드백 반영: ① 발굴 장면 문구에 "고작 뼈 몇 조각" 애도 표현을 복원(현장 세부묘사 "깊은 땅속/겨우 찾았다"는 근거 없어 복원 안 함), 날짜(2025.4)는 발굴 장면 안내로, 이어지는 문장은 75년 전체를 돌아보는 서술로 재배치. ② DNA 문구를 "유해의 DNA와 동생의 DNA를 비교했습니다 → 형제 관계가 확인됐습니다"로 한 번 더 다듬음. ③ 미수습 통계(12만2223명)가 "유해 미수습"만을 뜻하도록 도입 블록쿼트·숫자 섹션 문구를 통일했고, 이 수치는 국유단 원자료를 직접 확보한 게 아니라 네이트뉴스(2026.6.24) 보도를 확인해 인용한 것이라 출처·disclaimer 표현을 그에 맞게 수정(동아일보 원문 URL은 접근 차단으로 직접 확인 못 함). "유가족 유전자 시료 12만여 개"는 정확한 집계 시점을 확인하지 못해 확정하지 않고 페이지에 확인 필요 문구를 남김 — 남은 사실확인 항목. ④ 섹션 순서를 발굴→DNA·신원확인→귀환행사·동생의 말→국방부·국유단 입장 순으로 재배치(공식 발언 내용은 원문 그대로 유지). ⑤ 아카이브 31장을 처음 8장 + `<details>`(귀환 기록 더 보기 · 23장) 구조로 변경 — 네이티브 details/summary라 JS 없이도 전체 열람 가능, 열고 닫기 모두 확인함. ⑥ "잘 모르겠다" 패널 문구 교체, "인척" 표현 미복원, 독자 노출 disclaimer에서 "복수의 취재 확인을 거쳐" 같은 과잉 확언 제거. ⑦ 기다림 연출(1400vh, long-wait 섹션)은 지시대로 전혀 손대지 않음 — 표시 오류만 데스크톱·모바일 뷰포트로 확인(가로 넘침 없음), 실제 휴대전화 검증은 아님.
 -->
 <html lang="ko">
 <head>
@@ -236,9 +237,15 @@
     .archive-card .archive-cap{display:block;padding:14px 16px;font-size:12.5px;line-height:1.65;color:#aeb7ba}
     .archive-card .archive-cap b{display:block;font-size:13.5px;font-weight:800;color:#fff;margin-bottom:4px;letter-spacing:-.01em}
     .archive-note{margin:20px 0 0;font-size:12px;color:#7c8688}
-    .archive-more{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;border:1px dashed rgba(255,255,255,.22);height:100%;min-height:100%;color:#7c8688}
-    .archive-more span{font-size:28px;letter-spacing:.2em;color:rgba(255,255,255,.35)}
-    .archive-more b{font-size:13.5px;font-weight:800;line-height:1.5;text-align:center;color:#9aa2a6}
+    .archive-grid-more{margin-top:18px}
+    .archive-more-details:not([open]) .archive-grid-more{display:none}
+    .archive-more-details summary{margin-top:22px;display:inline-flex;align-items:center;gap:10px;padding:13px 22px;border:1px solid rgba(255,255,255,.28);border-radius:999px;color:#e7ebec;font-size:13.5px;font-weight:800;letter-spacing:.02em;cursor:pointer;list-style:none;-webkit-user-select:none;user-select:none}
+    .archive-more-details summary::-webkit-details-marker{display:none}
+    .archive-more-details summary:hover,.archive-more-details summary:focus-visible{border-color:var(--mint);color:var(--mint)}
+    .archive-more-details summary:before{content:"+";font-size:16px;line-height:1}
+    .archive-more-details[open] summary:before{content:"–"}
+    .archive-more-details[open] summary .archive-more-count{display:none}
+    .archive-more-count{color:#7c8688;font-weight:600}
 
     .sources{background:#0a0d10;color:#fff}
     .sources ul{margin:28px 0 0;padding:0;list-style:none;display:grid;gap:18px;max-width:780px}
@@ -324,7 +331,7 @@
     <section class="section intro">
       <div class="wrap reveal">
         <div class="eyebrow on-dark">6·25전쟁, 75년</div>
-        <blockquote>6·25 전사·실종자 <em>16만 2913명</em> 중<br>아직도 <em>12만 2223명</em>이<br>돌아오지 못했습니다.<cite>국방부 유해발굴감식단 발표(2026.6.24)</cite></blockquote>
+        <blockquote>6·25 국군 전사·실종자 <em>16만 2913명</em> 중<br><em>12만 2223명</em>의 유해는<br>아직 수습하지 못했습니다.<cite>네이트뉴스(2026.6.24), 국방부 유해발굴감식단 발표 인용</cite></blockquote>
         <div class="stat-row">
           <div class="stat"><b>75년</b><span>1951년 2월 전사부터 2026년 8월 귀환까지 걸린 시간</span></div>
           <div class="stat"><b>9번째</b><span>국방부 유해발굴감식단이 2026년 8월 31일 기준 올해 신원을 확인한 호국영웅</span></div>
@@ -383,7 +390,7 @@
 
     <section class="text-bridge" style="background-image:url('images/NISI20230531_0019907576.jpg')">
       <div class="wrap">
-        <blockquote>2025년 4월, 강원 횡성군 서원면 압곡리.<br><br>압곡리에서 수습한 것은<br>일부만 남은 유해였습니다.<cite>국방부 유해발굴감식단(국유단) 발굴 현장</cite></blockquote>
+        <blockquote>2025년 4월, 강원 횡성군 서원면 압곡리.<br><br>열아홉에 전장으로 떠났습니다.<br>75년 만에 돌아온 것은<br>고작 뼈 몇 조각이었습니다.<cite>국방부 유해발굴감식단(국유단) 발굴 현장</cite></blockquote>
         <div class="bone-caption">
           <span class="bone-chip">무릎뼈</span>
           <span class="bone-chip">정강뼈</span>
@@ -399,7 +406,7 @@
       <div class="wrap reveal science-grid">
         <div class="science-copy">
           <div class="eyebrow">유전자가 이어준 75년</div>
-          <h2 style="margin:20px 0 0;font-size:clamp(28px,3.6vw,42px);line-height:1.28;letter-spacing:-.04em">유해의 DNA를<br>동생과 대조했습니다.<br>형제라는 사실이 확인됐습니다.</h2>
+          <h2 style="margin:20px 0 0;font-size:clamp(28px,3.6vw,42px);line-height:1.28;letter-spacing:-.04em">유해의 DNA와<br>동생의 DNA를 비교했습니다.<br>형제 관계가 확인됐습니다.</h2>
           <p>2023년 10월, 김하동 일병의 동생 김하준 옹(87)이 유전자 시료를 미리 제공해 뒀습니다. 2025년 4월 압곡리에서 유해가 발굴되자, 국유단은 그 유전자를 김하준 옹의 시료와 비교 분석해 두 사람이 형제 관계임을 2026년 4월 확인했습니다.</p>
           <p>수습된 것은 하지골 몇 조각뿐이었지만, 유전자 감식 기술은 그 몇 조각만으로도 75년 전 헤어진 형제를 다시 연결했습니다.</p>
         </div>
@@ -413,15 +420,6 @@
       </div>
     </section>
 
-    <section class="section stance">
-      <div class="wrap reveal">
-        <div class="eyebrow">국방부·국유단의 입장</div>
-        <p class="stance-lead">유해발굴사업은 국방부 유해발굴감식단(국유단)이 2000년부터 이어온 사업입니다. 국유단은 같은 날인 8월 31일, 2026년 하반기 6·25 전사자 유해발굴을 시작하며 이렇게 밝혔습니다.</p>
-        <blockquote class="stance-quote">유해발굴이 펼쳐지는 전국 산야는 나라를 위해 희생하신 영웅들을 국가가 끝까지 책임진다는 무한책임의 가치를 실현하는 현장이며, 후반기에도 한 분의 유해라도 더 찾고 신원을 확인할 수 있도록 모든 노력을 다하겠다.<cite>전병희 국방부 유해발굴감식단장 · 2026년 8월 31일</cite></blockquote>
-        <p class="stance-note">이 발언은 하반기 유해발굴사업 개시와 관련해 나온 것으로, 김하동 일병 건에 대한 별도 코멘트는 아닙니다.</p>
-      </div>
-    </section>
-
     <section class="section homecoming-scene">
       <div class="wrap reveal">
         <div class="eyebrow on-dark">2026년 8월 31일, 경기 용인</div>
@@ -432,6 +430,15 @@
           <figcaption>31일 오전, 전병희 국방부 유해발굴감식단장(오른쪽)이 김하동 일병의 유가족에게 유해발굴 및 신원확인 과정을 설명하고 있다 — 사진: 국방부 유해발굴감식단</figcaption>
         </figure>
         <blockquote class="voice-quote">형님을 유전자 검사로 찾았다고 하니 우리나라가 선진국이 된 것을 새삼 느낀다.<br>이제 한이 내려앉는 것 같다.<cite>김하준 옹(87) · 김하동 일병의 동생</cite></blockquote>
+      </div>
+    </section>
+
+    <section class="section stance">
+      <div class="wrap reveal">
+        <div class="eyebrow">국방부·국유단의 입장</div>
+        <p class="stance-lead">유해발굴사업은 국방부 유해발굴감식단(국유단)이 2000년부터 이어온 사업입니다. 국유단은 같은 날인 8월 31일, 2026년 하반기 6·25 전사자 유해발굴을 시작하며 이렇게 밝혔습니다.</p>
+        <blockquote class="stance-quote">유해발굴이 펼쳐지는 전국 산야는 나라를 위해 희생하신 영웅들을 국가가 끝까지 책임진다는 무한책임의 가치를 실현하는 현장이며, 후반기에도 한 분의 유해라도 더 찾고 신원을 확인할 수 있도록 모든 노력을 다하겠다.<cite>전병희 국방부 유해발굴감식단장 · 2026년 8월 31일</cite></blockquote>
+        <p class="stance-note">이 발언은 하반기 유해발굴사업 개시와 관련해 나온 것으로, 김하동 일병 건에 대한 별도 코멘트는 아닙니다.</p>
       </div>
     </section>
 
@@ -468,10 +475,10 @@
     <section class="section numbers">
       <div class="wrap reveal">
         <div class="eyebrow">숫자로 보는 귀환</div>
-        <h2 style="margin:20px 0 0;font-size:clamp(28px,3.8vw,44px);line-height:1.26;letter-spacing:-.045em">아직, 12만 2223명이<br>돌아오지 못했습니다.</h2>
+        <h2 style="margin:20px 0 0;font-size:clamp(28px,3.8vw,44px);line-height:1.26;letter-spacing:-.045em">아직, 12만 2223명의<br>유해를 수습하지 못했습니다.</h2>
         <div class="num-grid">
-          <div class="num-cell"><b>12만 2223명</b><span>6·25 전사·실종자 중 아직 가족 품으로 돌아오지 못한 이들(2026.6.24 국방부 유해발굴감식단 발표 기준)</span></div>
-          <div class="num-cell"><b>12만여 개</b><span>지금까지 국유단이 확보한 유가족 유전자 시료</span></div>
+          <div class="num-cell"><b>12만 2223명</b><span>아직 유해를 수습하지 못한 국군 전사·실종자(2026년 6월 24일 국유단 집계 기준, 네이트뉴스 보도)</span></div>
+          <div class="num-cell"><b>12만여 개</b><span>지금까지 국유단이 확보한 유가족 유전자 시료(정확한 집계 시점 확인 필요)</span></div>
           <div class="num-cell"><b>9명</b><span>국유단이 2026년 8월 31일 기준 올해 새로 신원을 확인한 호국영웅</span></div>
           <div class="num-cell"><b>277명</b><span>2000년 4월 유해발굴사업 개시 이후 2026년 8월 31일 기준 가족 품으로 돌아온 국군 전사자</span></div>
         </div>
@@ -489,7 +496,7 @@
           <button class="act-btn" type="button" data-target="act-no">없다</button>
         </div>
         <div class="act-panel" id="act-yes">국방부 유해발굴감식단(1577-5625)에 연락하거나 아래 페이지에서 유전자 검사를 신청할 수 있습니다. 몇 촌 관계인지 정확히 몰라도 괜찮습니다.<br><br><a href="https://withcountry.mil.kr/withcountry/5256/subview.do" target="_blank" rel="noopener noreferrer">유전자 검사 신청 안내 보기 ↗</a></div>
-        <div class="act-panel" id="act-unsure">8촌은 생각보다 넓은 범위입니다. 어르신들께 한번 여쭤보세요 — 가족 중 전사하거나 실종된 분이 있는지 확인해보세요.<br><br><a href="https://withcountry.mil.kr/withcountry/5256/subview.do" target="_blank" rel="noopener noreferrer">참여 대상 확인하기 ↗</a></div>
+        <div class="act-panel" id="act-unsure">가족 중 6·25전쟁에서 전사하거나 실종된 분이 있는지 어르신들께 여쭤보세요. 참여 대상인지는 국방부 유해발굴감식단에 문의할 수 있습니다.<br><br><a href="https://withcountry.mil.kr/withcountry/5256/subview.do" target="_blank" rel="noopener noreferrer">참여 대상 확인하기 ↗</a></div>
         <div class="act-panel" id="act-no">그래도 이 페이지를, 아직 가족을 찾고 있는 누군가에게 보내주세요.<br><br><button class="act-copy" type="button">이 페이지 링크 복사하기</button></div>
       </div>
     </section>
@@ -508,6 +515,10 @@
           <a class="archive-card" href="https://www.newsis.com/view/?id=NISI20180906_0014438900" target="_blank" rel="noopener noreferrer"><img src="images/NISI20180906_0014438900.jpg" alt="故 김정권 이등중사 귀환행사" loading="lazy"><span class="archive-cap"><b>故 김정권 이등중사</b>귀환행사 · 2018.9.6 · 경남 통영</span></a>
           <a class="archive-card" href="https://www.newsis.com/view/?id=NISI20181016_0014558305" target="_blank" rel="noopener noreferrer"><img src="images/NISI20181016_0014558305.jpg" alt="故 박태홍 일병 귀환행사" loading="lazy"><span class="archive-cap"><b>故 박태홍 일병</b>귀환행사 · 2018.10.16 · 경기 양주</span></a>
           <a class="archive-card" href="https://www.newsis.com/view/?id=NISI20190312_0014982586" target="_blank" rel="noopener noreferrer"><img src="images/NISI20190312_0014982586.jpg" alt="故 한병구 일병 귀환행사" loading="lazy"><span class="archive-cap"><b>故 한병구 일병</b>귀환행사 · 2019.3.12 · 서울 은평구</span></a>
+        </div>
+        <details class="archive-more-details">
+          <summary>귀환 기록 더 보기<span class="archive-more-count">(23장)</span></summary>
+          <div class="archive-grid archive-grid-more">
           <a class="archive-card" href="https://www.newsis.com/view/?id=NISI20190905_0015565508" target="_blank" rel="noopener noreferrer"><img src="images/NISI20190905_0015565508.jpg" alt="故 남궁선 이등중사 귀환행사" loading="lazy"><span class="archive-cap"><b>故 남궁선 이등중사</b>귀환행사 · 2019.9.5 · 서울 중랑구</span></a>
           <a class="archive-card" href="https://www.newsis.com/view/?id=NISI20191008_0015682894" target="_blank" rel="noopener noreferrer"><img src="images/NISI20191008_0015682894.jpg" alt="故 김기봉 이등중사 귀환행사" loading="lazy"><span class="archive-cap"><b>故 김기봉 이등중사</b>귀환행사 · 2019.10.8 · 경남 거제</span></a>
           <a class="archive-card" href="https://www.newsis.com/view/?id=NISI20191122_0015832406" target="_blank" rel="noopener noreferrer"><img src="images/NISI20191122_0015832406.jpg" alt="故 김홍조 하사 귀환행사" loading="lazy"><span class="archive-cap"><b>故 김홍조 하사</b>귀환행사 · 2019.11.22 · 울산 울주군</span></a>
@@ -531,8 +542,8 @@
           <a class="archive-card" href="https://www.newsis.com/view/?id=NISI20260428_0002122689" target="_blank" rel="noopener noreferrer"><img src="images/NISI20260428_0002122689.jpg" alt="故 김판성 하사 귀환행사" loading="lazy"><span class="archive-cap"><b>故 김판성 하사</b>귀환행사 · 2026.4.28 · 경기도 부천시</span></a>
           <a class="archive-card" href="https://www.newsis.com/view/?id=NISI20260629_0021341571" target="_blank" rel="noopener noreferrer"><img src="images/NISI20260629_0021341571.jpg" alt="故 최백인 일병·故 하창규 일병 합동안장식" loading="lazy"><span class="archive-cap"><b>故 최백인 일병·故 하창규 일병</b>합동안장식 · 2026.6.29 · 국립대전현충원</span></a>
           <a class="archive-card" href="https://www.newsis.com/view/?id=NISI20260729_0021381257" target="_blank" rel="noopener noreferrer"><img src="images/NISI20260729_0021381257.jpg" alt="故 강대언 경사 신원확인 통지서 전달" loading="lazy"><span class="archive-cap"><b>故 강대언 경사</b>신원확인 통지서 전달 · 2026.7.29 · 호남지역 전투에서 전사</span></a>
-          <div class="archive-more"><span>···</span><b>그리고,<br>계속</b></div>
-        </div>
+          </div>
+        </details>
         <p class="archive-note">사진을 누르면 각 귀환행사를 보도한 뉴시스 포토기사로 연결됩니다.</p>
       </div>
     </section>
@@ -714,7 +725,7 @@
           <li><b>「6·25 당시 19세에 산화한 김하동 일병, 75년 만에 가족 품으로」 (2026.08.31) - 뉴시스</b><span>故 김하동 일병의 출생·입대·전사 경위, 발굴 위치와 수습 부위, 신원확인 경위, 동생 김하준 옹의 인터뷰를 확인.</span><a href="https://www.newsis.com/view/NISX20260831_0003769722" target="_blank" rel="noopener noreferrer">기사 보러가기 ↗</a></li>
           <li><b>「75년 만에 가족의 품으로 돌아간 故김익장 일병」 (2025.03.31) - 뉴시스</b><span>김익장 일병의 생애, 발굴·신원확인 경위, 동생 김삼장씨 관련 사실을 확인.</span><a href="https://www.newsis.com/view/NISX20250331_0003120112" target="_blank" rel="noopener noreferrer">기사 보러가기 ↗</a></li>
         </ul>
-        <p class="disclaimer">이 페이지의 수치와 사실관계는 국방부 유해발굴감식단이 2026년 6월 24일 발표한 자료(전사·실종자 16만2913명 중 12만2223명·75.0% 미수습), KBS 보도(2026.06.24, 「"마지막 한 명까지"…6·25 전사자 유해 발굴 구슬땀」), 복수의 취재 확인을 거쳐 작성했습니다.</p>
+        <p class="disclaimer">이 페이지의 사실관계는 뉴시스 원문, KBS 보도(2026.06.24, 「"마지막 한 명까지"…6·25 전사자 유해 발굴 구슬땀」)를 확인해 작성했습니다. 미수습 통계(전사·실종자 16만2913명 중 12만2223명·75.0%)는 국방부 유해발굴감식단이 직접 발표한 원자료가 아니라, 이를 전한 네이트뉴스 보도(2026.6.24)를 확인해 인용했습니다.</p>
       </div>
     </section>
 
