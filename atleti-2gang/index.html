@@ -832,7 +832,7 @@ function bothLayout(role,sac){
   }
   const out={[sac]:true};
   if(sac==='baena'){Object.assign(pos,{julian:role==='RIGHT'?[34,30]:jul,barrios:[42,52],hjulmand:[54,64]});
-    return {pos,out,passes:[['barrios','julian'],['julian','lee'],['lee','david'],['lee','giuliano']],runs:[['giuliano',[88,9]]],spaces:[{c:[26,42],r:[9,7],k:'cost',t:'바에나 자리 비움'}],live:['julian','david']};}
+    return {pos,out,passes:[['barrios','julian'],['julian','lee'],['lee','david'],['lee','giuliano']],runs:[['giuliano',[88,9]]],spaces:[{c:[26,42],r:[9,7],k:'cost',t:'바에나 자리 비움',lp:'c'}],live:['julian','david']};}
   if(sac==='giuliano'){Object.assign(pos,{rb:[88,44],lee:role==='RIGHT'?[74,34]:lee});
     return {pos,out,passes:[['lee','david'],['lee','julian'],['rb','lee'],['barrios','lee']],runs:[['rb',[92,20]]],spaces:[{c:[90,28],r:[8,12],k:'cost',t:'오른쪽 측면 비움'}],live:['rb','david','julian']};}
   // barrios / hjulmand : 중원 한 자리
@@ -963,7 +963,7 @@ class Board{
       (lay.spaces||[]).forEach(s=>{
         const g=el('g',{class:'sp '+s.k},this.gSp);
         if(s.zone){const [x,y,w,h]=s.zone;el('rect',{x:x*SX,y:y*SY,width:w*SX,height:h*SY,rx:1.5},g);el('text',{x:(x+w/2)*SX,y:(y+h)*SY-1.6,'text-anchor':'middle'},g).textContent=s.t}
-        else{el('ellipse',{cx:s.c[0]*SX,cy:s.c[1]*SY,rx:s.r[0]*SX,ry:s.r[1]*SY},g);s.lp==='r'?(el('text',{x:(s.c[0]+s.r[0])*SX+1,y:s.c[1]*SY+.9,'text-anchor':'start'},g).textContent=s.t):s.lp==='l'?(el('text',{x:(s.c[0]-s.r[0])*SX-1,y:s.c[1]*SY+.9,'text-anchor':'end'},g).textContent=s.t):el('text',{x:Math.max(1.4*s.t.length,Math.min(68-1.4*s.t.length,s.c[0]*SX)),y:s.lp==='b'?(s.c[1]+s.r[1])*SY+2.8:Math.max(3,(s.c[1]-s.r[1])*SY-1.2),'text-anchor':'middle'},g).textContent=s.t}
+        else{el('ellipse',{cx:s.c[0]*SX,cy:s.c[1]*SY,rx:s.r[0]*SX,ry:s.r[1]*SY},g);s.lp==='r'?(el('text',{x:(s.c[0]+s.r[0])*SX+1,y:s.c[1]*SY+.9,'text-anchor':'start'},g).textContent=s.t):s.lp==='l'?(el('text',{x:(s.c[0]-s.r[0])*SX-1,y:s.c[1]*SY+.9,'text-anchor':'end'},g).textContent=s.t):el('text',{x:Math.max(1.4*s.t.length,Math.min(68-1.4*s.t.length,s.c[0]*SX)),y:s.lp==='c'?s.c[1]*SY+.9:s.lp==='b'?(s.c[1]+s.r[1])*SY+2.8:Math.max(3,(s.c[1]-s.r[1])*SY-1.2),'text-anchor':'middle'},g).textContent=s.t}
         void g.getBoundingClientRect();g.classList.add('on');
       });
       if(o.chain)o.chain('space');
@@ -1014,7 +1014,8 @@ class Board{
 /* ---------- panel copy ---------- */
 function panelHTML(key,extra='',copyOverride=null){
   const s=STATES[key],lv=LV[s.conf],scn=SCN[s.status];
-  const kd=KIND[s.kind];return `<div class="tagline"><span class="tag ${kd[0]}">${kd[1]}</span>${scn?'<span class="tag scn">전술 시나리오</span>':''}</div><p class="copy">${copyOverride!==null?copyOverride:s.copy}</p>${s.gain.length?`<dl class="gc"><dt class="g">얻는 것</dt><dd>${s.gain.join(' · ')}</dd><dt class="k">잃는 것</dt><dd>${s.cost.join(' · ')}</dd></dl>`:''}${extra}<dl class="fi"><dt>확인된 것</dt><dd>${s.fact}</dd><dt>해석한 것</dt><dd>${s.interp}</dd></dl>`;
+  const cost=key==='DAVID_JULIAN_LEE'&&store.sac?[SAC[store.sac].cost]:s.cost;
+  const kd=KIND[s.kind];return `<div class="tagline"><span class="tag ${kd[0]}">${kd[1]}</span>${scn?'<span class="tag scn">전술 시나리오</span>':''}</div><p class="copy">${copyOverride!==null?copyOverride:s.copy}</p>${s.gain.length?`<dl class="gc"><dt class="g">얻는 것</dt><dd>${s.gain.join(' · ')}</dd><dt class="k">잃는 것</dt><dd>${cost.join(' · ')}</dd></dl>`:''}${extra}<dl class="fi"><dt>확인된 것</dt><dd>${s.fact}</dd><dt>해석한 것</dt><dd>${s.interp}</dd></dl>`;
 }
 
 /* ---------- BOARD 1 · LAB ---------- */
