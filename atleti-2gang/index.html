@@ -745,7 +745,7 @@ const SOURCES={
   S04:['AS','2026-09-13','Lo mejor, para el final','https://as.com/futbol/primera/lo-mejor-para-el-final-f202609-n/','교체 뒤 경기력 개선. 휼만-카르도주 더블 볼란치, 코케 전진, 데이비드 "진짜 9번". 단독 인과 추정은 아님.'],
   S05:['AS','2026-09-16','1x1 ... Jonathan David cae de pie','https://as.com/futbol/primera/1x1-del-atletico-jonathan-david-cae-de-pie-y-cuti-es-un-muro-f202609-n/','오사수나 4-0. 데이비드 첫 선발, 루크먼과 투톱, 나흘 새 두 번째 골.'],
   S06:['AS','2026-09-17','Kang-in Lee ya hace de Griezmann','https://as.com/futbol/primera/kang-in-lee-ya-hace-de-griezmann-f202609-n/','AS의 해석: 이강인이 그리즈만 같은 역할에 적응 중. 객관적 동일시가 아닌 인용 해석으로만 사용.'],
-  S07:['El País','2026-09-20','Atlético-Real Madrid live','https://elpais.com/deportes/futbol/2026-09-20/atletico-real-madrid-en-directo-el-partido-de-la-liga-en-vivo.html','레알전 선발에 줄리아노·요렌테·카르도주·바에나·이강인·데이비드. 데이비드가 훌리안 대신 선발. (다른 라인업 출처와 충돌 가능성 있음)'],
+  S07:['El País','2026-09-20','Atlético-Real Madrid live','https://elpais.com/deportes/futbol/2026-09-20/atletico-real-madrid-en-directo-el-partido-de-la-liga-en-vivo.html','메트로폴리타노에서 열린 라리가 더비 실황 중계. 아틀레티코가 레알을 2-1로 꺾었다.'],
   S08:['El País','2026-09-21','Así se impuso Simeone a Mourinho…','https://elpais.com/deportes/futbol/2026-09-21/asi-se-impuso-simeone-a-mourinho-en-el-derbi-la-penultima-leccion-de-koke-y-el-rompedor-giuliano-para-aprovechar-que-vinicius-no-baja-a-defender.html','시메오네가 레알의 왼쪽을 공략. 푸빌-요렌테-줄리아노 3인. 이강인은 약한 쪽에서 크로스성 슈팅. 코케가 빌드업을 바꿈. 이강인이 줄리아노의 움직임을 만들었다는 증거는 아님.'],
   S09:['El País','2026-09-20','Huijsen condena al Madrid…','https://elpais.com/deportes/futbol/2026-09-20/huijsen-condena-al-madrid-en-el-derbi-ante-el-atletico.html','코케 투입 뒤 요렌테가 오른쪽 수비로. 줄리아노의 질주가 페널티킥을 얻었고, 이후 오른쪽 질주로 데이비드의 골을 도움.'],
   S10:['Atlético official','2026-09-21','Jonathan David: séptimo jugador…','https://www.atleticodemadrid.com/noticias/jonathan-david-septimo-jugador-en-nuestra-historia-en-marcar-en-sus-tres-primeros-partidos-de-liga','데이비드는 AT 리그 첫 세 경기에서 모두 득점. 구단 역사상 일곱 번째.'],
@@ -1012,9 +1012,9 @@ class Board{
 }
 
 /* ---------- panel copy ---------- */
-function panelHTML(key,extra=''){
+function panelHTML(key,extra='',copyOverride=null){
   const s=STATES[key],lv=LV[s.conf],scn=SCN[s.status];
-  const kd=KIND[s.kind];return `<div class="tagline"><span class="tag ${kd[0]}">${kd[1]}</span>${scn?'<span class="tag scn">전술 시나리오</span>':''}</div><p class="copy">${s.copy}</p>${s.gain.length?`<dl class="gc"><dt class="g">얻는 것</dt><dd>${s.gain.join(' · ')}</dd><dt class="k">잃는 것</dt><dd>${s.cost.join(' · ')}</dd></dl>`:''}${extra}<dl class="fi"><dt>확인된 것</dt><dd>${s.fact}</dd><dt>해석한 것</dt><dd>${s.interp}</dd></dl>`;
+  const kd=KIND[s.kind];return `<div class="tagline"><span class="tag ${kd[0]}">${kd[1]}</span>${scn?'<span class="tag scn">전술 시나리오</span>':''}</div><p class="copy">${copyOverride!==null?copyOverride:s.copy}</p>${s.gain.length?`<dl class="gc"><dt class="g">얻는 것</dt><dd>${s.gain.join(' · ')}</dd><dt class="k">잃는 것</dt><dd>${s.cost.join(' · ')}</dd></dl>`:''}${extra}<dl class="fi"><dt>확인된 것</dt><dd>${s.fact}</dd><dt>해석한 것</dt><dd>${s.interp}</dd></dl>`;
 }
 
 /* ---------- BOARD 1 · LAB ---------- */
@@ -1094,7 +1094,7 @@ function doSacrifice(id){
   b2.render(lay,{cause:id==='giuliano'?'rb':'lee'});
   b2.bench.innerHTML=`<span class="b">${KO[id]||P[id][0]} <small>보완할 점 · ${SAC[id].cost}</small></span>`;
   b2.setCount(11,'ok');syncControls();
-  $('#panel2').innerHTML=panelHTML('DAVID_JULIAN_LEE',`<p class="hint">${SAC[id].line}</p>`);
+  $('#panel2').innerHTML=panelHTML('DAVID_JULIAN_LEE',`<p class="hint">${SAC[id].line}</p>`,'11명을 맞췄습니다. '+(KO[id]||P[id][0])+' 제외 후 팀이 그 자리를 어떻게 메우는지 아래에서 확인하세요.');
   refreshOthers();
 }
 function resetBoth(silent){
@@ -1223,7 +1223,7 @@ let shared=null;try{const q=new URLSearchParams(location.search).get('at');if(q)
 if(shared){store.role=shared.ro;store.front=shared.fr;store.touched=true;firstWow=true;b1.root.classList.add('touched')}
 emit({from:'init',cause:'lee'});
 if(shared&&shared.bo){store.both=true;store.sac=shared.sa;b2.render(bothLayout(store.role,store.sac),{instant:true});b2.setEvidence('DAVID_JULIAN_LEE');
-  if(store.sac){b2.bench.innerHTML='<span class="b">'+(KO[store.sac]||P[store.sac][0])+' <small>보완할 점 · '+SAC[store.sac].cost+'</small></span>';b2.setCount(11,'ok');$('#panel2').innerHTML=panelHTML('DAVID_JULIAN_LEE','<p class="hint">'+SAC[store.sac].line+'</p>')}
+  if(store.sac){b2.bench.innerHTML='<span class="b">'+(KO[store.sac]||P[store.sac][0])+' <small>보완할 점 · '+SAC[store.sac].cost+'</small></span>';b2.setCount(11,'ok');$('#panel2').innerHTML=panelHTML('DAVID_JULIAN_LEE','<p class="hint">'+SAC[store.sac].line+'</p>','11명을 맞췄습니다. '+(KO[store.sac]||P[store.sac][0])+' 제외 후 팀이 그 자리를 어떻게 메우는지 아래에서 확인하세요.')}
   else{b2.setCount(12,'over');b2.root.classList.add('zoomout');sacPhase=true;applyPick();$('#sacbox').classList.add('on');$('#panel2').innerHTML=panelHTML('DAVID_JULIAN_LEE','')}
   syncControls();emitResult()}
 setOpp('mine');
