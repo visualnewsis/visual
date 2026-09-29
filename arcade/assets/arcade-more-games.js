@@ -10,7 +10,8 @@ const ARCADE_GAMES = Object.freeze([
   { number: '09', name: '넌 내 도도독', path: '/arcade/dododok/' },
   { number: '10', name: '충무맨', path: '/arcade/chungmuman/' },
   { number: '11', name: '제목있음', path: '/arcade/output/' },
-  { number: '12', name: '충무로 타로#', path: '/arcade/tarot/' }
+  { number: '12', name: '충무로 타로#', path: '/arcade/tarot/' },
+  { number: '14', name: '사공팡팡', path: '/arcade/sagong/', isNew: true }
 ]);
 
 function normalizeArcadePath(pathname) {
