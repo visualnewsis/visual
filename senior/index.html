@@ -538,6 +538,21 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
   <link rel="stylesheet" href="../assets/editshop-carousel.css?v=20260826-3">
   <script defer src="../assets/visual-header.js?v=20260915-onepoint-1" data-section="편집#" data-section-href="https://visual.newsis.com/editshop/" data-current="senior" data-header-theme="light"></script>
   <script defer src="../assets/editshop-carousel.js?v=20260928-1" data-current="senior"></script>
+
+  <style id="photo-autoplay">
+    .hero-sequence{height:auto}
+    .cover{position:relative;top:auto}
+    .photo-playback{position:absolute;right:24px;top:24px;z-index:8;width:36px;height:36px;border:1px solid #ffffff66;border-radius:50%;background:#0005;color:white;font-size:13px;cursor:pointer}
+    .photo-playback[hidden]{display:none}
+    .photo-playback:focus-visible{outline:2px solid white;outline-offset:4px}
+    @media(min-width:641px){
+      .photo-scroll,.photo-scroll--tall{height:auto}
+      .photo-scroll-pin{position:relative;top:auto;height:100svh}
+      #pin-607608{height:auto}
+      #pin-607608 .photo-scroll-stage{position:relative;inset:auto}
+      #pin-607608 .ps-pan{position:relative;display:block;width:100%;height:auto;transform:none}
+    }
+  </style>
 </head>
 <body>
   <!-- 기존 편집# 공용 topbar 프레임(pension 등과 동일 패턴). ../assets/visual-header.js가 실행되면 이 topbar를 제거하고 공용 헤더(햄버거 메뉴 포함)를 주입한다. -->
@@ -823,30 +838,6 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
     const clamp = value => Math.max(0, Math.min(1, value));
     const ease = value => value * value * (3 - 2 * value);
 
-    /* ---------- HERO: 1616 HOLD → 1616→1615 crossfade(가장 길고 느림) → 1615 HOLD. 1617/1618 없음. ---------- */
-    (() => {
-      const cover = document.getElementById('cover');
-      const sequence = document.getElementById('hero-sequence');
-      const mobileQuery = matchMedia('(max-width: 760px)');
-      let frame = null;
-      function updateScroll() {
-        frame = null;
-        // 모바일은 pin+crossfade가 스크롤 정체로 느껴진다는 신고가 있어 첫 사진 고정, 그냥 스크롤되게 둔다(PC는 유지).
-        if (mobileQuery.matches) return;
-        const distance = Math.max(1, sequence.offsetHeight - window.innerHeight);
-        const progress = clamp(-sequence.getBoundingClientRect().top / distance);
-        // 0–40% 1616 HOLD(충분히 오래) / 40–85% 1616→1615 crossfade(느림) / 85–100% 1615 HOLD.
-        const crossfade = reducedMotion.matches ? (progress > .625 ? 1 : 0) : ease(clamp((progress - .40) / .45));
-        cover.style.setProperty('--o-1616', 1 - crossfade);
-        cover.style.setProperty('--o-1615', crossfade);
-      }
-      function queueScroll() { if (frame === null) frame = requestAnimationFrame(updateScroll); }
-      window.addEventListener('scroll', queueScroll, {passive:true});
-      window.addEventListener('resize', queueScroll);
-      reducedMotion.addEventListener('change', queueScroll);
-      updateScroll();
-    })();
-
     /* ---------- 공통: 뷰포트에 들어오면 .in-view를 붙이는 1회성 reveal(스크롤 스크럽이 아니라 트리거) ---------- */
     const revealOnce = (selector, options) => {
       const nodes = document.querySelectorAll(selector);
@@ -926,66 +917,57 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
       document.getElementById('region-retry')?.addEventListener('click', () => { resultView.hidden = true; selectView.hidden = false; });
     })();
 
-    /* ---------- 사진 시퀀스 공통: 스크롤 진행에 따라 한 장에서 다음 한 장으로 인계.
-       대부분의 구간은 정지 상태(hold)이고, transStart~transEnd 구간에서만 짧게 전환한다. ---------- */
-    function initPhotoScroll(sectionId, pinId, transStart, transEnd) {
-      const section = document.getElementById(sectionId);
-      const pin = document.getElementById(pinId);
-      if (!section || !pin) return;
-      const mobileQuery = matchMedia('(max-width: 640px)');
-      let frame = null;
-      function update() {
-        frame = null;
-        // 모바일은 pin+crossfade 없이 두 장을 그냥 세로로 쌓아 보여준다(스크롤 정체 신고 반영, PC는 유지).
-        if (mobileQuery.matches) return;
-        const distance = Math.max(1, section.offsetHeight - window.innerHeight);
-        const progress = clamp(-section.getBoundingClientRect().top / distance);
-        const mid = (transStart + transEnd) / 2;
-        const t = reducedMotion.matches ? (progress > mid ? 1 : 0) : ease(clamp((progress - transStart) / (transEnd - transStart)));
-        pin.style.setProperty('--o-a', 1 - t);
-        pin.style.setProperty('--o-b', t);
+    /* 01: elapsed-time playback; scrolling never controls or pins photos. */
+    function autoplayPhotos(id, firstVar, secondVar, breakpoint) {
+      const host = document.getElementById(id);
+      const mobile = matchMedia('(max-width: ' + breakpoint + 'px)');
+      const button = document.createElement('button');
+      button.type = 'button';
+      button.className = 'photo-playback';
+      button.textContent = 'Ⅱ';
+      button.setAttribute('aria-label', '사진 자동 전환 일시정지');
+      host.append(button);
+      let visible = false, paused = false, elapsed = 0, last = null, frame = null;
+      function paint() {
+        // Advance only the initial hold by 3s; later holds and 2s dissolves stay unchanged.
+        const phase = (elapsed + 3000) % 14000;
+        const t = phase < 5000 ? 0 : phase < 7000 ? ease((phase-5000)/2000)
+          : phase < 12000 ? 1 : 1-ease((phase-12000)/2000);
+        // Keep the lower image opaque to avoid a dark dip during the dissolve.
+        host.style.setProperty(firstVar, 1);
+        host.style.setProperty(secondVar, t);
       }
-      function queue() { if (frame === null) frame = requestAnimationFrame(update); }
-      window.addEventListener('scroll', queue, {passive:true});
-      window.addEventListener('resize', queue);
-      reducedMotion.addEventListener('change', queue);
-      update();
+      function tick(now) {
+        if (last !== null) elapsed += Math.min(now-last, 100);
+        last = now;
+        paint();
+        frame = requestAnimationFrame(tick);
+      }
+      function sync() {
+        if (frame !== null) cancelAnimationFrame(frame);
+        frame = null; last = null;
+        button.hidden = mobile.matches || reducedMotion.matches;
+        if (mobile.matches || reducedMotion.matches) { elapsed = 0; paint(); }
+        if (visible && !paused && !document.hidden && !mobile.matches && !reducedMotion.matches)
+          frame = requestAnimationFrame(tick);
+      }
+      button.addEventListener('click', () => {
+        paused = !paused;
+        button.textContent = paused ? '▶' : 'Ⅱ';
+        button.setAttribute('aria-label', paused ? '사진 자동 전환 재생' : '사진 자동 전환 일시정지');
+        sync();
+      });
+      new IntersectionObserver(entries => {
+        visible = entries[0].isIntersecting; sync();
+      }, {threshold: 0}).observe(host);
+      document.addEventListener('visibilitychange', sync);
+      mobile.addEventListener('change', sync);
+      reducedMotion.addEventListener('change', sync);
+      sync();
     }
-    initPhotoScroll('seq-617618', 'pin-617618', .18, .82);
-    initPhotoScroll('seq-apgujeong', 'pin-apgujeong', .18, .82);
-
-    /* ---------- 608 단독: 원본 세로 사진을 sticky pin 안에서 천장 조명(맨 위)부터 시작해
-       스크롤에 따라 서서히 아래로 pan한다. targetFraction만큼만 내려가 부부가 보이는 자리에서
-       멈추고(사진 끝의 어두운 부분까지는 가지 않음), 이후 스크롤에는 그대로 멈춰 있다가
-       다음 사진으로 넘어간다. ---------- */
-    function initPhotoPan(sectionId, pinId, imgId, transStart, transEnd, targetFraction) {
-      const section = document.getElementById(sectionId);
-      const pin = document.getElementById(pinId);
-      const img = document.getElementById(imgId);
-      if (!section || !pin || !img) return;
-      let panRange = 0;
-      function measure() {
-        const pinHeight = pin.getBoundingClientRect().height || window.innerHeight;
-        const renderedHeight = pin.getBoundingClientRect().width * (img.naturalHeight / img.naturalWidth);
-        panRange = Math.max(0, renderedHeight - pinHeight);
-      }
-      let frame = null;
-      function update() {
-        frame = null;
-        const distance = Math.max(1, section.offsetHeight - window.innerHeight);
-        const progress = clamp(-section.getBoundingClientRect().top / distance);
-        const t = reducedMotion.matches ? (progress > transEnd ? 1 : 0) : ease(clamp((progress - transStart) / (transEnd - transStart)));
-        pin.style.setProperty('--pan-y', (-t * targetFraction * panRange) + 'px');
-      }
-      function queue() { if (frame === null) frame = requestAnimationFrame(update); }
-      function onResize() { measure(); queue(); }
-      if (img.complete) measure(); else img.addEventListener('load', () => { measure(); update(); });
-      window.addEventListener('scroll', queue, {passive:true});
-      window.addEventListener('resize', onResize);
-      reducedMotion.addEventListener('change', queue);
-      update();
-    }
-    initPhotoPan('seq-607608', 'pin-607608', 'ps-pan-607608', .12, .62, .88);
+    autoplayPhotos('cover', '--o-1616', '--o-1615', 760);
+    autoplayPhotos('pin-617618', '--o-a', '--o-b', 640);
+    autoplayPhotos('pin-apgujeong', '--o-a', '--o-b', 640);
 
     /* ---------- 고령 기준 눈금 위젯(기존 V0 ruler 로직): age-question-section과
        엔딩의 recall-reconsider 두 곳에서 재사용하도록 일반화했다. 동작은 원래와 동일하다. ---------- */
