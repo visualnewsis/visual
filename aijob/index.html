@@ -237,7 +237,7 @@
       .hero-side:before{width:68%}
       .hero-question{font-size:clamp(29px,9vw,44px)}
       h1{font-size:clamp(43px,14vw,72px)}
-      .hero-photo img{object-position:72% 22%}
+      .hero-photo img{object-position:52% 22%}
       .panel{grid-template-columns:1fr;gap:38px}
       .control:last-child,.result-jump{grid-column:auto}
       .chart-grid{gap:44px}
@@ -691,7 +691,7 @@
       if(!img.naturalWidth)return;
       canvas.width=2896;canvas.height=2172;ctx.setTransform(2,0,0,2,0,0);previous=-1;
       const r=photo.getBoundingClientRect(),k=Math.max(r.width/1448,r.height/1086),mobile=innerWidth<=760;
-      Object.assign(stage.style,{width:1448*k+'px',height:1086*k+'px',left:(r.width-1448*k)*(mobile?.72:.5)+'px',top:(r.height-1086*k)*(mobile?.22:.20)+'px'});
+      Object.assign(stage.style,{width:1448*k+'px',height:1086*k+'px',left:(r.width-1448*k)*(mobile?.52:.5)+'px',top:(r.height-1086*k)*(mobile?.22:.20)+'px'});
     }
 
     function frame(t){
