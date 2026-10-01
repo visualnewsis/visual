@@ -19,6 +19,7 @@ PAGES = {
     "kangin/index.html": ("편집#", True),
     "children/index.html": ("편집#", True),
     "buy-live/index.html": ("편집#", True),
+    "homecoming/index.html": ("편집#", True),
     "heat-rain/index.html": ("뉴시스템", False),
     "battery/index.html": ("한눈에 알아볼지도", False),
     "adult-missing/index.html": ("뉴시스템", False),
@@ -26,7 +27,7 @@ PAGES = {
     "moreno/index.html": ("뉴시스템", True),
     "calculator/index.html": ("계산대로", True),
 }
-EDITSHOP_STORIES = {"oil", "thief", "shelter", "temperature", "kangin", "children", "buy-live"}
+EDITSHOP_STORIES = {"oil", "thief", "shelter", "temperature", "kangin", "children", "buy-live", "homecoming"}
 VISUAL_STORIES_CAROUSEL_PAGES = {"battery"}
 NEWSYSTEM_CAROUSEL_PAGES = {"heat-rain", "adult-missing", "nepal-flood", "moreno"}
 JSON_LD_RE = re.compile(
