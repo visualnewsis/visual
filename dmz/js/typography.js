@@ -4,12 +4,12 @@ const lerp = (a, b, t) => a + (b - a) * t;
 const sm = (a, b, x) => { const t = Math.min(1, Math.max(0, (x - a) / (b - a))); return t * t * (3 - 2 * t); };
 export { sm };
 
-// em 단위. 'fused' 값은 Noto Sans KR 300의 悲 글리프를 캔버스로 래스터화해 측정한 구성비(위 非 40–232, 아래 心 240–397 / 400)로 보정했다.
+// em 단위. 'fused' 값은 Noto Sans KR 900의 悲 글리프를 캔버스로 래스터화해 측정한 구성비(위 非 32–231, 아래 心 236–406 / 400)로 보정했다.
 const POSE = {
   hiSolo: { ty: 0, sx: 1, sy: 1 },
-  hiFused: { ty: -0.193, sx: 1.0, sy: 0.527 },
-  simEnter: { ty: 0.4, sx: 0.88, sy: 0.38 },     // 결합 위치 바로 아래에서 납작하게 시작
-  simFused: { ty: 0.274, sx: 0.968, sy: 0.444 },
+  hiFused: { ty: -0.205, sx: 0.97, sy: 0.52 },
+  simEnter: { ty: 0.41, sx: 0.88, sy: 0.39 },    // 결합 위치 바로 아래에서 납작하게 시작
+  simFused: { ty: 0.279, sx: 0.98, sy: 0.455 },
 };
 const mix = (p, q, t) => ({ ty: lerp(p.ty, q.ty, t), sx: lerp(p.sx, q.sx, t), sy: lerp(p.sy, q.sy, t) });
 const tf = p => `translate3d(0,${p.ty.toFixed(4)}em,0) scale(${p.sx.toFixed(4)},${p.sy.toFixed(4)})`;

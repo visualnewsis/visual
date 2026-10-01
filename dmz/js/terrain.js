@@ -1,6 +1,6 @@
 // 가상 합성 지형. 실제 DMZ 특정 구간을 복제하지 않는다.
 // 좌표계: 1 unit = 10 m, +z = 남쪽, -z = 북쪽, 군사분계선 z = 0.
-import * as THREE from './three.js?v=20261001-9';
+import * as THREE from './three.js?v=20261001-10';
 
 export const W = {
   xMin: -420, xMax: 420, zMin: -340, zMax: 340,
@@ -55,6 +55,8 @@ export const lerp = (a, b, t) => a + (b - a) * t;
 // ---------- 지형 요소의 기준선 ----------
 export function riverZ(x) { return 128 + 22 * Math.sin(x * 0.0105 + 0.6) + 9 * Math.sin(x * 0.027 + 2.1); }
 export function roadX(z) { return 96 + 14 * Math.sin(z * 0.0075 + 0.4); }
+// 남·북방한계선 철책선: 경계선 바깥쪽에서 지형을 따라 굽이치는 일반화한 선 (side: +1 남측, -1 북측)
+export function fenceZ(x, z0, side) { return z0 + side * (3.6 + 2.5 * Math.sin(x * 0.012 + z0) + 1.6 * Math.sin(x * 0.041 + z0 * 0.5) + 1) ; }
 // 북측 장벽선 (일반화한 형태)
 export function wallZ(x) { return -62 + 7 * Math.sin(x * 0.019 + 1.3) + 3 * Math.sin(x * 0.051); }
 
@@ -75,8 +77,8 @@ export function forestMask(x, z) {
   const dz = Math.abs(z - riverZ(x));
   m *= smooth(9, 16, dz);
   m *= smooth(5, 9, Math.abs(x - roadX(z)));
-  m *= smooth(5, 10, Math.abs(z - W.SLL));
-  m *= smooth(5, 10, Math.abs(z - W.NLL));
+  m *= smooth(5, 11, Math.abs(z - fenceZ(x, W.SLL, 1)) - 2);      // 철책·순찰로 주변 개활지
+  m *= smooth(5, 11, Math.abs(z - fenceZ(x, W.NLL, -1)) - 2);
   m *= smooth(6, 12, Math.abs(z - wallZ(x)));
   m *= (0.3 + 0.7 * smooth(3, 12, Math.abs(z))) * smooth(1.2, 3.5, Math.abs(z));   // 군사분계선 부근은 성기게 (표지판은 수풀 속에 남김)
   m *= smooth(9, 17, Math.hypot(x + 4, z - 94));                 // 사고 지점(가상) 주변 개활지

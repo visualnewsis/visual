@@ -1,7 +1,7 @@
 // 식생: 절차적 수목 모델(여러 수종·형태 변형) + 관목. 모두 인스턴싱.
 // 공 하나짜리 나무 대신, 불규칙한 수관 덩어리·줄기·높이별 음영(가짜 AO)으로 저고도에서도 자연스럽게 보이게 한다.
-import * as THREE from './three.js?v=20261001-9';
-import { W, forestMask, riverZ, roadX, wallZ, rng, smooth, noise } from './terrain.js?v=20261001-9';
+import * as THREE from './three.js?v=20261001-10';
+import { W, forestMask, riverZ, roadX, wallZ, rng, smooth, noise } from './terrain.js?v=20261001-10';
 
 const V = new THREE.Vector3();
 

@@ -106,13 +106,13 @@ a{color:inherit}
 .h-block{display:flex;flex-direction:column;align-items:center;gap:.3em;padding-top:4vh;font-size:clamp(54px,10.5vw,152px);opacity:var(--word)}
 .h-ko,.h-line{display:flex;gap:.06em;margin:0;line-height:1;white-space:nowrap}
 .h-ko span,.h-line .hc,.h-line .morph{display:inline-block;width:1em;height:1em;text-align:center}
-.h-ko{font-weight:300;color:#8a9496}   /* 한자가 주, 한글은 읽기 보조: 명도만 낮춤 */
+.h-ko{font-weight:800;color:#8a9496}   /* 한자가 주, 한글은 읽기 보조: 명도만 낮춤 */
 .h-ko span:first-child{color:var(--mint)}   /* 한글 비 ↔ 한자 非/悲 같은 민트로 대응 */
 .h-line .morph .m-g{color:var(--mint)}
-.h-line{font-weight:300}
+.h-line{font-weight:900}
 .h-line .morph{position:relative}
 .m-stage{position:absolute;inset:0;display:block}
-.m-g{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-weight:300;line-height:1;opacity:0;transform-origin:50% 50%;will-change:transform,opacity}
+.m-g{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-weight:900;line-height:1;opacity:0;transform-origin:50% 50%;will-change:transform,opacity}
 /* 엔딩: 悲만 아주 미세하게 */
 .finale .bi{transition:color .6s ease}
 
@@ -292,3 +292,9 @@ body.no-webgl .gl-why{position:absolute;left:50%;top:calc(64px + 18px);transform
 .related time{font-size:13px;font-weight:800;color:var(--mint-dark);letter-spacing:.02em}
 .related span{font-size:clamp(15px,1.25vw,17px);font-weight:700;line-height:1.55}
 @media (max-width:800px){.related a{grid-template-columns:1fr;gap:4px;padding:14px 0}}
+/* 非·悲 풀이: 첫 글자 아래에만, 작고 절제되게 */
+.h-gloss{display:flex;gap:.06em;margin:-.12em 0 0;height:.3em;line-height:1}
+.h-gloss .cell{position:relative;width:1em}
+.h-gloss i{position:absolute;left:50%;top:0;transform:translateX(-50%);font-style:normal;font-size:.17em;font-weight:700;letter-spacing:.04em;white-space:nowrap;color:#aab4b6}
+.h-gloss .g-hi{opacity:var(--g-hi,0)}
+.h-gloss .g-bi{opacity:var(--g-bi,0);color:var(--mint)}
