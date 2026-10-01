@@ -392,17 +392,19 @@
   var introStep=introSection && introSection.querySelector('.step[data-ph="0"]');
   var gifState=0, gifTimer=0, gifLoadTimer=0, gifStyles=null;
   var gifPreview=false;
-  var gifBlob=null, gifBlobUrl=null, gifFetch=0, gifWaiting=false;
+  var gifBlob=null, gifFetch=0, gifWaiting=false;
   /* GIF는 처음부터 끝까지 다 받은 뒤에만 재생한다. 덜 받은 상태로 붙이면 받은 프레임까지만 돌다 멈춘다.
-     그동안 화면에는 첫 프레임 정지 이미지(src)를 보여 준다. */
+     그동안 화면에는 첫 프레임 정지 이미지(src)를 보여 준다.
+     서비스 CSP(img-src)가 blob: 주소를 막으므로 받은 GIF는 data: 주소로 붙인다. */
   function attachGif(){
-    if(gifBlobUrl) URL.revokeObjectURL(gifBlobUrl);
-    gifBlobUrl=URL.createObjectURL(gifBlob); introGif.src=gifBlobUrl;
+    if(introGif.getAttribute("src")!==gifBlob) introGif.src=gifBlob;
   }
-  if(introGif && window.fetch && window.URL && URL.createObjectURL){
+  if(introGif && window.fetch && window.FileReader){
     fetch(introGif.dataset.src).then(function(r){ return r.ok ? r.blob() : null; }).then(function(b){
       if(!b) throw 0;
-      gifBlob=b; gifFetch=1;
+      return new Promise(function(ok,no){ var fr=new FileReader(); fr.onload=function(){ ok(fr.result); }; fr.onerror=no; fr.readAsDataURL(b); });
+    }).then(function(data){
+      gifBlob=data; gifFetch=1;
       if(gifWaiting){ gifWaiting=false; attachGif(); }
       else if(gifState===2 && !introGif.dataset.played){ attachGif(); }
     }).catch(function(){
@@ -438,7 +440,10 @@
     clearTimeout(gifTimer); clearTimeout(gifLoadTimer);
     introGif.dataset.playback="loading";
     gifLoadTimer=setTimeout(gifFailed,20000); // 느린 모바일 회선에서도 화면이 영구 잠기지 않도록 한다.
-    if(gifBlob){ attachGif(); return; }         // 다 받아 둔 GIF를 새 주소로 붙여 처음부터 재생
+    if(gifBlob){                                // 다 받아 둔 GIF를 붙여 처음부터 재생
+      if(introGif.getAttribute("src")===gifBlob) gifLoaded(); else attachGif();
+      return;
+    }
     if(gifFetch===0){ gifWaiting=true; return; } // 아직 받는 중: 다 받으면 그때 붙인다
     introGif.src=introGif.dataset.src;
   }
