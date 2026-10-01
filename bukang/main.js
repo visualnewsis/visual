@@ -500,8 +500,8 @@
   }
   function beginEndingChange(){
     swapSeen=true;
-    // CSS 변환 0.85초 + 변환된 질문을 읽는 시간 2초.
-    startStoryHold("ending-change",swapStep,1,(reduce?0:850)+2000);
+    // CSS 변환 1.35초 + 변환된 질문을 읽는 시간 2초.
+    startStoryHold("ending-change",swapStep,1,(reduce?0:1350)+2000);
     swapStep.classList.add("swapped");
   }
   function containStory(){
