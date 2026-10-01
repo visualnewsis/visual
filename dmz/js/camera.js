@@ -1,8 +1,8 @@
 // 고정 경로 카메라. 키프레임(위치·시선)을 Catmull-Rom 곡선으로 잇고,
 // 기사 단계(anchor) 사이 구간마다 호 길이 기준으로 이징해 이동한다.
 // 독자가 카메라를 직접 돌리지 않는다.
-import * as THREE from './three.js?v=20261001-11';
-import { W } from './terrain.js?v=20261001-11';
+import * as THREE from './three.js?v=20261001-12';
+import { W } from './terrain.js?v=20261001-12';
 
 const D2R = Math.PI / 180;
 

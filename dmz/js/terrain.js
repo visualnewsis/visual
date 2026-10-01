@@ -1,6 +1,6 @@
 // 가상 합성 지형. 실제 DMZ 특정 구간을 복제하지 않는다.
 // 좌표계: 1 unit = 10 m, +z = 남쪽, -z = 북쪽, 군사분계선 z = 0.
-import * as THREE from './three.js?v=20261001-11';
+import * as THREE from './three.js?v=20261001-12';
 
 export const W = {
   xMin: -420, xMax: 420, zMin: -340, zMax: 340,
