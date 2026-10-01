@@ -294,7 +294,7 @@ body.no-webgl .gl-why{position:absolute;left:50%;top:calc(64px + 18px);transform
 @media (max-width:800px){.related a{grid-template-columns:1fr;gap:4px;padding:14px 0}}
 /* 非·悲 풀이: 첫 글자 아래에만, 작고 절제되게 */
 .h-gloss{display:flex;gap:.06em;margin:-.12em 0 0;height:.3em;line-height:1}
-.h-gloss .cell{position:relative;width:1em}
-.h-gloss i{position:absolute;left:50%;top:0;transform:translateX(-50%);font-style:normal;font-size:.17em;font-weight:700;letter-spacing:.04em;white-space:nowrap;color:#aab4b6}
+.h-gloss .cell{position:relative;width:1em;overflow:hidden}
+.h-gloss i{position:absolute;left:50%;top:0;max-width:5.6em;transform:translateX(-50%);font-style:normal;font-size:.17em;text-align:center;font-weight:700;letter-spacing:.04em;white-space:nowrap;color:#aab4b6}
 .h-gloss .g-hi{opacity:var(--g-hi,0)}
 .h-gloss .g-bi{opacity:var(--g-bi,0);color:var(--mint)}

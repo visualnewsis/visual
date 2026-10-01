@@ -1,10 +1,10 @@
 // 3D 디오라마: 렌더러, 조명, 지형, 수목, 경계선, 철책, 북측 요새화 요소, 사고 지점 표식, 먼지.
-import * as THREE from './three.js?v=20261001-10';
+import * as THREE from './three.js?v=20261001-11';
 import {
   W, Terrain, rawHeight, riverZ, roadX, wallZ, fenceZ, forestMask, rng, smooth, lerp,
   drapeStrip, geomFrom, linePts, circlePts,
-} from './terrain.js?v=20261001-10';
-import { buildVegetation } from './vegetation.js?v=20261001-10';
+} from './terrain.js?v=20261001-11';
+import { buildVegetation } from './vegetation.js?v=20261001-11';
 
 export const COLORS = {
   sky: new THREE.Color('#dfe3dd'),
