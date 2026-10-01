@@ -1,14 +1,14 @@
 // DMZ 편집# — 스크롤텔링 통합.
 // 장면 상태는 모두 (보간된) 스크롤 위치의 함수다. 따라서 어느 방향으로 스크롤해도 같은 화면이 나온다.
 // 예외: 사고 장면의 진동·먼지는 한 번 재생되는 시간 기반 이벤트.
-import * as THREE from './three.js?v=20261001-10';
-import { W, smooth } from './terrain.js?v=20261001-10';
-import { createWorld, SPOTS } from './scene3d.js?v=20261001-10';
-import { createXray } from './xray.js?v=20261001-10';
-import { CameraRig, KEYS } from './camera.js?v=20261001-10';
-import { Scroller } from './scroll.js?v=20261001-10';
-import { createMorph, sm } from './typography.js?v=20261001-10';
-import { Labels, Track, Timeline } from './ui.js?v=20261001-10';
+import * as THREE from './three.js?v=20261001-11';
+import { W, smooth } from './terrain.js?v=20261001-11';
+import { createWorld, SPOTS } from './scene3d.js?v=20261001-11';
+import { createXray } from './xray.js?v=20261001-11';
+import { CameraRig, KEYS } from './camera.js?v=20261001-11';
+import { Scroller } from './scroll.js?v=20261001-11';
+import { createMorph, sm } from './typography.js?v=20261001-11';
+import { Labels, Track, Timeline } from './ui.js?v=20261001-11';
 
 const T0 = performance.now();
 const params = new URLSearchParams(location.search);
@@ -253,8 +253,9 @@ function tick(now) {
   // 非武裝地帶 → (心이 짧게) → 悲武裝地帶. 짧게 지나가고 悲에서 잠깐 멈춘다.
   morphA.update(sm(0.0, 0.1, h), sm(0.36, 0.44, h), sm(0.42, 0.54, h), sm(0.52, 0.62, h));
   document.getElementById('hanja').style.setProperty('--word', sm(0.0, 0.1, h).toFixed(3));
-  document.getElementById('hanja').style.setProperty('--g-hi', (sm(0.06, 0.16, h) * (1 - sm(0.4, 0.5, h))).toFixed(3));
-  document.getElementById('hanja').style.setProperty('--g-bi', sm(0.6, 0.7, h).toFixed(3));
+  // 풀이는 글자 전환과 같은 순간에 교차: 非와 함께 '아닐 비' 아웃, 悲와 함께 '슬플 비' 인
+  document.getElementById('hanja').style.setProperty('--g-hi', (sm(0.06, 0.16, h) * (1 - sm(0.52, 0.62, h))).toFixed(3));
+  document.getElementById('hanja').style.setProperty('--g-bi', sm(0.52, 0.62, h).toFixed(3));
 
   // 단계 내 순차 표시 요소
   let eviOn = false;
