@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-09-30T20:56:23+00:00",
+  "updatedAt": "2026-10-01T15:34:37+00:00",
   "source": "VISUAL NEWSIS editshop landing page",
   "articles": [
     {
@@ -120,6 +120,16 @@
       "description": "이강인의 자리를 직접 옮기고, 데이비드와 훌리안을 넣고, 함께 뛸 11명을 고르며 아틀레티코 마드리드의 전술 퍼즐을 체험합니다.",
       "image": "https://visual.newsis.com/atleti-2gang/images/hero-derby-bellingham.jpg",
       "url": "https://visual.newsis.com/atleti-2gang/",
+      "profile": "center"
+    },
+    {
+      "id": "homecoming",
+      "issue": "편집#013",
+      "label": "KOREAN WAR / HOMECOMING / INTERACTIVE",
+      "title": "작은 뼈 조각으로, 가족 품에",
+      "description": "6·25전쟁 횡성전투에서 열아홉 나이로 전사한 故 김하동 일병이 75년 만에 가족의 품으로 돌아오기까지, 발굴부터 신원확인과 귀환행사를 따라갑니다.",
+      "image": "https://visual.newsis.com/homecoming/images/NISI20260831_0021417256.jpg",
+      "url": "https://visual.newsis.com/homecoming/",
       "profile": "center"
     }
   ]
