@@ -3,12 +3,13 @@
 // 예외: 사고 장면의 진동·먼지는 한 번 재생되는 시간 기반 이벤트.
 import * as THREE from './three.js?v=20261001-12';
 import { W, smooth } from './terrain.js?v=20261001-12';
-import { createWorld, SPOTS } from './scene3d.js?v=20261001-12';
-import { createXray } from './xray.js?v=20261001-12';
+import { createWorld, SPOTS } from './scene3d.js?v=20261001-13';
+import { createXray } from './xray.js?v=20261001-13';
 import { CameraRig, KEYS } from './camera.js?v=20261001-12';
 import { Scroller } from './scroll.js?v=20261001-12';
 import { createMorph, sm } from './typography.js?v=20261001-12';
 import { Labels, Track, Timeline } from './ui.js?v=20261001-12';
+import { createHeroIntro } from './hero.js?v=20261001-13';
 
 const T0 = performance.now();
 const params = new URLSearchParams(location.search);
@@ -31,6 +32,7 @@ const scroller = new Scroller($('#story'));
 const labels = new Labels($('#labels'));
 const track = new Track($('#track'));
 const timeline = new Timeline($('#timeline'));
+const heroIntro = createHeroIntro($('#hero-intro'), { reduceMotion, disabled: OG, onReady: () => { dirty = true; } });
 const morphA = createMorph($('#morphA'));
 const finBi = $('#finale .bi');
 
@@ -155,7 +157,7 @@ function state(s, now) {
       ring: Math.max(inv * smooth(0.12, 0.3, gInv), tl * smooth(0.77, 0.82, tp)),
       found: inv * smooth(0.3, 0.42, gInv),
     },
-    veil: Math.max(hanja * 0.9, tl * 0.1),
+    veil: Math.max(hanja * 0.9, tl * 0.26),
     blur: hanja > 0.35,
     lbl: {
       'h-s': heroL, 'h-0': heroL, 'h-n': heroL,
@@ -190,6 +192,7 @@ function tick(now) {
 
   if (!vw) { resize(true); if (!vw) return; }
   const st = state(sSm, now);
+  const introOpacity = heroIntro.update(sSm, scroller.vh);
   const animating = st.bt !== null && st.bt < 4.5;
   // 이야기 끝 이후(출처·엔딩 배너)에서는 렌더를 멈춘다
   const past = sSm > scroller.span('finale').b + scroller.vh * 1.15;
@@ -244,7 +247,9 @@ function tick(now) {
   veil.style.opacity = st.veil.toFixed(3);
   stageEl.classList.toggle('blur', st.blur);
   track.update(camPos.z, st.travel * (1 - st.hanja) * (1 - st.tl) * (1 - st.inv));
-  labels.update(cam, vw, vh, OG ? {} : st.lbl);
+  const labelState = OG ? {} : { ...st.lbl };
+  for (const k of ['h-s', 'h-0', 'h-n']) labelState[k] *= 1 - introOpacity;
+  labels.update(cam, vw, vh, labelState);
   document.body.classList.toggle('dark-phase', st.hanja > 0.5 || st.tl > 0.5);
 
   // 非 → 悲 (본문)

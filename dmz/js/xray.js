@@ -2,7 +2,7 @@
 // 매설물의 위치와 수량은 실제를 나타내지 않는다.
 import * as THREE from './three.js?v=20261001-12';
 import { rng, smooth } from './terrain.js?v=20261001-12';
-import { SPOTS } from './scene3d.js?v=20261001-12';
+import { SPOTS } from './scene3d.js?v=20261001-13';
 
 const DEPTH = 15;   // 단면 깊이 (과장된 수직 축척)
 const SEG = 44;     // 벽 한 변의 분할 수
@@ -27,7 +27,8 @@ export function createXray(world) {
   for (let v = 0; v < nV; v++) {
     const k = v % (ROWS + 1);
     const c = bands[Math.min(bands.length - 1, Math.round(k / ROWS * (bands.length - 1)))];
-    wallCol[v * 3] = c.r; wallCol[v * 3 + 1] = c.g; wallCol[v * 3 + 2] = c.b;
+    const speck = 0.87 + 0.16 * (Math.sin(v * 17.31) * 0.5 + 0.5);
+    wallCol[v * 3] = c.r * speck; wallCol[v * 3 + 1] = c.g * speck; wallCol[v * 3 + 2] = c.b * speck;
   }
   const wallGeo = new THREE.BufferGeometry();
   wallGeo.setAttribute('position', new THREE.BufferAttribute(wallPos, 3));
@@ -90,8 +91,33 @@ export function createXray(world) {
     remains: place(6, 2.4, 6.5, 6),
   };
   // 납작한 사각 상자형 (합참 공개 지뢰 사진의 형태 참고, 종류를 특정하지 않는 일반형)
-  const mineMesh = new THREE.InstancedMesh(new THREE.BoxGeometry(1.7, 0.42, 1.15), new THREE.MeshLambertMaterial({ color: '#ffffff', emissive: '#140f08' }), objs.mine.length);
-  const uxoMesh = new THREE.InstancedMesh(new THREE.CapsuleGeometry(0.32, 1.7, 4, 10), new THREE.MeshLambertMaterial({ color: '#ffffff', emissive: '#170d06' }), objs.uxo.length);
+  // 부품을 한 지오메트리에 합쳐 기존 매설물 draw call을 유지한다.
+  const detailed = parts => {
+    const P = [], N = [], C = [];
+    for (const [geo, tint] of parts) {
+      const g = geo.index ? geo.toNonIndexed() : geo, c = new THREE.Color(tint);
+      P.push(...g.attributes.position.array); N.push(...g.attributes.normal.array);
+      for (let i=0;i<g.attributes.position.count;i++) {
+        const shade=0.88+0.12*Math.sin(i*7.13)**2;
+        C.push(c.r*shade,c.g*shade,c.b*shade);
+      }
+    }
+    const g = new THREE.BufferGeometry();
+    g.setAttribute('position',new THREE.Float32BufferAttribute(P,3));g.setAttribute('normal',new THREE.Float32BufferAttribute(N,3));g.setAttribute('color',new THREE.Float32BufferAttribute(C,3));return g;
+  };
+  const mineGeo = detailed([
+    [new THREE.BoxGeometry(1.7,0.42,1.15),'#b8aa91'],
+    [new THREE.CylinderGeometry(0.42,0.45,0.08,12).translate(0,0.25,0),'#d6c9ab'],
+    ...[-1,1].flatMap(x=>[-1,1].map(z=>[new THREE.CylinderGeometry(0.035,0.04,0.04,5).translate(x*0.67,0.23,z*0.42),'#87806d'])),
+  ]);
+  const uxoGeo = detailed([
+    [new THREE.CapsuleGeometry(0.32,1.7,4,10),'#b0aea2'],
+    [new THREE.CylinderGeometry(0.34,0.34,0.12,10).translate(0,-0.64,0),'#79796d'],
+    [new THREE.BoxGeometry(0.78,0.42,0.045).translate(0,-0.97,0),'#817d6c'],
+    [new THREE.BoxGeometry(0.045,0.42,0.78).translate(0,-0.97,0),'#817d6c'],
+  ]);
+  const mineMesh = new THREE.InstancedMesh(mineGeo, new THREE.MeshPhongMaterial({vertexColors:true,color:'#ffffff',specular:'#49463c',shininess:12}),objs.mine.length);
+  const uxoMesh = new THREE.InstancedMesh(uxoGeo, new THREE.MeshPhongMaterial({vertexColors:true,color:'#ffffff',specular:'#4a4b44',shininess:16}),objs.uxo.length);
   // 유해: 작고 흰 조각들의 묶음 (추상 표현)
   const pieces = [];
   objs.remains.forEach(o => { for (let k = 0; k < 4; k++) pieces.push({ ...o, k, ox: (R() - 0.5) * 2.2, oz: (R() - 0.5) * 1.6, rot: R() * 3.14, len: 0.5 + R() * 0.7 }); });
@@ -99,12 +125,20 @@ export function createXray(world) {
   [mineMesh, uxoMesh, remMesh].forEach(m => { m.instanceMatrix.setUsage(THREE.DynamicDrawUsage); m.frustumCulled = false; group.add(m); });
   const tint = (mesh, list, base) => {
     const c = new THREE.Color(), b = new THREE.Color(base), dark = new THREE.Color('#2a2721');
-    list.forEach((o, i) => mesh.setColorAt(i, c.copy(b).lerp(dark, smooth(0, DEPTH, o.d) * 0.55)));
+    list.forEach((o, i) => mesh.setColorAt(i, c.copy(b).lerp(new THREE.Color('#866546'),o.r2*0.17).lerp(dark, smooth(0, DEPTH, o.d) * 0.65)));
     mesh.instanceColor.needsUpdate = true;
   };
   tint(mineMesh, objs.mine, '#7a5a3a'); tint(uxoMesh, objs.uxo, '#5e5850'); tint(remMesh, pieces, '#ece6d6');
 
   const dummy = new THREE.Object3D();
+  const strataR = rng(734);
+  const stones = Array.from({length:64},()=>({edge:Math.floor(strataR()*4),t:strataR(),depth:0.8+strataR()*10,size:0.08+strataR()*0.21}));
+  const stoneMesh = new THREE.InstancedMesh(new THREE.DodecahedronGeometry(1,0),new THREE.MeshLambertMaterial({color:'#918776'}),stones.length);
+  stoneMesh.frustumCulled=false;group.add(stoneMesh);
+  const rootPos = new Float32Array(32*12);
+  const rootGeo = new THREE.BufferGeometry(); rootGeo.setAttribute('position',new THREE.BufferAttribute(rootPos,3));
+  const rootMesh = new THREE.LineSegments(rootGeo,new THREE.LineBasicMaterial({color:'#443d2c'}));
+  rootMesh.frustumCulled=false;group.add(rootMesh);
   const placeObjects = (amt) => {
     objs.mine.forEach((o, i) => {
       const k = smooth(o.r * 0.5, o.r * 0.5 + 0.5, amt);
@@ -114,7 +148,7 @@ export function createXray(world) {
     objs.uxo.forEach((o, i) => {
       const k = smooth(0.1 + o.r * 0.45, 0.6 + o.r * 0.4, amt);
       dummy.position.set(o.x, o.y, o.z); dummy.rotation.set(0.3 + o.r2 * 0.9, o.r * 6, Math.PI / 2 + (o.r - 0.5));
-      dummy.scale.setScalar(k + 1e-3); dummy.updateMatrix(); uxoMesh.setMatrixAt(i, dummy.matrix);
+      dummy.scale.set((k+1e-3)*(0.8+o.r*0.35),(k+1e-3)*(0.65+o.r2*0.7),k+1e-3); dummy.updateMatrix(); uxoMesh.setMatrixAt(i, dummy.matrix);
     });
     pieces.forEach((o, i) => {
       const k = smooth(0.2 + o.r * 0.4, 0.65 + o.r * 0.35, amt);
@@ -126,6 +160,18 @@ export function createXray(world) {
 
   const writeWalls = (hx, hz) => {
     const corners = [[cx - hx, cz + hz], [cx + hx, cz + hz], [cx + hx, cz - hz], [cx - hx, cz - hz]];
+    stones.forEach((o,i)=>{
+      const a=corners[o.edge],b=corners[(o.edge+1)%4],x=a[0]+(b[0]-a[0])*o.t,z=a[1]+(b[1]-a[1])*o.t;
+      dummy.position.set(x,terrain.heightAt(x,z)-o.depth,z);dummy.rotation.set(i,i*0.7,i*0.3);dummy.scale.set(o.size,o.size*0.65,o.size);dummy.updateMatrix();stoneMesh.setMatrixAt(i,dummy.matrix);
+    });
+    stoneMesh.instanceMatrix.needsUpdate=true;
+    for(let i=0;i<32;i++){
+      const e=i%4,a=corners[e],b=corners[(e+1)%4],t=(Math.sin(i*17.1)*0.5+0.5)*0.92+0.04;
+      const x=a[0]+(b[0]-a[0])*t,z=a[1]+(b[1]-a[1])*t,y=terrain.heightAt(x,z)-0.16;
+      const tx=(b[0]-a[0])/Math.max(1,2*hx+2*hz),tz=(b[1]-a[1])/Math.max(1,2*hx+2*hz),d=0.4+(i%5)*0.14;
+      rootPos.set([x,y,z,x+tx*0.4,y-d,z+tz*0.4,x+tx*0.4,y-d,z+tz*0.4,x-tx*0.2,y-d*1.6,z-tz*0.2],i*12);
+    }
+    rootGeo.attributes.position.needsUpdate=true;
     let v = 0;
     for (let e = 0; e < 4; e++) {
       const [x0, z0] = corners[e], [x1, z1] = corners[(e + 1) % 4];
@@ -133,7 +179,8 @@ export function createXray(world) {
         const x = x0 + (x1 - x0) * s / SEG, z = z0 + (z1 - z0) * s / SEG;
         const top = terrain.heightAt(x, z) + 0.12;
         for (let k = 0; k <= ROWS; k++) {
-          wallPos[v * 3] = x; wallPos[v * 3 + 1] = top - DEPTH * Math.pow(k / ROWS, 1.15); wallPos[v * 3 + 2] = z; v++;
+          const ripple = k > 0 && k < ROWS ? Math.sin(s*0.71+e*2+k)*0.18 : 0;
+          wallPos[v * 3] = x; wallPos[v * 3 + 1] = top - DEPTH * Math.pow(k / ROWS, 1.15) + ripple; wallPos[v * 3 + 2] = z; v++;
         }
       }
     }

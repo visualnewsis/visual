@@ -54,7 +54,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/dmz.css?v=20261001-12">
+  <link rel="stylesheet" href="css/dmz.css?v=20261001-13">
   <link rel="stylesheet" href="../assets/visual-header.css?v=20260828-5">
   <link rel="stylesheet" href="../assets/editshop-carousel.css?v=20260826-3">
   <script defer src="../assets/visual-header.js?v=20260915-onepoint-1" data-section="편집#" data-section-href="https://visual.newsis.com/editshop/" data-current="editshop"></script>
@@ -68,6 +68,11 @@
   </header>
 
   <div id="stage" aria-hidden="true"><canvas id="gl"></canvas></div>
+  <div id="hero-intro" aria-hidden="true">
+    <picture><source media="(max-width:819px)" srcset="images/web/hero-interpretation-v1-800.webp"><img class="intro-graphic" src="images/web/hero-interpretation-v1.webp" alt="" width="1599" height="612" fetchpriority="high"></picture>
+    <picture><source media="(max-width:819px)" srcset="images/web/hero-photo-v1-800.webp"><img class="intro-photo" src="images/web/hero-photo-v1.webp" alt="" width="1599" height="612" fetchpriority="high"></picture>
+    <span class="intro-source">접경 풍경 참고 사진 · 사건 현장과 다릅니다</span>
+  </div>
   <div class="fallback" aria-hidden="true"><p id="gl-why" class="gl-why"></p>
     <svg viewBox="0 0 900 260"><rect x="150" y="40" width="600" height="180" fill="#cdd3cb"/><line x1="150" y1="30" x2="150" y2="230" stroke="#fff" stroke-width="3"/><line x1="450" y1="30" x2="450" y2="230" stroke="#00b4c9" stroke-width="4"/><line x1="750" y1="30" x2="750" y2="230" stroke="#fff" stroke-width="3"/><text x="150" y="252" text-anchor="middle" font-size="16" font-weight="800" fill="#121516">남방 2km</text><text x="450" y="252" text-anchor="middle" font-size="16" font-weight="800" fill="#007f91">0 km</text><text x="750" y="252" text-anchor="middle" font-size="16" font-weight="800" fill="#121516">북방 2km</text></svg>
   </div>
@@ -83,7 +88,7 @@
     <section class="step hero" data-key="hero" style="--h:100">
       <div class="kicker">편집# 014</div>
       <h1><span class="t1">남방 2km 북방 2km</span><span class="t2">이곳은 <span class="bi">悲</span>무장지대입니다</span></h1>
-      <p class="byline">뉴시스 안재현 기자 · 2026. 10.</p>
+      <p class="byline">기획·디렉터 = 안재현 기자</p>
       <div class="scroll-cue" aria-hidden="true">SCROLL<i></i></div>
     </section>
     <div class="gap" style="--h:30"></div>
@@ -309,7 +314,7 @@
       try{ok=!!(window.WebGLRenderingContext&&(c.getContext('webgl2')||c.getContext('webgl')));}catch(e){}
       if(!ok){why('이 브라우저에서 WebGL(3D 그래픽)을 사용할 수 없습니다.');return;}
       window.addEventListener('error',function(e){if(!window.__dmzReady)why('3D 로딩 오류: '+(e.message||(e.target&&e.target.src)||'알 수 없음'));},true);
-      var s=document.createElement('script');s.type='module';s.src='js/main.js?v=20261001-12';
+      var s=document.createElement('script');s.type='module';s.src='js/main.js?v=20261001-13';
       s.onerror=function(){why('3D 스크립트를 불러오지 못했습니다.');};
       document.body.appendChild(s);
       setTimeout(function(){if(!window.__dmzReady)why('3D 로딩이 20초 안에 끝나지 않았습니다.');},20000);
