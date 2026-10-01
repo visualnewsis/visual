@@ -9,18 +9,20 @@ const V = new THREE.Vector3();
 function merge(list) {
   let n = 0;
   for (const g of list) n += g.attributes.position.count;
-  const P = new Float32Array(n * 3), N = new Float32Array(n * 3), C = new Float32Array(n * 3);
+  const P = new Float32Array(n * 3), N = new Float32Array(n * 3), C = new Float32Array(n * 3), U = new Float32Array(n * 2);
   let o = 0;
   for (const g of list) {
     P.set(g.attributes.position.array, o * 3);
     N.set(g.attributes.normal.array, o * 3);
     C.set(g.attributes.color.array, o * 3);
+    if (g.attributes.uv) U.set(g.attributes.uv.array, o * 2);
     o += g.attributes.position.count;
   }
   const g = new THREE.BufferGeometry();
   g.setAttribute('position', new THREE.BufferAttribute(P, 3));
   g.setAttribute('normal', new THREE.BufferAttribute(N, 3));
   g.setAttribute('color', new THREE.BufferAttribute(C, 3));
+  g.setAttribute('uv', new THREE.BufferAttribute(U, 2));
   g.computeBoundingSphere();
   return g;
 }
@@ -90,7 +92,48 @@ function shrub(seed) {
   return merge([paint(place(blob(1, seed, 0.24), 0, 0.36, 0, 1, 0.8, 1), '#ffffff', 0, 0.8, 0.55, 0.95)]);
 }
 
-export function buildVegetation(terrain, { low, cutPlanes }) {
+// 근경: 잎 사이 빈 공간이 있는 교차 카드. 구형 수관·원뿔 윤곽을 대체한다.
+function foliageTexture() {
+  const c = document.createElement('canvas');c.width=c.height=256;
+  const g=c.getContext('2d'),R=rng(831);
+  // 가는 가지를 먼저 그린 뒤 작은 잎 묶음이 겹쳐지게 한다.
+  g.strokeStyle='rgba(94,91,77,.7)';g.lineWidth=1.3;
+  for(let k=0;k<12;k++){const a=k*2.4,d=48+R()*45;g.beginPath();g.moveTo(128,142);g.quadraticCurveTo(128+Math.cos(a)*d*0.4,120+Math.sin(a)*d*0.3,128+Math.cos(a)*d,128+Math.sin(a)*d);g.stroke();}
+  for(let i=0;i<1400;i++){
+    const a=R()*Math.PI*2,r=Math.sqrt(R())*(66+16*Math.sin(a*5+0.7)+8*Math.sin(a*9));
+    const x=128+Math.cos(a)*r,y=128+Math.sin(a)*r*0.88;
+    const shade=Math.floor(205+R()*45-(y-80)*0.07);
+    g.fillStyle=`rgba(${shade},${shade},${Math.max(80,shade-12)},${0.65+R()*0.35})`;
+    g.beginPath();g.ellipse(x,y,2+R()*3.8,1.2+R()*2.2,R()*6,0,Math.PI*2);g.fill();
+  }
+  g.fillStyle='#ffffff';g.fillRect(0,0,16,16); // 내부 수관용 불투명 UV 영역
+  const t=new THREE.CanvasTexture(c);t.colorSpace=THREE.SRGBColorSpace;t.anisotropy=2;return t;
+}
+function foliageCards(seed, low, con, solid) {
+  const R=rng(seed),parts=[],count=low?9:14;
+  for(let i=0;i<count;i++){
+    const a=i*2.4+R()*0.4,level=R();
+    const y=con?0.8+level*1.7:1.12+level*0.8;
+    const width=con?1.35*(1-level*0.72):1.0+R()*0.9;
+    const radius=con?0.17:0.3+R()*0.28;
+    const p=flat(new THREE.PlaneGeometry(width,con?0.85:0.95));
+    const u=p.attributes.uv;for(let j=0;j<u.count;j++)u.setXY(j,0.08+u.getX(j)*0.84,0.08+u.getY(j)*0.84);
+    p.rotateX((R()-0.5)*0.4);p.rotateY(a);p.translate(Math.cos(a)*radius,y,Math.sin(a)*radius);
+    parts.push(paint(p,'#ffffff',0.4,2.7,0.58,1.03));
+  }
+  // 잎 카드만 남으면 위에서 나뭇가지처럼 보인다. 내부는 작은 불규칙 수관으로 채운다.
+  for(let i=0;solid && i<(low?3:4);i++){
+    const a=i*2.4,level=i/(low?3:4);
+    const core=blob(low?0:1,seed+i*11,0.3);
+    if(con) place(core,Math.cos(a)*0.08,0.95+level*1.35,Math.sin(a)*0.08,0.48*(1-level*0.55),0.48,0.48*(1-level*0.55));
+    else place(core,Math.cos(a)*0.35,1.4+R()*0.32,Math.sin(a)*0.35,0.62,0.48+R()*0.12,0.62);
+    core.setAttribute('uv',new THREE.Float32BufferAttribute(Array.from({length:core.attributes.position.count*2},(_,j)=>j%2?0.97:0.03),2));
+    parts.push(paint(core,'#ffffff',0.4,2.7,0.58,1.03));
+  }
+  return merge(parts);
+}
+
+export function buildVegetation(terrain, { low, cutPlanes, foliageImage }) {
   const R = rng(27);
   const target = low ? 6500 : 15000;
   const items = [];
@@ -125,9 +168,8 @@ export function buildVegetation(terrain, { low, cutPlanes }) {
 
   const nB = low ? 2 : 3, nC = 2;
   const geoB = Array.from({ length: nB }, (_, i) => broadleaf(101 + i * 31, low));
-  // 카메라 경로 가까운 활엽수는 더 촘촘한 수관 모델 (데스크톱)
-  const geoBF = Array.from({ length: nB }, (_, i) => broadleaf(101 + i * 31, low, true));
-  const near = t => Math.abs(t.x) < (low ? 30 : 55) && t.z > -230 && t.z < 245;
+  // 카메라 경로 주변만 잎 카드로 바꾸고 원거리 모델은 유지한다.
+  const near = t => Math.abs(t.x) < (low ? 70 : 115) && t.z > -230 && t.z < 245;
   const geoC = Array.from({ length: nC }, (_, i) => conifer(203 + i * 17, low));
   // 납작하고 갈라진 하층 식생. 기존 구형 관목 대신 잎 묶음을 하나의 모델로 합친다.
   const under = [];
@@ -141,10 +183,14 @@ export function buildVegetation(terrain, { low, cutPlanes }) {
   const shrubCols = ['#566b3a', '#5f723d', '#4e6236', '#677440'].map(h => new THREE.Color(h));
 
   const meshes = [];
+  const leafMap = foliageImage ? new THREE.Texture(foliageImage) : foliageTexture();
+  leafMap.colorSpace=THREE.SRGBColorSpace;leafMap.anisotropy=2;leafMap.needsUpdate=true;
+  const leafMat = new THREE.MeshBasicMaterial({map:leafMap,vertexColors:true,side:THREE.DoubleSide,alphaTest:0.35,clippingPlanes:cutPlanes,clipIntersection:true});
+  const leafColors=['#ffffff','#eee8d5','#d2dcc9','#e5e8dd'].map(c=>new THREE.Color(c));
   const m4 = new THREE.Matrix4(), q = new THREE.Quaternion(), e = new THREE.Euler(), pos = new THREE.Vector3(), scl = new THREE.Vector3(), col = new THREE.Color();
-  const make = (geo, list, colors, scaleFn) => {
+  const make = (geo, list, colors, scaleFn, material) => {
     if (!list.length) return;
-    const mat = new THREE.MeshLambertMaterial({ vertexColors: true, clippingPlanes: cutPlanes, clipIntersection: true });
+    const mat = material || new THREE.MeshLambertMaterial({ vertexColors: true, clippingPlanes: cutPlanes, clipIntersection: true });
     const mesh = new THREE.InstancedMesh(geo, mat, list.length);
     list.forEach((t, i) => {
       scaleFn(t, scl);
@@ -162,11 +208,15 @@ export function buildVegetation(terrain, { low, cutPlanes }) {
     const bs = (t, s) => { const k = 0.62 + t.b * 0.88; s.set(k * (0.78 + t.c * 0.36), k * (0.8 + t.a * 0.55), k * (0.8 + t.a * 0.35)); };
     const mine = items.filter(t => !t.con && Math.floor(t.a * 997) % nB === v);
     make(geoB[v], mine.filter(t => !near(t)), broadCols, bs);
-    if (geoBF) make(geoBF[v], mine.filter(near), broadCols, bs);
+    make(foliageCards(401+v*19,low,false,!foliageImage),mine.filter(near),foliageImage?leafColors:broadCols,bs,leafMat);
+    make(trunk(1.3,0.07,4),mine.filter(near),[new THREE.Color('#b4a089')],bs);
   }
   for (let v = 0; v < nC; v++) {
-    make(geoC[v], items.filter(t => t.con && Math.floor(t.a * 991) % nC === v), conCols,
-      (t, s) => { const k = 0.7 + t.b * 0.55; s.set(k, k * (1.0 + t.c * 0.6), k); });
+    const mine=items.filter(t=>t.con&&Math.floor(t.a*991)%nC===v);
+    const scale=(t,s)=>{const k=0.7+t.b*0.55;s.set(k,k*(1.0+t.c*0.6),k);};
+    make(geoC[v],mine.filter(t=>!near(t)),conCols,scale);
+    make(foliageCards(501+v*17,low,true,!foliageImage),mine.filter(near),foliageImage?leafColors:conCols,scale,leafMat);
+    make(trunk(1.2,0.06,4),mine.filter(near),[new THREE.Color('#a7947c')],scale);
   }
   make(geoS, shrubs, shrubCols, (t, s) => { const k = 0.6 + t.b * 0.6; s.set(k * (1 + t.c * 0.4), k * (0.9 + t.a * 0.5), k); });
   return meshes;

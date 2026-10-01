@@ -5,7 +5,7 @@ import {
   drapeStrip, geomFrom, linePts, circlePts,
 } from './terrain.js?v=20261001-12';
 import { buildFence } from './fence.js?v=20261001-13';
-import { buildVegetation } from './vegetation.js?v=20261001-13';
+import { buildVegetation } from './vegetation.js?v=20261001-14';
 
 export const COLORS = {
   sky: new THREE.Color('#dfe3dd'),
@@ -22,7 +22,7 @@ export const SPOTS = {
 
 const hash = (a, b = 0) => { const s = Math.sin(a * 127.1 + b * 311.7) * 43758.5453; return s - Math.floor(s); };
 
-export function createWorld(canvas, { low }) {
+export function createWorld(canvas, { low, foliageImage }) {
   const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, powerPreference: 'high-performance', stencil: false });
   renderer.localClippingEnabled = true;
   renderer.setClearColor(COLORS.sky, 1);
@@ -52,8 +52,24 @@ export function createWorld(canvas, { low }) {
 
   // ---------- 지형 ----------
   const terrain = low ? new Terrain(170, 138) : new Terrain(240, 194);
-  const groundMat = new THREE.MeshLambertMaterial({ vertexColors: true, clippingPlanes: cutPlanes, clipIntersection: true });
-  const ground = new THREE.Mesh(terrain.buildMesh(), groundMat);
+  const groundTexture = (() => {
+    const c=document.createElement('canvas');c.width=c.height=256;
+    const ctx=c.getContext('2d'),R=rng(844),pixels=ctx.createImageData(256,256);
+    for(let i=0;i<256*256;i++){const v=Math.floor(230+R()*24);pixels.data.set([v,v,v-3,255],i*4);}
+    ctx.putImageData(pixels,0,0);
+    for(let i=0;i<1600;i++){const x=R()*256,y=R()*256;ctx.strokeStyle=R()>.5?'rgba(62,65,48,.13)':'rgba(251,246,226,.13)';ctx.lineWidth=.5;ctx.beginPath();ctx.moveTo(x,y);ctx.lineTo(x+R()*2-1,y-1-R()*3);ctx.stroke();}
+    const t=new THREE.CanvasTexture(c);t.wrapS=t.wrapT=THREE.RepeatWrapping;t.colorSpace=THREE.SRGBColorSpace;t.anisotropy=2;return t;
+  })();
+  const groundMat = new THREE.MeshLambertMaterial({ vertexColors: true, map:groundTexture, clippingPlanes: cutPlanes, clipIntersection: true });
+  const groundGeo=terrain.buildMesh(),uv=new Float32Array(groundGeo.attributes.position.count*2);
+  const groundColors=groundGeo.attributes.color;
+  for(let i=0;i<groundGeo.attributes.position.count;i++){
+    const p=groundGeo.attributes.position;uv[i*2]=p.getX(i)/18;uv[i*2+1]=p.getZ(i)/18;
+    // 초지의 노란 기운을 낮춰 젖은 흙과 숲의 색을 가깝게 한다.
+    groundColors.setXYZ(i,groundColors.getX(i)*0.95,groundColors.getY(i),groundColors.getZ(i)*1.07);
+  }
+  groundGeo.setAttribute('uv',new THREE.BufferAttribute(uv,2));
+  const ground = new THREE.Mesh(groundGeo, groundMat);
   scene.add(ground);
 
   const skirt = new THREE.Mesh(terrain.buildSkirt(), new THREE.MeshLambertMaterial({ vertexColors: true, side: THREE.DoubleSide }));
@@ -100,7 +116,7 @@ export function createWorld(canvas, { low }) {
   }
 
   // ---------- 수목 (인스턴싱) ----------
-  const trees = buildVegetation(terrain, { low, cutPlanes });
+  const trees = buildVegetation(terrain, { low, cutPlanes, foliageImage });
   trees.forEach(m => scene.add(m));
 
   // ---------- 경계선 (남방한계선·군사분계선·북방한계선) ----------
@@ -159,18 +175,20 @@ export function createWorld(canvas, { low }) {
     const { x, z } = SPOTS.incident;
     const basic = (c) => new THREE.MeshBasicMaterial({ color: c, transparent: true, opacity: 0, depthWrite: false, polygonOffset: true, polygonOffsetFactor: -6 });
     const disc = { P: [], I: [], UV: [] };
-    for (let r = 0.5; r <= 2.0; r += 0.75) drapeStrip(terrain, circlePts(x, z, r), 0.8, 0.7, disc);
+    drapeStrip(terrain, circlePts(x,z,1.55,0,Math.PI*2,0.16),0.15,0.55,disc);
+    drapeStrip(terrain,linePts(x-0.4,z,x+0.4,z,0.12),0.1,0.57,disc);
+    drapeStrip(terrain,linePts(x,z-0.4,x,z+0.4,0.12),0.1,0.57,disc);
     marks.blast = new THREE.Mesh(geomFrom(disc), basic(COLORS.blast));
     const dash = { P: [], I: [], UV: [] };
-    const R = 12, nD = 26;
+    const R = 12, nD = 52;
     for (let k = 0; k < nD; k++) {
-      const a0 = k / nD * Math.PI * 2, a1 = a0 + Math.PI * 2 / nD * 0.55;
-      drapeStrip(terrain, circlePts(x, z, R, a0, a1, 0.8), 0.55, 0.7, dash);
+      const a0 = k / nD * Math.PI * 2, a1 = a0 + Math.PI * 2 / nD * 0.48;
+      drapeStrip(terrain, circlePts(x, z, R, a0, a1, 0.2), 0.11, 0.55, dash);
     }
     marks.ring = new THREE.Mesh(geomFrom(dash), basic(COLORS.mint));
     const found = { P: [], I: [], UV: [] };
     marks.foundPts = [[x + 6.5, z - 4.5], [x - 7.5, z + 2.5], [x + 1.5, z + 8]];
-    marks.foundPts.forEach(([fx, fz]) => drapeStrip(terrain, circlePts(fx, fz, 1.1), 0.55, 0.75, found));
+    marks.foundPts.forEach(([fx, fz]) => drapeStrip(terrain, circlePts(fx, fz, 1.1,0,Math.PI*2,0.14), 0.12, 0.57, found));
     marks.found = new THREE.Mesh(geomFrom(found), basic(COLORS.found));
     [marks.blast, marks.ring, marks.found].forEach(m => { m.renderOrder = 3; scene.add(m); });
   }

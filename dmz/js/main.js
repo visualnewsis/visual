@@ -3,13 +3,13 @@
 // 예외: 사고 장면의 진동·먼지는 한 번 재생되는 시간 기반 이벤트.
 import * as THREE from './three.js?v=20261001-12';
 import { W, smooth } from './terrain.js?v=20261001-12';
-import { createWorld, SPOTS } from './scene3d.js?v=20261001-13';
-import { createXray } from './xray.js?v=20261001-13';
+import { createWorld, SPOTS } from './scene3d.js?v=20261001-14';
+import { createXray } from './xray.js?v=20261001-14';
 import { CameraRig, KEYS } from './camera.js?v=20261001-12';
 import { Scroller } from './scroll.js?v=20261001-12';
 import { createMorph, sm } from './typography.js?v=20261001-12';
 import { Labels, Track, Timeline } from './ui.js?v=20261001-12';
-import { createHeroIntro } from './hero.js?v=20261001-13';
+import { createHeroIntro } from './hero.js?v=20261001-14';
 
 const T0 = performance.now();
 const params = new URLSearchParams(location.search);
@@ -25,7 +25,15 @@ const stageEl = $('#stage');
 const veil = $('#veil');
 // (엔딩 안개 레이어는 사용하지 않음)
 
-const world = createWorld(canvas, { low });
+// 잎 텍스처는 초기화 전에 한 번 읽어 스크롤 도중 수관이 바뀌지 않게 한다.
+const foliageImage = await new Promise(resolve => {
+  const img = new Image();let done=false;
+  const finish=value=>{if(done)return;done=true;clearTimeout(timer);resolve(value);};
+  const timer=setTimeout(()=>finish(null),4000);
+  img.onload=()=>finish(img);img.onerror=()=>finish(null);
+  img.src=new URL('../images/web/foliage-cluster-v1.webp',import.meta.url).href;
+});
+const world = createWorld(canvas, { low, foliageImage });
 const xray = createXray(world);
 const rig = new CameraRig(world.terrain);
 const scroller = new Scroller($('#story'));
@@ -249,6 +257,7 @@ function tick(now) {
   track.update(camPos.z, st.travel * (1 - st.hanja) * (1 - st.tl) * (1 - st.inv));
   const labelState = OG ? {} : { ...st.lbl };
   for (const k of ['h-s', 'h-0', 'h-n']) labelState[k] *= 1 - introOpacity;
+  cam.updateMatrixWorld();
   labels.update(cam, vw, vh, labelState);
   document.body.classList.toggle('dark-phase', st.hanja > 0.5 || st.tl > 0.5);
 
