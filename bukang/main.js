@@ -392,8 +392,24 @@
   var introStep=introSection && introSection.querySelector('.step[data-ph="0"]');
   var gifState=0, gifTimer=0, gifLoadTimer=0, gifStyles=null;
   var gifPreview=false;
-  var gifBlob=null, gifBlobUrl=null;
-  if(introGif && window.fetch && window.URL && URL.createObjectURL){ fetch(introGif.dataset.src).then(function(r){ return r.ok ? r.blob() : null; }).then(function(b){ gifBlob=b; }).catch(function(){}); }
+  var gifBlob=null, gifBlobUrl=null, gifFetch=0, gifWaiting=false;
+  /* GIF는 처음부터 끝까지 다 받은 뒤에만 재생한다. 덜 받은 상태로 붙이면 받은 프레임까지만 돌다 멈춘다.
+     그동안 화면에는 첫 프레임 정지 이미지(src)를 보여 준다. */
+  function attachGif(){
+    if(gifBlobUrl) URL.revokeObjectURL(gifBlobUrl);
+    gifBlobUrl=URL.createObjectURL(gifBlob); introGif.src=gifBlobUrl;
+  }
+  if(introGif && window.fetch && window.URL && URL.createObjectURL){
+    fetch(introGif.dataset.src).then(function(r){ return r.ok ? r.blob() : null; }).then(function(b){
+      if(!b) throw 0;
+      gifBlob=b; gifFetch=1;
+      if(gifWaiting){ gifWaiting=false; attachGif(); }
+      else if(gifState===2 && !introGif.dataset.played){ attachGif(); }
+    }).catch(function(){
+      gifFetch=2;
+      if(gifWaiting || gifState===2){ gifWaiting=false; introGif.src=introGif.dataset.src; }
+    });
+  }else if(introGif){ gifFetch=2; introGif.src=introGif.dataset.src; }
   function pinGif(){
     if(gifState!==1) return;
     var top=window.scrollY+introStep.getBoundingClientRect().top;
@@ -421,14 +437,17 @@
   function replayGif(){
     clearTimeout(gifTimer); clearTimeout(gifLoadTimer);
     introGif.dataset.playback="loading";
-    gifLoadTimer=setTimeout(gifFailed,8000); // 영상 로드 실패로 화면이 영구 잠기지 않도록 한다.
-    /* 이미 받아 둔 GIF를 새 blob 주소로 다시 붙여 처음부터 재생 (3.9MB를 다시 내려받지 않음) */
-    if(gifBlob){ if(gifBlobUrl) URL.revokeObjectURL(gifBlobUrl); gifBlobUrl=URL.createObjectURL(gifBlob); introGif.src=gifBlobUrl; return; }
-    var src=introGif.dataset.src;
-    introGif.src=src+(src.indexOf("?")<0 ? "?" : "&")+"replay="+Date.now();
+    gifLoadTimer=setTimeout(gifFailed,20000); // 느린 모바일 회선에서도 화면이 영구 잠기지 않도록 한다.
+    if(gifBlob){ attachGif(); return; }         // 다 받아 둔 GIF를 새 주소로 붙여 처음부터 재생
+    if(gifFetch===0){ gifWaiting=true; return; } // 아직 받는 중: 다 받으면 그때 붙인다
+    introGif.src=introGif.dataset.src;
   }
   function containGif(){
     if(!introStep || gifPreview || gifState===2) return;
+    if(!gifState && introStep.getBoundingClientRect().top < -window.innerHeight*.5){
+      /* 빠른 관성 스크롤로 이미 지나쳤으면 되돌려 붙잡지 않는다 (다른 장면으로 튀는 현상 방지) */
+      gifState=2; replayGif(); clearTimeout(gifLoadTimer); return;
+    }
     if(!gifState && introStep.getBoundingClientRect().top<=2){
       gifState=1;
       var style=document.documentElement.style;
@@ -483,6 +502,15 @@
   function containStory(){
     if(storyHold){ pinStoryHold(); return; }
     if(gifState===1 || gifPreview) return;
+    /* 처음 도착했을 때만 붙잡는다. 관성으로 이미 반 화면 넘게 지나쳤으면 '본 것'으로만 처리해
+       뒤늦게 그 장면으로 되돌아가 튀는 일을 막는다. */
+    var past=-window.innerHeight*.5;
+    function gone(el){ return el && el.getBoundingClientRect().top<past; }
+    if(!returnSeen && gone(returnStep)) returnSeen=true;
+    if(!lastCardSeen && gone(lastCardStep)) lastCardSeen=true;
+    if(!voiceSeen && gone(voice)){ voiceSeen=true; voice.classList.add("in"); }
+    if(!swapPinned && gone(swapStep)) swapPinned=true;
+    if(!swapSeen && swapStep && swapStep.getBoundingClientRect().top < -window.innerHeight*1.2){ swapSeen=true; swapStep.classList.add("swapped"); }
     if(!returnSeen && returnStep && returnStep.getBoundingClientRect().top<=2){
       returnSeen=true; active=null;
       startStoryHold("return",returnStep,0); // sync에서 회귀 애니메이션을 시작한다.
@@ -567,7 +595,27 @@
     else if(step.dataset.ph!==undefined){ (sec._ph||(sec._ph=photoSeq(sec)))(step.dataset.ph); }
     popGone();
   }
-  window.addEventListener("scroll",function(){ containGif(); containStory(); if(!ticking){ ticking=true; requestAnimationFrame(sync); } },{passive:true});
+  /* 모바일: 지도 위로 올라가는 설명 카드를 지도 아래 영역 윗선에서 잘라 사라지게 한다.
+     카드가 원래 지도와 겹쳐 서는 높이면 그 위치(멈춘 자리)부터 잘린다. 팝업 카드는 제외. */
+  var clipSecs=[].slice.call(document.querySelectorAll("section.scrolly"));
+  function clipCards(){
+    var on=portrait();
+    clipSecs.forEach(function(sec){
+      var stage=sec.querySelector(".stage"), line=stage.getBoundingClientRect().bottom;
+      [].forEach.call(sec.querySelectorAll(".steps > .step"),function(step){
+        var st=step.getBoundingClientRect().top;
+        [].forEach.call(step.children,function(el){
+          if(el.classList.contains("popup") || el.classList.contains("snap-pt")) return;
+          var cut=0;
+          if(on && st<0){ var top=el.getBoundingClientRect().top, rest=top-st; cut=Math.max(0,Math.min(line,rest)-top); }
+          var v=cut>0 ? "inset("+Math.ceil(cut)+"px -40px -40px -40px)" : "";
+          if(el.style.clipPath!==v){ el.style.clipPath=v; el.style.webkitClipPath=v; }
+        });
+      });
+    });
+  }
+  window.addEventListener("scroll",function(){ containGif(); containStory(); clipCards(); if(!ticking){ ticking=true; requestAnimationFrame(sync); } },{passive:true});
+  window.addEventListener("resize",clipCards);
   qSvg.setAttribute("viewBox",VB("park").join(" "));
   window.addEventListener("resize",function(){ qSvg.setAttribute("viewBox",VB("park").join(" ")); [wSvg,pSvg,qSvg].forEach(legible); });
   stateA("w0"); stateB("c2");
