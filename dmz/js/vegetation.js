@@ -61,11 +61,16 @@ const trunk = (h, r, segs) => paint(place(flat(new THREE.CylinderGeometry(r * 0.
 // 활엽수: 줄기 + 3~5개의 수관 덩어리
 function broadleaf(seed, low, fine = false) {
   const R = rng(seed), parts = [trunk(1.1, 0.11, low ? 4 : 5)];
-  const n = 3 + Math.floor(R() * 2);
-  parts.push(place(blob(low ? 0 : 1, seed, 0.22), 0, 1.55, 0, 1.0, 0.82, 1.0, R() * 6));
+  const n = 3 + Math.floor(R() * (fine ? 4 : 2));
+  parts.push(place(blob(low && !fine ? 0 : 1, seed, 0.27), 0, 1.55, 0, 1.0, 0.82, 1.0, R() * 6));
   for (let i = 0; i < n; i++) {
     const a = i / n * Math.PI * 2 + R(), d = 0.42 + R() * 0.25, s = 0.5 + R() * 0.25;
-    parts.push(place(blob(fine ? 1 : 0, seed + i * 7, 0.18), Math.cos(a) * d, 1.15 + R() * 0.75, Math.sin(a) * d, s, s * 0.85, s, R() * 6));
+    parts.push(place(blob(fine && !low ? 1 : 0, seed + i * 7, 0.18), Math.cos(a) * d, 1.15 + R() * 0.75, Math.sin(a) * d, s, s * 0.85, s, R() * 6));
+  }
+  // 근경 수관 가장자리의 작은 가지 덩어리: 둥근 덩어리의 매끈한 외곽을 끊는다.
+  if (fine) for (let i = 0; i < (low ? 4 : 7); i++) {
+    const a = R() * Math.PI * 2, s = 0.16 + R() * 0.16;
+    parts.push(place(blob(0, seed + 71 + i, 0.32), Math.cos(a) * 0.93, 1.25 + R() * 0.7, Math.sin(a) * 0.93, s, s * 0.75, s * 1.3, a));
   }
   parts.slice(1).forEach(g => paint(g, '#ffffff', 0.7, 2.35, 0.52, 1.08));
   return merge(parts);
@@ -76,7 +81,7 @@ function conifer(seed, low) {
   const tiers = [[0.78, 1.35, 0.35], [0.6, 1.15, 1.0], [0.42, 1.0, 1.6], [0.24, 0.8, 2.1]];
   tiers.forEach(([r, h, y], i) => {
     const g = flat(new THREE.ConeGeometry(r * (0.92 + R() * 0.16), h, segs, 1, true));
-    place(g, (R() - 0.5) * 0.05, y + h / 2, (R() - 0.5) * 0.05, 1, 1, 1, R() * 6);
+    place(g, (R() - 0.5) * 0.16, y + h / 2, (R() - 0.5) * 0.16, 0.85 + R() * 0.3, 1, 0.85 + R() * 0.3, R() * 6);
     parts.push(paint(g, '#ffffff', 0.3, 2.9, 0.48, 1.04));
   });
   return merge(parts);
@@ -97,19 +102,19 @@ export function buildVegetation(terrain, { low, cutPlanes }) {
     const m = forestMask(x, z);
     if (m < 0.04) continue;
     const center = Math.exp(-(x * x) / (2 * 180 * 180));
-    if (R() > m * (0.3 + 0.7 * center)) continue;
+    if (R() > m * (0.3 + 0.7 * center) * (0.7 + 0.3 * noise(x * 0.04, z * 0.04))) continue;
     const y = terrain.heightAt(x, z);
     const isCon = R() < 0.2 + smooth(14, 32, y) * 0.5;
     items.push({ x, y, z, con: isCon, a: R(), b: R(), c: R() });
   }
   // 관목: 숲 가장자리·초지에 낮게
   const shrubs = [];
-  const sTarget = 0;   // 관목은 저고도에서 바위처럼 보여 제외 (수목 밀도로 충분)
+  const sTarget = low ? 70 : 220;
   tries = 0;
   while (shrubs.length < sTarget && tries < sTarget * 20) {
     tries++;
-    const x = W.xMin + 4 + R() * (W.xMax - W.xMin - 8);
-    const z = W.zMin + 4 + R() * (W.zMax - W.zMin - 8);
+    const x = -50 + R() * 100;
+    const z = -210 + R() * 430;
     const m = forestMask(x, z);
     const edge = 1 - Math.abs(m - 0.35) * 2.2;
     if (Math.abs(z - riverZ(x)) < 8 || Math.abs(x - roadX(z)) < 4 || Math.abs(z - wallZ(x)) < 5) continue;
@@ -121,10 +126,16 @@ export function buildVegetation(terrain, { low, cutPlanes }) {
   const nB = low ? 2 : 3, nC = 2;
   const geoB = Array.from({ length: nB }, (_, i) => broadleaf(101 + i * 31, low));
   // 카메라 경로 가까운 활엽수는 더 촘촘한 수관 모델 (데스크톱)
-  const geoBF = low ? null : Array.from({ length: nB }, (_, i) => broadleaf(101 + i * 31, false, true));
-  const near = t => !low && Math.abs(t.x) < 80;
+  const geoBF = Array.from({ length: nB }, (_, i) => broadleaf(101 + i * 31, low, true));
+  const near = t => Math.abs(t.x) < (low ? 30 : 55) && t.z > -230 && t.z < 245;
   const geoC = Array.from({ length: nC }, (_, i) => conifer(203 + i * 17, low));
-  const geoS = shrub(307);
+  // 납작하고 갈라진 하층 식생. 기존 구형 관목 대신 잎 묶음을 하나의 모델로 합친다.
+  const under = [];
+  for (let i = 0; i < 8; i++) {
+    const a = i * 2.4;
+    under.push(paint(place(flat(new THREE.ConeGeometry(0.13, 0.65, 3, 1, true)), Math.cos(a) * 0.3, 0.24, Math.sin(a) * 0.3, 1, 0.7 + (i % 3) * 0.15, 1, a), '#ffffff', 0, 0.65, 0.55, 1));
+  }
+  const geoS = merge(under);
   const broadCols = ['#5a7741', '#64793f', '#4f6b3c', '#6f7f46', '#58723f', '#617448', '#7c8247', '#4c6639'].map(h => new THREE.Color(h));
   const conCols = ['#3c5739', '#43603d', '#375036', '#4a5f3f'].map(h => new THREE.Color(h));
   const shrubCols = ['#566b3a', '#5f723d', '#4e6236', '#677440'].map(h => new THREE.Color(h));
@@ -148,7 +159,7 @@ export function buildVegetation(terrain, { low, cutPlanes }) {
     meshes.push(mesh);
   };
   for (let v = 0; v < nB; v++) {
-    const bs = (t, s) => { const k = 0.75 + t.b * 0.7; s.set(k * (0.9 + t.c * 0.2), k * (0.85 + t.a * 0.4), k * (0.9 + t.a * 0.2)); };
+    const bs = (t, s) => { const k = 0.62 + t.b * 0.88; s.set(k * (0.78 + t.c * 0.36), k * (0.8 + t.a * 0.55), k * (0.8 + t.a * 0.35)); };
     const mine = items.filter(t => !t.con && Math.floor(t.a * 997) % nB === v);
     make(geoB[v], mine.filter(t => !near(t)), broadCols, bs);
     if (geoBF) make(geoBF[v], mine.filter(near), broadCols, bs);
