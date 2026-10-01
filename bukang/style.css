@@ -424,3 +424,25 @@ html{scroll-snap-type:y proximity}
 @media (max-aspect-ratio:10/11){ .photo-seq .ph[data-ph="1"] img{object-position:16% 50%} }
 /* 첫 화면 PC 최적화 안내 */
 .pc-note{margin:10px 0 0;font-size:12px;opacity:.6}
+/* 외해 → 왜 (2차): 글리프 실측(Noto Sans KR 900) 기준으로 조각을 나눔
+   외 = 오 [0~68%] + ㅣ [73~90%] · 해 = ㅎ [0~52%] + ㅐ [55~94%] · 왜 = 오(가로 78%) + ㅐ(해의 ㅐ와 같은 자리)
+   ① ㅣ·ㅎ이 회색으로 바래며 사라지고 ② ㅐ가 왼쪽으로 붙는 동안 오가 가로로 줄어 왜의 오 자리에 맞고
+   ③ 모양이 거의 같아진 뒤 실제 '왜' 글자로 교차 — 잘림 없이 자연스럽게 */
+.swap-card .morph.merge{transition:width .6s cubic-bezier(.45,0,.2,1) .3s}
+.swap-card .morph.merge .m-hae{transition:left .6s cubic-bezier(.45,0,.2,1) .3s}
+.swap-card .morph.merge .m-oe .keep{clip-path:inset(-15% 29.5% -15% -15%);transform-origin:0 50%;transition:transform .6s cubic-bezier(.45,0,.2,1) .3s,color .5s ease .3s,opacity .3s ease .9s}
+.swap-card .morph.merge .m-oe .drop{clip-path:inset(-15% -15% -15% 70.5%)}
+.swap-card .morph.merge .m-hae .drop{clip-path:inset(-15% 45.7% -15% -15%)}
+.swap-card .morph.merge .m-hae .keep{clip-path:inset(-15% -15% -15% 54.3%);transition:color .5s ease .3s,opacity .3s ease .9s}
+.swap-card .morph.merge .drop{transition:color .25s ease,opacity .35s ease .05s}
+.swap-card .morph.merge .m-wae{transition:opacity .3s ease .9s}
+.swap-step.swapped .morph.merge .m-oe .keep{transform:scaleX(.78);color:#4FD3E2}
+.swap-step.swapped .morph.merge .m-hae .keep{color:#4FD3E2}
+.swap-step:not(.swapped) .morph.merge .m-oe .keep,.swap-step:not(.swapped) .morph.merge .m-hae .keep{transition-delay:0s;transition-duration:.3s}
+.swap-card .morph.merge .m-wae,.swap-card .morph.merge .keep,.swap-card .morph.merge .drop{text-align:left}
+/* 교차 시 밝기가 꺼지지 않도록: 진짜 '왜'를 먼저 올리고 조각은 그 뒤에 내림 */
+.swap-card .morph.merge .m-oe .keep{transition:transform .6s cubic-bezier(.45,0,.2,1) .3s,color .5s ease .3s,opacity .2s ease 1.12s}
+.swap-card .morph.merge .m-hae .keep{transition:color .5s ease .3s,opacity .2s ease 1.12s}
+.swap-card .morph.merge .m-wae{transition:opacity .22s ease .9s}
+/* 모바일: 빠르게 휙 넘겨도 설명 카드마다 한 번씩은 멈추도록 */
+@media (max-aspect-ratio:10/11){ .scrolly .step,.photo-seq .step,.snap-pt{scroll-snap-stop:always} }
