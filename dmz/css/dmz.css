@@ -103,11 +103,15 @@ a{color:inherit}
 
 /* 非 → 悲 */
 .hanja{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:#f1f2ee;--word:0}
-.h-line{display:flex;align-items:center;margin:0;padding-top:4vh;font-size:clamp(54px,10.5vw,152px);font-weight:300;line-height:1;letter-spacing:.04em;white-space:nowrap;opacity:var(--word)}
-.h-line .morph{position:relative;display:inline-block;width:1em;height:1em;margin-right:.04em}
+.h-block{display:flex;flex-direction:column;align-items:center;gap:.3em;padding-top:4vh;font-size:clamp(54px,10.5vw,152px);opacity:var(--word)}
+.h-ko,.h-line{display:flex;gap:.06em;margin:0;line-height:1;white-space:nowrap}
+.h-ko span,.h-line .hc,.h-line .morph{display:inline-block;width:1em;height:1em;text-align:center}
+.h-ko{font-weight:300;color:#8a9496}   /* 한자가 주, 한글은 읽기 보조: 명도만 낮춤 */
+.h-ko span:first-child{color:var(--mint)}   /* 비 만 뉴시스 민트 */
+.h-line{font-weight:300}
+.h-line .morph{position:relative}
 .m-stage{position:absolute;inset:0;display:block}
 .m-g{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-weight:300;line-height:1;opacity:0;transform-origin:50% 50%;will-change:transform,opacity}
-.h-rest{display:inline-block;line-height:1}
 /* 엔딩: 悲만 아주 미세하게 */
 .finale .bi{transition:color .6s ease}
 
@@ -254,7 +258,7 @@ body.evi-on #labels,body.evi-on #track{opacity:0!important;transition:opacity .3
 body.no-webgl .gl-why{position:absolute;left:50%;top:calc(64px + 18px);transform:translateX(-50%);z-index:2;margin:0;padding:10px 16px;max-width:calc(100% - 32px);background:#121516;color:#fff;font-size:13px;line-height:1.5;text-align:center}
 @media (max-width:800px){
   .hero h1 .t2,.finale h2 .t2{font-size:clamp(26px,7.6vw,40px)}
-  .h-line{font-size:clamp(44px,15vw,72px);letter-spacing:.02em}
+  .h-block{font-size:clamp(44px,15vw,72px)}
 }
 
 /* 정전협정의 원래 DMZ → 현재 (非→悲 직전, 같은 어두운 화면) */
@@ -273,3 +277,5 @@ body.no-webgl .gl-why{position:absolute;left:50%;top:calc(64px + 18px);transform
   .pact-col li{padding:4px 0;font-size:15px;border:0}
 }
 .xr-fact{margin:12px 0 0;font-size:13.5px;line-height:1.6;color:#d6dddf}
+.pact-col.now{padding-left:22px;border-left:2px solid var(--mint)}
+@media (max-width:800px){.pact-col.now{padding-left:14px}}

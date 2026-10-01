@@ -1,14 +1,14 @@
 // DMZ 편집# — 스크롤텔링 통합.
 // 장면 상태는 모두 (보간된) 스크롤 위치의 함수다. 따라서 어느 방향으로 스크롤해도 같은 화면이 나온다.
 // 예외: 사고 장면의 진동·먼지는 한 번 재생되는 시간 기반 이벤트.
-import * as THREE from './three.js?v=20261001-6';
-import { W, smooth } from './terrain.js?v=20261001-6';
-import { createWorld, SPOTS } from './scene3d.js?v=20261001-6';
-import { createXray } from './xray.js?v=20261001-6';
-import { CameraRig, KEYS } from './camera.js?v=20261001-6';
-import { Scroller } from './scroll.js?v=20261001-6';
-import { createMorph, sm } from './typography.js?v=20261001-6';
-import { Labels, Track, Timeline } from './ui.js?v=20261001-6';
+import * as THREE from './three.js?v=20261001-8';
+import { W, smooth } from './terrain.js?v=20261001-8';
+import { createWorld, SPOTS } from './scene3d.js?v=20261001-8';
+import { createXray } from './xray.js?v=20261001-8';
+import { CameraRig, KEYS } from './camera.js?v=20261001-8';
+import { Scroller } from './scroll.js?v=20261001-8';
+import { createMorph, sm } from './typography.js?v=20261001-8';
+import { Labels, Track, Timeline } from './ui.js?v=20261001-8';
 
 const T0 = performance.now();
 const params = new URLSearchParams(location.search);
@@ -248,8 +248,8 @@ function tick(now) {
   document.body.classList.toggle('dark-phase', st.hanja > 0.5 || st.tl > 0.5);
 
   // 非 → 悲 (본문)
-  // 앞 46%: 정전협정 장면(phase 요소), 뒤 54%: 非→悲
-  const h = Math.max(0, (st.hanjaP - 0.46) / 0.54);
+  // 앞 48%: 정전협정 → 북측 작업 → 폭발·조사 장면(phase 요소), 뒤 50%: 非→悲
+  const h = Math.max(0, (st.hanjaP - 0.5) / 0.5);
   // 非武裝地帶 → (心이 짧게) → 悲武裝地帶. 짧게 지나가고 悲에서 잠깐 멈춘다.
   morphA.update(sm(0.0, 0.1, h), sm(0.36, 0.44, h), sm(0.42, 0.54, h), sm(0.52, 0.62, h));
   document.getElementById('hanja').style.setProperty('--word', sm(0.0, 0.1, h).toFixed(3));
