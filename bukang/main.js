@@ -391,7 +391,6 @@
   var introSection=introGif && introGif.closest(".photo-seq");
   var introStep=introSection && introSection.querySelector('.step[data-ph="0"]');
   var gifState=0, gifTimer=0, gifLoadTimer=0, gifStyles=null;
-  var gifPreview=false;
   var gifBlob=null, gifFetch=0, gifWaiting=false;
   /* GIF는 처음부터 끝까지 다 받은 뒤에만 재생한다. 덜 받은 상태로 붙이면 받은 프레임까지만 돌다 멈춘다.
      그동안 화면에는 첫 프레임 정지 이미지(src)를 보여 준다.
@@ -448,7 +447,7 @@
     introGif.src=introGif.dataset.src;
   }
   function containGif(){
-    if(!introStep || gifPreview || gifState===2) return;
+    if(!introStep || gifState===2) return;
     if(!gifState && introStep.getBoundingClientRect().top < -window.innerHeight*.5){
       /* 빠른 관성 스크롤로 이미 지나쳤으면 되돌려 붙잡지 않는다 (다른 장면으로 튀는 현상 방지) */
       gifState=2; replayGif(); clearTimeout(gifLoadTimer); return;
@@ -508,7 +507,7 @@
   }
   function containStory(){
     if(storyHold){ pinStoryHold(); return; }
-    if(gifState===1 || gifPreview) return;
+    if(gifState===1) return;
     /* 처음 도착했을 때만 붙잡는다. 관성으로 이미 반 화면 넘게 지나쳤으면 '본 것'으로만 처리해
        뒤늦게 그 장면으로 되돌아가 튀는 일을 막는다. */
     var past=-window.innerHeight*.5;
