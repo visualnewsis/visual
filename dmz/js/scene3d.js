@@ -1,10 +1,10 @@
 // 3D 디오라마: 렌더러, 조명, 지형, 수목, 경계선, 철책, 북측 요새화 요소, 사고 지점 표식, 먼지.
-import * as THREE from './three.js?v=20261001-9';
+import * as THREE from './three.js?v=20261001-10';
 import {
-  W, Terrain, rawHeight, riverZ, roadX, wallZ, forestMask, rng, smooth, lerp,
+  W, Terrain, rawHeight, riverZ, roadX, wallZ, fenceZ, forestMask, rng, smooth, lerp,
   drapeStrip, geomFrom, linePts, circlePts,
-} from './terrain.js?v=20261001-9';
-import { buildVegetation } from './vegetation.js?v=20261001-9';
+} from './terrain.js?v=20261001-10';
+import { buildVegetation } from './vegetation.js?v=20261001-10';
 
 export const COLORS = {
   sky: new THREE.Color('#dfe3dd'),
@@ -129,7 +129,7 @@ export function createWorld(canvas, { low }) {
   scene.add(band);
 
   // ---------- 철책 (남·북방한계선, 단순화) ----------
-  const fences = [buildFence(terrain, W.SLL + 1.2), buildFence(terrain, W.NLL - 1.2)];
+  const fences = [buildFence(terrain, W.SLL, 1, low), buildFence(terrain, W.NLL, -1, low)];
   fences.forEach(f => f.forEach(o => scene.add(o)));
 
   // ---------- 군사분계선 표지 (일반화) ----------
@@ -210,24 +210,64 @@ export function createWorld(canvas, { low }) {
 }
 
 
-function buildFence(terrain, z) {
-  const xs = [];
-  for (let x = W.xMin + 2; x <= W.xMax - 2; x += 1.6) xs.push(x);
-  const posts = new THREE.InstancedMesh(new THREE.BoxGeometry(0.12, 1.15, 0.12).translate(0, 0.575, 0), new THREE.MeshLambertMaterial({ color: '#5d605a' }), xs.length);
-  const m = new THREE.Matrix4();
-  const P = [];
-  xs.forEach((x, i) => {
+// 철책: 지형을 따라 굽이치는 선 위에 기둥·철망 패널·윤형 철조망, 안쪽에 순찰로.
+// 조감(HERO)에서도 밝은 순찰로와 철책선이 한 줄로 길게 읽히도록 한다. 실제 철책 배치를 재현하지 않은 일반화 표현이다.
+function buildFence(terrain, z0, side, low) {
+  const step = 1.5, H = 1.35;
+  const pts = [];
+  for (let x = W.xMin + 2; x <= W.xMax - 2; x += step) pts.push([x, fenceZ(x, z0, side)]);
+  const out = [];
+  // 순찰로
+  const road = pts.map(([x, z]) => [x, z + side * 3.4]);   // 순찰로: 철책 바깥(남측은 남쪽)
+  out.push(new THREE.Mesh(geomFrom(drapeStrip(terrain, road, 3.0, 0.18)),
+    new THREE.MeshLambertMaterial({ color: '#d6ccb0', polygonOffset: true, polygonOffsetFactor: -2 })));
+  // 철책 아래 제초 띠
+  out.push(new THREE.Mesh(geomFrom(drapeStrip(terrain, pts, 4.2, 0.1)),
+    new THREE.MeshLambertMaterial({ color: '#a9a07f', polygonOffset: true, polygonOffsetFactor: -1 })));
+  // 철망 패널 (세로 띠 + 마름모 철망 텍스처)
+  const tex = (() => {
+    const c = document.createElement('canvas'); c.width = c.height = 64;
+    const g = c.getContext('2d');
+    g.strokeStyle = 'rgba(70,74,68,1)'; g.lineWidth = 3;
+    for (let k = -64; k <= 128; k += 16) { g.beginPath(); g.moveTo(k, 0); g.lineTo(k + 64, 64); g.stroke(); g.beginPath(); g.moveTo(k + 64, 0); g.lineTo(k, 64); g.stroke(); }
+    g.fillStyle = 'rgba(60,63,58,1)'; g.fillRect(0, 0, 64, 4); g.fillRect(0, 60, 64, 4);
+    const t = new THREE.CanvasTexture(c); t.wrapS = t.wrapT = THREE.RepeatWrapping; t.anisotropy = 4; return t;
+  })();
+  const P = [], UV = [], I = [];
+  let len = 0;
+  pts.forEach(([x, z], i) => {
+    if (i) len += Math.hypot(x - pts[i - 1][0], z - pts[i - 1][1]);
     const y = terrain.heightAt(x, z);
-    posts.setMatrixAt(i, m.makeTranslation(x, y, z));
-    if (i > 0) {
-      const xp = xs[i - 1], yp = terrain.heightAt(xp, z);
-      for (const h of [0.3, 0.62, 0.94, 1.12]) P.push(xp, yp + h, z, x, y + h, z);
-    }
+    P.push(x, y + 0.05, z, x, y + H, z);
+    UV.push(len / 1.2, 0, len / 1.2, 1);
+    if (i) { const a = (i - 1) * 2; I.push(a, a + 2, a + 1, a + 1, a + 2, a + 3); }
   });
-  const g = new THREE.BufferGeometry();
-  g.setAttribute('position', new THREE.Float32BufferAttribute(P, 3));
-  const wires = new THREE.LineSegments(g, new THREE.LineBasicMaterial({ color: '#545750', transparent: true, opacity: 0.85 }));
-  return [posts, wires];
+  const pg = new THREE.BufferGeometry();
+  pg.setAttribute('position', new THREE.Float32BufferAttribute(P, 3));
+  pg.setAttribute('uv', new THREE.Float32BufferAttribute(UV, 2));
+  pg.setIndex(I); pg.computeVertexNormals();
+  out.push(new THREE.Mesh(pg, new THREE.MeshLambertMaterial({ color: '#ffffff', map: tex, transparent: true, alphaTest: 0.35, side: THREE.DoubleSide })));
+  // 기둥 (3칸마다)
+  const postPts = pts.filter((_, i) => i % 2 === 0);
+  const posts = new THREE.InstancedMesh(new THREE.BoxGeometry(0.14, H + 0.35, 0.14).translate(0, (H + 0.35) / 2, 0), new THREE.MeshLambertMaterial({ color: '#5f625c' }), postPts.length);
+  const m = new THREE.Matrix4();
+  postPts.forEach(([x, z], i) => posts.setMatrixAt(i, m.makeTranslation(x, terrain.heightAt(x, z), z)));
+  out.push(posts);
+  // 윤형 철조망 (상단)
+  const coilStep = low ? 1.5 : 0.9;
+  const coils = [];
+  for (let x = W.xMin + 2; x <= W.xMax - 2; x += coilStep) coils.push(x);
+  const coil = new THREE.InstancedMesh(new THREE.TorusGeometry(0.32, 0.035, 3, low ? 7 : 9), new THREE.MeshLambertMaterial({ color: '#4d504b' }), coils.length);
+  const q = new THREE.Quaternion(), p = new THREE.Vector3(), s = new THREE.Vector3(1, 1, 1), e = new THREE.Euler();
+  coils.forEach((x, i) => {
+    const z = fenceZ(x, z0, side), dz = fenceZ(x + 0.5, z0, side) - fenceZ(x - 0.5, z0, side);
+    e.set(0, Math.PI / 2 - Math.atan2(dz, 1), (i % 2 ? 0.25 : -0.25));
+    q.setFromEuler(e);
+    p.set(x, terrain.heightAt(x, z) + H + 0.3, z);
+    coil.setMatrixAt(i, m.compose(p, q, s));
+  });
+  out.push(coil);
+  return out;
 }
 
 // 북측 요소: 장벽, 철조망, 도로 단절, 지뢰 작업 구역(상징), 군 구조물.

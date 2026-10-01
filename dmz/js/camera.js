@@ -1,8 +1,8 @@
 // 고정 경로 카메라. 키프레임(위치·시선)을 Catmull-Rom 곡선으로 잇고,
 // 기사 단계(anchor) 사이 구간마다 호 길이 기준으로 이징해 이동한다.
 // 독자가 카메라를 직접 돌리지 않는다.
-import * as THREE from './three.js?v=20261001-9';
-import { W } from './terrain.js?v=20261001-9';
+import * as THREE from './three.js?v=20261001-10';
+import { W } from './terrain.js?v=20261001-10';
 
 const D2R = Math.PI / 180;
 
@@ -14,7 +14,7 @@ export const KEYS = [
   { name: 'descend', aerial: { target: [6, 0, 34], az: 20, el: 27, cover: 175, fov: 34 }, m: { el: 38, fov: 50, cover: 150 } },
   { name: 'structure', aerial: { target: [-40, 0, 0], az: 6, el: 62, cover: 335, fov: 32 }, m: { el: 66, fov: 48, cover: 300 } },
   { pos: [70, 300, 88], target: [12, 196, 0], fov: 44 },
-  { name: 'start', pos: [10, 214, 34], target: [0, 150, 0], fov: 48 },
+  { name: 'start', pos: [6, 226, 15], target: [0, 182, 2], fov: 50 },   // 남방한계선 철책 바깥에서 철책 너머를 본다
   { name: 'forest', pos: [-6, 180, 15], target: [-14, 138, 1], fov: 50 },
   { pos: [-4, 150, 14], target: [-2, 112, 1.5], fov: 50 },
   { name: 'incident', pos: [6, 121, 12], target: [-4, 94, 0], fov: 50 },
@@ -26,7 +26,7 @@ export const KEYS = [
   { name: 'north', pos: [8, -22, 19], target: [-2, -72, 0], fov: 52 },
   { pos: [-6, -108, 21], target: [-8, -166, 2], fov: 52 },
   { name: 'timeline', aerial: { target: [-30, 0, -20], az: 12, el: 40, cover: 245, fov: 34 }, m: { el: 52, fov: 50, cover: 240 } },
-  { name: 'end4km', pos: [0, -194, 17], target: [0, -252, 4], fov: 52 },
+  { name: 'end4km', pos: [0, -178, 18], target: [0, -232, 2], fov: 52 },
   { pos: [190, -110, 210], target: [0, -30, 0], fov: 40 },
   { name: 'rise', ...HERO },
   { name: 'finale', ...HERO },
