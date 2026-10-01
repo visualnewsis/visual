@@ -1,14 +1,14 @@
 // DMZ 편집# — 스크롤텔링 통합.
 // 장면 상태는 모두 (보간된) 스크롤 위치의 함수다. 따라서 어느 방향으로 스크롤해도 같은 화면이 나온다.
 // 예외: 사고 장면의 진동·먼지는 한 번 재생되는 시간 기반 이벤트.
-import * as THREE from './three.js?v=20261001-11';
-import { W, smooth } from './terrain.js?v=20261001-11';
-import { createWorld, SPOTS } from './scene3d.js?v=20261001-11';
-import { createXray } from './xray.js?v=20261001-11';
-import { CameraRig, KEYS } from './camera.js?v=20261001-11';
-import { Scroller } from './scroll.js?v=20261001-11';
-import { createMorph, sm } from './typography.js?v=20261001-11';
-import { Labels, Track, Timeline } from './ui.js?v=20261001-11';
+import * as THREE from './three.js?v=20261001-12';
+import { W, smooth } from './terrain.js?v=20261001-12';
+import { createWorld, SPOTS } from './scene3d.js?v=20261001-12';
+import { createXray } from './xray.js?v=20261001-12';
+import { CameraRig, KEYS } from './camera.js?v=20261001-12';
+import { Scroller } from './scroll.js?v=20261001-12';
+import { createMorph, sm } from './typography.js?v=20261001-12';
+import { Labels, Track, Timeline } from './ui.js?v=20261001-12';
 
 const T0 = performance.now();
 const params = new URLSearchParams(location.search);
