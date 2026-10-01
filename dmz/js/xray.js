@@ -1,8 +1,8 @@
 // 지표 아래 X-ray: 클리핑 평면으로 지표·수목을 잘라내고, 지층 단면 벽과 개념적 매설물을 드러낸다.
 // 매설물의 위치와 수량은 실제를 나타내지 않는다.
-import * as THREE from './three.js?v=20261001-8';
-import { rng, smooth } from './terrain.js?v=20261001-8';
-import { SPOTS } from './scene3d.js?v=20261001-8';
+import * as THREE from './three.js?v=20261001-9';
+import { rng, smooth } from './terrain.js?v=20261001-9';
+import { SPOTS } from './scene3d.js?v=20261001-9';
 
 const DEPTH = 15;   // 단면 깊이 (과장된 수직 축척)
 const SEG = 44;     // 벽 한 변의 분할 수

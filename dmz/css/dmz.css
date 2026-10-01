@@ -107,7 +107,8 @@ a{color:inherit}
 .h-ko,.h-line{display:flex;gap:.06em;margin:0;line-height:1;white-space:nowrap}
 .h-ko span,.h-line .hc,.h-line .morph{display:inline-block;width:1em;height:1em;text-align:center}
 .h-ko{font-weight:300;color:#8a9496}   /* 한자가 주, 한글은 읽기 보조: 명도만 낮춤 */
-.h-ko span:first-child{color:var(--mint)}   /* 비 만 뉴시스 민트 */
+.h-ko span:first-child{color:var(--mint)}   /* 한글 비 ↔ 한자 非/悲 같은 민트로 대응 */
+.h-line .morph .m-g{color:var(--mint)}
 .h-line{font-weight:300}
 .h-line .morph{position:relative}
 .m-stage{position:absolute;inset:0;display:block}
@@ -279,3 +280,15 @@ body.no-webgl .gl-why{position:absolute;left:50%;top:calc(64px + 18px);transform
 .xr-fact{margin:12px 0 0;font-size:13.5px;line-height:1.6;color:#d6dddf}
 .pact-col.now{padding-left:22px;border-left:2px solid var(--mint)}
 @media (max-width:800px){.pact-col.now{padding-left:14px}}
+
+/* 뉴시스 관련기사 */
+.related{padding:clamp(60px,8vw,104px) clamp(22px,7vw,112px) clamp(48px,6vw,80px);background:#fff;color:var(--ink)}
+.related .wrap{max-width:960px;margin:0 auto}
+.related .eyebrow{margin:0;font-size:12.5px;font-weight:800;letter-spacing:.16em;color:var(--mint-dark)}
+.related ol{list-style:none;margin:20px 0 0;padding:0;border-top:2px solid var(--ink)}
+.related li{border-bottom:1px solid #e3e6e7}
+.related a{display:grid;grid-template-columns:110px 1fr;gap:16px;align-items:baseline;padding:16px 4px;text-decoration:none}
+.related a:hover span,.related a:focus-visible span{text-decoration:underline;text-underline-offset:4px;color:var(--mint-dark)}
+.related time{font-size:13px;font-weight:800;color:var(--mint-dark);letter-spacing:.02em}
+.related span{font-size:clamp(15px,1.25vw,17px);font-weight:700;line-height:1.55}
+@media (max-width:800px){.related a{grid-template-columns:1fr;gap:4px;padding:14px 0}}
