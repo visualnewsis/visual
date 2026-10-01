@@ -416,3 +416,11 @@ html{scroll-snap-type:y proximity}
   .vs-4{right:7%;top:auto;bottom:23%}
   .vs-5{bottom:9%}
 }
+/* 모바일: 지도 위 출처 상자는 숨김 (출처는 하단 취재·제작 정보에 표기) */
+@media (max-aspect-ratio:10/11){ .map-credit{display:none} }
+/* 모바일: 지도 아래 빈 영역을 철창·양옆 채움과 같은 회색으로 */
+@media (max-aspect-ratio:10/11){ .scrolly{background:#4B5157} }
+/* 모바일: '사람들은 이름을 붙였다' 사진에서 부캉이가 화면 안에 들어오도록 왼쪽으로 */
+@media (max-aspect-ratio:10/11){ .photo-seq .ph[data-ph="1"] img{object-position:16% 50%} }
+/* 첫 화면 PC 최적화 안내 */
+.pc-note{margin:10px 0 0;font-size:12px;opacity:.6}
