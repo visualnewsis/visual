@@ -21,6 +21,7 @@ a{color:inherit}
 #hero-intro{position:fixed;inset:0;z-index:1;pointer-events:none;overflow:hidden;background:#dfe3dd}
 .no-webgl #hero-intro{display:none}
 #hero-intro img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 50%;transform:scale(var(--intro-scale,1))}
+#hero-intro .intro-lift1,#hero-intro .intro-lift2{opacity:0}
 #hero-intro:after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(223,227,221,.22),transparent 50%,rgba(223,227,221,.08))}
 .intro-source{position:absolute;right:18px;bottom:18px;z-index:1;font-size:10px;letter-spacing:.02em;color:#fff;text-shadow:0 1px 4px #252d25}
 @media(max-width:819px){#hero-intro img{object-position:42% 50%}.intro-source{right:12px;bottom:18px;font-size:9px}}
@@ -75,6 +76,7 @@ a{color:inherit}
 
 /* HERO */
 .hero{display:flex;flex-direction:column;align-items:center;justify-content:flex-start;text-align:center;padding-top:clamp(40px,8vh,96px)}
+.hero .kicker,.hero h1,.hero .byline{position:relative;transform:translateY(var(--intro-title-y,0px))}
 .hero .kicker{font-size:13px;font-weight:800;letter-spacing:.2em;color:var(--mint-dark)}
 .hero h1{margin:16px 0 0;font-weight:900;letter-spacing:-.05em;line-height:1.08;color:var(--ink);text-shadow:0 0 30px rgba(223,227,221,.9)}
 .hero h1 .t1{display:block;font-size:clamp(26px,3.3vw,46px);font-weight:800;letter-spacing:-.035em;color:#2c3234}
@@ -82,6 +84,7 @@ a{color:inherit}
 .hero .byline{margin:20px 0 0;font-size:12.5px;font-weight:600;color:#40484b;letter-spacing:.02em}
 .scroll-cue{position:absolute;left:50%;bottom:calc(84px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:10px;font-size:10.5px;font-weight:800;letter-spacing:.24em;color:#3d4547}
 .scroll-cue i{display:block;width:1px;height:42px;background:linear-gradient(var(--ink),transparent);animation:cue 1.9s ease-in-out infinite}
+.hero .scroll-cue{top:calc(100svh - 130px);bottom:auto;transform:translate(-50%,var(--intro-title-y,0px))}
 @keyframes cue{50%{transform:translateY(10px);opacity:.45}}
 
 /* sticky 장면 공통 */
