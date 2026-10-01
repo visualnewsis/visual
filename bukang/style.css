@@ -446,3 +446,11 @@ html{scroll-snap-type:y proximity}
 .swap-card .morph.merge .m-wae{transition:opacity .22s ease .9s}
 /* 모바일: 빠르게 휙 넘겨도 설명 카드마다 한 번씩은 멈추도록 */
 @media (max-aspect-ratio:10/11){ .scrolly .step,.photo-seq .step,.snap-pt{scroll-snap-stop:always} }
+/* 모바일: 좁은 폰에서 한 줄 제목 등이 화면보다 넓어 페이지가 옆으로 늘어나면
+   가운데 팝업(left:50%)이 오른쪽으로 밀려 잘린다 → 가로 넘침을 자르고 팝업은 양옆 여백 기준으로 고정 */
+main{overflow-x:clip}
+.hero h1{font-size:min(clamp(40px,8vw,84px),calc((100vw - 40px) / 8.9))}
+@media (max-aspect-ratio:10/11){
+  .scrolly .card.popup{left:16px;right:16px;width:auto;max-width:520px;margin:0 auto;transform:translateY(-50%) scale(.55);max-height:calc(100vh - 80px);overflow:auto}
+  .scrolly .card.popup.is-in{transform:translateY(-50%) scale(1)}
+}
