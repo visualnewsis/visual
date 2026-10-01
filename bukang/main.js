@@ -476,6 +476,8 @@
   var returnStep=A.querySelector('.step[data-state="p10"]'), returnSeen=false;
   var lastCardStep=B.querySelector('.step[data-state="c1"]'), lastCardSeen=false;
   var storyHold=null, storyTimer=0;
+  var popSteps=[].map.call(document.querySelectorAll(".scrolly .step"),function(st){ return st.querySelector(".card.popup") ? {step:st,done:false} : null; }).filter(Boolean);
+  function touchy(){ return portrait() || ("ontouchstart" in window) || navigator.maxTouchPoints>0; }
   function pinStoryHold(){
     if(!storyHold) return;
     var top=window.scrollY+storyHold.step.getBoundingClientRect().top+window.innerHeight*storyHold.ratio;
@@ -516,6 +518,16 @@
     if(!voiceSeen && gone(voice)){ voiceSeen=true; voice.classList.add("in"); }
     if(!swapPinned && gone(swapStep)) swapPinned=true;
     if(!swapSeen && swapStep && swapStep.getBoundingClientRect().top < -window.innerHeight*1.2){ swapSeen=true; swapStep.classList.add("swapped"); }
+    /* 모바일: 가운데 뜨는 전문가 경고·'살 만한 곳인가' 팝업은 손가락으로 빠르게 넘겨
+       관성 스크롤이 몇 화면 지나쳐 가더라도 한 번은 그 자리로 붙잡아 2.8초 보여 준다. */
+    if(touchy()){
+      for(var pi2=0; pi2<popSteps.length; pi2++){
+        var ps=popSteps[pi2]; if(ps.done) continue;
+        var pt=ps.step.getBoundingClientRect().top;
+        if(pt < -window.innerHeight*3){ ps.done=true; continue; }
+        if(pt<=2){ ps.done=true; active=null; startStoryHold("pop",ps.step,0,2800); return; }
+      }
+    }
     if(!returnSeen && returnStep && returnStep.getBoundingClientRect().top<=2){
       returnSeen=true; active=null;
       startStoryHold("return",returnStep,0); // sync에서 회귀 애니메이션을 시작한다.
