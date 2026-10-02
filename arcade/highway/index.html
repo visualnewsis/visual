@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <title>팔도 고속도로 타자 | 표지판 치고 슝 지나가는 타자 게임 | 충무로딩</title>
+  <meta name="description" content="경부·서해안·호남·영동·서울양양 고속도로를 골라 다가오는 표지판의 나들목과 휴게소 이름을 치면 슝 지나갑니다. 지나는 지역의 뉴시스 지역본부 기사도 함께 볼 수 있는 충무로딩 타자 게임.">
+  <meta name="keywords" content="팔도 고속도로 타자,고속도로 타자,타자 게임,한글 타자 연습,표지판 타자,경부고속도로,서해안고속도로,호남고속도로,영동고속도로,서울양양고속도로,휴게소,나들목,뉴시스 지역본부,충무로딩,비주얼 뉴시스,VISUAL NEWSIS,뉴시스,안재현,크리에이티브 디렉터 안재현">
+  <meta name="author" content="크리에이티브 디렉터 안재현">
+  <meta name="robots" content="index,follow,max-image-preview:large">
+  <meta name="theme-color" content="#0f5b3a">
+  <link rel="shortcut icon" href="https://image.newsis.com/n_www/images/ci/2024/favicon.png?v=20260829">
+  <link rel="icon" type="image/png" href="https://image.newsis.com/n_www/images/ci/2024/favicon.png?v=20260829">
+  <link rel="apple-touch-icon" href="https://image.newsis.com/n_www/images/ci/2024/favicon.png?v=20260829">
+  <link rel="canonical" href="https://visual.newsis.com/arcade/highway/">
+  <meta property="og:type" content="website"><meta property="og:locale" content="ko_KR">
+  <meta property="og:title" content="팔도 고속도로 타자"><meta property="og:description" content="고속도로를 골라 표지판 이름을 치면 슝! 서울에서 부산·목포·광주·강릉·양양까지 달려보세요.">
+  <meta property="og:url" content="https://visual.newsis.com/arcade/highway/"><meta property="og:site_name" content="VISUAL NEWSIS">
+  <meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="팔도 고속도로 타자"><meta name="twitter:description" content="고속도로를 골라 표지판 이름을 치면 슝! 서울에서 부산·목포·광주·강릉·양양까지 달려보세요.">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-6BKMWE02W5"></script>
+  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','G-6BKMWE02W5');</script>
+  <link rel="stylesheet" href="./style.css?v=20261002-1">
+  <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"Game","name":"팔도 고속도로 타자","alternateName":["고속도로 표지판 타자","한글 타자 게임"],"url":"https://visual.newsis.com/arcade/highway/","description":"경부·서해안·호남·영동·서울양양 고속도로의 나들목과 휴게소 표지판 이름을 입력하며 목적지까지 달리는 한글 타자 게임. 지나는 지역의 뉴시스 지역본부 기사로 바로 이동할 수 있다.","genre":["Typing game","Educational game"],"inLanguage":"ko-KR","isAccessibleForFree":true,"creator":{"@type":"Person","name":"안재현","jobTitle":["크리에이티브 디렉터","뉴시스 기자"],"worksFor":{"@type":"NewsMediaOrganization","name":"뉴시스","url":"https://www.newsis.com/"}},"isPartOf":{"@type":"CollectionPage","name":"충무로딩","url":"https://visual.newsis.com/arcade/"},"publisher":{"@type":"NewsMediaOrganization","name":"뉴시스","url":"https://www.newsis.com/"}},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"VISUAL NEWSIS","item":"https://visual.newsis.com/"},{"@type":"ListItem","position":2,"name":"충무로딩","item":"https://visual.newsis.com/arcade/"},{"@type":"ListItem","position":3,"name":"팔도 고속도로 타자","item":"https://visual.newsis.com/arcade/highway/"}]}]}</script>
+  <link rel="stylesheet" href="../assets/arcade-more-games.css?v=20260903-2">
+  <link rel="stylesheet" href="../assets/arcade-header-sizes.css?v=20260903-2">
+</head>
+<body>
+  <header class="site-header">
+    <a class="brand" href="../"><img src="../assets/chungmuroading-logo-transparent-v2.png" alt="충무로딩"></a>
+    <a class="newsis-logo" href="https://www.newsis.com/" target="_blank" rel="noopener"><img src="../../assets/logo2024.png" alt="뉴시스"></a>
+    <a class="visual-newsis" href="https://visual.newsis.com/">VISUAL NEWSIS</a>
+  </header>
+
+  <main class="hw-main">
+    <!-- 1. 노선 선택 -->
+    <section class="pick" id="pick" aria-labelledby="pickTitle">
+      <p class="eyebrow">TYPING ROAD TRIP · 충무로딩</p>
+      <h1 class="logo" id="pickTitle">팔도 고속도로 <em>타자</em></h1>
+      <p class="lead">다가오는 표지판 이름을 치면 <b>슝</b> 지나갑니다.<br>어느 고속도로를 탈까요?</p>
+      <div class="routes" id="routes"></div>
+      <p class="pick-note">표지판 이름을 정확히 치면 자동으로 넘어가요. 마지막 글자가 안 넘어가면 <kbd>Enter</kbd> 또는 <kbd>Space</kbd>.</p>
+    </section>
+
+    <!-- 2. 주행 -->
+    <section class="drive" id="drive" hidden aria-label="주행 화면">
+      <div class="drive-top">
+        <button class="back" id="btnBack" type="button" aria-label="노선 선택으로">← 노선</button>
+        <div class="route-title"><span class="shield" id="shield"><b>1</b></span><span id="routeName">경부고속도로</span></div>
+        <div class="stats">
+          <div><small>시간</small><b id="tTime">0.0</b></div>
+          <div><small>타수</small><b id="tCpm">0</b></div>
+          <div><small>오타</small><b id="tErr">0</b></div>
+        </div>
+      </div>
+
+      <div class="drive-body">
+        <div class="scene" id="scene">
+          <div class="sky"></div>
+          <div class="hills"></div>
+          <div class="road"><div class="lanes"></div></div>
+          <div class="signs" id="signs"></div>
+          <div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
+          <div class="overlay" id="ovPause" hidden>
+            <div class="card"><h2>잠시 정차</h2><p>기사 잘 보고 오셨나요?</p><button id="btnResume" type="button">다시 출발</button></div>
+          </div>
+        </div>
+
+        <aside class="side" aria-label="지금 지나는 지역 뉴스">
+          <p class="side-label">지금 지나는 곳</p>
+          <p class="side-region" id="sideRegion">서울</p>
+          <a class="side-link" id="sideLink" href="#" target="_blank" rel="noopener" hidden>기사보기 ↗</a>
+          <p class="side-hint" id="sideHint">뉴시스 지역본부 기사를 옆에서 바로 볼 수 있어요</p>
+          <ul class="side-passed" id="sidePassed" aria-label="지나온 본부"></ul>
+        </aside>
+      </div>
+
+      <div class="typebox">
+        <label class="sr-only" for="typeInput">표지판 이름 입력</label>
+        <input id="typeInput" type="text" lang="ko" inputmode="text" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" enterkeyhint="next" placeholder="표지판 이름을 입력하세요">
+        <span class="typehint" id="typeHint" hidden>Enter ↵</span>
+      </div>
+
+      <div class="strip" aria-hidden="true"><div class="strip-line" id="strip"></div></div>
+      <p class="strip-ends"><span id="stripFrom">서울</span><span id="stripCount">0 / 0</span><span id="stripTo">부산</span></p>
+    </section>
+
+    <!-- 3. 도착 -->
+    <section class="arrive" id="arrive" hidden aria-labelledby="arriveTitle">
+      <p class="eyebrow" id="arriveRoute">경부고속도로</p>
+      <h2 id="arriveTitle"><span id="arriveTo">부산</span> 도착!</h2>
+      <div class="result">
+        <div><small>기록</small><b id="rTime">0.0초</b></div>
+        <div><small>평균 타수</small><b id="rCpm">0</b></div>
+        <div><small>정확도</small><b id="rAcc">100%</b></div>
+        <div><small>최고 기록</small><b id="rBest">-</b></div>
+      </div>
+      <p class="arrive-new" id="rNew" hidden>새 최고 기록!</p>
+      <div class="arrive-actions">
+        <button id="btnRetry" type="button">다시 달리기</button>
+        <button id="btnOther" class="ghost" type="button">다른 고속도로</button>
+      </div>
+
+      <h3 class="sub-h">이번에 지나온 지역 소식</h3>
+      <div class="passed-links" id="passedLinks"></div>
+
+      <h3 class="sub-h">전국 본부 도장판 <small id="stampCount">0 / 15</small></h3>
+      <div class="stamps" id="stamps"></div>
+    </section>
+    <small class="coordinates">37.561827°N · 126.991076°E</small>
+  </main>
+
+  <section class="other-games"><div><p>PLAY ANOTHER</p><h2>다른 게임도<br>하러가기</h2></div><nav><a href="/arcade/sagong/"><span>01</span><b>사공팡팡</b></a><a href="/arcade/puzzle/"><span>02</span><b>조각 사진관</b></a><a href="/arcade/chagok/"><span>03</span><b>차곡차곡</b></a><a href="/arcade/omok/"><span>04</span><b>뉴스 오목</b></a></nav></section>
+  <footer><a href="../">충무로딩</a><small>크리에이티브 디렉터 = 안재현</small><span>© NEWSIS</span></footer>
+  <script src="./app.js?v=20261002-1"></script>
+  <script type="module" src="../assets/arcade-more-games.js?v=20260929-2"></script>
+</body>
+</html>
