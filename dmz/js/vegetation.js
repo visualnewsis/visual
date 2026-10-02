@@ -133,6 +133,17 @@ function foliageCards(seed, low, con, solid) {
   return merge(parts);
 }
 
+// 원경도 잎으로 읽히되, 수관당 네 장만 사용해 전체 숲의 삼각형 수를 줄인다.
+function distantCrown(seed, con) {
+  const R=rng(seed),parts=[];
+  for(let i=0;i<3;i++) {
+    const w=con?1.3:1.8,h=con?2.1:1.45;
+    const g=flat(new THREE.PlaneGeometry(w,h));g.rotateY(i*Math.PI/3+R()*.2);g.translate((R()-.5)*.2,con?1.7:1.6,(R()-.5)*.2);
+    parts.push(paint(g,'#ffffff',.5,2.7,.58,1.02));
+  }
+  const top=flat(new THREE.PlaneGeometry(con?1:1.9,con?1:1.9));top.rotateX(-Math.PI/2);top.rotateY(R()*6);top.translate(0,con?2:1.9,0);parts.push(paint(top,'#ffffff',.5,2.7,.58,1.02));return merge(parts);
+}
+
 export function buildVegetation(terrain, { low, cutPlanes, foliageImage }) {
   const R = rng(27);
   const target = low ? 6500 : 15000;
@@ -145,7 +156,7 @@ export function buildVegetation(terrain, { low, cutPlanes, foliageImage }) {
     const m = forestMask(x, z);
     if (m < 0.04) continue;
     const center = Math.exp(-(x * x) / (2 * 180 * 180));
-    if (R() > m * (0.3 + 0.7 * center) * (0.7 + 0.3 * noise(x * 0.04, z * 0.04))) continue;
+    if (R() > m * (0.3 + 0.7 * center) * (0.35 + 0.65 * smooth(-0.5, 0.6, noise(x * 0.028, z * 0.028)))) continue;
     const y = terrain.heightAt(x, z);
     const isCon = R() < 0.2 + smooth(14, 32, y) * 0.5;
     items.push({ x, y, z, con: isCon, a: R(), b: R(), c: R() });
@@ -205,16 +216,16 @@ export function buildVegetation(terrain, { low, cutPlanes, foliageImage }) {
     meshes.push(mesh);
   };
   for (let v = 0; v < nB; v++) {
-    const bs = (t, s) => { const k = 0.62 + t.b * 0.88; s.set(k * (0.78 + t.c * 0.36), k * (0.8 + t.a * 0.55), k * (0.8 + t.a * 0.35)); };
+    const bs = (t, s) => { const k = (0.9 + t.b * 1.25) * (1.25 + 0.35 * noise(t.x*.021,t.z*.021)); s.set(k * (0.78 + t.c * 0.36), k * (0.8 + t.a * 0.55), k * (0.8 + t.a * 0.35)); };
     const mine = items.filter(t => !t.con && Math.floor(t.a * 997) % nB === v);
-    make(geoB[v], mine.filter(t => !near(t)), broadCols, bs);
+    make(distantCrown(701+v*23,false), mine.filter(t => !near(t)), leafColors, bs, leafMat);
     make(foliageCards(401+v*19,low,false,!foliageImage),mine.filter(near),foliageImage?leafColors:broadCols,bs,leafMat);
     make(trunk(1.3,0.07,4),mine.filter(near),[new THREE.Color('#b4a089')],bs);
   }
   for (let v = 0; v < nC; v++) {
     const mine=items.filter(t=>t.con&&Math.floor(t.a*991)%nC===v);
-    const scale=(t,s)=>{const k=0.7+t.b*0.55;s.set(k,k*(1.0+t.c*0.6),k);};
-    make(geoC[v],mine.filter(t=>!near(t)),conCols,scale);
+    const scale=(t,s)=>{const k=(1.0+t.b*0.9)*(1.1+0.25*noise(t.x*.021,t.z*.021));s.set(k,k*(1.0+t.c*0.6),k);};
+    make(distantCrown(811+v*23,true),mine.filter(t=>!near(t)),leafColors,scale,leafMat);
     make(foliageCards(501+v*17,low,true,!foliageImage),mine.filter(near),foliageImage?leafColors:conCols,scale,leafMat);
     make(trunk(1.2,0.06,4),mine.filter(near),[new THREE.Color('#a7947c')],scale);
   }
@@ -226,7 +237,7 @@ export function buildVegetation(terrain, { low, cutPlanes, foliageImage }) {
   const contact=new THREE.InstancedMesh(new THREE.PlaneGeometry(1,1),new THREE.MeshBasicMaterial({map:shadowMap,transparent:true,depthWrite:false,polygonOffset:true,polygonOffsetFactor:-1,clippingPlanes:cutPlanes,clipIntersection:true}),shadowItems.length);
   const normal=new THREE.Vector3(),axis=new THREE.Vector3(0,0,1);
   shadowItems.forEach((t,i)=>{
-    const r=1.4+t.b*1.2,x=t.x+.25*r,z=t.z-.3*r;
+    const r=2.3+t.b*2.1,x=t.x+.25*r,z=t.z-.3*r;
     normal.set(-(terrain.heightAt(x+.5,z)-terrain.heightAt(x-.5,z)),1,-(terrain.heightAt(x,z+.5)-terrain.heightAt(x,z-.5))).normalize();
     pos.set(x,terrain.heightAt(x,z)+.08,z);q.setFromUnitVectors(axis,normal);scl.set(r*1.2,r*1.7,1);contact.setMatrixAt(i,m4.compose(pos,q,scl));
   });

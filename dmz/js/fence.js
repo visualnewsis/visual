@@ -109,7 +109,7 @@ export function buildFence(terrain, z0, side, low) {
     const x=Math.max(W.xMin+2,Math.min(W.xMax-2,camera.position.x));
     const z=fenceZ(x,z0,side), y=terrain.heightAt(x,z);
     const distance=Math.hypot(camera.position.y-y,camera.position.z-z);
-    farMat.opacity=0.58*smooth(95,380,distance);
+    farMat.opacity=0.78*smooth(75,300,distance);
     distant.visible=farMat.opacity>0.01;
   };
   return out;

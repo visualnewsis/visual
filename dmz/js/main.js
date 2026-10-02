@@ -3,8 +3,8 @@
 // 예외: 사고 장면의 진동은 한 번 재생되는 시간 기반 이벤트.
 import * as THREE from './three.js?v=20261001-12';
 import { W, smooth } from './terrain.js?v=20261001-12';
-import { createWorld, SPOTS } from './scene3d.js?v=20261002-4';
-import { createXray } from './xray.js?v=20261002-4';
+import { createWorld, SPOTS } from './scene3d.js?v=20261002-5';
+import { createXray } from './xray.js?v=20261002-5';
 import { CameraRig, KEYS } from './camera.js?v=20261001-12';
 import { Scroller } from './scroll.js?v=20261001-12';
 import { createMorph, sm } from './typography.js?v=20261001-12';
