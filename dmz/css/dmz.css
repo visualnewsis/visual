@@ -76,7 +76,7 @@ a{color:inherit}
 
 /* HERO */
 .hero{display:flex;flex-direction:column;align-items:center;justify-content:flex-start;text-align:center;padding-top:clamp(40px,8vh,96px)}
-.hero .kicker,.hero h1,.hero .byline{position:relative;transform:translateY(var(--intro-title-y,0px))}
+.hero .kicker,.hero h1,.hero .byline{position:relative}
 .hero .kicker{font-size:13px;font-weight:800;letter-spacing:.2em;color:var(--mint-dark)}
 .hero h1{margin:16px 0 0;font-weight:900;letter-spacing:-.05em;line-height:1.08;color:var(--ink);text-shadow:0 0 30px rgba(223,227,221,.9)}
 .hero h1 .t1{display:block;font-size:clamp(26px,3.3vw,46px);font-weight:800;letter-spacing:-.035em;color:#2c3234}
