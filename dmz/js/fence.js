@@ -2,7 +2,7 @@
 import * as THREE from './three.js?v=20261001-12';
 import { W, fenceZ, roadX, drapeStrip, geomFrom, smooth } from './terrain.js?v=20261001-12';
 const hash = (a, b = 0) => { const s = Math.sin(a * 127.1 + b * 311.7) * 43758.5453; return s - Math.floor(s); };
-let meshTexture, warningTexture, soilTexture;
+let meshTexture, warningTexture, soilTexture, weatherTexture;
 function soilMap() {
   if(soilTexture) return soilTexture;
   const c=document.createElement("canvas");c.width=256;c.height=128;const g=c.getContext("2d"),im=g.createImageData(256,128);
@@ -21,12 +21,24 @@ function warningMap() {
   for(let i=0;i<90;i++){g.fillStyle=i%3?"rgba(72,56,37,.16)":"rgba(201,192,151,.22)";g.fillRect(hash(i,1)*128,hash(i,2)*80,1+hash(i,3)*12,1+hash(i,4)*4);}
   warningTexture=new THREE.CanvasTexture(c);return warningTexture;
 }
+function weatherMap() {
+  if(weatherTexture) return weatherTexture;
+  const c=document.createElement('canvas');c.width=128;c.height=256;
+  const ctx=c.getContext('2d'),im=ctx.createImageData(128,256);
+  for(let y=0;y<256;y++)for(let x=0;x<128;x++){
+    const stain=Math.pow(hash(Math.floor(x/7),3),5)*(18+22*y/256);
+    const v=225+hash(x,y)*25-stain-24*smooth(190,255,y),i=(y*128+x)*4;
+    im.data[i]=v;im.data[i+1]=v-3;im.data[i+2]=v-7;im.data[i+3]=255;
+  }
+  ctx.putImageData(im,0,0);weatherTexture=new THREE.CanvasTexture(c);
+  weatherTexture.colorSpace=THREE.SRGBColorSpace;return weatherTexture;
+}
 function wireTexture() {
   if (meshTexture) return meshTexture;
   const c = document.createElement('canvas'); c.width = c.height = 128;
-  const g = c.getContext('2d'); g.lineWidth = 1.6;
-  for (let k = -128; k <= 256; k += 32) {
-    g.strokeStyle = k % 64 ? '#6c6e61' : '#80705b';
+  const g = c.getContext('2d'); g.lineWidth = 1.05;
+  for (let k = -128; k <= 256; k += 16) {
+    g.strokeStyle = k % 48 ? '#a1a69b' : '#8d7b64';
     g.beginPath(); g.moveTo(k, 0); g.lineTo(k + 128, 128); g.stroke();
     g.beginPath(); g.moveTo(k + 128, 0); g.lineTo(k, 128); g.stroke();
   }
@@ -54,7 +66,7 @@ export function buildFence(terrain, z0, side, low) {
     const wear=0.74+hash(Math.floor(x/12),side)*0.26;farC.push(wear,wear,wear);
     pts.push([x, z]); P.push(x, y + 0.03, z, x, top(x), z);
     UV.push(len / 1.2, 0, len / 1.2, 2.25);
-    color.set('#b1ac94').lerp(new THREE.Color('#89755a'), hash(Math.floor(x / 9), z0) * 0.4);
+    color.set('#c2c5b7').lerp(new THREE.Color('#89755a'), hash(Math.floor(x / 9), z0) * 0.4);
     C.push(color.r * 0.7, color.g * 0.7, color.b * 0.7, color.r, color.g, color.b);
     if (i) { const a = (i - 1) * 2; I.push(a, a + 2, a + 1, a + 1, a + 2, a + 3); }
     if (i) for (const h of [0.02, 0.55, 1.4]) {
@@ -81,6 +93,7 @@ export function buildFence(terrain, z0, side, low) {
   const farGeo=new THREE.BufferGeometry();farGeo.setAttribute('position',new THREE.Float32BufferAttribute(farP,3));farGeo.setAttribute('color',new THREE.Float32BufferAttribute(farC,3));
   const farMat=new THREE.LineBasicMaterial({color:'#343f32',vertexColors:true,transparent:true,opacity:0,depthWrite:false});
   const distant=new THREE.Line(farGeo,farMat);out.push(distant);
+  drapeStrip(terrain,pts.map(([x,z])=>[x,z-side*.42]),.65,.115,shadow);
   out.push(new THREE.Mesh(geomFrom(shadow),new THREE.MeshBasicMaterial({color:'#303329',transparent:true,opacity:0.16,depthWrite:false,polygonOffset:true,polygonOffsetFactor:-2})));
   for(const start of [-57,21,87]) {
     if(low && start===87) continue;
@@ -92,6 +105,17 @@ export function buildFence(terrain, z0, side, low) {
   }
   const g = geomFrom({P,I,UV}); g.setAttribute('color',new THREE.Float32BufferAttribute(C,3));
   out.push(new THREE.Mesh(g,new THREE.MeshLambertMaterial({map:wireTexture(),vertexColors:true,alphaTest:0.22,side:THREE.DoubleSide})));
+  // A continuous helical wire follows each bay; distant coils share the wire draw call.
+  const closeCoils=[];
+  for(let i=0;i<pts.length-baySamples;i+=baySamples){
+    const [x,z]=pts[i],[xx,zz]=pts[i+baySamples];
+    if(Math.abs(x)<(low?80:145)){closeCoils.push({x,z,xx,zz});continue;}
+    const steps=low?72:108;
+    for(let j=0;j<steps;j++)for(const t of [j/steps,(j+1)/steps]){
+      const ax=x+(xx-x)*t,az=z+(zz-z)*t,angle=t*Math.PI*20;
+      wires.push(ax,top(ax)+.28+Math.sin(angle)*.25,az+side*.16+Math.cos(angle)*.25);
+    }
+  }
   const wg = new THREE.BufferGeometry(); wg.setAttribute('position',new THREE.Float32BufferAttribute(wires,3));
   out.push(new THREE.LineSegments(wg,new THREE.LineBasicMaterial({color:'#66695a'})));
   const obj = new THREE.Object3D();
@@ -101,15 +125,15 @@ export function buildFence(terrain, z0, side, low) {
     out.push(m); return m;
   };
   const postParts=[
-    [new THREE.BoxGeometry(0.17,1,0.17).translate(0,0.5,0),'#676b60'],
+    [new THREE.BoxGeometry(0.14,1,0.14).translate(0,0.5,0),'#888d80'],
     [new THREE.BoxGeometry(0.34,0.1,0.32).translate(0,0.04,0),'#87887b'],
     [new THREE.BoxGeometry(0.21,0.035,0.21).translate(0,1.01,0),'#685c49'],
     [new THREE.BoxGeometry(0.07,0.18,0.07).rotateX(side*.58).translate(0,1.065,side*.055),'#515b50'],
   ];
-  const postP=[],postN=[],postC=[];
-  postParts.forEach(([g,tint])=>{const n=g.toNonIndexed(),c=new THREE.Color(tint);postP.push(...n.attributes.position.array);postN.push(...n.attributes.normal.array);for(let i=0;i<n.attributes.position.count;i++)postC.push(c.r,c.g,c.b);});
-  const postGeo=new THREE.BufferGeometry();postGeo.setAttribute('position',new THREE.Float32BufferAttribute(postP,3));postGeo.setAttribute('normal',new THREE.Float32BufferAttribute(postN,3));postGeo.setAttribute('color',new THREE.Float32BufferAttribute(postC,3));
-  inst(postGeo,posts,new THREE.MeshLambertMaterial({vertexColors:true}),(p,i,o)=>{o.position.set(p.x,p.y,p.z);o.rotation.z=p.lean;o.scale.set(i%11===0?1.35:1,p.h+.25,i%11===0?1.35:1);});
+  const postP=[],postN=[],postC=[],postUV=[];
+  postParts.forEach(([g,tint])=>{const n=g.toNonIndexed(),c=new THREE.Color(tint);postP.push(...n.attributes.position.array);postN.push(...n.attributes.normal.array);postUV.push(...n.attributes.uv.array);for(let i=0;i<n.attributes.position.count;i++)postC.push(c.r,c.g,c.b);});
+  const postGeo=new THREE.BufferGeometry();postGeo.setAttribute('position',new THREE.Float32BufferAttribute(postP,3));postGeo.setAttribute('uv',new THREE.Float32BufferAttribute(postUV,2));postGeo.setAttribute('normal',new THREE.Float32BufferAttribute(postN,3));postGeo.setAttribute('color',new THREE.Float32BufferAttribute(postC,3));
+  inst(postGeo,posts,new THREE.MeshPhongMaterial({vertexColors:true,map:weatherMap(),shininess:9,specular:'#30372d'}),(p,i,o)=>{o.position.set(p.x,p.y,p.z);o.rotation.z=p.lean;o.scale.set(i%11===0?1.35:1,p.h+.25,i%11===0?1.35:1);});
   inst(new THREE.BoxGeometry(0.075,1,0.075).translate(0,0.5,0),braces,new THREE.MeshLambertMaterial({color:'#60665b'}),(p,i,o)=>{o.position.set(p.x,p.y,p.z+side*1.05);o.rotation.x=side*0.48;o.scale.y=p.h*1.14;});
   const railP=[],railN=[],a=new THREE.Vector3(),b=new THREE.Vector3(),direction=new THREE.Vector3(),q=new THREE.Quaternion(),mid=new THREE.Vector3(),scale=new THREE.Vector3(),matrix=new THREE.Matrix4(),up=new THREE.Vector3(0,1,0);
   const beam=new THREE.BoxGeometry(1,1,1).toNonIndexed();
@@ -123,8 +147,18 @@ export function buildFence(terrain, z0, side, low) {
   }
   const railGeo=new THREE.BufferGeometry();railGeo.setAttribute('position',new THREE.Float32BufferAttribute(railP,3));railGeo.setAttribute('normal',new THREE.Float32BufferAttribute(railN,3));
   out.push(new THREE.Mesh(railGeo,new THREE.MeshLambertMaterial({color:'#535b4f'})));
-  const coils = pts.filter((_,i)=>i%(low?2:1)===0 && hash(Math.floor(i/7),side)>0.07);
-  inst(new THREE.TorusGeometry(0.25,0.018,3,low?7:9),coils,new THREE.MeshLambertMaterial({color:'#636658'}),([x,z],i,o)=>{o.position.set(x,top(x)+0.24,z+side*.12);o.rotation.set(0,Math.PI/2-Math.atan2(fenceZ(x+0.5,z0,side)-fenceZ(x-0.5,z0,side),1),(hash(x,z0)-0.5)*0.65);const s=0.85+hash(x,side)*0.28;o.scale.set(s,0.86+hash(x,2)*0.2,s);});
+  class CoilPath extends THREE.Curve {
+    getPoint(t,target=new THREE.Vector3()) {
+      const angle=t*Math.PI*20;
+      return target.set(t*bay,Math.sin(angle)*.25-Math.sin(t*Math.PI)*.16,Math.cos(angle)*.25);
+    }
+  }
+  inst(new THREE.TubeGeometry(new CoilPath(),low?90:150,.013,3,false),closeCoils,
+    new THREE.MeshPhongMaterial({color:'#8e9385',shininess:12,specular:'#42473c'}),(p,i,o)=>{
+      o.position.set(p.x,top(p.x)+.28,p.z+side*.16);
+      o.quaternion.setFromUnitVectors(new THREE.Vector3(1,0,0),new THREE.Vector3(p.xx-p.x,top(p.xx)-top(p.x),p.zz-p.z).normalize());
+      o.scale.x=Math.hypot(p.xx-p.x,p.zz-p.z)/bay;
+    });
   inst(new THREE.BoxGeometry(0.52,0.34,0.035),signs,new THREE.MeshLambertMaterial({color:'#cbc4a1',map:warningMap()}),(p,i,o)=>{o.position.set(p.x,p.y,p.z+side*0.08);o.rotation.set(0,-Math.atan2(fenceZ(p.x+0.5,z0,side)-fenceZ(p.x-0.5,z0,side),1),(hash(i,z0)-0.5)*0.1);});
   inst(new THREE.ConeGeometry(0.065,1,3).translate(0,0.5,0),grass,new THREE.MeshLambertMaterial({color:'#64704b'}),(p,i,o)=>{o.position.set(p.x,terrain.heightAt(p.x,p.z),p.z);o.rotation.set((hash(i,1)-0.5)*0.4,hash(i,2)*6,(hash(i,3)-0.5)*0.4);o.scale.set(1,p.h,1);});
   out.update = camera => {

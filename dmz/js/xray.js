@@ -2,7 +2,7 @@
 // 매설물의 위치와 수량은 실제를 나타내지 않는다.
 import * as THREE from './three.js?v=20261001-12';
 import { rng, smooth } from './terrain.js?v=20261001-12';
-import { SPOTS } from './scene3d.js?v=20261002-9';
+import { SPOTS } from './scene3d.js?v=20261002-10';
 
 const DEPTH = 15;   // 단면 깊이 (과장된 수직 축척)
 const SEG = 44;     // 벽 한 변의 분할 수
