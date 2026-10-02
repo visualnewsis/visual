@@ -38,11 +38,12 @@ function wireTexture() {
 export function buildFence(terrain, z0, side, low) {
   const out = [], pts = [], P = [], UV = [], C = [], I = [], wires = [], posts = [], braces = [], signs = [], grass = [];
   const color = new THREE.Color();
-  const height = x => 2.25 + 0.14 * Math.sin(x * 0.17) + 0.07 * (hash(Math.floor(x / 3), side) - 0.5);
+  const bay = 6, baySamples = 8; // 0.75 단위 샘플 × 8: 좌우로 긴 철책 한 칸
+  const height = x => 2.25 + 0.14 * Math.sin(x * 0.17) + 0.07 * (hash(Math.floor(x / bay), side) - 0.5);
   const top = x => {
-    const a = W.xMin + 2 + Math.floor((x - W.xMin - 2) / 3) * 3, b = a + 3, t = (x - a) / 3;
+    const a = W.xMin + 2 + Math.floor((x - W.xMin - 2) / bay) * bay, b = a + bay, t = (x - a) / bay;
     const za = fenceZ(a, z0, side), zb = fenceZ(b, z0, side);
-    return (terrain.heightAt(a, za) + height(a)) * (1 - t) + (terrain.heightAt(b, zb) + height(b)) * t - Math.sin(t * Math.PI) * (0.04 + hash(a, z0) * 0.13);
+    return (terrain.heightAt(a, za) + height(a)) * (1 - t) + (terrain.heightAt(b, zb) + height(b)) * t - Math.sin(t * Math.PI) * (0.10 + hash(a, z0) * 0.19);
   };
   const farP = [], farC = [], shadow = {P:[],I:[],UV:[]};
   let len = 0;
@@ -64,10 +65,10 @@ export function buildFence(terrain, z0, side, low) {
       const [px,pz]=pts[Math.max(0,i-4)];
       wires.push(px,top(px)-0.12,pz,x,y+0.18,z);
     }
-    if (i % 4 === 0) {
+    if (i % baySamples === 0) {
       drapeStrip(terrain,[[x,z],[x+0.8,z-1.5]],0.13,0.12,shadow);
     }
-    if (i % 4 === 0) posts.push({x, z, y, h:height(x), lean:(hash(x, z0) - 0.5) * 0.06});
+    if (i % baySamples === 0) posts.push({x, z, y, h:height(x), lean:(hash(x, z0) - 0.5) * 0.06});
     if (i % 24 === 0 || Math.abs(x - roadX(z)) < 0.8) braces.push({x, z, y, h:height(x)});
     if (i % 136 === 20 && Math.abs(x) < 230) signs.push({x,z,y:top(x) - 0.35});
     if (Math.abs(x) < (low ? 65 : 110) && hash(x, side) > 0.4 && Math.abs(x - roadX(z)) > 5) {
@@ -112,8 +113,8 @@ export function buildFence(terrain, z0, side, low) {
   inst(new THREE.BoxGeometry(0.075,1,0.075).translate(0,0.5,0),braces,new THREE.MeshLambertMaterial({color:'#60665b'}),(p,i,o)=>{o.position.set(p.x,p.y,p.z+side*1.05);o.rotation.x=side*0.48;o.scale.y=p.h*1.14;});
   const railP=[],railN=[],a=new THREE.Vector3(),b=new THREE.Vector3(),direction=new THREE.Vector3(),q=new THREE.Quaternion(),mid=new THREE.Vector3(),scale=new THREE.Vector3(),matrix=new THREE.Matrix4(),up=new THREE.Vector3(0,1,0);
   const beam=new THREE.BoxGeometry(1,1,1).toNonIndexed();
-  for(let i=0;i<pts.length-4;i+=4) {
-    const [x,z]=pts[i],[xx,zz]=pts[i+4];
+  for(let i=0;i<pts.length-baySamples;i+=baySamples) {
+    const [x,z]=pts[i],[xx,zz]=pts[i+baySamples];
     for(const offset of [0.04,1.95]) {
       a.set(x,top(x)-offset,z);b.set(xx,top(xx)-offset,zz);
       direction.subVectors(b,a);const length=direction.length();q.setFromUnitVectors(up,direction.normalize());mid.addVectors(a,b).multiplyScalar(.5);scale.set(offset<1?.07:.045,length,offset<1?.07:.045);matrix.compose(mid,q,scale);
