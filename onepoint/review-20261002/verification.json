@@ -1,0 +1,149 @@
+[
+  {
+    "slug": "omool-oomool",
+    "device": "desktop",
+    "passed": true,
+    "slider": "endpoints, keyboard, pointer/touch tap",
+    "carousel": 19
+  },
+  {
+    "slug": "ttong-ttoong",
+    "device": "desktop",
+    "passed": true,
+    "slider": "endpoints, keyboard, pointer/touch tap",
+    "carousel": 19
+  },
+  {
+    "slug": "balbal-beolbeol",
+    "device": "desktop",
+    "passed": true,
+    "slider": "endpoints, keyboard, pointer/touch tap",
+    "carousel": 19
+  },
+  {
+    "slug": "areun-eoreun",
+    "device": "desktop",
+    "passed": true,
+    "slider": "endpoints, keyboard, pointer/touch tap",
+    "carousel": 19
+  },
+  {
+    "slug": "kkogit-kkoogit",
+    "device": "desktop",
+    "passed": true,
+    "slider": "endpoints, keyboard, pointer/touch tap",
+    "carousel": 19
+  },
+  {
+    "slug": "jjogeul-jjoogeul",
+    "device": "desktop",
+    "passed": true,
+    "slider": "endpoints, keyboard, pointer/touch tap",
+    "carousel": 19
+  },
+  {
+    "slug": "mallang-moolleong",
+    "device": "desktop",
+    "passed": true,
+    "slider": "endpoints, keyboard, pointer/touch tap",
+    "carousel": 19
+  },
+  {
+    "slug": "omool-oomool",
+    "device": "iphone-size",
+    "passed": true,
+    "slider": "endpoints, keyboard, pointer/touch tap",
+    "carousel": 19
+  },
+  {
+    "slug": "ttong-ttoong",
+    "device": "iphone-size",
+    "passed": true,
+    "slider": "endpoints, keyboard, pointer/touch tap",
+    "carousel": 19
+  },
+  {
+    "slug": "balbal-beolbeol",
+    "device": "iphone-size",
+    "passed": true,
+    "slider": "endpoints, keyboard, pointer/touch tap",
+    "carousel": 19
+  },
+  {
+    "slug": "areun-eoreun",
+    "device": "iphone-size",
+    "passed": true,
+    "slider": "endpoints, keyboard, pointer/touch tap",
+    "carousel": 19
+  },
+  {
+    "slug": "kkogit-kkoogit",
+    "device": "iphone-size",
+    "passed": true,
+    "slider": "endpoints, keyboard, pointer/touch tap",
+    "carousel": 19
+  },
+  {
+    "slug": "jjogeul-jjoogeul",
+    "device": "iphone-size",
+    "passed": true,
+    "slider": "endpoints, keyboard, pointer/touch tap",
+    "carousel": 19
+  },
+  {
+    "slug": "mallang-moolleong",
+    "device": "iphone-size",
+    "passed": true,
+    "slider": "endpoints, keyboard, pointer/touch tap",
+    "carousel": 19
+  },
+  {
+    "slug": "omool-oomool",
+    "device": "android-size",
+    "passed": true,
+    "slider": "endpoints, keyboard, pointer/touch tap",
+    "carousel": 19
+  },
+  {
+    "slug": "ttong-ttoong",
+    "device": "android-size",
+    "passed": true,
+    "slider": "endpoints, keyboard, pointer/touch tap",
+    "carousel": 19
+  },
+  {
+    "slug": "balbal-beolbeol",
+    "device": "android-size",
+    "passed": true,
+    "slider": "endpoints, keyboard, pointer/touch tap",
+    "carousel": 19
+  },
+  {
+    "slug": "areun-eoreun",
+    "device": "android-size",
+    "passed": true,
+    "slider": "endpoints, keyboard, pointer/touch tap",
+    "carousel": 19
+  },
+  {
+    "slug": "kkogit-kkoogit",
+    "device": "android-size",
+    "passed": true,
+    "slider": "endpoints, keyboard, pointer/touch tap",
+    "carousel": 19
+  },
+  {
+    "slug": "jjogeul-jjoogeul",
+    "device": "android-size",
+    "passed": true,
+    "slider": "endpoints, keyboard, pointer/touch tap",
+    "carousel": 19
+  },
+  {
+    "slug": "mallang-moolleong",
+    "device": "android-size",
+    "passed": true,
+    "slider": "endpoints, keyboard, pointer/touch tap",
+    "carousel": 19
+  }
+]
