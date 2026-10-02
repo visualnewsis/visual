@@ -158,8 +158,8 @@ export function createXray(world) {
     mineMesh.instanceMatrix.needsUpdate = uxoMesh.instanceMatrix.needsUpdate = remMesh.instanceMatrix.needsUpdate = true;
   };
 
-  const writeWalls = (hx, hz) => {
-    const corners = [[cx - hx, cz + hz], [cx + hx, cz + hz], [cx + hx, cz - hz], [cx - hx, cz - hz]];
+  const writeWalls = (hx, hz, center = cx) => {
+    const corners = [[center - hx, cz + hz], [center + hx, cz + hz], [center + hx, cz - hz], [center - hx, cz - hz]];
     stones.forEach((o,i)=>{
       const a=corners[o.edge],b=corners[(o.edge+1)%4],x=a[0]+(b[0]-a[0])*o.t,z=a[1]+(b[1]-a[1])*o.t;
       dummy.position.set(x,terrain.heightAt(x,z)-o.depth,z);dummy.rotation.set(i,i*0.7,i*0.3);dummy.scale.set(o.size,o.size*0.65,o.size);dummy.updateMatrix();stoneMesh.setMatrixAt(i,dummy.matrix);
@@ -187,22 +187,25 @@ export function createXray(world) {
     wallGeo.attributes.position.needsUpdate = true;
     wallGeo.computeVertexNormals();
     for (let j = 0; j <= FR; j++) for (let i = 0; i <= FR; i++) {
-      const x = cx - hx + 2 * hx * i / FR, z = cz - hz + 2 * hz * j / FR, a = (j * (FR + 1) + i) * 3;
+      const x = center - hx + 2 * hx * i / FR, z = cz - hz + 2 * hz * j / FR, a = (j * (FR + 1) + i) * 3;
       floorPos[a] = x; floorPos[a + 1] = terrain.heightAt(x, z) - DEPTH; floorPos[a + 2] = z;
     }
     floorGeo.attributes.position.needsUpdate = true;
     floorGeo.computeVertexNormals();
-    inside[0].constant = -(cx - hx) + 0.05; inside[1].constant = (cx + hx) + 0.05;
+    inside[0].constant = -(center - hx) + 0.05; inside[1].constant = (center + hx) + 0.05;
     inside[2].constant = -(cz - hz) + 0.05; inside[3].constant = (cz + hz) + 0.05;
   };
 
-  let last = -1, lastScan = -1;
+  [mineMesh, uxoMesh, remMesh].forEach(m => { m.material.clippingPlanes = inside; });
+  let last = -1, lastScan = -1, cutCenter = cx, cutHalf = HX;
+  const inWindow = p => smooth(0, 1.5, cutHalf - Math.abs(p.x - cutCenter));
   return {
+    labelVisibility: () => ({mine: inWindow(objs.mine[0]), uxo: inWindow(objs.uxo.reduce((a,b)=>b.d>a.d?b:a)), remains: inWindow(objs.remains[0])}),
     labelPts: {
       mine: objs.mine[0], uxo: objs.uxo.reduce((a, b) => (b.d > a.d ? b : a)), remains: objs.remains[0],
     },
     // scanT: 스캔선 진행(0..1), open: 단면 열림(0..1), reveal: 매설물 표시(0..1)
-    update(scanT, open, reveal) {
+    update(scanT, open, reveal, explore = 0, pointer = 0.5) {
       const sv = scanT > 0 && scanT < 1 ? 1 : 0;
       scan.visible = sv > 0;
       if (sv && Math.abs(scanT - lastScan) > 1e-4) {
@@ -215,15 +218,17 @@ export function createXray(world) {
         scanGeo.attributes.position.needsUpdate = true;
         scan.material.opacity = Math.sin(scanT * Math.PI) * 0.95;
       }
-      const key = open * 1000 + reveal;
+      const key = open * 1000 + reveal + explore * 10000 + pointer * 100000;
       if (Math.abs(key - last) < 1e-5) return;
       last = key;
       if (open <= 0.001) { group.visible = false; world.setCut(0, 0, -1, -1); return; }
       group.visible = true;
       const e = open * open * (3 - 2 * open);
-      const hx = HX * (0.18 + 0.82 * e), hz = HZ * e;
-      world.setCut(cx, cz, hx, hz);
-      writeWalls(hx, hz);
+      const hx = HX * (0.18 + 0.82 * e) * (1 - 0.58 * explore), hz = HZ * e;
+      cutCenter = cx + (pointer * 2 - 1) * (HX - hx) * explore;
+      cutHalf = hx;
+      world.setCut(cutCenter, cz, hx, hz);
+      writeWalls(hx, hz, cutCenter);
       gridMat.opacity = 0.55 * smooth(0.3, 0.9, open);
       placeObjects(reveal * smooth(0.2, 0.7, open));
     },

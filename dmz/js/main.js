@@ -1,10 +1,10 @@
 // DMZ 편집# — 스크롤텔링 통합.
 // 장면 상태는 모두 (보간된) 스크롤 위치의 함수다. 따라서 어느 방향으로 스크롤해도 같은 화면이 나온다.
-// 예외: 사고 장면의 진동·먼지는 한 번 재생되는 시간 기반 이벤트.
+// 예외: 사고 장면의 진동은 한 번 재생되는 시간 기반 이벤트.
 import * as THREE from './three.js?v=20261001-12';
 import { W, smooth } from './terrain.js?v=20261001-12';
 import { createWorld, SPOTS } from './scene3d.js?v=20261001-14';
-import { createXray } from './xray.js?v=20261001-14';
+import { createXray } from './xray.js?v=20261002-2';
 import { CameraRig, KEYS } from './camera.js?v=20261001-12';
 import { Scroller } from './scroll.js?v=20261001-12';
 import { createMorph, sm } from './typography.js?v=20261001-12';
@@ -104,6 +104,39 @@ new ResizeObserver(() => resize(false)).observe(stageEl);
 
 const ats = [...document.querySelectorAll('[data-at]')].map(el => ({ el, key: el.closest('[data-key]').dataset.key, at: +el.dataset.at, until: el.dataset.until ? +el.dataset.until : 2, on: false }));
 
+// X-ray의 기존 단면을 좌우로 옮긴다. 세로 터치는 브라우저 스크롤에 맡긴다.
+const exploreSurface = $('[data-key="xray"] .xr');
+let exploreOn = false, exploreMix = 0, exploreTarget = 0.5, exploreX = 0.5, exploreStart = null;
+const canExplore = () => !OG && scroller.progress('xray', scrollY) >= 0.42 && scrollY <= scroller.span('xray').b;
+const pointExplore = e => {
+  exploreOn = true;
+  const r = exploreSurface.getBoundingClientRect();
+  exploreTarget = Math.max(0, Math.min(1, (e.clientX - r.left) / r.width));
+  dirty = true;
+};
+exploreSurface.addEventListener('pointerdown', e => {
+  if (!canExplore() || e.target.closest('.xr-card')) return;
+  exploreStart = {x:e.clientX, y:e.clientY};
+});
+exploreSurface.addEventListener('pointermove', e => {
+  if (!canExplore() || e.target.closest('.xr-card')) return;
+  if (e.pointerType === 'mouse') { pointExplore(e); return; }
+  if (!exploreStart) return;
+  const dx = Math.abs(e.clientX - exploreStart.x), dy = Math.abs(e.clientY - exploreStart.y);
+  if (dx > 8 && dx > dy * 1.2) pointExplore(e);
+});
+exploreSurface.addEventListener('pointerup', () => { exploreStart = null; });
+exploreSurface.addEventListener('pointercancel', () => { exploreStart = null; });
+exploreSurface.addEventListener('pointerleave', e => { if (e.pointerType === 'mouse') { exploreOn = false; dirty = true; } });
+
+// 한자 섹션 앞의 자료 120vh는 유지하고, 추가 50vh는 非→悲에만 배분한다.
+function chapterProgress(key, s) {
+  const p = scroller.progress(key, s);
+  if (key !== 'hanja') return p;
+  const span = scroller.span(key), split = 1.2 * scroller.vh / (span.b - span.a);
+  return p < split ? 0.5 * p / split : 0.5 + 0.5 * (p - split) / (1 - split);
+}
+
 // ---------- 사고 이벤트 ----------
 let blastAt = null, blastArmed = true;
 
@@ -115,7 +148,7 @@ let perfAcc = 0, perfN = 0, lastOy = 0;
 
 function state(s, now) {
   const P = (k, r) => scroller.presence(k, s, r);
-  const G = k => scroller.progress(k, s);
+  const G = k => chapterProgress(k, s);
   const sp = k => scroller.span(k);
   const vhh = scroller.vh;
 
@@ -146,13 +179,15 @@ function state(s, now) {
   // 사고 이벤트 트리거
   const gi = G('incident');
   if (s < sp('incident').a - 0.25 * vhh) blastArmed = true;
-  if (blastArmed && gi > 0.015 && s < sp('incident').b) { blastArmed = false; blastAt = now; }
+  if (blastArmed && gi >= 0.12 && s < sp('incident').b) { blastArmed = false; blastAt = now; }
   const bt = blastAt === null ? null : (now - blastAt) / 1000;
+  // 전조 0..0.12 → 폭발/잔상 0.12..0.48. 입력을 막지 않고 기존 먼지를 스크롤에 연결.
+  const dustT = gi < 0.12 || gi >= 0.48 ? null : 4.2 * (gi - 0.12) / 0.36;
 
   const inv = P('investigation', 0.5), gInv = G('investigation');
   const ftl = G('finale');
   return {
-    travel, heroish, structure, hanja, tl, open, scanT, reveal, front, bt, inv,
+    travel, heroish, structure, hanja, tl, open, scanT, reveal, front, bt, dustT, inv,
     lines: {
       sll: Math.max(0.35 * heroish, structure, 0.45 * travel, tl * (tph === 0 ? 1 : 0.5)),
       mdl: Math.max(0.45 * heroish, structure, 0.4 * travel, 0.8 * P('mdl', 0.6), tl * (tph === 0 ? 1 : 0.55)),
@@ -161,7 +196,7 @@ function state(s, now) {
     band: Math.max(0.24 * structure, tl * 0.2 * (1 - smooth(0.2, 0.25, tp))),
     clear: tl * smooth(0.25, 0.3, tp) * (1 - smooth(0.5, 0.56, tp) * 0.6),
     marks: {
-      blast: Math.max(P('incident', 0.4) * smooth(0.25, 0.5, gi), inv, hanja * 0.6, tl * smooth(0.75, 0.79, tp)) * (1 - open),
+      blast: Math.max(P('incident', 0.4) * smooth(0.28, 0.48, gi), inv, hanja * 0.6, tl * smooth(0.75, 0.79, tp)) * (1 - open),
       ring: Math.max(inv * smooth(0.12, 0.3, gInv), tl * smooth(0.77, 0.82, tp)),
       found: inv * smooth(0.3, 0.42, gInv),
     },
@@ -170,13 +205,13 @@ function state(s, now) {
     lbl: {
       'h-s': heroL, 'h-0': heroL, 'h-n': heroL,
       's-sll': structure, 's-mdl': structure, 's-nll': structure, 's-2a': structure, 's-2b': structure,
-      'i-blast': Math.max(P('incident', 0.4) * smooth(0.35, 0.6, gi), inv) * (1 - hanja),
+      'i-blast': Math.max(P('incident', 0.4) * smooth(0.44, 0.58, gi), inv) * (1 - hanja),
       'i-ring': inv * smooth(0.15, 0.3, gInv) * (1 - hanja),
       'i-found': inv * smooth(0.32, 0.42, gInv) * (1 - hanja),
       'st-sll': P('start', 0.45),
       't-clear': tl * smooth(0.27, 0.32, tp) * (1 - smooth(0.48, 0.52, tp)),
       't-blast': tl * smooth(0.78, 0.83, tp),
-      'x-mine': open * smooth(0.5, 0.62, gx), 'x-uxo': open * smooth(0.56, 0.68, gx), 'x-rem': open * smooth(0.62, 0.74, gx),
+      'x-mine': open * smooth(0.48, 0.68, gx), 'x-uxo': open * smooth(0.61, 0.81, gx), 'x-rem': open * smooth(0.74, 0.94, gx),
       'm-mdl': P('mdl', 0.4),
       'n-wall': P('north', 0.5), 'n-wire': P('north', 0.5) * smooth(0.12, 0.24, G('north')),
       'n-road': P('north', 0.5) * smooth(0.05, 0.16, G('north')),
@@ -199,6 +234,14 @@ function tick(now) {
   if (Math.abs(target - sSm) < 0.3) sSm = target;
 
   if (!vw) { resize(true); if (!vw) return; }
+  if (!canExplore()) { exploreOn = false; exploreStart = null; }
+  const exploreGoal = exploreOn ? 1 : 0;
+  const ek = reduceMotion ? 1 : 1 - Math.exp(-dt * 12);
+  exploreMix += (exploreGoal - exploreMix) * ek;
+  exploreX += (exploreTarget - exploreX) * ek;
+  if (Math.abs(exploreGoal - exploreMix) < 0.001) exploreMix = exploreGoal;
+  if (Math.abs(exploreTarget - exploreX) < 0.001) exploreX = exploreTarget;
+  if (exploreMix !== exploreGoal || exploreX !== exploreTarget) dirty = true;
   const st = state(sSm, now);
   const introOpacity = heroIntro.update(sSm, scroller.vh);
   const animating = st.bt !== null && st.bt < 4.5;
@@ -245,8 +288,8 @@ function tick(now) {
   world.marks.found.material.opacity = st.marks.found;
   world.north.update(st.front ?? camPos.z, world.road);
   world.clear.set(st.clear);
-  world.dust.update(reduceMotion ? null : st.bt);
-  xray.update(st.scanT, st.open, st.reveal);
+  world.dust.update(reduceMotion ? null : st.dustT);
+  xray.update(st.scanT, st.open, st.reveal, exploreMix, exploreX);
   world.hemi.intensity = 1.35 * (1 - 0.28 * st.open);
   world.scene.background.copy(sky).lerp(skyX, st.open * 0.8);
   world.scene.fog.color.copy(world.scene.background);
@@ -257,6 +300,10 @@ function tick(now) {
   track.update(camPos.z, st.travel * (1 - st.hanja) * (1 - st.tl) * (1 - st.inv));
   const labelState = OG ? {} : { ...st.lbl };
   for (const k of ['h-s', 'h-0', 'h-n']) labelState[k] *= 1 - introOpacity;
+  const windowLabels = xray.labelVisibility();
+  labelState['x-mine'] *= windowLabels.mine;
+  labelState['x-uxo'] *= windowLabels.uxo;
+  labelState['x-rem'] *= windowLabels.remains;
   cam.updateMatrixWorld();
   labels.update(cam, vw, vh, labelState);
   document.body.classList.toggle('dark-phase', st.hanja > 0.5 || st.tl > 0.5);
@@ -274,7 +321,7 @@ function tick(now) {
   // 단계 내 순차 표시 요소
   let eviOn = false;
   for (const a of ats) {
-    const pa = scroller.progress(a.key, sSm), on = pa >= a.at && pa < a.until;
+    const pa = chapterProgress(a.key, sSm), on = pa >= a.at && pa < a.until;
     if (on !== a.on) { a.on = on; a.el.classList.toggle('on', on); }
     if (on && a.el.classList.contains('evi')) eviOn = true;
   }
