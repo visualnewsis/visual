@@ -1,18 +1,19 @@
 const ARCADE_GAMES = Object.freeze([
-  { number: '01', name: '사공팡팡', path: '/arcade/sagong/', isNew: true },
-  { number: '02', name: '조각 사진관', path: '/arcade/puzzle/' },
-  { number: '03', name: '차곡차곡', path: '/arcade/chagok/' },
-  { number: '04', name: '뉴스 오목', path: '/arcade/omok/' },
-  { number: '05', name: '벽크크', path: '/arcade/brickrunch/' },
-  { number: '06', name: '가짜뉴스 지뢰찾기', path: '/arcade/minesweeper/' },
-  { number: '07', name: '카드 프리셀', path: '/arcade/freecell/' },
-  { number: '08', name: '이슈 훔친 두더지', path: '/arcade/mole/' },
-  { number: '09', name: '낱말수선소', path: '/arcade/words/' },
-  { number: '10', name: '넌 내 도도독', path: '/arcade/dododok/' },
-  { number: '11', name: '충무맨', path: '/arcade/chungmuman/' },
-  { number: '12', name: '제목있음', path: '/arcade/output/' },
-  { number: '13', name: '충무로 타로#', path: '/arcade/tarot/' },
-  { number: '14', name: 'BTA 밤티에이', path: '/arcade/bamta/' }
+  { number: '01', name: '팔도 고속도로 타자', path: '/arcade/highway/', isNew: true },
+  { number: '02', name: '사공팡팡', path: '/arcade/sagong/' },
+  { number: '03', name: '조각 사진관', path: '/arcade/puzzle/' },
+  { number: '04', name: '차곡차곡', path: '/arcade/chagok/' },
+  { number: '05', name: '뉴스 오목', path: '/arcade/omok/' },
+  { number: '06', name: '벽크크', path: '/arcade/brickrunch/' },
+  { number: '07', name: '가짜뉴스 지뢰찾기', path: '/arcade/minesweeper/' },
+  { number: '08', name: '카드 프리셀', path: '/arcade/freecell/' },
+  { number: '09', name: '이슈 훔친 두더지', path: '/arcade/mole/' },
+  { number: '10', name: '낱말수선소', path: '/arcade/words/' },
+  { number: '11', name: '넌 내 도도독', path: '/arcade/dododok/' },
+  { number: '12', name: '충무맨', path: '/arcade/chungmuman/' },
+  { number: '13', name: '제목있음', path: '/arcade/output/' },
+  { number: '14', name: '충무로 타로#', path: '/arcade/tarot/' },
+  { number: '15', name: 'BTA 밤티에이', path: '/arcade/bamta/' }
 ]);
 
 function normalizeArcadePath(pathname) {
