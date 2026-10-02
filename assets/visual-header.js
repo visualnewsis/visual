@@ -5,7 +5,7 @@
   const sectionHref=script?.dataset.sectionHref||"";
   const current=script?.dataset.current||"";
   const labels={latest:"최신 기사",editshop:"편집#",newsystem:"뉴시스템",mapguide:"알아볼지도",onepoint:"닿소리 홀소리",arcade:"충무로딩",calculator:"계산대로"};
-  const links={latest:"https://visual.newsis.com/#latest",editshop:"https://visual.newsis.com/editshop/",newsystem:"https://visual.newsis.com/newsystem/",mapguide:"https://visual.newsis.com/battery/",onepoint:"https://visual.newsis.com/onepoint/",arcade:"https://visual.newsis.com/arcade/",calculator:"https://visual.newsis.com/calculator/index.html"};
+  const links={latest:"https://visual.newsis.com/#latest",editshop:"https://visual.newsis.com/editshop/",newsystem:"https://visual.newsis.com/newsystem/",mapguide:"https://visual.newsis.com/bukang/",onepoint:"https://visual.newsis.com/onepoint/",arcade:"https://visual.newsis.com/arcade/",calculator:"https://visual.newsis.com/calculator/index.html"};
   const icons={arcade:"https://visual.newsis.com/assets/menu-icon-arcade.png",calculator:"https://visual.newsis.com/assets/menu-icon-calculator.png"};
   const start=()=>{
     const old=document.querySelector("body > header.masthead,body > header.topbar,body > header.visual-head");

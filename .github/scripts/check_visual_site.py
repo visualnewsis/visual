@@ -22,13 +22,14 @@ PAGES = {
     "homecoming/index.html": ("편집#", True),
     "heat-rain/index.html": ("뉴시스템", False),
     "battery/index.html": ("한눈에 알아볼지도", False),
+    "bukang/index.html": ("한눈에 알아볼지도", False),
     "adult-missing/index.html": ("뉴시스템", False),
     "nepal-flood/index.html": ("뉴시스템", True),
     "moreno/index.html": ("뉴시스템", True),
     "calculator/index.html": ("계산대로", True),
 }
 EDITSHOP_STORIES = {"oil", "thief", "shelter", "temperature", "kangin", "children", "buy-live", "homecoming"}
-VISUAL_STORIES_CAROUSEL_PAGES = {"battery"}
+VISUAL_STORIES_CAROUSEL_PAGES = {"battery", "bukang"}
 NEWSYSTEM_CAROUSEL_PAGES = {"heat-rain", "adult-missing", "nepal-flood", "moreno"}
 JSON_LD_RE = re.compile(
     r'<script[^>]+type=["\']application/ld\+json["\'][^>]*>([\s\S]*?)</script>',
@@ -124,10 +125,10 @@ def main() -> int:
         links_body = links_match.group(1) if links_match else ""
         if 'newsystem:"https://visual.newsis.com/newsystem/"' not in links_body:
             fail(errors, "뉴시스템 global menu link is missing or incorrect")
-        # 알아볼지도 has no hub landing yet; it's temporarily pointed at its one
-        # published story (battery) until a real hub replaces this link.
-        if 'mapguide:"https://visual.newsis.com/battery/"' not in links_body:
-            fail(errors, "알아볼지도 temporary menu link is missing or incorrect (expected the battery story)")
+        # 알아볼지도 has no hub landing yet; it's temporarily pointed at its
+        # latest published story (bukang) until a real hub replaces this link.
+        if 'mapguide:"https://visual.newsis.com/bukang/"' not in links_body:
+            fail(errors, "알아볼지도 temporary menu link is missing or incorrect (expected the latest bukang story)")
 
     if errors:
         print("VISUAL NEWSIS checks failed:", file=sys.stderr)

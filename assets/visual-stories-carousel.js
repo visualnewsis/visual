@@ -19,7 +19,8 @@
     {slug:"senior",num:"015",meta:"고령화 · 나이 기준 · 인터랙티브",title:"환갑이면 고령? 천만예요",image:"/senior/images/NISI20240905_0020511616.jpg",alt:"웨딩 의상을 입고 붉은 런웨이를 걷는 두 사람"},
     {slug:"moreno",num:"016",meta:"축구 · 국가대표 · 인터랙티브",title:"눈 앞의 기록, 눈 안의 열망",image:"/moreno/images/taegeukgi-crowd.jpg",alt:"대형 태극기가 펼쳐진 축구 경기장 관중석"},
     {slug:"atleti-2gang",num:"017",meta:"라리가 · 팀 전술 · 인터랙티브",title:"AT, 라리가 '2강 IN'",image:"/atleti-2gang/images/hero-derby-bellingham.jpg",alt:"레알 마드리드전에서 상대 선수와 몸싸움하며 공을 지키는 이강인"},
-    {slug:"homecoming",num:"018",meta:"6·25 · 유해발굴 · 인터랙티브",title:"작은 뼈 조각으로, 가족 품에",image:"/homecoming/images/NISI20260831_0021417256.jpg",alt:"故 김하동 일병 귀환행사에서 신원확인 통지서가 담긴 함을 전달받는 동생 김하준 옹"}
+    {slug:"homecoming",num:"018",meta:"6·25 · 유해발굴 · 인터랙티브",title:"작은 뼈 조각으로, 가족 품에",image:"/homecoming/images/NISI20260831_0021417256.jpg",alt:"故 김하동 일병 귀환행사에서 신원확인 통지서가 담긴 함을 전달받는 동생 김하준 옹"},
+    {slug:"bukang",num:"019",meta:"부산 북항 · 상어 · 지도 인터랙티브",title:"알아볼지도 부캉이편",image:"/bukang/images/02-crowd-shark.jpg",alt:"부산 북항 친수공원 수로에서 헤엄치는 상어 부캉이를 난간 너머로 촬영하는 시민들"}
   ];
   const mount=host=>{
     const visible=stories.filter(story=>story.slug!==current);
