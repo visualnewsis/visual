@@ -1,11 +1,11 @@
 // 3D 디오라마: 렌더러, 조명, 지형, 수목, 경계선, 철책, 북측 요새화 요소, 사고 지점 표식, 먼지.
 import * as THREE from './three.js?v=20261001-12';
 import {
-  W, Terrain, rawHeight, riverZ, roadX, wallZ, fenceZ, forestMask, rng, smooth, lerp,
+  W, Terrain, rawHeight, noise, riverZ, roadX, wallZ, fenceZ, forestMask, rng, smooth, lerp,
   drapeStrip, geomFrom, linePts, circlePts,
 } from './terrain.js?v=20261001-12';
-import { buildFence } from './fence.js?v=20261002-4';
-import { buildVegetation } from './vegetation.js?v=20261002-4';
+import { buildFence } from './fence.js?v=20261002-5';
+import { buildVegetation } from './vegetation.js?v=20261002-5';
 
 export const COLORS = {
   sky: new THREE.Color('#dfe3dd'),
@@ -37,6 +37,7 @@ export function createWorld(canvas, { low, foliageImage }) {
   scene.add(hemi);
   const sun = new THREE.DirectionalLight('#fff0d8', 2.9);
   sun.position.set(-150, 260, 360);
+  sun.intensity=2.6;
   scene.add(sun);
 
   // X-ray에서 지표를 잘라내는 평면 (구간 내부를 잘라냄)
@@ -66,7 +67,15 @@ export function createWorld(canvas, { low, foliageImage }) {
   for(let i=0;i<groundGeo.attributes.position.count;i++){
     const p=groundGeo.attributes.position;uv[i*2]=p.getX(i)/18;uv[i*2+1]=p.getZ(i)/18;
     // 초지의 노란 기운을 낮춰 젖은 흙과 숲의 색을 가깝게 한다.
-    groundColors.setXYZ(i,groundColors.getX(i)*0.95,groundColors.getY(i),groundColors.getZ(i)*1.07);
+    const x=p.getX(i),z=p.getZ(i),wood=forestMask(x,z);
+    const patch=noise(x*.023,z*.023)*.09+noise(x*.079,z*.079)*.035;
+    let occlusion=0;
+    for(const distance of [18,48,100]) {
+      const sx=Math.max(W.xMin,Math.min(W.xMax,x-distance*.385)),sz=Math.max(W.zMin,Math.min(W.zMax,z+distance*.923));
+      occlusion=Math.max(occlusion,(terrain.heightAt(sx,sz)-p.getY(i))/distance);
+    }
+    const damp=(1-.17*wood+patch)*(1-.16*smooth(.025,.24,occlusion));
+    groundColors.setXYZ(i,groundColors.getX(i)*.88*damp,groundColors.getY(i)*.94*damp,groundColors.getZ(i)*1.02*damp);
   }
   groundGeo.setAttribute('uv',new THREE.BufferAttribute(uv,2));
   const ground = new THREE.Mesh(groundGeo, groundMat);
