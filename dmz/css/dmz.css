@@ -310,5 +310,18 @@ body.no-webgl .gl-why{position:absolute;left:50%;top:calc(64px + 18px);transform
 
 /* 선택형 X-ray 탐색: 수직 스크롤은 기본 동작을 유지한다. */
 .xr{touch-action:pan-y}
-.xr-hint{margin:12px 0 0;font-size:12px;color:#b8c5c6}
+.xr-hint{position:absolute;left:50%;top:22%;transform:translateX(-50%);width:max-content;max-width:calc(100% - 40px);margin:0;padding:20px 28px;text-align:center;font-size:clamp(22px,3vw,34px);font-weight:700;line-height:1.5;color:#f1f3ee;background:rgba(12,16,17,.82);pointer-events:none;transition:opacity .45s ease}
+.xr-hint span{display:block;margin-top:10px;font-size:13px;font-weight:400;color:#bccdce}
+.xr-hint.dismissed{opacity:0!important}
+@media(max-width:800px){.xr-hint{top:18%;padding:16px 20px;font-size:22px}}
 body.no-webgl .xr-hint{display:none}
+
+/* 엔딩에서만 사용하는 거리별 다시보기. 본문의 거리 표시는 그대로 둔다. */
+.revisit{width:min(460px,calc(100% - 48px));margin-top:32px;padding:18px 24px;background:rgba(223,227,221,.88);text-align:center;transition:opacity .5s ease}
+.revisit label{display:block;font-size:15px;font-weight:700}
+.revisit output{display:block;margin-top:12px;font-size:13px;font-weight:700;color:var(--mint-dark)}
+.revisit input{display:block;width:100%;height:36px;margin:0;accent-color:var(--mint-dark);cursor:ew-resize;touch-action:pan-y}
+.revisit input:focus-visible{outline:2px solid var(--mint-dark);outline-offset:3px}
+.revisit-labels{display:flex;justify-content:space-between;font-size:11px}
+.revisit p{margin:12px 0 0;font-size:11px;color:#495653}
+body.no-webgl .revisit,body.og .revisit{display:none}

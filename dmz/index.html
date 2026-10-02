@@ -54,7 +54,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/dmz.css?v=20261002-2">
+  <link rel="stylesheet" href="css/dmz.css?v=20261002-3">
   <link rel="stylesheet" href="../assets/visual-header.css?v=20260828-5">
   <link rel="stylesheet" href="../assets/editshop-carousel.css?v=20260826-3">
   <script defer src="../assets/visual-header.js?v=20260915-onepoint-1" data-section="편집#" data-section-href="https://visual.newsis.com/editshop/" data-current="editshop"></script>
@@ -185,11 +185,10 @@
 
     <!-- SCENE 08 지표 아래 -->
     <section class="step" data-key="xray" style="--h:360">
-      <div class="sticky"><div class="xr"><div class="xr-card" data-at="0.36">
+      <div class="sticky"><div class="xr"><p class="xr-hint phase" data-at="0.42" data-until="0.99">지표 아래를 좌우로 움직여<br>살펴보세요<span>마우스 또는 손가락으로 탐색</span></p><div class="xr-card" data-at="0.36">
         <h2>지표 아래</h2>
         <ul class="legend"><li class="lm"><i></i>지뢰</li><li class="lu"><i></i>미확인 폭발물</li><li class="lr"><i></i>전사자 유해</li></ul>
         <p class="xr-fact">2018년 DMZ에서는 전사자 유해발굴을 위한 지뢰 제거 작업이 진행됐습니다.</p>
-        <p class="xr-hint">지표 아래를 좌우로 움직여 살펴보세요</p>
         <p class="xr-warn">※ 위치와 수량을 나타낸 그림이 아닙니다.</p>
       </div></div></div>
     </section>
@@ -260,6 +259,13 @@
     <section class="step" data-key="finale" style="--h:200">
       <div class="sticky"><div class="finale" id="finale">
         <h2><span class="t1">남방 2km 북방 2km</span><span class="t2">이곳은 <span class="bi">悲</span>무장지대입니다</span></h2>
+        <div class="revisit phase" data-at="0.24">
+          <label for="revisit-distance">움직여서 다시 둘러보기</label>
+          <output id="revisit-read" for="revisit-distance">0 km</output>
+          <input id="revisit-distance" type="range" min="-2000" max="2000" step="100" value="0" aria-describedby="revisit-help">
+          <div class="revisit-labels" aria-hidden="true"><span>남 2km</span><span>0</span><span>북 2km</span></div>
+          <p id="revisit-help">원하는 거리에서 놓으면 본문으로 돌아갑니다</p>
+        </div>
       </div></div>
     </section>
   </main>
@@ -317,7 +323,7 @@
       try{ok=!!(window.WebGLRenderingContext&&(c.getContext('webgl2')||c.getContext('webgl')));}catch(e){}
       if(!ok){why('이 브라우저에서 WebGL(3D 그래픽)을 사용할 수 없습니다.');return;}
       window.addEventListener('error',function(e){if(!window.__dmzReady)why('3D 로딩 오류: '+(e.message||(e.target&&e.target.src)||'알 수 없음'));},true);
-      var s=document.createElement('script');s.type='module';s.src='js/main.js?v=20261002-2';
+      var s=document.createElement('script');s.type='module';s.src='js/main.js?v=20261002-3';
       s.onerror=function(){why('3D 스크립트를 불러오지 못했습니다.');};
       document.body.appendChild(s);
       setTimeout(function(){if(!window.__dmzReady)why('3D 로딩이 20초 안에 끝나지 않았습니다.');},20000);
