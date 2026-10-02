@@ -307,3 +307,8 @@ body.no-webgl .gl-why{position:absolute;left:50%;top:calc(64px + 18px);transform
 .h-gloss i{position:absolute;left:50%;top:0;transform:translateX(-50%);font-style:normal;font-size:.31em;text-align:center;font-weight:500;letter-spacing:.01em;white-space:nowrap;color:#7f898b}
 .h-gloss .g-hi{opacity:var(--g-hi,0)}
 .h-gloss .g-bi{opacity:calc(var(--g-bi,0) * .85);color:var(--mint)}
+
+/* 선택형 X-ray 탐색: 수직 스크롤은 기본 동작을 유지한다. */
+.xr{touch-action:pan-y}
+.xr-hint{margin:12px 0 0;font-size:12px;color:#b8c5c6}
+body.no-webgl .xr-hint{display:none}
