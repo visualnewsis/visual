@@ -106,6 +106,7 @@ const ats = [...document.querySelectorAll('[data-at]')].map(el => ({ el, key: el
 
 // X-ray의 기존 단면을 좌우로 옮긴다. 세로 터치는 브라우저 스크롤에 맡긴다.
 const exploreSurface = $('[data-key="xray"] .xr');
+const exploreHint = exploreSurface.querySelector('.xr-hint');
 let exploreOn = false, exploreMix = 0, exploreTarget = 0.5, exploreX = 0.5, exploreStart = null;
 const canExplore = () => !OG && scroller.progress('xray', scrollY) >= 0.42 && scrollY <= scroller.span('xray').b;
 const pointExplore = e => {
@@ -116,6 +117,7 @@ const pointExplore = e => {
 };
 exploreSurface.addEventListener('pointerdown', e => {
   if (!canExplore() || e.target.closest('.xr-card')) return;
+  exploreHint.classList.add('dismissed');
   exploreStart = {x:e.clientX, y:e.clientY};
 });
 exploreSurface.addEventListener('pointermove', e => {
@@ -136,6 +138,35 @@ function chapterProgress(key, s) {
   const span = scroller.span(key), split = 1.2 * scroller.vh / (span.b - span.a);
   return p < split ? 0.5 * p / split : 0.5 + 0.5 * (p - split) / (1 - split);
 }
+
+// 엔딩에서 거리를 선택하고 놓으면 기존 카메라 경로의 가까운 지점으로 돌아간다.
+const revisitDistance = $('#revisit-distance'), revisitRead = $('#revisit-read');
+revisitDistance.addEventListener('input', () => {
+  const metres = +revisitDistance.value;
+  revisitRead.textContent = metres === 0 ? '0 km' : `${metres < 0 ? '남' : '북'} ${(Math.abs(metres) / 1000).toFixed(1)}km`;
+});
+const revisitGo = () => {
+  if (scroller.presence('finale', scrollY, 0.4) < 0.5) return;
+  const z = -Number(revisitDistance.value) / 10;
+  const from = scroller.span('start').a, to = scroller.span('end4km').b;
+  const p = new THREE.Vector3(), target = new THREE.Vector3();
+  let best = from, error = Infinity;
+  for (let i = 0; i <= 900; i++) {
+    const s = from + (to - from) * i / 900;
+    if (s >= scroller.span('timeline').a && s <= scroller.span('timeline').b) continue;
+    const loc = scroller.locate(s);
+    rig.sample(rig.paramAt(loc.seg, loc.f), p, target);
+    if (p.y - T.heightAt(Math.max(W.xMin, Math.min(W.xMax, p.x)), Math.max(W.zMin, Math.min(W.zMax, p.z))) > 70) continue;
+    const d = Math.abs(p.z - z);
+    if (d < error) { error = d; best = s; }
+  }
+  scrollTo({top:best, behavior:'instant'});
+  sSm = scrollY; dirty = true;
+  revisitDistance.blur();
+};
+revisitDistance.addEventListener('change', revisitGo);
+revisitDistance.addEventListener('pointerup', revisitGo);
+revisitDistance.addEventListener('keydown', e => { if (e.key === 'Enter') revisitGo(); });
 
 // ---------- 사고 이벤트 ----------
 let blastAt = null, blastArmed = true;
