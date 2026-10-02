@@ -135,7 +135,9 @@ function foliageCards(seed, low, con, solid) {
 
 // 원경도 잎으로 읽히되, 수관당 네 장만 사용해 전체 숲의 삼각형 수를 줄인다.
 function distantCrown(seed, con) {
-  const R=rng(seed),parts=[];
+  const R=rng(seed),stem=trunk(1.1,.055,3);
+  stem.setAttribute('uv',new THREE.Float32BufferAttribute(Array.from({length:stem.attributes.position.count*2},()=>.5),2));
+  const parts=[stem];
   for(let i=0;i<3;i++) {
     const w=con?1.3:1.8,h=con?2.1:1.45;
     const g=flat(new THREE.PlaneGeometry(w,h));g.rotateY(i*Math.PI/3+R()*.2);g.translate((R()-.5)*.2,con?1.7:1.6,(R()-.5)*.2);

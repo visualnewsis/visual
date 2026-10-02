@@ -4,8 +4,8 @@ import {
   W, Terrain, rawHeight, noise, riverZ, roadX, wallZ, fenceZ, forestMask, rng, smooth, lerp,
   drapeStrip, geomFrom, linePts, circlePts,
 } from './terrain.js?v=20261001-12';
-import { buildFence } from './fence.js?v=20261002-5';
-import { buildVegetation } from './vegetation.js?v=20261002-5';
+import { buildFence } from './fence.js?v=20261002-6';
+import { buildVegetation } from './vegetation.js?v=20261002-6';
 
 export const COLORS = {
   sky: new THREE.Color('#dfe3dd'),
