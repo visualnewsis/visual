@@ -230,3 +230,34 @@ footer a{color:inherit;text-decoration:none}
   .lanes,.lanes::before,.lanes::after{animation:none}
   .gantry{transition:none}
 }
+
+/* Keep the sign and input together inside the keyboard's visual viewport. */
+@media (max-width:760px){
+  html.mobile-driving,html.mobile-driving body{overflow:hidden;overscroll-behavior:none}
+  .mobile-driving .drive{
+    position:fixed;z-index:20;top:var(--drive-top,0px);left:0;right:0;
+    height:var(--drive-height,100dvh);padding:8px 12px max(8px,env(safe-area-inset-bottom));
+    display:flex;flex-direction:column;gap:6px;background:var(--paper);overflow:hidden;
+  }
+  .mobile-driving .drive-top{flex:none;margin:0;gap:5px 8px}
+  .mobile-driving .drive-top .shield{width:25px;height:27px}
+  .mobile-driving .drive-top .shield b{font-size:11px}
+  .mobile-driving .drive-body{flex:1;min-height:0;display:flex;flex-direction:column;gap:5px}
+  .mobile-driving .scene{flex:1;min-height:0;height:auto;border-radius:12px}
+  .mobile-driving .side{flex:none;flex-wrap:nowrap;padding:5px 9px;min-height:32px}
+  .mobile-driving .side-region{font-size:16px;white-space:nowrap}
+  .mobile-driving .side-hint{font-size:10px;line-height:1.2}
+  .mobile-driving .side-link{padding:4px 8px;font-size:12px;white-space:nowrap}
+  .mobile-driving .typebox{flex:none;margin:0 0 5px}
+  .mobile-driving #typeInput{height:46px;font-size:20px}
+  .mobile-driving .strip{flex:none;margin:0;padding:8px 6px 3px}
+  .mobile-driving .strip-ends{flex:none;margin:0 6px;font-size:10px}
+  .mobile-driving .sign{padding:8px 12px 18px}
+  .mobile-driving .sign-top{font-size:11px}
+  .mobile-driving .sign-top .shield{width:22px;height:24px}
+  .mobile-driving .sign-name{font-size:clamp(20px,calc((100vw - 80px) / var(--name-length,5)),40px);margin:4px 0 2px}
+  .mobile-driving .sign-icon{width:20px;height:20px;right:12px;bottom:8px}
+  .mobile-driving .gantry.far{top:62%;transform:translateX(-50%) scale(.25)}
+  .mobile-driving .drive-short .stats,.mobile-driving .drive-short .side,
+  .mobile-driving .drive-short .strip,.mobile-driving .drive-short .strip-ends{display:none}
+}

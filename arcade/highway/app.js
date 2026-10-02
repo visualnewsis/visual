@@ -99,6 +99,30 @@
     stripFrom: $('#stripFrom'), stripTo: $('#stripTo'), stripCount: $('#stripCount')
   };
 
+  // Fit the mobile driving panel to the area above the software keyboard.
+  const mobileDrive = window.matchMedia('(max-width: 760px)');
+  let viewportFrame = 0;
+  function syncDriveViewport() {
+    const active = mobileDrive.matches && !el.drive.hidden;
+    document.documentElement.classList.toggle('mobile-driving', active);
+    const viewport = window.visualViewport;
+    const height = viewport ? viewport.height : window.innerHeight;
+    el.drive.classList.toggle('drive-short', active && height < 300);
+    el.drive.style.setProperty('--drive-height', `${height}px`);
+    el.drive.style.setProperty('--drive-top', `${viewport ? viewport.offsetTop : 0}px`);
+  }
+  function queueDriveViewport() {
+    cancelAnimationFrame(viewportFrame);
+    viewportFrame = requestAnimationFrame(syncDriveViewport);
+  }
+  if (window.visualViewport) {
+    window.visualViewport.addEventListener('resize', queueDriveViewport);
+    window.visualViewport.addEventListener('scroll', queueDriveViewport);
+  }
+  window.addEventListener('resize', queueDriveViewport);
+  el.input.addEventListener('focus', queueDriveViewport);
+  el.input.addEventListener('blur', queueDriveViewport);
+
   const store = {
     get(key, fallback) { try { return JSON.parse(localStorage.getItem(key)) ?? fallback; } catch { return fallback; } },
     set(key, value) { try { localStorage.setItem(key, JSON.stringify(value)); } catch { /* 저장 불가 환경 */ } }
@@ -173,6 +197,7 @@
     const g = document.createElement('div');
     g.className = `gantry ${state}`;
     g.dataset.idx = i;
+    g.style.setProperty('--name-length', Math.max(5, stop.name.length));
     g.innerHTML = signHTML(stop, i === S.route.stops.length - 1);
     return g;
   }
@@ -236,8 +261,9 @@
     updateHud();
     enterRegion(route.stops[0].region, true);
     updateStrip();
+    syncDriveViewport();
     el.input.focus({ preventScroll: true });
-    window.scrollTo({ top: el.drive.getBoundingClientRect().top + window.scrollY - 8, behavior: 'smooth' });
+    if (!mobileDrive.matches) window.scrollTo({ top: el.drive.getBoundingClientRect().top + window.scrollY - 8, behavior: 'smooth' });
     setSpeed(1);
   }
 
@@ -391,6 +417,8 @@
   function toPick() {
     S.running = false; cancelAnimationFrame(S.raf);
     el.drive.hidden = true; el.arrive.hidden = true; el.pick.hidden = false;
+    el.input.blur();
+    syncDriveViewport();
     renderRoutes();
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
@@ -428,6 +456,7 @@
     setTimeout(() => {
       el.drive.hidden = true; el.arrive.hidden = false;
       el.input.blur();
+      syncDriveViewport();
       window.scrollTo({ top: el.arrive.getBoundingClientRect().top + window.scrollY - 8, behavior: 'smooth' });
     }, 650);
     if (typeof gtag === 'function') gtag('event', 'highway_finish', { route: S.route.id, seconds: Math.round(ms / 1000) });
