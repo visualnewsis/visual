@@ -91,13 +91,13 @@ kbd{font:800 11px var(--body);padding:1px 6px;border:1px solid var(--line);borde
 .gantry{position:absolute;left:50%;top:3%;width:min(520px,86%);transform-origin:50% 0;
   transition:transform .38s cubic-bezier(.2,.8,.2,1),top .38s cubic-bezier(.2,.8,.2,1),opacity .3s,filter .3s}
 .gantry.near{transform:translateX(-50%) scale(1);z-index:3}
-.gantry.far{top:35.5%;transform:translateX(-50%) scale(.3);opacity:.92;filter:saturate(.8) brightness(1.05);z-index:2}
-.gantry.spawn{top:42%;transform:translateX(-50%) scale(.08);opacity:0}
+.gantry.far{top:39%;transform:translateX(-50%) scale(.3);opacity:.92;filter:saturate(.8) brightness(1.05);z-index:2}
+.gantry.spawn{top:45%;transform:translateX(-50%) scale(.08);opacity:0}
 .gantry.pass{animation:pass .45s cubic-bezier(.5,0,.9,.4) forwards;z-index:4}
 @keyframes pass{from{transform:translateX(-50%) scale(1);top:3%;opacity:1}to{transform:translateX(-50%) scale(2.6);top:-60%;opacity:0}}
 .post{position:absolute;top:40%;width:9px;height:360px;background:linear-gradient(90deg,#9aa3a8,#d5dadc 50%,#8c959a);border-radius:2px}
 .post.l{left:9%}.post.r{right:9%}
-.sign{position:relative;background:var(--sign);color:#fff;border-radius:12px;padding:12px 18px 14px;
+.sign{position:relative;background:var(--sign);color:#fff;border-radius:12px;padding:14px 18px 26px;
   box-shadow:inset 0 0 0 4px var(--sign),inset 0 0 0 7px #fff,0 6px 0 rgba(0,0,0,.18)}
 .sign-top{display:flex;align-items:center;gap:8px;font-size:13px;font-weight:800}
 .sign-top .shield{width:28px;height:30px}.sign-top .shield b{font-size:12px}
@@ -209,7 +209,8 @@ footer a{color:inherit;text-decoration:none}
   .drive-body{grid-template-columns:1fr;gap:8px}
   .scene{height:clamp(220px,36svh,320px)}
   .gantry{width:90%}
-  .sign{padding:9px 12px 11px}
+  .gantry.far{top:42.5%}
+  .sign{padding:10px 12px 19px}
   .sign-name{font-size:clamp(36px,11vw,56px)}
   .post{width:7px}
   /* 모바일: 옆 패널을 입력창 위 한 줄 띠로 */
