@@ -449,7 +449,7 @@ function buildDust(terrain) {
     ctx.fillStyle = gr; ctx.fillRect(0, 0, 64, 64);
     return new THREE.CanvasTexture(c);
   })();
-  const mat = new THREE.PointsMaterial({ color: '#b9ad97', size: 3.4, map: tex, transparent: true, opacity: 0, depthWrite: false, sizeAttenuation: true });
+  const mat = new THREE.PointsMaterial({ color: '#aaa08b', size: 3.4, map: tex, transparent: true, opacity: 0, depthWrite: false, sizeAttenuation: true });
   const points = new THREE.Points(g, mat);
   points.frustumCulled = false;
   points.visible = false;
@@ -457,17 +457,17 @@ function buildDust(terrain) {
     points,
     // t: 폭발 후 경과 시간(초). null이면 숨김.
     update(t) {
-      if (t === null || t > 4.2) { points.visible = false; return; }
+      if (t === null || t > 5.2) { points.visible = false; return; }
       points.visible = true;
       for (let i = 0; i < N; i++) {
-        const s = seeds[i], k = 1 - Math.exp(-t * 2.4 * s[3]);
+        const s = seeds[i], k = 1 - Math.exp(-t * 3.2 * s[3]);
         pos[i * 3] = x + s[0] * k;
-        pos[i * 3 + 1] = y0 + 0.5 + s[1] * k - Math.max(0, t - 1.2) * 0.5;
+        pos[i * 3 + 1] = y0 + 0.5 + s[1] * 1.2 * k - Math.max(0, t - 1.4) * 0.65;
         pos[i * 3 + 2] = z + s[2] * k;
       }
       g.attributes.position.needsUpdate = true;
-      mat.opacity = 0.75 * smooth(0, 0.08, t) * (1 - smooth(1.0, 4.2, t));
-      mat.size = 2.6 + t * 1.6;
+      mat.opacity = 0.86 * smooth(0, 0.06, t) * (1 - smooth(1.6, 5.2, t));
+      mat.size = 3.1 + Math.min(t, 3.8) * 1.65;
     },
   };
 }

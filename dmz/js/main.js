@@ -3,8 +3,8 @@
 // 예외: 사고 장면의 진동은 한 번 재생되는 시간 기반 이벤트.
 import * as THREE from './three.js?v=20261001-12';
 import { W, smooth } from './terrain.js?v=20261001-12';
-import { createWorld, SPOTS } from './scene3d.js?v=20261002-8';
-import { createXray } from './xray.js?v=20261002-8';
+import { createWorld, SPOTS } from './scene3d.js?v=20261002-9';
+import { createXray } from './xray.js?v=20261002-9';
 import { CameraRig, KEYS } from './camera.js?v=20261001-12';
 import { Scroller } from './scroll.js?v=20261001-12';
 import { createMorph, sm } from './typography.js?v=20261001-12';
@@ -117,7 +117,7 @@ const pointExplore = e => {
 };
 exploreSurface.addEventListener('pointerdown', e => {
   if (!canExplore() || e.target.closest('.xr-card')) return;
-  exploreHint.classList.add('dismissed');
+  if (e.pointerType === 'mouse') exploreHint.classList.add('dismissed');
   exploreStart = {x:e.clientX, y:e.clientY};
 });
 exploreSurface.addEventListener('pointermove', e => {
@@ -125,9 +125,12 @@ exploreSurface.addEventListener('pointermove', e => {
   if (e.pointerType === 'mouse') { pointExplore(e); return; }
   if (!exploreStart) return;
   const dx = Math.abs(e.clientX - exploreStart.x), dy = Math.abs(e.clientY - exploreStart.y);
-  if (dx > 8 && dx > dy * 1.2) pointExplore(e);
+  if (dx > 8 && dx > dy * 1.2) { exploreHint.classList.add('dismissed'); pointExplore(e); }
 });
-exploreSurface.addEventListener('pointerup', () => { exploreStart = null; });
+exploreSurface.addEventListener('pointerup', e => {
+  if (canExplore() && exploreStart && Math.hypot(e.clientX - exploreStart.x, e.clientY - exploreStart.y) < 8) exploreHint.classList.add('dismissed');
+  exploreStart = null;
+});
 exploreSurface.addEventListener('pointercancel', () => { exploreStart = null; });
 exploreSurface.addEventListener('pointerleave', e => { if (e.pointerType === 'mouse') { exploreOn = false; dirty = true; } });
 
@@ -213,7 +216,7 @@ function state(s, now) {
   if (blastArmed && gi >= 0.12 && s < sp('incident').b) { blastArmed = false; blastAt = now; }
   const bt = blastAt === null ? null : (now - blastAt) / 1000;
   // 전조 0..0.12 → 폭발/잔상 0.12..0.48. 입력을 막지 않고 기존 먼지를 스크롤에 연결.
-  const dustT = gi < 0.12 || gi >= 0.48 ? null : 4.2 * (gi - 0.12) / 0.36;
+  const dustT = gi < 0.12 || gi >= 0.56 ? null : 5.2 * (gi - 0.12) / 0.44;
 
   const inv = P('investigation', 0.5), gInv = G('investigation');
   const ftl = G('finale');
@@ -265,7 +268,7 @@ function tick(now) {
   if (Math.abs(target - sSm) < 0.3) sSm = target;
 
   if (!vw) { resize(true); if (!vw) return; }
-  if (!canExplore()) { exploreOn = false; exploreStart = null; }
+  if (!canExplore()) { exploreOn = false; exploreStart = null; exploreHint.classList.remove('dismissed'); }
   const exploreGoal = exploreOn ? 1 : 0;
   const ek = reduceMotion ? 1 : 1 - Math.exp(-dt * 12);
   exploreMix += (exploreGoal - exploreMix) * ek;
@@ -287,8 +290,8 @@ function tick(now) {
   const { seg, f } = scroller.locate(sSm);
   const t = rig.paramAt(seg, f);
   const fov = rig.sample(t, camPos, camTgt);
-  if (st.bt !== null && st.bt < 1.2 && !reduceMotion) {
-    const a = 0.55 * Math.exp(-st.bt * 4.2), q = st.bt * 60;
+  if (st.bt !== null && st.bt < 0.9 && !reduceMotion) {
+    const a = 0.9 * Math.exp(-st.bt * 5.5), q = st.bt * 48;
     shake.set(Math.sin(q * 1.1) * a, Math.sin(q * 1.37 + 1) * a * 0.7, Math.sin(q * 0.93 + 2) * a);
     camPos.add(shake); camTgt.addScaledVector(shake, 0.4);
   }
