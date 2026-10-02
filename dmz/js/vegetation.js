@@ -219,5 +219,17 @@ export function buildVegetation(terrain, { low, cutPlanes, foliageImage }) {
     make(trunk(1.2,0.06,4),mine.filter(near),[new THREE.Color('#a7947c')],scale);
   }
   make(geoS, shrubs, shrubCols, (t, s) => { const k = 0.6 + t.b * 0.6; s.set(k * (1 + t.c * 0.4), k * (0.9 + t.a * 0.5), k); });
+  // 근경에만 수관 아래의 부드러운 접지 음영. 실시간 shadow map 없이 1개 draw call.
+  const c=document.createElement('canvas');c.width=c.height=64;const ctx=c.getContext('2d');
+  const grad=ctx.createRadialGradient(32,32,3,32,32,30);grad.addColorStop(0,'rgba(32,39,27,.24)');grad.addColorStop(.5,'rgba(32,39,27,.12)');grad.addColorStop(1,'rgba(32,39,27,0)');ctx.fillStyle=grad;ctx.fillRect(0,0,64,64);
+  const shadowMap=new THREE.CanvasTexture(c),shadowItems=items.filter(near);
+  const contact=new THREE.InstancedMesh(new THREE.PlaneGeometry(1,1),new THREE.MeshBasicMaterial({map:shadowMap,transparent:true,depthWrite:false,polygonOffset:true,polygonOffsetFactor:-1,clippingPlanes:cutPlanes,clipIntersection:true}),shadowItems.length);
+  const normal=new THREE.Vector3(),axis=new THREE.Vector3(0,0,1);
+  shadowItems.forEach((t,i)=>{
+    const r=1.4+t.b*1.2,x=t.x+.25*r,z=t.z-.3*r;
+    normal.set(-(terrain.heightAt(x+.5,z)-terrain.heightAt(x-.5,z)),1,-(terrain.heightAt(x,z+.5)-terrain.heightAt(x,z-.5))).normalize();
+    pos.set(x,terrain.heightAt(x,z)+.08,z);q.setFromUnitVectors(axis,normal);scl.set(r*1.2,r*1.7,1);contact.setMatrixAt(i,m4.compose(pos,q,scl));
+  });
+  contact.frustumCulled=false;meshes.push(contact);
   return meshes;
 }

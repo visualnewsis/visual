@@ -4,8 +4,8 @@ import {
   W, Terrain, rawHeight, riverZ, roadX, wallZ, fenceZ, forestMask, rng, smooth, lerp,
   drapeStrip, geomFrom, linePts, circlePts,
 } from './terrain.js?v=20261001-12';
-import { buildFence } from './fence.js?v=20261001-13';
-import { buildVegetation } from './vegetation.js?v=20261001-14';
+import { buildFence } from './fence.js?v=20261002-4';
+import { buildVegetation } from './vegetation.js?v=20261002-4';
 
 export const COLORS = {
   sky: new THREE.Color('#dfe3dd'),
@@ -225,7 +225,7 @@ export function createWorld(canvas, { low, foliageImage }) {
       const far = Math.min(3000, Math.max(320, 300 + camHeight * 3.4));
       scene.fog.far = far; scene.fog.near = far * 0.22;
     },
-    render() { renderer.render(scene, camera); },
+    render() { fences.forEach(f => f.update(camera)); renderer.render(scene, camera); },
   };
   return api;
 }
