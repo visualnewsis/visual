@@ -9,7 +9,7 @@ import { CameraRig, KEYS } from './camera.js?v=20261005-3';
 import { Scroller } from './scroll.js?v=20261001-12';
 import { createMorph, sm } from './typography.js?v=20261001-12';
 import { Labels, Track, Timeline } from './ui.js?v=20261005-3';
-import { createHeroIntro, sequenceAt } from './hero.js?v=20261005-3';
+import { createHeroIntro, sequenceAt } from './hero.js?v=20261005-4';
 
 const T0 = performance.now();
 const params = new URLSearchParams(location.search);

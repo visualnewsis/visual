@@ -1,13 +1,20 @@
 // 진입과 귀환은 같은 좌표계의 역방향. 시간 기반 재생·CSS transition 없음.
 import { smooth } from './terrain.js?v=20261005-3';
-import { createAnchoredMorph } from './image-morph.js?v=20261005-3';
 const clamp = p => Math.max(0, Math.min(1, p));
+// 오프닝 전용 스크롤 → 진행도 배분. 사진→단순화(p 0~0.31)를 압축하고 MAP→3D(p 0.78~1)는 스크롤 여유 유지.
+// 꺾이는 지점은 단계 경계(전환 속도 0)에 둔다. 클로징은 별도 경로라 영향 없음.
+const OPEN = [[0,0],[0.2,0.31],[0.667,0.78],[1,1]];
+const openingP = u => {
+  let i = 0; while (i < OPEN.length-2 && u > OPEN[i+1][0]) i++;
+  const [u0,p0] = OPEN[i], [u1,p1] = OPEN[i+1];
+  return p0 + (p1-p0) * clamp((u-u0)/(u1-u0));
+};
 export function sequenceAt(s, scroller) {
   const hero = scroller.span('hero'), finale = scroller.span('finale');
   const returning = s >= scroller.span('rise').b;
   // sticky가 풀리기 전에 문장 노출을 마친다. 섹션 높이 전체가 아닌 실제 sticky 이동 거리.
   const endProgress = clamp((s - finale.T) / Math.max(1, finale.H - scroller.vh));
-  const p = returning ? 1 - clamp((endProgress - 0.14) / 0.54) : clamp(s / hero.b);
+  const p = returning ? 1 - clamp((endProgress - 0.14) / 0.54) : openingP(clamp(s / hero.b));
   const bridge = smooth(0.78, 1, p);
   return { p, bridge, returning, active: (returning && s < finale.T + finale.H) || s <= hero.b,
     dolly: 1 + 0.12 * (1 - bridge),
@@ -17,22 +24,22 @@ export function createHeroIntro(root, { reduceMotion, disabled, onReady, rendere
   const layers = [...root.querySelectorAll('picture img')];
   const knots = [0,0.10,0.21,0.31,0.42,0.52,0.62,0.69,0.78];
   const map = root.querySelector('.intro-map'), source = root.querySelector('.intro-source');
-  let ready = false, settled = false, last = '', morph = null, current = null, mapPoints = [];
+  // 변형 보간(GPU) 미사용: 기존 CSS 이미지 레이어 합성·확대·이동으로 전환한다.
+  let ready = false, settled = false, last = '';
   Promise.all(layers.map(img => img.decode().catch(() => null).then(() => img.naturalWidth > 0))).then(ok => {
     settled = true; ready = ok.every(Boolean);
-    if (ready && !disabled) { morph = createAnchoredMorph(renderer,layers,map,low); morph.mapChanged(mapPoints); root.classList.add('gpu'); }
     onReady();
   });
   return {
     map,
-    get gpu(){return !!morph && !!current;},
-    mapChanged(points){mapPoints=points;morph?.mapChanged(points);},
-    mapTargetChanged(points){morph?.mapTargetChanged(points);},
-    render(){if(current && morph){morph.prepare(...current);morph.render();}},
+    get gpu(){return false;},
+    mapChanged(){},
+    mapTargetChanged(){},
+    render(){},
     update(seq, s, vh, width, height) {
       const { p, bridge, active, returning } = seq;
       document.querySelector('.hero').style.setProperty('--intro-title-y', `${Math.min(s, vh).toFixed(1)}px`);
-      if (disabled || !active || (settled && !ready)) { root.style.visibility = 'hidden'; last = ''; current=null; return 0; }
+      if (disabled || !active || (settled && !ready)) { root.style.visibility = 'hidden'; last = ''; return 0; }
       root.style.visibility = 'visible';
       if (!ready) { root.style.opacity = '1'; return 1; }
       const key = `${p}:${returning}:${width}:${height}`;
@@ -46,7 +53,6 @@ export function createHeroIntro(root, { reduceMotion, disabled, onReady, rendere
       let index = 0;
       while (index < knots.length-1 && p >= knots[index+1]) index++;
       const mix = index < knots.length-1 ? smooth(knots[index],knots[index+1],p) : 0;
-      current=[index,mix,p,opacity,width,height,seq.dolly,reduceMotion];
       frames.forEach((img,i) => { img.style.opacity = (i === index ? 1 : i === index+1 ? mix : 0).toFixed(5); });
       const depth = Math.min(p / 0.78, 1);
       layers.forEach((img, i) => {
