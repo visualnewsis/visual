@@ -9,13 +9,14 @@ const V = new THREE.Vector3();
 function merge(list) {
   let n = 0;
   for (const g of list) n += g.attributes.position.count;
-  const P = new Float32Array(n * 3), N = new Float32Array(n * 3), C = new Float32Array(n * 3), U = new Float32Array(n * 2);
+  const P = new Float32Array(n * 3), N = new Float32Array(n * 3), C = new Float32Array(n * 3), U = new Float32Array(n * 2), K = new Float32Array(n * 2);
   let o = 0;
   for (const g of list) {
     P.set(g.attributes.position.array, o * 3);
     N.set(g.attributes.normal.array, o * 3);
     C.set(g.attributes.color.array, o * 3);
     if (g.attributes.uv) U.set(g.attributes.uv.array, o * 2);
+    if (g.attributes.corner) K.set(g.attributes.corner.array, o * 2);
     o += g.attributes.position.count;
   }
   const g = new THREE.BufferGeometry();
@@ -23,6 +24,7 @@ function merge(list) {
   g.setAttribute('normal', new THREE.BufferAttribute(N, 3));
   g.setAttribute('color', new THREE.BufferAttribute(C, 3));
   g.setAttribute('uv', new THREE.BufferAttribute(U, 2));
+  g.setAttribute('corner', new THREE.BufferAttribute(K, 2));
   g.computeBoundingSphere();
   return g;
 }
@@ -109,20 +111,27 @@ function foliageTexture() {
   g.fillStyle='#ffffff';g.fillRect(0,0,16,16); // 내부 수관용 불투명 UV 영역
   const t=new THREE.CanvasTexture(c);t.colorSpace=THREE.SRGBColorSpace;t.anisotropy=2;return t;
 }
+// 잎 카드 = 카메라를 정면으로 바라보는 빌보드. 정점은 카드 중심에 두고 corner(화면 평면 오프셋)만 다르게 준다.
+// 고정 평면 카드는 비스듬히·옆에서 보면 칼날·줄무늬·판으로 드러난다. 빌보드는 어느 시점에서도 잎 묶음 정면만 보인다.
+function card(cx, cy, cz, w, h, rot) {
+  const P=[],K=[],U=[],N=[],c=Math.cos(rot),s=Math.sin(rot);
+  for(const [x,y] of [[-1,-1],[1,-1],[1,1],[-1,-1],[1,1],[-1,1]]){
+    const ax=x*w/2,ay=y*h/2;P.push(cx,cy,cz);K.push(ax*c-ay*s,ax*s+ay*c);U.push(.04+(x+1)/2*.92,.04+(y+1)/2*.92);N.push(0,1,0);
+  }
+  const g=new THREE.BufferGeometry();
+  g.setAttribute('position',new THREE.Float32BufferAttribute(P,3));g.setAttribute('corner',new THREE.Float32BufferAttribute(K,2));
+  g.setAttribute('uv',new THREE.Float32BufferAttribute(U,2));g.setAttribute('normal',new THREE.Float32BufferAttribute(N,3));
+  return g;
+}
 function foliageCards(seed, low, con, solid) {
   const R=rng(seed),parts=[],count=low?9:14;
   for(let i=0;i<count;i++){
-    const a=i*2.4+R()*0.4,level=R();
-    const y=con?0.8+level*1.7:1.12+level*0.8;
-    const width=con?1.35*(1-level*0.72):1.0+R()*0.9;
-    const radius=con?0.17:0.3+R()*0.28;
-    const p=flat(new THREE.PlaneGeometry(width,con?0.85:0.95));
-    const u=p.attributes.uv;for(let j=0;j<u.count;j++)u.setXY(j,0.08+u.getX(j)*0.84,0.08+u.getY(j)*0.84);
-    // 수직 카드만 있으면 비스듬한·내려다보는 시점에서 모두 옆면(칼날)으로 보인다.
-    // 활엽수는 위·바깥을 향해 15~80° 고르게 기울이고 상부일수록 눕힌다. 침엽수는 가지처럼 완만하게.
-    const tilt=con?(R()-0.5)*0.7:-(0.25+0.55*R()+0.55*level);
-    p.rotateX(tilt);p.rotateY(a);p.translate(Math.cos(a)*radius,y,Math.sin(a)*radius);
-    parts.push(paint(p,'#ffffff',0.4,2.7,0.58,1.03));
+    // 수관 부피 안에 중심을 흩고, 침엽수는 위로 갈수록 작게 해 원뿔 실루엣을 유지한다.
+    const a=i*2.4+R()*0.4,level=(i+R())/count;
+    const y=con?0.85+level*1.75:1.15+level*0.8;
+    const radius=con?0.22*(1-level*0.6)*Math.sqrt(R()):0.55*Math.sqrt(R())*(1-Math.abs(level-0.45)*0.6);
+    const size=con?1.15*(1-level*0.62):0.85+R()*0.45;
+    parts.push(paint(card(Math.cos(a)*radius,y,Math.sin(a)*radius,size,size*(con?1.05:0.92),R()*6.283),'#ffffff',0.4,2.7,0.62+level*0.1,1.03));
   }
   // 잎 카드만 남으면 위에서 나뭇가지처럼 보인다. 내부는 작은 불규칙 수관으로 채운다.
   for(let i=0;solid && i<(low?3:4);i++){
@@ -141,15 +150,9 @@ function distantCrown(seed, con) {
   const R=rng(seed),stem=trunk(1.1,.055,3);
   stem.setAttribute('uv',new THREE.Float32BufferAttribute(Array.from({length:stem.attributes.position.count*2},()=>.5),2));
   const parts=[stem];
-  for(let i=0;i<3;i++) {
-    const w=con?1.3:1.8,h=con?2.1:1.45;
-    const g=flat(new THREE.PlaneGeometry(w,h));g.rotateY(i*Math.PI/3+R()*.2);g.translate((R()-.5)*.2,con?1.7:1.6,(R()-.5)*.2);
-    parts.push(paint(g,'#ffffff',.5,2.7,.58,1.02));
-  }
-  // 항공 시점에서 수관이 세 장의 수직 판처럼 보이지 않도록 상부 잎 층을 공유한다.
-  const top=flat(new THREE.PlaneGeometry(con?1.15:1.65,con?1.15:1.65));
-  top.rotateX(-Math.PI/2);top.rotateY(R()*Math.PI);top.translate(0,con?2.05:2.0,0);
-  parts.push(paint(top,'#ffffff',.5,2.7,.7,1.02));
+  // 원경도 빌보드 3장. 고정 판(수직 3 + 수평 1)은 저고도에서 판처럼 드러난다.
+  const spec=con?[[0,1.25,0,1.35],[0,1.85,0,1.0],[0,2.35,0,0.62]]:[[0,1.75,0,1.75],[0.32,1.45,0.18,1.15],[-0.3,1.5,-0.2,1.1]];
+  spec.forEach(([x,y,z,w],i)=>parts.push(paint(card(x+(R()-.5)*.1,y,z+(R()-.5)*.1,w,w*(con?1.1:0.9),R()*6.283),'#ffffff',.5,2.7,.62+i*.08,1.02)));
   return merge(parts);
 }
 
@@ -208,10 +211,14 @@ export function buildVegetation(terrain, { low, cutPlanes, foliageImage }) {
   const leafMap = foliageImage ? new THREE.Texture(foliageImage) : foliageTexture();
   leafMap.colorSpace=THREE.SRGBColorSpace;leafMap.anisotropy=2;leafMap.needsUpdate=true;
   const leafMat = new THREE.MeshLambertMaterial({map:leafMap,vertexColors:true,side:THREE.DoubleSide,alphaTest:0.35,emissive:'#ffffff',emissiveMap:leafMap,emissiveIntensity:.20,clippingPlanes:cutPlanes,clipIntersection:true});
-  // 시선과 거의 평행한 잎 카드는 알파를 줄여 잘라낸다. 칼날처럼 보이는 옆면과 카드 관통선을 숨긴다.
-  leafMat.onBeforeCompile=sh=>{sh.fragmentShader=sh.fragmentShader.replace('#include <alphatest_fragment>',
-    'diffuseColor.a*=smoothstep(.16,.46,abs(dot(normalize(vNormal),normalize(vViewPosition))));\n#include <alphatest_fragment>');};
-  leafMat.customProgramCacheKey=()=>'leaf-facing-fade';
+  // corner가 0이 아닌 정점은 카메라 평면으로 펼친다(인스턴스 배율 반영). 줄기(corner 0)는 그대로.
+  leafMat.onBeforeCompile=sh=>{
+    sh.vertexShader=sh.vertexShader.replace('#include <common>','#include <common>\nattribute vec2 corner;')
+      .replace('#include <project_vertex>',['vec4 mvPosition = vec4( transformed, 1.0 );','float bbScale = 1.0;',
+        '#ifdef USE_INSTANCING','mvPosition = instanceMatrix * mvPosition;','bbScale = length( instanceMatrix[0].xyz );','#endif',
+        'mvPosition = modelViewMatrix * mvPosition;','mvPosition.xy += corner * bbScale;','gl_Position = projectionMatrix * mvPosition;'].join('\n'));
+  };
+  leafMat.customProgramCacheKey=()=>'leaf-billboard';
   const leafColors=['#ffffff','#eee8d5','#d2dcc9','#e5e8dd'].map(c=>new THREE.Color(c));
   const m4 = new THREE.Matrix4(), q = new THREE.Quaternion(), e = new THREE.Euler(), pos = new THREE.Vector3(), scl = new THREE.Vector3(), col = new THREE.Color();
   const make = (geo, list, colors, scaleFn, material) => {
