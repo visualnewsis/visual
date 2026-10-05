@@ -9,7 +9,7 @@ import { CameraRig, KEYS } from './camera.js?v=20261005-3';
 import { Scroller } from './scroll.js?v=20261001-12';
 import { createMorph, sm } from './typography.js?v=20261001-12';
 import { Labels, Track, Timeline } from './ui.js?v=20261005-3';
-import { createHeroIntro, sequenceAt } from './hero.js?v=20261005-6';
+import { createHeroIntro, sequenceAt } from './hero.js?v=20261005-8';
 
 const T0 = performance.now();
 const params = new URLSearchParams(location.search);
@@ -287,7 +287,10 @@ function tick(now) {
   const st = state(sSm, now);
   const seq = sequenceAt(sSm, scroller);
   if (reduceMotion) seq.dolly = 1;
-  heroIntro.entry(seq, vw, vh);
+  // 오프닝 직후(HERO→descend 이동)와 클로징 직전(end4km→rise 이동)에만 entry 보정을 풀고 건다.
+  const hsp = scroller.span('hero'), dsp = scroller.span('descend'), esp = scroller.span('end4km'), rsp = scroller.span('rise');
+  const entryK = OG ? 0 : sSm <= hsp.b || sSm >= rsp.a ? 1 : sSm < dsp.a ? 1 - smooth(hsp.b, dsp.a, sSm) : sSm > esp.b ? smooth(esp.b, rsp.a, sSm) : 0;
+  heroIntro.entry(seq, vw, vh, entryK);
   const introOpacity = heroIntro.update(seq, sSm, scroller.vh, vw, vh);
   const animating = st.bt !== null && st.bt < 4.5;
   // 이야기 끝 이후(출처·엔딩 배너)에서는 렌더를 멈춘다
@@ -302,7 +305,7 @@ function tick(now) {
   const { seg, f } = scroller.locate(sSm);
   const t = rig.paramAt(seg, f);
   const fov = rig.sample(t, camPos, camTgt);
-  if (seq.active && !OG) camPos.sub(camTgt).multiplyScalar(seq.dolly).add(camTgt);
+  if (!OG && seq.dolly !== 1) camPos.sub(camTgt).multiplyScalar(seq.dolly).add(camTgt);
   if (st.bt !== null && st.bt < 0.9 && !reduceMotion) {
     const a = 0.9 * Math.exp(-st.bt * 5.5), q = st.bt * 48;
     shake.set(Math.sin(q * 1.1) * a, Math.sin(q * 1.37 + 1) * a * 0.7, Math.sin(q * 0.93 + 2) * a);
@@ -316,7 +319,7 @@ function tick(now) {
   const blastFocus = vw < vh ? scroller.presence('incident', sSm, 0.6) : 0;
   const oy = vw < vh ? Math.round(vh * 0.13 * st.travel * (1 - blastFocus)) : 0;
   // MAP→3D 구간에서 MAP 화면 이동과 같은 만큼 3D 화면을 옮긴다(entry). 그 외 구간은 0.
-  const ox = seq.active ? -Math.round(seq.dx || 0) : 0, vy = oy - (seq.active ? Math.round(seq.dy || 0) : 0);
+  const ox = -Math.round(seq.dx || 0), vy = oy - Math.round(seq.dy || 0);
   if (Math.abs(cam.fov - fov) > 0.01 || vy !== lastOy || ox !== lastOx || viewDirty) {
     cam.fov = fov; lastOy = vy; lastOx = ox; viewDirty = false;
     if (ox || vy) cam.setViewOffset(vw, vh, ox, vy, vw, vh); else cam.clearViewOffset();
@@ -394,7 +397,7 @@ function tick(now) {
     const savedFov = cam.fov, savedFog = [world.scene.fog.near, world.scene.fog.far];
     const mapPos = new THREE.Vector3(), mapTarget = new THREE.Vector3();
     cam.fov = rig.sample(0, mapPos, mapTarget);
-    mapPos.sub(mapTarget).multiplyScalar(reduceMotion ? 1 : 1.12).add(mapTarget);
+    // MAP은 HERO 카메라 거리 그대로 찍는다(앞 조감 그림과 같은 크기). 별도 당김·줌 없음.
     cam.position.copy(mapPos); cam.lookAt(mapTarget); cam.clearViewOffset(); cam.updateProjectionMatrix();
     const mats = [world.band.material, ...Object.values(world.marks).filter(m => m.material).map(m => m.material),
       ...Object.values(L).flatMap(m => [m.material, m.thin.material])];
