@@ -1,8 +1,41 @@
 // 일반화된 경계 시설. 결정적 변주·공유 망 텍스처·인스턴싱으로 반복과 비용을 제한한다.
 import * as THREE from './three.js?v=20261001-12';
-import { W, fenceZ, roadX, drapeStrip, geomFrom, smooth } from './terrain.js?v=20261001-12';
+import { W, fenceZ, roadX, drapeStrip, geomFrom, smooth } from './terrain.js?v=20261005-3';
 const hash = (a, b = 0) => { const s = Math.sin(a * 127.1 + b * 311.7) * 43758.5453; return s - Math.floor(s); };
 let meshTexture, warningTexture, soilTexture, weatherTexture;
+// 연속 나선과 양날 가시를 한 지오메트리로 공유한다. 고리를 따로 찍어내지 않는다.
+export function concertinaGeometry(length, radius, turns, low, sag = 0) {
+  class Helix extends THREE.Curve {
+    getPoint(t, target = new THREE.Vector3()) {
+      const a = t * turns * Math.PI * 2;
+      return target.set(t * length, Math.sin(a) * radius - Math.sin(t * Math.PI) * sag, Math.cos(a) * radius);
+    }
+  }
+  const path = new Helix();
+  const tube = new THREE.TubeGeometry(path, turns * (low ? 12 : 22), 0.014, low ? 3 : 5, false).toNonIndexed();
+  const positions = [...tube.attributes.position.array], normals = [...tube.attributes.normal.array];
+  const point = new THREE.Vector3(), tangent = new THREE.Vector3(), radial = new THREE.Vector3();
+  const count = turns * (low ? 2 : 4);
+  for (let i = 0; i < count; i++) {
+    const t = (i + 0.37) / count, a = t * turns * Math.PI * 2;
+    path.getPoint(t, point); path.getTangent(t, tangent);
+    radial.set(0, Math.sin(a), Math.cos(a));
+    for (const side of [-1, 1]) {
+      const tip = point.clone().addScaledVector(radial, side * 0.075).addScaledVector(tangent, side * 0.035);
+      const left = point.clone().addScaledVector(tangent, -0.045);
+      const right = point.clone().addScaledVector(tangent, 0.045);
+      const n = new THREE.Vector3().subVectors(right, left).cross(new THREE.Vector3().subVectors(tip, left)).normalize();
+      positions.push(...left.toArray(), ...right.toArray(), ...tip.toArray());
+      for (let j = 0; j < 3; j++) normals.push(...n.toArray());
+    }
+  }
+  tube.dispose();
+  const geo = new THREE.BufferGeometry();
+  geo.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3));
+  geo.setAttribute('normal', new THREE.Float32BufferAttribute(normals, 3));
+  geo.computeBoundingSphere();
+  return geo;
+}
 function soilMap() {
   if(soilTexture) return soilTexture;
   const c=document.createElement("canvas");c.width=256;c.height=128;const g=c.getContext("2d"),im=g.createImageData(256,128);
@@ -147,18 +180,17 @@ export function buildFence(terrain, z0, side, low) {
   }
   const railGeo=new THREE.BufferGeometry();railGeo.setAttribute('position',new THREE.Float32BufferAttribute(railP,3));railGeo.setAttribute('normal',new THREE.Float32BufferAttribute(railN,3));
   out.push(new THREE.Mesh(railGeo,new THREE.MeshLambertMaterial({color:'#535b4f'})));
-  class CoilPath extends THREE.Curve {
-    getPoint(t,target=new THREE.Vector3()) {
-      const angle=t*Math.PI*20;
-      return target.set(t*bay,Math.sin(angle)*.25-Math.sin(t*Math.PI)*.16,Math.cos(angle)*.25);
-    }
-  }
-  inst(new THREE.TubeGeometry(new CoilPath(),low?90:150,.013,3,false),closeCoils,
-    new THREE.MeshPhongMaterial({color:'#8e9385',shininess:12,specular:'#42473c'}),(p,i,o)=>{
+  inst(concertinaGeometry(bay,.25,10,low,.16),closeCoils,
+    new THREE.MeshPhongMaterial({color:'#8e9385',shininess:28,specular:'#687063',side:THREE.DoubleSide}),(p,i,o)=>{
       o.position.set(p.x,top(p.x)+.28,p.z+side*.16);
       o.quaternion.setFromUnitVectors(new THREE.Vector3(1,0,0),new THREE.Vector3(p.xx-p.x,top(p.xx)-top(p.x),p.zz-p.z).normalize());
       o.scale.x=Math.hypot(p.xx-p.x,p.zz-p.z)/bay;
     });
+  // 지주 연결 밴드·볼트·바닥 앵커. 같은 부품을 인스턴싱해 가까이서만 읽히는 디테일.
+  const collars = posts.flatMap(p => [0.35,1.15,2.0].map(h => ({...p,offset:Math.min(h,p.h-.12)})));
+  inst(new THREE.BoxGeometry(.22,.055,.21),collars,new THREE.MeshPhongMaterial({color:'#646e60',shininess:24}),(p,i,o)=>{o.position.set(p.x,p.y+p.offset,p.z);});
+  inst(new THREE.CylinderGeometry(.022,.022,.065,6).rotateX(Math.PI/2),collars,new THREE.MeshPhongMaterial({color:'#a7afa2',shininess:36}),(p,i,o)=>{o.position.set(p.x,p.y+p.offset,p.z+side*.13);});
+  inst(new THREE.BoxGeometry(.14,.06,.12),braces,new THREE.MeshLambertMaterial({color:'#746d58'}),(p,i,o)=>{o.position.set(p.x,p.y+.03,p.z+side*1.05);});
   inst(new THREE.BoxGeometry(0.52,0.34,0.035),signs,new THREE.MeshLambertMaterial({color:'#cbc4a1',map:warningMap()}),(p,i,o)=>{o.position.set(p.x,p.y,p.z+side*0.08);o.rotation.set(0,-Math.atan2(fenceZ(p.x+0.5,z0,side)-fenceZ(p.x-0.5,z0,side),1),(hash(i,z0)-0.5)*0.1);});
   inst(new THREE.ConeGeometry(0.065,1,3).translate(0,0.5,0),grass,new THREE.MeshLambertMaterial({color:'#64704b'}),(p,i,o)=>{o.position.set(p.x,terrain.heightAt(p.x,p.z),p.z);o.rotation.set((hash(i,1)-0.5)*0.4,hash(i,2)*6,(hash(i,3)-0.5)*0.4);o.scale.set(1,p.h,1);});
   out.update = camera => {

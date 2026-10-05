@@ -18,11 +18,14 @@ a{color:inherit}
 #stage{position:fixed;left:0;top:0;width:100%;height:100vh;height:100lvh;z-index:0;transition:filter .9s ease}
 #stage canvas{display:block;width:100%;height:100%}
 #stage.blur{filter:blur(5px)}
-#hero-intro{position:fixed;inset:0;z-index:1;pointer-events:none;overflow:hidden;background:#dfe3dd}
+#hero-intro{position:fixed;left:0;top:0;width:100%;height:100vh;height:100lvh;z-index:1;pointer-events:none;overflow:hidden;background:#dfe3dd}
 .no-webgl #hero-intro{display:none}
-#hero-intro img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 50%;transform:scale(var(--intro-scale,1))}
-#hero-intro .intro-lift1,#hero-intro .intro-lift2{opacity:0}
-#hero-intro:after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(223,227,221,.22),transparent 50%,rgba(223,227,221,.08))}
+#hero-intro.gpu{background:transparent}
+#hero-intro.gpu picture,#hero-intro.gpu .intro-map{visibility:hidden}
+#hero-intro img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 50%;transform-origin:50% 50%}
+#hero-intro .intro-map{position:absolute;inset:0;width:100%;height:100%;opacity:0;transform-origin:50% 50%}
+#hero-intro .intro-graphic,#hero-intro .intro-lift1,#hero-intro .intro-lift2,#hero-intro .intro-between{opacity:0}
+#hero-intro:after{content:"";position:absolute;inset:0;opacity:var(--intro-shade,1);background:linear-gradient(180deg,rgba(223,227,221,.22),transparent 50%,rgba(223,227,221,.08))}
 .intro-source{position:absolute;right:18px;bottom:18px;z-index:1;font-size:10px;letter-spacing:.02em;color:#fff;text-shadow:0 1px 4px #252d25}
 @media(max-width:819px){#hero-intro img{object-position:42% 50%}.intro-source{right:12px;bottom:18px;font-size:9px}}
 #veil{position:fixed;inset:0;z-index:1;background:var(--night);opacity:0;pointer-events:none}
@@ -43,6 +46,31 @@ a{color:inherit}
 .lbl.found,.lbl.found .lbl-in{color:#ffd28a}
 .lbl.zone,.lbl.zone .lbl-in{color:#ffc2b4}
 .lbl.x .lbl-in{color:#fff;font-size:13px}
+.lbl.target{color:#7af2ed}
+.lbl.target .lbl-in{bottom:40px;background:rgba(10,25,25,.94);border:1px solid #7af2ed;border-radius:4px;padding:10px 14px;color:#efffff;font-size:clamp(12px,1.05vw,16px);line-height:1.5;box-shadow:0 4px 20px #0005;text-shadow:none}
+.lbl.target .lbl-in small{display:block;color:#c1d7d2;font-size:10px;font-weight:500}
+.lbl.target:after{height:34px;width:2px;background:#7af2ed}
+.lbl.target:before{left:-4px;bottom:-4px;width:8px;height:8px;background:#efffff;box-shadow:0 0 0 4px #00b4c970,0 0 16px #7af2ed}
+.target-pulse{position:absolute;left:-26px;top:-26px;width:52px;height:52px}
+.target-pulse:before,.target-pulse:after{content:"";position:absolute;inset:0;border:2px solid currentColor;border-radius:50%;animation:target-sonar 2.4s ease-out infinite;box-shadow:0 0 10px #00b4c945}
+.target-pulse:after{border-style:dashed;animation-delay:-1.2s}
+@keyframes target-sonar{0%{transform:scale(.45);opacity:.95}85%,100%{transform:scale(1.65);opacity:0}}
+.lbl.target.blast{color:#ffc0a4}
+.lbl.target.blast .lbl-in{border-color:#ffc0a4}
+.lbl.target.blast:after{background:#ffc0a4}.lbl.target.blast:before{box-shadow:0 0 0 4px #e0533a70,0 0 16px #ffc0a4}
+.lbl.big.range .lbl-in{bottom:38px;display:flex;align-items:baseline;gap:7px;padding:8px 13px;background:rgba(12,25,23,.94);border:1px solid #c6d9ce;border-radius:4px;color:#fff;font-size:clamp(13px,1.3vw,20px);text-shadow:none;box-shadow:0 4px 16px #0004}
+.lbl.big.range .lbl-in b{font-size:clamp(22px,2.3vw,36px);line-height:1.1}
+.lbl.big.range.mint .lbl-in{border-color:#66ede9;color:#8bf7ef}
+.lbl.structure-mdl .lbl-in{bottom:66px;padding:5px 8px;background:rgba(12,25,23,.94);border:1px solid #66ede9;border-radius:3px;text-shadow:none}
+.lbl.structure-mdl:after{height:60px;background:#66ede9}
+.lbl.big.range:after{height:32px;width:2px;background:#f1f7ed}
+.lbl.big.range:before{width:8px;height:8px;left:-4px;bottom:-4px;background:#f1f7ed;box-shadow:0 0 0 5px #fffffd30}
+#range-recap{position:fixed;z-index:3;left:50%;top:calc(88px + env(safe-area-inset-top,0px));transform:translateX(-50%);display:flex;align-items:center;gap:14px;padding:12px 20px;background:rgba(11,26,23,.94);color:#fff;border:1px solid #94b1a1;border-radius:4px;opacity:0;visibility:hidden;pointer-events:none;white-space:nowrap;font-size:clamp(13px,1.4vw,20px);box-shadow:0 6px 25px #0003}
+#range-recap b,#range-recap strong{font-size:clamp(20px,2vw,30px)}
+#range-recap strong{color:#7ef1e7}#range-recap i{font-style:normal;color:#adbdaf}
+.evi-on .lbl.target,.evi-on #range-recap{visibility:hidden!important}
+@media(max-width:600px){.lbl.big.range .lbl-in{padding:6px 8px;gap:4px;font-size:11px}.lbl.big.range .lbl-in b{font-size:21px}#range-recap{gap:7px;padding:10px 12px;font-size:11px}#range-recap b,#range-recap strong{font-size:19px}.lbl.target .lbl-in{padding:8px 10px;font-size:12px}.target-pulse{left:-22px;top:-22px;width:44px;height:44px}}
+@media(prefers-reduced-motion:reduce){.target-pulse:before,.target-pulse:after{animation:none;opacity:.75}.target-pulse:after{display:none}}
 
 /* 4km 진행바 */
 #track{position:fixed;z-index:3;left:50%;bottom:calc(18px + env(safe-area-inset-bottom,0px));width:min(560px,calc(100% - 48px));transform:translateX(-50%);opacity:0;visibility:hidden;pointer-events:none;padding:30px 0 0}
@@ -142,7 +170,7 @@ a{color:inherit}
 
 /* 엔딩 */
 .finale{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;text-align:center;padding-top:calc(64px + env(safe-area-inset-top,0px) + clamp(28px,6vh,80px));--title:0}
-.finale h2{margin:0;font-weight:900;letter-spacing:-.05em;line-height:1.08;opacity:var(--title);transform:translateY(calc((1 - var(--title)) * 14px))}
+.finale h2{margin:0;font-weight:900;letter-spacing:-.05em;line-height:1.08;opacity:var(--title)}
 .finale h2 .t1{display:block;font-size:clamp(26px,3.3vw,46px);font-weight:800;letter-spacing:-.035em;color:#2c3234}
 .finale h2 .t2{display:block;margin-top:8px;font-size:clamp(40px,6vw,86px);text-shadow:0 0 30px rgba(223,227,221,.9)}
 
@@ -317,6 +345,7 @@ body.no-webgl .gl-why{position:absolute;left:50%;top:calc(64px + 18px);transform
 body.no-webgl .xr-hint{display:none}
 
 /* 엔딩에서만 사용하는 거리별 다시보기. 본문의 거리 표시는 그대로 둔다. */
+.revisit[hidden]{display:none}
 .revisit{width:min(460px,calc(100% - 48px));margin-top:32px;padding:18px 24px;background:rgba(223,227,221,.88);text-align:center;transition:opacity .5s ease}
 .revisit label{display:block;font-size:15px;font-weight:700}
 .revisit output{display:block;margin-top:12px;font-size:13px;font-weight:700;color:var(--mint-dark)}

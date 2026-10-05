@@ -1,7 +1,7 @@
 // 식생: 절차적 수목 모델(여러 수종·형태 변형) + 관목. 모두 인스턴싱.
 // 공 하나짜리 나무 대신, 불규칙한 수관 덩어리·줄기·높이별 음영(가짜 AO)으로 저고도에서도 자연스럽게 보이게 한다.
 import * as THREE from './three.js?v=20261001-12';
-import { W, forestMask, riverZ, roadX, wallZ, rng, smooth, noise } from './terrain.js?v=20261001-12';
+import { W, forestMask, riverZ, roadX, wallZ, rng, smooth, noise } from './terrain.js?v=20261005-3';
 
 const V = new THREE.Vector3();
 
@@ -143,12 +143,16 @@ function distantCrown(seed, con) {
     const g=flat(new THREE.PlaneGeometry(w,h));g.rotateY(i*Math.PI/3+R()*.2);g.translate((R()-.5)*.2,con?1.7:1.6,(R()-.5)*.2);
     parts.push(paint(g,'#ffffff',.5,2.7,.58,1.02));
   }
-  const top=flat(new THREE.PlaneGeometry(con?1:1.9,con?1:1.9));top.rotateX(-Math.PI/2);top.rotateY(R()*6);top.translate(0,con?2:1.9,0);parts.push(paint(top,'#ffffff',.5,2.7,.58,1.02));return merge(parts);
+  // 항공 시점에서 수관이 세 장의 수직 판처럼 보이지 않도록 상부 잎 층을 공유한다.
+  const top=flat(new THREE.PlaneGeometry(con?1.15:1.65,con?1.15:1.65));
+  top.rotateX(-Math.PI/2);top.rotateY(R()*Math.PI);top.translate(0,con?2.05:2.0,0);
+  parts.push(paint(top,'#ffffff',.5,2.7,.7,1.02));
+  return merge(parts);
 }
 
 export function buildVegetation(terrain, { low, cutPlanes, foliageImage }) {
   const R = rng(27);
-  const target = low ? 6500 : 15000;
+  const target = low ? 7500 : 18000;
   const items = [];
   let tries = 0;
   while (items.length < target && tries < target * 30) {
@@ -198,7 +202,7 @@ export function buildVegetation(terrain, { low, cutPlanes, foliageImage }) {
   const meshes = [];
   const leafMap = foliageImage ? new THREE.Texture(foliageImage) : foliageTexture();
   leafMap.colorSpace=THREE.SRGBColorSpace;leafMap.anisotropy=2;leafMap.needsUpdate=true;
-  const leafMat = new THREE.MeshBasicMaterial({map:leafMap,vertexColors:true,side:THREE.DoubleSide,alphaTest:0.35,clippingPlanes:cutPlanes,clipIntersection:true});
+  const leafMat = new THREE.MeshLambertMaterial({map:leafMap,vertexColors:true,side:THREE.DoubleSide,alphaTest:0.35,emissive:'#ffffff',emissiveMap:leafMap,emissiveIntensity:.20,clippingPlanes:cutPlanes,clipIntersection:true});
   const leafColors=['#ffffff','#eee8d5','#d2dcc9','#e5e8dd'].map(c=>new THREE.Color(c));
   const m4 = new THREE.Matrix4(), q = new THREE.Quaternion(), e = new THREE.Euler(), pos = new THREE.Vector3(), scl = new THREE.Vector3(), col = new THREE.Color();
   const make = (geo, list, colors, scaleFn, material) => {
@@ -232,17 +236,26 @@ export function buildVegetation(terrain, { low, cutPlanes, foliageImage }) {
     make(trunk(1.2,0.06,4),mine.filter(near),[new THREE.Color('#a7947c')],scale);
   }
   make(geoS, shrubs, shrubCols, (t, s) => { const k = 0.6 + t.b * 0.6; s.set(k * (1 + t.c * 0.4), k * (0.9 + t.a * 0.5), k); });
-  // 근경에만 수관 아래의 부드러운 접지 음영. 실시간 shadow map 없이 1개 draw call.
+  // 수관 아래의 부드러운 접지 음영. 실시간 shadow map 없이 1개 draw call.
   const c=document.createElement('canvas');c.width=c.height=64;const ctx=c.getContext('2d');
-  const grad=ctx.createRadialGradient(32,32,3,32,32,30);grad.addColorStop(0,'rgba(32,39,27,.24)');grad.addColorStop(.5,'rgba(32,39,27,.12)');grad.addColorStop(1,'rgba(32,39,27,0)');ctx.fillStyle=grad;ctx.fillRect(0,0,64,64);
-  const shadowMap=new THREE.CanvasTexture(c),shadowItems=items.filter(near);
-  const contact=new THREE.InstancedMesh(new THREE.PlaneGeometry(1,1),new THREE.MeshBasicMaterial({map:shadowMap,transparent:true,depthWrite:false,polygonOffset:true,polygonOffsetFactor:-1,clippingPlanes:cutPlanes,clipIntersection:true}),shadowItems.length);
-  const normal=new THREE.Vector3(),axis=new THREE.Vector3(0,0,1);
+  const grad=ctx.createRadialGradient(32,32,3,32,32,30);grad.addColorStop(0,'rgba(32,39,27,.14)');grad.addColorStop(.5,'rgba(32,39,27,.06)');grad.addColorStop(1,'rgba(32,39,27,0)');ctx.fillStyle=grad;ctx.fillRect(0,0,64,64);
+  // 항공 시점에서도 나무가 지형에 접지되도록 원경까지 같은 한 번의 인스턴스 draw call.
+  const shadowMap=new THREE.CanvasTexture(c),shadowItems=items;
+  // 평면 그림자가 굴곡진 지표를 관통하면 검은 삼각 조각이 생긴다. 각 꼭짓점을 지표에 붙인다.
+  const shadowP=new Float32Array(shadowItems.length*27),shadowUV=new Float32Array(shadowItems.length*18),shadowI=new Uint32Array(shadowItems.length*24);
   shadowItems.forEach((t,i)=>{
-    const r=2.3+t.b*2.1,x=t.x+.25*r,z=t.z-.3*r;
-    normal.set(-(terrain.heightAt(x+.5,z)-terrain.heightAt(x-.5,z)),1,-(terrain.heightAt(x,z+.5)-terrain.heightAt(x,z-.5))).normalize();
-    pos.set(x,terrain.heightAt(x,z)+.08,z);q.setFromUnitVectors(axis,normal);scl.set(r*1.2,r*1.7,1);contact.setMatrixAt(i,m4.compose(pos,q,scl));
+    const r=1.9+t.b*1.6,cx=t.x+.18*r,cz=t.z-.22*r;
+    for(let v=0;v<3;v++)for(let u=0;u<3;u++){
+      const x=cx+(u-1)*r*.55,z=cz+(v-1)*r*.8,k=i*9+v*3+u;
+      shadowP.set([x,terrain.heightAt(x,z)+.09,z],k*3);shadowUV.set([u/2,v/2],k*2);
+    }
+    for(let v=0;v<2;v++)for(let u=0;u<2;u++){
+      const a=i*9+v*3+u,k=i*24+(v*2+u)*6;
+      shadowI.set([a,a+3,a+1,a+1,a+3,a+4],k);
+    }
   });
+  const shadowGeo=new THREE.BufferGeometry();shadowGeo.setAttribute('position',new THREE.BufferAttribute(shadowP,3));shadowGeo.setAttribute('uv',new THREE.BufferAttribute(shadowUV,2));shadowGeo.setIndex(new THREE.BufferAttribute(shadowI,1));
+  const contact=new THREE.Mesh(shadowGeo,new THREE.MeshBasicMaterial({map:shadowMap,transparent:true,depthWrite:false,polygonOffset:true,polygonOffsetFactor:-1,clippingPlanes:cutPlanes,clipIntersection:true}));
   contact.frustumCulled=false;meshes.push(contact);
   return meshes;
 }
