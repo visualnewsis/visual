@@ -3,9 +3,9 @@ import * as THREE from './three.js?v=20261001-12';
 import {
   W, Terrain, rawHeight, noise, riverZ, roadX, wallZ, fenceZ, forestMask, rng, smooth, lerp,
   drapeStrip, geomFrom, linePts, circlePts,
-} from './terrain.js?v=20261001-12';
-import { buildFence } from './fence.js?v=20261002-10';
-import { buildVegetation } from './vegetation.js?v=20261002-8';
+} from './terrain.js?v=20261005-3';
+import { buildFence, concertinaGeometry } from './fence.js?v=20261005-3';
+import { buildVegetation } from './vegetation.js?v=20261005-3';
 
 export const COLORS = {
   sky: new THREE.Color('#dfe3dd'),
@@ -26,6 +26,8 @@ export function createWorld(canvas, { low, foliageImage }) {
   const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, powerPreference: 'high-performance', stencil: false });
   renderer.localClippingEnabled = true;
   renderer.setClearColor(COLORS.sky, 1);
+  renderer.toneMapping=THREE.ACESFilmicToneMapping;
+  renderer.toneMappingExposure=.93;
 
   const scene = new THREE.Scene();
   scene.background = COLORS.sky.clone();
@@ -33,11 +35,11 @@ export function createWorld(canvas, { low, foliageImage }) {
 
   const camera = new THREE.PerspectiveCamera(40, 1, 1, 5000);
 
-  const hemi = new THREE.HemisphereLight('#eef2ec', '#5f5843', 1.35);
+  const hemi = new THREE.HemisphereLight('#e1ebe6', '#465246', 1.15);
   scene.add(hemi);
-  const sun = new THREE.DirectionalLight('#fff0d8', 2.9);
+  const sun = new THREE.DirectionalLight('#faf1dd', 1.9);
   sun.position.set(-150, 260, 360);
-  sun.intensity=2.6;
+  sun.intensity=1.9;
   scene.add(sun);
 
   // X-ray에서 지표를 잘라내는 평면 (구간 내부를 잘라냄)
@@ -52,7 +54,7 @@ export function createWorld(canvas, { low, foliageImage }) {
   setCut(0, 0, -1, -1);
 
   // ---------- 지형 ----------
-  const terrain = low ? new Terrain(170, 138) : new Terrain(240, 194);
+  const terrain = low ? new Terrain(200, 164) : new Terrain(320, 260);
   const groundTexture = (() => {
     const c=document.createElement('canvas');c.width=c.height=256;
     const ctx=c.getContext('2d'),R=rng(844),pixels=ctx.createImageData(256,256);
@@ -61,13 +63,17 @@ export function createWorld(canvas, { low, foliageImage }) {
     for(let i=0;i<1600;i++){const x=R()*256,y=R()*256;ctx.strokeStyle=R()>.5?'rgba(62,65,48,.13)':'rgba(251,246,226,.13)';ctx.lineWidth=.5;ctx.beginPath();ctx.moveTo(x,y);ctx.lineTo(x+R()*2-1,y-1-R()*3);ctx.stroke();}
     const t=new THREE.CanvasTexture(c);t.wrapS=t.wrapT=THREE.RepeatWrapping;t.colorSpace=THREE.SRGBColorSpace;t.anisotropy=2;return t;
   })();
-  const groundMat = new THREE.MeshLambertMaterial({ vertexColors: true, map:groundTexture, clippingPlanes: cutPlanes, clipIntersection: true });
+  const groundMat = new THREE.MeshPhongMaterial({ vertexColors: true, map:groundTexture, shininess:3, specular:'#192118', clippingPlanes: cutPlanes, clipIntersection: true });
   const groundGeo=terrain.buildMesh(),uv=new Float32Array(groundGeo.attributes.position.count*2);
   const groundColors=groundGeo.attributes.color;
+  // 고주파 능선의 삼각 면 음영 대신 넓은 사면의 연속 법선. 지형·높이 판정은 그대로.
+  const normal = new THREE.Vector3(), delta = low ? 4.5 : 3.5;
   for(let i=0;i<groundGeo.attributes.position.count;i++){
     const p=groundGeo.attributes.position;uv[i*2]=p.getX(i)/18;uv[i*2+1]=p.getZ(i)/18;
     // 초지의 노란 기운을 낮춰 젖은 흙과 숲의 색을 가깝게 한다.
     const x=p.getX(i),z=p.getZ(i),wood=forestMask(x,z);
+    normal.set(terrain.heightAt(x-delta,z)-terrain.heightAt(x+delta,z),2*delta,terrain.heightAt(x,z-delta)-terrain.heightAt(x,z+delta)).normalize();
+    groundGeo.attributes.normal.setXYZ(i,normal.x,normal.y,normal.z);
     const patch=noise(x*.023,z*.023)*.09+noise(x*.079,z*.079)*.035;
     let occlusion=0;
     for(const distance of [18,48,100]) {
@@ -91,15 +97,21 @@ export function createWorld(canvas, { low, foliageImage }) {
   // ---------- 하천 ----------
   {
     const pts = [];
-    for (let x = W.xMin + 0.5; x <= W.xMax - 0.5; x += 3) pts.push([x, riverZ(x), terrain.heightAt(x, riverZ(x))]);
+    for (let x = W.xMin + 0.5; x <= W.xMax - 0.5; x += 1.5) pts.push([x, riverZ(x), terrain.heightAt(x, riverZ(x))]);
     const ys = pts.map(p => p[2]);
     for (let i = 0; i < pts.length; i++) {
       let s = 0, n = 0;
-      for (let k = -3; k <= 3; k++) { const v = ys[i + k]; if (v !== undefined) { s += v; n++; } }
+      for (let k = -6; k <= 6; k++) { const v = ys[i + k]; if (v !== undefined) { s += v; n++; } }
       pts[i][2] = Math.min(s / n, ys[i]) + 0.9;
     }
-    const water = new THREE.Mesh(geomFrom(drapeStrip(terrain, pts, 15, 0)),
-      new THREE.MeshPhongMaterial({ color: '#7f9ea1', specular: '#cfdcd9', shininess: 70, clippingPlanes: cutPlanes, clipIntersection: true }));
+    const waterGeo=geomFrom(drapeStrip(terrain,pts,15,0));
+    for(let i=0;i<pts.length;i++){
+      const a=pts[Math.max(0,i-1)],b=pts[Math.min(pts.length-1,i+1)];
+      const n=new THREE.Vector3(a[2]-b[2],Math.max(.001,b[0]-a[0]),0).normalize();
+      for(let j=0;j<2;j++)waterGeo.attributes.normal.setXYZ(i*2+j,n.x,n.y,n.z);
+    }
+    const water = new THREE.Mesh(waterGeo,
+      new THREE.MeshPhongMaterial({ color: '#7d9e9d', specular: '#8ba7a6', shininess: 35, clippingPlanes: cutPlanes, clipIntersection: true }));
     scene.add(water);
   }
   const waterY = x => terrain.heightAt(x, riverZ(x)) + 0.9;
@@ -115,9 +127,20 @@ export function createWorld(canvas, { low, foliageImage }) {
         const g = terrain.heightAt(x, z);
         pts.push([x, z, nearRiver > 0 ? Math.max(g, lerp(g, waterY(x) + 1.2, nearRiver)) : undefined]);
       }
-      return geomFrom(drapeStrip(terrain, pts, 4.4, 0.25));
+      return geomFrom(drapeStrip(terrain, pts, 4.4, 0.32, undefined, 3));
     };
-    const mat = new THREE.MeshLambertMaterial({ color: '#7a7972', polygonOffset: true, polygonOffsetFactor: -1 });
+    const roadMap=(()=>{
+      const c=document.createElement('canvas');c.width=256;c.height=128;
+      const g=c.getContext('2d'),pixels=g.createImageData(256,128);
+      for(let y=0;y<128;y++)for(let x=0;x<256;x++){
+        const shoulder=smooth(14,0,Math.min(y,127-y)),n=hash(x,y),grain=(n-.5)*24;
+        const rut=6*Math.exp(-(((y-37)/7)**2))+6*Math.exp(-(((y-90)/7)**2)),i=(y*256+x)*4;
+        pixels.data.set([168+grain+shoulder*28-rut,164+grain+shoulder*29-rut,150+grain+shoulder*17-rut,255],i);
+      }
+      g.putImageData(pixels,0,0);
+      const t=new THREE.CanvasTexture(c);t.wrapS=THREE.RepeatWrapping;t.repeat.x=.11;t.colorSpace=THREE.SRGBColorSpace;t.anisotropy=low?2:4;return t;
+    })();
+    const mat = new THREE.MeshPhongMaterial({ color: '#939888', map:roadMap, shininess:2, polygonOffset: true, polygonOffsetFactor: -1 });
     road.south = new THREE.Mesh(mk(W.zMax - 1, -30), mat);
     road.gap = new THREE.Mesh(mk(-30, -58), mat.clone());
     road.north = new THREE.Mesh(mk(-58, W.zMin + 1), mat);
@@ -176,7 +199,7 @@ export function createWorld(canvas, { low, foliageImage }) {
   }
 
   // ---------- 북측 요새화 요소 (일반화·가상 배치) ----------
-  const north = buildNorth(terrain, scene);
+  const north = buildNorth(terrain, scene, low);
 
   // ---------- 사고·조사 표식 ----------
   const marks = {};
@@ -242,7 +265,7 @@ export function createWorld(canvas, { low, foliageImage }) {
 
 // 북측 요소: 장벽, 철조망, 도로 단절, 지뢰 작업 구역(상징), 군 구조물.
 // 실제 시설의 위치·형태를 재현하지 않은 일반화 표현이다.
-function buildNorth(terrain, scene) {
+function buildNorth(terrain, scene, low) {
   const groups = [];
   const dummy = new THREE.Object3D();
   const add = (geo, mat, items) => {
@@ -258,30 +281,56 @@ function buildNorth(terrain, scene) {
   for (let x = -330; x < 330; x += 6.4) {
     if (hash(x, 3) < 0.13) continue;
     const z = wallZ(x + 3.2), dz = wallZ(x + 3.3) - wallZ(x + 3.1);
-    walls.push({ x: x + 3.2, z, y: terrain.heightAt(x + 3.2, z) - 0.08, ry: -Math.atan2(dz, 0.2), rz: (hash(x, 11) - 0.5) * 0.02, s: [1, 0.88 + hash(x, 12) * 0.23, 1], d: hash(x, 9) });
+    const left=terrain.heightAt(x+.15,wallZ(x+.15)),right=terrain.heightAt(x+6.25,wallZ(x+6.25)),base=Math.min(left,right)-.12;
+    const sy=(Math.max(left,right,terrain.heightAt(x+3.2,z))-base+1.32+hash(x,12)*.18)/1.5;
+    walls.push({ x: x + 3.2, z, y: base, ry: -Math.atan2(dz, 0.2), s: [1,sy,1], footL:(left-base-.03)/sy,footR:(right-base-.03)/sy,d: hash(x, 9) });
   }
   const concrete = (() => {
-    const c = document.createElement('canvas'); c.width = c.height = 128;
-    const g = c.getContext('2d'); g.fillStyle = '#b5b2a5'; g.fillRect(0,0,128,128);
-    for (let i = 0; i < 650; i++) {
-      const x = hash(i,1)*128, y = hash(i,2)*128;
-      g.fillStyle = i%3 ? 'rgba(77,75,57,.08)' : 'rgba(233,230,210,.14)';
-      g.fillRect(x,y,1+hash(i,3)*13,2+hash(i,4)*20);
+    const c = document.createElement('canvas'); c.width = 512;c.height = 256;
+    const g = c.getContext('2d'),pixels=g.createImageData(512,256);
+    for(let y=0;y<256;y++)for(let x=0;x<512;x++){
+      const grain=(hash(x,y)-.5)*22,stain=15*smooth(140,256,y),i=(y*512+x)*4;
+      pixels.data.set([196+grain-stain,194+grain-stain,181+grain-stain,255],i);
     }
-    const shade=g.createLinearGradient(0,0,0,128); shade.addColorStop(0,'rgba(50,53,37,0)');shade.addColorStop(1,'rgba(50,53,37,.35)');g.fillStyle=shade;g.fillRect(0,0,128,128);
-    const t = new THREE.CanvasTexture(c); t.colorSpace = THREE.SRGBColorSpace; return t;
+    g.putImageData(pixels,0,0);
+    // 거푸집 판 이음, 체결 자국, 빗물 흐름과 미세 기공. 작은 텍스처 한 장을 공유.
+    for(let y=64;y<256;y+=64){g.fillStyle='rgba(78,83,72,.19)';g.fillRect(0,y,512,1);g.fillStyle='rgba(240,241,220,.18)';g.fillRect(0,y+1,512,1);}
+    for(let x=96;x<512;x+=128){g.fillStyle='rgba(89,86,68,.13)';g.fillRect(x,0,1,256);}
+    for(let i=0;i<32;i++){
+      const x=24+hash(i,12)*464,y=15+hash(i,16)*225;
+      g.fillStyle='rgba(84,81,65,.14)';g.fillRect(x,y,1,15+hash(i,13)*34);
+      g.beginPath();g.arc(x,y,1.2+hash(i,14),0,Math.PI*2);g.fill();
+    }
+    const shade=g.createLinearGradient(0,175,0,256);shade.addColorStop(0,'rgba(56,69,43,0)');shade.addColorStop(1,'rgba(56,69,43,.18)');g.fillStyle=shade;g.fillRect(0,175,512,81);
+    const t = new THREE.CanvasTexture(c); t.colorSpace = THREE.SRGBColorSpace;t.anisotropy=low?2:4;return t;
   })();
-  const wallMesh = add(new THREE.BoxGeometry(6.1, 1.5, 0.7).translate(0, 0.75, 0), new THREE.MeshLambertMaterial({ color: '#dedbd0', map: concrete }), walls);
+  const wallMesh = add(new THREE.BoxGeometry(6.1, 1.5, 0.7).translate(0, 0.75, 0), new THREE.MeshPhongMaterial({ color: '#e1e2d6', map: concrete, bumpMap:concrete,bumpScale:.012,shininess:4,specular:'#242d23' }), walls);
+  add(new THREE.BoxGeometry(6.16,.095,.78).translate(0,1.48,0),new THREE.MeshPhongMaterial({color:'#bfc4b6',shininess:6}),walls);
+  const foundation=add(new THREE.BoxGeometry(6.2,.12,.82).translate(0,.025,0),new THREE.MeshLambertMaterial({color:'#737c67'}),walls);
+  // 윗면은 수평·벽면은 수직으로 유지하고 밑면만 지형을 따른다. 전체 벽을 한 번에 그린다.
+  for(const [mesh,bottomOnly] of [[wallMesh,true],[foundation,false]]){
+    mesh.geometry.setAttribute('footL',new THREE.InstancedBufferAttribute(new Float32Array(walls.map(w=>w.footL)),1));
+    mesh.geometry.setAttribute('footR',new THREE.InstancedBufferAttribute(new Float32Array(walls.map(w=>w.footR)),1));
+    mesh.material.onBeforeCompile=shader=>{
+      shader.vertexShader=shader.vertexShader.replace('#include <common>','#include <common>\nattribute float footL;attribute float footR;')
+        .replace('#include <begin_vertex>','#include <begin_vertex>\n'+(bottomOnly?'if(position.y<.01)':'')+' transformed.y+=mix(footL,footR,clamp(position.x/6.1+.5,0.,1.));');
+    };
+    mesh.material.customProgramCacheKey=()=>bottomOnly?'dmz-wall-foot-v1':'dmz-foundation-foot-v1';
+  }
   const wallColor = new THREE.Color();
   walls.forEach((it,i)=>wallMesh.setColorAt(i,wallColor.set('#ffffff').lerp(new THREE.Color('#918c76'),hash(i,33)*0.35)));
 
-  // 철조망 (윤형)
+  // 철조망: 독립 토러스 고리 대신 지면 경사를 따라 연결된 윤형 철선·양날 가시.
   const coils = [];
-  for (let x = -330; x < 330; x += 0.95) {
-    const z = wallZ(x) + 2.4;
-    coils.push({ x, z, y: terrain.heightAt(x, z) + 0.45, ry: Math.PI / 2, rz: (hash(x, 4) - 0.5) * 0.5, s: [1, 1, 1], d: hash(x, 7) });
+  const stakes = [];
+  for (let x = -330; x < 330; x += 4.8) {
+    const z = wallZ(x) + 2.4, zz = wallZ(x+4.8)+2.4;
+    const y = terrain.heightAt(x,z), yy = terrain.heightAt(x+4.8,zz);
+    coils.push({ x, z, y:y+.48, ry:-Math.atan2(zz-z,4.8), rz:Math.atan2(yy-y,4.8), s:[Math.hypot(4.8,zz-z,yy-y)/4.8,1,1], d:hash(x,7) });
+    stakes.push({x,z,y:y-.08,ry:0,s:[1,1,1],d:hash(x,7)});
   }
-  add(new THREE.TorusGeometry(0.5, 0.045, 3, 10), new THREE.MeshLambertMaterial({ color: '#4c4e4a' }), coils);
+  add(concertinaGeometry(4.8,.46,8,low),new THREE.MeshPhongMaterial({color:'#8a9082',shininess:32,specular:'#6e7569',side:THREE.DoubleSide}),coils);
+  add(new THREE.CylinderGeometry(.027,.035,1.12,low?4:6).translate(0,.56,0),new THREE.MeshPhongMaterial({color:'#646e5e',shininess:18}),stakes);
 
   // 군 구조물 (단순 상자)
   const st = [[-74, -9], [46, -10], [162, -8], [-196, -11], [-120, -150], [110, -168]].map(([x, o], i) => {

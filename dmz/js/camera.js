@@ -2,7 +2,7 @@
 // 기사 단계(anchor) 사이 구간마다 호 길이 기준으로 이징해 이동한다.
 // 독자가 카메라를 직접 돌리지 않는다.
 import * as THREE from './three.js?v=20261001-12';
-import { W } from './terrain.js?v=20261001-12';
+import { W } from './terrain.js?v=20261005-3';
 
 const D2R = Math.PI / 180;
 

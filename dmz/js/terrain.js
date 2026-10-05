@@ -98,6 +98,19 @@ export class Terrain {
       const z = W.zMin + j * this.dz;
       for (let i = 0; i <= nx; i++) this.h[j * (nx + 1) + i] = rawHeight(W.xMin + i * this.dx, z);
     }
+    // 큰 능선을 유지하면서 작은 생성 노이즈를 제거한다. 시설·카메라·단면이 이 높이를 공유한다.
+    // 격자 해상도와 관계없이 비슷한 물리 반경을 사용해 모바일에서도 같은 능선을 유지.
+    const r = nx + 1, temp = new Float32Array(n), result = new Float32Array(n);
+    const kernel = [1,4,6,4,1], strideX=Math.max(1,Math.round(2.7/this.dx)),strideZ=Math.max(1,Math.round(2.7/this.dz));
+    for(let j=0;j<=nz;j++)for(let i=0;i<=nx;i++) {
+      let value=0;for(let k=-2;k<=2;k++)value+=this.h[j*r+Math.max(0,Math.min(nx,i+k*strideX))]*kernel[k+2];
+      temp[j*r+i]=value/16;
+    }
+    for(let j=0;j<=nz;j++)for(let i=0;i<=nx;i++) {
+      let value=0;for(let k=-2;k<=2;k++)value+=temp[Math.max(0,Math.min(nz,j+k*strideZ))*r+i]*kernel[k+2];
+      result[j*r+i]=value/16;
+    }
+    this.h=result;
   }
   // 메시 삼각분할과 정확히 같은 보간
   heightAt(x, z) {
@@ -185,7 +198,7 @@ export class Terrain {
 }
 
 // 지형을 따라 붙는 띠 (선·도로·링)
-export function drapeStrip(terrain, pts, width, lift, out) {
+export function drapeStrip(terrain, pts, width, lift, out, cross = 1) {
   const P = out ? out.P : [], I = out ? out.I : [], UV = out ? out.UV : [];
   const start = P.length / 3;
   let len = 0;
@@ -196,14 +209,16 @@ export function drapeStrip(terrain, pts, width, lift, out) {
     const nx = -tz * width / 2, nz = tx * width / 2;
     if (i > 0) len += Math.hypot(pts[i][0] - pts[i - 1][0], pts[i][1] - pts[i - 1][1]);
     const [x, z] = pts[i];
-    const yl = (pts[i][2] ?? terrain.heightAt(x + nx, z + nz)) + lift;
-    const yr = (pts[i][2] ?? terrain.heightAt(x - nx, z - nz)) + lift;
-    P.push(x + nx, yl, z + nz, x - nx, yr, z - nz);
-    UV.push(len, 0, len, 1);
+    for(let j=0;j<=cross;j++){
+      const t=j/cross,d=1-t*2,px=x+nx*d,pz=z+nz*d;
+      P.push(px,(pts[i][2] ?? terrain.heightAt(px,pz))+lift,pz);UV.push(len,t);
+    }
   }
   for (let i = 0; i < pts.length - 1; i++) {
-    const a = start + i * 2;
-    I.push(a, a + 2, a + 1, a + 1, a + 2, a + 3);
+    for(let j=0;j<cross;j++){
+      const a=start+i*(cross+1)+j,b=a+cross+1;
+      I.push(a,b,a+1,a+1,b,b+1);
+    }
   }
   return { P, I, UV };
 }

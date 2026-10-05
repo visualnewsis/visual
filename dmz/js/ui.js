@@ -1,6 +1,6 @@
 // DOM 레이어: 3D 좌표에 붙는 라벨, 4km 진행바, 시간 변화 도식.
 import * as THREE from './three.js?v=20261001-12';
-import { W } from './terrain.js?v=20261001-12';
+import { W } from './terrain.js?v=20261005-3';
 
 export class Labels {
   constructor(root) { this.root = root; this.items = []; this.v = new THREE.Vector3(); }
@@ -8,6 +8,7 @@ export class Labels {
     const el = document.createElement('div');
     el.className = `lbl ${cls}`;
     el.innerHTML = `<div class="lbl-in">${html}</div>`;
+    if (cls.split(' ').includes('target')) el.insertAdjacentHTML('beforeend','<span class="target-pulse"></span>');
     this.root.appendChild(el);
     this.items.push({ id, el, pos, shown: false, lastO: -1 });
   }

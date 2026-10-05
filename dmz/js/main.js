@@ -2,14 +2,14 @@
 // 장면 상태는 모두 (보간된) 스크롤 위치의 함수다. 따라서 어느 방향으로 스크롤해도 같은 화면이 나온다.
 // 예외: 사고 장면의 진동은 한 번 재생되는 시간 기반 이벤트.
 import * as THREE from './three.js?v=20261001-12';
-import { W, smooth } from './terrain.js?v=20261001-12';
-import { createWorld, SPOTS } from './scene3d.js?v=20261002-10';
-import { createXray } from './xray.js?v=20261002-10';
-import { CameraRig, KEYS } from './camera.js?v=20261001-12';
+import { W, smooth, riverZ } from './terrain.js?v=20261005-3';
+import { createWorld, SPOTS } from './scene3d.js?v=20261005-3';
+import { createXray } from './xray.js?v=20261005-3';
+import { CameraRig, KEYS } from './camera.js?v=20261005-3';
 import { Scroller } from './scroll.js?v=20261001-12';
 import { createMorph, sm } from './typography.js?v=20261001-12';
-import { Labels, Track, Timeline } from './ui.js?v=20261001-12';
-import { createHeroIntro } from './hero.js?v=20261001-14';
+import { Labels, Track, Timeline } from './ui.js?v=20261005-3';
+import { createHeroIntro, sequenceAt } from './hero.js?v=20261005-3';
 
 const T0 = performance.now();
 const params = new URLSearchParams(location.search);
@@ -40,9 +40,8 @@ const scroller = new Scroller($('#story'));
 const labels = new Labels($('#labels'));
 const track = new Track($('#track'));
 const timeline = new Timeline($('#timeline'));
-const heroIntro = createHeroIntro($('#hero-intro'), { reduceMotion, disabled: OG, onReady: () => { dirty = true; } });
+const heroIntro = createHeroIntro($('#hero-intro'), { reduceMotion, disabled: OG, renderer:world.renderer, low, onReady: () => { dirty = true; } });
 const morphA = createMorph($('#morphA'));
-const finBi = $('#finale .bi');
 
 // 단계 순서 검증 (DOM data-key ↔ 카메라 키프레임)
 {
@@ -53,21 +52,25 @@ const finBi = $('#finale .bi');
 // ---------- 라벨 ----------
 const T = world.terrain;
 const gp = (x, z, h = 0) => new THREE.Vector3(x, T.heightAt(x, z) + h, z);
-labels.add('h-s', '<b>남방 2km</b>', gp(0, W.SLL, 2), 'big');
-labels.add('h-0', '<b>0 km</b>', gp(0, W.MDL, 2), 'big mint');
-labels.add('h-n', '<b>북방 2km</b>', gp(0, W.NLL, 2), 'big');
+const mapLandmarks = cam => [null,null,null,null,null,null,
+  ...[-310,-160,0,165,300].map(x=>[x,riverZ(x)]),[-230,W.SLL],[380,W.SLL],[-50,W.NLL],[310,W.NLL]
+].map(p=>{if(!p)return null;const v=gp(p[0],p[1],.9).project(cam);return [(v.x+1)/2,(1-v.y)/2];});
+labels.add('h-s', '남방 <b>2km</b>', gp(0, W.SLL, 2), 'big range');
+labels.add('h-0', '군사분계선 <b>0km</b>', gp(0, W.MDL, 2), 'big mint range');
+labels.add('h-n', '북방 <b>2km</b>', gp(0, W.NLL, 2), 'big range');
 labels.add('s-sll', '남방한계선', gp(-40, W.SLL, 1.5));
-labels.add('s-mdl', '<b>군사분계선 MDL</b> · 0 km', gp(-40, W.MDL, 1.5), 'mint');
+labels.add('s-mdl', '<b>군사분계선 MDL</b> · 0 km', gp(-40, W.MDL, 1.5), 'mint structure-mdl');
 labels.add('s-nll', '북방한계선', gp(-40, W.NLL, 1.5));
-labels.add('s-2a', '2 km', gp(40, 100, 1), 'dim');
-labels.add('s-2b', '2 km', gp(40, -100, 1), 'dim');
+labels.add('s-2a', '남방 <b>2km</b>', gp(40, 100, 1), 'big range');
+labels.add('s-2b', '북방 <b>2km</b>', gp(40, -100, 1), 'big range');
 const I = SPOTS.incident;
 labels.add('i-blast', '폭발 지점', gp(I.x, I.z, 0.8), 'blast');
 labels.add('i-ring', '인근 조사 구간', gp(I.x - 8.5, I.z - 8.5, 0.8), 'mint');
 labels.add('i-found', '활성 북한제 대인지뢰 추가 확인', gp(...world.marks.foundPts[0], 0.8), 'found');
 labels.add('st-sll', '<b>남방한계선</b> · 남 2km', gp(-2, W.SLL, 2.2));
-labels.add('t-clear', '지뢰 제거 작업(상징)', gp(world.clear.pt[0], world.clear.pt[1], 1.2));
-labels.add('t-blast', '2026. 9. 21 폭발 지점', gp(I.x, I.z, 0.8), 'blast');
+labels.add('t-clear', '<b>지뢰 제거 작업 구간(상징)</b><small>다음: 2018년 공개 자료 사진</small>', gp(world.clear.pt[0], world.clear.pt[1], 1.2), 'target');
+labels.add('t-work', '<b>북측 경계 작업 구간(상징)</b><small>다음: 2024년 공개 자료 사진</small>', gp(world.north.zones[0].x, world.north.zones[0].z, 1.5), 'target');
+labels.add('t-blast', '<b>2026. 9. 21 폭발 지점</b><small>가상 위치 · 실제 좌표와 다릅니다</small>', gp(I.x, I.z, 0.8), 'blast target');
 const xp = xray.labelPts;
 labels.add('x-mine', '지뢰', new THREE.Vector3(xp.mine.x, xp.mine.y + 0.3, xp.mine.z), 'x');
 labels.add('x-uxo', '미확인 폭발물', new THREE.Vector3(xp.uxo.x, xp.uxo.y + 0.3, xp.uxo.z), 'x');
@@ -83,13 +86,14 @@ labels.add('n-post', '감시초소', gp(np.post[0], np.post[1], 6.5));
 labels.add('e-nll', '<b>북방한계선</b> · 북 2km', gp(-6, W.NLL, 2));
 
 // ---------- 크기 ----------
-let vw = 0, vh = 0, dpr = Math.min(devicePixelRatio || 1, DPR_MAX), dirty = true, viewDirty = true;
+let vw = 0, vh = 0, dpr = Math.min(devicePixelRatio || 1, DPR_MAX), dirty = true, viewDirty = true, mapValid = false;
 function resize(force) {
   const w = stageEl.clientWidth, h = stageEl.clientHeight;
   if (!w || !h) return;   // 숨겨진 탭·패널 등 크기 0일 때는 다음 resize를 기다린다
   // iOS 주소창 변화(높이 소폭 변동)는 무시해 캔버스 재할당을 줄인다
   if (!force && w === vw && Math.abs(h - vh) < 140) { scroller.measure(); dirty = true; return; }
   vw = w; vh = h;
+  mapValid = false;
   world.setSize(vw, vh, dpr);
   viewDirty = true;
   rig.build(vw / vh);
@@ -179,6 +183,7 @@ const camPos = new THREE.Vector3(), camTgt = new THREE.Vector3(), shake = new TH
 const sky = new THREE.Color('#dfe3dd'), skyX = new THREE.Color('#c9cdc6');
 let sSm = scrollY, lastT = performance.now(), lastRendered = -1;
 let perfAcc = 0, perfN = 0, lastOy = 0;
+const bench = params.has('bench') ? [] : null;
 
 function state(s, now) {
   const P = (k, r) => scroller.presence(k, s, r);
@@ -187,8 +192,8 @@ function state(s, now) {
   const vhh = scroller.vh;
 
   const travel = smooth(sp('start').a - 0.9 * vhh, sp('start').a, s) * (1 - smooth(sp('end4km').b, sp('end4km').b + 0.6 * vhh, s));
-  const heroish = Math.max(P('hero', 0.8), P('finale', 0.6) * smooth(0.0, 0.25, G('finale')));
-  const heroL = Math.max(P('hero', 0.8), P('finale', 0.6) * smooth(0.0, 0.08, G('finale')) * (1 - smooth(0.16, 0.24, G('finale'))));
+  const heroish = Math.max(P('hero', 0.8), P('finale', 0.6));
+  const heroL = Math.max(P('hero', 0.8), P('rise', 0.7), P('finale', 0.6) * (1 - smooth(0.16, 0.3, G('finale'))));
   const structure = P('structure', 0.7);
   const hanja = P('hanja', 0.4);
   const tl = P('timeline', 0.5);
@@ -243,7 +248,8 @@ function state(s, now) {
       'i-ring': inv * smooth(0.15, 0.3, gInv) * (1 - hanja),
       'i-found': inv * smooth(0.32, 0.42, gInv) * (1 - hanja),
       'st-sll': P('start', 0.45),
-      't-clear': tl * smooth(0.27, 0.32, tp) * (1 - smooth(0.48, 0.52, tp)),
+      't-clear': tl * smooth(0.25, 0.27, tp) * (1 - smooth(0.35, 0.36, tp)),
+      't-work': tl * smooth(0.5, 0.52, tp) * (1 - smooth(0.62, 0.63, tp)),
       't-blast': tl * smooth(0.78, 0.83, tp),
       'x-mine': open * smooth(0.48, 0.68, gx), 'x-uxo': open * smooth(0.61, 0.81, gx), 'x-rem': open * smooth(0.74, 0.94, gx),
       'm-mdl': P('mdl', 0.4),
@@ -263,7 +269,9 @@ function frame(now) { requestAnimationFrame(frame); tick(now); }
 function tick(now) {
   const dt = Math.min(0.1, (now - lastT) / 1000); lastT = now;
   const target = OG ? 0 : scrollY;
-  const k = reduceMotion ? 1 : 1 - Math.exp(-dt * 7);
+  const direct = target <= scroller.span('hero').b || target >= scroller.span('rise').b ||
+    sSm <= scroller.span('hero').b || sSm >= scroller.span('rise').b;
+  const k = reduceMotion || direct ? 1 : 1 - Math.exp(-dt * 7);
   sSm += (target - sSm) * k;
   if (Math.abs(target - sSm) < 0.3) sSm = target;
 
@@ -277,7 +285,9 @@ function tick(now) {
   if (Math.abs(exploreTarget - exploreX) < 0.001) exploreX = exploreTarget;
   if (exploreMix !== exploreGoal || exploreX !== exploreTarget) dirty = true;
   const st = state(sSm, now);
-  const introOpacity = heroIntro.update(sSm, scroller.vh);
+  const seq = sequenceAt(sSm, scroller);
+  if (reduceMotion) seq.dolly = 1;
+  const introOpacity = heroIntro.update(seq, sSm, scroller.vh, vw, vh);
   const animating = st.bt !== null && st.bt < 4.5;
   // 이야기 끝 이후(출처·엔딩 배너)에서는 렌더를 멈춘다
   const past = sSm > scroller.span('finale').b + scroller.vh * 1.15;
@@ -285,11 +295,13 @@ function tick(now) {
   if (past) { lastRendered = -1; return; }
   if (!dirty && !animating && sSm === lastRendered) return;
   dirty = false; lastRendered = sSm;
+  const drawStarted = bench ? performance.now() : 0;
 
   // 카메라
   const { seg, f } = scroller.locate(sSm);
   const t = rig.paramAt(seg, f);
   const fov = rig.sample(t, camPos, camTgt);
+  if (seq.active && !OG) camPos.sub(camTgt).multiplyScalar(seq.dolly).add(camTgt);
   if (st.bt !== null && st.bt < 0.9 && !reduceMotion) {
     const a = 0.9 * Math.exp(-st.bt * 5.5), q = st.bt * 48;
     shake.set(Math.sin(q * 1.1) * a, Math.sin(q * 1.37 + 1) * a * 0.7, Math.sin(q * 0.93 + 2) * a);
@@ -324,7 +336,7 @@ function tick(now) {
   world.clear.set(st.clear);
   world.dust.update(reduceMotion ? null : st.dustT);
   xray.update(st.scanT, st.open, st.reveal, exploreMix, exploreX);
-  world.hemi.intensity = 1.35 * (1 - 0.28 * st.open);
+  world.hemi.intensity = 1.15 * (1 - 0.28 * st.open);
   world.scene.background.copy(sky).lerp(skyX, st.open * 0.8);
   world.scene.fog.color.copy(world.scene.background);
 
@@ -334,6 +346,9 @@ function tick(now) {
   track.update(camPos.z, st.travel * (1 - st.hanja) * (1 - st.tl) * (1 - st.inv));
   const labelState = OG ? {} : { ...st.lbl };
   for (const k of ['h-s', 'h-0', 'h-n']) labelState[k] *= 1 - introOpacity;
+  const recap = $('#range-recap'), recapOpacity = Math.max(Math.min(labelState['h-s'] || 0,labelState['h-n'] || 0),st.structure);
+  recap.style.opacity = recapOpacity.toFixed(3);
+  recap.style.visibility = recapOpacity > 0.01 ? 'visible' : 'hidden';
   const windowLabels = xray.labelVisibility();
   labelState['x-mine'] *= windowLabels.mine;
   labelState['x-uxo'] *= windowLabels.uxo;
@@ -364,14 +379,50 @@ function tick(now) {
   // 시간 변화
   timeline.update(st.tlP);
 
-  // 엔딩: 제목 회수 → 非 → 心 → 悲
-  const fp = st.finale;
-  $('#finale').style.setProperty('--title', sm(0.02, 0.14, fp).toFixed(3));
-  // 悲만 아주 미세하게 강조 (변환 반복 없음)
-  const em = sm(0.3, 0.6, fp) * 0.55;
-  finBi.style.color = `rgb(${Math.round(18 + (11 - 18) * em)},${Math.round(21 + (94 - 21) * em)},${Math.round(22 + (105 - 22) * em)})`;
+  // sticky 이동 68%에 현실 사진 복귀 → 정지 여백 → 한글 문장. 悲는 시작에만 유지.
+  $('#finale').style.setProperty('--title', seq.title.toFixed(4));
 
-  world.render();
+  // MAP은 별도 모델이 아니라 기존 렌더러의 HERO 구도. viewport당 한 번만 1x 캡처.
+  // 중간 X-ray에서 resize해도 캡처를 미루므로 단면이 MAP에 섞이지 않는다.
+  if (!mapValid && seq.active && !OG) {
+    const savedPos = cam.position.clone(), savedQuat = cam.quaternion.clone();
+    const savedFov = cam.fov, savedFog = [world.scene.fog.near, world.scene.fog.far];
+    const mapPos = new THREE.Vector3(), mapTarget = new THREE.Vector3();
+    cam.fov = rig.sample(0, mapPos, mapTarget);
+    mapPos.sub(mapTarget).multiplyScalar(reduceMotion ? 1 : 1.12).add(mapTarget);
+    cam.position.copy(mapPos); cam.lookAt(mapTarget); cam.clearViewOffset(); cam.updateProjectionMatrix();
+    const mats = [world.band.material, ...Object.values(world.marks).filter(m => m.material).map(m => m.material),
+      ...Object.values(L).flatMap(m => [m.material, m.thin.material])];
+    const savedOpacity = mats.map(m => m.opacity);
+    mats.forEach(m => { m.opacity = 0; });
+    for (const [key, strength] of [['sll', 0.35 * 0.8], ['mdl', 0.45 * 0.85], ['nll', 0.35 * 0.8]]) {
+      L[key].material.opacity = strength; L[key].thin.material.opacity = 0.9 * strength / (key === 'mdl' ? 0.85 : 0.8) * 0.2;
+    }
+    world.north.update(999, world.road); world.clear.set(0);
+    world.setFog(mapPos.y - T.heightAt(mapPos.x, mapPos.z));
+    world.render();
+    heroIntro.map.width = vw; heroIntro.map.height = vh;
+    heroIntro.map.getContext('2d', { alpha: false }).drawImage(canvas, 0, 0, vw, vh);
+    heroIntro.mapChanged(mapLandmarks(cam));
+    mats.forEach((m, i) => { m.opacity = savedOpacity[i]; });
+    world.north.update(st.front ?? camPos.z, world.road); world.clear.set(st.clear);
+    [world.scene.fog.near, world.scene.fog.far] = savedFog;
+    cam.position.copy(savedPos); cam.quaternion.copy(savedQuat); cam.fov = savedFov;
+    if (oy) cam.setViewOffset(vw, vh, 0, oy, vw, vh); else cam.clearViewOffset();
+    cam.updateProjectionMatrix(); mapValid = true;
+  }
+
+  // 귀환 중 처음과 같은 지형 상태로 수렴. 사진에 덮인 후에는 렌더하지 않는다.
+  if (seq.returning) world.north.update(-999 + 1998 * smooth(0, 0.18, 1 - seq.p), world.road);
+
+  if (!(heroIntro.gpu && introOpacity >= .9999) && (!seq.returning || seq.p > 0)) world.render();
+  if(seq.active && seq.p>=.69){cam.updateMatrixWorld();heroIntro.mapTargetChanged(mapLandmarks(cam));}
+  heroIntro.render();
+  if(bench){
+    bench.push(performance.now()-drawStarted);if(bench.length>90)bench.shift();
+    const sorted=[...bench].sort((a,b)=>a-b),info=world.renderer.info;
+    stageEl.dataset.bench=JSON.stringify({frames:bench.length,meanMs:+(bench.reduce((a,b)=>a+b,0)/bench.length).toFixed(2),p95Ms:+sorted[Math.floor((sorted.length-1)*.95)].toFixed(2),drawCalls:info.render.calls,triangles:info.render.triangles,textures:info.memory.textures,geometries:info.memory.geometries,dpr,low});
+  }
 
   // 적응형 해상도: 렌더가 느리면 DPR을 낮춘다
   perfAcc += dt; perfN++;
