@@ -19,12 +19,13 @@ export function sequenceAt(s, scroller) {
   const p = returning ? 1 - clamp((endProgress - 0.14) / 0.54) : openingP(clamp(s / hero.b));
   const bridge = smooth(0.78, 1, p);
   return { p, bridge, returning, active: (returning && s < finale.T + finale.H) || s <= hero.b,
-    dolly: 1 + 0.12 * (1 - bridge),
+    dolly: 1,
     title: returning ? smooth(0.82, 0.94, endProgress) : 0 };
 }
 export function createHeroIntro(root, { reduceMotion, disabled, onReady, renderer, low }) {
   const layers = [...root.querySelectorAll('picture img')];
-  const knots = [0,0.10,0.21,0.31,0.42,0.52,0.62,0.69,0.78];
+  // MAP 직전 그림(hero-between-map)은 혼자 확대돼 보여 제외. lift-2 → MAP으로 바로 교차.
+  const knots = [0,0.10,0.21,0.31,0.42,0.52,0.62,0.78];
   const map = root.querySelector('.intro-map'), source = root.querySelector('.intro-source');
   // 변형 보간(GPU) 미사용: 기존 CSS 이미지 레이어 합성으로 전환한다.
   // 그림마다 고정된 위치·크기 한 벌만 적용해 같은 능선·강이 같은 자리에 오게 한다(스크롤 중 그림별 움직임 없음).
@@ -65,9 +66,10 @@ export function createHeroIntro(root, { reduceMotion, disabled, onReady, rendere
   const computeAlign = (w,h) => {
     const P = layers.map((_,i)=>natural(i,w,h)), M = mapPts.map(q=>q?[q[0]*w,q[1]*h]:null), T = [];
     T[0]=ID; T[1]=comp(T[0],link(P[1],P[0],w,h)); T[2]=comp(T[1],link(P[2],P[1],w,h));
-    T[7]=link(P[7],M,w,h);
-    for (let i=6;i>=3;i--) T[i]=comp(T[i+1],link(P[i],P[i+1],w,h));
-    const GA=groupFix(T.slice(0,3),w,h), GB=groupFix(T.slice(3,8),w,h);
+    const L=layers.length-1;
+    T[L]=link(P[L],M,w,h);
+    for (let i=L-1;i>=3;i--) T[i]=comp(T[i+1],link(P[i],P[i+1],w,h));
+    const GA=groupFix(T.slice(0,3),w,h), GB=groupFix(T.slice(3,L+1),w,h);
     return {T:T.map((t,i)=>comp(i<3?GA:GB,t)), GB};
   };
 
@@ -82,14 +84,14 @@ export function createHeroIntro(root, { reduceMotion, disabled, onReady, rendere
     mapTargetChanged(){},
     render(){},
     get align(){return align;},
-    // MAP→3D: 조감 묶음 보정(GB)에서 실제 HERO 카메라까지 한 방향 줌인. 카메라 dolly와 화면 이동을 seq에 넣는다.
-    entry(seq, width, height) {
-      seq.dx = 0; seq.dy = 0;
-      if (reduceMotion || !align) return;
-      const G = align.GB, s0 = Math.min(1.12, Math.max(1, G.s));
-      const ox = G.tx - width/2*(1-G.s), oy = G.ty - height/2*(1-G.s), k = 1 - seq.bridge;
-      seq.dolly = 1.12 / (s0 + (1.12 - s0) * seq.bridge);
-      seq.dx = ox * k; seq.dy = oy * k;
+    // 조감 그림 → MAP → 3D는 같은 크기(조감 묶음 보정 GB)로 이어 확대·축소가 없다.
+    // 3D는 GB만큼 당겨진 상태로 시작하고, k(다음 장면으로 내려가는 카메라 이동 구간에서 0으로)에 따라 풀린다.
+    entry(seq, width, height, k) {
+      seq.dolly = 1; seq.dx = 0; seq.dy = 0;
+      if (!align || !k) return;
+      const G = align.GB, s = Math.min(1.15, Math.max(1, G.s));
+      const ox = G.tx - width/2*(1-G.s), oy = G.ty - height/2*(1-G.s);
+      seq.dolly = 1 / (1 + (s - 1) * k); seq.dx = ox * k; seq.dy = oy * k;
     },
     update(seq, s, vh, width, height) {
       const { p, bridge, active, returning } = seq;
@@ -121,9 +123,9 @@ export function createHeroIntro(root, { reduceMotion, disabled, onReady, rendere
       // MAP 정지 프레임과 실제 카메라가 동일한 dolly 투영 확대율을 사용한다.
       // MAP은 조감 묶음과 같은 보정(GB)을 받다가 3D 페이드(p 0.86) 전에 실제 카메라 배율로 수렴한다.
       // MAP과 3D는 같은 배율·이동(entry)을 공유한다. 조감 묶음 보정 배율에서 출발해 커지기만 한다.
-      const ds = (reduceMotion ? 1 : 1.12) / seq.dolly;
+      const G = align.GB;
       map.style.transformOrigin = '0 0';
-      map.style.transform = `translate3d(${(width*(1-ds)/2 + (seq.dx||0)).toFixed(2)}px,${(height*(1-ds)/2 + (seq.dy||0)).toFixed(2)}px,0) scale(${ds.toFixed(6)})`;
+      map.style.transform = `translate3d(${G.tx.toFixed(2)}px,${G.ty.toFixed(2)}px,0) scale(${G.s.toFixed(6)})`;
       source.style.opacity = (1 - smooth(0.12, 0.32, p)).toFixed(4);
       root.style.setProperty('--intro-shade', (1 - bridge).toFixed(4));
       return opacity;
