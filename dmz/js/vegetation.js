@@ -118,7 +118,10 @@ function foliageCards(seed, low, con, solid) {
     const radius=con?0.17:0.3+R()*0.28;
     const p=flat(new THREE.PlaneGeometry(width,con?0.85:0.95));
     const u=p.attributes.uv;for(let j=0;j<u.count;j++)u.setXY(j,0.08+u.getX(j)*0.84,0.08+u.getY(j)*0.84);
-    p.rotateX((R()-0.5)*0.4);p.rotateY(a);p.translate(Math.cos(a)*radius,y,Math.sin(a)*radius);
+    // 수직 카드만 있으면 비스듬한·내려다보는 시점에서 모두 옆면(칼날)으로 보인다.
+    // 활엽수는 위·바깥을 향해 15~80° 고르게 기울이고 상부일수록 눕힌다. 침엽수는 가지처럼 완만하게.
+    const tilt=con?(R()-0.5)*0.7:-(0.25+0.55*R()+0.55*level);
+    p.rotateX(tilt);p.rotateY(a);p.translate(Math.cos(a)*radius,y,Math.sin(a)*radius);
     parts.push(paint(p,'#ffffff',0.4,2.7,0.58,1.03));
   }
   // 잎 카드만 남으면 위에서 나뭇가지처럼 보인다. 내부는 작은 불규칙 수관으로 채운다.
@@ -164,8 +167,10 @@ export function buildVegetation(terrain, { low, cutPlanes, foliageImage }) {
     const center = Math.exp(-(x * x) / (2 * 180 * 180));
     if (R() > m * (0.3 + 0.7 * center) * (0.35 + 0.65 * smooth(-0.5, 0.6, noise(x * 0.028, z * 0.028)))) continue;
     const y = terrain.heightAt(x, z);
+    // 비탈에서 줄기 아래쪽이 뜨지 않도록 주변 최저 지표 차이만큼 내린다.
+    const sink = Math.max(0, y - Math.min(terrain.heightAt(x + 0.45, z), terrain.heightAt(x - 0.45, z), terrain.heightAt(x, z + 0.45), terrain.heightAt(x, z - 0.45)));
     const isCon = R() < 0.2 + smooth(14, 32, y) * 0.5;
-    items.push({ x, y, z, con: isCon, a: R(), b: R(), c: R() });
+    items.push({ x, y, z, sink, con: isCon, a: R(), b: R(), c: R() });
   }
   // 관목: 숲 가장자리·초지에 낮게
   const shrubs = [];
@@ -203,6 +208,10 @@ export function buildVegetation(terrain, { low, cutPlanes, foliageImage }) {
   const leafMap = foliageImage ? new THREE.Texture(foliageImage) : foliageTexture();
   leafMap.colorSpace=THREE.SRGBColorSpace;leafMap.anisotropy=2;leafMap.needsUpdate=true;
   const leafMat = new THREE.MeshLambertMaterial({map:leafMap,vertexColors:true,side:THREE.DoubleSide,alphaTest:0.35,emissive:'#ffffff',emissiveMap:leafMap,emissiveIntensity:.20,clippingPlanes:cutPlanes,clipIntersection:true});
+  // 시선과 거의 평행한 잎 카드는 알파를 줄여 잘라낸다. 칼날처럼 보이는 옆면과 카드 관통선을 숨긴다.
+  leafMat.onBeforeCompile=sh=>{sh.fragmentShader=sh.fragmentShader.replace('#include <alphatest_fragment>',
+    'diffuseColor.a*=smoothstep(.16,.46,abs(dot(normalize(vNormal),normalize(vViewPosition))));\n#include <alphatest_fragment>');};
+  leafMat.customProgramCacheKey=()=>'leaf-facing-fade';
   const leafColors=['#ffffff','#eee8d5','#d2dcc9','#e5e8dd'].map(c=>new THREE.Color(c));
   const m4 = new THREE.Matrix4(), q = new THREE.Quaternion(), e = new THREE.Euler(), pos = new THREE.Vector3(), scl = new THREE.Vector3(), col = new THREE.Color();
   const make = (geo, list, colors, scaleFn, material) => {
@@ -213,7 +222,7 @@ export function buildVegetation(terrain, { low, cutPlanes, foliageImage }) {
       scaleFn(t, scl);
       e.set((t.b - 0.5) * 0.1, t.a * 6.283, (t.c - 0.5) * 0.1);
       q.setFromEuler(e);
-      pos.set(t.x, t.y - 0.12, t.z);
+      pos.set(t.x, t.y - 0.12 - (t.sink || 0), t.z);
       mesh.setMatrixAt(i, m4.compose(pos, q, scl));
       mesh.setColorAt(i, col.copy(colors[Math.floor(t.c * colors.length) % colors.length]).multiplyScalar(0.88 + t.b * 0.24));
     });

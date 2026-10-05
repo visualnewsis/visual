@@ -3,13 +3,13 @@
 // 예외: 사고 장면의 진동은 한 번 재생되는 시간 기반 이벤트.
 import * as THREE from './three.js?v=20261001-12';
 import { W, smooth, riverZ } from './terrain.js?v=20261005-3';
-import { createWorld, SPOTS } from './scene3d.js?v=20261005-3';
-import { createXray } from './xray.js?v=20261005-3';
+import { createWorld, SPOTS } from './scene3d.js?v=20261005-5';
+import { createXray } from './xray.js?v=20261005-5';
 import { CameraRig, KEYS } from './camera.js?v=20261005-3';
 import { Scroller } from './scroll.js?v=20261001-12';
 import { createMorph, sm } from './typography.js?v=20261001-12';
 import { Labels, Track, Timeline } from './ui.js?v=20261005-3';
-import { createHeroIntro, sequenceAt } from './hero.js?v=20261005-4';
+import { createHeroIntro, sequenceAt } from './hero.js?v=20261005-5';
 
 const T0 = performance.now();
 const params = new URLSearchParams(location.search);
@@ -311,7 +311,9 @@ function tick(now) {
   cam.position.copy(camPos);
   cam.lookAt(camTgt);
   // 세로 화면: 하단 캡션을 피해 피사체를 화면 위쪽으로 올린다
-  const oy = vw < vh ? Math.round(vh * 0.13 * st.travel) : 0;
+  // 지뢰 폭발 구간은 폭발 지점이 화면 중앙에 오도록 들어올림을 서서히 푼다.
+  const blastFocus = vw < vh ? scroller.presence('incident', sSm, 0.6) : 0;
+  const oy = vw < vh ? Math.round(vh * 0.13 * st.travel * (1 - blastFocus)) : 0;
   if (Math.abs(cam.fov - fov) > 0.01 || oy !== lastOy || viewDirty) {
     cam.fov = fov; lastOy = oy; viewDirty = false;
     if (oy) cam.setViewOffset(vw, vh, 0, oy, vw, vh); else cam.clearViewOffset();
