@@ -3,13 +3,13 @@
 // 예외: 사고 장면의 진동은 한 번 재생되는 시간 기반 이벤트.
 import * as THREE from './three.js?v=20261001-12';
 import { W, smooth, riverZ } from './terrain.js?v=20261005-3';
-import { createWorld, SPOTS } from './scene3d.js?v=20261005-5';
-import { createXray } from './xray.js?v=20261005-5';
+import { createWorld, SPOTS } from './scene3d.js?v=20261005-6';
+import { createXray } from './xray.js?v=20261005-6';
 import { CameraRig, KEYS } from './camera.js?v=20261005-3';
 import { Scroller } from './scroll.js?v=20261001-12';
 import { createMorph, sm } from './typography.js?v=20261001-12';
 import { Labels, Track, Timeline } from './ui.js?v=20261005-3';
-import { createHeroIntro, sequenceAt } from './hero.js?v=20261005-5';
+import { createHeroIntro, sequenceAt } from './hero.js?v=20261005-6';
 
 const T0 = performance.now();
 const params = new URLSearchParams(location.search);
@@ -182,7 +182,7 @@ let blastAt = null, blastArmed = true;
 const camPos = new THREE.Vector3(), camTgt = new THREE.Vector3(), shake = new THREE.Vector3();
 const sky = new THREE.Color('#dfe3dd'), skyX = new THREE.Color('#c9cdc6');
 let sSm = scrollY, lastT = performance.now(), lastRendered = -1;
-let perfAcc = 0, perfN = 0, lastOy = 0;
+let perfAcc = 0, perfN = 0, lastOy = 0, lastOx = 0;
 const bench = params.has('bench') ? [] : null;
 
 function state(s, now) {
@@ -287,6 +287,7 @@ function tick(now) {
   const st = state(sSm, now);
   const seq = sequenceAt(sSm, scroller);
   if (reduceMotion) seq.dolly = 1;
+  heroIntro.entry(seq, vw, vh);
   const introOpacity = heroIntro.update(seq, sSm, scroller.vh, vw, vh);
   const animating = st.bt !== null && st.bt < 4.5;
   // 이야기 끝 이후(출처·엔딩 배너)에서는 렌더를 멈춘다
@@ -314,9 +315,11 @@ function tick(now) {
   // 지뢰 폭발 구간은 폭발 지점이 화면 중앙에 오도록 들어올림을 서서히 푼다.
   const blastFocus = vw < vh ? scroller.presence('incident', sSm, 0.6) : 0;
   const oy = vw < vh ? Math.round(vh * 0.13 * st.travel * (1 - blastFocus)) : 0;
-  if (Math.abs(cam.fov - fov) > 0.01 || oy !== lastOy || viewDirty) {
-    cam.fov = fov; lastOy = oy; viewDirty = false;
-    if (oy) cam.setViewOffset(vw, vh, 0, oy, vw, vh); else cam.clearViewOffset();
+  // MAP→3D 구간에서 MAP 화면 이동과 같은 만큼 3D 화면을 옮긴다(entry). 그 외 구간은 0.
+  const ox = seq.active ? -Math.round(seq.dx || 0) : 0, vy = oy - (seq.active ? Math.round(seq.dy || 0) : 0);
+  if (Math.abs(cam.fov - fov) > 0.01 || vy !== lastOy || ox !== lastOx || viewDirty) {
+    cam.fov = fov; lastOy = vy; lastOx = ox; viewDirty = false;
+    if (ox || vy) cam.setViewOffset(vw, vh, ox, vy, vw, vh); else cam.clearViewOffset();
     cam.updateProjectionMatrix();
   }
   const camH = camPos.y - T.heightAt(Math.max(W.xMin, Math.min(W.xMax, camPos.x)), Math.max(W.zMin, Math.min(W.zMax, camPos.z)));
@@ -410,7 +413,7 @@ function tick(now) {
     world.north.update(st.front ?? camPos.z, world.road); world.clear.set(st.clear);
     [world.scene.fog.near, world.scene.fog.far] = savedFog;
     cam.position.copy(savedPos); cam.quaternion.copy(savedQuat); cam.fov = savedFov;
-    if (oy) cam.setViewOffset(vw, vh, 0, oy, vw, vh); else cam.clearViewOffset();
+    if (ox || vy) cam.setViewOffset(vw, vh, ox, vy, vw, vh); else cam.clearViewOffset();
     cam.updateProjectionMatrix(); mapValid = true;
   }
 

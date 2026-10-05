@@ -82,6 +82,15 @@ export function createHeroIntro(root, { reduceMotion, disabled, onReady, rendere
     mapTargetChanged(){},
     render(){},
     get align(){return align;},
+    // MAP→3D: 조감 묶음 보정(GB)에서 실제 HERO 카메라까지 한 방향 줌인. 카메라 dolly와 화면 이동을 seq에 넣는다.
+    entry(seq, width, height) {
+      seq.dx = 0; seq.dy = 0;
+      if (reduceMotion || !align) return;
+      const G = align.GB, s0 = Math.min(1.12, Math.max(1, G.s));
+      const ox = G.tx - width/2*(1-G.s), oy = G.ty - height/2*(1-G.s), k = 1 - seq.bridge;
+      seq.dolly = 1.12 / (s0 + (1.12 - s0) * seq.bridge);
+      seq.dx = ox * k; seq.dy = oy * k;
+    },
     update(seq, s, vh, width, height) {
       const { p, bridge, active, returning } = seq;
       document.querySelector('.hero').style.setProperty('--intro-title-y', `${Math.min(s, vh).toFixed(1)}px`);
@@ -111,10 +120,10 @@ export function createHeroIntro(root, { reduceMotion, disabled, onReady, rendere
       }
       // MAP 정지 프레임과 실제 카메라가 동일한 dolly 투영 확대율을 사용한다.
       // MAP은 조감 묶음과 같은 보정(GB)을 받다가 3D 페이드(p 0.86) 전에 실제 카메라 배율로 수렴한다.
-      const ds = (reduceMotion ? 1 : 1.12) / seq.dolly, gw = 1 - smooth(0.78, 0.86, p), G = align.GB;
-      const ms = ds * (1 + (G.s - 1) * gw), mx = G.tx * gw, my = G.ty * gw;
+      // MAP과 3D는 같은 배율·이동(entry)을 공유한다. 조감 묶음 보정 배율에서 출발해 커지기만 한다.
+      const ds = (reduceMotion ? 1 : 1.12) / seq.dolly;
       map.style.transformOrigin = '0 0';
-      map.style.transform = `translate3d(${(mx + width*(1-ds)/2*(1-gw)).toFixed(2)}px,${(my + height*(1-ds)/2*(1-gw)).toFixed(2)}px,0) scale(${ms.toFixed(6)})`;
+      map.style.transform = `translate3d(${(width*(1-ds)/2 + (seq.dx||0)).toFixed(2)}px,${(height*(1-ds)/2 + (seq.dy||0)).toFixed(2)}px,0) scale(${ds.toFixed(6)})`;
       source.style.opacity = (1 - smooth(0.12, 0.32, p)).toFixed(4);
       root.style.setProperty('--intro-shade', (1 - bridge).toFixed(4));
       return opacity;

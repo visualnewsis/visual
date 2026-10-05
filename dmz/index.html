@@ -334,7 +334,7 @@
       try{ok=!!(window.WebGLRenderingContext&&(c.getContext('webgl2')||c.getContext('webgl')));}catch(e){}
       if(!ok){why('이 브라우저에서 WebGL(3D 그래픽)을 사용할 수 없습니다.');return;}
       window.addEventListener('error',function(e){if(!window.__dmzReady)why('3D 로딩 오류: '+(e.message||(e.target&&e.target.src)||'알 수 없음'));},true);
-      var s=document.createElement('script');s.type='module';s.src='js/main.js?v=20261005-5';
+      var s=document.createElement('script');s.type='module';s.src='js/main.js?v=20261005-6';
       s.onerror=function(){why('3D 스크립트를 불러오지 못했습니다.');};
       document.body.appendChild(s);
       setTimeout(function(){if(!window.__dmzReady)why('3D 로딩이 20초 안에 끝나지 않았습니다.');},20000);
