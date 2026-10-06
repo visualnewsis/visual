@@ -27,7 +27,7 @@ a{color:inherit}
 #hero-intro .intro-graphic,#hero-intro .intro-lift1,#hero-intro .intro-lift2,#hero-intro .intro-between{opacity:0}
 #hero-intro:after{content:"";position:absolute;inset:0;opacity:var(--intro-shade,1);background:linear-gradient(180deg,rgba(223,227,221,.22),transparent 50%,rgba(223,227,221,.08))}
 .intro-source{position:absolute;right:18px;bottom:18px;z-index:1;font-size:10px;letter-spacing:.02em;color:#fff;text-shadow:0 1px 4px #252d25}
-@media(max-width:819px){#hero-intro img{object-position:42% 50%}.intro-source{right:12px;bottom:18px;font-size:9px}}
+@media(max-width:819px){#hero-intro img{object-position:42% 50%}.intro-source{right:12px;bottom:18px;font-size:9px;max-width:calc(100% - 24px);text-align:right;line-height:1.45}}
 #veil{position:fixed;inset:0;z-index:1;background:var(--night);opacity:0;pointer-events:none}
 #mist{position:fixed;inset:0;z-index:1;background:#e6e9e3;opacity:0;pointer-events:none}
 #labels{position:fixed;inset:0;z-index:2;pointer-events:none;overflow:hidden}
@@ -110,6 +110,12 @@ a{color:inherit}
 .hero h1 .t1{display:block;font-size:clamp(26px,3.3vw,46px);font-weight:800;letter-spacing:-.035em;color:#2c3234}
 .hero h1 .t2{display:block;margin-top:8px;font-size:clamp(40px,6vw,86px)}
 .hero .byline{margin:20px 0 0;font-size:12.5px;font-weight:600;color:#40484b;letter-spacing:.02em}
+/* 제목 悲 아래 훈 표기(회색, 한자 폭 이내). 바이라인은 제목 오른쪽 끝에 맞춘다. */
+.hero .hero-head{position:relative}
+.hero h1 .bi{position:relative}
+.hero h1 .bi::after{content:attr(data-gloss);position:absolute;left:50%;top:calc(100% - .06em);transform:translateX(-50%);font-size:.25em;font-weight:500;letter-spacing:-.02em;line-height:1;white-space:nowrap;color:#7f898b;text-shadow:none}
+.hero .hero-head .byline{margin-top:45px;text-align:right;font-size:14px;font-weight:700;color:#2c3234}
+@media (max-width:800px){.hero .hero-head .byline{margin-top:24px;font-size:calc(clamp(26px,7.6vw,40px) * .25)}}
 .scroll-cue{position:absolute;left:50%;bottom:calc(84px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:10px;font-size:10.5px;font-weight:800;letter-spacing:.24em;color:#3d4547}
 .scroll-cue i{display:block;width:1px;height:42px;background:linear-gradient(var(--ink),transparent);animation:cue 1.9s ease-in-out infinite}
 .hero .scroll-cue{top:calc(100svh - 130px);bottom:auto;transform:translate(-50%,var(--intro-title-y,0px))}
