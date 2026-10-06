@@ -18,7 +18,7 @@ jobs:
       DEPLOYMENT_MATRIX: ${{ steps.export-deployment-matrix.outputs.DEPLOYMENT_MATRIX }}
     
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v5
         with:
           clean: true
 
@@ -33,7 +33,7 @@ jobs:
           tar -cvf "${GITHUB_SHA}".tar.gz --exclude="${GITHUB_SHA}".tar.gz --exclude=*.git --exclude=node_modules .
 
       - name: Store artifact for distribution
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         with:
           name: app-build-${{ matrix.runs-on }}
           path: ${{ github.sha }}.tar.gz
@@ -56,7 +56,7 @@ jobs:
       matrix:
         server: ${{ fromJson(needs.create-deployment-artifacts.outputs.DEPLOYMENT_MATRIX) }}
     steps:
-      - uses: actions/download-artifact@v4
+      - uses: actions/download-artifact@v7
         with:
           pattern: app-build-*
           merge-multiple: true

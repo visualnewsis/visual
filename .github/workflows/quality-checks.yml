@@ -13,7 +13,7 @@ jobs:
   static-checks:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - name: Validate service pages and global header rules
         run: python .github/scripts/check_visual_site.py
       - name: Validate shared header JavaScript syntax
