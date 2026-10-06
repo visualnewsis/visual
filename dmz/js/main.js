@@ -317,7 +317,14 @@ function tick(now) {
   // 세로 화면: 하단 캡션을 피해 피사체를 화면 위쪽으로 올린다
   // 지뢰 폭발 구간은 폭발 지점이 화면 중앙에 오도록 들어올림을 서서히 푼다.
   const blastFocus = vw < vh ? scroller.presence('incident', sSm, 0.6) : 0;
-  const oy = vw < vh ? Math.round(vh * 0.13 * st.travel * (1 - blastFocus)) : 0;
+  // 들어올림을 푼 상태(0)에서도 먼지 덩어리는 지면 폭발점 위로 솟아 화면 위 약 36%(390x844·412x915 실측, 피크 0.8초)에 놓인다.
+  // 화면을 vh의 10%만큼 내린다. 정확한 50%보다 '폭발 지점' 링·라벨이 설명 카드 위에서 온전히 보이는 것이 우선(링 하단~카드 윗변 12px 이상, 390x844 실측 기준).
+  // 0.14는 먼지 중심 50%였지만 390x844에서 링이 카드 뒤로 완전히 가려져 채택하지 않음. 가로 화면·카메라 경로는 그대로.
+  // 내리기는 들어올 때(forest→incident, 여유 구간 약 2vh) 1.0vh에 걸쳐, 나갈 때는 기존 해제와 같은 0.6vh에 걸쳐 풀어 investigation 구도는 건드리지 않는다.
+  const BLAST_DROP = 0.10;
+  const isp = scroller.span('incident'), ivh = scroller.vh;
+  const blastDrop = vw < vh ? (sSm < isp.a ? smooth(isp.a - ivh, isp.a, sSm) : 1 - smooth(isp.b, isp.b + 0.6 * ivh, sSm)) : 0;
+  const oy = vw < vh ? Math.round(vh * (0.13 * st.travel * (1 - blastFocus) - BLAST_DROP * blastDrop)) : 0;
   // MAP→3D 구간에서 MAP 화면 이동과 같은 만큼 3D 화면을 옮긴다(entry). 그 외 구간은 0.
   const ox = -Math.round(seq.dx || 0), vy = oy - Math.round(seq.dy || 0);
   if (Math.abs(cam.fov - fov) > 0.01 || vy !== lastOy || ox !== lastOx || viewDirty) {
