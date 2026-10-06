@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-10-05T17:17:00+00:00",
+  "updatedAt": "2026-10-06T01:55:40+00:00",
   "source": "VISUAL NEWSIS editshop landing page",
   "articles": [
     {
@@ -130,6 +130,16 @@
       "description": "6·25전쟁 횡성전투에서 열아홉 나이로 전사한 故 김하동 일병이 75년 만에 가족의 품으로 돌아오기까지, 발굴부터 신원확인과 귀환행사를 따라갑니다.",
       "image": "https://visual.newsis.com/homecoming/images/NISI20260831_0021417256.jpg",
       "url": "https://visual.newsis.com/homecoming/",
+      "profile": "center"
+    },
+    {
+      "id": "dmz",
+      "issue": "편집#014",
+      "label": "DMZ / LANDMINE / 3D INTERACTIVE",
+      "title": "남방 2km 북방 2km 이곳은 悲무장지대입니다",
+      "description": "9월 21일 서부전선 DMZ 지뢰 폭발 사고를 계기로, 남방한계선에서 군사분계선을 지나 북방한계선까지 폭 4km 비무장지대를 3D로 통과합니다.",
+      "image": "https://visual.newsis.com/dmz/images/og-dmz-1200x630.jpg",
+      "url": "https://visual.newsis.com/dmz/",
       "profile": "center"
     }
   ]
