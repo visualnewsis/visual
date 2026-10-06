@@ -501,9 +501,12 @@
   </footer>
   <script>
     (()=>{
+      // 「지금, 이 이야기」에 걸린 기사는 목록에서 빼고, 최신 기사 쪽(끝)에서 시작한다.
+      const featured=document.querySelector('.latest a.feature')?.getAttribute('href');
+      if(featured)document.querySelectorAll('.archive-card').forEach(card=>{if(card.getAttribute('href')===featured)card.remove()});
       const viewport=document.querySelector('.archive-viewport'),track=document.querySelector('.archive-grid'),cards=[...document.querySelectorAll('.archive-card')],prev=document.querySelector('.archive-arrow.prev'),next=document.querySelector('.archive-arrow.next');
       if(!viewport||!track||!cards.length)return;
-      let index=0,startX=0,dragX=0,pointerDown=false,dragging=false,suppressClick=false,activePointer=null;
+      let index=Number.MAX_SAFE_INTEGER,startX=0,dragX=0,pointerDown=false,dragging=false,suppressClick=false,activePointer=null;
       const visible=()=>innerWidth<=520?1:innerWidth<=850?2:3;
       const max=()=>Math.max(0,cards.length-visible());
       const cardStep=()=>cards[0].getBoundingClientRect().width+1;

@@ -35,6 +35,15 @@
     next.addEventListener("click",()=>move(1));
     track.addEventListener("scroll",update,{passive:true});
     addEventListener("resize",update,{passive:true});
+    // 최신 기사가 기본 위치: 목록 끝(최신)에서 시작하고 ‹ 버튼으로 이전 기사로 이동한다.
+    let touched=false;
+    const toLatest=()=>{if(touched)return;track.scrollTo({left:track.scrollWidth,behavior:"instant"});update()};
+    ["pointerdown","wheel","touchstart","keydown"].forEach(type=>track.addEventListener(type,()=>{touched=true},{passive:true,once:true}));
+    prev.addEventListener("click",()=>{touched=true});
+    next.addEventListener("click",()=>{touched=true});
+    toLatest();
+    requestAnimationFrame(toLatest);
+    addEventListener("load",toLatest,{once:true});
     update();
   };
   document.readyState==="loading"?document.addEventListener("DOMContentLoaded",start):start();
