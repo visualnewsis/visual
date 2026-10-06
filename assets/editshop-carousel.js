@@ -14,7 +14,8 @@
     {slug:"pension",num:"010",meta:"국민연금과 노후",title:"국민연금, 믿어도 돼?",image:"/pension/images/hero-payslip-final.jpg",alt:"어두운 여백 안에 놓인 실제 급여명세서 캡처, 국민연금 공제액 1,579,379원이 강조돼 있음"},
     {slug:"senior",num:"011",meta:"고령화와 나이 기준",title:"환갑이면 고령? 천만예요",image:"/senior/images/NISI20240905_0020511616.jpg",alt:"웨딩 의상을 입고 붉은 런웨이를 걷는 두 사람"},
     {slug:"atleti-2gang",num:"012",meta:"라리가와 팀 전술",title:"AT, 라리가 '2강 IN'",image:"/atleti-2gang/images/hero-derby-bellingham.jpg",alt:"레알 마드리드전에서 상대 선수와 몸싸움하며 공을 지키는 이강인"},
-    {slug:"homecoming",num:"013",meta:"6·25와 유해발굴",title:"작은 뼈 조각으로, 가족 품에",image:"/homecoming/images/NISI20260831_0021417256.jpg",alt:"故 김하동 일병 귀환행사에서 신원확인 통지서가 담긴 함을 전달받는 동생 김하준 옹"}
+    {slug:"homecoming",num:"013",meta:"6·25와 유해발굴",title:"작은 뼈 조각으로, 가족 품에",image:"/homecoming/images/NISI20260831_0021417256.jpg",alt:"故 김하동 일병 귀환행사에서 신원확인 통지서가 담긴 함을 전달받는 동생 김하준 옹"},
+    {slug:"dmz",num:"014",meta:"DMZ와 지뢰 폭발",title:"이곳은 悲무장지대입니다",image:"/dmz/images/og-dmz-1200x630.jpg",alt:"군사분계선을 사이에 두고 남북 2km씩 펼쳐진 비무장지대 지형을 위에서 내려다본 3D 그래픽"}
   ];
   const start=()=>{
     const section=document.querySelector("section.more,section.editshop-next");

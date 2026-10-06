@@ -8,15 +8,15 @@
   2) 3D 공간은 공개 자료의 일반적 요소를 결합한 가상 합성 지형이다. 실제 DMZ 구간·GP·철책·지뢰 위치를 재현하지 않는다.
   3) [팩트 기준 2026-10-01, 안재현 기자 지시] 9.21 사고: 우리 군 3명 부상·2명 중상. 9.30 유엔사 발표: 합동 현장조사에서 MDL 남측 활성 북한제 대인지뢰 추가 확인, 정전협정 위반 발생 판단. 북한: 조사 결과·책임 부인.
      "북한제 대인지뢰 확인"은 현장조사에서 추가 발견된 활성 지뢰 맥락으로만 쓴다. 사고 원인 지뢰가 물증으로 특정된 것처럼 쓰지 않는다. 사진 캡션 범위를 넘어 지뢰 종류·원인을 단정하지 않는다.
-  4) 편집# 번호 014는 현재 발행 목록(homecoming=013) 기준 다음 순번으로 가정. 공용 랜딩·더보기 데이터·sitemap에는 아직 등록하지 않았다.
-  5) og:image(images/og-dmz-1200x630.jpg)는 이 페이지의 HERO 3D를 ?og 모드로 캡처한 것. 발행일(article:published_time)은 확정 시 수정.
+  4) 2026-10-06 정식 공개: 편집# 014 / VISUAL NEWSIS STORY 020. 메인·편집# 랜딩·더보기 데이터·sitemap 등록.
+  5) og:image(images/og-dmz-1200x630.jpg)는 이 페이지의 HERO 3D를 ?og 모드로 캡처한 것.
+  6) HERO 첫 사진 원본: NISI20190428_0015137002(강원 고성 금강산전망대, 2019, 국방일보 제공). 이후 전환 그림은 이 사진을 참조한 재해석 그림.
 -->
 <html lang="ko">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-  <!-- [테스트 배포] 정식 공개 전까지 noindex. 공개 시 index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1 로 되돌린다. -->
-  <meta name="robots" content="noindex,nofollow">
+  <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1">
   <link rel="canonical" href="https://visual.newsis.com/dmz/">
   <meta property="og:type" content="article">
   <meta property="og:locale" content="ko_KR">
@@ -54,11 +54,11 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/dmz.css?v=20261005-3">
+  <link rel="stylesheet" href="css/dmz.css?v=20261006-3">
   <link rel="stylesheet" href="../assets/visual-header.css?v=20260828-5">
   <link rel="stylesheet" href="../assets/editshop-carousel.css?v=20260826-3">
   <script defer src="../assets/visual-header.js?v=20261002-bukang" data-section="편집#" data-section-href="https://visual.newsis.com/editshop/" data-current="editshop"></script>
-  <script defer src="../assets/editshop-carousel.js?v=20261001-1" data-current="dmz"></script>
+  <script defer src="../assets/editshop-carousel.js?v=20261006-1" data-current="dmz"></script>
 </head>
 <body>
   <header class="topbar">
@@ -77,7 +77,7 @@
     <picture><source media="(max-width:819px)" srcset="images/web/hero-between-relief-v1-800.webp"><img class="intro-between" src="images/web/hero-between-relief-v1.webp" alt="" width="1440" height="901"></picture>
     <picture><source media="(max-width:819px)" srcset="images/web/hero-lift-2-mobile-v1.webp"><img class="intro-lift2" src="images/web/hero-lift-2-v1.webp" alt="" width="1440" height="900"></picture>
     <canvas class="intro-map"></canvas>
-    <span class="intro-source">접경 풍경 참고 사진 · 사건 현장과 다릅니다</span>
+    <span class="intro-source">강원 고성 금강산전망대에서 본 접경 풍경(2019) · 사건 현장과 다릅니다 (사진=국방일보 제공)</span>
   </div>
   <div class="fallback" aria-hidden="true"><p id="gl-why" class="gl-why"></p>
     <svg viewBox="0 0 900 260"><rect x="150" y="40" width="600" height="180" fill="#cdd3cb"/><line x1="150" y1="30" x2="150" y2="230" stroke="#fff" stroke-width="3"/><line x1="450" y1="30" x2="450" y2="230" stroke="#00b4c9" stroke-width="4"/><line x1="750" y1="30" x2="750" y2="230" stroke="#fff" stroke-width="3"/><text x="150" y="252" text-anchor="middle" font-size="16" font-weight="800" fill="#121516">남방 2km</text><text x="450" y="252" text-anchor="middle" font-size="16" font-weight="800" fill="#007f91">0 km</text><text x="750" y="252" text-anchor="middle" font-size="16" font-weight="800" fill="#121516">북방 2km</text></svg>
@@ -94,8 +94,10 @@
     <!-- SCENE 00 HERO -->
     <section class="step hero" data-key="hero" style="--h:500">
       <div class="kicker">편집# 014</div>
-      <h1><span class="t1">남방 2km 북방 2km</span><span class="t2">이곳은 <span class="bi">悲</span>무장지대입니다</span></h1>
+      <div class="hero-head">
+      <h1><span class="t1">남방 2km 북방 2km</span><span class="t2">이곳은 <span class="bi" data-gloss="슬플 비">悲</span>무장지대입니다</span></h1>
       <p class="byline">기획·디렉터 = 안재현 기자</p>
+      </div>
       <div class="scroll-cue" aria-hidden="true">SCROLL<i></i></div>
     </section>
     <div class="gap" style="--h:30"></div>
