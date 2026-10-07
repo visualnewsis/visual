@@ -5,7 +5,7 @@
     "username": "newsis",
     "port": "22",
     "beforeHooks": "",
-    "afterHooks": "",
+    "afterHooks": "rm -f /home/newsis/sites/visual/htdocs/senior/AWARD_SUBMISSION_DRAFT.md /home/newsis/sites/visual/htdocs/senior/STORYBOARD_V1.md /home/newsis/sites/visual/htdocs/senior/PHOTO_PLAN.md /home/newsis/sites/visual/htdocs/senior/RECALL_ANSWERS_SETUP.md /home/newsis/sites/visual/htdocs/senior/index_v1.html /home/newsis/sites/visual/htdocs/senior/index_v2.html /home/newsis/sites/visual/htdocs/senior/index_v3.html /home/newsis/sites/visual/htdocs/senior/index_v4.html",
     "backbeforeHooks": "",
     "backafterHooks": "",
     "path": "/home/newsis/sites/visual/htdocs",
