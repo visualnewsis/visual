@@ -1,5 +1,6 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://visual.newsis.com/sitemap.xml
+# SiteMap
+Sitemap: https://visual.newsis.com/sitemap-sections.xml
 Sitemap: https://visual.newsis.com/sitemap-news.xml
