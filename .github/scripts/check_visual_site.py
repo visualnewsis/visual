@@ -57,6 +57,10 @@ def main() -> int:
     carousel_slugs = set(re.findall(r'\{slug:"([^"]+)"', visual_carousel_js))
     if archive_slugs != carousel_slugs:
         fail(errors, "VISUAL NEWSIS carousel stories must match the main ALL STORIES archive")
+    news_sitemap = (ROOT / "sitemap-news.xml").read_text(encoding="utf-8")
+    news_slugs = set(re.findall(r'<loc>https://visual.newsis.com/([^/<]+)/</loc>', news_sitemap))
+    if not archive_slugs <= news_slugs:
+        fail(errors, f"sitemap-news.xml is missing ALL STORIES entries: {sorted(archive_slugs - news_slugs)}")
     if "비주얼 뉴시스" not in visual_carousel_js or "#00a9ba" not in visual_carousel_css:
         fail(errors, "VISUAL NEWSIS more-stories heading treatment is missing")
     newsystem_carousel_js = (ROOT / "assets" / "newsystem-carousel.js").read_text(encoding="utf-8")
