@@ -21,7 +21,8 @@
     {slug:"atleti-2gang",num:"017",meta:"라리가 · 팀 전술 · 인터랙티브",title:"AT, 라리가 '2강 IN'",image:"/atleti-2gang/images/hero-derby-bellingham.jpg",alt:"레알 마드리드전에서 상대 선수와 몸싸움하며 공을 지키는 이강인"},
     {slug:"homecoming",num:"018",meta:"6·25 · 유해발굴 · 인터랙티브",title:"작은 뼈 조각으로, 가족 품에",image:"/homecoming/images/NISI20260831_0021417256.jpg",alt:"故 김하동 일병 귀환행사에서 신원확인 통지서가 담긴 함을 전달받는 동생 김하준 옹"},
     {slug:"bukang",num:"019",meta:"부산 북항 · 상어 · 지도 인터랙티브",title:"알아볼지도 부캉이편",image:"/bukang/images/02-crowd-shark.jpg",alt:"부산 북항 친수공원 수로에서 헤엄치는 상어 부캉이를 난간 너머로 촬영하는 시민들"},
-    {slug:"dmz",num:"020",meta:"DMZ · 지뢰 폭발 · 3D 인터랙티브",title:"남방 2km 북방 2km 이곳은 悲무장지대입니다",image:"/dmz/images/dmz-cover-1200x800.jpg",alt:"비무장지대 너머 북한군 초소와 그 아래 우리 군 초소가 마주 보고 있는 모습"}
+    {slug:"dmz",num:"020",meta:"DMZ · 지뢰 폭발 · 3D 인터랙티브",title:"남방 2km 북방 2km 이곳은 悲무장지대입니다",image:"/dmz/images/dmz-cover-1200x800.jpg",alt:"비무장지대 너머 북한군 초소와 그 아래 우리 군 초소가 마주 보고 있는 모습"},
+    {slug:"nuri5",num:"021",meta:"누리호 5차 · 위성 15기 · 비행 인터랙티브",title:"누리호 5차 비행기록",image:"/nuri5/og.jpg",alt:"한반도 남쪽에서 이륙해 우주로 솟아오르는 누리호를 위성 지도 위에 그린 그래픽"}
   ];
   const mount=host=>{
     const visible=stories.filter(story=>story.slug!==current);
