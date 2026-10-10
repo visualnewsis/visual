@@ -1,25 +1,12 @@
 {
-  "updatedAt": "2026-10-10T14:34:43+00:00",
+  "updatedAt": "2026-10-10T20:11:31+00:00",
   "source": "NEWSIS official RSS headlines and article leads",
   "title": "오늘의 낱말",
   "puzzles": [
     {
       "rows": 5,
-      "cols": 8,
+      "cols": 10,
       "words": [
-        {
-          "answer": "구조",
-          "definition": "소식이 오랫동안 막힘.",
-          "definitionSource": "우리말샘",
-          "clue": "부산 용호부두 앞바다에 빠진 60대 여성 □□",
-          "category": "사회",
-          "title": "부산 용호부두 앞바다에 빠진 60대 여성 구조",
-          "url": "https://www.newsis.com/view/NISX20261010_0003820671",
-          "row": 0,
-          "col": 1,
-          "direction": "across",
-          "number": 1
-        },
         {
           "answer": "조국혁신당",
           "definition": "대한민국의 정당 이름.",
@@ -31,20 +18,46 @@
           "row": 0,
           "col": 2,
           "direction": "down",
+          "number": 1
+        },
+        {
+          "answer": "사형",
+          "definition": "남에게 자기의 형을 겸손하게 이르는 말.",
+          "definitionSource": "우리말샘",
+          "clue": "교황, 美 총살형 생중계 방침 비판…\"□□, 인간 존엄성 공격\"",
+          "category": "국제",
+          "title": "교황, 美 총살형 생중계 방침 비판…\"사형, 인간 존엄성 공격\"",
+          "url": "https://www.newsis.com/view/NISX20261011_0003820738",
+          "row": 0,
+          "col": 5,
+          "direction": "down",
           "number": 2
         },
         {
-          "answer": "부산",
-          "definition": "급하게 서두르거나 시끄럽게 떠들어 어수선함.",
+          "answer": "연합군",
+          "definition": "전쟁에서 둘 혹은 둘 이상의 국가가 연합하여 구성한 군대.",
           "definitionSource": "우리말샘",
-          "clue": "□□ 용호부두 앞바다에 빠진 60대 여성 구조",
-          "category": "사회",
-          "title": "부산 용호부두 앞바다에 빠진 60대 여성 구조",
-          "url": "https://www.newsis.com/view/NISX20261010_0003820671",
+          "clue": "트럼프 \"美, 후티 격퇴 사우디 주도 □□□ 작전 동참할 수도…곧 결정\"",
+          "category": "국제",
+          "title": "트럼프 \"美, 후티 격퇴 사우디 주도 연합군 작전 동참할 수도…곧 결정\"",
+          "url": "https://www.newsis.com/view/NISX20261011_0003820737",
+          "row": 0,
+          "col": 7,
+          "direction": "across",
+          "number": 3
+        },
+        {
+          "answer": "연산",
+          "definition": "일 년 동안 생산 또는 산출하는 총량.",
+          "definitionSource": "우리말샘",
+          "clue": "AI칩 빌리는 값 1년새 60% 뛰었다…클로드도 □□ 모자라 장애 잦았다",
+          "category": "국제",
+          "title": "AI칩 빌리는 값 1년새 60% 뛰었다…클로드도 연산 모자라 장애 잦았다",
+          "url": "https://www.newsis.com/view/NISX20261011_0003820733",
           "row": 0,
           "col": 7,
           "direction": "down",
-          "number": 3
+          "number": 4
         },
         {
           "answer": "국가무형유산",
@@ -57,32 +70,19 @@
           "row": 1,
           "col": 2,
           "direction": "across",
-          "number": 4
-        },
-        {
-          "answer": "무궁화호",
-          "definition": "우리나라의 급행열차. 최고 시속은 150km이며, 2020년까지 운행될 계획이다.",
-          "definitionSource": "우리말샘",
-          "clue": "이게 □□□□ 맞아?…객실부터 바퀴까지 전면 리모델링[짤막영상]",
-          "category": "경제",
-          "title": "이게 무궁화호 맞아?…객실부터 바퀴까지 전면 리모델링[짤막영상]",
-          "url": "https://www.newsis.com/view/NISX20261007_0003817653",
-          "row": 1,
-          "col": 4,
-          "direction": "down",
           "number": 5
         },
         {
-          "answer": "화재",
-          "definition": "불이 나는 재앙. 또는 불로 인한 재난.",
+          "answer": "국민",
+          "definition": "국가를 구성하는 사람. 또는 그 나라의 국적을 가진 사람.",
           "definitionSource": "우리말샘",
-          "clue": "창원 성산구 공단서 폐기물 □□, 냄새·연기 발생",
-          "category": "사회",
-          "title": "창원 성산구 공단서 폐기물 화재, 냄새·연기 발생",
-          "url": "https://www.newsis.com/view/NISX20261010_0003820687",
+          "clue": "이 대통령 \"돈벌이로 □□ 위해 가하는 것 어떤 경우도 용납 안돼\"",
+          "category": "정치",
+          "title": "이 대통령 \"돈벌이로 국민 위해 가하는 것 어떤 경우도 용납 안돼\"",
+          "url": "https://www.newsis.com/view/NISX20261010_0003820725",
           "row": 3,
-          "col": 4,
-          "direction": "across",
+          "col": 0,
+          "direction": "down",
           "number": 6
         },
         {
@@ -101,9 +101,22 @@
       ]
     },
     {
-      "rows": 7,
+      "rows": 6,
       "cols": 7,
       "words": [
+        {
+          "answer": "전쟁",
+          "definition": "국가와 국가, 또는 교전(交戰) 단체 사이에 무력을 사용하여 싸움.",
+          "definitionSource": "우리말샘",
+          "clue": "트럼프, 노벨상 불발에 불만 쏟아내…\"난 8개 □□ 끝내\"",
+          "category": "국제",
+          "title": "트럼프, 노벨상 불발에 불만 쏟아내…\"난 8개 전쟁 끝내\"",
+          "url": "https://www.newsis.com/view/NISX20261010_0003820728",
+          "row": 0,
+          "col": 2,
+          "direction": "across",
+          "number": 1
+        },
         {
           "answer": "전문가",
           "definition": "어떤 분야를 연구하거나 그 일에 종사하여 그 분야에 상당한 지식과 경험을 가진 사람.",
@@ -115,7 +128,7 @@
           "row": 0,
           "col": 2,
           "direction": "down",
-          "number": 1
+          "number": 2
         },
         {
           "answer": "김유정",
@@ -128,7 +141,7 @@
           "row": 1,
           "col": 5,
           "direction": "down",
-          "number": 2
+          "number": 3
         },
         {
           "answer": "국가무형유산",
@@ -141,7 +154,7 @@
           "row": 2,
           "col": 1,
           "direction": "across",
-          "number": 3
+          "number": 4
         },
         {
           "answer": "국채금리",
@@ -154,116 +167,6 @@
           "row": 2,
           "col": 1,
           "direction": "down",
-          "number": 4
-        },
-        {
-          "answer": "소금",
-          "definition": "참새, 제비, 종달새 따위의 작은 새를 통틀어 이르는 말.",
-          "definitionSource": "우리말샘",
-          "clue": "라이 총통, 국경일 연설 키워드…‘산 위의 도시 건설·세상의 □□과 빛’",
-          "category": "국제",
-          "title": "라이 총통, 국경일 연설 키워드…‘산 위의 도시 건설·세상의 소금과 빛’",
-          "url": "https://www.newsis.com/view/NISX20261010_0003820699",
-          "row": 4,
-          "col": 0,
-          "direction": "across",
-          "number": 5
-        },
-        {
-          "answer": "리모델링",
-          "definition": "사용하던 주택이나 빌딩 따위를 목적과 용도에 맞게 고쳐 새것처럼 바꿈.",
-          "definitionSource": "우리말샘",
-          "clue": "이게 무궁화호 맞아?…객실부터 바퀴까지 전면 □□□□[짤막영상]",
-          "category": "경제",
-          "title": "이게 무궁화호 맞아?…객실부터 바퀴까지 전면 리모델링[짤막영상]",
-          "url": "https://www.newsis.com/view/NISX20261007_0003817653",
-          "row": 5,
-          "col": 1,
-          "direction": "across",
-          "number": 6
-        },
-        {
-          "answer": "델리",
-          "definition": "인도의 북부에 있는 상업 도시. 미술 공예품이 생산된다. 뉴델리 이전에 인도의 수도였다. 면적은 932㎢.",
-          "definitionSource": "우리말샘",
-          "clue": "印 선거인 명부 조작 논란속 수도 □□ 시위…야당 지도자 등 수백명 체포·구금",
-          "category": "국제",
-          "title": "印 선거인 명부 조작 논란속 수도 델리 시위…야당 지도자 등 수백명 체포·구금",
-          "url": "https://www.newsis.com/view/NISX20261010_0003820689",
-          "row": 5,
-          "col": 3,
-          "direction": "down",
-          "number": 7
-        }
-      ]
-    },
-    {
-      "rows": 6,
-      "cols": 6,
-      "words": [
-        {
-          "answer": "전문가",
-          "definition": "어떤 분야를 연구하거나 그 일에 종사하여 그 분야에 상당한 지식과 경험을 가진 사람.",
-          "definitionSource": "우리말샘",
-          "clue": "\"가만히 있으면 벼락거지\"…□□□가 말하는 돈 풀릴 때 자산 지키는 법",
-          "category": "경제",
-          "title": "\"가만히 있으면 벼락거지\"…전문가가 말하는 돈 풀릴 때 자산 지키는 법",
-          "url": "https://www.newsis.com/view/NISX20261010_0003820560",
-          "row": 0,
-          "col": 1,
-          "direction": "down",
-          "number": 1
-        },
-        {
-          "answer": "김유정",
-          "definition": "소설가(1908~1937). ‘구인회’에 참가하였으며, 농촌과 도시의 토속적 인간상을 유머러스한 필치로 그려 내었다. 작품에 <봄봄>, <동백꽃>, <따라지> 따위가 있다.",
-          "definitionSource": "우리말샘",
-          "clue": "배우 □□□, 한남 유엔빌리지 떠나 성동 월세살이 왜?",
-          "category": "경제",
-          "title": "배우 김유정, 한남 유엔빌리지 떠나 성동 월세살이 왜?",
-          "url": "https://www.newsis.com/view/NISX20261010_0003820546",
-          "row": 1,
-          "col": 4,
-          "direction": "down",
-          "number": 2
-        },
-        {
-          "answer": "국가무형유산",
-          "definition": "국가에서 지정하여 법률로 보호하는 무형유산.",
-          "definitionSource": "우리말샘",
-          "clue": "\"가장 거문고다운 소리\"…□□□□□□ 이정석 공연",
-          "category": "문화",
-          "title": "\"가장 거문고다운 소리\"…국가무형유산 이정석 공연",
-          "url": "https://www.newsis.com/view/NISX20261006_0003815229",
-          "row": 2,
-          "col": 0,
-          "direction": "across",
-          "number": 3
-        },
-        {
-          "answer": "국경",
-          "definition": "나라와 나라의 영역을 가르는 경계.",
-          "definitionSource": "우리말샘",
-          "clue": "'아비뇽 예술감독' 호드리게즈 \"예술엔 □□ 없죠\"",
-          "category": "문화",
-          "title": "'아비뇽 예술감독' 호드리게즈 \"예술엔 국경 없죠\"",
-          "url": "https://www.newsis.com/view/NISX20261010_0003820573",
-          "row": 2,
-          "col": 0,
-          "direction": "down",
-          "number": 4
-        },
-        {
-          "answer": "국경일",
-          "definition": "나라의 경사를 기념하기 위하여, 국가에서 법률로 정한 경축일. 우리나라에는 삼일절, 제헌절, 광복절, 개천절, 한글날이 있다.",
-          "definitionSource": "우리말샘",
-          "clue": "라이 총통, □□□ 연설 키워드…‘산 위의 도시 건설·세상의 소금과 빛’",
-          "category": "국제",
-          "title": "라이 총통, 국경일 연설 키워드…‘산 위의 도시 건설·세상의 소금과 빛’",
-          "url": "https://www.newsis.com/view/NISX20261010_0003820699",
-          "row": 2,
-          "col": 0,
-          "direction": "down",
           "number": 5
         },
         {
@@ -275,50 +178,50 @@
           "title": "이게 무궁화호 맞아?…객실부터 바퀴까지 전면 리모델링[짤막영상]",
           "url": "https://www.newsis.com/view/NISX20261007_0003817653",
           "row": 2,
-          "col": 2,
+          "col": 3,
           "direction": "down",
           "number": 6
         },
         {
-          "answer": "화재",
-          "definition": "불이 나는 재앙. 또는 불로 인한 재난.",
+          "answer": "빌리",
+          "definition": "북유럽 신화에 나오는 <FL>보르</FL>의 둘째 아들. <FL>보르</FL>와 <FL>베스틀라</FL>의 사이에서 태어났으며, <FL>베</FL>와 오딘의 형제이다. <FL>베</FL>, 오딘과 함께 거인 이미르를 공격하여 살해하였고, 이미르의 몸으로 세상을 창조하였다. 두 형제와 더불어 두 그루의 나무로 최초의 인간인 남자와 여자를 만들고 그들에게 생각하는 능력과 감정을 주었다. ⇒규범 표기는 미확정이다.",
           "definitionSource": "우리말샘",
-          "clue": "창원 성산구 공단서 폐기물 □□, 냄새·연기 발생",
-          "category": "사회",
-          "title": "창원 성산구 공단서 폐기물 화재, 냄새·연기 발생",
-          "url": "https://www.newsis.com/view/NISX20261010_0003820687",
-          "row": 4,
-          "col": 2,
+          "clue": "AI칩 □□는 값 1년새 60% 뛰었다…클로드도 연산 모자라 장애 잦았다",
+          "category": "국제",
+          "title": "AI칩 빌리는 값 1년새 60% 뛰었다…클로드도 연산 모자라 장애 잦았다",
+          "url": "https://www.newsis.com/view/NISX20261011_0003820733",
+          "row": 5,
+          "col": 0,
           "direction": "across",
           "number": 7
         }
       ]
     },
     {
-      "rows": 5,
+      "rows": 4,
       "cols": 8,
       "words": [
         {
-          "answer": "성수",
-          "definition": "흥겨운 신이나 멋. ⇒규범 표기는 ‘신명’이다.",
+          "answer": "총살형",
+          "definition": "총으로 쏘아 죽이는 형벌.",
           "definitionSource": "우리말샘",
-          "clue": "□□ 한강변에 자이·아크로·래미안·르엘…72층 초고층 단지로",
-          "category": "경제",
-          "title": "성수 한강변에 자이·아크로·래미안·르엘…72층 초고층 단지로",
-          "url": "https://www.newsis.com/view/NISX20261007_0003816895",
+          "clue": "교황, 美 □□□ 생중계 방침 비판…\"사형, 인간 존엄성 공격\"",
+          "category": "국제",
+          "title": "교황, 美 총살형 생중계 방침 비판…\"사형, 인간 존엄성 공격\"",
+          "url": "https://www.newsis.com/view/NISX20261011_0003820738",
           "row": 0,
-          "col": 6,
-          "direction": "across",
+          "col": 3,
+          "direction": "down",
           "number": 1
         },
         {
-          "answer": "성동",
-          "definition": "열다섯 살 된 사내아이를 이르는 말.",
+          "answer": "종합",
+          "definition": "여러 가지를 한데 모아서 합함.",
           "definitionSource": "우리말샘",
-          "clue": "배우 김유정, 한남 유엔빌리지 떠나 □□ 월세살이 왜?",
-          "category": "경제",
-          "title": "배우 김유정, 한남 유엔빌리지 떠나 성동 월세살이 왜?",
-          "url": "https://www.newsis.com/view/NISX20261010_0003820546",
+          "clue": "與 \"한동훈, 딸 사건 덮었나\" 韓 \"민주당의 망상\"(□□)",
+          "category": "정치",
+          "title": "與 \"한동훈, 딸 사건 덮었나\" 韓 \"민주당의 망상\"(종합)",
+          "url": "https://www.newsis.com/view/NISX20261010_0003820657",
           "row": 0,
           "col": 6,
           "direction": "down",
@@ -338,17 +241,101 @@
           "number": 3
         },
         {
-          "answer": "자동",
-          "definition": "기계나 설비 따위가 자체 내에 있는 일정한 장치의 작용에 의하여 스스로 작동함. 또는 그런 기계.",
+          "answer": "연합군",
+          "definition": "전쟁에서 둘 혹은 둘 이상의 국가가 연합하여 구성한 군대.",
           "definitionSource": "우리말샘",
-          "clue": "1245회 로또 1등 각 30억씩…10명 모두 □□(종합)",
-          "category": "사회",
-          "title": "1245회 로또 1등 각 30억씩…10명 모두 자동(종합)",
-          "url": "https://www.newsis.com/view/NISX20261010_0003820693",
+          "clue": "트럼프 \"美, 후티 격퇴 사우디 주도 □□□ 작전 동참할 수도…곧 결정\"",
+          "category": "국제",
+          "title": "트럼프 \"美, 후티 격퇴 사우디 주도 연합군 작전 동참할 수도…곧 결정\"",
+          "url": "https://www.newsis.com/view/NISX20261011_0003820737",
           "row": 1,
           "col": 5,
           "direction": "across",
           "number": 4
+        },
+        {
+          "answer": "연산",
+          "definition": "일 년 동안 생산 또는 산출하는 총량.",
+          "definitionSource": "우리말샘",
+          "clue": "AI칩 빌리는 값 1년새 60% 뛰었다…클로드도 □□ 모자라 장애 잦았다",
+          "category": "국제",
+          "title": "AI칩 빌리는 값 1년새 60% 뛰었다…클로드도 연산 모자라 장애 잦았다",
+          "url": "https://www.newsis.com/view/NISX20261011_0003820733",
+          "row": 1,
+          "col": 5,
+          "direction": "down",
+          "number": 5
+        },
+        {
+          "answer": "국가무형유산",
+          "definition": "국가에서 지정하여 법률로 보호하는 무형유산.",
+          "definitionSource": "우리말샘",
+          "clue": "\"가장 거문고다운 소리\"…□□□□□□ 이정석 공연",
+          "category": "문화",
+          "title": "\"가장 거문고다운 소리\"…국가무형유산 이정석 공연",
+          "url": "https://www.newsis.com/view/NISX20261006_0003815229",
+          "row": 2,
+          "col": 0,
+          "direction": "across",
+          "number": 6
+        },
+        {
+          "answer": "가을",
+          "definition": "한 해의 네 철 가운데 셋째 철. 여름과 겨울의 사이이며, 달로는 9~11월, 절기(節氣)로는 입추부터 입동 전까지를 이른다.",
+          "definitionSource": "우리말샘",
+          "clue": "\"독성이 있어요\"…□□ 산, 밤인척 하는 '이 열매'",
+          "category": "사회",
+          "title": "\"독성이 있어요\"…가을 산, 밤인척 하는 '이 열매'",
+          "url": "https://www.newsis.com/view/NISX20261008_0003819343",
+          "row": 2,
+          "col": 1,
+          "direction": "down",
+          "number": 7
+        }
+      ]
+    },
+    {
+      "rows": 6,
+      "cols": 6,
+      "words": [
+        {
+          "answer": "반전",
+          "definition": "논을 밭으로 만듦. ⇒규범 표기는 ‘번전’이다.",
+          "definitionSource": "우리말샘",
+          "clue": "\"말없이 내 카드로 47만원 긁은 여자친구\"…알고 보니 '□□ 선물'",
+          "category": "사회",
+          "title": "\"말없이 내 카드로 47만원 긁은 여자친구\"…알고 보니 '반전 선물'",
+          "url": "https://www.newsis.com/view/NISX20261010_0003820466",
+          "row": 0,
+          "col": 0,
+          "direction": "across",
+          "number": 1
+        },
+        {
+          "answer": "전문가",
+          "definition": "어떤 분야를 연구하거나 그 일에 종사하여 그 분야에 상당한 지식과 경험을 가진 사람.",
+          "definitionSource": "우리말샘",
+          "clue": "\"가만히 있으면 벼락거지\"…□□□가 말하는 돈 풀릴 때 자산 지키는 법",
+          "category": "경제",
+          "title": "\"가만히 있으면 벼락거지\"…전문가가 말하는 돈 풀릴 때 자산 지키는 법",
+          "url": "https://www.newsis.com/view/NISX20261010_0003820560",
+          "row": 0,
+          "col": 1,
+          "direction": "down",
+          "number": 2
+        },
+        {
+          "answer": "총살형",
+          "definition": "총으로 쏘아 죽이는 형벌.",
+          "definitionSource": "우리말샘",
+          "clue": "교황, 美 □□□ 생중계 방침 비판…\"사형, 인간 존엄성 공격\"",
+          "category": "국제",
+          "title": "교황, 美 총살형 생중계 방침 비판…\"사형, 인간 존엄성 공격\"",
+          "url": "https://www.newsis.com/view/NISX20261011_0003820738",
+          "row": 0,
+          "col": 3,
+          "direction": "down",
+          "number": 3
         },
         {
           "answer": "자산",
@@ -358,6 +345,116 @@
           "category": "경제",
           "title": "\"가만히 있으면 벼락거지\"…전문가가 말하는 돈 풀릴 때 자산 지키는 법",
           "url": "https://www.newsis.com/view/NISX20261010_0003820560",
+          "row": 1,
+          "col": 5,
+          "direction": "down",
+          "number": 4
+        },
+        {
+          "answer": "국가무형유산",
+          "definition": "국가에서 지정하여 법률로 보호하는 무형유산.",
+          "definitionSource": "우리말샘",
+          "clue": "\"가장 거문고다운 소리\"…□□□□□□ 이정석 공연",
+          "category": "문화",
+          "title": "\"가장 거문고다운 소리\"…국가무형유산 이정석 공연",
+          "url": "https://www.newsis.com/view/NISX20261006_0003815229",
+          "row": 2,
+          "col": 0,
+          "direction": "across",
+          "number": 5
+        },
+        {
+          "answer": "국경",
+          "definition": "나라와 나라의 영역을 가르는 경계.",
+          "definitionSource": "우리말샘",
+          "clue": "'아비뇽 예술감독' 호드리게즈 \"예술엔 □□ 없죠\"",
+          "category": "문화",
+          "title": "'아비뇽 예술감독' 호드리게즈 \"예술엔 국경 없죠\"",
+          "url": "https://www.newsis.com/view/NISX20261010_0003820573",
+          "row": 2,
+          "col": 0,
+          "direction": "down",
+          "number": 6
+        },
+        {
+          "answer": "무궁화호",
+          "definition": "우리나라의 급행열차. 최고 시속은 150km이며, 2020년까지 운행될 계획이다.",
+          "definitionSource": "우리말샘",
+          "clue": "이게 □□□□ 맞아?…객실부터 바퀴까지 전면 리모델링[짤막영상]",
+          "category": "경제",
+          "title": "이게 무궁화호 맞아?…객실부터 바퀴까지 전면 리모델링[짤막영상]",
+          "url": "https://www.newsis.com/view/NISX20261007_0003817653",
+          "row": 2,
+          "col": 2,
+          "direction": "down",
+          "number": 7
+        }
+      ]
+    },
+    {
+      "rows": 5,
+      "cols": 8,
+      "words": [
+        {
+          "answer": "종합",
+          "definition": "여러 가지를 한데 모아서 합함.",
+          "definitionSource": "우리말샘",
+          "clue": "與 \"한동훈, 딸 사건 덮었나\" 韓 \"민주당의 망상\"(□□)",
+          "category": "정치",
+          "title": "與 \"한동훈, 딸 사건 덮었나\" 韓 \"민주당의 망상\"(종합)",
+          "url": "https://www.newsis.com/view/NISX20261010_0003820657",
+          "row": 0,
+          "col": 6,
+          "direction": "down",
+          "number": 1
+        },
+        {
+          "answer": "미국",
+          "definition": "쌀가루를 쪄서 띄운 누룩.",
+          "definitionSource": "우리말샘",
+          "clue": "\"□□ 국채금리 사상 최고치\"…□□ 국채금리 급등이 바꿀 경제 흐름",
+          "category": "경제",
+          "title": "\"미국 국채금리 사상 최고치\"…미국 국채금리 급등이 바꿀 경제 흐름",
+          "url": "https://www.newsis.com/view/NISX20261010_0003820478",
+          "row": 1,
+          "col": 0,
+          "direction": "down",
+          "number": 2
+        },
+        {
+          "answer": "사형",
+          "definition": "남에게 자기의 형을 겸손하게 이르는 말.",
+          "definitionSource": "우리말샘",
+          "clue": "교황, 美 총살형 생중계 방침 비판…\"□□, 인간 존엄성 공격\"",
+          "category": "국제",
+          "title": "교황, 美 총살형 생중계 방침 비판…\"사형, 인간 존엄성 공격\"",
+          "url": "https://www.newsis.com/view/NISX20261011_0003820738",
+          "row": 1,
+          "col": 3,
+          "direction": "down",
+          "number": 3
+        },
+        {
+          "answer": "연합군",
+          "definition": "전쟁에서 둘 혹은 둘 이상의 국가가 연합하여 구성한 군대.",
+          "definitionSource": "우리말샘",
+          "clue": "트럼프 \"美, 후티 격퇴 사우디 주도 □□□ 작전 동참할 수도…곧 결정\"",
+          "category": "국제",
+          "title": "트럼프 \"美, 후티 격퇴 사우디 주도 연합군 작전 동참할 수도…곧 결정\"",
+          "url": "https://www.newsis.com/view/NISX20261011_0003820737",
+          "row": 1,
+          "col": 5,
+          "direction": "across",
+          "number": 4
+        },
+        {
+          "answer": "연산",
+          "definition": "일 년 동안 생산 또는 산출하는 총량.",
+          "definitionSource": "우리말샘",
+          "clue": "AI칩 빌리는 값 1년새 60% 뛰었다…클로드도 □□ 모자라 장애 잦았다",
+          "category": "국제",
+          "title": "AI칩 빌리는 값 1년새 60% 뛰었다…클로드도 연산 모자라 장애 잦았다",
+          "url": "https://www.newsis.com/view/NISX20261011_0003820733",
           "row": 1,
           "col": 5,
           "direction": "down",
@@ -390,121 +487,11 @@
           "number": 7
         }
       ]
-    },
-    {
-      "rows": 6,
-      "cols": 7,
-      "words": [
-        {
-          "answer": "성산구",
-          "definition": "경상남도 창원시 중동부에 있는 구. 창원 국가 산업 단지가 위치해 있으며, 창원 성산 패총, 진례 산성(進禮山城) 등의 유적지가 있다. 면적은 82.12㎢.",
-          "definitionSource": "우리말샘",
-          "clue": "창원 □□□ 공단서 폐기물 화재, 냄새·연기 발생",
-          "category": "사회",
-          "title": "창원 성산구 공단서 폐기물 화재, 냄새·연기 발생",
-          "url": "https://www.newsis.com/view/NISX20261010_0003820687",
-          "row": 0,
-          "col": 5,
-          "direction": "down",
-          "number": 1
-        },
-        {
-          "answer": "국가무형유산",
-          "definition": "국가에서 지정하여 법률로 보호하는 무형유산.",
-          "definitionSource": "우리말샘",
-          "clue": "\"가장 거문고다운 소리\"…□□□□□□ 이정석 공연",
-          "category": "문화",
-          "title": "\"가장 거문고다운 소리\"…국가무형유산 이정석 공연",
-          "url": "https://www.newsis.com/view/NISX20261006_0003815229",
-          "row": 1,
-          "col": 0,
-          "direction": "across",
-          "number": 2
-        },
-        {
-          "answer": "국경일",
-          "definition": "나라의 경사를 기념하기 위하여, 국가에서 법률로 정한 경축일. 우리나라에는 삼일절, 제헌절, 광복절, 개천절, 한글날이 있다.",
-          "definitionSource": "우리말샘",
-          "clue": "라이 총통, □□□ 연설 키워드…‘산 위의 도시 건설·세상의 소금과 빛’",
-          "category": "국제",
-          "title": "라이 총통, 국경일 연설 키워드…‘산 위의 도시 건설·세상의 소금과 빛’",
-          "url": "https://www.newsis.com/view/NISX20261010_0003820699",
-          "row": 1,
-          "col": 0,
-          "direction": "down",
-          "number": 3
-        },
-        {
-          "answer": "무궁화호",
-          "definition": "우리나라의 급행열차. 최고 시속은 150km이며, 2020년까지 운행될 계획이다.",
-          "definitionSource": "우리말샘",
-          "clue": "이게 □□□□ 맞아?…객실부터 바퀴까지 전면 리모델링[짤막영상]",
-          "category": "경제",
-          "title": "이게 무궁화호 맞아?…객실부터 바퀴까지 전면 리모델링[짤막영상]",
-          "url": "https://www.newsis.com/view/NISX20261007_0003817653",
-          "row": 1,
-          "col": 2,
-          "direction": "down",
-          "number": 4
-        },
-        {
-          "answer": "구금",
-          "definition": "아홉 겹의 금문(禁門)이라는 뜻으로, 대궐을 이르는 말.",
-          "definitionSource": "우리말샘",
-          "clue": "印 선거인 명부 조작 논란속 수도 델리 시위…야당 지도자 등 수백명 체포·□□",
-          "category": "국제",
-          "title": "印 선거인 명부 조작 논란속 수도 델리 시위…야당 지도자 등 수백명 체포·구금",
-          "url": "https://www.newsis.com/view/NISX20261010_0003820689",
-          "row": 2,
-          "col": 5,
-          "direction": "across",
-          "number": 5
-        },
-        {
-          "answer": "용호부두",
-          "definition": "부산광역시 남구에 있는 부두. 1990년 개장하였다.",
-          "definitionSource": "우리말샘",
-          "clue": "부산 □□□□ 앞바다에 빠진 60대 여성 구조",
-          "category": "사회",
-          "title": "부산 용호부두 앞바다에 빠진 60대 여성 구조",
-          "url": "https://www.newsis.com/view/NISX20261010_0003820671",
-          "row": 4,
-          "col": 1,
-          "direction": "across",
-          "number": 6
-        },
-        {
-          "answer": "부산",
-          "definition": "급하게 서두르거나 시끄럽게 떠들어 어수선함.",
-          "definitionSource": "우리말샘",
-          "clue": "□□ 용호부두 앞바다에 빠진 60대 여성 구조",
-          "category": "사회",
-          "title": "부산 용호부두 앞바다에 빠진 60대 여성 구조",
-          "url": "https://www.newsis.com/view/NISX20261010_0003820671",
-          "row": 4,
-          "col": 3,
-          "direction": "down",
-          "number": 7
-        }
-      ]
     }
   ],
   "rows": 5,
-  "cols": 8,
+  "cols": 10,
   "words": [
-    {
-      "answer": "구조",
-      "definition": "소식이 오랫동안 막힘.",
-      "definitionSource": "우리말샘",
-      "clue": "부산 용호부두 앞바다에 빠진 60대 여성 □□",
-      "category": "사회",
-      "title": "부산 용호부두 앞바다에 빠진 60대 여성 구조",
-      "url": "https://www.newsis.com/view/NISX20261010_0003820671",
-      "row": 0,
-      "col": 1,
-      "direction": "across",
-      "number": 1
-    },
     {
       "answer": "조국혁신당",
       "definition": "대한민국의 정당 이름.",
@@ -516,20 +503,46 @@
       "row": 0,
       "col": 2,
       "direction": "down",
+      "number": 1
+    },
+    {
+      "answer": "사형",
+      "definition": "남에게 자기의 형을 겸손하게 이르는 말.",
+      "definitionSource": "우리말샘",
+      "clue": "교황, 美 총살형 생중계 방침 비판…\"□□, 인간 존엄성 공격\"",
+      "category": "국제",
+      "title": "교황, 美 총살형 생중계 방침 비판…\"사형, 인간 존엄성 공격\"",
+      "url": "https://www.newsis.com/view/NISX20261011_0003820738",
+      "row": 0,
+      "col": 5,
+      "direction": "down",
       "number": 2
     },
     {
-      "answer": "부산",
-      "definition": "급하게 서두르거나 시끄럽게 떠들어 어수선함.",
+      "answer": "연합군",
+      "definition": "전쟁에서 둘 혹은 둘 이상의 국가가 연합하여 구성한 군대.",
       "definitionSource": "우리말샘",
-      "clue": "□□ 용호부두 앞바다에 빠진 60대 여성 구조",
-      "category": "사회",
-      "title": "부산 용호부두 앞바다에 빠진 60대 여성 구조",
-      "url": "https://www.newsis.com/view/NISX20261010_0003820671",
+      "clue": "트럼프 \"美, 후티 격퇴 사우디 주도 □□□ 작전 동참할 수도…곧 결정\"",
+      "category": "국제",
+      "title": "트럼프 \"美, 후티 격퇴 사우디 주도 연합군 작전 동참할 수도…곧 결정\"",
+      "url": "https://www.newsis.com/view/NISX20261011_0003820737",
+      "row": 0,
+      "col": 7,
+      "direction": "across",
+      "number": 3
+    },
+    {
+      "answer": "연산",
+      "definition": "일 년 동안 생산 또는 산출하는 총량.",
+      "definitionSource": "우리말샘",
+      "clue": "AI칩 빌리는 값 1년새 60% 뛰었다…클로드도 □□ 모자라 장애 잦았다",
+      "category": "국제",
+      "title": "AI칩 빌리는 값 1년새 60% 뛰었다…클로드도 연산 모자라 장애 잦았다",
+      "url": "https://www.newsis.com/view/NISX20261011_0003820733",
       "row": 0,
       "col": 7,
       "direction": "down",
-      "number": 3
+      "number": 4
     },
     {
       "answer": "국가무형유산",
@@ -542,32 +555,19 @@
       "row": 1,
       "col": 2,
       "direction": "across",
-      "number": 4
-    },
-    {
-      "answer": "무궁화호",
-      "definition": "우리나라의 급행열차. 최고 시속은 150km이며, 2020년까지 운행될 계획이다.",
-      "definitionSource": "우리말샘",
-      "clue": "이게 □□□□ 맞아?…객실부터 바퀴까지 전면 리모델링[짤막영상]",
-      "category": "경제",
-      "title": "이게 무궁화호 맞아?…객실부터 바퀴까지 전면 리모델링[짤막영상]",
-      "url": "https://www.newsis.com/view/NISX20261007_0003817653",
-      "row": 1,
-      "col": 4,
-      "direction": "down",
       "number": 5
     },
     {
-      "answer": "화재",
-      "definition": "불이 나는 재앙. 또는 불로 인한 재난.",
+      "answer": "국민",
+      "definition": "국가를 구성하는 사람. 또는 그 나라의 국적을 가진 사람.",
       "definitionSource": "우리말샘",
-      "clue": "창원 성산구 공단서 폐기물 □□, 냄새·연기 발생",
-      "category": "사회",
-      "title": "창원 성산구 공단서 폐기물 화재, 냄새·연기 발생",
-      "url": "https://www.newsis.com/view/NISX20261010_0003820687",
+      "clue": "이 대통령 \"돈벌이로 □□ 위해 가하는 것 어떤 경우도 용납 안돼\"",
+      "category": "정치",
+      "title": "이 대통령 \"돈벌이로 국민 위해 가하는 것 어떤 경우도 용납 안돼\"",
+      "url": "https://www.newsis.com/view/NISX20261010_0003820725",
       "row": 3,
-      "col": 4,
-      "direction": "across",
+      "col": 0,
+      "direction": "down",
       "number": 6
     },
     {
