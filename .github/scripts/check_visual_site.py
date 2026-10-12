@@ -28,11 +28,12 @@ PAGES = {
     "adult-missing/index.html": ("뉴시스템", False),
     "nepal-flood/index.html": ("뉴시스템", True),
     "moreno/index.html": ("뉴시스템", True),
+    "son7/index.html": ("뉴시스템", True),
     "calculator/index.html": ("계산대로", True),
 }
 EDITSHOP_STORIES = {"oil", "thief", "shelter", "temperature", "kangin", "children", "buy-live", "homecoming", "dmz"}
 VISUAL_STORIES_CAROUSEL_PAGES = {"battery", "bukang", "nuri5"}
-NEWSYSTEM_CAROUSEL_PAGES = {"heat-rain", "adult-missing", "nepal-flood", "moreno"}
+NEWSYSTEM_CAROUSEL_PAGES = {"heat-rain", "adult-missing", "nepal-flood", "moreno", "son7"}
 JSON_LD_RE = re.compile(
     r'<script[^>]+type=["\']application/ld\+json["\'][^>]*>([\s\S]*?)</script>',
     re.IGNORECASE,

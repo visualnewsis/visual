@@ -117,6 +117,9 @@ img{display:block;max-width:100%}
 .work-stage.ice .work-scan{background:linear-gradient(90deg,transparent,rgb(114,220,255),transparent);box-shadow:rgb(114,220,255) 0 0 28px}
 .work-stage.pitch .work-copy p{color:rgb(231,211,154)}
 .work-stage.pitch .work-scan{background:linear-gradient(90deg,transparent,rgb(231,211,154),transparent);box-shadow:rgb(231,211,154) 0 0 28px}
+.work-stage.legend .work-copy p{color:rgb(231,211,154)}
+.work-stage.legend .work-scan{background:linear-gradient(90deg,transparent,rgb(231,211,154),transparent);box-shadow:rgb(231,211,154) 0 0 28px}
+.work-stage.legend .work-copy h3{font-size:clamp(40px,5.8vw,88px)}
 .work-enter{position:absolute;top:50%;right:36px;z-index:2;writing-mode:vertical-rl;color:rgba(255,255,255,.72);font-size:11px;letter-spacing:.12em;transform:translateY(-50%)}
 .work-enter b{margin-top:8px;color:var(--mint)}
 
@@ -247,6 +250,7 @@ footer{display:flex;flex-direction:column;align-items:center;min-height:300px;pa
   .work-copy{bottom:24%;left:22px;right:22px}
   .work-copy h3{font-size:clamp(42px,12.8vw,66px)}
   .work-stage.ice .work-copy h3{font-size:clamp(36px,10.3vw,52px)}
+  .work-stage.legend .work-copy h3{font-size:clamp(30px,9.2vw,46px)}
   .work-stats{gap:14px;bottom:9%;left:22px;right:auto}
   .work-stats b{font-size:23px}
   .work-stats small{font-size:9px}
