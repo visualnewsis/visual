@@ -239,12 +239,12 @@
     compare.setAttribute('aria-label',phase===4?`${recordMilestone.confirmed?'':'경신 후 발행 가정: '}차범근 58골, 손흥민 ${recordGoal}골로 단독 최다 득점`:`1978년 12월 17일 차범근 58골. 2026년 9월 28일 손흥민 58골. 같은 숫자, 서로 다른 날짜.`);
     const photos=[duo,exchange,smile,shared,solo];
     photos.forEach((photo,index)=>{photo.classList.toggle('is-current',index===phase);photo.setAttribute('aria-hidden',String(index!==phase));photo.style.opacity=index===phase?(innerWidth<=800?'1':index<3?'.72':'.85'):'0';});
-    const headings=['58골과 58골.','47년의 거리가 접힌다.','같은 자리에 선 두 시대.','기록보다 먼저, 팀.',`${recordGoal}골, 팀과 함께 이겼다.`];
+    const headings=['58골과 58골.','47년 넘게 지켜온 기록.','차범근과 나란히.','58골, 웃지 못했다.',`${recordGoal}호골, 차범근을 넘었다.`];
     const descriptions=[
-      '한 사람의 마지막 골과, 다른 사람의 58번째 골. 같은 숫자가 두 시대를 잇는다.',
-      '차범근의 마지막 골 이후, 47년 넘게 이어진 한국 축구의 시간.',
-      '1978년의 차범근과 2026년의 손흥민. 득점표에서 같은 자리에 섰다.',
-      '한국이 1:4로 진 우루과이전. 공동 1위가 된 그는 팀의 패배부터 돌아봤다.',
+      '1978년, 차범근이 58번째 골을 넣었다. 손흥민이 태어나기도 전이었다.',
+      '차범근의 58골은 47년 넘게 한국 남자 A매치 최다골 기록으로 남았다.',
+      '손흥민도 58골. 차범근과 공동 1위에 올랐다. 단독 1위까지는 한 골이 남아 있었다.',
+      '우루과이전 58호골로 공동 1위에 올랐다. 하지만 한국은 1:4로 졌다.',
       '한국의 2:0 승리를 연 59번째 골. 차범근의 마지막 골 이후 1만7460일, 47년 9개월 19일 만의 새 기록.'
     ];
     $('handoff-text').textContent=headings[phase];$('handoff-description').textContent=descriptions[phase];

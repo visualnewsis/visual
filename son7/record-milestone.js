@@ -29,4 +29,4 @@ const recordMilestoneDescription = `전반 6분, 자신이 얻은 프리킥을 �
 // The independently audited historical list stays intact; the browser's complete archive includes the confirmed record goal.
 const goalRecordData = [...goalData,[recordMilestone.date,recordMilestone.opponent,recordMilestone.venue,recordMilestone.finalScore,recordMilestone.competition]];
 const goalRecordMeta = [...goalMatchMeta,{goalsInMatch:1,ordinal:1}];
-const goalRecordHighlights = {...goalHighlights,59:['그 자리에 닿은 59번째 골.',recordMilestoneDescription]};
+const goalRecordHighlights = {...goalHighlights,59:['차범근을 넘어선 59호골.',recordMilestoneDescription]};

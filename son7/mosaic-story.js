@@ -89,7 +89,7 @@
     document.documentElement.classList.toggle('intro-cinema',enhanced&&nameStep===4&&(phase<3||revealStage!=='explore')&&cinemaVisible);
     if(lastPhase!==phase){
       lastPhase=phase;
-      heading.innerHTML=phase===3?'전설로 남은 자리<br>마침내 <span class="title-hand">손</span>에 닿다':'그 자리에<br>닿은 한 골.';
+      heading.innerHTML=phase===3?'전설로 남은 자리<br>마침내 <span class="title-hand">손</span>에 닿다':'기록을 바꾼<br>59호골.';
       $('mosaic-zoom-hint').textContent=phase===3?'작은 사진을 누르면, 그날의 골이 열립니다.':'';
     }
     story.classList.toggle('is-mosaic-zoomed',phase===3&&userZoom>1.001);

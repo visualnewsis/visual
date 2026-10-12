@@ -976,3 +976,6 @@ h1,h2,h3,.intro-caption p,.handoff-copy>p,.finish-story p,
 }
 
 .journey-article-title .title-hand{color:#806630}
+
+/* Editorial credit remains in normal flow below the sharing controls. */
+.tribute-end .article-credit{margin-top:10px;color:#c8d6df;font-size:.8125rem;font-weight:400;line-height:1.6;letter-spacing:0;word-break:keep-all}
