@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-10-14T05:05:22+00:00",
+  "updatedAt": "2026-10-14T20:18:32+00:00",
   "source": "VISUAL NEWSIS editshop landing page",
   "articles": [
     {
@@ -140,6 +140,16 @@
       "description": "9월 21일 서부전선 DMZ 지뢰 폭발 사고를 계기로, 남방한계선에서 군사분계선을 지나 북방한계선까지 폭 4km 비무장지대를 3D로 통과합니다.",
       "image": "https://visual.newsis.com/dmz/images/dmz-cover-1200x800.jpg",
       "url": "https://visual.newsis.com/dmz/",
+      "profile": "center"
+    },
+    {
+      "id": "smartwatch",
+      "issue": "편집#015",
+      "label": "SMARTWATCH / VICTIM PROTECTION",
+      "title": "방전된 안전",
+      "description": "송파의 방전과 제주의 워치 강제 훼손. 신변보호 스마트워치의 기능과 지급 이후의 점검을 살펴봅니다.",
+      "image": "https://visual.newsis.com/smartwatch/images/og-songpa-court-1200x630.jpg",
+      "url": "https://visual.newsis.com/smartwatch/",
       "profile": "center"
     }
   ]
