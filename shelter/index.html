@@ -173,6 +173,7 @@
 <link rel="stylesheet" href="../assets/editshop-carousel.css?v=20261014-smartwatch-photo-15">
 <script defer src="../assets/visual-header.js?v=20261002-bukang" data-section="편집#" data-section-href="https://visual.newsis.com/editshop/" data-current="editshop" data-header-theme="dark"></script>
 <script defer src="../assets/editshop-carousel.js?v=20261014-smartwatch-photo-15" data-current="shelter"></script>
+  <link rel="stylesheet" href="../assets/editshop-brand-banner.css?v=20261015-1">
 </head>
 <body>
   <div class="progress" aria-hidden="true"><i id="bar"></i></div>
@@ -263,7 +264,7 @@
 
     <section class="resolve"><div class="resolve-inner"><div class="eyebrow">THE FIVE MINUTES</div><h2><b>5분</b>은<br>생각보다 짧습니다.</h2><p>재난은 예고 없이 찾아오지만, 대응은 미리 준비할 수 있습니다. 가까운 민방위 대피시설과 행동요령을 지금 확인해 두십시오.</p><div class="actions"><a class="primary" href="https://safekorea.go.kr/safekorea-kor/acts/nacts/action-guide.do?actsHeaderTitle=%EB%B9%84%EC%83%81%EB%8C%80%EB%B9%84&category=stateOfEmergency&menuSn=4" target="_blank" rel="noopener">공식 행동요령 보기 ↗</a><a href="https://www.safekorea.go.kr/" target="_blank" rel="noopener">민방위 대피시설 찾기 ↗</a><a href="https://www.newsis.com/view/NISX20260804_0003735163" target="_blank" rel="noopener">관련 기사 읽기 ↗</a></div><p class="note">이 콘텐츠는 공습경보 상황에서의 대응을 이해하기 위한 가상 시뮬레이션입니다. 화면의 알림·시간·전파 장면은 실제 재난문자나 특정 군사 상황을 재현한 것이 아닙니다. 실제 상황에서는 정부와 관계기관이 제공하는 최신 안내를 따르십시오.</p></div></section>
 
-    <section class="ending"><div class="board"></div><div class="silhouette" aria-hidden="true"></div><div class="ending-copy"><div class="smallline">팩트 너머의 공감<br><strong>사실을 넘어 이야기로</strong></div><h2>뉴스를,<br><span>한 걸음 더</span></h2><p>매일 쏟아지는 기사<br>놓치고 있는 가치를 찾고<br>더 깊이, 더 쉽게, 더 오래<br><strong>편집#이 끌어올립니다.</strong></p><div class="credit">기획·디렉터 = 안재현 기자</div></div><div class="watermark">편집# 003</div><div class="footer"><span>VISUAL NEWSIS · INTERACTIVE SERIES</span><span>EDIT# 003</span></div></section>
+
     <section class="editshop-next" aria-labelledby="editshop-next-title">
       <div class="editshop-next-head">
         <div><div class="editshop-next-kicker">편집# · MORE STORIES</div><h2 id="editshop-next-title">다른 편집#</h2></div>
@@ -276,7 +277,20 @@
     </section>
   </main>
 
-  <script>
+  <aside class="ves-brand" aria-labelledby="ves-brand-title">
+  <div class="ves-brand-inner">
+    <div class="ves-brand-top"><span>VISUAL NEWSIS · 편집#</span><span>뉴스를 새롭게 읽는 방법</span></div>
+    <div class="ves-brand-body">
+      <a class="ves-brand-logo" href="../editshop/" aria-label="편집샵 랜딩으로 이동">편집<svg viewBox="0 0 120 140" role="img" aria-label="# 처마 로고"><path fill="currentColor" d="M31 8h22l-5 27h31l5-27h22l-5 27h16l-4 21H97l-5 25h19l-4 21H88l-6 30H60l6-30H35l-6 30H7l6-30H0l4-21h13l5-25H7l4-21h15zm13 48-5 25h31l5-25z"/><path class="shop-awning" fill="#e9a35c" d="M0 99h108l-2 10q-17 11-35 0-17 11-35 0-17 11-36 0z"/></svg></a>
+      <h2 id="ves-brand-title">뉴스에,<br><em>한 걸음 더</em></h2>
+      <p class="ves-brand-description">매일 쏟아지는 기사 속에서<br>놓치고 있는 가치를 찾고<br>더 깊이, 더 쉽게, 더 오래<br><strong>편집#이 끌어올립니다.</strong></p>
+      <a class="ves-brand-cta" href="../editshop/">다음 이야기 만나보기 <span aria-hidden="true">↗</span></a>
+    </div>
+    <div class="ves-brand-signature-row"><a class="ves-brand-signature" href="../editshop/"><b>VISUAL</b> JOURNALISM</a></div>
+    <div class="ves-brand-bottom"><div class="ves-brand-credit">기획·디렉터 = 안재현 기자</div><span>© NEWSIS. ALL RIGHTS RESERVED.</span></div>
+  </div>
+</aside>
+<script>
   (()=>{
     const $=(s,c=document)=>c.querySelector(s), $$=(s,c=document)=>[...c.querySelectorAll(s)];
     const intro=$('#intro'),phone=$('#phone'),notice=$('#notice'),start=$('#start'),cue=$('#scrollCue'),timer=$('#timer'),bar=$('#bar');
@@ -318,5 +332,6 @@
     $$('.setting').forEach(b=>b.addEventListener('click',()=>b.classList.toggle('on')));
   })();
   </script>
+
 </body>
 </html>

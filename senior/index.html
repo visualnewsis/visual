@@ -553,6 +553,7 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
       #pin-607608 .ps-pan{position:relative;display:block;width:100%;height:auto;transform:none}
     }
   </style>
+  <link rel="stylesheet" href="../assets/editshop-brand-banner.css?v=20261015-1">
 </head>
 <body>
   <!-- 기존 편집# 공용 topbar 프레임(pension 등과 동일 패턴). ../assets/visual-header.js가 실행되면 이 topbar를 제거하고 공용 헤더(햄버거 메뉴 포함)를 주입한다. -->
@@ -821,7 +822,7 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
   <!-- 공용 편집# 엔딩/캐러셀/footer는 hero-sequence(360svh, sticky cover) 밖으로 완전히 분리한다.
        main 안에 있으면 cover의 sticky 유지 구간과 무관하게 main의 일반 흐름상 이 요소들이 훨씬 이른 스크롤 위치에서 나타나
        Hero 진행 중 화면에 침범한다. body 레벨 형제 요소로 두어 hero-sequence 360svh가 전부 지난 뒤에만 등장하게 한다. -->
-  <aside class="editor-note"><div class="editor-copy"><div class="editor-kicker">팩트 너머의 공감<br><strong>사실을 넘어 이야기로</strong></div><h2 class="editor-title"><span>뉴스를,</span><span class="mint">한 걸음 더</span></h2><div class="editor-body">매일 쏟아지는 기사<br>놓치고 있는 가치를 찾고<br>더 깊이, 더 쉽게, 더 오래<br><strong>편집#이 끌어올립니다.</strong><div class="editor-byline">기획·디렉터 = 안재현 기자</div></div><a class="editor-link" href="https://visual.newsis.com/editshop/">VISUAL NEWSIS · INTERACTIVE SERIES</a></div><div class="editor-mark" aria-hidden="true">편집#011</div></aside>
+
   <footer class="site-footer"><span>VISUAL NEWSIS · 편집# 011 · INTERACTIVE SERIES</span><span>기획·디렉터 = 안재현 기자</span><span>© NEWSIS. ALL RIGHTS RESERVED.</span></footer>
   <section class="editshop-next" aria-labelledby="editshop-next-title">
     <div class="editshop-next-head">
@@ -831,7 +832,20 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
     <div class="editshop-next-grid"></div>
   </section>
   <noscript><p style="padding:20px">연령을 선택하려면 브라우저에서 JavaScript를 활성화해 주세요.</p></noscript>
-  <script>
+  <aside class="ves-brand" aria-labelledby="ves-brand-title">
+  <div class="ves-brand-inner">
+    <div class="ves-brand-top"><span>VISUAL NEWSIS · 편집#</span><span>뉴스를 새롭게 읽는 방법</span></div>
+    <div class="ves-brand-body">
+      <a class="ves-brand-logo" href="../editshop/" aria-label="편집샵 랜딩으로 이동">편집<svg viewBox="0 0 120 140" role="img" aria-label="# 처마 로고"><path fill="currentColor" d="M31 8h22l-5 27h31l5-27h22l-5 27h16l-4 21H97l-5 25h19l-4 21H88l-6 30H60l6-30H35l-6 30H7l6-30H0l4-21h13l5-25H7l4-21h15zm13 48-5 25h31l5-25z"/><path class="shop-awning" fill="#e9a35c" d="M0 99h108l-2 10q-17 11-35 0-17 11-35 0-17 11-36 0z"/></svg></a>
+      <h2 id="ves-brand-title">뉴스에,<br><em>한 걸음 더</em></h2>
+      <p class="ves-brand-description">매일 쏟아지는 기사 속에서<br>놓치고 있는 가치를 찾고<br>더 깊이, 더 쉽게, 더 오래<br><strong>편집#이 끌어올립니다.</strong></p>
+      <a class="ves-brand-cta" href="../editshop/">다음 이야기 만나보기 <span aria-hidden="true">↗</span></a>
+    </div>
+    <div class="ves-brand-signature-row"><a class="ves-brand-signature" href="../editshop/"><b>VISUAL</b> JOURNALISM</a></div>
+    <div class="ves-brand-bottom"><div class="ves-brand-credit">기획·디렉터 = 안재현 기자</div><span>© NEWSIS. ALL RIGHTS RESERVED.</span></div>
+  </div>
+</aside>
+<script>
   (() => {
     'use strict';
     const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)');
@@ -1343,5 +1357,6 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
     /* 전체 메뉴/햄버거는 ../assets/visual-header.js가 담당하므로 이 페이지에서 별도로 열고 닫지 않는다. */
   })();
   </script>
+
 </body>
 </html>
