@@ -15,7 +15,8 @@ const wait = ms => new Promise(r => setTimeout(r, ms));
 const ENDING_PRIORITY = ['hwabyeong', 'rude', 'full', 'together', 'jeonking', 'peace'];
 const DANGER = { hp: 30, rep: 20, wt: 70 };          // 위험 안내 기준
 const SPECIAL = { togetherHelp: 1, togetherSupport: 3, jeonKingEat: 2, jeonKingShare: 2 };
-const QUESTION_COUNT = 6;
+const QUESTION_COUNT = 7;
+const REST_LIMIT = 2;                                  // 큰상에서 "잠깐 쉬기"를 쓸 수 있는 횟수
 const JEON_PLATE = 10, JEON_GAIN = 10;                 // 부침개 10장 = 몸무게 증가량 최대
 const START = { hp: 100, rep: 60, wt: 0, stress: 0, cheer: 0 };
 
@@ -74,7 +75,7 @@ const VILLAGE = {
     kid1: '하나 데리고 왔구먼! 혼자 크면 외로울 텐디.',
     kids: '애들이 줄줄이네! 키우느라 등골 휘겠구먼.',
     deflect: '이장님, 마을 어귀 장승 새로 칠하셨네요? 멋져요!',
-    ok: '허허, 알아봤어? 내가 직접 칠했지!',
+    ok: '장승? 아, 그거… 근데 내가 묻는 말엔 대답을 안 했다?',
   },
   granny: {
     minor: '아가, 이리 와 봐. 얼굴이 왜 이리 핼쑥해? 공부만 하지 말고 밥 좀 먹어.',
@@ -85,7 +86,7 @@ const VILLAGE = {
     kid1: '동생 하나 만들어 줘야지. 형제가 있어야 의지가 되지.',
     kids: { daughters: '딸만 있어서 어쩐댜. 그래도 딸이 살갑긴 하지.', sons: '아들만 있으면 집이 남아나질 않겄네!', mixed: '딸 아들 골고루네~ 그래도 하나 더 낳지 그랴?' },
     deflect: '할머니, 정자 그늘 너무 시원해요~ 무릎은 좀 괜찮으세요?',
-    ok: '아이고, 내 걱정을 다 해 주고. 고맙다.',
+    ok: '무릎이야 늘 아프지. 근데 말 돌리지 말고, 아까 그 얘기.',
   },
   shop: {
     minor: '학생 왔네? 군것질 말고 공부에 써야지~ 성적은 좀 올랐어?',
@@ -96,7 +97,7 @@ const VILLAGE = {
     kid1: '하나면 돈도 덜 들고 좋지~ 근데 둘째는?',
     kids: '애 키우는 데 돈 많이 들 텐데, 맞벌이는 하는 거지?',
     deflect: '사장님, 식혜 하나 주세요! 올해도 직접 담그셨어요?',
-    ok: '그럼! 자, 한 잔 서비스여. (HP 회복)',
+    ok: '식혜야 있지. (따르며) 근데 아까 묻는 말엔 왜 대답을 안 혀? (HP 회복)',
   },
   grandpa: {
     minor: '커서 뭐 될 거냐? 의사? 판사? 그런 걸 해야 효도하는 거다.',
@@ -107,10 +108,16 @@ const VILLAGE = {
     kid1: '애가 어째 좀 작다? 잘 먹여야지.',
     kids: '애들 학원은 몇 개씩 보내? 요즘은 다 보낸다던데.',
     deflect: '할아버지 감나무 올해 대풍이네요! 몇 개나 따셨어요?',
-    ok: '두 접은 땄지! 이따 몇 개 가져가거라.',
+    ok: '감이야 잘 열었지. 그래서 아까 그 얘기는?',
   },
 };
-const VILLAGE_SOFT = '왔구나! 오랜만이네. 요즘은 어떻게 지내?';
+const VILLAGE_FOLLOW = {
+  ijang: '근데 말이여, 다 너 잘되라고 하는 소리여. 어른 말 들어서 손해 볼 거 없어.',
+  granny: '에휴, 내가 오래 살아 봐서 하는 말이여. 나중에 후회 말고.',
+  shop: '아니 뭐, 난 걱정돼서 그러지~ 다른 집 애들은 다 잘만 하던데.',
+  grandpa: '요즘 것들은 어른이 말하면 듣는 척도 안 혀. 쯧.',
+};
+const VILLAGE_SOFT ='왔구나! 오랜만이네. 요즘은 어떻게 지내?';
 const VILLAGE_REPEAT = { ijang: '큰집은 저 개울 건너 골목 끝이여~', granny: '정자 마루에 앉아 쉬었다 가도 돼.', shop: '오가는 길에 또 들러~', grandpa: '대문은 저 위 오른쪽이여.' };
 
 /* ================= 대사: 장면 2 큰상 ================= */
@@ -176,17 +183,20 @@ const LINES = {
   askback: ['혹시 걱정돼서 하시는 말씀이에요? 저는 지금 제 속도로 잘 지내고 있어요.', '그 질문을 들으면 저는 조금 부담이 돼요. 어떤 게 궁금하셨어요?', '“그렇게 해야 한다”는 말씀이시죠? 저는 생각이 조금 달라요.'],
   rest: '잠깐 바람 좀 쐬고 올게요.',
   snap: ['그걸 왜 자꾸 물어보세요? 제 일은 제가 알아서 한다고요!', '아, 진짜 그만 좀 하세요! 명절마다 똑같잖아요!', '그런 건 본인 일이나 신경 쓰세요!'],
-  r_deflect: ['어? 아, 그거? 그 얘기라면 할 말이 많지! (신이 나서 이야기를 시작한다)', '오, 그래? 그거 말이야… (대화가 슬그머니 다른 길로 흐른다)', '하하, 그렇지? 내가 그거 하나는 자신 있지.'],
-  r_deflect_meh: ['응? 아… 그래, 그것도 좋지. (조금 머쓱해한다)', '그래, 뭐… 먹자, 먹어.'],
-  r_boundary: ['그래, 그래. 내가 괜히 물었다. 먹자, 먹어.', '알았다. 네가 알아서 잘하겠지.'],
-  r_boundary_meh: ['아니 뭐, 걱정돼서 그러지… 알았다.', '흠… 그래, 알았다.'],
-  r_askback: ['음… 듣고 보니 내가 좀 지나쳤나 보다. 미안하다.', '그렇게 들렸으면 내가 말을 잘못했네. 응원한다는 뜻이었어.'],
-  r_askback_meh: ['아니, 그냥 물어본 거지 뭐….', '요즘 애들은 말도 참… 아니다, 알았다.'],
+  // 반응은 '알았다' 대신 티 안 나게 서운하고 언짢은 말투로
+  r_deflect: ['어? 아, 그거? (잠깐 신이 났다가) …근데 말 돌리는 솜씨는 여전하다?', '그래, 그 얘기도 좋지. (젓가락을 탁 내려놓으며) 내 얘긴 듣기 싫은가 보네.', '하하, 그렇지. 근데 너는 꼭 중요한 얘기만 나오면 딴 데로 새더라.'],
+  r_deflect_meh: ['응? 아… 그래. (입꼬리만 웃는다) 대답하기 싫으면 싫다고 하지.', '그래, 뭐… 먹자, 먹어. (한숨을 길게 쉰다)'],
+  r_boundary: ['그래, 그래. 이제 걱정도 마음대로 못 하는 세상이구나.', '알았다~ 네가 다 알아서 잘하겠지. 잘하겠지 뭐.'],
+  r_boundary_meh: ['아니 뭐, 걱정돼서 그러지… 누가 들으면 내가 못된 소리 한 줄 알겠다.', '흠… (물을 벌컥 마신다) 그래, 하지 말자 하지 마.'],
+  r_askback: ['음… 듣고 보니 내가 좀 그랬나? 근데 틀린 말은 아니잖아.', '그렇게 들렸으면 할 수 없고. 다 응원하는 뜻이었는데 서운하네.'],
+  r_askback_meh: ['아니, 그냥 물어본 거지 뭐…. 요새는 묻지도 못하겠네.', '요즘 애들은 말도 참… (혀를 찬다) 아니다, 됐다.'],
+  // 대답이 끝나도 한 번 더 이어지는 잔소리
+  jab: ['아니 내가 뭐 틀린 말 했나? 다 너 잘되라고 하는 소리지.', '요즘 애들은 어른 말을 잔소리로만 들어요, 아주.', '(혼잣말처럼) 우리 땐 그런 건 상상도 못 했는데….', '말이 나와서 말인데, 그러니까 내 말은 말이다….', '서운하다, 서운해. 걱정해 주는 사람한테.', '그래도 명절에 이런 얘기 아니면 언제 하니?'],
   r_snap: ['…뭐, 뭐라고? (큰상 위에 정적이 흐른다)', '아니, 얘가 오늘 왜 이래? (모두 젓가락을 멈춘다)', '(고모가 들고 있던 송편이 데구루루 굴러간다)'],
-  r_rest: ['어, 그래. 천천히 다녀와라.', '그래, 바람 좀 쐬고 와.'],
+  r_rest: ['어, 그래. 천천히 다녀와라. (얘기하다 말고 가네…)', '그래, 바람 좀 쐬고 와. 다녀와서 마저 하자.'],
   ally_spouse: ['(하늘이 당신을 한번 보고) 그 이야기는 저희 둘이 함께 정할 일이라서요. 대신 저희 지난달 여행 사진 보실래요?', '(하늘이 당신 손을 잡는다) 저희는 지금 충분히 잘 지내고 있어요. 걱정은 감사히 받을게요.', '(하늘) 그 얘기는 저희가 이미 같이 정했어요. 오늘은 맛있게 먹고 싶어요.'],
   ally_cousin: ['(다온이 끼어든다) 에이~ 그런 건 본인이 제일 잘 알죠! 대신 제 얘기 들어 보실래요? 저 요즘 수영 배워요!', '(다온) 큰상에서 그런 얘기하면 소화 안 돼요~ 이 전이나 드세요!', '(다온) 저도 그 질문 받으면 진짜 싫던데요? 우리 다른 얘기해요.'],
-  r_ally: ['하하, 그래 그래. 그 얘기 좀 해 봐라.', '아이고, 알았다 알았다. 둘이 한편이구먼!', '그래, 내가 괜한 소리 했다.'],
+  r_ally: ['하하, 그래 그래. (웃는데 눈은 안 웃는다) 둘이 아주 한편이네.', '아이고, 알았다 알았다. 나만 나쁜 사람이지 뭐.', '그래, 내가 괜한 소리 했나 보다. 다들 나만 보고 그래.'],
 };
 
 /* ================= 상태 ================= */
@@ -495,12 +505,42 @@ function newState() {
     scene: 'village', st: Object.assign({}, START), ended: false, busy: false,
     soft: setup.soft, skipFamily: setup.skipFamily,
     count: { deflect: 0, boundary: 0, askback: 0, help: 0, rest: 0, snap: 0, short: 0, eat: 0, share: 0 },
-    support: 0, helpCount: 0, allyOffers: 0, breathers: 0, warned: {}, talked: {}, rested: false,
+    support: 0, helpCount: 0, allyOffers: 0, combo: 0, restUsed: 0, breathers: 0, warned: {}, talked: {}, rested: false,
     plate: JEON_PLATE, qi: 0, qn: QUESTION_COUNT, speaker: null, eatAnim: 0, cool: {},
   };
 }
 const STAT_LABEL = { hp: 'HP', rep: '평판', wt: '몸무게 증가', stress: '스트레스', cheer: '응원' };
-function apply(d, why) {
+// 받침 유무에 따라 '로/으로'를 붙인다(ㄹ 받침은 '로')
+function ro(word) {
+  const last = word[word.length - 1];
+  // 숫자는 읽는 소리 기준: 영·삼·육은 받침이 있어 '으로'
+  if (/[0-9]/.test(last)) return word + ('036'.includes(last) ? '으로' : '로');
+  const c = word.charCodeAt(word.length - 1) - 0xAC00;
+  if (c < 0 || c > 11171) return word + '로';
+  const jong = c % 28;
+  return word + (jong === 0 || jong === 8 ? '로' : '으로');
+}
+// HP 감소·평판 하락·몸무게 증가는 원인과 함께 알림창으로 알린다
+const NOTICE_DEFAULT = { hp: '스트레스 증가', rep: '친척들의 반응', wt: '음식 섭취' };
+function noticeFor(k, diff, cause) {
+  // 스트레스는 원인을 따로 넘긴 경우(연속 잔소리 등)에만 알린다
+  if (k === 'stress') { if (cause && diff > 0) notice(`😣 ${ro(cause)} 스트레스가 ${diff} 올랐다.`, 'stress'); return; }
+  if (!NOTICE_DEFAULT[k]) return;
+  const why = ro(cause || NOTICE_DEFAULT[k]), n = Math.abs(diff);
+  if (k === 'hp' && diff < 0) notice(`❤️ ${why} HP가 ${n} 감소했다.`, 'hp');
+  else if (k === 'rep' && diff < 0) notice(`⭐ ${why} 평판이 ${n} 떨어졌다.`, 'rep');
+  else if (k === 'wt' && diff > 0) notice(`🍳 ${why} 몸무게가 ${n} 늘었다.`, 'wt');
+}
+function notice(msg, kind, ms) {
+  const box = $('#notices');
+  const el = document.createElement('p');
+  el.className = 'notice ' + (kind || '');
+  el.textContent = msg;
+  box.appendChild(el);
+  while (box.children.length > 3) box.firstChild.remove();
+  setTimeout(() => { el.classList.add('out'); setTimeout(() => el.remove(), 400); }, ms || 3200);
+}
+function apply(d, why, cause) {
   if (!state || state.ended) return;
   const s = state.st;
   let slot = 0;
@@ -510,6 +550,7 @@ function apply(d, why) {
     s[k] = clamp(old + d[k], 0, 100);
     const diff = s[k] - old;
     if (!diff) return;
+    noticeFor(k, diff, cause && cause[k]);
     const good = (k === 'stress' || k === 'wt') ? diff < 0 : diff > 0;
     floatText(`${STAT_LABEL[k]} ${diff > 0 ? '+' : ''}${diff}`, k === 'wt' ? '' : (good ? 'pos' : 'neg'), slot++);
     const hb = { hp: '.hb-hp', rep: '.hb-rep', wt: '.hb-wt' }[k];
@@ -521,12 +562,18 @@ function apply(d, why) {
   if (checkLimits()) return;
   if (s.stress >= 100) breather(false);
 }
+// 잔소리가 끊기지 않고 이어질수록 스트레스가 점점 더 크게 오른다. 쉬기·물 마시기·숨 고르기로 끊긴다
+function chainNag() {
+  state.combo = Math.min((state.combo || 0) + 1, 5);
+  apply({ stress: 2 + state.combo * 2 }, '', { stress: `연속 잔소리 ×${state.combo}` });
+}
 function expose(base) {
   const soft = state.soft;
   // 스트레스가 쌓인 채 질문을 받으면 '휴식 부족'으로 HP가 더 깎인다
   const s = state.st.stress;
-  const extra = ((s >= 50 ? 4 : 0) + (s >= 80 ? 4 : 0)) / (soft ? 2 : 1);
-  apply({ stress: soft ? Math.round(base * .6) : base, hp: -((soft ? Math.round(base * .5) : base) + extra) }, extra ? '휴식 부족' : '');
+  const extra = ((s >= 60 ? 3 : 0) + (s >= 85 ? 3 : 0)) / (soft ? 2 : 1);
+  apply({ stress: soft ? Math.round(base * .6) : base, hp: -(soft ? Math.round(base * .4) : Math.round(base * .8)) }, '', { hp: '스트레스 증가' });
+  if (extra && !state.ended) apply({ hp: -extra }, '휴식 부족', { hp: '휴식 부족' });
 }
 function floatText(txt, cls, slot) {
   const hb = $('#headbars');
@@ -560,10 +607,9 @@ function updateHUD() {
   else near = '지금 가까운 엔딩: ' + ENDINGS[evaluateEnding(true)].title;
   $('#hudEnding').textContent = near;
 }
-let warnTimer = 0;
 function warn(msg) {
-  const el = $('#warn'); el.textContent = msg; el.hidden = false; sfx('warn');
-  clearTimeout(warnTimer); warnTimer = setTimeout(() => { el.hidden = true; }, 4200);
+  // 위험 안내도 같은 알림창 묶음에 더 오래 띄워 겹치지 않게 한다
+  notice(msg, 'warn', 5000); sfx('warn');
 }
 function checkDanger() {
   const s = state.st, w = state.warned;
@@ -713,14 +759,14 @@ function runDefense() {
   return new Promise(resolve => {
     const wrap = $('#defense'), zone = $('#defZone'), mark = $('#defMark');
     wrap.hidden = false;
-    const zw = 24, zx = 15 + Math.random() * (85 - zw - 15);
+    const zw = 16, zx = 15 + Math.random() * (85 - zw - 15);
     zone.style.left = zx + '%'; zone.style.width = zw + '%';
     const t0 = performance.now();
     let pos = 0, raf = 0;
     defense.active = true;
     const loop = now => {
       const t = (now - t0) / 1000;
-      pos = 50 - 50 * Math.cos(t * Math.PI / 1.1);
+      pos = 50 - 50 * Math.cos(t * Math.PI / .8);
       mark.style.left = pos + '%';
       if (t > 9) return end(null);
       raf = requestAnimationFrame(loop);
@@ -763,7 +809,7 @@ function breather(voluntary) {
       clearInterval(breathTimer); ov.hidden = true;
       if (!voluntary) {
         state.breathers++;
-        state.st.stress = 40;
+        state.st.stress = 40; state.combo = 0;
         apply({}, '숨 고르기 완료');
       }
       resolve();
@@ -892,18 +938,59 @@ function buildMap() {
   for (let y = 1; y < 6; y++) { obj('wall', 25, y, 1, 1, { side: true }); obj('wall', 34, y, 1, 1, { side: true }); }
   obj('mansion', 26, 1, 8, 3); obj('gate', 29, 6, 2, 1);
   // NPC
+  // (x, y) = 평소 자리, (bx, by) = 플레이어가 다가오면 막아서는 길 위 지점
   npcs = [
-    { id: 'ijang', x: 10.5, y: 22.6, dir: 'down' },
-    { id: 'granny', x: 20.5, y: 12.8, dir: 'right' },
-    { id: 'shop', x: 23.5, y: 21.8, dir: 'left' },
-    { id: 'grandpa', x: 25.5, y: 10.8, dir: 'down' },
+    { id: 'ijang', x: 10.5, y: 22.6, dir: 'down', bx: 11, by: 24.2 },
+    { id: 'granny', x: 20.5, y: 12.8, dir: 'right', bx: 21.9, by: 13.6 },
+    { id: 'shop', x: 23.5, y: 21.8, dir: 'left', bx: 21.9, by: 20.6 },
+    { id: 'grandpa', x: 25.5, y: 10.8, dir: 'down', bx: 25, by: 9.2 },
   ];
+  npcs.forEach(n => { n.hx = n.x; n.hy = n.y; n.hdir = n.dir; });
+}
+// 길을 막아설 때 먼저 건네는 말
+const CALL = { ijang: '어이, 거기! 잠깐 서 봐!', granny: '아가, 아가! 이리 좀 와 봐.', shop: '어머, 이게 누구야! 잠깐만~', grandpa: '어허, 인사도 없이 그냥 지나가려고?' };
+const INTERCEPT_RANGE = 3.2;
+function faceTo(a, x, y) {
+  const dx = x - a.x, dy = y - a.y;
+  a.dir = Math.abs(dx) > Math.abs(dy) ? (dx > 0 ? 'right' : 'left') : (dy > 0 ? 'down' : 'up');
+}
+function walkNpc(n, x, y, done) { n.walking = true; n.target = { x, y }; n.onArrive = done; }
+function updateNpcs(dt) {
+  npcs.forEach(n => {
+    if (!n.walking) return;
+    const dx = n.target.x - n.x, dy = n.target.y - n.y, d = Math.hypot(dx, dy), step = 5.5 * dt;
+    if (d <= step) {
+      n.x = n.target.x; n.y = n.target.y; n.walking = false; n.anim = 0;
+      const cb = n.onArrive; n.onArrive = null; if (cb) cb();
+    } else {
+      n.x += dx / d * step; n.y += dy / d * step; n.anim = (n.anim || 0) + dt * 10;
+      faceTo(n, n.target.x, n.target.y);
+    }
+  });
+}
+// 아직 인사하지 않은 이웃 근처에 오면 이웃이 길 위로 나와 막아서고 말을 건다
+function checkIntercept() {
+  for (const n of npcs) {
+    if (state.talked[n.id] || n.walking) continue;
+    const d = Math.hypot(player.x - n.bx, player.y - n.by);
+    if (d > INTERCEPT_RANGE) continue;
+    let tx = n.bx, ty = n.by;
+    if (d < 1.1) { const hx = n.hx - player.x, hy = n.hy - player.y, m = Math.hypot(hx, hy) || 1; tx = player.x + hx / m * 1.1; ty = player.y + hy / m * 1.1; }
+    state.busy = true; state.intercept = n.id;
+    player.anim = 0;
+    faceTo(player, tx, ty);
+    sfx('select');
+    const hint = $('#hint'); hint.hidden = false; hint.textContent = `🚧 ${NPC[n.id].name}이(가) 길을 막아섰어요!`;
+    walkNpc(n, tx, ty, () => { faceTo(n, player.x, player.y); talkVillage(n, true); });
+    return true;
+  }
+  return false;
 }
 const isSolid = (tx, ty) => tx < 0 || ty < 0 || tx >= MW || ty >= MH || solid[ty * MW + tx] === 1;
 function blocked(x, y) {
   const hw = .3;
   for (const [px, py] of [[x - hw, y - .3], [x + hw, y - .3], [x - hw, y - .02], [x + hw, y - .02]]) if (isSolid(Math.floor(px), Math.floor(py))) return true;
-  for (const n of npcs) if (Math.hypot(n.x - x, (n.y - y) * 1.4) < .62) return true;
+  for (const n of npcs) if (!n.walking && Math.hypot(n.x - x, (n.y - y) * 1.4) < .62) return true;
   return false;
 }
 function updateVillage(dt) {
@@ -925,6 +1012,7 @@ function updateVillage(dt) {
     const t = trail[Math.min(trail.length - 1, 9 + i * 7)];
     if (t) { const moved = Math.hypot(f.x - t.x, f.y - t.y) > .01; f.x = t.x; f.y = t.y; f.dir = t.dir; f.anim = moved ? player.anim : 0; }
   });
+  if (checkIntercept()) return;
   // 상호작용 안내
   const tg = nearestTarget();
   const hint = $('#hint');
@@ -947,12 +1035,13 @@ function interact() {
   const t = nearestTarget();
   if (t) t.fn();
 }
-async function talkVillage(n) {
+async function talkVillage(n, intercepted) {
   state.busy = true;
+  state.intercept = null;
+  $('#hint').hidden = true;
   const P = NPC[n.id];
   // NPC가 플레이어를 바라보게
-  const dx = player.x - n.x, dy = player.y - n.y;
-  n.dir = Math.abs(dx) > Math.abs(dy) ? (dx > 0 ? 'right' : 'left') : (dy > 0 ? 'down' : 'up');
+  faceTo(n, player.x, player.y);
   if (state.talked[n.id]) {
     await say(P, VILLAGE_REPEAT[n.id]);
     closeDialog(); state.busy = false; return;
@@ -962,7 +1051,8 @@ async function talkVillage(n) {
   let line = VILLAGE[n.id][cat];
   if (typeof line === 'object') line = line[setup.mix] || line.mixed;
   if (state.soft) line = VILLAGE_SOFT;
-  expose(5);
+  if (intercepted) line = CALL[n.id] + ' ' + line;
+  expose(6);
   if (state.ended) return;
   const married = isMarried();
   const c = await say(P, line, [
@@ -980,31 +1070,60 @@ async function talkVillage(n) {
     await say(P, VILLAGE[n.id].ok);
     if (n.id === 'shop') { apply({ hp: 6 }, '식혜 한 잔'); sfx('water'); }
   } else if (v === 'boundary') {
-    apply({ stress: -3, rep: -1, cheer: 8 });
-    await say(P, pick(['그려, 그려. 알아서 하것지.', '아이고, 내가 괜한 소리 했나 보네. 잘 가~']));
+    apply({ stress: -3, rep: -1, cheer: 8 }, '', { rep: '정중한 선 긋기' });
+    await say(P, pick(['그려, 그려. 요즘은 어른이 말도 못 혀.', '아이고~ 무서워서 무슨 말을 못 하겄네.']));
   } else if (v === 'short') {
-    apply({ stress: 2, hp: -1 });
-    await say(P, '그려~ 어여 가 봐.');
+    apply({ stress: 2, hp: -1 }, '', { hp: '서두른 대답' });
+    await say(P, '…대답이 왜 그렇게 짧어? 서운하게.');
   } else if (v === 'help') {
     state.helpCount++; state.support++;
     apply({ stress: -5, cheer: 6, rep: 1 });
     if (married) await say(NPC.spouse, '어르신, 저희 큰집에서 다들 기다리셔서요! 이따 또 인사드릴게요.');
     else await say(NPC.cousin, '📱 다온: “큰집에서 다들 너 찾아! 얼른 와~” (전화를 받는 척 자리를 뜬다)');
     if (state.ended) return;
-    await say(P, '그려, 어여 가 봐라~');
+    await say(P, '어이구, 혼자선 대답도 못 하나 보네. 그려, 가 봐라.');
   } else if (v === 'snap') {
-    apply({ stress: -4, rep: -16, cheer: -2 });
+    apply({ stress: -4, rep: -16, cheer: -2 }, '', { rep: '쏘아붙인 말' });
     if (state.ended) return;
     await say(P, '…아이고, 깜짝이야. 요즘 애들은 참….');
   }
   if (state.ended) return;
+  // 한 번 답해도 끝나지 않는 잔소리 2탄. 도움을 청했거나 쏘아붙였으면 생략
+  if (v === 'deflect' || v === 'boundary' || v === 'short') {
+    chainNag();
+    if (state.ended) return;
+    const c2 = await say(P, VILLAGE_FOLLOW[n.id], [
+      { tag: '🙂 웃으며 넘기기', label: '하하… 네, 명심할게요.', value: 'smile' },
+      { tag: '🚧 한 번 더 선 긋기', label: '말씀은 감사해요. 그래도 그건 제가 정할게요.', value: 'boundary' },
+      { tag: '🏃 인사하고 자리 뜨기', label: '큰집에서 기다리셔서요! 안녕히 계세요~', value: 'leave' },
+    ]);
+    if (state.ended) return;
+    if (c2.value === 'smile') {
+      apply({ hp: -2, rep: 1 }, '', { hp: '꾹 참은 웃음' });
+      if (state.ended) return;
+      await say(P, '그려, 명심혀. 다 너 잘되라고 하는 소리여. 다음에 또 얘기하자고.');
+      if (state.ended) return;
+      chainNag();
+    } else if (c2.value === 'boundary') {
+      state.count.boundary++;
+      apply({ cheer: 6, rep: -1 }, '', { rep: '거듭된 선 긋기' });
+      if (state.ended) return;
+      await say(P, '(입을 삐죽이며) 그려, 잘났다 잘났어. 어여 가 봐.');
+    } else {
+      await say(P, '벌써 가? 얼굴 한 번 보기 힘드네, 참.');
+    }
+    if (state.ended) return;
+  }
   closeDialog(); state.busy = false; updateGoal();
+  // 대화가 끝나면 원래 자리로 비켜 준다
+  if (n.x !== n.hx || n.y !== n.hy) walkNpc(n, n.hx, n.hy, () => { n.dir = n.hdir; });
 }
 async function restPavilion() {
   state.busy = true;
   if (state.rested) { await say({ name: '정자', role: '마을 쉼터', look: LOOKS.granny }, '이미 한 번 쉬었어요. 큰집이 기다리고 있어요!'); closeDialog(); state.busy = false; return; }
   state.rested = true;
   await breather(true);
+  state.combo = 0;
   apply({ hp: 8, stress: -12, cheer: 3 }, '정자에서 쉼');
   state.busy = false;
 }
@@ -1172,7 +1291,7 @@ function drawVillage(time) {
   const items = [];
   objects.forEach(o => { if ((o.x + o.w + 2) * T > camX && (o.x - 2) * T < camX + LW && (o.y + o.h + 2) * T > camY && (o.y - 2) * T < camY + LH) items.push({ y: (o.y + o.h) * T - .1, draw: () => drawObject(ctx, o, time) }); });
   npcs.forEach(n => items.push({ y: n.y * T, draw: () => {
-    drawPerson(ctx, n.x * T, n.y * T, NPC[n.id].look, { dir: n.dir, frame: 0 });
+    drawPerson(ctx, n.x * T, n.y * T, NPC[n.id].look, { dir: n.dir, frame: n.walking ? (Math.floor(n.anim) % 2) + 1 : 0 });
     if (!state.talked[n.id]) { const b = Math.sin(time * 5) * 1.5; ctx.fillStyle = '#fff'; ctx.fillRect(n.x * T - 3, n.y * T - 25 + b, 7, 8); ctx.fillStyle = '#e8692a'; ctx.fillRect(n.x * T - 1, n.y * T - 24 + b, 3, 4); ctx.fillRect(n.x * T - 1, n.y * T - 19 + b, 3, 1); }
   } }));
   followers.forEach(f => items.push({ y: f.y * T - .01, draw: () => drawPerson(ctx, f.x * T, f.y * T, f.look, { dir: f.dir, frame: f.anim ? (Math.floor(player.anim) % 2) + 1 : 0 }) }));
@@ -1350,11 +1469,11 @@ async function startHouse() {
 async function askQuestion(q) {
   const rel = NPC[q.who];
   const text = state.soft && q.soft ? q.soft : q.text;
-  expose(state.soft ? 8 : 12);
+  expose(state.soft ? 8 : 14);
   if (state.ended) return;
   const A = ally(), allyId = isMarried() ? 'spouse' : 'cousin';
   // 스트레스가 높으면 믿을 만한 사람이 먼저 손을 내민다
-  if (state.st.stress >= 60 && state.allyOffers < 2) {
+  if (state.st.stress >= 60 && state.allyOffers < 1) {
     state.allyOffers++;
     const offer = isMarried() ? '(하늘이 당신 손등을 톡 친다) 내가 한마디 거들까? 네가 원할 때만.' : '(다온이 눈짓한다) 내가 끼어들어 줄까? 싫으면 가만있을게.';
     state.allyWave = performance.now() / 1000 + 3;
@@ -1370,7 +1489,9 @@ async function askQuestion(q) {
     { tag: '🚧 선 긋기', label: pick(LINES.boundary), value: 'boundary' },
     { tag: '🔁 되묻기', label: q.askback || pick(LINES.askback), value: 'askback' },
     { tag: '🤝 지원 요청', label: help, value: 'help' },
-    { tag: '🌿 잠깐 쉬기', label: LINES.rest, value: 'rest' },
+    state.restUsed < REST_LIMIT
+      ? { tag: `🌿 잠깐 쉬기 (남은 ${REST_LIMIT - state.restUsed}번)`, label: LINES.rest, value: 'rest' }
+      : { tag: '🌿 잠깐 쉬기 (다 썼어요)', label: '…또 일어나기엔 눈치가 보인다. 꾹 참고 듣는다.', value: 'endure' },
     { tag: '💥 욱하기', label: pick(LINES.snap), value: 'snap', rude: true },
   ], { speakerId: q.who, skippable: true });
   if (state.ended) return;
@@ -1381,6 +1502,15 @@ async function askQuestion(q) {
     await say({ name: '안내', role: '편의 기능', look: playerLook() }, q.sens ? '이 주제를 건너뛰었어요. 이후 임신·출산·자녀 질문은 나오지 않아요. (⚙️ 설정에서 바꿀 수 있어요)' : '이 질문을 건너뛰었어요. 큰아버지가 슬쩍 다른 이야기를 꺼냅니다.');
     return;
   }
+  if (v === 'endure') {
+    state.count.short++;
+    apply({ hp: -3 }, '', { hp: '꾹 참은 화' });
+    if (state.ended) return;
+    chainNag();
+    if (state.ended) return;
+    await say(rel, pick(LINES.jab), null, { speakerId: q.who });
+    return;
+  }
   state.count[v]++;
   if (v === 'deflect' || v === 'boundary' || v === 'askback') {
     const line = c.label;
@@ -1388,11 +1518,18 @@ async function askQuestion(q) {
     if (state.ended) return;
     const success = ok.value === true;
     if (v === 'deflect') apply(success ? { stress: -6, rep: 4, cheer: 4, hp: 2 } : { stress: -2, rep: 2, cheer: 3 });
-    if (v === 'boundary') apply(success ? { stress: -5, rep: 0, cheer: 12, hp: 3 } : { stress: -2, rep: -2, cheer: 10 });
-    if (v === 'askback') apply(success ? { stress: -4, rep: 2, cheer: 9 } : { stress: 0, rep: -3, cheer: 7, hp: -2 });
+    if (v === 'boundary') apply(success ? { stress: -5, rep: 0, cheer: 12, hp: 3 } : { stress: -2, rep: -2, cheer: 10 }, '', { rep: '선 긋기' });
+    if (v === 'askback') apply(success ? { stress: -4, rep: 2, cheer: 9 } : { stress: 0, rep: -3, cheer: 7, hp: -2 }, '', { rep: '되묻는 말', hp: '신경전' });
     if (state.ended) return;
     const pool = LINES['r_' + v + (ok.value === false ? '_meh' : '')];
     await say(rel, pick(pool), null, { speakerId: q.who });
+    if (state.ended) return;
+    // 방어에 성공하지 못하면 잔소리가 한 번 더 이어진다
+    if (!success) {
+      chainNag();
+      if (state.ended) return;
+      await say(rel, pick(LINES.jab), null, { speakerId: q.who });
+    }
   } else if (v === 'help') {
     await say(PLAYER(), help);
     if (state.ended) return;
@@ -1400,13 +1537,14 @@ async function askQuestion(q) {
   } else if (v === 'rest') {
     await say(PLAYER(), LINES.rest);
     closeDialog();
+    state.restUsed++; state.combo = 0;
     await breather(true);
     if (state.ended) return;
-    apply({ hp: 12, stress: -18, rep: -1 }, '숨 고르고 복귀');
+    apply({ hp: 10, stress: -15, rep: -2 }, '숨 고르고 복귀', { rep: '잠깐 자리 비움' });
     if (state.ended) return;
     await say(rel, pick(LINES.r_rest), null, { speakerId: q.who });
   } else if (v === 'snap') {
-    apply({ stress: -6, rep: -18, hp: -4, cheer: -2 });
+    apply({ stress: -6, rep: -18, hp: -4, cheer: -2 }, '', { rep: '욱한 말', hp: '치솟은 화' });
     if (state.ended) return;
     await say(rel, pick(LINES.r_snap), null, { speakerId: q.who });
   }
@@ -1417,7 +1555,8 @@ async function allyHelp(rel, q, offered) {
   if (offered) state.count.help++;
   await say(A, pick(isMarried() ? LINES.ally_spouse : LINES.ally_cousin), null, { speakerId: allyId });
   if (state.ended) return;
-  apply({ stress: -8, hp: 3, cheer: 10, rep: 1 }, '함께 대응');
+  state.combo = 0;
+  apply({ stress: -12, hp: 6, cheer: 10, rep: 1 }, '함께 대응');
   if (state.ended) return;
   const c = await say(rel, pick(LINES.r_ally), [
     { tag: '🤝 서로 지지하기', label: isMarried() ? '(하늘에게) 고마워, 다음엔 내가 네 편 들게.' : '(다온에게) 고마워, 다음엔 내가 도와줄게!', value: 'thanks' },
@@ -1428,7 +1567,7 @@ async function allyHelp(rel, q, offered) {
 }
 
 /* 큰상 음식 */
-const FOOD_COOL = { jeon: .8, water: 6, chat: 8, share: 4, help: 8 };
+const FOOD_COOL = { jeon: .8, water: 10, chat: 12, share: 4, help: 8 };
 function updateFood() {
   const now = performance.now() / 1000;
   document.querySelectorAll('#food [data-food]').forEach(b => {
@@ -1448,9 +1587,9 @@ async function useFood(k) {
     if (s.plate <= 0) return;
     s.plate--; s.count.eat++; s.eatAnim = now + .9; sfx('eat');
     await wait(500);
-    apply({ wt: JEON_GAIN, hp: 2, stress: -2 }, '고소한 부침개');
+    apply({ wt: JEON_GAIN, hp: 2, stress: -2 }, '고소한 부침개', { wt: '부침개 한 장' });
   } else if (k === 'water') {
-    sfx('water'); apply({ hp: 6, stress: -6 }, '물 한 잔');
+    state.combo = 0; sfx('water'); apply({ hp: 7, stress: -6 }, '물 한 잔');
   } else if (k === 'chat') {
     sfx('select');
     apply({ hp: 4, stress: -5, rep: 2, cheer: 3 }, isMarried() ? '“하늘, 요즘 보는 드라마 뭐야?”' : '“다온아, 요즘 보는 드라마 있어?”');
@@ -1460,7 +1599,7 @@ async function useFood(k) {
     apply({ rep: 4, cheer: 2 }, '“큰어머니도 하나 드세요!”');
   } else if (k === 'help') {
     s.count.share++; sfx('dish');
-    apply({ rep: 3, hp: -2, stress: -3, cheer: 3 }, '상차림 함께');
+    apply({ rep: 3, hp: -2, stress: -3, cheer: 3 }, '상차림 함께', { hp: '상차림 노동' });
   }
   if (s.ended) return;
   if (s.plate <= 0 && s.st.wt < 100) {
@@ -1502,7 +1641,8 @@ function frame(now) {
     let anchor = null;
     if (state.scene === 'village' && player) {
       const paused = dlg.open || state.busy || !$('#ovSettings').hidden || !$('#ovBreath').hidden || state.ended;
-      if (!paused) updateVillage(dt); else $('#hint').hidden = true;
+      if (!paused) updateVillage(dt); else if (!state.intercept) $('#hint').hidden = true;
+      if ($('#ovSettings').hidden) updateNpcs(dt);
       anchor = drawVillage(time);
     } else if (state.scene === 'house') {
       anchor = drawHouse(time);
