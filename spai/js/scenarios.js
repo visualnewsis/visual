@@ -65,7 +65,7 @@
           classification:"check",
           reportInterpretation:"40분 연속 무입력 · 자리 비움 추정",
           realContext:"회의실에서 팀장·동료와 오후 마감 순서를 정했다.",
-          flipReveal:"PC 입력이 없던 40분 동안 마감 순서를 정하는 회의를 했다.",
+          flipReveal:"'자리 비움'으로 추정된 40분. 실제로는 회의실에서 동료들과 마감 순서를 정했다.",
           verdict:"under",
           caveat:"PC 모니터링 소프트웨어는 PC 앞의 활동을 기록한다. 화면 밖의 회의는 '입력 없음'으로만 남는다."
         },
@@ -175,7 +175,7 @@
         },
         {
           id:"s4-chat",label:"메신저로 동료들과 조율한다",
-          short:"메신저 잡담",
+          short:"메신저 업무·잡담 대화",
           detail:"사내 메신저로 동료들과 남은 일을 나누고, 이야기를 이어간다.",
           observables:{app:"사내 메신저",site:null,activity:"짧은 입력 반복, 잦은 창 전환",idle:"무입력 구간 없음",visibleDuration:"30분"},
           log:["16:40 활성 창 · 사내 메신저","16:52 입력 활동 활발","17:10 업무 앱 30분"],
