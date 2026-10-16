@@ -72,6 +72,14 @@ section{position:relative;scroll-margin-top:56px}
 
 /* S1 실제 사례 */
 .case{padding:clamp(80px,11vw,140px) 0 clamp(60px,8vw,100px);background:var(--paper)}
+.orwell-quote{margin:0 0 clamp(52px,7vw,80px);padding:0 0 clamp(32px,4vw,48px);border-bottom:1px solid var(--line)}
+.orwell-quote blockquote{margin:0}
+.orwell-quote blockquote p{margin:0;max-width:29em;font-size:clamp(18px,2vw,23px);font-weight:500;line-height:1.85;letter-spacing:-.025em;color:var(--ink-2)}
+.orwell-quote figcaption{margin-top:20px;font-size:12px;line-height:1.9;color:#636b73}
+.orwell-quote cite{font-style:normal}
+.orwell-quote a{text-underline-offset:3px}
+.case-dateline{margin:0 0 24px;font-size:clamp(26px,3.2vw,38px);font-weight:800;line-height:1.3;letter-spacing:-.04em;color:var(--ink)}
+.case-dateline span{color:var(--mint-dark)}
 .case-voices{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:36px 0 0}
 .voice{margin:0;padding:22px 22px 18px;background:var(--white);border-top:4px solid var(--ink)}
 .voice--worker{border-top-color:var(--flag)}
