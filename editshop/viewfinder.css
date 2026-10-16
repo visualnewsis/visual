@@ -1,0 +1,12 @@
+/* Only the animation wrapper changes flow; the original hero remains intact. */
+.vf-zone{position:relative}
+.vf-zone>.hero{position:sticky;top:var(--vf-top,64px)}
+.vf-overlay{position:fixed;left:0;top:var(--vf-top,64px);width:100%;height:calc(100svh - var(--vf-top,64px));z-index:30;pointer-events:none;overflow:hidden;visibility:hidden}
+.vf-overlay svg{display:block;width:100%;height:100%}
+.vf-window{position:absolute;inset:0;clip-path:url(#vf-aperture);-webkit-clip-path:url(#vf-aperture)}
+.vf-image{position:absolute;max-width:none}
+.vf-zone.vf-active .hero-top{opacity:var(--vf-copy,1)}
+.vf-zone.vf-cover-hidden .feature-image img{visibility:hidden}
+/* Hold the existing cover still during handoff; its usual hover remains outside it. */
+.vf-zone.vf-active .feature-image img{transform:none;transition:none}
+@media(prefers-reduced-motion:reduce){.vf-zone{height:auto!important}.vf-zone>.hero{position:static}.vf-overlay{display:none}.vf-zone.vf-active .hero-top{opacity:1}}
