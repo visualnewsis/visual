@@ -148,7 +148,8 @@
       </ol>
       <div class="rp-grade">
         <div class="rp-grade-rule">
-          <p class="rp-grade-label">SPAI 가상 고과 · 뉴스용 시뮬레이션, 효력 없음</p>
+          <p class="rp-grade-label">SPAI 가상 고과</p>
+          <p class="rp-grade-warn">실제 업무 성과가 아닌, 네 구간의 PC 기록만으로 산출한 가상 결과입니다.</p>
           <p>확인 필요·비업무 의심 항목 수로만 매긴다.<br>0건 A · 1건 B · 2건 C · 3건 이상 D</p>
           <p>오늘 해당 항목: <b>${data.flags}건</b></p>
         </div>
@@ -198,7 +199,7 @@
     const lines=[`선택한 네 구간 가운데 SPAI가 '맥락 확인 필요'나 '비업무 의심'으로 표시한 구간은 ${data.flags}개다. 이 중 실제로 일을 하지 않은 구간은 ${data.offTask?"개인 영상을 본 25분 하나다":"없다"}.`];
     if(missed.length){const w=missed.join(", ");lines.push(`기록에 제대로 잡히지 않은 일은 ${w}${josa(w,"이었다","였다")}.`)}
     if(inflated.length){const w=inflated.join(", ");lines.push(`${w}${josa(w,"은","는")} 업무 앱 사용으로 분류됐지만, 무엇을 남겼고 무슨 이야기를 했는지는 기록되지 않았다.`)}
-    lines.push(`고과는 ${data.grade}였다. PC 기록만으로는 실제 업무 여부를 가리기 어렵다. 기록을 평가에 쓰려면 관리자가 직원에게 당시 상황을 확인해야 한다.`);
+    lines.push(`앞면의 고과는 ${data.grade}였다.`);
     $("verdictBody").innerHTML=lines.map(l=>`<p>${l}</p>`).join("");
   }
 
