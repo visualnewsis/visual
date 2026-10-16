@@ -27,3 +27,4 @@
 @media(max-width:650px){#cm-play .cm-nav{margin:0 -19px;padding:6px 14px;gap:0 22px;justify-content:flex-start}#cm-play .cm-nav a{font-size:12px;padding:12px 0}#cm-play .cm-hero{padding-top:48px}}
 
 html{scroll-behavior:smooth}body{margin:0;background:#151719}#cm-play{max-width:1280px;margin:auto}#cm-play .cm-top{margin-inline:-36px}#cm-play .cm-game:focus-visible{outline:2px solid #e1ee89;outline-offset:5px}#cm-play .cm-nav a:focus-visible{outline:2px solid currentColor}#cm-play .cm-game img{height:auto}@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}#cm-play .cm-game img{transition:none}}@media(max-width:650px){#cm-play .cm-top{margin-inline:-19px}}
+#cm-play .cm-top>a:first-child{display:flex;align-items:center;justify-self:start;align-self:stretch;line-height:0}#cm-play .cm-top .cm-logo{display:block;flex:none}
