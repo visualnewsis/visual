@@ -30,495 +30,68 @@
   </script>
   <title>비주얼 뉴시스 | VISUAL NEWSIS — 뉴스를 보는 새로운 방식</title>
   <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebSite","name":"VISUAL NEWSIS","alternateName":["비주얼 뉴시스","Visual Newsis"],"url":"https://visual.newsis.com/","inLanguage":"ko-KR","publisher":{"@type":"NewsMediaOrganization","name":"뉴시스","url":"https://www.newsis.com/"},"hasPart":[{"@type":"CollectionPage","name":"편집#","alternateName":["편집샵","편집숍","뉴시스 편집샵","뉴시스 편집숍","안재현 기자 편집샵","비주얼 뉴시스 편집샵","인터랙티브 뉴스 편집샵"],"url":"https://visual.newsis.com/editshop/","creator":{"@type":"Person","name":"안재현","alternateName":["안재현 기자","크리에이티브 디렉터 안재현","크리에이티브 디렉터 = 안재현","JAEHYEON AN","Visual Journalist Jaehyeon An"],"jobTitle":["뉴시스 기자","크리에이티브 디렉터"],"description":"뉴시스 기자이자 비주얼 저널리스트. 비주얼 뉴시스의 편집#, 충무로딩, 계산대로의 기획·취재·디자인·개발을 모두 맡고 있습니다.","worksFor":{"@type":"NewsMediaOrganization","name":"뉴시스","url":"https://www.newsis.com/"}}},{"@type":"CollectionPage","name":"충무로딩","alternateName":"충무로 놀이마당","url":"https://visual.newsis.com/arcade/"}]}</script>
-  <style>
-    :root{
-      --ink:#0b0e0f;
-      --paper:#f3f1ea;
-      --white:#fff;
-      --mint:#19e5c0;
-      --cyan:#08b6cb;
-      --muted:#777c7b;
-      --line:rgba(11,14,15,.18);
-      --pad:clamp(20px,4vw,64px);
-    }
-    *{box-sizing:border-box}
-    html{scroll-behavior:smooth}
-    body{
-      margin:0;padding-top:74px;
-      background:var(--paper);
-      color:var(--ink);
-      font-family:"Noto Sans KR",sans-serif;
-      word-break:keep-all;
-    }
-    a{color:inherit;text-decoration:none}
-    button{font:inherit}
-    .skip{
-      position:fixed;left:12px;top:-80px;z-index:99;
-      padding:12px 16px;background:var(--mint);font-weight:800;
-    }
-    .skip:focus{top:12px}
-    .masthead{
-      height:74px;padding:0 var(--pad);
-      display:flex;align-items:center;justify-content:space-between;
-      border-bottom:1px solid rgba(255,255,255,.12);background:var(--ink);
-      color:var(--white);position:fixed;left:0;right:0;top:0;z-index:80;
-    }
-    .brand{
-      position:relative;z-index:2;display:flex;align-items:center;gap:12px;
-      font:16px/1 "Archivo Black",sans-serif;letter-spacing:-.02em;
-    }
-    .brand-mark{width:10px;height:10px;background:var(--mint);border-radius:50%}
-    .brand small{font:600 10px/1 "Noto Sans KR",sans-serif;letter-spacing:.18em;color:var(--muted)}
-    .nav{position:relative;z-index:2;display:flex;align-items:center;gap:28px;font-size:13px;font-weight:700}
-    .nav a{position:relative}
-    .nav a::after{
-      content:"";position:absolute;left:0;right:100%;bottom:-5px;height:2px;
-      background:var(--mint);transition:right .25s ease;
-    }
-    .nav a:hover::after,.nav a:focus-visible::after{right:0}
-    .issue{display:flex;gap:8px;align-items:center;color:var(--muted)}
-    .issue::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--mint)}
-    .newsis-logo{
-      position:absolute;z-index:3;left:50%;top:50%;
-      width:112px;height:40px;transform:translate(-50%,-50%);
-      transition:opacity .2s ease,transform .2s ease;
-    }
-    .newsis-logo:hover,.newsis-logo:focus-visible{opacity:.78;transform:translate(-50%,-50%) scale(1.03)}
-    .newsis-logo img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain}
-    .newsis-logo .white-layer{filter:brightness(0) invert(1)}
-    .newsis-logo .mint-layer{clip-path:inset(0 0 0 78%)}
-
-    .hero{
-      min-height:calc(100svh - 74px);
-      padding:clamp(44px,8vh,94px) var(--pad) 32px;
-      display:grid;grid-template-columns:minmax(0,1.35fr) minmax(280px,.65fr);
-      grid-template-rows:1fr auto;gap:32px 6vw;
-      background:var(--ink);color:var(--white);overflow:hidden;position:relative;
-    }
-    .hero::before{
-      content:"";position:absolute;width:55vw;height:55vw;right:-18vw;top:-20vw;
-      border:1px solid rgba(255,255,255,.14);border-radius:50%;
-      box-shadow:0 0 0 7vw rgba(255,255,255,.025),0 0 0 14vw rgba(255,255,255,.018);
-    }
-    .hero-copy{align-self:start;position:relative;z-index:1}
-    .eyebrow{
-      display:flex;gap:12px;align-items:center;margin-bottom:clamp(30px,6vh,72px);
-      font:700 11px/1 "Noto Sans KR",sans-serif;letter-spacing:.18em;color:var(--mint);
-    }
-    .eyebrow::before{content:"";width:42px;height:1px;background:currentColor}
-    h1{
-      margin:0;max-width:1000px;
-      font-size:clamp(54px,9.5vw,152px);font-weight:900;line-height:.9;letter-spacing:-.08em;
-    }
-    h1 span{display:block}
-    h1 .outline{
-      color:transparent;-webkit-text-stroke:1.5px var(--white);
-      margin-left:clamp(30px,9vw,150px);
-    }
-    .hero-side{
-      align-self:end;position:relative;z-index:1;padding-bottom:18px;
-      border-top:1px solid rgba(255,255,255,.3);
-    }
-    .hero-side p{font-size:clamp(18px,2vw,28px);line-height:1.55;font-weight:600;margin:22px 0 34px}
-    .hero-side small{color:#aeb4b3;font-size:12px;line-height:1.8}
-    .scroll{
-      grid-column:1/-1;display:flex;justify-content:space-between;align-items:end;
-      color:#929998;font-size:11px;letter-spacing:.14em;position:relative;z-index:1;
-    }
-    .scroll-line{width:clamp(100px,26vw,380px);height:1px;background:rgba(255,255,255,.25);overflow:hidden}
-    .scroll-line::after{
-      content:"";display:block;width:35%;height:100%;background:var(--mint);
-      animation:scan 2.4s ease-in-out infinite;
-    }
-    @keyframes scan{0%{transform:translateX(-100%)}100%{transform:translateX(390%)}}
-
-    .latest{padding:clamp(74px,11vw,150px) var(--pad)}
-    .section-head{
-      display:grid;grid-template-columns:1fr 1fr;gap:30px;align-items:end;
-      margin-bottom:clamp(34px,6vw,76px);padding-bottom:20px;border-bottom:1px solid var(--ink);
-    }
-    .section-kicker{font:700 11px/1 "Noto Sans KR",sans-serif;letter-spacing:.18em;color:var(--muted)}
-    h2{margin:10px 0 0;font-size:clamp(36px,6vw,80px);line-height:1;font-weight:900;letter-spacing:-.07em}
-    .section-head p{margin:0;max-width:510px;justify-self:end;font-size:14px;line-height:1.9;color:#626766}
-    .feature{
-      display:grid;grid-template-columns:minmax(0,1.15fr) minmax(300px,.85fr);
-      min-height:620px;background:#071011;color:var(--white);
-    }
-    .feature-art{position:relative;overflow:hidden;isolation:isolate;min-height:480px}
-    .feature-art::before{
-      content:"";position:absolute;inset:0;
-      background:
-        linear-gradient(90deg,rgba(7,16,17,.18),rgba(7,16,17,.02)),
-          url("./spai/images/og-spai-1200x630.jpg") center/cover no-repeat;
-      transform:scale(1.05);transition:transform .7s ease;
-    }
-    .feature:hover .feature-art::before{transform:scale(1.1)}
-    .map-label{
-      position:absolute;z-index:2;padding:9px 12px;background:var(--mint);color:var(--ink);
-      font:800 10px/1 "Noto Sans KR",sans-serif;letter-spacing:.08em;
-    }
-    .map-label.one{left:18%;top:27%}
-    .map-label.two{right:14%;bottom:28%;background:var(--white)}
-    .route{
-      position:absolute;z-index:2;left:42%;top:48%;width:34%;border-top:1px dashed var(--mint);
-      transform:rotate(-19deg);transform-origin:left;
-    }
-    .route::before,.route::after{content:"";position:absolute;width:7px;height:7px;border-radius:50%;background:var(--mint);top:-4px}
-    .route::before{left:0}.route::after{right:0}
-    .art-index{position:absolute;left:26px;bottom:20px;z-index:2;font:12px/1 "Archivo Black";color:rgba(255,255,255,.6)}
-    .feature-copy{
-      display:flex;flex-direction:column;padding:clamp(30px,5vw,72px);
-      border-left:1px solid rgba(255,255,255,.18);
-    }
-    .tag-row{display:flex;gap:8px;flex-wrap:wrap}
-    .tag{padding:7px 10px;border:1px solid rgba(255,255,255,.3);border-radius:999px;font-size:10px;letter-spacing:.1em}
-    .feature-copy h3{margin:auto 0 18px;font-size:clamp(40px,5.7vw,80px);line-height:1.02;letter-spacing:-.07em}
-    .feature-copy h3 i{font-style:normal;color:rgb(162,219,203)}
-    .feature-copy h3 b{font-weight:inherit;color:rgb(240,217,156)}
-    .feature-copy h3 em{font-style:normal;color:rgb(225,138,125)}
-    .feature-copy h3.long-title{font-size:clamp(34px,3.9vw,56px)}
-    .feature-copy p{max-width:450px;margin:0;color:#b9c2c1;font-size:15px;line-height:1.8}
-    .meta{margin-top:34px;padding-top:20px;border-top:1px solid rgba(255,255,255,.22);display:flex;justify-content:space-between;color:#8f9b99;font-size:11px}
-    .read{margin-top:32px;display:flex;align-items:center;justify-content:space-between;font-weight:800}
-    .arrow{
-      display:grid;place-items:center;width:48px;height:48px;border-radius:50%;background:var(--mint);color:var(--ink);
-      font-size:21px;transition:transform .25s ease;
-    }
-    .feature:hover .arrow{transform:translate(4px,-4px)}
-
-    .archive{padding:0 var(--pad) clamp(80px,12vw,170px)}
-    .archive-title{
-      display:flex;justify-content:space-between;align-items:end;padding-bottom:18px;border-bottom:1px solid var(--ink);
-    }
-    .archive-title h3{font-size:clamp(27px,4vw,54px);margin:0;letter-spacing:-.06em}
-    .archive-title-meta{display:flex;align-items:center;gap:18px}.archive-title-meta>span{font-size:12px;color:var(--muted)}
-    .archive-controls{display:flex;gap:6px}.archive-arrow{width:42px;height:42px;border:1px solid var(--ink);border-radius:50%;background:transparent;color:var(--ink);font-size:20px;cursor:pointer;transition:.2s ease}.archive-arrow:hover,.archive-arrow:focus-visible{background:var(--ink);color:var(--paper)}.archive-arrow:disabled{opacity:.25;cursor:default}
-    .archive-viewport{overflow:hidden;border-bottom:1px solid var(--line);touch-action:pan-y}.archive-grid{display:flex;gap:1px;background:var(--line);transition:transform .55s cubic-bezier(.22,.8,.22,1);will-change:transform}.archive-grid.dragging{transition:none;cursor:grabbing}
-    .archive-card{flex:0 0 calc((100% - 2px)/3);min-height:290px;padding:28px;background:var(--paper);display:flex;flex-direction:column;transition:background-color .22s ease}
-    .archive-card:hover,.archive-card:focus-visible,.archive-card.latest-story{background:var(--mint)}
-    .archive-card .num{font:12px/1 "Archivo Black";color:var(--muted)}
-    .archive-card strong{margin:auto 0 12px;font-size:clamp(22px,2.4vw,34px);line-height:1.3;letter-spacing:-.04em}
-    .archive-card p{margin:0;color:#666b6a;font-size:12px;line-height:1.7}
-    .archive-card .state{margin-top:24px;font-size:10px;font-weight:800;letter-spacing:.13em}
-    .archive-card.placeholder{background:rgba(255,255,255,.28)}
-    .archive-card.placeholder strong{color:#a6aaa8}
-
-    .play-break{
-      margin:0 var(--pad) clamp(80px,11vw,150px);min-height:300px;
-      display:grid;grid-template-columns:minmax(0,1fr) minmax(280px,.7fr);
-      background:#17231c;color:var(--white);overflow:hidden;
-    }
-    .play-break-copy{padding:clamp(38px,6vw,78px);display:flex;flex-direction:column;align-items:flex-start}
-    .play-break-kicker{font:700 10px/1 "Noto Sans KR",sans-serif;letter-spacing:.18em;color:var(--mint)}
-    .play-break h3{margin:28px 0 18px;font-size:clamp(36px,5vw,68px);line-height:1.05;letter-spacing:-.06em}
-    .play-break p{margin:0;color:#b7c1bb;font-size:13px;line-height:1.8}
-    .play-break-link{margin-top:auto;padding:18px 0 8px;min-width:min(100%,260px);display:flex;justify-content:space-between;border-bottom:1px solid var(--mint);font-size:12px;font-weight:800}
-    .play-break-art{position:relative;background:#b38a56;overflow:hidden}
-    .play-break-art::before{content:"";position:absolute;inset:0;background-image:linear-gradient(rgba(46,28,14,.34) 1px,transparent 1px),linear-gradient(90deg,rgba(46,28,14,.34) 1px,transparent 1px);background-size:12.5% 12.5%;transform:rotate(-7deg) scale(1.25)}
-    .play-stone{position:absolute;width:42px;aspect-ratio:1;border-radius:50%;box-shadow:0 8px 12px rgba(47,29,13,.35)}
-    .play-stone.one{left:24%;top:30%;background:radial-gradient(circle at 30% 25%,#667068,#101512 55%,#000)}
-    .play-stone.two{left:38%;top:45%;background:radial-gradient(circle at 30% 25%,#fff,#dedbd1 58%,#aaa)}
-    .play-card{position:absolute;right:14%;bottom:-10%;width:31%;aspect-ratio:2/3;border:1px solid #d6b36a;background:#0b0907;transform:rotate(12deg);box-shadow:0 22px 34px rgba(42,25,11,.45)}
-    .play-card::before{content:"✦";position:absolute;inset:9px;border:1px solid rgba(214,179,106,.6);display:grid;place-items:center;color:#d6b36a;font-size:30px}
-
-    .about{display:grid;grid-template-columns:1fr 1fr;background:var(--mint)}
-    .about-title{padding:clamp(58px,9vw,130px) var(--pad);border-right:1px solid rgba(11,14,15,.22)}
-    .about-title .big{font-size:clamp(54px,9vw,136px);font-weight:900;line-height:.85;letter-spacing:-.09em}
-    .about-title .big span{display:block;margin-left:10%}
-    .about-copy{padding:clamp(58px,9vw,130px) var(--pad);display:flex;flex-direction:column;justify-content:space-between;gap:70px}
-    .about-copy p{margin:0;font-size:clamp(12px,1.05vw,16px);font-weight:500;line-height:1.75;letter-spacing:-.01em;color:rgba(11,14,15,.7)}
-    .principles{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
-    .principles div{padding-top:14px;border-top:1px solid var(--ink);font-size:12px;font-weight:800}
-    footer{
-      padding:36px var(--pad);display:flex;justify-content:space-between;align-items:end;
-      background:var(--ink);color:var(--white);
-    }
-    .footer-brand{font:clamp(22px,3vw,38px)/1 "Archivo Black";letter-spacing:-.04em}
-    footer p{margin:7px 0 0;color:#858d8c;font-size:10px;letter-spacing:.1em}
-    .top-link{font-size:12px;font-weight:700;color:var(--mint)}
-    @media (max-width:850px){
-      .nav a:not(.issue){display:none}
-      .brand small{display:none}
-      .hero{grid-template-columns:1fr;grid-template-rows:auto auto 1fr}
-      .hero-side{max-width:520px}
-      .scroll{grid-column:1}
-      .section-head,.feature,.about{grid-template-columns:1fr}
-      .play-break{grid-template-columns:1fr}.play-break-art{min-height:280px}
-      .section-head p{justify-self:start}
-      .feature-copy{min-height:480px;border-left:0;border-top:1px solid rgba(255,255,255,.18)}
-      .about-title{border-right:0;border-bottom:1px solid rgba(11,14,15,.22)}
-      .archive-card{flex-basis:calc((100% - 1px)/2);min-height:230px}
-    }
-    @media (max-width:520px){
-      body{padding-top:64px}
-      .masthead{height:64px}
-      .brand{font-size:12px}
-      .brand-mark{display:none}
-      .newsis-logo{width:84px;height:31px}
-      .issue{font-size:10px}
-      .hero{min-height:calc(100svh - 64px)}
-      h1{font-size:clamp(52px,18vw,92px)}
-      h1 .outline{margin-left:0;margin-top:8px}
-      .feature-art{min-height:390px}
-      .archive-title{align-items:flex-start}.archive-title-meta{flex-direction:column;align-items:flex-end;gap:9px}.archive-card{flex-basis:100%}
-      .play-break{margin-inline:0}.play-break-copy{min-height:330px}.play-break-art{min-height:230px}
-      .principles{grid-template-columns:1fr}
-      footer{align-items:start;gap:30px;flex-direction:column}
-    }
-    @media (prefers-reduced-motion:reduce){
-      html{scroll-behavior:auto}
-      *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition:none!important}
-    }
-  </style>
-<link rel="stylesheet" href="./assets/visual-header.css?v=20260828-5">
+  <link rel="stylesheet" href="./assets/visual-header.css?v=20260828-5">
   <script defer src="./assets/visual-header.js?v=20261002-bukang" data-section="최신 기사" data-section-href="https://visual.newsis.com/#latest" data-current="latest" data-header-theme="dark"></script>
+  <link rel="stylesheet" href="./assets/visual-landing.css?v=20261016-hub-1">
+  <script defer src="./assets/visual-landing.js?v=20261016-hub-1"></script>
 </head>
 <body>
-  <a class="skip" href="#main">본문 바로가기</a>
-  <header class="masthead">
-    <a class="brand" href="https://visual.newsis.com/" aria-label="비주얼 뉴시스 홈">
-      <span class="brand-mark"></span>
-      <span>VISUAL NEWSIS</span>
-      <small>INTERACTIVE JOURNALISM</small>
-    </a>
-    <a class="newsis-logo" href="https://www.newsis.com/" aria-label="뉴시스 홈페이지로 이동">
-      <img class="white-layer" src="./assets/logo2024.png" alt="">
-      <img class="mint-layer" src="./assets/logo2024.png" alt="공감언론 뉴시스">
-    </a>
-    <nav class="nav" aria-label="주요 메뉴">
-      <a href="#latest">최신 기사</a>
-      <a href="./editshop/">편집#</a>
-      <a href="./arcade/">충무로딩</a>
-      <a href="./calculator/index.html">계산대로</a>
-    </nav>
-  </header>
+<a class="skip" href="#main">본문 바로가기</a>
+<div id="vn-hub">
 
-  <main id="main">
-    <section class="hero" aria-labelledby="hero-title">
-      <div class="hero-copy">
-        <div class="eyebrow">NEWS, DESIGNED TO BE EXPERIENCED</div>
-        <h1 id="hero-title">
-          <span>뉴스를</span>
-          <span class="outline">보는 방식.</span>
-        </h1>
-      </div>
-      <div class="hero-side">
-        <p>복잡한 세계를 더 선명하게.<br>데이터와 디자인, 인터랙션으로<br>뉴스의 다음 장면을 만듭니다.</p>
-        <small>비주얼 뉴시스는 읽는 기사를 넘어<br>직접 보고, 움직이고, 이해하는 뉴스를 실험합니다.</small>
-      </div>
-      <div class="scroll" aria-hidden="true">
-        <span>SCROLL TO EXPLORE</span>
-        <div class="scroll-line"></div>
-        <span>SEOUL · 2026</span>
-      </div>
-    </section>
 
-    <section class="latest" id="latest" aria-labelledby="latest-title">
-      <div class="section-head">
-        <div>
-          <div class="section-kicker">LATEST STORY · 024</div>
-          <h2 id="latest-title">지금, 이 이야기</h2>
-        </div>
-      </div>
 
-      <a class="feature" href="./spai/" aria-label="&quot;쟤 지금 딴짓해요&quot; 회사가 고용한 SPAI 기사 읽기"><div class="feature-art" aria-hidden="true"></div><div class="feature-copy"><div class="tag-row"><span class="tag">AI</span><span class="tag">WORK</span><span class="tag">편집#016</span></div><h3 class="long-title">&quot;쟤 지금 딴짓해요&quot;<br> 회사가 고용한 SP<b>AI</b></h3><p>AI가 직원의 통화를 50개 넘는 항목으로 평가하는 시대. 가상 감시 시스템 SPAI가 기록한 당신의 하루, 그 보고서를 뒤집어 봅니다.</p><div class="meta"><span>2026. 10. 16</span><span>기획·디렉터 = 안재현 기자 · 편집#016</span></div><div class="read"><span>인터랙티브 기사 보기</span><span class="arrow" aria-hidden="true">↗</span></div></div></a>
-    </section>
+<main class="vn-body" id="main">
+ <div class="vn-issue" id="latest"><h2>지금, 이 이야기</h2><span>INTERACTIVE JOURNALISM</span></div>
+ <section class="vn-latest" aria-label="지금 주목할 대표 기사">
+  <article class="vn-lead"><a href="https://visual.newsis.com/spai/"><img class="vn-lead-photo" fetchpriority="high" src="./spai/images/hero-office-night-1536.webp" alt="밤늦은 사무실에서 일하는 직원과 감시 카메라"><div class="vn-lead-copy"><span class="vn-eyebrow">편집# · 최신 이야기</span><h1>"쟤 지금 딴짓해요"<br>회사가 고용한 SPAI</h1><p>AI가 기록한 하루와 실제로 일한 하루.<br>당신의 근무 보고서를 뒤집어 봅니다.</p><span class="vn-action">내 근무 기록 받아보기 <span>↗</span></span></div></a></article>
+ </section>
+ <section aria-labelledby="vn-hub-archive-title">
+  <div class="vn-archive-head"><div><span class="vn-tool-label">ALL STORIES</span><h2 id="vn-hub-archive-title">모든 이야기, 여기서.</h2></div><p>코너에 들어가지 않아도, 바로 읽을 수 있습니다.</p></div>
+  <div class="vn-filters" aria-label="기사 코너 필터"><button type="button" class="" data-filter="all" aria-pressed="true">전체</button><button type="button" class="" data-filter="editshop" aria-pressed="false">편집#</button><button type="button" class="" data-filter="newsystem" aria-pressed="false">뉴시스템</button><button type="button" class="" data-filter="map" aria-pressed="false">알아볼지도</button><span class="vn-count" id="vn-hub-count" aria-live="polite">23개의 이야기</span></div>
+  <div class="vn-story-grid" id="vn-hub-archive">
+<a class="archive-card vn-story" href="./spai/" data-corner="editshop" hidden><img src="./assets/landing/story-spai.webp" alt="" width="660" height="400" loading="lazy" decoding="async"><small><span>편집#</span><span class="vn-story-number">STORY 024</span></small><h3>&quot;쟤 지금 딴짓해요&quot; 회사가 고용한 SPAI</h3><p>AI 직원 감시 · 근무 기록 · 인터랙티브</p></a>
+<a class="archive-card vn-story" href="./smartwatch/" data-corner="editshop"><img src="./assets/landing/story-smartwatch.webp" alt="" width="660" height="400" loading="lazy" decoding="async"><small><span>편집#</span><span class="vn-story-number">STORY 023</span></small><h3>방전된 안전</h3><p>신변보호 스마트워치 · 지급 이후의 점검</p></a>
+<a class="archive-card vn-story" href="./son7/" data-corner="newsystem"><img src="./assets/landing/story-son7.webp" alt="" width="660" height="400" loading="lazy" decoding="async"><small><span>뉴시스템</span><span class="vn-story-number">STORY 022</span></small><h3>전설로 남은 자리, 마침내 손에 닿다</h3><p>축구 · A매치 · 인터랙티브</p></a>
+<a class="archive-card vn-story" href="./nuri5/" data-corner="special"><img src="./assets/landing/story-nuri5.webp" alt="" width="660" height="400" loading="lazy" decoding="async"><small><span>특집</span><span class="vn-story-number">STORY 021</span></small><h3>누리호 5차 비행기록</h3><p>누리호 5차 · 위성 15기 · 비행 인터랙티브</p></a>
+<a class="archive-card vn-story" href="./dmz/" data-corner="editshop"><img src="./assets/landing/story-dmz.webp" alt="" width="660" height="400" loading="lazy" decoding="async"><small><span>편집#</span><span class="vn-story-number">STORY 020</span></small><h3>이곳은 悲무장지대입니다</h3><p>DMZ · 지뢰 폭발 · 3D 인터랙티브</p></a>
+<a class="archive-card vn-story" href="./bukang/" data-corner="map"><img src="./assets/landing/story-bukang.webp" alt="" width="660" height="400" loading="lazy" decoding="async"><small><span>알아볼지도</span><span class="vn-story-number">STORY 019</span></small><h3>알아볼지도 부캉이편</h3><p>부산 북항 · 상어 · 지도 인터랙티브</p></a>
+<a class="archive-card vn-story" href="./homecoming/" data-corner="editshop"><img src="./assets/landing/story-homecoming.webp" alt="" width="660" height="400" loading="lazy" decoding="async"><small><span>편집#</span><span class="vn-story-number">STORY 018</span></small><h3>작은 뼈 조각으로, 가족 품에</h3><p>6·25 · 유해발굴 · 인터랙티브</p></a>
+<a class="archive-card vn-story" href="./atleti-2gang/" data-corner="editshop"><img src="./assets/landing/story-atleti-2gang.webp" alt="" width="660" height="400" loading="lazy" decoding="async"><small><span>편집#</span><span class="vn-story-number">STORY 017</span></small><h3>AT, 라리가 &#x27;2강 IN&#x27;</h3><p>라리가 · 팀 전술 · 인터랙티브</p></a>
+<a class="archive-card vn-story" href="./moreno/" data-corner="newsystem"><img src="./assets/landing/story-moreno.webp" alt="" width="660" height="400" loading="lazy" decoding="async"><small><span>뉴시스템</span><span class="vn-story-number">STORY 016</span></small><h3>눈 앞의 기록, 눈 안의 열망</h3><p>축구 · 국가대표 · 인터랙티브</p></a>
+<a class="archive-card vn-story" href="./senior/" data-corner="editshop"><img src="./assets/landing/story-senior.webp" alt="" width="660" height="400" loading="lazy" decoding="async"><small><span>편집#</span><span class="vn-story-number">STORY 015</span></small><h3>환갑이면 고령? 천만예요</h3><p>고령화 · 나이 기준 · 인터랙티브</p></a>
+<a class="archive-card vn-story" href="./pension/" data-corner="editshop"><img src="./assets/landing/story-pension.webp" alt="" width="660" height="400" loading="lazy" decoding="async"><small><span>편집#</span><span class="vn-story-number">STORY 014</span></small><h3>국민연금, 믿어도 돼?</h3><p>국민연금 · 노후 · 인터랙티브</p></a>
+<a class="archive-card vn-story" href="./nepal-flood/" data-corner="newsystem"><img src="./assets/landing/story-nepal-flood.webp" alt="" width="660" height="400" loading="lazy" decoding="async"><small><span>뉴시스템</span><span class="vn-story-number">STORY 013</span></small><h3>마른 하늘 대홍수 뒤집힌 재난 공식</h3><p>네팔 · 빙하 붕괴 · 기후재난</p></a>
+<a class="archive-card vn-story" href="./aijob/" data-corner="editshop"><img src="./assets/landing/story-aijob.webp" alt="" width="660" height="400" loading="lazy" decoding="async"><small><span>편집#</span><span class="vn-story-number">STORY 012</span></small><h3>지금부터 당신을 대체합니다.</h3><p>AI · 노동시장 · 인터랙티브</p></a>
+<a class="archive-card vn-story" href="./witness/" data-corner="editshop"><img src="./assets/landing/story-witness.webp" alt="" width="660" height="400" loading="lazy" decoding="async"><small><span>편집#</span><span class="vn-story-number">STORY 011</span></small><h3>내가 증인입니다.</h3><p>광복 · 증언 · 기억 · 인터랙티브</p></a>
+<a class="archive-card vn-story" href="./battery/" data-corner="map"><img src="./assets/landing/story-battery.webp" alt="" width="660" height="400" loading="lazy" decoding="async"><small><span>알아볼지도</span><span class="vn-story-number">STORY 010</span></small><h3>알아볼지도 리튬이온 배터리편</h3><p>리튬이온배터리 · 배터리 구조 · 인터랙티브</p></a>
+<a class="archive-card vn-story" href="./adult-missing/" data-corner="newsystem"><img src="./assets/landing/story-adult-missing.webp" alt="" width="660" height="400" loading="lazy" decoding="async"><small><span>뉴시스템</span><span class="vn-story-number">STORY 009</span></small><h3>사람은 사라지고 확인도 실종됐다</h3><p>성인 실종 · 경찰 초동대응 · 인터랙티브</p></a>
+<a class="archive-card vn-story" href="./buy-live/" data-corner="editshop"><img src="./assets/landing/story-buy-live.webp" alt="" width="660" height="400" loading="lazy" decoding="async"><small><span>편집#</span><span class="vn-story-number">STORY 008</span></small><h3>이 집, 살 수 있겠습니까?</h3><p>주택 · 대출 · 생활비 · 인터랙티브</p></a>
+<a class="archive-card vn-story" href="./children/" data-corner="editshop"><img src="./assets/landing/story-children.webp" alt="" width="660" height="400" loading="lazy" decoding="async"><small><span>편집#</span><span class="vn-story-number">STORY 007</span></small><h3>아이가 자라는 동안 주변은 얼마나 사라질까요</h3><p>아이 · 생활권 · 인터랙티브</p></a>
+<a class="archive-card vn-story" href="./heat-rain/" data-corner="newsystem"><img src="./assets/landing/story-heat-rain.webp" alt="" width="660" height="400" loading="lazy" decoding="async"><small><span>뉴시스템</span><span class="vn-story-number">STORY 006</span></small><h3>폭염 사이 폭우 중간이 없다</h3><p>폭염 · 폭우 · 기후재난</p></a>
+<a class="archive-card vn-story" href="./kangin/" data-corner="editshop"><img src="./assets/landing/story-kangin.webp" alt="" width="660" height="400" loading="lazy" decoding="async"><small><span>편집#</span><span class="vn-story-number">STORY 005</span></small><h3>120%의 이강인</h3><p>축구 · 전술 · 인터랙티브</p></a>
+<a class="archive-card vn-story" href="./temperature/" data-corner="editshop"><img src="./assets/landing/story-temperature.webp" alt="" width="660" height="400" loading="lazy" decoding="async"><small><span>편집#</span><span class="vn-story-number">STORY 004</span></small><h3>당신의 온도</h3><p>폭염 · 열 노출 · 인터랙티브</p></a>
+<a class="archive-card vn-story" href="./shelter/index.html?v=20260804" data-corner="editshop"><img src="./assets/landing/story-shelter.webp" alt="" width="660" height="400" loading="lazy" decoding="async"><small><span>편집#</span><span class="vn-story-number">STORY 003</span></small><h3>대한민국, 준비됐나요?</h3><p>민방위 · 재난대응 · 인터랙티브</p></a>
+<a class="archive-card vn-story" href="./thief/index.html" data-corner="editshop"><img src="./assets/landing/story-thief.webp" alt="" width="660" height="400" loading="lazy" decoding="async"><small><span>편집#</span><span class="vn-story-number">STORY 002</span></small><h3>이자가 범인입니다</h3><p>금리 · 가계경제 · 인터랙티브</p></a>
+<a class="archive-card vn-story" href="./oil/" data-corner="editshop"><img src="./assets/landing/story-oil.webp" alt="" width="660" height="400" loading="lazy" decoding="async"><small><span>편집#</span><span class="vn-story-number">STORY 001</span></small><h3>호르무즈가 멈추면</h3><p>에너지 · 국제 · 데이터 스토리</p></a>
+</div>
+ </section>
+ <div class="vn-tools">
+  <section class="vn-game" id="vn-hub-play" aria-label="충무로딩">
+   <a class="vn-game-top" href="https://visual.newsis.com/arcade/"><div><span class="vn-tool-label">충무로딩 · PLAY & READ</span><h2>한 판 하고,<br>다시 뉴스.</h2><p>뉴스가 있는 충무로 놀이마당</p></div><img class="vn-joystick" src="./assets/menu-icon-arcade.png" alt="기존 뉴스바의 빨간 조이스틱"></a>
+   <div class="vn-minigames" id="vn-hub-minigames"><a href="./arcade/highway/"><img src="./arcade/highway/assets/thumbnail-360x240.jpg?v=20261002-1" alt="" loading="lazy" decoding="async"><span>팔도 고속도로 타자</span></a><a href="./arcade/sagong/"><img src="./arcade/sagong/assets/thumbnail-v3-safe-card-360x240.jpg?v=20260929-5" alt="" loading="lazy" decoding="async"><span>사공팡팡</span></a><a href="./arcade/puzzle/"><img src="./arcade/assets/thumbnails/puzzle-safe-v2-360x240.jpg?v=20260812-1" alt="" loading="lazy" decoding="async"><span>조각 사진관</span></a></div>
+   <div class="vn-tool-foot"><a href="https://visual.newsis.com/arcade/">놀러가기 ↗</a><button type="button" class="" id="vn-hub-games-toggle" aria-expanded="false" aria-controls="vn-hub-game-list">전체 게임 15개 보기 +</button></div><div class="vn-allgames" id="vn-hub-game-list" hidden><a href="./arcade/highway/">팔도 고속도로 타자 ↗</a><a href="./arcade/sagong/">사공팡팡 ↗</a><a href="./arcade/puzzle/">조각 사진관 ↗</a><a href="./arcade/chagok/">차곡차곡 ↗</a><a href="./arcade/omok/">뉴스 오목 ↗</a><a href="./arcade/brickrunch/">벽크크 ↗</a><a href="./arcade/minesweeper/">가짜뉴스 지뢰찾기 ↗</a><a href="./arcade/freecell/">카드 프리셀 ↗</a><a href="./arcade/mole/">이슈 훔친 두더지 ↗</a><a href="./arcade/words/">낱말수선소 ↗</a><a href="./arcade/dododok/">넌 내 도도독 ↗</a><a href="./arcade/chungmuman/">충무맨 ↗</a><a href="./arcade/output/index.html">제목있음 ↗</a><a href="./arcade/tarot/">충무로 타로# ↗</a><a href="./arcade/bamta/">BTA 밤티에이 ↗</a></div>
+  </section>
+  <section class="vn-calc" id="vn-hub-calc" aria-label="계산대로">
+   <a class="vn-game-top vn-calc-top" href="https://visual.newsis.com/calculator/index.html"><div><span class="vn-tool-label">계산대로 · 생활 속 숫자</span><h2>내 숫자로,<br>계산해보기</h2><p>연봉 · 대출 · 예적금 · 할인율</p></div><img class="vn-joystick vn-calculator-icon" src="./assets/menu-icon-calculator.png" alt="기존 뉴스바의 계산기 아이콘"></a>
+   <a class="vn-street-wrap" href="https://visual.newsis.com/calculator/index.html"><img src="./assets/landing/calculator-street.webp" alt="계산인력소·계산은행·계산증권·계산마트가 나란히 있는 계산대로 거리"><span>계산인력소 · 계산은행 · 계산증권 · 계산마트</span></a>
+   <div class="vn-tool-foot"><a href="https://visual.newsis.com/calculator/index.html">내 숫자 넣어보기 ↗</a><span class="vn-shop-address">계산대로 3가</span></div>
+  </section>
+ </div>
+ <a class="vn-word" href="https://visual.newsis.com/onepoint/"><img class="vn-word-scene" src="./assets/landing/onepoint-friends.webp" alt="닿소리 홀소리에 등장하는 토끼·고슴도치·사슴·다람쥐 친구들"><div class="vn-word-copy"><span class="vn-word-kicker">소리 하나로 달라지는 장면</span><h2>닿소리 <span>홀소리</span></h2><p>자음 하나, 모음 하나.<br>동물 친구들과 우리말의 작은 차이를 만나보세요.</p><div class="vn-word-sounds"><span>오물오물 · 우물우물</span><span>토닥토닥 · 투닥투닥</span></div><span class="vn-word-cta">친구들 만나러 가기 ↗</span></div></a>
+ <footer class="vn-foot"><span>VISUAL NEWSIS · 뉴스를 보는 새로운 방법</span><span>© NEWSIS. ALL RIGHTS RESERVED.</span></footer>
+</main>
+</div>
 
-    <section class="archive" aria-labelledby="archive-title">
-      <div class="archive-title">
-        <h3 id="archive-title">ALL STORIES</h3>
-        <div class="archive-title-meta"><span>22 STORIES PUBLISHED</span><div class="archive-controls" aria-label="스토리 슬라이더"><button class="archive-arrow prev" type="button" aria-label="이전 스토리">←</button><button class="archive-arrow next" type="button" aria-label="다음 스토리">→</button></div></div>
-      </div>
-      <div class="archive-viewport"><div class="archive-grid">
-        <a class="archive-card" href="./oil/">
-          <span class="num">STORY 001</span>
-          <strong>호르무즈가<br>멈추면</strong>
-          <p>에너지 · 국제 · 데이터 스토리</p>
-          <span class="state">READ STORY ↗</span>
-        </a>
-        <a class="archive-card" href="./thief/index.html">
-          <span class="num">STORY 002</span>
-          <strong>이자가<br>범인입니다</strong>
-          <p>금리 · 가계경제 · 인터랙티브</p>
-          <span class="state">READ STORY ↗</span>
-        </a>
-        <a class="archive-card" href="./shelter/index.html?v=20260804">
-          <span class="num">STORY 003</span>
-          <strong>대한민국,<br>준비됐나요?</strong>
-          <p>민방위 · 재난대응 · 인터랙티브</p>
-          <span class="state">READ STORY ↗</span>
-        </a>
-        <a class="archive-card" href="./temperature/">
-          <span class="num">STORY 004</span>
-          <strong>당신의<br>온도</strong>
-          <p>폭염 · 열 노출 · 인터랙티브</p>
-          <span class="state">READ STORY ↗</span>
-        </a>
-        <a class="archive-card" href="./kangin/">
-          <span class="num">STORY 005</span>
-          <strong>120%의<br>이강인</strong>
-          <p>축구 · 전술 · 인터랙티브</p>
-          <span class="state">READ STORY ↗</span>
-        </a>
-        <a class="archive-card" href="./heat-rain/">
-          <span class="num">STORY 006</span>
-          <strong>폭염 사이 폭우<br>중간이 없다</strong>
-          <p>폭염 · 폭우 · 기후재난</p>
-          <span class="state">READ STORY ↗</span>
-        </a>
-        <a class="archive-card" href="./children/">
-          <span class="num">STORY 007</span>
-          <strong>아이가 자라는 동안<br>주변은 얼마나 사라질까요</strong>
-          <p>아이 · 생활권 · 인터랙티브</p>
-          <span class="state">READ STORY ↗</span>
-        </a>
-        <a class="archive-card" href="./buy-live/">
-          <span class="num">STORY 008</span>
-          <strong>이 집,<br>살 수 있겠습니까?</strong>
-          <p>주택 · 대출 · 생활비 · 인터랙티브</p>
-          <span class="state">READ STORY ↗</span>
-        </a>
-        <a class="archive-card" href="./adult-missing/">
-          <span class="num">STORY 009</span>
-          <strong>사람은 사라지고<br>확인도 실종됐다</strong>
-          <p>성인 실종 · 경찰 초동대응 · 인터랙티브</p>
-          <span class="state">READ STORY ↗</span>
-        </a>
-        <a class="archive-card" href="./battery/">
-          <span class="num">STORY 010</span>
-          <strong>알아볼지도<br>리튬이온 배터리편</strong>
-          <p>리튬이온배터리 · 배터리 구조 · 인터랙티브</p>
-          <span class="state">READ STORY ↗</span>
-        </a>
-        <a class="archive-card" href="./witness/">
-          <span class="num">STORY 011</span>
-          <strong>내가<br>증인입니다.</strong>
-          <p>광복 · 증언 · 기억 · 인터랙티브</p>
-          <span class="state">READ STORY ↗</span>
-        </a>
-        <a class="archive-card" href="./aijob/">
-          <span class="num">STORY 012</span>
-          <strong>지금부터<br>당신을 대체합니다.</strong>
-          <p>AI · 노동시장 · 인터랙티브</p>
-          <span class="state">READ STORY ↗</span>
-        </a>
-        <a class="archive-card" href="./nepal-flood/">
-          <span class="num">STORY 013</span>
-          <strong>마른 하늘 대홍수<br>뒤집힌 재난 공식</strong>
-          <p>네팔 · 빙하 붕괴 · 기후재난</p>
-          <span class="state">READ STORY ↗</span>
-        </a>
-        <a class="archive-card" href="./pension/">
-          <span class="num">STORY 014</span>
-          <strong>국민연금,<br>믿어도 돼?</strong>
-          <p>국민연금 · 노후 · 인터랙티브</p>
-          <span class="state">READ STORY ↗</span>
-        </a>
-        <a class="archive-card" href="./senior/">
-          <span class="num">STORY 015</span>
-          <strong>환갑이면 고령?<br>천만예요</strong>
-          <p>고령화 · 나이 기준 · 인터랙티브</p>
-          <span class="state">READ STORY ↗</span>
-        </a>
-        <a class="archive-card" href="./moreno/">
-          <span class="num">STORY 016</span>
-          <strong>눈 앞의 기록,<br>눈 안의 열망</strong>
-          <p>축구 · 국가대표 · 인터랙티브</p>
-          <span class="state">READ STORY ↗</span>
-        </a>
-        <a class="archive-card" href="./atleti-2gang/">
-          <span class="num">STORY 017</span>
-          <strong>AT, 라리가<br>'2강 IN'</strong>
-          <p>라리가 · 팀 전술 · 인터랙티브</p>
-          <span class="state">READ STORY ↗</span>
-        </a>
-        <a class="archive-card" href="./homecoming/">
-          <span class="num">STORY 018</span>
-          <strong>작은 뼈 조각으로,<br>가족 품에</strong>
-          <p>6·25 · 유해발굴 · 인터랙티브</p>
-          <span class="state">READ STORY ↗</span>
-        </a>
-        <a class="archive-card" href="./bukang/">
-          <span class="num">STORY 019</span>
-          <strong>알아볼지도<br>부캉이편</strong>
-          <p>부산 북항 · 상어 · 지도 인터랙티브</p>
-          <span class="state">READ STORY ↗</span>
-        </a>
-        <a class="archive-card" href="./dmz/">
-          <span class="num">STORY 020</span>
-          <strong>이곳은<br>悲무장지대입니다</strong>
-          <p>DMZ · 지뢰 폭발 · 3D 인터랙티브</p>
-          <span class="state">READ STORY ↗</span>
-        </a>
-        <a class="archive-card" href="./nuri5/">
-          <span class="num">STORY 021</span>
-          <strong>누리호 5차<br>비행기록</strong>
-          <p>누리호 5차 · 위성 15기 · 비행 인터랙티브</p>
-          <span class="state">READ STORY ↗</span>
-        </a>
-        <a class="archive-card" href="./son7/">
-          <span class="num">STORY 022</span>
-          <strong>전설로 남은 자리,<br>마침내 손에 닿다</strong>
-          <p>축구 · A매치 · 인터랙티브</p>
-          <span class="state">READ STORY ↗</span>
-        </a>
-        <a class="archive-card" href="./smartwatch/"><span class="num">STORY 023</span><strong>방전된 안전</strong><p>신변보호 스마트워치 · 지급 이후의 점검</p><span class="state">READ STORY ↗</span></a>
-        <a class="archive-card latest-story" href="./spai/"><span class="num">STORY 024</span><strong>&quot;쟤 지금 딴짓해요&quot;<br> 회사가 고용한 SPAI</strong><p>AI 직원 감시 · 근무 기록 · 인터랙티브</p><span class="state">READ STORY ↗</span></a>
-      </div>
-    </section>
-
-    <aside class="play-break" id="playground" aria-labelledby="play-break-title">
-      <div class="play-break-copy">
-        <span class="play-break-kicker">쉬어가는 곳 · 충무로딩</span>
-        <h3 id="play-break-title">잠깐,<br>놀다가기</h3>
-        <p>뉴스 오목, 충무로 타로#, 제목있음. 놀다 보면 오늘의 뉴스가 보입니다.</p>
-        <a class="play-break-link" href="./arcade/"><span>충무로딩 · 충무로 놀이마당 입장</span><span aria-hidden="true">↗</span></a>
-      </div></div>
-      <div class="play-break-art" aria-hidden="true"><i class="play-stone one"></i><i class="play-stone two"></i><i class="play-card"></i></div>
-    </aside>
-
-    <section class="about" id="about" aria-labelledby="about-title">
-      <div class="about-title">
-        <div class="section-kicker">ABOUT VISUAL NEWSIS</div>
-        <h2 class="big" id="about-title">SEE<span>MORE.</span></h2>
-      </div>
-      <div class="about-copy">
-        <p>비주얼 뉴시스(VISUAL NEWSIS)는 취재와 편집, 개발과 디자인을 연결해 뉴스를 새롭게 경험하게 합니다.</p>
-        <div class="principles">
-          <div>01. 깊이 취재하고</div>
-          <div>02. 명확히 설계하고</div>
-          <div>03. 새롭게 경험합니다</div>
-        </div>
-      </div>
-    </section>
-  </main>
-
-  <footer>
-    <div>
-      <div class="footer-brand">VISUAL NEWSIS · 비주얼 뉴시스</div>
-      <p>INTERACTIVE NEWS &amp; VISUAL STORYTELLING</p>
-    </div>
-    <a class="top-link" href="#">BACK TO TOP ↑</a>
-  </footer>
-  <script>
-    (()=>{
-      // 「지금, 이 이야기」에 걸린 기사는 목록에서 빼고, 최신 기사 쪽(끝)에서 시작한다.
-      const featured=document.querySelector('.latest a.feature')?.getAttribute('href');
-      if(featured)document.querySelectorAll('.archive-card').forEach(card=>{if(card.getAttribute('href')===featured)card.remove()});
-      const viewport=document.querySelector('.archive-viewport'),track=document.querySelector('.archive-grid'),cards=[...document.querySelectorAll('.archive-card')],prev=document.querySelector('.archive-arrow.prev'),next=document.querySelector('.archive-arrow.next');
-      if(!viewport||!track||!cards.length)return;
-      let index=Number.MAX_SAFE_INTEGER,startX=0,dragX=0,pointerDown=false,dragging=false,suppressClick=false,activePointer=null;
-      const visible=()=>innerWidth<=520?1:innerWidth<=850?2:3;
-      const max=()=>Math.max(0,cards.length-visible());
-      const cardStep=()=>cards[0].getBoundingClientRect().width+1;
-      function render(animate=true){index=Math.max(0,Math.min(index,max()));track.classList.toggle('dragging',!animate);track.style.transform=`translate3d(${-index*cardStep()}px,0,0)`;prev.disabled=index===0;next.disabled=index===max()}
-      prev.addEventListener('click',()=>{index--;render()});next.addEventListener('click',()=>{index++;render()});
-      viewport.addEventListener('pointerdown',e=>{if(e.pointerType==='mouse'&&e.button!==0)return;pointerDown=true;dragging=false;suppressClick=false;activePointer=e.pointerId;startX=e.clientX;dragX=0});
-      viewport.addEventListener('pointermove',e=>{if(!pointerDown||e.pointerId!==activePointer)return;dragX=e.clientX-startX;if(!dragging&&Math.abs(dragX)>8){dragging=true;suppressClick=true;viewport.setPointerCapture(e.pointerId);track.classList.add('dragging')}if(!dragging)return;e.preventDefault();track.style.transform=`translate3d(${(-index*cardStep())+dragX}px,0,0)`});
-      function endDrag(e){if(!pointerDown||e.pointerId!==activePointer)return;pointerDown=false;if(dragging&&Math.abs(dragX)>cardStep()*.18)index+=dragX<0?1:-1;dragging=false;activePointer=null;render();setTimeout(()=>{suppressClick=false},0)}
-      viewport.addEventListener('click',e=>{if(suppressClick){e.preventDefault();e.stopPropagation()}},true);
-      viewport.addEventListener('pointerup',endDrag);viewport.addEventListener('pointercancel',endDrag);addEventListener('resize',()=>render(false));render(false);
-    })();
-  </script>
 </body>
 </html>
