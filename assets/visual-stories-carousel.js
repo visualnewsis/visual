@@ -24,7 +24,8 @@
     {slug:"dmz",num:"020",meta:"DMZ · 지뢰 폭발 · 3D 인터랙티브",title:"이곳은<br>悲무장지대입니다",image:"/dmz/images/dmz-cover-1200x800.jpg",alt:"비무장지대 너머 북한군 초소와 그 아래 우리 군 초소가 마주 보고 있는 모습"},
     {slug:"nuri5",num:"021",meta:"누리호 5차 · 위성 15기 · 비행 인터랙티브",title:"누리호 5차 비행기록",image:"/nuri5/og.jpg",alt:"한반도 남쪽에서 이륙해 우주로 솟아오르는 누리호를 위성 지도 위에 그린 그래픽"},
     {slug:"son7",num:"022",meta:"축구 · A매치 · 인터랙티브",title:"전설로 남은 자리, 마침내 손에 닿다",image:"/son7/assets/intro-59-2.webp",alt:"우즈베키스탄전에서 오른발 프리킥을 차는 손흥민"},
-    {slug:"smartwatch",num:"023",meta:"신변보호 스마트워치 · 지급 이후의 점검",title:"방전된 안전",image:"/smartwatch/images/og-songpa-court-1200x630.jpg",alt:"송파 장모 살해·아내 납치 사건 피의자의 법원 출석 모습"}
+    {slug:"smartwatch",num:"023",meta:"신변보호 스마트워치 · 지급 이후의 점검",title:"방전된 안전",image:"/smartwatch/images/og-songpa-court-1200x630.jpg",alt:"송파 장모 살해·아내 납치 사건 피의자의 법원 출석 모습"},
+    {slug:"spai",num:"024",meta:"AI 직원 감시 · 근무 기록 · 인터랙티브",title:"“쟤 지금 딴짓해요”<br>회사가 고용한 SPAI",image:"/spai/images/og-spai-1200x630.jpg",alt:"밤늦은 사무실에서 모니터 앞에 앉은 직원의 뒷모습과 천장의 감시 카메라"}
   ];
   const mount=host=>{
     const visible=stories.filter(story=>story.slug!==current);
