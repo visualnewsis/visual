@@ -32,6 +32,11 @@ for(const s of scenes){
 }
 const personal=scenes.find(s=>s.id==="s3").choices.find(c=>c.id==="s3-personal");
 if(personal.verdict!=="match"||!/실제로 개인 영상/.test(personal.realContext))fail("개인 영상 시청을 업무로 합리화함");
+// 앞면(관측 기록)에는 PC 밖의 일을 알 수 없다: 통화·회의·휴대전화를 적지 않는다
+for(const s of scenes)for(const c of s.choices){
+  const front=[...Object.values(c.observables).filter(Boolean),...c.log,c.reportInterpretation].join(" ");
+  if(/통화|휴대전화|회의실|PC 밖/.test(front))fail(`${c.id}: 앞면이 PC 밖 정보를 앎`);
+}
 // 무입력을 '놀았다'로 단정하지 않는지
 for(const s of scenes)for(const c of s.choices)if(/놀았|딴짓했/.test(c.reportInterpretation))fail(`${c.id}: 보고서가 단정 표현 사용`);
 
