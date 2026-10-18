@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-10-18T04:46:03+00:00",
+  "updatedAt": "2026-10-18T12:44:51+00:00",
   "source": "VISUAL NEWSIS editshop landing page",
   "articles": [
     {
@@ -161,6 +161,16 @@
       "image": "https://visual.newsis.com/spai/images/og-spai-1200x630.jpg",
       "url": "https://visual.newsis.com/spai/",
       "profile": "center"
+    },
+    {
+      "id": "quit",
+      "issue": "편집#017",
+      "label": "QUIT / MONEY / INTERACTIVE",
+      "title": "퇴사할게여 내 통장 몇 달 버틸 수 있을까",
+      "description": "저축과 퇴직금으로 얼마나 버틸까. 매달 생활비와 보험료를 감안해 퇴사 후 통장 잔고를 계산합니다.",
+      "image": "https://visual.newsis.com/quit/images/og-quit-1200x630.jpg",
+      "url": "https://visual.newsis.com/quit/",
+      "profile": "attack"
     }
   ]
 }
