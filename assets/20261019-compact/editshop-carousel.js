@@ -1,0 +1,55 @@
+(()=>{
+  const script=document.currentScript;
+  const current=script?.dataset.current||"";
+  const stories=[
+    {slug:"oil",num:"001",meta:"호르무즈 해협",title:"호르무즈가 멈추면",image:"/oil/images/visual-01.jpg",alt:"바다 위 대형 유조선"},
+    {slug:"thief",num:"002",meta:"금리와 이자",title:"이자가 범인입니다",image:"/thief/images/visual-01.png",alt:"검은 복면을 쓴 인물"},
+    {slug:"shelter",num:"003",meta:"민방위 대피",title:"대한민국, 준비됐나요?",image:"/shelter/images/thumbnail-emergency-bg-v1.png",alt:"재난 경보를 표현한 도시"},
+    {slug:"temperature",num:"004",meta:"폭염과 열 노출",title:"당신의 온도",image:"/temperature/images/thermometer.jpg",alt:"폭염 속 온도계"},
+    {slug:"kangin",num:"005",meta:"축구와 전술",title:"120%의 이강인",image:"/kangin/images/hero.jpg",alt:"경기장에서 달리는 이강인"},
+    {slug:"children",num:"006",meta:"아이와 생활권",title:"아이가 자라는 동안",image:"/children/images/children-running.jpg",alt:"함께 달리는 아이들"},
+    {slug:"buy-live",num:"007",meta:"주택과 생활비",title:"이 집, 살 수 있겠습니까?",image:"/buy-live/images/hero.jpg",alt:"도시의 주택과 아파트"},
+    {slug:"witness",num:"008",meta:"광복과 기억",title:"내가 증인입니다.",image:"/witness/images/thumbnail-carousel-1600x948.jpg",alt:"태극기를 든 시민들의 3·1 만세운동 재현행사"},
+    {slug:"aijob",num:"009",meta:"AI와 일자리",title:"삐빅— 지금부터 당신을 대체합니다",image:"/aijob/images/hero-newsroom-night-v7.png",alt:"남산타워가 보이는 야간 도심을 배경으로, 사람 없이 재킷만 걸쳐진 의자와 듀얼 모니터가 켜져 있는 편집부 자리"},
+    {slug:"pension",num:"010",meta:"국민연금과 노후",title:"국민연금, 믿어도 돼?",image:"/pension/images/hero-payslip-final.jpg",alt:"어두운 여백 안에 놓인 실제 급여명세서 캡처, 국민연금 공제액 1,579,379원이 강조돼 있음"},
+    {slug:"senior",num:"011",meta:"고령화와 나이 기준",title:"환갑이면 고령? 천만예요",image:"/senior/images/NISI20240905_0020511616.jpg",alt:"웨딩 의상을 입고 붉은 런웨이를 걷는 두 사람"},
+    {slug:"atleti-2gang",num:"012",meta:"라리가와 팀 전술",title:"AT, 라리가 '2강 IN'",image:"/atleti-2gang/images/hero-derby-bellingham.jpg",alt:"레알 마드리드전에서 상대 선수와 몸싸움하며 공을 지키는 이강인"},
+    {slug:"homecoming",num:"013",meta:"6·25와 유해발굴",title:"작은 뼈 조각으로, 가족 품에",image:"/homecoming/images/NISI20260831_0021417256.jpg",alt:"故 김하동 일병 귀환행사에서 신원확인 통지서가 담긴 함을 전달받는 동생 김하준 옹"},
+    {slug:"dmz",num:"014",meta:"DMZ와 지뢰 폭발",title:"이곳은 悲무장지대입니다",image:"/dmz/images/dmz-cover-1200x800.jpg",alt:"비무장지대 너머 북한군 초소와 그 아래 우리 군 초소가 마주 보고 있는 모습"},
+    {slug:"smartwatch",num:"015",meta:"신변보호 스마트워치 · 지급 이후의 점검",title:"방전된 안전",image:"/smartwatch/images/og-songpa-court-1200x630.jpg",alt:"송파 장모 살해·아내 납치 사건 피의자의 법원 출석 모습"},
+    {slug:"spai",num:"016",meta:"AI 직원 감시 · 근무 기록의 빈틈",title:"“쟤 지금 딴짓해요” 회사가 고용한 SPAI",image:"/spai/images/og-spai-1200x630.jpg",alt:"밤늦은 사무실에서 모니터 앞에 앉은 직원의 뒷모습과 천장의 감시 카메라"},
+    {slug:"quit",num:"017",meta:"퇴사 후 생활비 · 통장 잔고 · 인터랙티브",title:"퇴사할게여 · 내 통장 몇 달 버틸 수 있을까",image:"/quit/images/og-quit-1200x630.jpg",alt:"개인 물품 상자를 들고 회사를 나서는 직장인, 생성형 AI 이미지"}
+
+  ];
+  const start=()=>{
+    const section=document.querySelector("section.more,section.editshop-next");
+    if(!section)return;
+    const visible=stories.filter(story=>story.slug!==current);
+    const banner=[...document.querySelectorAll("main section,main aside,body>section,body>aside")].reverse().find(node=>node!==section&&node.textContent.includes("편집#이 끌어올립니다"));
+    if(banner)banner.before(section);
+    section.className="ves-carousel";
+    section.setAttribute("aria-labelledby","ves-carousel-title");
+    section.innerHTML=`<div class="ves-carousel-inner"><div class="ves-carousel-head"><div><div class="ves-carousel-kicker">편집# · MORE STORIES</div><h2 id="ves-carousel-title"><span>다른</span> <em>편집#</em></h2></div><div class="ves-carousel-tools"><a class="ves-carousel-all" href="/editshop/">편집# 전체 시리즈 보기 ↗</a><button class="ves-carousel-button ves-prev" type="button" aria-label="이전 편집# 보기">‹</button><button class="ves-carousel-button ves-next" type="button" aria-label="다음 편집# 보기">›</button></div></div><div class="ves-carousel-track" tabindex="0" aria-label="다른 편집샵 작품, 가로로 스크롤">${visible.map(story=>`<a class="ves-carousel-card" href="/${story.slug}/"><img src="${story.image}" alt="${story.alt}" loading="lazy" decoding="async" width="1200" height="750"><span class="ves-carousel-copy"><small>편집#${story.num} · ${story.meta}</small><strong>${story.title}</strong></span></a>`).join("")}</div></div>`;
+    const track=section.querySelector(".ves-carousel-track");
+    const prev=section.querySelector(".ves-prev");
+    const next=section.querySelector(".ves-next");
+    const update=()=>{const max=track.scrollWidth-track.clientWidth;prev.disabled=track.scrollLeft<2;next.disabled=track.scrollLeft>max-2};
+    const reduceMotion=()=>matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const move=direction=>{const card=track.querySelector(".ves-carousel-card");const gap=parseFloat(getComputedStyle(track).columnGap)||0;track.scrollBy({left:direction*(card.getBoundingClientRect().width+gap),behavior:reduceMotion()?"auto":"smooth"})};
+    prev.addEventListener("click",()=>move(-1));
+    next.addEventListener("click",()=>move(1));
+    track.addEventListener("scroll",update,{passive:true});
+    addEventListener("resize",update,{passive:true});
+    // 최신 기사가 기본 위치: 목록 끝(최신)에서 시작하고 ‹ 버튼으로 이전 기사로 이동한다.
+    let touched=false;
+    const toLatest=()=>{if(touched)return;track.scrollTo({left:track.scrollWidth,behavior:"instant"});update()};
+    ["pointerdown","wheel","touchstart","keydown"].forEach(type=>track.addEventListener(type,()=>{touched=true},{passive:true,once:true}));
+    prev.addEventListener("click",()=>{touched=true});
+    next.addEventListener("click",()=>{touched=true});
+    toLatest();
+    requestAnimationFrame(toLatest);
+    addEventListener("load",toLatest,{once:true});
+    update();
+  };
+  document.readyState==="loading"?document.addEventListener("DOMContentLoaded",start):start();
+})();
