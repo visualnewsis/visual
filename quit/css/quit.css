@@ -237,3 +237,4 @@ fieldset.field{border:0;padding:0;margin:0 0 16px}
 .quit-ending p{margin:0 0 24px;font-size:clamp(16px,2vw,19px);line-height:1.95}
 .quit-ending .quit-ending-last{margin:42px 0 0;font-size:clamp(18px,2.4vw,23px);line-height:1.9;letter-spacing:-.025em}
 .quit-ending-last strong{font-weight:800}
+.quit-mint{color:var(--mint)}
