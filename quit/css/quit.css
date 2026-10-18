@@ -39,7 +39,6 @@ img,video,svg{display:block;max-width:100%}
 /* ---------- 본문 ---------- */
 .lead{padding:clamp(64px,9vw,110px) 0 30px}
 .lead p{font-size:clamp(18px,2.2vw,21px);line-height:1.95;margin:0 0 22px}
-.lead p.first::first-line{font-weight:800}
 .sec-title{margin:0 0 20px;font-size:clamp(28px,4.4vw,42px);line-height:1.28;letter-spacing:-.045em;font-weight:900}
 .sec-title .hl{color:var(--mint-ink)}
 .sec-body{font-size:17px;line-height:1.95;margin:0 0 18px}
