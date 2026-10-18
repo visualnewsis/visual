@@ -228,3 +228,7 @@ fieldset.field{border:0;padding:0;margin:0 0 16px}
 #simResult .result-months{color:var(--mint-ink)}
 .sim-method{max-width:680px;margin:32px auto 0}
 @media(max-width:600px){.quit-question{padding:44px 0}.question-pair{grid-template-columns:1fr;gap:0}.quit-question h3{font-size:28px}.question-result-link{font-size:14px}.quit-question .choice label{min-height:44px}#simResult{margin-top:40px}}
+/* Reverse-playback cue; SVG avoids platform-dependent emoji styling. */
+.opening-rewind{position:absolute;left:50%;top:45%;transform:translate(-50%,-50%);z-index:3;pointer-events:none;color:rgba(255,255,255,.8);filter:drop-shadow(0 2px 8px #0008)}
+.opening-rewind svg{width:clamp(52px,17cqw,86px);height:auto}
+.opening:not([data-state="playing"]) .opening-rewind{display:none}

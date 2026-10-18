@@ -10,7 +10,28 @@
   const reduce = window.matchMedia('(prefers-reduced-motion: reduce)');
   const endPoster = box.dataset.endPoster;
 
-  const setState = (state) => { box.dataset.state = state; };
+  const setState = (state) => { box.dataset.state = state; updateRewind(); };
+  // The baked-in reverse sequence runs from 6.55s to the envelope cut at 7.60s.
+  const rewindMark = document.getElementById('openingRewind');
+  let rewindFrame = null;
+  function updateRewind() {
+    if (rewindMark) rewindMark.hidden = !(box.dataset.state === 'playing' && video.currentTime >= 6.55 && video.currentTime < 7.60);
+  }
+  function trackRewind() {
+    updateRewind();
+    rewindFrame = video.paused || video.ended ? null : requestAnimationFrame(trackRewind);
+  }
+  video.addEventListener('play', () => {
+    if (rewindFrame !== null) cancelAnimationFrame(rewindFrame);
+    trackRewind();
+  });
+  video.addEventListener('pause', () => {
+    if (rewindFrame !== null) cancelAnimationFrame(rewindFrame);
+    rewindFrame = null;
+    updateRewind();
+  });
+  ['timeupdate', 'seeking', 'ended', 'emptied'].forEach(type => video.addEventListener(type, updateRewind));
+
 
   function showEnd() {
     video.pause();
