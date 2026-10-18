@@ -17,7 +17,9 @@
     {slug:"homecoming",num:"013",meta:"6·25와 유해발굴",title:"작은 뼈 조각으로, 가족 품에",image:"/homecoming/images/NISI20260831_0021417256.jpg",alt:"故 김하동 일병 귀환행사에서 신원확인 통지서가 담긴 함을 전달받는 동생 김하준 옹"},
     {slug:"dmz",num:"014",meta:"DMZ와 지뢰 폭발",title:"이곳은 悲무장지대입니다",image:"/dmz/images/dmz-cover-1200x800.jpg",alt:"비무장지대 너머 북한군 초소와 그 아래 우리 군 초소가 마주 보고 있는 모습"},
     {slug:"smartwatch",num:"015",meta:"신변보호 스마트워치 · 지급 이후의 점검",title:"방전된 안전",image:"/smartwatch/images/og-songpa-court-1200x630.jpg",alt:"송파 장모 살해·아내 납치 사건 피의자의 법원 출석 모습"},
-    {slug:"spai",num:"016",meta:"AI 직원 감시 · 근무 기록의 빈틈",title:"“쟤 지금 딴짓해요” 회사가 고용한 SPAI",image:"/spai/images/og-spai-1200x630.jpg",alt:"밤늦은 사무실에서 모니터 앞에 앉은 직원의 뒷모습과 천장의 감시 카메라"}
+    {slug:"spai",num:"016",meta:"AI 직원 감시 · 근무 기록의 빈틈",title:"“쟤 지금 딴짓해요” 회사가 고용한 SPAI",image:"/spai/images/og-spai-1200x630.jpg",alt:"밤늦은 사무실에서 모니터 앞에 앉은 직원의 뒷모습과 천장의 감시 카메라"},
+    {slug:"quit",num:"017",meta:"퇴사 후 생활비 · 통장 잔고 · 인터랙티브",title:"퇴사할게여 · 내 통장 몇 달 버틸 수 있을까",image:"/quit/images/site-thumbnail-360x240.jpg",alt:"사직서를 내미는 직장인과 퇴사 후 통장 잔고를 묻는 문구, 생성형 AI 이미지"}
+
   ];
   const start=()=>{
     const section=document.querySelector("section.more,section.editshop-next");
