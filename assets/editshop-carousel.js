@@ -35,7 +35,17 @@
     const next=section.querySelector(".ves-next");
     const update=()=>{const max=track.scrollWidth-track.clientWidth;prev.disabled=track.scrollLeft<2;next.disabled=track.scrollLeft>max-2};
     const reduceMotion=()=>matchMedia("(prefers-reduced-motion: reduce)").matches;
-    const move=direction=>{const card=track.querySelector(".ves-carousel-card");const gap=parseFloat(getComputedStyle(track).columnGap)||0;track.scrollBy({left:direction*(card.getBoundingClientRect().width+gap),behavior:reduceMotion()?"auto":"smooth"})};
+    const move=direction=>{
+      const card=track.querySelector(".ves-carousel-card");
+      if(!card)return;
+      const gap=parseFloat(getComputedStyle(track).columnGap)||0;
+      const stride=card.getBoundingClientRect().width+gap;
+      if(stride<=0)return;
+      const count=Math.max(1,Math.floor((track.clientWidth+gap+1)/stride));
+      const max=Math.max(0,track.scrollWidth-track.clientWidth);
+      const target=Math.max(0,Math.min(max,track.scrollLeft+direction*count*stride));
+      track.scrollTo({left:target,behavior:reduceMotion()?"auto":"smooth"});
+    };
     prev.addEventListener("click",()=>move(-1));
     next.addEventListener("click",()=>move(1));
     track.addEventListener("scroll",update,{passive:true});
