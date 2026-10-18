@@ -18,7 +18,7 @@
     {slug:"dmz",num:"014",meta:"DMZ와 지뢰 폭발",title:"이곳은 悲무장지대입니다",image:"/dmz/images/dmz-cover-1200x800.jpg",alt:"비무장지대 너머 북한군 초소와 그 아래 우리 군 초소가 마주 보고 있는 모습"},
     {slug:"smartwatch",num:"015",meta:"신변보호 스마트워치 · 지급 이후의 점검",title:"방전된 안전",image:"/smartwatch/images/og-songpa-court-1200x630.jpg",alt:"송파 장모 살해·아내 납치 사건 피의자의 법원 출석 모습"},
     {slug:"spai",num:"016",meta:"AI 직원 감시 · 근무 기록의 빈틈",title:"“쟤 지금 딴짓해요” 회사가 고용한 SPAI",image:"/spai/images/og-spai-1200x630.jpg",alt:"밤늦은 사무실에서 모니터 앞에 앉은 직원의 뒷모습과 천장의 감시 카메라"},
-    {slug:"quit",num:"017",meta:"퇴사 후 생활비 · 통장 잔고 · 인터랙티브",title:"퇴사할게여 · 내 통장 몇 달 버틸 수 있을까",image:"/quit/images/site-thumbnail-360x240.jpg",alt:"사직서를 내미는 직장인과 퇴사 후 통장 잔고를 묻는 문구, 생성형 AI 이미지"}
+    {slug:"quit",num:"017",meta:"퇴사 후 생활비 · 통장 잔고 · 인터랙티브",title:"퇴사할게여 · 내 통장 몇 달 버틸 수 있을까",image:"/quit/images/og-quit-1200x630.jpg",alt:"개인 물품 상자를 들고 회사를 나서는 직장인, 생성형 AI 이미지"}
 
   ];
   const start=()=>{
@@ -29,12 +29,13 @@
     if(banner)banner.before(section);
     section.className="ves-carousel";
     section.setAttribute("aria-labelledby","ves-carousel-title");
-    section.innerHTML=`<div class="ves-carousel-inner"><div class="ves-carousel-head"><div><div class="ves-carousel-kicker">편집# · MORE STORIES</div><h2 id="ves-carousel-title"><span>다른</span> <em>편집#</em></h2></div><div class="ves-carousel-tools"><a class="ves-carousel-all" href="/editshop/">편집# 전체 시리즈 보기 ↗</a><button class="ves-carousel-button ves-prev" type="button" aria-label="이전 편집# 보기">‹</button><button class="ves-carousel-button ves-next" type="button" aria-label="다음 편집# 보기">›</button></div></div><div class="ves-carousel-track">${visible.map(story=>`<a class="ves-carousel-card" href="/${story.slug}/"><img src="${story.image}" alt="${story.alt}" loading="lazy"><span class="ves-carousel-copy"><small>편집#${story.num} · ${story.meta}</small><strong>${story.title}</strong><i>기사 보러가기 ↗</i></span></a>`).join("")}</div></div>`;
+    section.innerHTML=`<div class="ves-carousel-inner"><div class="ves-carousel-head"><div><div class="ves-carousel-kicker">편집# · MORE STORIES</div><h2 id="ves-carousel-title"><span>다른</span> <em>편집#</em></h2></div><div class="ves-carousel-tools"><a class="ves-carousel-all" href="/editshop/">편집# 전체 시리즈 보기 ↗</a><button class="ves-carousel-button ves-prev" type="button" aria-label="이전 편집# 보기">‹</button><button class="ves-carousel-button ves-next" type="button" aria-label="다음 편집# 보기">›</button></div></div><div class="ves-carousel-track" tabindex="0" aria-label="다른 편집샵 작품, 가로로 스크롤">${visible.map(story=>`<a class="ves-carousel-card" href="/${story.slug}/"><img src="${story.image}" alt="${story.alt}" loading="lazy" decoding="async" width="1200" height="750"><span class="ves-carousel-copy"><small>편집#${story.num} · ${story.meta}</small><strong>${story.title}</strong></span></a>`).join("")}</div></div>`;
     const track=section.querySelector(".ves-carousel-track");
     const prev=section.querySelector(".ves-prev");
     const next=section.querySelector(".ves-next");
     const update=()=>{const max=track.scrollWidth-track.clientWidth;prev.disabled=track.scrollLeft<2;next.disabled=track.scrollLeft>max-2};
-    const move=direction=>{const card=track.querySelector(".ves-carousel-card");const gap=parseFloat(getComputedStyle(track).columnGap)||0;track.scrollBy({left:direction*(card.getBoundingClientRect().width+gap),behavior:"smooth"})};
+    const reduceMotion=()=>matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const move=direction=>{const card=track.querySelector(".ves-carousel-card");const gap=parseFloat(getComputedStyle(track).columnGap)||0;track.scrollBy({left:direction*(card.getBoundingClientRect().width+gap),behavior:reduceMotion()?"auto":"smooth"})};
     prev.addEventListener("click",()=>move(-1));
     next.addEventListener("click",()=>move(1));
     track.addEventListener("scroll",update,{passive:true});
