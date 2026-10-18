@@ -232,3 +232,8 @@ fieldset.field{border:0;padding:0;margin:0 0 16px}
 .opening-rewind{position:absolute;left:50%;top:45%;transform:translate(-50%,-50%);z-index:3;pointer-events:none;color:rgba(255,255,255,.8);filter:drop-shadow(0 2px 8px #0008)}
 .opening-rewind svg{width:clamp(52px,17cqw,86px);height:auto}
 .opening:not([data-state="playing"]) .opening-rewind{display:none}
+.quit-ending{padding:clamp(56px,8vw,100px) 0;border-top:1px solid var(--line)}
+.quit-ending h2{margin:0 0 28px;font-size:clamp(25px,3.4vw,34px);line-height:1.5;letter-spacing:-.045em;font-weight:800}
+.quit-ending p{margin:0 0 24px;font-size:clamp(16px,2vw,19px);line-height:1.95}
+.quit-ending .quit-ending-last{margin:42px 0 0;font-size:clamp(18px,2.4vw,23px);line-height:1.9;letter-spacing:-.025em}
+.quit-ending-last strong{font-weight:800}
