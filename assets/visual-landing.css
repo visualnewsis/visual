@@ -33,3 +33,6 @@ body{margin:0;background:#101313;font-family:"Noto Sans KR",Arial,sans-serif}
 #vn-hub #latest{scroll-margin-top:84px}
 
 #vn-hub .vn-story img{height:auto}
+#vn-hub .vn-title-line{display:block;white-space:nowrap}
+#vn-hub #vn-hub-play .vn-game-top{grid-template-columns:minmax(0,1fr) clamp(44px,10vw,90px)}
+#vn-hub #vn-hub-play .vn-game-top .vn-joystick{width:clamp(44px,10vw,90px)}
