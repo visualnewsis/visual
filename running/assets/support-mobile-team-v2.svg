@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 180" fill="none">
+  <title>의료지원 자전거와 도보 구조요원</title>
+  <desc>십자 표시가 있는 의료 가방을 장착한 자전거와 구조 조끼를 입고 의료 가방을 든 요원을 나타낸 개념도.</desc>
+  <path d="M13 161H307" stroke="#b7c5c7" stroke-width="1.5"/>
+  <!-- The equipment bicycle is shown in profile, without a decorative rider. -->
+  <g stroke="#3d5964" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="49" cy="127" r="29" fill="#e6ebe6" stroke-width="4"/>
+    <circle cx="155" cy="127" r="29" fill="#e6ebe6" stroke-width="4"/>
+    <circle cx="49" cy="127" r="23" stroke="#a8b9bb" stroke-width="1"/>
+    <circle cx="155" cy="127" r="23" stroke="#a8b9bb" stroke-width="1"/>
+    <path d="M49 127 78 77 110 127H49L142 81 155 127M110 127 78 77M137 63 148 63 155 127M74 67 78 77" stroke-width="4"/>
+    <path d="M66 65H84" stroke-width="6"/>
+    <path d="M137 63H158Q165 63 165 70" stroke-width="4"/>
+    <path d="M20 90H67L73 105M27 91 39 111" stroke-width="2.5"/>
+    <circle cx="110" cy="127" r="7" fill="#d5dfe0" stroke-width="2"/>
+    <path d="m110 127 12 9h9" stroke-width="2.5"/>
+  </g>
+  <rect x="20" y="67" width="43" height="30" rx="5" fill="#5c7680"/>
+  <path d="M33 67v-5h16v5" stroke="#3d5964" stroke-width="3"/>
+  <path d="M42 74V90M34 82H50" stroke="#edf0eb" stroke-width="4" stroke-linecap="square"/>
+  <!-- Clothing and tapered limbs replace the earlier stick figure. -->
+  <path d="m239 96-5 25-12 27 9 4 17-27 8-24Z" fill="#526b76"/>
+  <path d="m248 96 12 28 6 26 10-2-4-28-9-25Z" fill="#334f5c"/>
+  <path d="m221 147-5 8q-1 3 3 3h18l-1-5-6-5Z" fill="#293f4b"/>
+  <path d="m266 147 1 10h20q3-1 0-4l-12-7Z" fill="#293f4b"/>
+  <path d="m240 56-11 7-10 25q-1 4 3 7l9 5 4-7-6-5 9-17Z" fill="#becbc9"/>
+  <path d="m229 93-5 4 5 7q3 3 6 0l1-3Z" fill="#a3b2af"/>
+  <path d="M242 51q-8 2-10 11l-2 36q18 8 35-1l-5-34q-2-10-11-12Z" fill="#dce3dd"/>
+  <path d="m239 55-5 41q13 5 27 0l-6-41-7 5Z" fill="#76928f"/>
+  <path d="m245 59 1 37M234 77h24M233 84h27" stroke="#e0e7dc" stroke-width="3"/>
+  <path d="m255 57 12 9 7 22 10 12-6 6-15-14-10-20Z" fill="#c5d0cb"/>
+  <path d="m278 99 7 1 4 5q2 4-2 6l-4-1-6-6Z" fill="#a3b2af"/>
+  <path d="M243 45v11q5 5 10 0V44Z" fill="#a3b2af"/>
+  <path d="M239 31q2-9 11-9 10 1 11 10v7l3 4-5 2q-1 8-8 8-9-1-12-13Z" fill="#b7c1b9"/>
+  <path d="M238 35q-3-10 5-14 7-4 15 1 5 3 4 11l-7-1-4-4-7 3-1 8-5-1Z" fill="#405964"/>
+  <path d="M281 109v-5h12v5" stroke="#3d5964" stroke-width="2.5"/>
+  <rect x="273" y="108" width="29" height="28" rx="4" fill="#536e79"/>
+  <path d="M287.5 115V129M280.5 122H294.5" stroke="#edf0eb" stroke-width="3.5" stroke-linecap="square"/>
+</svg>
