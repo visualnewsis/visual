@@ -1,0 +1,48 @@
+/* VISUAL NEWSIS additions on top of the draft's marathon-chrome.css. Kept in a separate file so syncing the draft never overwrites them. */
+
+/* Share button: a bright light sweep plus a pulsing glow, about once every 1.8 seconds. */
+#articleShare.article-share-button {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  color: #fff;
+  animation: share-flash-pulse 1.8s ease-in-out infinite;
+}
+#articleShare.article-share-button::before {
+  content: "";
+  position: absolute;
+  inset: -2px;
+  pointer-events: none;
+  background: linear-gradient(105deg, transparent 18%, rgba(255, 255, 255, .92) 50%, transparent 82%);
+  transform: translateX(-160%) skewX(-18deg);
+  animation: share-flash-sweep 1.8s ease-in-out infinite;
+}
+#articleShare.article-share-button::after {
+  opacity: .6;
+  border-color: #d5eef7;
+}
+#articleShare.article-share-button svg,
+#articleShare.article-share-button .share-label {
+  position: relative;
+  z-index: 1;
+}
+@keyframes share-flash-sweep {
+  0%, 30% { transform: translateX(-160%) skewX(-18deg); }
+  68%, 100% { transform: translateX(160%) skewX(-18deg); }
+}
+@keyframes share-flash-pulse {
+  0%, 100% {
+    background-color: rgba(31, 75, 96, 0);
+    border-color: #a9c6d2;
+    box-shadow: 0 0 0 0 rgba(150, 225, 255, 0);
+  }
+  42% {
+    background-color: rgba(48, 112, 140, .55);
+    border-color: #e6f9ff;
+    box-shadow: 0 0 18px 3px rgba(150, 225, 255, .6);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  #articleShare.article-share-button { animation: none; }
+  #articleShare.article-share-button::before { display: none; }
+}
