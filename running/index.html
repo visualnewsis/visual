@@ -20,13 +20,13 @@
 <meta property="og:image:height" content="800">
 <meta property="og:image:alt" content="강변 코스를 달리는 뉴시스 바다마라톤 참가자들. 사진 = 뉴시스 황준선 기자">
 <meta property="article:published_time" content="2026-10-20T11:03:47+09:00">
-<meta property="article:modified_time" content="2026-10-20T11:31:32+09:00">
+<meta property="article:modified_time" content="2026-10-20T14:00:26+09:00">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="끝까지 달릴 준비, 도중에 멈출 대비">
 <meta name="twitter:description" content="내 기록으로 마지막 1㎞의 페이스를 비교하고, 출발 전 컨디션부터 몸의 이상 신호, 응급대응과 중단·완주 뒤 의료지원까지 살펴봅니다.">
 <meta name="twitter:image" content="https://visual.newsis.com/running/assets/race-riverside-progress.jpg">
 <meta name="twitter:image:alt" content="강변 코스를 달리는 뉴시스 바다마라톤 참가자들. 사진 = 뉴시스 황준선 기자">
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"NewsArticle","@id":"https://visual.newsis.com/running/#article","mainEntityOfPage":{"@type":"WebPage","@id":"https://visual.newsis.com/running/"},"url":"https://visual.newsis.com/running/","headline":"끝까지 달릴 준비, 도중에 멈출 대비","description":"내 기록으로 마지막 1㎞의 페이스를 비교하고, 출발 전 컨디션부터 몸의 이상 신호, 응급대응과 중단·완주 뒤 의료지원까지 살펴봅니다.","inLanguage":"ko-KR","articleSection":"러닝 안전 인터랙티브","author":{"@type":"Person","name":"최승훈"},"publisher":{"@type":"NewsMediaOrganization","name":"뉴시스","alternateName":"NEWSIS","url":"https://www.newsis.com/","logo":{"@type":"ImageObject","url":"https://visual.newsis.com/assets/logo2024.png"}},"datePublished":"2026-10-20T11:03:47+09:00","dateModified":"2026-10-20T11:31:32+09:00","isPartOf":{"@type":"CollectionPage","name":"비주얼 뉴시스","alternateName":"VISUAL NEWSIS","url":"https://visual.newsis.com/"},"image":{"@type":"ImageObject","url":"https://visual.newsis.com/running/assets/race-riverside-progress.jpg","width":1200,"height":800,"caption":"뉴시스 바다마라톤. 사진 = 뉴시스 황준선 기자"},"isAccessibleForFree":true}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"NewsArticle","@id":"https://visual.newsis.com/running/#article","mainEntityOfPage":{"@type":"WebPage","@id":"https://visual.newsis.com/running/"},"url":"https://visual.newsis.com/running/","headline":"끝까지 달릴 준비, 도중에 멈출 대비","description":"내 기록으로 마지막 1㎞의 페이스를 비교하고, 출발 전 컨디션부터 몸의 이상 신호, 응급대응과 중단·완주 뒤 의료지원까지 살펴봅니다.","inLanguage":"ko-KR","articleSection":"러닝 안전 인터랙티브","author":{"@type":"Person","name":"최승훈"},"publisher":{"@type":"NewsMediaOrganization","name":"뉴시스","alternateName":"NEWSIS","url":"https://www.newsis.com/","logo":{"@type":"ImageObject","url":"https://visual.newsis.com/assets/logo2024.png"}},"datePublished":"2026-10-20T11:03:47+09:00","dateModified":"2026-10-20T14:00:26+09:00","isPartOf":{"@type":"CollectionPage","name":"비주얼 뉴시스","alternateName":"VISUAL NEWSIS","url":"https://visual.newsis.com/"},"image":{"@type":"ImageObject","url":"https://visual.newsis.com/running/assets/race-riverside-progress.jpg","width":1200,"height":800,"caption":"뉴시스 바다마라톤. 사진 = 뉴시스 황준선 기자"},"isAccessibleForFree":true}</script>
 <!-- Same GA4 property as the published Newsis visual articles. -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-6BKMWE02W5"></script>
 <script defer src="assets/analytics.js"></script>
@@ -610,14 +610,14 @@ html.mobile-story-flow{scroll-behavior:auto;scroll-snap-type:y proximity;overflo
  .calculator-entry .record-example{grid-column:1;grid-row:4}
 }
 
-/* A real mobile pin: the calculator stays at the viewport top over a short scroll span. */
+/* Mobile calculator stays in the document flow; all content uses the page scroll. */
 .calculator-scene{display:contents}
 @media(max-width:900px){
- /* overflow:hidden on .bleed would create the wrong scroll ancestor for sticky. */
+ /* Keep the full-height calculator content in the outer page scroll. */
  .hero.bleed{overflow:visible}
- .calculator-scene{display:block;position:relative;height:140vh;height:140svh;background:#102532;scroll-snap-align:start;scroll-snap-stop:always}
- .hero .calculator-entry{position:sticky;top:0;height:100vh;height:100svh;min-height:100vh;min-height:100svh;margin:0;scroll-snap-align:none;scroll-snap-stop:normal}
- .calculator-entry .pace-experience{flex:none;min-height:0;max-height:100%;overflow-y:auto;overscroll-behavior:contain}
+ .calculator-scene{display:block;position:relative;height:auto;background:#102532;scroll-snap-align:none;scroll-snap-stop:normal}
+ .hero .calculator-entry{position:relative;top:auto;height:auto;min-height:100vh;min-height:100svh;margin:0;scroll-snap-align:none;scroll-snap-stop:normal}
+ .calculator-entry .pace-experience{flex:none;min-height:0;max-height:none;overflow:visible;overscroll-behavior:auto}
 }
 @media(max-width:900px) and (prefers-reduced-motion:reduce){
  .calculator-scene{height:auto;scroll-snap-align:none;scroll-snap-stop:normal}
@@ -1545,10 +1545,10 @@ html{scroll-snap-type:y proximity}
 
 /* A single held frame: DNF dissolves into its meaning, with bounded native scroll travel. */
 html.dnf-in-place{scroll-snap-type:none}
-#dnfTransition{position:relative;height:240vh;height:240svh;background:#111b22;scroll-snap-align:start;scroll-snap-stop:always}
-#dnfMeaningAnchor{position:absolute;top:100vh;top:100svh;left:0;width:1px;height:1px;opacity:0;pointer-events:none;scroll-snap-align:start;scroll-snap-stop:always}
+#dnfTransition{position:relative;height:160vh;height:160svh;background:#111b22;scroll-snap-align:start;scroll-snap-stop:always}
+#dnfMeaningAnchor{position:absolute;top:40vh;top:40svh;left:0;width:1px;height:1px;opacity:0;pointer-events:none;scroll-snap-align:start;scroll-snap-stop:always}
 #dnfPinned{position:sticky;top:0;height:100vh;height:100svh;isolation:isolate;overflow:hidden;background:#111b22}
-#journey #dnfPinned>.story-scene{position:absolute;inset:0;width:100%;height:100%;min-height:0;box-sizing:border-box;scroll-snap-align:none;scroll-snap-stop:normal;background:transparent;will-change:opacity,transform;transition:opacity .85s ease,transform .85s cubic-bezier(.22,.61,.36,1)}
+#journey #dnfPinned>.story-scene{position:absolute;inset:0;width:100%;height:100%;min-height:0;box-sizing:border-box;scroll-snap-align:none;scroll-snap-stop:normal;background:transparent;will-change:opacity,transform;transition:opacity .28s ease,transform .28s cubic-bezier(.22,.61,.36,1)}
 #journey #dnfPinned #stopScene{opacity:1;z-index:1}
 #journey #dnfPinned #mobileMeaningScene{opacity:0;z-index:2}
 #journey #dnfPinned .meaning-next{background:none;border:0;font:inherit;font-size:11px;cursor:pointer}
@@ -2691,7 +2691,8 @@ html.reader-direct-scroll{scroll-snap-type:none;scroll-behavior:auto}
 }
 </style><link rel="stylesheet" href="../assets/visual-header.css?v=20261008-nuri5"><link rel="stylesheet" href="assets/site-chrome/article-footer.css"><link rel="stylesheet" href="assets/site-chrome/marathon-chrome.css"><link rel="stylesheet" href="../assets/visual-stories-carousel.css?v=20260828-2">
 <script defer src="assets/site-chrome/marathon-chrome.js"></script>
-<script defer src="../assets/newsystem-carousel.js?v=20261020-1" data-current="running"></script></head><body class="vnh-ready">
+<script defer src="../assets/newsystem-carousel.js?v=20261020-1" data-current="running"></script><script defer src="assets/newsis-video.js"></script>
+<script defer src="assets/video-embed-guard.js"></script></head><body class="vnh-ready">
 <header class="vnh-header" id="siteHeader" data-theme="dark" data-open="false"><a class="vnh-brand" href="https://visual.newsis.com/">VISUAL NEWSIS</a><a class="vnh-newsis" href="https://www.newsis.com/" aria-label="뉴시스 홈페이지"><img src="../assets/logo2024.png" width="88" height="30" alt="NEWSIS"></a><div class="vnh-right"><a class="vnh-section" href="https://visual.newsis.com/newsystem/">뉴시스템</a><button class="vnh-toggle" id="siteMenuToggle" type="button" aria-label="전체 메뉴 열기" aria-expanded="false" aria-controls="vnh-menu"><span class="vnh-toggle-lines" aria-hidden="true"></span></button></div></header>
 <div class="vnh-overlay" id="vnh-menu" data-theme="dark" data-open="false" hidden inert><div class="vnh-panel" role="dialog" aria-modal="true" aria-label="VISUAL NEWSIS 전체 메뉴"><nav class="vnh-nav" aria-label="비주얼 뉴시스 메뉴"><a id="menuLatest" href="https://visual.newsis.com/#latest">최신 기사</a><a id="menuEditshop" href="https://visual.newsis.com/editshop/">편집#</a><a id="menuNewsystem" href="https://visual.newsis.com/newsystem/" aria-current="page">뉴시스템</a><a id="menuMapguide" href="https://visual.newsis.com/bukang/">알아볼지도</a><a id="menuOnepoint" href="https://visual.newsis.com/onepoint/">닿소리 홀소리</a><a id="menuArcade" href="https://visual.newsis.com/arcade/"><img class="vnh-nav-icon" src="../assets/menu-icon-arcade.png" alt="">충무로딩</a><a id="menuCalculator" href="https://visual.newsis.com/calculator/index.html"><img class="vnh-nav-icon" src="../assets/menu-icon-calculator.png" alt="">계산대로</a></nav></div></div>
 <p id="articleShareStatus" class="site-share-status" role="status" aria-live="polite" hidden></p>
@@ -2726,7 +2727,7 @@ html.reader-direct-scroll{scroll-snap-type:none;scroll-behavior:auto}
 <li><img src="assets/support-mobile-team-v2.svg" width="320" height="180" alt="AED 가방을 장착한 자전거와 구조 조끼를 입고 의료 가방을 든 도보 구조요원의 개념도" loading="lazy"><div><strong>자전거·도보 구조팀</strong><span>대회 코스를 돌며<br>응급환자에게 이동</span></div></li>
 <li><img src="assets/support-aed-kit.svg" width="320" height="180" alt="휴대용 자동심장충격기 본체와 케이블로 연결된 두 개의 패드 개념도" loading="lazy"><div><strong>AED·구급장비</strong><span>이동하는 구조팀이<br>응급처치 장비를 휴대</span></div></li>
 <li><img src="assets/support-location-radio.svg" width="320" height="180" alt="발생 위치 표시와 무전기를 그린 연락 체계 개념도" loading="lazy"><div><strong>위치를 공유하는 연락 체계</strong><span>발생 위치를 전달해<br>가까운 대응 인력을 연결</span></div></li>
-<li class="support-video-item"><a id="newsisSafetyVideo" href="https://www.youtube.com/watch?v=LxVIx0BFzzg" target="_blank" rel="noopener" aria-label="뉴시스TV 5분 정독: 자전거 탄 AED, 4단계 깃발… 세계 마라톤은 러너를 이렇게 지킨다. 유튜브에서 새 창으로 보기"><span class="video-thumbnail"><img src="assets/newsis-marathon-safety-video.jpg" width="480" height="360" alt="" loading="eager" fetchpriority="low" decoding="async"><span class="video-play-icon" aria-hidden="true"><svg viewBox="0 0 24 24" focusable="false"><path d="M6 3L21 12L6 21Z"/></svg></span></span><span><small>뉴시스TV · 5분 정독</small><strong>자전거 탄 AED, 4단계 깃발…<br>세계 마라톤은 러너를 이렇게 지킨다</strong><span class="video-link-action">영상 보기 ↗</span></span></a></li>
+<li class="support-video-item"><a id="newsisSafetyVideo" href="https://www.youtube.com/watch?v=LxVIx0BFzzg" aria-haspopup="dialog" aria-controls="newsisVideoDialog" aria-label="뉴시스TV 5분 정독: 자전거 탄 AED, 4단계 깃발… 세계 마라톤은 러너를 이렇게 지킨다. 영상 재생창 열기"><span class="video-thumbnail"><img src="assets/newsis-marathon-safety-video.jpg" width="480" height="360" alt="" loading="eager" fetchpriority="low" decoding="async"><span class="video-play-icon" aria-hidden="true"><svg viewBox="0 0 24 24" focusable="false"><path d="M6 3L21 12L6 21Z"/></svg></span></span><span><small>뉴시스TV · 5분 정독</small><strong>자전거 탄 AED, 4단계 깃발…<br>세계 마라톤은 러너를 이렇게 지킨다</strong><span class="video-link-action">영상 재생</span></span></a></li>
 </ul><p class="support-system-note">앞 장의 일본 연구(251개 대회)에 나온 대응 체계의 개념도 · 실제 장비 모델·배치도와 다릅니다.</p></div>
 <aside id="emergencyEvidence" aria-labelledby="emergencyEvidenceTitle"><div><h3 id="emergencyEvidenceTitle">심정지 뒤 생존한 비율은 높아졌습니다.</h3><p>미국 풀·하프마라톤 연구에서 심정지 뒤 생존율은 29%(2000~2009년)에서 66%(2010~2023년)로 높아졌습니다. 연구진은 응급처치가 빨라지고 AED를 쉽게 쓸 수 있게 된 점이 도움이 됐을 것으로 봤습니다.</p><p class="evidence-source">출처: 미국의학협회지(2025) · 두 기간의 관찰 자료 비교 · 국내 대회의 생존율이 아닙니다.</p></div><p class="aftercare-lead">도움을 받을 곳과 돌아갈 방법까지<br>대회가 준비해야 합니다.</p></aside></div><div class="response-footnotes">
 <div id="guidanceBook" role="region" aria-label="달리기 전후 안전 안내"><div id="guidanceBookViewport"><nav class="guidance-book-nav" aria-label="달리기 전후 안내 이동"><button type="button" id="guideBeforeButton" aria-controls="preparation" aria-pressed="true">달리기 전</button><button type="button" id="guideAfterButton" aria-controls="recovery" aria-pressed="false">중단·완주 뒤</button><span id="guidanceTurnHint">스크롤해 다음 안내 보기</span></nav><div id="guidanceBookRail"><section class="guidance-page" id="preparation" aria-labelledby="preparationTitle"><h2 id="preparationTitle">다음 달리기 전 확인할 것</h2><div class="essential-guidance"><figure class="guidance-photo"><img src="assets/race-preparation-stretch.webp" width="1200" height="800" alt="나주영산강마라톤 출발 전 트랙에서 한쪽 다리를 접어 스트레칭하는 참가자들" loading="eager" fetchpriority="low" decoding="async"><figcaption>나주영산강마라톤. 사진 = 뉴시스 김혜인 기자</figcaption></figure>
@@ -2753,6 +2754,7 @@ html.reader-direct-scroll{scroll-snap-type:none;scroll-behavior:auto}
 <footer class="article-footer" id="siteFooter"><a href="https://visual.newsis.com/" class="footer-visual">VISUAL NEWSIS</a><a href="#articleIntro" class="footer-top" id="articleTop" aria-label="기사 맨 위로">TOP <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 7-7 7 7"/><path d="M12 19V5"/></svg></a><a href="https://visual.newsis.com/newsystem/" class="footer-brand"><span class="fb-line1">NEW SYSTEM</span><span class="fb-slash"> / </span><span class="fb-line2">NEWSIS <span class="silent-i">I</span>TEM</span></a></footer>
 
 
+<div id="newsisVideoDialog" class="newsis-video-dialog" role="dialog" aria-modal="true" aria-labelledby="newsisVideoTitle" hidden inert><div class="newsis-video-panel"><div class="newsis-video-heading"><h2 id="newsisVideoTitle">뉴시스TV · 세계 마라톤은 러너를 이렇게 지킨다</h2><button type="button" id="newsisVideoClose" aria-label="영상 닫기">닫기 ×</button></div><div id="newsisVideoHost" class="newsis-video-host"></div><p class="newsis-video-help">뒤로가거나 닫으면 재생이 종료됩니다. <a id="newsisVideoExternal" href="https://www.youtube.com/watch?v=LxVIx0BFzzg" rel="noopener">유튜브에서 보기 ↗</a></p></div></div>
 <script>
 window.articleReadingTop=()=>Math.max(0,document.getElementById('siteHeader')?.getBoundingClientRect().height||0);
 // Every reader sees the same six-step document flow; controls are never moved or cloned.
@@ -2850,8 +2852,8 @@ window.raceStory={comparison,clock,pace,time,stageAt,createModel,model,render,up
 (()=>{'use strict';
 const $=id=>document.getElementById(id),chapter=$('dnfTransition'),pinned=$('dnfPinned'),word=$('stopScene'),meaning=$('mobileMeaningScene'),motion=window.matchMedia('(prefers-reduced-motion: reduce)');let frame=0,progress=0;
 function geometry(){const top=(window.scrollY||0)+chapter.getBoundingClientRect().top-window.articleReadingTop(),height=pinned.getBoundingClientRect().height||window.innerHeight;return{top,height};}
-function positionFor(id){if(id!=='stopScene'&&id!=='mobileMeaningScene')return null;const {top,height}=geometry();return id==='stopScene'?top:top+height;}
-function update(){frame=0;const {top,height}=geometry(),y=window.scrollY||0;document.documentElement.classList.toggle('dnf-in-place',y>=top-1&&y<top+chapter.getBoundingClientRect().height-1);progress=Math.max(0,Math.min(1,(y-top-height*.25)/(height*.5)));pinned.style.setProperty?.('--dnf-progress',String(progress));
+function positionFor(id){if(id!=='stopScene'&&id!=='mobileMeaningScene')return null;const {top,height}=geometry();return id==='stopScene'?top:top+height*.4;}
+function update(){frame=0;const {top,height}=geometry(),y=window.scrollY||0;document.documentElement.classList.toggle('dnf-in-place',y>=top-1&&y<top+chapter.getBoundingClientRect().height-1);progress=Math.max(0,Math.min(1,(y-top-height*.1)/(height*.3)));pinned.style.setProperty?.('--dnf-progress',String(progress));
  // Explicit styles also keep the state well-defined before CSS custom-property support.
  word.style.opacity=String(1-progress);meaning.style.opacity=String(progress);word.style.transform='translateY('+(-16*progress)+'px)';meaning.style.transform='translateY('+(18*(1-progress))+'px)';
  const showMeaning=progress>=.5;word.inert=showMeaning;word.setAttribute('aria-hidden',String(showMeaning));meaning.inert=!showMeaning;meaning.setAttribute('aria-hidden',String(!showMeaning));word.style.pointerEvents=showMeaning?'none':'auto';meaning.style.pointerEvents=showMeaning?'auto':'none';pinned.dataset.view=showMeaning?'meaning':'word';return progress;
@@ -2863,7 +2865,7 @@ window.dnfTransitionController={positionFor,update,showMeaning,snapshot:()=>({pr
 })();
 
 (()=>{'use strict';
-const stageDurations={distance:850,delay:900,late:900,check:1100,stop:2200,meaning:2300};
+const stageDurations={distance:850,delay:900,late:900,check:1100,stop:350,meaning:350};
 // A bounded forward pause, with no automatic advance. Reversing, Escape, and reduced motion release it.
 function createRestGate(){let hold=null;const seen=new Set();return{
  snapshot(){return hold?{...hold}:null;},
@@ -2914,7 +2916,7 @@ function expireTouchLanding(){if(touchLanding&&performance.now()>=touchLanding.u
 function landAt(top){lastY=top;window.scrollTo({top,behavior:'instant'});window.dnfTransitionController?.update();window.raceStory?.update();}
 function positions(){const y=window.scrollY||0,readingTop=window.articleReadingTop(),mobile=nativeMobileFlow(),separateCalculator=window.matchMedia('(max-width: 900px)').matches,h=document.getElementById('raceStage').getBoundingClientRect().height,calculatorY=separateCalculator?y+document.getElementById('calculatorScene').getBoundingClientRect().top-readingTop:0;return [
  {id:'article-intro',y:Math.max(0,y+document.getElementById('articleIntro').getBoundingClientRect().top-readingTop),duration:650},
- ...(separateCalculator?[{id:'record-calculator',y:calculatorY,triggerY:calculatorY-Math.min(document.getElementById('myPaceCalculator').getBoundingClientRect().height*.45,320),duration:1000}]:[]),
+ ...(separateCalculator?[{id:'record-calculator',y:calculatorY,duration:650}]:[]),
  ...Array.from(document.querySelectorAll('[data-stage]')).map((e,i)=>({id:'race-'+e.dataset.stage,y:window.dnfTransitionController?.positionFor(e.id)??(y+e.getBoundingClientRect().top-readingTop-(!mobile&&i?h*.45-1:0)),duration:stageDurations[e.dataset.stage]})),
  ...Array.from(document.querySelectorAll('[data-rest]')).map(e=>({id:'care-'+e.dataset.rest,y:y+e.getBoundingClientRect().top-readingTop,duration:800}))
  ].sort((a,b)=>a.y-b.y);}
@@ -2931,6 +2933,7 @@ function controlTarget(target,delta,kind){
 }
 function nativeMobileFlow(){return window.mobileStoryLayoutController?.enabled===true;}
 function consume(event,delta,kind){
+ if(document.documentElement.classList.contains('newsis-video-open'))return false;
  expireTouchLanding();
  if(motion.matches){gate.release();clearTouchReading();return false;}
  if(delta<0){touchLanding=null;if(touchReading)gate.reset();else gate.release();}
@@ -2957,6 +2960,7 @@ window.addEventListener('keydown',e=>{normalNavigation();clearTouchReading();if(
 // Native mobile scrolling may bypass cancelable touchmove entirely.
 window.addEventListener('scroll',()=>{
  expireTouchLanding();const y=window.scrollY||0;
+ if(document.documentElement.classList.contains('newsis-video-open')){gate.release();lastY=y;return;}
  // A thumb drag or direct desktop jump belongs to the reader, not the timed gate.
  const desktop=!window.matchMedia('(max-width: 900px)').matches;
  if(directNavigation||(desktop&&!finger&&Math.abs(y-lastY)>2)){releaseDirectScroll(y);return;}

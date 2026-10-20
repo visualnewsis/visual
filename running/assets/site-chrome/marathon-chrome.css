@@ -15,8 +15,8 @@ html{scroll-padding-top:var(--site-header-height)}
 #siteFooter{scroll-snap-align:none}
 #articleIntro{min-height:var(--reader-height)}
 #journey .story-scene,#journey #bodyCheckScene{min-height:var(--reader-height)}
-#dnfTransition{height:calc(var(--reader-height) * 2.4)}
-#dnfMeaningAnchor{top:var(--reader-height)}
+#dnfTransition{height:calc(var(--reader-height) * 1.6)}
+#dnfMeaningAnchor{top:calc(var(--reader-height) * .4)}
 #dnfPinned{top:var(--site-header-height);height:var(--reader-height)}
 #journey #dnfPinned>.story-scene{min-height:0}
 #raceSupport #guidanceBook{--guidance-screen:var(--reader-height)}
@@ -30,5 +30,26 @@ html{scroll-padding-top:var(--site-header-height)}
 #myPaceCalculator .calculator-heading{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:12px;margin-bottom:12px;min-height:40px}
 #myPaceCalculator .calculator-heading #calculatorTitle{margin:0}
 #calculatorShareActions{padding:0;background:transparent}
-@media(max-width:900px){#articleIntro #myPaceCalculator{top:var(--site-header-height);height:var(--reader-height);min-height:var(--reader-height)}}
-@media(max-width:900px) and (prefers-reduced-motion:reduce){#articleIntro #myPaceCalculator{top:auto;height:auto;min-height:var(--reader-height)}}
+@media(max-width:900px){#articleIntro #myPaceCalculator{position:relative;top:auto;height:auto;min-height:var(--reader-height);max-height:none;overflow:visible}}
+
+/* A soft periodic glint draws attention without dimming the label or moving the button. */
+#articleShare{position:relative;isolation:isolate;overflow:hidden;animation:share-glow 3.6s ease-in-out infinite}
+#articleShare::before{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(110deg,transparent 20%,#d7f2fc55 48%,transparent 76%);transform:translateX(-150%);animation:share-glint 3.6s ease-in-out infinite}
+#articleShare::after{content:"";position:absolute;inset:0;pointer-events:none;border:1px solid #c5e5ef66;opacity:.35}
+#articleShare svg,#articleShare .share-label{position:relative}
+@keyframes share-glint{0%,28%{transform:translateX(-150%)}65%,100%{transform:translateX(150%)}}
+@keyframes share-glow{0%,100%{box-shadow:0 0 0 #a7d3e100;border-color:#a1b6c16b}48%{box-shadow:0 0 12px #a7d3e138;border-color:#bfdde6b3}}
+@media(prefers-reduced-motion:reduce){#articleShare,#articleShare::before{animation:none}#articleShare::before{display:none}}
+
+html.newsis-video-open{overflow:hidden!important;scroll-snap-type:none!important}
+#newsisVideoDialog[hidden]{display:none!important}
+#newsisVideoDialog{position:fixed;inset:0;z-index:11000;display:flex;align-items:center;justify-content:center;padding:24px;background:#06121be8;overscroll-behavior:contain;color:#e8f0f1}
+#newsisVideoDialog .newsis-video-panel{width:min(960px,100%);max-height:100%;overflow:auto;background:#102532;padding:18px 20px;border:1px solid #a4bac34d}
+#newsisVideoDialog .newsis-video-heading{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:14px}
+#newsisVideoDialog h2{font-size:16px;line-height:1.5;font-weight:500;margin:0}
+#newsisVideoClose{flex:none;min-width:64px;min-height:44px;padding:6px 12px;border:1px solid #a4bac380;color:inherit;background:transparent;font-size:14px}
+#newsisVideoDialog .newsis-video-host{width:100%;aspect-ratio:16/9;background:#07141c}
+#newsisVideoHost iframe{display:block;width:100%;height:100%;border:0}
+#newsisVideoDialog .newsis-video-help{display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;margin:14px 0 0;font-size:12px;line-height:1.8;color:#bdcfd6}
+@media(max-width:600px){#newsisVideoDialog{padding:12px}#newsisVideoDialog .newsis-video-panel{padding:12px}#newsisVideoDialog h2{font-size:13px}}
+@media(orientation:landscape) and (max-height:600px){#newsisVideoDialog .newsis-video-panel{width:min(960px,100%)}#newsisVideoDialog .newsis-video-host{height:calc(100svh - 142px);width:auto;aspect-ratio:auto}}
