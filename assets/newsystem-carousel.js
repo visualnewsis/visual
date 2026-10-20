@@ -6,7 +6,8 @@
     {slug:"adult-missing",num:"002",meta:"성인 실종 · 경찰 초동대응 · 인터랙티브",title:"사람은 사라지고 확인도 실종됐다",image:"/adult-missing/images/chapter-hero.jpg",alt:"성인 실종자를 찾는 초동 대응 화면"},
     {slug:"nepal-flood",num:"003",meta:"네팔 · 빙하 붕괴 · 기후재난",title:"마른 하늘 대홍수, 뒤집힌 재난 공식",image:"/nepal-flood/images/hero-aftermath.webp",alt:"진흙과 잔해로 뒤덮인 네팔 마을을 바라보는 주민"},
     {slug:"moreno",num:"004",meta:"축구 · 국가대표 · 인터랙티브",title:"눈 앞의 기록, 눈 안의 열망",image:"/moreno/images/taegeukgi-crowd.jpg",alt:"대형 태극기가 펼쳐진 축구 경기장 관중석"},
-    {slug:"son7",num:"005",meta:"축구 · A매치 · 인터랙티브",title:"전설로 남은 자리, 마침내 손에 닿다",image:"/son7/assets/intro-59-2.webp",alt:"우즈베키스탄전에서 오른발 프리킥을 차는 손흥민"}
+    {slug:"son7",num:"005",meta:"축구 · A매치 · 인터랙티브",title:"전설로 남은 자리, 마침내 손에 닿다",image:"/son7/assets/intro-59-2.webp",alt:"우즈베키스탄전에서 오른발 프리킥을 차는 손흥민"},
+    {slug:"running",num:"006",meta:"러닝 안전 · 응급대응 · 인터랙티브",title:"끝까지 달릴 준비, 도중에 멈출 대비",image:"/assets/landing/story-running.webp",alt:"강변 코스를 따라 달리는 뉴시스 바다마라톤 참가자들"}
   ];
   const mount=host=>{
     const visible=items.filter(item=>item.slug!==current);
