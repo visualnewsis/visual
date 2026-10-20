@@ -145,7 +145,7 @@ html.vn-arrival-hold { overflow: hidden !important; }
   #raceSupport #raceAftercare #supportSystemItems .support-video-item { padding-top: 8px; margin-top: 2px; }
   #raceSupport #raceAftercare #newsisSafetyVideo {
     display: grid;
-    grid-template-columns: 132px minmax(0, 1fr);
+    grid-template-columns: minmax(132px, 46%) minmax(0, 1fr);
     gap: 0 12px;
     align-items: center;
     max-width: none;
@@ -173,7 +173,14 @@ html.vn-arrival-hold { overflow: hidden !important; }
   #raceSupport #raceAftercare .support-system-visual li img { width: 40px; }
 }
 
-/* Desktop only: the research note breaks after its first sentence; phones keep it as one paragraph to stay on one screen. */
+/* The research note: desktop keeps the full paragraph and breaks it after the first sentence; phones show a shorter version
+   (same figures and source) so the chapter opening stays readable on one screen. */
+#raceSupport #emergencyEvidence .vn-evidence-short,
+#raceSupport #emergencyEvidence .vn-source-short { display: none; }
 @media (max-width: 900px) {
   #raceSupport #emergencyEvidence .vn-pc-break { display: none; }
+  #raceSupport #emergencyEvidence > div > p:not(.vn-evidence-short):not(.vn-source-short) { display: none; }
+  #raceSupport #emergencyEvidence .vn-evidence-short { display: block; font-size: 13px; line-height: 1.7; }
+  #raceSupport #emergencyEvidence .vn-evidence-short strong { font-weight: 650; color: #294e5e; }
+  #raceSupport #emergencyEvidence .vn-source-short { display: block; }
 }
