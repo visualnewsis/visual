@@ -46,3 +46,16 @@
   #articleShare.article-share-button { animation: none; }
   #articleShare.article-share-button::before { display: none; }
 }
+
+/* Brief scroll pause right after the guide book turns to "중단·완주 뒤" (see arrival-hold.js). */
+html.vn-arrival-hold { overflow: hidden !important; }
+
+/* Phone portrait: keep the calculator right under the header. The draft centres it with `margin:auto` inside a 100svh box;
+   browsers whose svh is taller than the visible area (Samsung Internet) turned that into ~80px of empty space on top and
+   clipped the bottom of the form. Top-aligning keeps everything inside the visible screen whatever the browser reports. */
+@media (max-width: 900px) and (orientation: portrait) {
+  .hero .calculator-entry .pace-experience { margin-top: 0; margin-bottom: auto; }
+}
+@media (max-width: 900px) and (orientation: portrait) and (min-height: 720px) {
+  .hero .calculator-entry .pace-experience { margin-top: 8px; }
+}
