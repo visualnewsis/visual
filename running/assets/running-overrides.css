@@ -84,8 +84,13 @@ html.vn-arrival-hold { overflow: hidden !important; }
 /* Support chapter ("멈춘 뒤에도, 지원이 이어지도록"). The disclaimer under the three support items is dropped on every screen. */
 #raceSupport #raceAftercare .support-system-note { display: none; }
 
-/* Desktop: the three support items and the research note read as one block on the left; the Newsis TV video, enlarged,
-   and the closing sentence sit together on the right. The wrappers are flattened so every piece can take its own grid cell. */
+/* Desktop: the Newsis TV video card is dropped; the closing sentence takes its place. */
+@media (min-width: 901px) {
+  #raceSupport #raceAftercare #supportSystemItems > .support-video-item { display: none; }
+}
+
+/* Wide desktop: the three support items and the research note read as one block on the left, and the closing sentence stands
+   on the right where the video was. The wrappers are flattened so every piece can take its own grid cell. */
 @media (min-width: 1200px) {
   #raceSupport #raceAftercare #aftercareOverview {
     display: grid;
@@ -105,9 +110,6 @@ html.vn-arrival-hold { overflow: hidden !important; }
   #raceSupport #raceAftercare #supportSystemItems > li:nth-child(1) { grid-column: 1; grid-row: 3; }
   #raceSupport #raceAftercare #supportSystemItems > li:nth-child(2) { grid-column: 2; grid-row: 3; }
   #raceSupport #raceAftercare #supportSystemItems > li:nth-child(3) { grid-column: 3; grid-row: 3; }
-  #raceSupport #raceAftercare #supportSystemItems > .support-video-item { grid-column: 4; grid-row: 2 / 5; align-self: start; padding-top: 0; }
-  #raceSupport #raceAftercare #newsisSafetyVideo { max-width: none; }
-  #raceSupport #raceAftercare #newsisSafetyVideo .video-thumbnail { max-height: none; width: 100%; }
   #raceSupport #raceAftercare #emergencyEvidence > div {
     grid-column: 1 / 4;
     grid-row: 4;
@@ -116,7 +118,16 @@ html.vn-arrival-hold { overflow: hidden !important; }
     padding-top: 20px;
     border-top: 1px solid #9aafb666;
   }
-  #raceSupport #raceAftercare .aftercare-lead { grid-column: 4; grid-row: 5; margin: 0; padding-left: 0; font-size: clamp(19px, 1.5vw, 24px); }
+  #raceSupport #raceAftercare #aftercareOverview #emergencyEvidence .aftercare-lead {
+    grid-column: 4;
+    grid-row: 2 / 5;
+    align-self: center;
+    margin: 0;
+    padding-left: clamp(20px, 2.2vw, 36px);
+    border-left: 1px solid #9aafb666;
+    font-size: clamp(22px, 1.9vw, 30px);
+    line-height: 1.6;
+  }
 }
 
 /* Phone: the whole chapter opening fits one screen. Items become one-line rows, the video a compact card. */
@@ -160,4 +171,9 @@ html.vn-arrival-hold { overflow: hidden !important; }
   #raceSupport #raceAftercare .support-system-visual { padding-top: 6px; }
   #raceSupport #raceAftercare #supportSystemItems > li:not(.support-video-item) > div > span { display: none; }
   #raceSupport #raceAftercare .support-system-visual li img { width: 40px; }
+}
+
+/* Desktop only: the research note breaks after its first sentence; phones keep it as one paragraph to stay on one screen. */
+@media (max-width: 900px) {
+  #raceSupport #emergencyEvidence .vn-pc-break { display: none; }
 }
