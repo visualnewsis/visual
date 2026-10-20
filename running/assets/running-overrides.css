@@ -59,3 +59,105 @@ html.vn-arrival-hold { overflow: hidden !important; }
 @media (max-width: 900px) and (orientation: portrait) and (min-height: 720px) {
   .hero .calculator-entry .pace-experience { margin-top: 8px; }
 }
+
+/* The ▲/▼ buttons must not swallow swipes: touch input pans the page from them (see calculator-touch.js). */
+.step-control { touch-action: pan-y; }
+
+/* Shorter phones: tighten the calculator so the whole form, down to the example link, stays on one screen. */
+@media (max-width: 900px) and (orientation: portrait) and (max-height: 735px) {
+  #myPaceCalculator .calculator-mode button { min-height: 38px; padding-block: 5px; }
+  #myPaceCalculator .step-control { height: 38px; min-height: 38px; }
+  #myPaceCalculator .time-inputs input { height: 40px; font-size: 38px; }
+  #myPaceCalculator .digit-help { display: none; }
+  #myPaceCalculator .course-options button,
+  #myPaceCalculator[data-input-mode="record"] .course-options button { min-height: 56px; }
+}
+@media (max-width: 900px) and (orientation: portrait) and (max-height: 660px) {
+  #myPaceCalculator .pace-experience h2 { font-size: 20px; margin-bottom: 4px; }
+  #myPaceCalculator .step-control { height: 36px; min-height: 36px; }
+  #myPaceCalculator .course-options button,
+  #myPaceCalculator[data-input-mode="record"] .course-options button { min-height: 52px; }
+  #myPaceCalculator .record-results { height: 64px; min-height: 64px; grid-template-rows: 58px; margin-bottom: 4px; }
+  #myPaceCalculator .record-feedback { height: 12px; min-height: 12px; }
+}
+
+/* Support chapter ("멈춘 뒤에도, 지원이 이어지도록"). The disclaimer under the three support items is dropped on every screen. */
+#raceSupport #raceAftercare .support-system-note { display: none; }
+
+/* Desktop: the three support items and the research note read as one block on the left; the Newsis TV video, enlarged,
+   and the closing sentence sit together on the right. The wrappers are flattened so every piece can take its own grid cell. */
+@media (min-width: 1200px) {
+  #raceSupport #raceAftercare #aftercareOverview {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr)) minmax(0, 1.8fr);
+    grid-template-rows: none;
+    grid-auto-rows: auto;
+    column-gap: clamp(20px, 2.5vw, 48px);
+    row-gap: 0;
+    align-items: start;
+    align-content: center;
+  }
+  #raceSupport #raceAftercare .support-system-visual,
+  #raceSupport #raceAftercare #supportSystemItems,
+  #raceSupport #raceAftercare #emergencyEvidence { display: contents; }
+  #raceSupport #raceAftercare .aftercare-heading { grid-column: 1 / -1; grid-row: 1; margin-bottom: 26px; }
+  #raceSupport #raceAftercare .support-system-visual > p { grid-column: 1 / 4; grid-row: 2; margin: 0 0 14px; }
+  #raceSupport #raceAftercare #supportSystemItems > li:nth-child(1) { grid-column: 1; grid-row: 3; }
+  #raceSupport #raceAftercare #supportSystemItems > li:nth-child(2) { grid-column: 2; grid-row: 3; }
+  #raceSupport #raceAftercare #supportSystemItems > li:nth-child(3) { grid-column: 3; grid-row: 3; }
+  #raceSupport #raceAftercare #supportSystemItems > .support-video-item { grid-column: 4; grid-row: 2 / 5; align-self: start; padding-top: 0; }
+  #raceSupport #raceAftercare #newsisSafetyVideo { max-width: none; }
+  #raceSupport #raceAftercare #newsisSafetyVideo .video-thumbnail { max-height: none; width: 100%; }
+  #raceSupport #raceAftercare #emergencyEvidence > div {
+    grid-column: 1 / 4;
+    grid-row: 4;
+    max-width: none;
+    margin: 22px 0 0;
+    padding-top: 20px;
+    border-top: 1px solid #9aafb666;
+  }
+  #raceSupport #raceAftercare .aftercare-lead { grid-column: 4; grid-row: 5; margin: 0; padding-left: 0; font-size: clamp(19px, 1.5vw, 24px); }
+}
+
+/* Phone: the whole chapter opening fits one screen. Items become one-line rows, the video a compact card. */
+@media (max-width: 900px) {
+  #raceSupport #raceAftercare .aftercare-heading h2 { font-size: 26px; }
+  #raceSupport #raceAftercare .support-system-visual { padding-top: 10px; }
+  #raceSupport #raceAftercare .support-system-visual > p { font-size: 12px; margin-bottom: 8px; }
+  #raceSupport #raceAftercare #supportSystemItems { gap: 8px; }
+  #raceSupport #raceAftercare .support-system-visual li { gap: 12px; }
+  #raceSupport #raceAftercare .support-system-visual li img { width: 48px; }
+  #raceSupport #raceAftercare .support-system-visual li strong { font-size: 12.5px; line-height: 1.4; }
+  #raceSupport #raceAftercare .support-system-visual li span { font-size: 10.5px; line-height: 1.45; margin-top: 1px; }
+  /* The draft hides the break inside each description on phones, which glues two words together ("돌며응급환자에게"). */
+  #raceSupport #raceAftercare .support-system-visual li span br { display: inline; }
+  #raceSupport #raceAftercare #supportSystemItems .support-video-item { padding-top: 8px; margin-top: 2px; }
+  #raceSupport #raceAftercare #newsisSafetyVideo {
+    display: grid;
+    grid-template-columns: 132px minmax(0, 1fr);
+    gap: 0 12px;
+    align-items: center;
+    max-width: none;
+    margin: 0;
+  }
+  #raceSupport #raceAftercare #newsisSafetyVideo .video-thumbnail { margin: 0; max-height: none; width: 100%; }
+  #raceSupport #raceAftercare #newsisSafetyVideo .video-play-icon { width: 34px; height: 34px; }
+  #raceSupport #raceAftercare #newsisSafetyVideo .video-play-icon svg { width: 13px; height: 13px; }
+  #raceSupport #raceAftercare #newsisSafetyVideo small { font-size: 10px; margin-bottom: 2px; }
+  #raceSupport #raceAftercare #newsisSafetyVideo strong { font-size: 12.5px; line-height: 1.45; }
+  #raceSupport #raceAftercare #newsisSafetyVideo .video-link-action { font-size: 11px; margin-top: 3px; }
+  #raceSupport #emergencyEvidence { padding: 12px 0 0; }
+  #raceSupport #emergencyEvidence > div { margin-bottom: 10px; }
+  #raceSupport #emergencyEvidence h3 { font-size: 15px; line-height: 1.5; margin-bottom: 4px; }
+  #raceSupport #emergencyEvidence p { font-size: 12px; line-height: 1.65; }
+  #raceSupport #emergencyEvidence .evidence-source { font-size: 10px; line-height: 1.55; margin-top: 4px; }
+  #raceSupport #raceAftercare #aftercareOverview #emergencyEvidence { gap: 10px; }
+  #raceSupport #raceAftercare #aftercareOverview #emergencyEvidence .aftercare-lead { font-size: 13px; line-height: 1.55; margin-top: 0; padding-left: 0; }
+}
+@media (max-width: 900px) and (max-height: 700px) {
+  #raceSupport #raceAftercare .aftercare-heading h2 { font-size: 24px; }
+  #raceSupport #raceAftercare .support-system-visual > p { display: none; }
+  #raceSupport #raceAftercare .support-system-visual { padding-top: 6px; }
+  #raceSupport #raceAftercare #supportSystemItems > li:not(.support-video-item) > div > span { display: none; }
+  #raceSupport #raceAftercare .support-system-visual li img { width: 40px; }
+}
