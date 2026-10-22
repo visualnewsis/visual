@@ -16,6 +16,8 @@
   store.set('newsmap:lastVisit:v1',sessionStarted);
   const state={region:nodes[params.get('place')]?params.get('place'):'',period:['24','168','720','all'].includes(params.get('period'))?params.get('period'):'24',onlyNew:params.get('new')==='1',viewport:false,motion:store.get('newsmap:motion')!=='off'};
   let map,markers,boundary,locationLayer,shown=[],searchMatches=[];
+  const sheet=window.NewsmapSheet?.();
+  document.querySelector('.skip').addEventListener('click',event=>{if(matchMedia('(max-width:700px)').matches){event.preventDefault();sheet?.expand();$('results').focus({preventScroll:true});}});
   const formatter=new Intl.DateTimeFormat('ko-KR',{month:'numeric',day:'numeric',hour:'2-digit',minute:'2-digit',hour12:false,timeZone:'Asia/Seoul'});
   const stamp=value=>formatter.format(new Date(value));
   const esc=value=>String(value).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -71,6 +73,7 @@
     $('breadcrumb').textContent=n?n.path.join(' / '):'대한민국';
     $('region-title').textContent=region+'의 소식';
     $('article-count').textContent=shown.length;
+    sheet?.update(shown.length,region);
     $('new-count').textContent=selectedArticles(false).filter(isNew).length;
     $('map-heading').textContent=n?region+'에서 전해온 이야기':'전국에서 전해온 이야기';
     $('map-subheading').textContent=n?.level==='dong'?'이 동네가 확인된 기사만 모았습니다.':'빛나는 원을 눌러 그곳의 뉴스를 만나보세요.';
@@ -109,7 +112,7 @@
         if(clustered){map.setView(g.node.center,Math.max(8,map.getZoom()+1),{animate:!matchMedia('(prefers-reduced-motion:reduce)').matches});return;}
         if(state.region===g.node.id){
           $('results').focus({preventScroll:true});
-          if(matchMedia('(max-width:700px)').matches)$('results').scrollIntoView({behavior:matchMedia('(prefers-reduced-motion:reduce)').matches?'auto':'smooth',block:'start'});
+          if(matchMedia('(max-width:700px)').matches)sheet?.expand();
         }else selectPlace(g.node.id);
       });
       marker.addTo(markers);
@@ -121,7 +124,8 @@
   function render(){renderList();renderMarkers();}
   function fitNational(){
     const mobile=matchMedia('(max-width:700px)').matches;
-    map.fitBounds([[33.05,124.9],[38.65,130.0]],{paddingTopLeft:[mobile?15:35,mobile?75:90],paddingBottomRight:[mobile?15:35,mobile?85:45],animate:false});
+    const bounds=mobile?[[33.05,125.7],[38.65,129.65]]:[[33.05,124.9],[38.65,130.0]];
+    map.fitBounds(bounds,{paddingTopLeft:[mobile?10:35,mobile?62:90],paddingBottomRight:[mobile?10:35,mobile?132:45],animate:false});
   }
   function drawBoundary(){
     if(!map)return;
@@ -171,7 +175,7 @@
     if(event.key==='ArrowDown'||event.key==='ArrowUp'){event.preventDefault();buttons[(i+(event.key==='ArrowDown'?1:-1)+buttons.length)%buttons.length]?.focus();}
     if(event.key==='Escape'){closeSearch();$('place-search').focus();}
   });
-  document.addEventListener('click',event=>{const b=event.target.closest('[data-place]');if(b)selectPlace(b.dataset.place);else if(!event.target.closest('.finder'))closeSearch();});
+  document.addEventListener('click',event=>{const b=event.target.closest('[data-place]');if(b){const fromSearch=!!b.closest('#search-results');selectPlace(b.dataset.place);if(fromSearch||b.classList.contains('place-link'))sheet?.collapse();}else if(!event.target.closest('.finder'))closeSearch();});
   $('province').addEventListener('change',()=>selectPlace($('province').value));
   $('district').addEventListener('change',()=>selectPlace($('district').value||$('province').value));
   $('dong').addEventListener('change',()=>selectPlace($('dong').value||$('district').value));

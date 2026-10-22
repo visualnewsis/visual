@@ -21,7 +21,7 @@
   <link rel="icon" href="../assets/logo2024.png">
   <link rel="stylesheet" href="../assets/visual-header.css">
   <link rel="stylesheet" href="vendor/leaflet.css">
-  <link rel="stylesheet" href="style.css?v=20261022-3">
+  <link rel="stylesheet" href="style.css?v=20261022-4">
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-6BKMWE02W5"></script>
   <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','G-6BKMWE02W5');</script>
   <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"뉴스맵부심","alternateName":"뉴스맵","url":"https://visual.newsis.com/newsmap/","description":"도시에서 동네까지 뉴시스 기사를 위치별로 탐색하는 지도","applicationCategory":"NewsApplication","operatingSystem":"Any","inLanguage":"ko-KR","isAccessibleForFree":true,"publisher":{"@type":"NewsMediaOrganization","name":"뉴시스","url":"https://www.newsis.com/"}}</script>
@@ -31,7 +31,8 @@
   <script defer src="data/articles.js"></script>
   <script defer src="core.js?v=20261022-2"></script>
   <script defer src="basemap.js?v=20261022-3"></script>
-  <script defer src="app.js?v=20261022-3"></script>
+  <script defer src="mobile-sheet.js?v=20261022-4"></script>
+  <script defer src="app.js?v=20261022-4"></script>
 </head>
 <body>
   <a class="skip" href="#results">기사 목록으로 건너뛰기</a>
@@ -43,6 +44,8 @@
     </div>
     <div class="workspace">
       <aside class="sidebar" aria-label="지역과 기사 탐색">
+        <button id="sheet-toggle" class="sheet-toggle" type="button" aria-expanded="false" aria-controls="sheet-content" aria-label="지역 검색과 기사 목록 펼치기"><span class="sheet-grip" aria-hidden="true"></span><span id="sheet-label">지역·기사 검색</span><span id="sheet-summary">전국</span><span class="sheet-arrow" aria-hidden="true">⌃</span></button>
+        <div id="sheet-content" class="sheet-content">
         <div class="finder">
           <label for="place-search" class="eyebrow">어느 지역의 뉴스가 궁금하세요?</label>
           <div class="searchbox"><span aria-hidden="true">⌕</span><input id="place-search" type="search" placeholder="동네·시·군·구 이름 검색" autocomplete="off" aria-controls="search-results" aria-expanded="false"><kbd>↵</kbd></div>
@@ -53,6 +56,7 @@
         <div class="results-head" id="results" tabindex="-1"><div class="eyebrow" id="breadcrumb">대한민국</div><div class="results-title"><h2 id="region-title">전국의 소식</h2><span id="article-count">0</span></div><div class="results-tabs" role="group" aria-label="기사 표시"><button id="all-tab" aria-pressed="true">전체 기사</button><button id="new-tab" aria-pressed="false"><i></i>새 기사 <span id="new-count">0</span></button><button id="viewport-toggle" aria-pressed="false" title="현재 지도 화면에 보이는 지역으로 기사 좁히기">지도 안만</button></div></div>
         <div id="article-list" class="article-list" aria-label="기사 목록"></div>
         <div class="snapshot"><span class="snapshot-dot"></span><div><strong>뉴시스 기사 스냅샷 · 위치 자동 분류</strong><p id="snapshot-time">기사를 불러오고 있습니다.</p></div><button id="refresh" aria-label="기사 데이터 다시 확인">↻</button></div>
+        </div>
       </aside>
       <section class="map-stage" aria-label="뉴스 지도">
         <div id="map" aria-label="확대와 이동이 가능한 전국 뉴스 지도"></div>
