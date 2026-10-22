@@ -225,15 +225,27 @@
     map=L.map('map',{zoomControl:false,minZoom:4,maxZoom:18,scrollWheelZoom:true,preferCanvas:true,zoomSnap:.25});
     map.attributionControl.setPrefix('<a href="https://leafletjs.com">Leaflet</a>');
     const tiles=L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:19,attribution:'© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',detectRetina:false});
+    const nativeBase=window.NewsmapBasemap?.(map,geo);
+    const useNative=()=>{map.removeLayer(tiles);nativeBase?.enable();if(shown.length)$('map-message').hidden=true;};
     let errors=0,loaded=0;
-    tiles.on('tileload',()=>{loaded++;if(loaded>3&&errors>2&&shown.length)$('map-message').hidden=true;});
-    tiles.on('tileerror',()=>{errors++;if(errors>2&&loaded===0){$('map-message').hidden=false;$('map-message').textContent='배경지도를 불러오지 못했습니다. 지역 선택과 기사 목록은 계속 이용할 수 있습니다.';}});
-    tiles.addTo(map);
+    tiles.on('tileload',()=>{loaded++;nativeBase?.disable();if(loaded>3&&errors>2&&shown.length)$('map-message').hidden=true;});
+    tiles.on('tileerror',()=>{errors++;if(errors>2&&loaded===0)useNative();});
+    const loadBackground=async()=>{
+      try{
+        const response=await fetch(location.href,{method:'HEAD',cache:'no-store'});
+        const policy=response.headers.get('Content-Security-Policy')||'';
+        const imageRule=policy.match(/(?:^|;)\s*img-src\s+([^;]+)/)?.[1]||policy.match(/(?:^|;)\s*default-src\s+([^;]+)/)?.[1];
+        const allowed=!imageRule||imageRule.split(/\s+/).some(source=>source==='*'||source==='https:'||/^https:\/\/(?:\*\.)?(?:tile\.)?openstreetmap\.org\/?$/.test(source));
+        if(!allowed){useNative();return;}
+      }catch{/* A failed policy check still has the tile-error fallback. */}
+      tiles.addTo(map);
+    };
     markers=L.layerGroup().addTo(map);boundary=L.layerGroup().addTo(map);
     map.on('moveend',()=>{if(state.viewport)renderList();renderMarkers();});
     fitNational();
     new ResizeObserver(()=>map.invalidateSize({pan:false})).observe($('map'));
     selectPlace(state.region);
+    loadBackground();
   }else{
     renderList();$('map-message').hidden=false;$('map-message').textContent='지도 라이브러리를 불러오지 못했습니다. 지역 선택과 기사 목록을 이용해 주세요.';
   }
