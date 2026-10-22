@@ -72,3 +72,43 @@ input[type=range]{width:100%;height:26px;accent-color:var(--ink);cursor:pointer;
 }
 @media(max-width:350px){.opening{padding-right:22px;padding-left:29px}.cover-topic h2{font-size:23px}.cover-topic .text-link::after{right:-61px;font-size:18px}.cover-fields{gap:10px}.cover-fields b{font-size:20px}.anatomy,.chapter{padding-left:16px;padding-right:16px}.part-selector{gap:4px}.part-selector button{padding:8px 7px}.part-selector i{display:none}.chapter-intro h2{font-size:26px}.chapter-nav{margin-left:16px;margin-right:16px;padding:15px}.chapter-links{gap:11px}.iris-numbers{padding:8px}.iris-numbers>strong{font-size:32px}.three{grid-template-columns:1fr;gap:3px}.three label{display:block}.sensor-modes button{font-size:8px;padding:9px 6px}}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*::before,*::after{animation:none!important;transition:none!important}}
+
+/* Open the book directly at the working model. */
+.opening--interactive{min-height:0;margin-bottom:40px;padding:24px 55px 27px;overflow:hidden}
+.opening--interactive .opening-top{padding-bottom:11px;border-bottom-width:1px}
+.cover-heading.compact-masthead{display:flex;align-items:center;justify-content:space-between;gap:25px;padding:17px 0 22px;margin:0 0 21px;border-bottom:3px double #7f805b70}
+.service-lockup{display:flex;align-items:baseline;gap:13px;min-width:0}
+.compact-masthead .pencil-prefix{position:static;font:34px/1.1 var(--pencil);color:var(--red);transform:none;white-space:nowrap}
+.compact-masthead .pencil-prefix::after{content:none}
+.compact-masthead h1{font:900 64px/1.25 var(--serif);letter-spacing:.04em;margin:0;white-space:nowrap}
+.cover-topic-name{font:700 31px/1.4 var(--serif);letter-spacing:.02em;margin:0;padding-left:25px;border-left:1px solid #7f805b70}
+.opening--interactive .anatomy{padding:0;position:relative;z-index:1}
+.opening--interactive .anatomy-heading{margin-bottom:17px;align-items:center}
+.opening--interactive .anatomy-heading h2{font-size:28px}
+.opening--interactive .anatomy-heading>p{font-size:11px}
+.opening--interactive .camera-stage{background:radial-gradient(ellipse at 50% 42%,#eee6c6,#dfd3ad);border-color:#aaa383}
+.opening--interactive .camera-stage canvas{aspect-ratio:2.6}
+.opening--interactive .assembly-controls{padding:11px 0}
+.opening--interactive .part-selector{padding:14px 0}
+.opening--interactive .part-description{min-height:0;padding:3px 0 17px}
+.opening--interactive .model-note{margin-top:11px}
+.chapter-nav::after{content:none}
+@media(max-width:900px){.opening--interactive{padding:20px 35px 24px;min-height:0}.compact-masthead h1{font-size:51px}.compact-masthead .pencil-prefix{font-size:29px}.cover-topic-name{font-size:26px}.opening--interactive .camera-stage canvas{aspect-ratio:2}}
+@media(max-width:600px){
+ .opening--interactive{padding:17px 21px 21px 29px;margin-bottom:28px;min-height:0}
+ .cover-heading.compact-masthead{display:flex;padding:13px 0 17px;margin-bottom:18px;gap:12px}
+ .service-lockup{display:flex;flex-direction:column;align-items:flex-start;gap:1px}
+ .compact-masthead .pencil-prefix{position:static;font-size:25px;line-height:1.1;transform:none}
+ .compact-masthead h1{font-size:clamp(34px,10vw,44px);letter-spacing:.035em;line-height:1.25}
+ .cover-topic-name{font-size:23px;padding-left:14px;flex-shrink:0}
+ .opening--interactive .anatomy-heading{display:block;margin-bottom:13px}
+ .opening--interactive .anatomy-heading h2{font-size:23px;letter-spacing:-.05em}
+ .opening--interactive .anatomy-heading>p{font-size:10px;margin-top:8px}
+ .opening--interactive .camera-stage canvas{aspect-ratio:1.3}
+ .opening--interactive .part-selector{padding:12px 0;gap:4px}
+ .opening--interactive .part-selector button{font-size:9px;padding:8px}
+ .opening--interactive .part-description{padding-bottom:12px;gap:5px}
+ .opening--interactive .model-note{font-size:8px}
+}
+@media(max-width:350px){.opening--interactive{padding-left:25px;padding-right:17px}.opening--interactive .anatomy-heading h2{font-size:21px}.opening--interactive .part-selector button{padding:7px 6px}.compact-masthead h1{font-size:34px}.cover-topic-name{font-size:21px;padding-left:10px}}
+@media(min-width:901px){main{margin-top:24px}.opening--interactive{padding-top:18px}.cover-heading.compact-masthead{padding-top:12px;padding-bottom:15px;margin-bottom:16px}.opening--interactive .camera-stage canvas{aspect-ratio:2.8}}
