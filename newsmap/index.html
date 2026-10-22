@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <title>뉴스맵부심 — 뉴스가 빛나는 지도 | VISUAL NEWSIS</title>
+  <meta name="description" content="도시에서 동네까지, 뉴시스 기사를 지도 위에서 만나세요. 기사에 확인된 위치를 따라 새로운 소식과 지역의 이야기를 탐색하는 뉴스맵부심.">
+  <meta name="robots" content="noindex,follow">
+  <link rel="canonical" href="https://visual.newsis.com/newsmap/">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="VISUAL NEWSIS">
+  <meta property="og:locale" content="ko_KR">
+  <meta property="og:title" content="뉴스맵부심 — 뉴스가 빛나는 지도">
+  <meta property="og:description" content="도시에서 동네까지. 뉴시스 뉴스가 일어난 자리를 지도에서 탐색하세요.">
+  <meta property="og:url" content="https://visual.newsis.com/newsmap/">
+  <meta property="og:image" content="https://visual.newsis.com/newsmap/assets/share.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="뉴스맵부심 — 뉴스가 빛나는 지도">
+  <meta name="twitter:description" content="뉴시스 뉴스를 읽는 새로운 방법. 도시에서 동네까지, 지도 위에서 만나세요.">
+  <meta name="twitter:image" content="https://visual.newsis.com/newsmap/assets/share.png">
+  <link rel="icon" href="../assets/logo2024.png">
+  <link rel="stylesheet" href="../assets/visual-header.css">
+  <link rel="stylesheet" href="vendor/leaflet.css">
+  <link rel="stylesheet" href="style.css?v=20261022-2">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-6BKMWE02W5"></script>
+  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','G-6BKMWE02W5');</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"뉴스맵부심","alternateName":"뉴스맵","url":"https://visual.newsis.com/newsmap/","description":"도시에서 동네까지 뉴시스 기사를 위치별로 탐색하는 지도","applicationCategory":"NewsApplication","operatingSystem":"Any","inLanguage":"ko-KR","isAccessibleForFree":true,"publisher":{"@type":"NewsMediaOrganization","name":"뉴시스","url":"https://www.newsis.com/"}}</script>
+  <script defer src="../assets/visual-header.js" data-section="뉴스맵부심" data-section-href="./"></script>
+  <script defer src="vendor/leaflet.js"></script>
+  <script defer src="data/geography.js"></script>
+  <script defer src="data/articles.js"></script>
+  <script defer src="core.js?v=20261022-2"></script>
+  <script defer src="app.js?v=20261022-2"></script>
+</head>
+<body>
+  <a class="skip" href="#results">기사 목록으로 건너뛰기</a>
+  <main>
+    <div class="mast">
+      <div class="identity"><span class="brand-orbit" aria-hidden="true"><i></i></span><div><h1>뉴스<span>맵부심</span></h1><p>뉴스가 빛나는 지도</p></div></div>
+      <p class="mast-copy">기사가 시작된 곳에서,<br><strong>동네의 이야기를 발견하세요.</strong></p>
+      <button class="text-button" id="about-button" aria-haspopup="dialog">이 지도 읽는 법 <span aria-hidden="true">↗</span></button>
+    </div>
+    <div class="workspace">
+      <aside class="sidebar" aria-label="지역과 기사 탐색">
+        <div class="finder">
+          <label for="place-search" class="eyebrow">어느 지역의 뉴스가 궁금하세요?</label>
+          <div class="searchbox"><span aria-hidden="true">⌕</span><input id="place-search" type="search" placeholder="동네·시·군·구 이름 검색" autocomplete="off" aria-controls="search-results" aria-expanded="false"><kbd>↵</kbd></div>
+          <div id="search-results" class="search-results" hidden></div>
+          <div class="region-selects"><label><span class="sr-only">시·도</span><select id="province"><option value="">전국</option></select></label><label><span class="sr-only">시·군·구</span><select id="district"><option value="">시·군·구 전체</option></select></label><label><span class="sr-only">읍·면·동</span><select id="dong"><option value="">읍·면·동 전체</option></select></label></div>
+          <div class="periods" role="group" aria-label="기사 기간"><button data-period="24" aria-pressed="true">24시간</button><button data-period="168" aria-pressed="false">7일</button><button data-period="720" aria-pressed="false">30일</button><button data-period="all" aria-pressed="false">전체 기간</button></div>
+        </div>
+        <div class="results-head" id="results" tabindex="-1"><div class="eyebrow" id="breadcrumb">대한민국</div><div class="results-title"><h2 id="region-title">전국의 소식</h2><span id="article-count">0</span></div><div class="results-tabs" role="group" aria-label="기사 표시"><button id="all-tab" aria-pressed="true">전체 기사</button><button id="new-tab" aria-pressed="false"><i></i>새 기사 <span id="new-count">0</span></button><button id="viewport-toggle" aria-pressed="false" title="현재 지도 화면에 보이는 지역으로 기사 좁히기">지도 안만</button></div></div>
+        <div id="article-list" class="article-list" aria-label="기사 목록"></div>
+        <div class="snapshot"><span class="snapshot-dot"></span><div><strong>뉴시스 기사 스냅샷 · 위치 자동 분류</strong><p id="snapshot-time">기사를 불러오고 있습니다.</p></div><button id="refresh" aria-label="기사 데이터 다시 확인">↻</button></div>
+      </aside>
+      <section class="map-stage" aria-label="뉴스 지도">
+        <div id="map" aria-label="확대와 이동이 가능한 전국 뉴스 지도"></div>
+        <div class="map-top"><div class="map-context"><span class="eyebrow">NEWS ON THE MAP</span><strong id="map-heading">전국에서 전해온 이야기</strong><span id="map-subheading">빛나는 원을 눌러 그곳의 뉴스를 만나보세요.</span></div><button id="reset-map" class="map-button" aria-label="전국 지도와 전체 기사로 돌아가기">⌂ <span>전국 보기</span></button></div>
+        <div class="map-tools"><button id="locate-me" class="map-button locate-button" aria-label="내 위치 보기" title="현재 위치를 지도에 표시하고 해당 지역의 뉴스를 봅니다"><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><circle cx="12" cy="12" r="6" fill="none" stroke="currentColor" stroke-width="1.5"/><circle cx="12" cy="12" r="2" fill="currentColor"/><path d="M12 2v4m0 12v4M2 12h4m12 0h4" stroke="currentColor" stroke-width="1.5"/></svg><span>내 위치</span></button><button id="zoom-in" class="map-button" aria-label="지도 확대">+</button><button id="zoom-out" class="map-button" aria-label="지도 축소">−</button></div>
+        <div class="map-legend"><span><i class="legend-pulse"></i>새 기사가 있는 곳</span><span><i class="legend-count"></i>원 안 숫자는 기사 수</span><button id="motion-toggle" aria-pressed="true">파동 켜짐</button></div>
+        <div id="map-message" class="map-message" role="status" hidden></div>
+        <div id="location-status" class="location-status" role="status" hidden></div>
+      </section>
+    </div>
+    <footer><span>© NEWSIS · 뉴스를 보는 새로운 방식</span><span>지역 원은 기사 묶음의 대표 위치이며 사건의 정확한 지점이 아닙니다.</span><button id="credits-button">지도·데이터 출처</button></footer>
+  </main>
+  <dialog id="about"><button class="dialog-close" aria-label="안내 닫기">×</button><span class="eyebrow">NEWS MAP GUIDE</span><h2>동네를 따라,<br>뉴스를 읽는 방법.</h2><div class="guide-row"><b>01</b><p><strong>궁금한 동네로 들어가세요.</strong>지도 위 원을 누르거나 지역 이름을 검색하세요. 읍·면·동까지 선택할 수 있습니다.</p></div><div class="guide-row"><b>02</b><p><strong>기사에서 확인된 곳까지만.</strong>동네가 확인된 기사는 구·시에서도 보입니다. 구까지만 확인된 기사는 특정 동네에 나타나지 않습니다. 법정동·통칭과 행정동은 임의로 같게 취급하지 않습니다.</p></div><div class="guide-row"><b>03</b><p><strong>새 소식이 도착한 자리에서 파동이 퍼집니다.</strong>첫 방문은 최근 24시간, 다음 방문은 마지막 방문 이후 발행된 기사가 기준입니다. 방문 기록은 이 브라우저에 저장합니다.</p></div><p class="guide-note">현재는 공개 뉴시스 기사 일부를 모은 시제품입니다. 기사 수는 수집된 뉴시스 보도량이며 지역의 실제 사건 발생량이나 전체 취재량을 의미하지 않습니다. 자동 위치 분류는 원문과 대조가 필요합니다. 실시간 자동 수집은 아직 연결하지 않았습니다.</p><div id="credits"><strong>지도·데이터 출처</strong><p>기사: 뉴시스 공식 RSS 및 공개 기사 메타데이터<br>배경지도: © OpenStreetMap contributors<br>행정동 경계: 통계청 SGIS · vuski/admdongkor, 2026-10-01판을 단순화 가공. 경계는 참고용입니다.<br>지도 라이브러리: Leaflet 1.9.4 (BSD-2-Clause)</p><a href="https://github.com/vuski/admdongkor" target="_blank" rel="noopener noreferrer">행정동 경계 원자료 ↗</a></div></dialog>
+  <noscript><p class="noscript">지도를 탐색하려면 JavaScript를 켜주세요. <a href="https://www.newsis.com/local/">뉴시스 지방 뉴스 읽기</a></p></noscript>
+</body>
+</html>

@@ -1,0 +1,3 @@
+# This page ships a local, licensed Leaflet distribution.
+!vendor/
+!vendor/**

@@ -1,0 +1,25 @@
+const assert=require('node:assert/strict');
+const fs=require('node:fs');
+const vm=require('node:vm');
+const R=require('../core.js');
+const context={window:{}};
+vm.runInNewContext(fs.readFileSync(require.resolve('../data/geography.js'),'utf8'),context);
+const regions=context.window.NEWSMAP_GEOGRAPHY.nodes;
+const shape={type:'Polygon',coordinates:[[[0,0],[10,0],[10,10],[0,10],[0,0]],[[3,3],[7,3],[7,7],[3,7],[3,3]]]};
+assert(R.containsPoint(shape,[1,1]));
+assert(!R.containsPoint(shape,[5,5]),'Polygon holes must be excluded.');
+assert(!R.containsPoint(shape,[11,11]));
+assert.equal(R.findRegion(regions,[0,0]),null,'Outside Korea must not select an arbitrary region.');
+assert.equal(R.findRegion(regions,[NaN,127]),null);
+assert.equal(R.findRegion(regions,[37.5665,126.978]).path[0],'서울특별시');
+assert.equal(R.findRegion(regions,[35.1796,129.0756]).path[0],'부산광역시');
+async function main(){
+  let called=0;
+  const fake={coords:{latitude:37.5665,longitude:126.978,accuracy:20}};
+  const result=await R.requestPosition({getCurrentPosition(success,error,options){called++;assert.equal(options.timeout,15000);success(fake);}});
+  assert.equal(called,1);assert.equal(result,fake);
+  for(const code of [1,2,3])await assert.rejects(R.requestPosition({getCurrentPosition(success,error){error({code});}}),e=>e.code===code);
+  await assert.rejects(R.requestPosition(undefined),e=>e.code===0);
+  console.log('PASS: current location containment, polygon holes, outside Korea, Seoul/Busan lookup, request-on-call, success, denial, unavailable and timeout.');
+}
+main().catch(error=>{console.error(error);process.exitCode=1;});

@@ -1,0 +1,44 @@
+const assert = require('node:assert/strict');
+const fs = require('node:fs');
+const vm = require('node:vm');
+const R = require('../core.js');
+const ctx = { window: {} };
+vm.runInNewContext(fs.readFileSync(require.resolve('../data/geography.js'),'utf8'),ctx);
+vm.runInNewContext(fs.readFileSync(require.resolve('../data/articles.js'),'utf8'),ctx);
+const geo=ctx.window.NEWSMAP_GEOGRAPHY;
+const snapshot=ctx.window.NEWSMAP_ARTICLES;
+const nodes=Object.fromEntries(geo.nodes.map(n=>[n.id,n]));
+const P='서울특별시', D=P+'/성동구', N=D+'/성수동';
+assert(nodes[N], 'Broad 성수동 must be available separately from numbered administrative dongs.');
+const time='2026-10-22T10:00:00+09:00';
+const a=(id,places,publishedAt=time)=>({id,places,publishedAt});
+const articles=[a('dong',[N]),a('district',[D]),a('city',[P]),a('other',['부산광역시'])];
+const options={period:'all',now:Date.parse('2026-10-22T12:00:00+09:00')};
+assert.deepEqual(R.filter(articles,{...options,region:N}).map(x=>x.id),['dong']);
+assert.deepEqual(R.filter(articles,{...options,region:D}).map(x=>x.id),['dong','district']);
+assert.deepEqual(R.filter(articles,{...options,region:P}).map(x=>x.id),['dong','district','city']);
+assert.equal(R.filter(articles,{...options,region:D+'/성수1가1동'}).length,0,'No inference into an administrative sub-dong.');
+assert.equal(R.filter([a('old',[P],'2026-10-10T00:00:00+09:00')],{...options,period:'24'}).length,0);
+assert.equal(R.filter([a('future',[P],'2026-10-23T00:00:00+09:00')],options).length,0);
+assert.equal(R.filter(articles,{...options,onlyNew:true,cutoff:Date.parse(time)}).length,0,'Revisit must not mark the same timestamp new.');
+const groups=R.group([a('multi',[N,D])],nodes,6);
+assert.equal(groups[0].articles.length,1,'A multi-location article counts once per group.');
+assert.equal(R.group([a('broad',[D])],nodes,15)[0].node.id,D,'Broad articles retain their actual scope on zoom.');
+assert.equal(R.filter(articles,{...options,bounds:[0,0,1,1],nodes}).length,0);
+for(const n of geo.nodes){
+  assert(n.bbox[0]<=n.bbox[2]&&n.bbox[1]<=n.bbox[3]);
+  assert(n.center.every(Number.isFinite));
+  if(n.parent)assert(nodes[n.parent], 'Missing parent '+n.id);
+}
+for(const article of snapshot.articles){
+  assert(article.places.length>0);
+  for(const place of article.places)assert(nodes[place],place);
+  assert.match(article.url,/^https:\/\/www\.newsis\.com\/view\/NISX\d+_\d+$/);
+  assert(!/[\uFF00-\uFFEF\u00A0\u200B\uFEFF\s]/u.test(article.url));
+  assert(Number.isFinite(Date.parse(article.publishedAt)));
+}
+const html=fs.readFileSync(require.resolve('../index.html'),'utf8');
+for(const block of html.matchAll(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/g))JSON.parse(block[1]);
+assert.equal((html.match(/gtag\('config','G-6BKMWE02W5'\)/g)||[]).length,1);
+assert.equal((html.match(/googletagmanager\.com\/gtag\/js/g)||[]).length,1);
+console.log(`PASS: hierarchy, no downward inference, period, revisit, deduplication, zoom scope, bounds; ${geo.nodes.length} regions, ${snapshot.articles.length} articles; JSON-LD, URLs and analytics.`);
