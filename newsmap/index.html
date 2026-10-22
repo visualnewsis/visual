@@ -3,28 +3,40 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-  <title>뉴스맵부심 — 뉴스가 빛나는 지도 | VISUAL NEWSIS</title>
-  <meta name="description" content="도시에서 동네까지, 뉴시스 기사를 지도 위에서 만나세요. 기사에 확인된 위치를 따라 새로운 소식과 지역의 이야기를 탐색하는 뉴스맵부심.">
-  <meta name="robots" content="noindex,follow">
+  <title>뉴스맵부심 | 여기 무슨 일 있어? 동네 뉴스 지도</title>
+  <meta name="description" content="여기 무슨 일 있어? 전국부터 시·군·구, 읍·면·동까지 뉴시스 기사를 지도에서 찾아보세요. 뉴스맵부심은 기사에서 확인된 지역을 따라 우리 동네 소식을 탐색하는 뉴스 지도입니다.">
+  <meta name="robots" content="index,follow,max-image-preview:large">
+  <meta name="theme-color" content="#fcfbf7">
+  <meta name="application-name" content="뉴스맵부심">
+  <meta name="apple-mobile-web-app-title" content="뉴스맵부심">
   <link rel="canonical" href="https://visual.newsis.com/newsmap/">
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="VISUAL NEWSIS">
   <meta property="og:locale" content="ko_KR">
-  <meta property="og:title" content="뉴스맵부심 — 뉴스가 빛나는 지도">
-  <meta property="og:description" content="도시에서 동네까지. 뉴시스 뉴스가 일어난 자리를 지도에서 탐색하세요.">
+  <meta property="og:title" content="뉴스맵부심 | 여기 무슨 일 있어?">
+  <meta property="og:description" content="전국부터 우리 동네까지, 뉴시스 기사를 지도에서 찾아보세요. 뉴스가 빛나는 지도, 뉴스맵부심.">
   <meta property="og:url" content="https://visual.newsis.com/newsmap/">
   <meta property="og:image" content="https://visual.newsis.com/newsmap/assets/share.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:type" content="image/png">
+  <meta property="og:image:alt" content="뉴스맵부심 — 뉴스가 빛나는 지도. 전국 지도 위 지역마다 붉은 파동이 퍼지는 모습.">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="뉴스맵부심 — 뉴스가 빛나는 지도">
-  <meta name="twitter:description" content="뉴시스 뉴스를 읽는 새로운 방법. 도시에서 동네까지, 지도 위에서 만나세요.">
+  <meta name="twitter:title" content="뉴스맵부심 | 여기 무슨 일 있어?">
+  <meta name="twitter:description" content="전국부터 우리 동네까지, 뉴시스 기사를 지도에서 찾아보세요. 뉴스가 빛나는 지도, 뉴스맵부심.">
   <meta name="twitter:image" content="https://visual.newsis.com/newsmap/assets/share.png">
-  <link rel="icon" href="../assets/logo2024.png">
+  <meta name="twitter:image:alt" content="뉴스맵부심 — 뉴스가 빛나는 지도">
+  <link rel="icon" href="assets/favicon.ico" sizes="16x16 32x32 48x48">
+  <link rel="icon" href="assets/favicon-96.png" type="image/png" sizes="96x96">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml" sizes="any">
+  <link rel="apple-touch-icon" href="assets/apple-touch-icon.png" sizes="180x180">
+  <link rel="manifest" href="site.webmanifest">
   <link rel="stylesheet" href="../assets/visual-header.css">
   <link rel="stylesheet" href="vendor/leaflet.css">
   <link rel="stylesheet" href="style.css?v=20261022-5">
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-6BKMWE02W5"></script>
   <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','G-6BKMWE02W5');</script>
-  <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"뉴스맵부심","alternateName":"뉴스맵","url":"https://visual.newsis.com/newsmap/","description":"도시에서 동네까지 뉴시스 기사를 위치별로 탐색하는 지도","applicationCategory":"NewsApplication","operatingSystem":"Any","inLanguage":"ko-KR","isAccessibleForFree":true,"publisher":{"@type":"NewsMediaOrganization","name":"뉴시스","url":"https://www.newsis.com/"}}</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"뉴스맵부심","alternateName":["뉴스 맵부심","뉴스맵"],"url":"https://visual.newsis.com/newsmap/","description":"여기 무슨 일 있어? 전국부터 읍면동까지 뉴시스 기사를 지역별로 탐색하는 동네 뉴스 지도","applicationCategory":"NewsApplication","operatingSystem":"Any","inLanguage":"ko-KR","isAccessibleForFree":true,"publisher":{"@type":"NewsMediaOrganization","name":"뉴시스","url":"https://www.newsis.com/"},"@id":"https://visual.newsis.com/newsmap/#app","image":"https://visual.newsis.com/newsmap/assets/share.png"}</script>
   <script defer src="../assets/visual-header.js" data-section="뉴스맵부심" data-section-href="./"></script>
   <script defer src="vendor/leaflet.js"></script>
   <script defer src="data/geography.js"></script>
@@ -39,7 +51,7 @@
   <main>
     <div class="mast">
       <div class="identity"><span class="brand-orbit" aria-hidden="true"><i></i></span><div class="identity-wordmark"><h1>뉴스<span>맵부심</span></h1><p aria-label="뉴스가 빛나는 지도"><span aria-hidden="true">뉴</span><span aria-hidden="true">스</span><span aria-hidden="true">가</span><span aria-hidden="true"> </span><span aria-hidden="true">빛</span><span aria-hidden="true">나</span><span aria-hidden="true">는</span><span aria-hidden="true"> </span><span aria-hidden="true">지</span><span aria-hidden="true">도</span></p></div></div>
-      <p class="mast-copy">기사가 시작된 곳에서,<br><strong>동네의 이야기를 발견하세요.</strong></p>
+      <p class="mast-copy">여기 무슨 일 있어?<br><strong>전국부터 우리 동네까지, 뉴시스 뉴스를 지도에서 만나세요.</strong></p>
       <button class="text-button" id="about-button" aria-haspopup="dialog">이 지도 읽는 법 <span aria-hidden="true">↗</span></button>
     </div>
     <div class="workspace">

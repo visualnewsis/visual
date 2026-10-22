@@ -1,0 +1,16 @@
+{
+  "name": "뉴스맵부심 — 뉴스가 빛나는 지도",
+  "short_name": "뉴스맵부심",
+  "description": "전국부터 우리 동네까지, 뉴시스 기사를 지도에서 찾아보세요.",
+  "lang": "ko-KR",
+  "id": "./",
+  "start_url": "./",
+  "scope": "./",
+  "display": "browser",
+  "theme_color": "#fcfbf7",
+  "background_color": "#fcfbf7",
+  "icons": [
+    {"src": "assets/icon-192.png", "sizes": "192x192", "type": "image/png"},
+    {"src": "assets/icon-512.png", "sizes": "512x512", "type": "image/png"}
+  ]
+}
