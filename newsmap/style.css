@@ -12,6 +12,8 @@ footer{display:flex;gap:20px;justify-content:space-between;align-items:center;mi
 .map-tools{align-items:flex-end}.map-tools .locate-button{display:flex;align-items:center;justify-content:center;gap:5px;padding:0 10px;width:auto;font-size:11px}.map-tools .locate-button span{margin:0;font-size:11px}.locate-button:disabled{opacity:.55;cursor:wait}.location-status{position:absolute;z-index:460;left:28px;bottom:88px;max-width:min(360px,calc(100% - 115px));padding:11px 14px;border:1px solid #dfe4da;border-radius:4px;background:#fcfbf7f5;color:#365c81;font-size:11px;line-height:1.7;box-shadow:0 3px 15px #24352314;pointer-events:none}.location-status[hidden]{display:none}@media(max-width:700px){.location-status{left:13px;bottom:70px;max-width:calc(100% - 118px);font-size:10px}.map-tools .locate-button{min-width:76px;height:34px}}
 .leaflet-container.native-basemap{background:#dce7e4}.native-map-label{position:absolute;text-align:center;font-size:11px;font-weight:500;color:#71816f;text-shadow:0 1px 2px #fff,1px 0 2px #fff;white-space:nowrap;pointer-events:none}.native-map-label span{display:block}.native-basemap .leaflet-control-attribution{font-size:8px!important}
 #map.native-basemap{background:#cddfdd}
+.identity-wordmark{display:grid;grid-template-columns:max-content}
+@media(min-width:701px){.identity-wordmark p{display:flex;justify-content:space-between;width:0;min-width:100%;letter-spacing:0}.identity-wordmark p span{white-space:pre}}
 .sheet-toggle{display:none}
 .sheet-content{display:flex;flex-direction:column;flex:1;min-height:0}
 @media(max-width:700px){
