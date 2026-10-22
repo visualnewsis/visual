@@ -31,7 +31,9 @@ VISUAL NEWSIS의 별도 지도 탐색 페이지. 편집# 작품이 아니며 작
 - 경계: 통계청 SGIS, [vuski/admdongkor](https://github.com/vuski/admdongkor)의 2026-10-01 GeoJSON을 단순화했다. 원출처 표시를 페이지에 유지했다.
 - Leaflet 1.9.4: 로컬 `vendor/`, BSD-2-Clause 라이선스 포함.
 - `tools/prepare_assets.py`: 최초 경계·지도 asset 준비용. 배포 때 실행할 필요 없음.
-- `tools/generate_share.py`: 코드로 그린 공유 이미지 생성용.
+- 현재 공유 대표 이미지는 `assets/share-final-20261022.png`다. 사용자 제공 시안의 구도와 로고를 유지하고 하단 문구의 양끝 정렬·밝기를 다듬은 최종본이며, OG·Twitter·JSON-LD가 같은 파일을 참조한다. 실제 이미지 크기는 1731×909px다.
+- `tools/generate_share.py`: 이전 코드 기반 `assets/share.png` 시안의 생성 도구다. 현재 승인된 최종 이미지를 생성하거나 덮어쓰지 않는다.
+- 다음 작업 인수인계: `HANDOFF-20261022.md`.
 
 ## 검증
 
