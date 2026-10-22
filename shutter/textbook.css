@@ -1,0 +1,176 @@
+/* Textbook edition. Existing experiments and their DOM hooks are preserved. */
+body.textbook {
+  --paper: #f7f3ea;
+  --ink: #1a1a1a;
+  --muted: #66635e;
+  --line: #d9d5cc;
+  --mint: #2f6bff;
+  --red: #2f6bff;
+  background: var(--paper);
+  color: var(--ink);
+}
+body.textbook::before, body.textbook main::before,
+body.textbook .opening::before, body.textbook .opening::after { content: none; }
+body.textbook main { max-width: 1280px; margin: 0 auto; background: none; box-shadow: none; padding: 0 40px; }
+body.textbook .opening--interactive { background: none; border: 0; padding: 24px 0 0; margin: 0 0 52px; min-height: 0; overflow: visible; }
+body.textbook .opening-top { padding: 0; border: 0; }
+body.textbook .opening-top .eyebrow { margin: 0; font: 11px/1.6 var(--sans); color: var(--muted); letter-spacing: .03em; }
+body.textbook .draft { color: var(--muted); font: 10px/1.6 var(--sans); }
+body.textbook .cover-heading.compact-masthead { padding: 12px 0 20px; margin: 0 0 24px; border-bottom: 1px solid var(--ink); }
+body.textbook .compact-masthead h1 { font: 900 64px/1.25 var(--serif); letter-spacing: -.01em; text-shadow: none; }
+body.textbook .explore-grid { display: grid; grid-template-columns: minmax(0, .37fr) minmax(0, .63fr); gap: 50px; align-items: start; }
+body.textbook .subject-intro { padding-top: 14px; }
+body.textbook .subject-index { font: 12px/1.5 var(--mono); letter-spacing: .04em; margin: 0 0 20px; color: var(--muted); }
+body.textbook .subject-index span { margin: 0 12px; color: #aaa69e; }
+body.textbook .subject-name { font: 700 72px/1.3 var(--serif); letter-spacing: -.035em; margin: 0 0 28px; }
+body.textbook .subject-description { font-size: 14px; line-height: 2; color: #5d5a54; margin: 0; }
+body.textbook .subject-hint { font-size: 12px; margin-top: 58px; color: var(--muted); }
+body.textbook .subject-hint span { color: var(--mint); font-size: 19px; padding-right: 7px; }
+body.textbook .opening--interactive .anatomy { padding: 0; min-width: 0; }
+body.textbook .opening--interactive .anatomy-heading { display: block; margin-bottom: 14px; }
+body.textbook .opening--interactive .anatomy-heading h2 { font: 700 26px/1.5 var(--serif); letter-spacing: -.035em; }
+body.textbook .opening--interactive .anatomy-heading > p { font-size: 12px; line-height: 1.7; margin: 6px 0 0; color: var(--muted); }
+body.textbook .opening--interactive .camera-stage { background: #fff; border: 1px solid var(--line); }
+body.textbook .opening--interactive .camera-stage canvas { aspect-ratio: 2.25; }
+body.textbook .stage-corner { left: 18px; top: 17px; color: var(--muted); font: 10px/1.6 var(--sans); letter-spacing: .01em; }
+body.textbook .drag-note { left: 18px; bottom: 16px; color: var(--muted); font-size: 10px; }
+body.textbook .round-btn { width: 44px; height: 44px; right: 10px; bottom: 8px; background: #fff; color: #555; border-color: var(--line); }
+body.textbook .assembly-controls { gap: 18px; align-items: center; padding: 10px 0; }
+body.textbook .assembly-controls > label { width: auto; flex: 1; gap: 12px; font-size: 12px; white-space: nowrap; }
+body.textbook .assembly-controls button { min-height: 44px; padding: 6px 0 6px 5px; font-size: 11px; }
+body.textbook .assembly-controls button[aria-pressed=true] { color: var(--mint); font-weight: 700; }
+body.textbook input[type=range] { -webkit-appearance: none; appearance: none; height: 44px; margin: 2px 0; background: transparent; accent-color: var(--mint); }
+body.textbook input[type=range]::-webkit-slider-runnable-track { height: 4px; background: #dce2ed; border-radius: 3px; }
+body.textbook input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 22px; height: 22px; margin-top: -9px; border: 2px solid #fff; border-radius: 50%; background: var(--mint); box-shadow: 0 0 0 1px #2f6bff33; }
+body.textbook input[type=range]::-moz-range-track { height: 4px; background: #dce2ed; border-radius: 3px; }
+body.textbook input[type=range]::-moz-range-thumb { width: 20px; height: 20px; border: 2px solid #fff; border-radius: 50%; background: var(--mint); }
+body.textbook .opening--interactive .part-selector { gap: 7px; padding: 14px 0; }
+body.textbook .part-selector button, body.textbook .sensor-modes button { min-height: 44px; padding: 9px 13px; background: transparent; border: 1px solid #d3d0c8; color: #55524c; font-size: 12px; border-radius: 2px; }
+body.textbook .part-selector button[aria-pressed=true], body.textbook .sensor-modes button[aria-pressed=true] { border-color: var(--mint); background: var(--mint); color: #fff; }
+body.textbook .part-selector i { display: none; }
+body.textbook .opening--interactive .part-description { grid-template-columns: 1fr; gap: 5px; padding: 3px 0 18px; min-height: 0; }
+body.textbook .part-description > span { font: 600 11px/1.8 var(--sans); color: var(--ink); }
+body.textbook .part-description p { font-size: 12px; line-height: 1.9; color: #625f59; }
+body.textbook .opening--interactive .model-note { font-size: 10px; color: #736f68; line-height: 1.8; margin: 10px 0 0; }
+body.textbook .chapter-nav { display: block; margin: 0; padding: 24px 0 8px; border: 0; border-top: 1px solid var(--ink); }
+body.textbook .chapter-nav::after { content: none; }
+body.textbook .chapter-nav > span { display: block; font: 700 21px/1.5 var(--serif); letter-spacing: -.02em; padding: 0 0 24px; }
+body.textbook .chapter-links { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 20px; }
+body.textbook .chapter-links a { display: flex; gap: 12px; align-items: baseline; padding: 0 0 18px; border-bottom: 1px solid var(--line); font-size: 14px; line-height: 1.7; }
+body.textbook .chapter-links b { color: var(--mint); font: 12px/1.6 var(--mono); }
+body.textbook .chapter-links small { display: block; font-size: 10px; line-height: 1.8; color: var(--muted); margin-top: 5px; }
+body.textbook .chapter { padding: 88px 0 0; }
+body.textbook .chapter-intro { max-width: 650px; margin: 0 auto 35px; }
+body.textbook .chapter-intro .eyebrow { font: 500 12px/1.7 var(--mono); color: var(--mint); margin: 0 0 18px; letter-spacing: .04em; }
+body.textbook .chapter-intro h2 { font-size: 42px; line-height: 1.55; letter-spacing: -.04em; margin-bottom: 23px; }
+body.textbook em { color: inherit; }
+body.textbook .chapter-intro > p:not(.eyebrow) { font-size: 15px; line-height: 2; }
+body.textbook .chapter-intro strong { background: none; font-weight: 700; }
+body.textbook .lab { background: #fff; border-color: var(--line); }
+body.textbook .lab-top { padding: 17px 24px; font-size: 12px; }
+body.textbook .lab-top span:last-child { color: var(--muted); font-size: 10px; }
+body.textbook .control-grid { padding: 18px 26px; gap: 35px; }
+body.textbook .control-grid label, body.textbook .wide-control { font-size: 13px; }
+body.textbook .control-grid output, body.textbook .wide-control output { font-size: 13px; }
+body.textbook .lab-footer { min-height: 70px; padding: 14px 26px; }
+body.textbook .lab-footer > span { font-size: 12px; }
+body.textbook .plain-btn { min-height: 44px; font-size: 12px; color: var(--mint); }
+body.textbook .solid-btn { min-height: 44px; border-color: var(--mint); background: var(--mint); color: #fff; padding: 12px 20px; font-size: 12px; box-shadow: none; border-radius: 2px; }
+body.textbook .solid-btn:hover { background: #2058df; border-color: #2058df; }
+body.textbook .readout, body.textbook .pixel-reading { background: #f1f5ff; color: #4a576d; font-size: 12px; }
+body.textbook .explanation { max-width: 850px; grid-template-columns: 230px 1fr; }
+body.textbook .explanation p { font-size: 12px; line-height: 2; }
+body.textbook .formula { color: var(--ink); }
+body.textbook .margin-note { max-width: 650px; }
+body.textbook .margin-note span { font: 700 21px/1.6 var(--serif); color: var(--ink); }
+body.textbook .margin-note p { font-size: 13px; }
+body.textbook .light-meter { background: #e4e9f3; }
+body.textbook .lab-caption, body.textbook .iris-numbers .micro { font-size: 11px; }
+body.textbook .check { min-height: 44px; font-size: 12px; }
+body.textbook .check input { accent-color: var(--mint); }
+body.textbook .contact-sheet figure { background: #fff; border: 1px solid var(--line); box-shadow: none; transform: none; }
+body.textbook .contact-sheet figure:nth-child(even) { transform: none; }
+body.textbook .contact-sheet figcaption { font-size: 10px; }
+body.textbook .ending { margin: 90px 0 0; border-top: 1px solid var(--ink); }
+body.textbook .observation { background: #fff; border-color: var(--line); }
+body.textbook .observation > label { font: 700 20px/1.6 var(--serif); color: var(--ink); }
+body.textbook .observation textarea { font: 15px/32px var(--sans); }
+body.textbook .observation textarea::placeholder { color: #85817a; }
+body.textbook .sources { margin: 60px 0 0; }
+body.textbook .sources summary { min-height: 44px; }
+body.textbook .sources p, body.textbook .sources li { font-size: 12px; }
+body.textbook .notebook-footer { margin: 0; padding: 25px 0 35px; }
+@media (max-width: 1100px) {
+  body.textbook main { padding: 0 30px; }
+  body.textbook .explore-grid { grid-template-columns: minmax(0,.34fr) minmax(0,.66fr); gap: 28px; }
+  body.textbook .subject-name { font-size: 60px; }
+  body.textbook .subject-description { font-size: 12px; }
+  body.textbook .chapter-links { grid-template-columns: repeat(3,minmax(0,1fr)); }
+}
+@media (max-width: 760px) {
+  body.textbook main { padding: 0 22px; margin: 0 auto; }
+  body.textbook .opening--interactive { padding: 22px 0 0; margin-bottom: 36px; }
+  body.textbook .opening-top .eyebrow { font-size: 9px; }
+  body.textbook .draft { display: none; }
+  body.textbook .cover-heading.compact-masthead { padding: 10px 0 20px; margin-bottom: 20px; }
+  body.textbook .compact-masthead h1 { font-size: 48px; letter-spacing: -.01em; }
+  body.textbook .explore-grid { display: block; }
+  body.textbook .subject-intro { padding: 0 0 20px; display: grid; grid-template-columns: 35px 1fr; gap: 4px 10px; align-items: baseline; }
+  body.textbook .subject-index { font-size: 11px; margin: 0; color: var(--mint); }
+  body.textbook .subject-index span { display: none; }
+  body.textbook .subject-index { font-size: 0; }
+  body.textbook .subject-index::before { content: '01'; font: 12px/1.6 var(--mono); }
+  body.textbook .subject-name { font-size: 36px; line-height: 1.3; margin: 0; }
+  body.textbook .subject-description { grid-column: 1/-1; font-size: 12px; line-height: 1.7; margin-top: 5px; }
+  body.textbook .subject-description br { display: none; }
+  body.textbook .desktop-intro { display: none; }
+  body.textbook .subject-hint { display: none; }
+  body.textbook .opening--interactive .anatomy-heading { margin-bottom: 12px; }
+  body.textbook .opening--interactive .anatomy-heading h2 { font-size: 22px; }
+  body.textbook .opening--interactive .anatomy-heading > p { font-size: 11px; margin-top: 5px; }
+  body.textbook .opening--interactive .camera-stage canvas { aspect-ratio: 1.45; }
+  body.textbook .stage-corner { top: 12px; left: 13px; font-size: 8px; }
+  body.textbook .drag-note { bottom: 14px; left: 13px; font-size: 8px; max-width: calc(100% - 68px); }
+  body.textbook .assembly-controls { gap: 12px; padding: 6px 0; }
+  body.textbook .assembly-controls > label { gap: 9px; font-size: 11px; }
+  body.textbook .assembly-controls button { font-size: 10px; }
+  body.textbook .part-selector button { font-size: 11px; padding: 8px 10px; }
+  body.textbook .opening--interactive .part-selector { gap: 6px; padding: 12px 0; }
+  body.textbook .part-description p { font-size: 12px; }
+  body.textbook .opening--interactive .model-note { font-size: 10px; }
+  body.textbook .chapter-nav { padding-top: 20px; }
+  body.textbook .chapter-nav > span { font-size: 20px; padding-bottom: 20px; }
+  body.textbook .chapter-links { grid-template-columns: repeat(2,minmax(0,1fr)); gap: 17px 20px; }
+  body.textbook .chapter-links a { font-size: 13px; gap: 10px; padding-bottom: 13px; }
+  body.textbook .chapter { padding: 62px 0 0; }
+  body.textbook .chapter-intro h2 { font-size: 30px; line-height: 1.55; margin-bottom: 21px; }
+  body.textbook .chapter-intro > p:not(.eyebrow) { font-size: 14px; line-height: 1.95; }
+  body.textbook .lab-top { padding: 13px 15px; font-size: 11px; }
+  body.textbook .lab-top span:last-child { font-size: 9px; }
+  body.textbook .control-grid { padding: 16px; gap: 20px; }
+  body.textbook .control-grid label, body.textbook .wide-control { font-size: 12px; }
+  body.textbook .control-grid output, body.textbook .wide-control output { font-size: 11px; }
+  body.textbook .lab-footer { padding: 12px 16px; gap: 12px; }
+  body.textbook .lab-footer > span { font-size: 11px; }
+  body.textbook .explanation { grid-template-columns: 1fr; gap: 2px; }
+  body.textbook .formula { font-size: 16px; }
+  body.textbook .explanation p { font-size: 12px; }
+  body.textbook .readout, body.textbook .pixel-reading { padding: 15px; font-size: 11px; }
+  body.textbook .sensor-modes { margin-left: 10px; margin-right: 10px; gap: 6px; }
+  body.textbook .sensor-modes button { font-size: 10px; padding: 8px 10px; }
+  body.textbook .margin-note { margin: 35px auto 24px; }
+  body.textbook .margin-note span { font-size: 20px; }
+  body.textbook .ending { margin: 65px 0 0; }
+  body.textbook .ending h2 { font-size: 29px; }
+  body.textbook .observation { padding: 18px; }
+  body.textbook .sources { margin: 40px 0 0; }
+}
+@media (max-width: 360px) {
+  body.textbook main { padding: 0 16px; }
+  body.textbook .compact-masthead h1 { font-size: 43px; }
+  body.textbook .subject-name { font-size: 32px; }
+  body.textbook .subject-description { font-size: 11px; }
+  body.textbook .part-selector button { padding: 8px; font-size: 10px; }
+  body.textbook .opening--interactive .camera-stage canvas { aspect-ratio: 1.35; }
+  body.textbook .three { grid-template-columns: 1fr; gap: 3px; }
+}

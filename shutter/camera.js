@@ -72,7 +72,7 @@
     function project(p) { const [x, y, z] = transform(p); const d = 650 / (650 - z); return [ox + x * scale * d, oy + y * scale * d]; }
     function face(points, color, edge, part = 'body') {
       const faded = model.part !== 'all' && model.part !== part;
-      faces.push({ points, color, edge, depth: points.reduce((s, p) => s + transform(p)[2], 0) / points.length, alpha: faded ? .18 : 1 });
+      faces.push({ points, color, edge: model.part !== 'all' && model.part === part ? '#2f6bff' : edge, depth: points.reduce((s, p) => s + transform(p)[2], 0) / points.length, alpha: faded ? .18 : 1 });
     }
     function box(x, y, z, sx, sy, sz, color, part = 'body', edge = '#667363') {
       const p = [[x,y,z],[x+sx,y,z],[x+sx,y+sy,z],[x,y+sy,z],[x,y,z+sz],[x+sx,y,z+sz],[x+sx,y+sy,z+sz],[x,y+sy,z+sz]];
@@ -144,8 +144,9 @@
         const q=project(p), mobile=w<600;
         const yy=h*ay;
         const xx=clamp(w*ax,mobile?30:50,w-(mobile?30:50));
-        line(ctx,[q,[q[0],yy],[xx,yy]],col,.7);circle(ctx,q[0],q[1],2.2,col);
-        text(ctx,name,xx,yy-7,col,mobile?7:9,'center');
+        const labelColor = model.part === 'all' ? col : '#2f6bff';
+        line(ctx,[q,[q[0],yy],[xx,yy]],labelColor,.7);circle(ctx,q[0],q[1],2.2,labelColor);
+        text(ctx,name,xx,yy-7,labelColor,mobile?7:9,'center');
       });
     }
   });
