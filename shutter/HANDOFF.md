@@ -8,8 +8,19 @@
 - 공개 주소: https://visual.newsis.com/shutter/
 - 작업 폴더: 저장소 루트의 `shutter/`
 - 디자인 구현 커밋: `96cd00ab823cb1712157825e6b2e462e51031874`
-- 공개 배포 확인: 진행 중. 아래 상태를 확인한 뒤 완료로 갱신한다.
+- 공개 배포 확인: **미완료 — GitHub Actions 장애로 대기 중**. 2026-10-23 00:09 KST 현재 공개 페이지는 이전 디자인이며 A안 반영을 확인하지 못했다.
 - 실행 방식: 정적 HTML·CSS·순수 JavaScript. 설치나 빌드가 필요 없다. 저장소 루트를 정적 서버로 열고 `/shutter/`로 접속한다. 별도 서버 애플리케이션을 만들지 않는다.
+
+## 회사에서 가장 먼저 확인할 배포 상태
+
+- 최신 전체 배포 요청: https://github.com/visualnewsis/visual/actions/runs/39801634931
+- 해당 배포 소스: `c25f6a75c506b2a5772ef366925e2dfee7f3d21a` (A안과 첫 인수인계 문서 포함). 요청은 정상 등록됐으며 마지막 확인 상태는 queued다.
+- A안 코드 품질검사 성공: https://github.com/visualnewsis/visual/actions/runs/39798396296
+- 이전 실행 `39798396271`은 결과 처리 지연 중 취소·부분 재시도·시작 실패를 겪었다. 위 최신 전체 배포 요청을 우선 확인한다.
+- 공식 장애 상태: https://www.githubstatus.com/ — Actions workflow/step results 처리 지연 공지. 확인한 사건 ID는 `q29p76qtnkyk`다. 상태 API: https://www.githubstatus.com/api/v2/summary.json
+- 서비스 코드를 더 고치거나 기존 배포 설정을 변경해서 이 외부 장애를 해결하려 하지 않는다. 먼저 최신 실행과 실제 서비스 응답을 확인한다. 동일 실행을 반복 취소·재시도하지 않는다.
+- 완료 판정: 공개 HTML에서 `textbook.css?v=20261022-a2` 로드, `/shutter/textbook.css` HTTP 200, 새 첫 화면과 실제 조작 정상 동작을 확인한다. 가능하면 `index.html`, `textbook.css`, `camera.js`, `og-camera.png` 및 세 아이콘의 SHA-256을 디자인 커밋 `96cd00ab`와 대조한다. GitHub 표시 상태만으로 공개 완료를 단정하지 않는다.
+- 문서 보완 커밋은 `[skip ci]`를 사용해 진행 중인 전체 사이트 배포를 중복 시작하지 않았다. 최신 문서는 GitHub main에서 읽는다.
 
 ## 확정된 디자인 방향과 현재 구현
 
@@ -77,6 +88,7 @@ VISUAL NEWSIS의 ‘탐구생활 — 카메라’ 작업을 이어갈 준비를 
 주요 파일은 shutter/index.html, shutter/textbook.css, shutter/camera.js야. 기존 모형과 실험 기능을 보존해줘.
 
 우선 최신 상태를 확인하고 로컬 미리보기를 열어 현재 PC·모바일 화면을 확인해줘.
+인수인계에 배포가 대기 중으로 적혀 있으면 최신 배포 실행과 실제 공개 페이지 반영부터 확인하고 결과를 알려줘. 기존 실행을 불필요하게 취소·재시작하지 마.
 어디까지 구현됐고 남은 검토가 무엇인지 짧게 정리한 뒤, 내 다음 수정 지시를 기다려줘.
 ```
 
