@@ -4,15 +4,18 @@
   const belongs=(place,region)=>!region||place===region||place.startsWith(region+'/');
   const matches=(article,region)=>article.places.some(place=>belongs(place,region));
   const inBox=(center,b)=>center[0]>=b[0]&&center[0]<=b[2]&&center[1]>=b[1]&&center[1]<=b[3];
-  function filter(articles,{region='',period='24',onlyNew=false,cutoff=0,now=Date.now(),category='',bounds=null,nodes={}}={}){
+  function filter(articles,{region='',period='24',onlyNew=false,cutoff=0,now=Date.now(),category='',bounds=null,nodes={},includeUnlocated=false}={}){
     const since=period==='all'?-Infinity:now-Number(period)*3600000;
+    const seen=new Set();
     return articles.filter(a=>{
+      if(seen.has(a.id))return false;
       const time=Date.parse(a.publishedAt);
-      return Number.isFinite(time)&&time<=now&&time>=since&&matches(a,region)&&(!onlyNew||time>cutoff)&&(!category||a.category===category)&&(!bounds||a.places.some(p=>belongs(p,region)&&nodes[p]&&inBox(nodes[p].center,bounds)));
+      const keep=Number.isFinite(time)&&time<=now&&time>=since&&(matches(a,region)||(includeUnlocated&&!region&&!a.places.length))&&(!onlyNew||time>cutoff)&&(!category||a.newsCategory===category)&&(!bounds||a.places.some(p=>belongs(p,region)&&nodes[p]&&inBox(nodes[p].center,bounds)));
+      if(keep)seen.add(a.id);return keep;
     }).sort((a,b)=>Date.parse(b.publishedAt)-Date.parse(a.publishedAt));
   }
   function group(articles,nodes,zoom,region=''){
-    const groups=new Map();
+    const groups=new Map(),seen=new Map();
     const depth=zoom<8?1:zoom<11?2:zoom<13?3:99;
     for(const a of articles) for(const place of a.places){
       if(!belongs(place,region)||!nodes[place]) continue;
@@ -20,9 +23,9 @@
       const minDepth=region?region.split('/').length:1;
       const target=parts.slice(0,Math.min(parts.length,Math.max(depth,minDepth))).join('/');
       if(!nodes[target]) continue;
-      if(!groups.has(target)) groups.set(target,{node:nodes[target],articles:[]});
+      if(!groups.has(target)){groups.set(target,{node:nodes[target],articles:[]});seen.set(target,new Set());}
       const g=groups.get(target);
-      if(!g.articles.some(x=>x.id===a.id)) g.articles.push(a);
+      if(!seen.get(target).has(a.id)){seen.get(target).add(a.id);g.articles.push(a);}
     }
     return [...groups.values()];
   }

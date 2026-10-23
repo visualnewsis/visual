@@ -24,11 +24,16 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.stdout.reconfigure(encoding='utf-8')
-FEEDS = ['sokbo', 'society', 'met', 'whol', 'economy', 'culture', 'industry', 'health']
+FEEDS = ['sokbo', 'politics', 'international', 'economy', 'bank', 'industry', 'society', 'health', 'met', 'country', 'sports', 'entertain', 'culture']
+FEED_CATEGORIES = {'politics':'정치','international':'국제','economy':'경제','bank':'경제','industry':'산업','society':'사회','health':'IT·바이오','sports':'스포츠','entertain':'연예','culture':'문화'}
 RETENTION_DAYS = 30
 MAX_ARTICLES = 10000
-MAX_ENRICH = 24
-LOCATION_METHOD = "conservative-place-name-v3"
+MAX_ENRICH = 50
+LOCATION_METHOD = "conservative-v3-related-v1"
+# District precision deliberately avoids guessing an administrative dong from a street address.
+# Official sources: scourt.go.kr/rel/infomation/OfferOrgList.work and data.visitkorea.or.kr/linkedview/126827
+FACILITIES = [('서울중앙지방법원|서울중앙지법|서울고등법원|서울고법','서울특별시/서초구','재판·기관 장소'),
+              ('국회의사당|국회(?:에서|에선|에서는| 본청| 본관| 의원회관| 소통관)','서울특별시/영등포구','회의·발표 장소')]
 
 def clean(text):
     return re.sub(r'\s+', ' ', html.unescape(re.sub(r'<[^>]+>', ' ', text or ''))).strip()
@@ -124,7 +129,7 @@ def relevant_hit(text, match):
     return True
 
 
-def locate(title, text, matchers):
+def locate(title, text, matchers, related=False):
     # 경기 광주 is Gwangju city in Gyeonggi, not the southern metropolitan area.
     title = re.sub(r'경기(?:도)?\s+광주(?:시)?', '경기도 광주시', title)
     text = re.sub(r'경기(?:도)?\s+광주(?:시)?', '경기도 광주시', text)
@@ -137,7 +142,7 @@ def locate(title, text, matchers):
     body_hits = [(n,m) for n,p in matchers if (m:=p.search(lead)) and relevant_hit(lead,m)]
     # Nationwide comparisons should not pick an arbitrary location from a ranking.
     body_provinces={n['id'] for n,_ in body_hits if n['level']=='province'}
-    if not title_hits and len(body_provinces)>=3 and re.search(r'전국|지역별|집계|통계',lead):
+    if not related and not title_hits and len(body_provinces)>=3 and re.search(r'전국|지역별|집계|통계',lead):
         return [],lead
     hits = title_hits + body_hits
     province_ids = {n['id'] for n,_ in hits if n['level']=='province'}
@@ -161,15 +166,48 @@ def locate(title, text, matchers):
     ids = {n['id'] for n in candidates}
     # Match the title's subject before secondary locations mentioned in the body.
     title_ids = {n['id'] for n,_ in title_hits if n['id'] in ids and n['level'] != 'province'}
-    if title_ids:
+    if title_ids and not related:
         ids = {i for i in ids if any(i==t or i.startswith(t+'/') or t.startswith(i+'/') for t in title_ids)}
     # A city/province mentioned as background must not become an extra map pin
     # when a more specific subject location was found elsewhere.
     specific = {n['id'] for n in candidates if n['id'] in ids and n['level']!='province'}
-    if specific:
+    if specific and not related:
         ids = {i for i in ids if '/' in i or any(j.startswith(i+'/') for j in specific)}
     deepest = sorted(i for i in ids if not any(j.startswith(i+'/') for j in ids))
     return deepest[:5], lead
+
+def related_locations(title, text, matchers, nodes):
+    places, lead = locate(title, text, matchers, related=True)
+    combined=title+' '+lead
+    reasons={p:'기사 관련 지역' for p in places}
+    for pattern, place, reason in FACILITIES:
+        found=re.search(pattern,combined)
+        if not found or place not in nodes:
+            continue
+        context=combined[max(0,found.start()-25):found.end()+100]
+        if re.search(r'관할법원|출신|근무했|역임|지난해|과거',context):
+            continue
+        if not re.search(r'선고|판결|재판|심리|공판|심문|법정|개최|열[린렸리]|회의|발표|회견|국감|국정감사',context):
+            continue
+        # A confirmed finer location already covers its parent district.
+        descendants=[p for p in places if p.startswith(place+'/')]
+        if descendants:
+            for p in descendants:reasons[p]=reason
+        else:
+            places.append(place);reasons[place]=reason+' · '+found[0]
+    places=sorted(set(places))
+    places=[p for p in places if not any(q.startswith(p+'/') for q in places)]
+    return places,{p:reasons[p] for p in places}
+
+def news_category(raw):
+    feeds=raw.get('feeds') or [raw.get('feed','')]
+    # Prefer an actual subject feed over general breaking/local feeds.
+    for feed in FEED_CATEGORIES:
+        if feed in feeds:return FEED_CATEGORIES[feed]
+    title=raw['title']
+    for name,pattern in [('정치','대통령|국회|민주당|국민의힘|장관|외교'),('스포츠','야구|축구|배구|농구|올림픽|선수|리그'),('연예','배우|가수|아이돌|드라마')]:
+        if re.search(pattern,title):return name
+    return {'경제':'경제','문화·생활':'문화'}.get(category(title),'사회')
 
 def category(title):
     for name, tokens in [('사건·안전',['화재','사고','경찰','살해','정전','구속','범죄','안전','방화','지진']),('문화·생활',['축제','공연','전시','문화','음악','관광','박람회','페스티벌']),('교통·도시',['교통','지하철','재개발','도로','아파트','건설','정비','철도']),('경제',['투자','기업','주가','매출','경제','임대','시장','은행'])]:
@@ -264,8 +302,8 @@ def enrich(article):
     parser.feed(request(article['url']).decode('utf-8', errors='replace'))
     lead = article_text(''.join(parser.parts))
     if lead:
-        return {**article, 'text':lead, 'locationSource':'article-lead'}
-    return article
+        return {**article, 'text':lead, 'locationSource':'article-lead','leadChecked':True}
+    return {**article,'leadChecked':True}
 
 
 def merge_articles(previous, current, now):
@@ -283,8 +321,7 @@ def merge_articles(previous, current, now):
 
 def build_article(raw, matchers, nodes):
     places, lead = locate(raw['title'], raw['text'], matchers)
-    if not places:
-        return None
+    related, reasons = related_locations(raw['title'],raw['text'],matchers,nodes)
     combined = raw['title']+' '+lead
     evidence = []
     patterns = {n['id']:pattern for n,pattern in matchers}
@@ -295,6 +332,8 @@ def build_article(raw, matchers, nodes):
         evidence.append(combined[max(0,found.start()-30):found.end()+70])
     return {key:raw.get(key, '') for key in ['id','title','url','publishedAt','image']} | {
         'places':places, 'category':category(raw['title']), 'evidence':evidence,
+        'relatedPlaces':related,'placeReasons':reasons,'newsCategory':news_category(raw),
+        'feeds':sorted(raw.get('feeds') or [raw.get('feed','')]),'leadChecked':raw.get('leadChecked',False),
         'summary':lead[:105].rstrip('. …')+'…', 'locationSource':raw.get('locationSource','rss'),
         'locationMethod':LOCATION_METHOD, 'locationLead':lead}
 
@@ -327,8 +366,10 @@ def collect(previous, now, fetch=request, enrich_limit=MAX_ENRICH):
                 _, (items,rejected) = future.result()
                 succeeded.append(feed)
                 for key, article in items.items():
+                    feeds=sorted(set(records.get(key,{}).get('feeds',[])+[feed]))
                     if key not in records or len(article['text']) > len(records[key]['text']):
                         records[key] = article
+                    records[key]['feeds']=feeds
                 if rejected:
                     warnings.append(feed+': invalid items '+str(rejected))
             except Exception as exc:
@@ -342,9 +383,9 @@ def collect(previous, now, fetch=request, enrich_limit=MAX_ENRICH):
     for article in records.values():
         old = old_by_id.get(article['id'])
         places, _ = locate(article['title'],article['text'],matchers)
-        fingerprint = hashlib.sha256('|'.join(article.get(k,'') for k in ['title','text','image','publishedAt']).encode()).hexdigest()
+        fingerprint = hashlib.sha256(('|'.join(article.get(k,'') for k in ['title','text','image','publishedAt'])+'|'+','.join(article['feeds'])).encode()).hexdigest()
         article['sourceFingerprint'] = fingerprint
-        if old and old.get('sourceFingerprint') == fingerprint and old.get('locationMethod')==LOCATION_METHOD:
+        if old and old.get('sourceFingerprint') == fingerprint and old.get('locationMethod')==LOCATION_METHOD and old.get('leadChecked'):
             continue
         if not places or all(nodes[p]['level']=='province' for p in places):
             pending.append(article)
@@ -362,7 +403,7 @@ def collect(previous, now, fetch=request, enrich_limit=MAX_ENRICH):
     current, unassigned, rejected_ids = [], [], set()
     for raw in records.values():
         old = old_by_id.get(raw['id'])
-        if old and old.get('sourceFingerprint')==raw['sourceFingerprint'] and old.get('locationMethod')==LOCATION_METHOD:
+        if old and old.get('sourceFingerprint')==raw['sourceFingerprint'] and old.get('locationMethod')==LOCATION_METHOD and (old.get('leadChecked') or not raw.get('leadChecked')):
             current.append(old)
             continue
         article = build_article(raw,matchers,nodes)
@@ -384,17 +425,17 @@ def collect(previous, now, fetch=request, enrich_limit=MAX_ENRICH):
             if revised:
                 retained.append(revised)
     articles = merge_articles(retained,current,now)
-    if len(current)<10 or len(articles)<15:
+    if sum(bool(a['places']) for a in current)<10 or len(articles)<15:
         raise RuntimeError('Too few located live articles; previous snapshot preserved.')
     payload = {'schemaVersion':1,'collectedAt':now.isoformat(timespec='seconds'),
         'source':'NEWSIS official RSS + limited official article leads','mode':'scheduled-snapshot',
         'retentionDays':RETENTION_DAYS,'articleLimit':MAX_ARTICLES,
-        'articles':articles,'unassignedCount':len(unassigned),
+        'articles':articles,'unassignedCount':sum(not a.get('relatedPlaces',a['places']) for a in articles),
         'collection':{'feedsSucceeded':sorted(succeeded),'feedWarnings':warnings,'enrichedCount':enriched}}
     # Collection metadata alone must not trigger a content deployment.
     changed = articles != previous.get('articles',[])
-    return payload, changed, {'fetched':len(records),'mapped':len(current),'retained':len(articles),
-        'unassigned':len(unassigned),'enriched':enriched,'warnings':warnings}
+    return payload, changed, {'fetched':len(records),'mapped':sum(bool(a.get('relatedPlaces',a['places'])) for a in current),'retained':len(articles),
+        'unassigned':payload['unassignedCount'],'enriched':enriched,'warnings':warnings}
 
 
 def main():

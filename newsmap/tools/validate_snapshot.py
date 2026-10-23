@@ -22,7 +22,9 @@ def validate(path):
         assert article['url']=='https://www.newsis.com/view/'+identifier,'Unexpected article URL'
         assert isinstance(article['title'],str) and article['title'].strip(),'Empty title'
         assert parse_time(article['publishedAt'])<=datetime.now(timezone.utc),'Future article'
-        assert article['places'] and all(p in nodes for p in article['places']),'Unknown place'
+        assert isinstance(article['places'],list) and all(p in nodes for p in article['places']),'Unknown place'
+        assert article['places'] or article.get('newsCategory'),'Unlocated articles require a category'
+        assert all(p in nodes for p in article.get('relatedPlaces',[])),'Unknown related place'
         assert isinstance(article.get('evidence'),list) and all(isinstance(e,str) for e in article['evidence']),'Missing evidence'
         assert 'text' not in article and 'articleBody' not in article,'Full body must not be published'
     return len(articles)

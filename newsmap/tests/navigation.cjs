@@ -18,8 +18,8 @@ function boot({missing=false,search='',withMap=false}={}){
   const ids=Object.fromEntries([...read('index.html').matchAll(/id="([^"]+)"/g)].map(m=>[m[1],new Element()]));
   const periods=['24','168','720','all'].map(period=>Object.assign(new Element(),{dataset:{period}}));
   const events={},location={pathname:'/newsmap/',search,hash:''},calls=[];
-  let pending,expanded=false;
-  const ctx={URL,URLSearchParams,Intl,Date,Option:class{},matchMedia:()=>({matches:false}),location,
+  let pending,expanded=false,markerBuilds=0;
+  const ctx={URL,URLSearchParams,Intl,Date,Option:class{},matchMedia:()=>({matches:false,addEventListener(){}}),location,
     localStorage:{getItem:()=>null,setItem(){}},history:{},
     document:{getElementById:id=>ids[id],querySelector:()=>new Element(),querySelectorAll:()=>periods,
       addEventListener(){},body:{classList:{toggle(){}}},createElement:()=>new Element(),head:{append:script=>pending=script}},
@@ -35,15 +35,15 @@ function boot({missing=false,search='',withMap=false}={}){
     latLngToContainerPoint(){return {distanceTo:()=>1000};},distance:()=>10000,removeLayer(){},invalidateSize(){},
     zoomIn(){this.zoom++;},zoomOut(){this.zoom--;}};
   if(withMap){
-    const layer=()=>({addTo(){return this;},clearLayers(){},on(){return this;},bindTooltip(){return this;}});
-    ctx.L=ctx.window.L={map:()=>fakeMap,tileLayer:layer,layerGroup:layer,geoJSON:layer,marker:layer,divIcon:x=>x};
+    const layer=()=>({addTo(){return this;},clearLayers(){},removeLayer(){},on(){return this;},bindTooltip(){return this;}});
+    ctx.L=ctx.window.L={map:()=>fakeMap,tileLayer:layer,layerGroup:layer,geoJSON:layer,marker:()=>{markerBuilds++;return layer();},divIcon:x=>x};
     ctx.ResizeObserver=class{observe(){}};
   }
   vm.createContext(ctx);
   for(const file of ['core.js','data/geography.js','data/articles.js'])vm.runInContext(read(file),ctx);
   if(missing)delete ctx.window.NEWSMAP_ARTICLES;
   vm.runInContext(read('app.js'),ctx);
-  return {ctx,ids,periods,events,calls,mapEvents,fakeMap,get pending(){return pending;},get expanded(){return expanded;}};
+  return {ctx,ids,periods,events,calls,mapEvents,fakeMap,get pending(){return pending;},get expanded(){return expanded;},get markerBuilds(){return markerBuilds;}};
 }
 const app=boot(),api=app.ctx.window.NewsmapApp;
 assert.equal(api.state.motion,true,'Waves must default to on.');
@@ -101,4 +101,7 @@ camera.fakeMap.zoom=8;camera.ids['zoom-out'].events.click();camera.mapEvents.mov
 assert.equal(cameraApi.state.viewport,false);
 assert.equal(camera.ids['map-heading'].textContent,'전국에서 전해온 이야기');
 assert.equal(cameraApi.state.region,'');
+const beforeMarkers=camera.markerBuilds;
+cameraApi.render();cameraApi.render();
+assert.equal(camera.markerBuilds,beforeMarkers,'An unchanged view must preserve existing markers and their pulse animations.');
 console.log('PASS: URL filters, history restoration, refresh loading/success/error, malformed data retention, empty data and initial load failure.');

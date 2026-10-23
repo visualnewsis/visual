@@ -28,3 +28,13 @@ assert locate('성수동 수제버거를 편의점에서','삼립은 성수동 �
 assert locate('완도 청산도 희귀어류 확인','전남 완도군 청산도에서 서식을 확인했다. 지난해 경남 통영시 사량도에서 채집했다.')==['전남광주통합특별시/완도군']
 assert locate('[김제소식] 자원순환 축제','전북 김제시는 축제를 개최한다. ◇금산면 문화의 날\n김제시 금산면에서 공연한다.')==['전북특별자치도/김제시']
 print('PASS: no empty matcher, foreign news, 경기 ambiguity, same-name dong, 광주 ambiguity, district-only scope, intermediate city hierarchy.')
+
+nodes={n['id']:n for n in collector.load_nodes()}
+places,reasons=collector.related_locations('부산 사건 피고인 선고','서울고법 형사부는 부산 부산진구에서 발생한 사건의 항소심 판결을 선고했다.',matchers,nodes)
+assert '서울특별시/서초구' in places and '부산광역시/부산진구' in places,places
+assert '재판' in reasons['서울특별시/서초구']
+places,_=collector.related_locations('국회에서 기자회견','국회에서 대책 발표 기자회견이 열렸다.',matchers,nodes)
+assert '서울특별시/영등포구' in places
+places,_=collector.related_locations('국회의원 정책 제안','국회의원은 전국 정책을 제안했다.',matchers,nodes)
+assert '서울특별시/영등포구' not in places,'A legislator alone is not evidence of an event at Parliament.'
+print('PASS: related locations allow incident + court; institution-only mentions do not invent an event.')
