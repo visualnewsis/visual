@@ -15,16 +15,27 @@ window.NewsmapBasemap=(map,geography)=>{
   const land=L.layerGroup(),detail=L.layerGroup(),labels=L.layerGroup();
   const colours=['#f0eee0','#e9ecdf','#ede9dc','#e6ebde'];
   const credit='행정구역 지도 · 통계청 SGIS / <a href="https://github.com/vuski/admdongkor">vuski</a>';
-  function prepareLand(){nodes.filter(n=>n.level==='province').forEach((province,i)=>{
-    const coordinates=leaves.filter(n=>n.path[0]===province.id).flatMap(n=>n.geometry.coordinates);
-    L.geoJSON({type:'MultiPolygon',coordinates},{pane:'newsmapBase',interactive:false,style:{stroke:false,fillColor:colours[i%colours.length],fillOpacity:1}}).addTo(land);
+  const provinces=nodes.filter(n=>n.level==='province');
+  const provinceLeaves=new Map(provinces.map(p=>[p.id,leaves.filter(n=>n.path[0]===p.id)]));
+  const landLayers=new Map(),detailLayers=new Map(),labelLayers=new Map();
+  function prepareLand(intersects){provinces.forEach((province,i)=>{
+    const visible=provinceLeaves.get(province.id).filter(intersects),key=visible.map(n=>n.id).join('|');
+    const previous=landLayers.get(province.id);
+    if(previous?.key===key)return;
+    if(previous)land.removeLayer(previous.layer);
+    if(!visible.length){landLayers.delete(province.id);return;}
+    const coordinates=visible.flatMap(n=>n.geometry.coordinates);
+    const layer=L.geoJSON({type:'MultiPolygon',coordinates},{pane:'newsmapBase',interactive:false,style:{stroke:false,fillColor:colours[i%colours.length],fillOpacity:1}}).addTo(land);
+    landLayers.set(province.id,{key,layer});
   });}
-  let active=false,prepared=false,detailStyle='';
-  const detailLayers=new Map(),labelLayers=new Map();
+  let active=false,detailStyle='';
   function redraw(){
     if(!active)return;
     const z=map.getZoom(),b=map.getBounds();
     const intersects=n=>n.bbox[0]<=b.getNorth()&&n.bbox[2]>=b.getSouth()&&n.bbox[1]<=b.getEast()&&n.bbox[3]>=b.getWest();
+    // Do not project the whole country's coastline when viewing a neighbourhood.
+    const landBounds=b.pad?b.pad(.5):b;
+    prepareLand(n=>n.bbox[0]<=landBounds.getNorth()&&n.bbox[2]>=landBounds.getSouth()&&n.bbox[1]<=landBounds.getEast()&&n.bbox[3]>=landBounds.getWest());
     const visible=z>=8?leaves.filter(intersects):[];
     const wanted=new Set(visible.map(n=>n.id));
     for(const [id,layer] of detailLayers)if(!wanted.has(id)){detail.removeLayer(layer);detailLayers.delete(id);}
@@ -47,7 +58,7 @@ window.NewsmapBasemap=(map,geography)=>{
     });
   }
   return {
-    enable(){if(active)return;if(!prepared){prepareLand();prepared=true;}active=true;land.addTo(map);detail.addTo(map);labels.addTo(map);map.getContainer().classList.add('native-basemap');map.attributionControl.addAttribution(credit);map.on('moveend',redraw);redraw();},
+    enable(){if(active)return;active=true;land.addTo(map);detail.addTo(map);labels.addTo(map);map.getContainer().classList.add('native-basemap');map.attributionControl.addAttribution(credit);map.on('moveend',redraw);redraw();},
     disable(){if(!active)return;active=false;map.off('moveend',redraw);map.removeLayer(land);map.removeLayer(detail);map.removeLayer(labels);map.getContainer().classList.remove('native-basemap');map.attributionControl.removeAttribution(credit);}
   };
 };
