@@ -24,3 +24,5 @@ body[data-arcade-game=bamta] #stage{height:calc(100dvh - 64px)}
 @media(pointer:coarse){.cgh-shell .cgh-toggle{min-width:44px!important;width:44px!important;height:44px!important}}
 @media(prefers-reduced-motion:reduce){.cgh-shell .cgh-lines,.cgh-shell .cgh-lines:before,.cgh-shell .cgh-lines:after{transition:none}}
 @media(max-width:360px){.cgh-shell .cgh-bar{padding:0 7px!important}.cgh-shell .cgh-brand img{width:60px!important;max-height:26px!important}.cgh-shell .cgh-newsis img{width:64px!important;max-height:25px!important}.cgh-shell .cgh-right{gap:2px!important}.cgh-shell .cgh-home{font-size:8px!important;letter-spacing:0!important}}
+
+.cgh-shell .cgh-nav .cgh-map-entry{margin-inline-start:12px!important}.cgh-shell .cgh-nav .cgh-map-entry img{height:15px!important}

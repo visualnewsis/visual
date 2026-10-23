@@ -4,9 +4,9 @@
   const theme=script?.dataset.headerTheme==="dark"?"dark":"light";
   const sectionHref=script?.dataset.sectionHref||"";
   const current=script?.dataset.current||"";
-  const labels={latest:"최신 기사",editshop:"편집#",newsystem:"뉴시스템",mapguide:"알아볼지도",onepoint:"닿소리 홀소리",arcade:"충무로딩",calculator:"계산대로"};
-  const links={latest:"https://visual.newsis.com/#latest",editshop:"https://visual.newsis.com/editshop/",newsystem:"https://visual.newsis.com/newsystem/",mapguide:"https://visual.newsis.com/bukang/",onepoint:"https://visual.newsis.com/onepoint/",arcade:"https://visual.newsis.com/arcade/",calculator:"https://visual.newsis.com/calculator/index.html"};
-  const icons={arcade:"https://visual.newsis.com/assets/menu-icon-arcade.png",calculator:"https://visual.newsis.com/assets/menu-icon-calculator.png"};
+  const labels={latest:"최신 기사",editshop:"편집#",newsystem:"뉴시스템",mapguide:"알아볼지도",onepoint:"닿소리 홀소리",arcade:"충무로딩",calculator:"계산대로",newsmap:"여기뉴스"};
+  const links={latest:"https://visual.newsis.com/#latest",editshop:"https://visual.newsis.com/editshop/",newsystem:"https://visual.newsis.com/newsystem/",mapguide:"https://visual.newsis.com/bukang/",onepoint:"https://visual.newsis.com/onepoint/",arcade:"https://visual.newsis.com/arcade/",calculator:"https://visual.newsis.com/calculator/index.html",newsmap:"https://visual.newsis.com/newsmap/"};
+  const icons={arcade:"https://visual.newsis.com/assets/menu-icon-arcade.png",calculator:"https://visual.newsis.com/assets/menu-icon-calculator.png",newsmap:new URL("menu-icon-here-news.svg",script.src).href};
   const start=()=>{
     const old=document.querySelector("body > header.masthead,body > header.topbar,body > header.visual-head");
     if(old) old.remove();
@@ -25,7 +25,7 @@
     const navItems=Object.keys(labels).map(key=>{
       const icon=icons[key]?`<img class="vnh-nav-icon" src="${icons[key]}" alt="">`:"";
       if(!links[key]) return `<span class="vnh-nav-disabled" aria-disabled="true">${icon}${labels[key]}</span>`;
-      return `<a href="${links[key]}"${current===key?' aria-current="page"':''}>${icon}${labels[key]}</a>`;
+      return `<a${key==='newsmap'?' class="vnh-map-entry"':''} href="${links[key]}"${current===key?' aria-current="page"':''}>${icon}${labels[key]}</a>`;
     }).join("");
     overlay.innerHTML=`<div class="vnh-panel" role="dialog" aria-modal="true" aria-label="VISUAL NEWSIS 전체 메뉴"><nav class="vnh-nav">${navItems}</nav></div>`;
     document.body.prepend(overlay);

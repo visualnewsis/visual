@@ -23,6 +23,23 @@
   const state={...readUrl(),motion:store.get('newsmap:motion')!=='off'};
   let restoring=false,refreshStatus='';
   const seenSignals=new Set();
+  function savedJSON(key,fallback){try{return JSON.parse(store.get(key))||fallback;}catch{return fallback;}}
+  const savedReads=savedJSON('newsmap:read:v1',[]);
+  const readArticles=new Set(Array.isArray(savedReads)?savedReads:[]);
+  let pulseBatch=savedJSON('newsmap:pulse-batch:v1',{}),pulseExpiry;
+  function syncPulseBatch(){
+    const collected=Date.parse(payload.collectedAt);
+    if(pulseBatch.collectedAt!==payload.collectedAt){
+      const known=new Set(Array.isArray(pulseBatch.known)?pulseBatch.known:[]);
+      pulseBatch={collectedAt:payload.collectedAt,known:payload.articles.map(a=>a.id),
+        active:payload.articles.filter(a=>known.size?!known.has(a.id):Date.parse(a.publishedAt)>collected-600000&&Date.parse(a.publishedAt)<=collected).map(a=>a.id)};
+      store.set('newsmap:pulse-batch:v1',JSON.stringify(pulseBatch));
+      window.clearTimeout(pulseExpiry);pulseExpiry=null;
+    }
+    const remaining=collected+600000-now();
+    if(!pulseExpiry&&remaining>0)pulseExpiry=window.setTimeout(()=>renderMarkers(),remaining+20);
+  }
+  const hasUnreadPulse=a=>Date.parse(payload.collectedAt)+600000>now()&&(pulseBatch.active||[]).includes(a.id)&&!readArticles.has(a.id);
   let map,markers,boundary,locationLayer,shown=[],searchMatches=[],visibleLimit=100;
   document.querySelector('.skip').addEventListener('click',event=>{if(matchMedia('(max-width:700px)').matches){event.preventDefault();sheet?.expand();$('results').focus({preventScroll:true});}});
   const formatter=new Intl.DateTimeFormat('ko-KR',{month:'numeric',day:'numeric',hour:'2-digit',minute:'2-digit',hour12:false,timeZone:'Asia/Seoul'});
@@ -82,6 +99,7 @@
     return `<article class="article-card" data-article="${esc(a.id)}"><div class="card-top">${isNew(a)?'<span class="new">NEW</span>':''}<span>${esc(a.category)}</span><span>·</span><time datetime="${esc(a.publishedAt)}">${esc(stamp(a.publishedAt))}</time></div><div class="card-body"><h3><a href="${esc(url)}" target="_blank" rel="noopener noreferrer">${esc(a.title)}</a></h3>${image?`<img src="${esc(image)}" alt="" loading="lazy" referrerpolicy="no-referrer" onerror="this.hidden=true">`:''}</div><div class="card-bottom"><button class="place-link" data-place="${esc(n.id)}" title="${esc(a.evidence?.join(' / ')||n.path.join(' '))}">⌖ ${esc(n.path.map((name,i)=>i===0?shortName(nodes[name]):name).join(' '))} <span class="precision">${level}</span></button><a class="source-link" href="${esc(url)}" target="_blank" rel="noopener noreferrer">뉴시스 ↗</a></div></article>`;
   }
   function renderList(){
+    syncPulseBatch();
     shown=selectedArticles();
     const n=nodes[state.region];
     const region=n?shortName(n):'전국';
@@ -120,10 +138,11 @@
       const size=Math.min(47,25+Math.sqrt(count)*3);
       const clustered=g.members?.length>1;
       const label=shortName(g.node)+(clustered?' 외 '+(g.members.length-1)+'곳':'');
-      const signalKey=g.node.id+':'+g.articles.filter(isNew).map(a=>a.id).sort().join(',');
-      const animate=fresh&&state.motion&&!matchMedia('(prefers-reduced-motion:reduce)').matches&&!seenSignals.has(signalKey);
+      const unread=g.articles.some(hasUnreadPulse);
+      const signalKey=g.node.id;
+      const animate=state.motion&&!matchMedia('(prefers-reduced-motion:reduce)').matches&&(now()<sessionStarted+5500||!seenSignals.has(signalKey));
       if(animate)seenSignals.add(signalKey);
-      const icon=L.divIcon({className:'news-marker'+(fresh?' has-new':'')+(animate?' animate-new':''),iconSize:[size,size],iconAnchor:[size/2,size/2],html:`<span class="dot">${count}</span><span class="marker-label">${esc(label)}</span>`});
+      const icon=L.divIcon({className:'news-marker'+(fresh?' has-new':'')+(animate?' animate-new':'')+(unread?' pulse-unread':''),iconSize:[size,size],iconAnchor:[size/2,size/2],html:`<span class="dot">${count}</span><span class="marker-label">${esc(label)}</span>`});
       const marker=L.marker(g.node.center,{icon,keyboard:true,title:label+': '+count+'개 기사'+(fresh?', 새 기사 '+fresh+'개':''),alt:label+' 기사 보기',riseOnHover:true});
       marker.on('add',()=>{const el=marker.getElement();el.style.setProperty('--size',size+'px');el.style.setProperty('--delay',(i%4)*.12+'s');el.setAttribute('role','button');});
       marker.bindTooltip(esc(g.node.path.join(' '))+' · '+count+'건'+(fresh?' / 새 기사 '+fresh+'건':''),{direction:'top',offset:[0,-12]});
@@ -216,7 +235,17 @@
   $('all-tab').addEventListener('click',()=>{state.onlyNew=false;render();});
   $('new-tab').addEventListener('click',()=>{state.onlyNew=true;render();});
   $('viewport-toggle').addEventListener('click',()=>{state.viewport=!state.viewport;render();});
-  $('motion-toggle').addEventListener('click',()=>{state.motion=!state.motion;store.set('newsmap:motion',state.motion?'on':'off');syncControls();});
+  $('motion-toggle').addEventListener('click',()=>{state.motion=!state.motion;store.set('newsmap:motion',state.motion?'on':'off');if(state.motion)seenSignals.clear();syncControls();renderMarkers();});
+  function markArticleRead(event){
+    if(event.type==='auxclick'&&event.button!==1)return;
+    const link=event.target.closest('a'),card=link?.closest('[data-article]');
+    if(!card||!safeUrl(link.href))return;
+    readArticles.add(card.dataset.article);
+    store.set('newsmap:read:v1',JSON.stringify([...readArticles].slice(-10000)));
+    renderMarkers();
+  }
+  $('article-list').addEventListener('click',markArticleRead);
+  $('article-list').addEventListener('auxclick',markArticleRead);
   $('article-list').addEventListener('click',event=>{if(event.target.id==='load-more'){visibleLimit+=100;renderList();return;}if(event.target.id!=='empty-reset')return;if(state.onlyNew){state.onlyNew=false;render();}else if(state.period!=='all'){state.period='all';render();}else selectPlace(nodes[state.region]?.parent||'');});
   $('reset-map').addEventListener('click',()=>selectPlace(''));
   $('zoom-in').addEventListener('click',()=>map?.zoomIn());

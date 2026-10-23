@@ -36,3 +36,5 @@ body{margin:0;background:#101313;font-family:"Noto Sans KR",Arial,sans-serif}
 #vn-hub .vn-title-line{display:block;white-space:nowrap}
 #vn-hub #vn-hub-play .vn-game-top{grid-template-columns:minmax(0,1fr) clamp(44px,10vw,90px)}
 #vn-hub #vn-hub-play .vn-game-top .vn-joystick{width:clamp(44px,10vw,90px)}
+
+#vn-hub .vn-newsmap{display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);gap:30px;align-items:center;margin:30px 0 40px;background:#071d2d;color:#fff;border-radius:12px;overflow:hidden}#vn-hub .vn-newsmap>img{display:block;width:100%;height:auto}#vn-hub .vn-newsmap-copy{padding:24px 28px 24px 0}#vn-hub .vn-newsmap h2{font-size:clamp(26px,3.4vw,38px);line-height:1.3;letter-spacing:-.05em;margin:10px 0 14px}#vn-hub .vn-newsmap p{color:#d0e3e8;font-size:13px;line-height:1.8;margin:0}#vn-hub .vn-newsmap .vn-action{display:inline-block;margin-top:20px;color:#75edf0;font-size:13px;font-weight:700}@media(max-width:650px){#vn-hub .vn-newsmap{grid-template-columns:1fr;gap:0}#vn-hub .vn-newsmap>img{max-height:260px;object-fit:cover;object-position:top}#vn-hub .vn-newsmap-copy{padding:24px}}

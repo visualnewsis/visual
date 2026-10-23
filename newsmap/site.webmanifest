@@ -10,7 +10,9 @@
   "theme_color": "#fcfbf7",
   "background_color": "#fcfbf7",
   "icons": [
-    {"src": "assets/icon-192.png", "sizes": "192x192", "type": "image/png"},
-    {"src": "assets/icon-512.png", "sizes": "512x512", "type": "image/png"}
+    {
+      "src": "https://image.newsis.com/n_www/images/ci/2024/favicon.png",
+      "type": "image/png"
+    }
   ]
 }

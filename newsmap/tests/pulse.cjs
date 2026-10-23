@@ -1,0 +1,33 @@
+const assert=require('node:assert/strict');
+const fs=require('node:fs');
+const vm=require('node:vm');
+const source=fs.readFileSync(require.resolve('../app.js'),'utf8');
+const helpers=source.slice(source.indexOf('  function savedJSON'),source.indexOf('  let map,markers'));
+const storage=new Map();
+let time=Date.parse('2026-10-23T01:00:00Z');
+const make=(id,minutes)=>({id,publishedAt:new Date(time-minutes*60000).toISOString()});
+const first={collectedAt:new Date(time).toISOString(),articles:[make('recent',2),make('older',30)]};
+function boot(payload){
+  const timers=[];
+  const ctx={Date,Set,JSON,payload,now:()=>time,store:{get:k=>storage.get(k),set:(k,v)=>storage.set(k,v)},window:{clearTimeout(){},setTimeout:(fn,delay)=>{timers.push({fn,delay});return timers.length;}},renderMarkers(){}};
+  vm.createContext(ctx);vm.runInContext(helpers+'\nthis.api={syncPulseBatch,hasUnreadPulse,readArticles};',ctx);
+  ctx.api.syncPulseBatch();return {ctx,timers,api:ctx.api};
+}
+let run=boot(first);
+assert(run.api.hasUnreadPulse(first.articles[0]));
+assert(!run.api.hasUnreadPulse(first.articles[1]),'First visit must not pulse older articles.');
+time+=300000;run=boot(first);
+assert(run.api.hasUnreadPulse(first.articles[0]),'Reload must preserve unread status.');
+assert(run.timers[0].delay<=300020,'Reload must not restart the ten-minute clock.');
+run.api.readArticles.add('recent');
+assert(!run.api.hasUnreadPulse(first.articles[0]),'Opening an article stops its pulse.');
+time+=300001;run=boot(first);
+assert(!run.api.hasUnreadPulse(first.articles[0]),'Unread articles expire after ten minutes.');
+const second={collectedAt:new Date(time).toISOString(),articles:[...first.articles,make('incoming',1)]};
+run=boot(second);
+assert(run.api.hasUnreadPulse(second.articles[2]));
+assert(!run.api.hasUnreadPulse(second.articles[0]),'A new batch must retire the previous batch.');
+const third={...second,collectedAt:new Date(time+600000).toISOString()};
+run=boot(third);
+assert(second.articles.every(a=>!run.api.hasUnreadPulse(a)),'Unchanged articles must not pulse again in a later collection.');
+console.log('PASS: unread pulses, reads, reload persistence, ten-minute expiry and batch replacement.');
