@@ -20,14 +20,14 @@ let audio;
 function clickSound(f=160){try{audio??=new (window.AudioContext||window.webkitAudioContext)();audio.resume();const o=audio.createOscillator(),g=audio.createGain(),now=audio.currentTime;o.type='triangle';o.frequency.setValueAtTime(f,now);g.gain.setValueAtTime(.025,now);g.gain.exponentialRampToValueAtTime(.0001,now+.06);o.connect(g).connect(audio.destination);o.start();o.stop(now+.07);}catch{}}
 function say(text){$('feedback').textContent=text;}
 function render(){
- $('instrument').innerHTML=scene(state);
+ if(!document.body.classList.contains('has-3d'))$('instrument').innerHTML=scene(state);window.GoodeasyRenderState={...state};window.dispatchEvent(new CustomEvent('goodeasy:state',{detail:{...state}}));
  if(kind==='fishing-reel')say(`${state.turns.toFixed(1)}바퀴 · 남은 거리 ${state.distance.toFixed(1)}m · ${state.slipping?'드래그가 풀리며 줄이 나갑니다.':state.distance===0?'목표 지점까지 감았습니다.':state.turns?'줄을 감고 있습니다.':'손잡이를 돌려보세요.'}`);
  if(kind==='watch')say(`태엽 잔량 ${Math.round(state.reserve)}% · ${state.reserve?'작동 중':'멈춤'} · 시연 시간 ${state.elapsed.toFixed(1)}초`);
  if(kind==='projector')say(`${state.frame+1} / 24 프레임 · 누적 ${Math.floor(state.frames)}장`);
  if(kind==='espresso-machine')say(`${state.locked?'포터필터 장착':'포터필터를 먼저 끼우세요.'} · ${state.brewing?'추출 중':'정지'} · ${state.volume.toFixed(1)}mL`);
 }
 function snapshot(){record=JSON.parse(JSON.stringify(state));step=0;showInside();}
-function showInside(){if(!record){$('record').textContent='위에서 조작한 뒤 파헤쳐보기를 누르세요.';return;}$('detail').innerHTML=scene(record,true);$('record').textContent=`직전 입력 기록 · ${kind==='keyboard'?record.key:kind==='camera'?record.shots+'번째 촬영':kind==='watch'?record.reserve.toFixed(0)+'% 잔량':kind==='projector'?(record.frame+1)+'번 프레임':kind==='fishing-reel'?record.turns.toFixed(1)+'바퀴':record.volume.toFixed(1)+'mL'}`;document.querySelectorAll('[data-step]').forEach((b,i)=>{b.setAttribute('aria-pressed',String(i===step));});$('part-copy').textContent=document.querySelectorAll('[data-step]')[step].dataset.copy;}
+function showInside(){if(!record){$('record').textContent='위에서 조작한 뒤 파헤쳐보기를 누르세요.';return;}if(!document.body.classList.contains('has-3d'))$('detail').innerHTML=scene(record,true);window.dispatchEvent(new CustomEvent('goodeasy:record',{detail:{record:JSON.parse(JSON.stringify(record)),step}}));$('record').textContent=`직전 입력 기록 · ${kind==='keyboard'?record.key:kind==='camera'?record.shots+'번째 촬영':kind==='watch'?record.reserve.toFixed(0)+'% 잔량':kind==='projector'?(record.frame+1)+'번 프레임':kind==='fishing-reel'?record.turns.toFixed(1)+'바퀴':record.volume.toFixed(1)+'mL'}`;document.querySelectorAll('[data-step]').forEach((b,i)=>{b.setAttribute('aria-pressed',String(i===step));});$('part-copy').textContent=document.querySelectorAll('[data-step]')[step].dataset.copy;}
 function action(){
  if(kind==='fishing-reel'){state=reelStep(state,1);clickSound(110);}
  if(kind==='watch'){state=wind(state,1);clickSound(230);wake();}
@@ -42,8 +42,9 @@ function number(id,key){$(id)?.addEventListener('input',e=>{state[key]=Number(e.
 number('drag','drag');number('aperture','aperture');number('shutter','shutter');number('grind','grind');number('pressure','pressure');
 $('lock')?.addEventListener('click',()=>{if(state.brewing)return;state.locked=!state.locked;$('lock').setAttribute('aria-pressed',state.locked);$('lock').textContent=state.locked?'포터필터 빼기':'포터필터 끼우기';render();});
 $('empty')?.addEventListener('click',()=>{state.brewing=false;state.volume=0;render();});
-$('reset')?.addEventListener('click',()=>{state={...base};record=null;step=0;document.querySelectorAll('[data-initial]').forEach(el=>{el.value=el.dataset.initial;el.dispatchEvent(new Event('input'));});if($('typing'))$('typing').value='';if($('lock')){$('lock').textContent='포터필터 끼우기';$('lock').setAttribute('aria-pressed','false');}render();$('detail').innerHTML='';$('record').textContent='조작 기록이 없습니다.';$('part-copy').textContent='부품을 선택하면 설명이 나옵니다.';});
+$('reset')?.addEventListener('click',()=>{state={...base};record=null;step=0;window.dispatchEvent(new CustomEvent('goodeasy:record',{detail:{record:null,step:0}}));document.querySelectorAll('[data-initial]').forEach(el=>{el.value=el.dataset.initial;el.dispatchEvent(new Event('input'));});if($('typing'))$('typing').value='';if($('lock')){$('lock').textContent='포터필터 끼우기';$('lock').setAttribute('aria-pressed','false');}render();$('detail').innerHTML='';$('record').textContent='조작 기록이 없습니다.';$('part-copy').textContent='부품을 선택하면 설명이 나옵니다.';});
 if(kind==='keyboard'){
+ window.addEventListener('keydown',e=>{if(e.ctrlKey||e.metaKey||e.altKey||e.repeat||e.isComposing||/INPUT|TEXTAREA|SELECT|BUTTON|A/.test(e.target.tagName)||e.key.length!==1)return;e.preventDefault();key(e.key===' '?' ':e.key.toUpperCase());});
  function key(k){state.key=k;state.travel=4;state.text=(state.text+k).slice(-2000);$('typing').value=state.text;render();clickSound(175);setTimeout(()=>{state.travel=0;render();},100);}
  document.querySelectorAll('[data-key]').forEach(b=>b.addEventListener('click',()=>key(b.dataset.key)));
  $('typing').addEventListener('input',e=>{state.text=e.target.value.slice(-2000);state.key=Array.from(state.text).at(-1)||'A';state.travel=4;render();clickSound(175);setTimeout(()=>{state.travel=0;render();},100);});
