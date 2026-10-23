@@ -41,6 +41,10 @@
   }
   const hasUnreadPulse=a=>Date.parse(payload.collectedAt)+600000>now()&&(pulseBatch.active||[]).includes(a.id)&&!readArticles.has(a.id);
   let map,markers,boundary,locationLayer,shown=[],searchMatches=[],visibleLimit=100;
+  const desktopPreview=matchMedia('(min-width:1100px) and (pointer:fine)');
+  let mapPreview;
+  function closeMapPreview(){if(mapPreview)mapPreview.hidden=true;}
+  desktopPreview.addEventListener('change',closeMapPreview);
   document.querySelector('.skip').addEventListener('click',event=>{if(matchMedia('(max-width:700px)').matches){event.preventDefault();sheet?.expand();$('results').focus({preventScroll:true});}});
   const formatter=new Intl.DateTimeFormat('ko-KR',{month:'numeric',day:'numeric',hour:'2-digit',minute:'2-digit',hour12:false,timeZone:'Asia/Seoul'});
   const stamp=value=>formatter.format(new Date(value));
@@ -100,6 +104,7 @@
     return `<article class="article-card" data-article="${esc(a.id)}"><div class="card-top">${isNew(a)?'<span class="new">NEW</span>':''}<span>${esc(a.category)}</span><span>·</span><time datetime="${esc(a.publishedAt)}">${esc(stamp(a.publishedAt))}</time></div><div class="card-body"><h3><a href="${esc(url)}" target="_blank" rel="noopener noreferrer">${esc(a.title)}</a></h3>${image?`<img src="${esc(image)}" alt="" loading="lazy" referrerpolicy="no-referrer" onerror="this.hidden=true">`:''}</div><div class="card-bottom"><button class="place-link" data-place="${esc(n.id)}" title="${esc(a.evidence?.join(' / ')||n.path.join(' '))}">⌖ ${esc(n.path.map((name,i)=>i===0?shortName(nodes[name]):name).join(' '))} <span class="precision">${level}</span></button><a class="source-link" href="${esc(url)}" target="_blank" rel="noopener noreferrer">뉴시스 ↗</a></div></article>`;
   }
   function renderList(){
+    closeMapPreview();
     syncPulseBatch();
     shown=selectedArticles();
     const n=nodes[state.region];
@@ -154,6 +159,11 @@
       marker.on('add',()=>{const el=marker.getElement();el.style.setProperty('--size',size+'px');el.style.setProperty('--delay',(i%4)*.12+'s');el.setAttribute('role','button');});
       marker.bindTooltip(esc(g.node.path.join(' '))+' · '+count+'건'+(fresh?' / 새 기사 '+fresh+'건':''),{direction:'top',offset:[0,-12]});
       marker.on('click',()=>{
+        if(desktopPreview.matches){
+          if(!clustered)selectPlace(g.node.id,{fit:false});
+          openMapPreview(g,clustered);
+          return;
+        }
         if(clustered){map.setView(g.node.center,Math.max(8,map.getZoom()+1),{animate:!matchMedia('(prefers-reduced-motion:reduce)').matches});return;}
         if(state.region===g.node.id){
           $('results').focus({preventScroll:true});
@@ -167,6 +177,34 @@
     if(showEmpty)$('map-message').textContent=state.viewport?'현재 지도 안에 모인 기사가 없습니다. 지도를 더 멀리 보거나 기간을 넓혀보세요.':'이 조건에 수집된 기사가 없습니다. 기간을 넓히거나 상위 지역을 선택해보세요.';
   }
   function render(mode='push'){if(mode==='push')visibleLimit=100;renderList();renderMarkers();updateUrl(mode);}
+  function openMapPreview(group,clustered){
+    if(!mapPreview){
+      mapPreview=document.createElement('section');
+      mapPreview.className='map-preview';mapPreview.setAttribute('aria-label','지도 기사 미리보기');
+      document.querySelector('.map-stage').append(mapPreview);
+      L.DomEvent.disableClickPropagation(mapPreview);
+      L.DomEvent.disableScrollPropagation(mapPreview);
+      mapPreview.addEventListener('click',markArticleRead);
+      mapPreview.addEventListener('auxclick',markArticleRead);
+      mapPreview.addEventListener('keydown',event=>{if(event.key==='Escape'){closeMapPreview();$('map').focus({preventScroll:true});}});
+    }
+    const articles=[...group.articles].sort((a,b)=>Date.parse(b.publishedAt)-Date.parse(a.publishedAt));
+    const label=shortName(group.node)+(clustered?' 외 '+(group.members.length-1)+'곳':'');
+    mapPreview.innerHTML=`<div class="map-preview-head"><strong>${esc(label)} <span>${articles.length}건</span></strong><button type="button" class="map-preview-close" aria-label="기사 미리보기 닫기">×</button></div><ol>${articles.slice(0,5).map(a=>`<li data-article="${esc(a.id)}"><a href="${esc(safeUrl(a.url))}" target="_blank" rel="noopener noreferrer">${esc(a.title)}</a><time datetime="${esc(a.publishedAt)}">${esc(stamp(a.publishedAt))}</time></li>`).join('')}</ol><button type="button" class="map-preview-all">${clustered?'지역 확대해 전체 '+articles.length+'건 보기':'왼쪽 목록에서 전체 '+articles.length+'건 보기'} ↗</button>`;
+    mapPreview.querySelector('.map-preview-close').onclick=closeMapPreview;
+    mapPreview.querySelector('.map-preview-all').onclick=()=>{
+      closeMapPreview();
+      if(clustered){map.setView(group.node.center,Math.max(8,map.getZoom()+1),{animate:!matchMedia('(prefers-reduced-motion:reduce)').matches});return;}
+      selectPlace(group.node.id,{fit:false});$('results').focus({preventScroll:true});
+    };
+    mapPreview.hidden=false;
+    const point=map.latLngToContainerPoint(group.node.center),size=map.getSize();
+    const width=mapPreview.offsetWidth,height=mapPreview.offsetHeight;
+    const left=point.x+34+width<=size.x-12?point.x+34:point.x-width-34;
+    mapPreview.style.left=Math.max(12,Math.min(size.x-width-12,left))+'px';
+    mapPreview.style.top=Math.max(12,Math.min(size.y-height-12,point.y-44))+'px';
+    mapPreview.querySelector('.map-preview-close').focus({preventScroll:true});
+  }
   function fitNational(){
     const mobile=matchMedia('(max-width:700px)').matches;
     const bounds=mobile?[[33.05,125.7],[38.65,129.65]]:[[33.05,124.9],[38.65,130.0]];
@@ -333,6 +371,7 @@
       tiles.addTo(map);
     };
     markers=L.layerGroup().addTo(map);boundary=L.layerGroup().addTo(map);
+    map.on('movestart zoomstart resize click',closeMapPreview);
     const manualMove=()=>{userMapInteraction=true;};
     map.on('dragstart',manualMove);
     $('map').addEventListener('wheel',manualMove,{passive:true,capture:true});

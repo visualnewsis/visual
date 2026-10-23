@@ -19,7 +19,7 @@ function boot({missing=false,search='',withMap=false}={}){
   const periods=['24','168','720','all'].map(period=>Object.assign(new Element(),{dataset:{period}}));
   const events={},location={pathname:'/newsmap/',search,hash:''},calls=[];
   let pending,expanded=false;
-  const ctx={URL,URLSearchParams,Intl,Date,Option:class{},matchMedia:()=>({matches:false}),location,
+  const ctx={URL,URLSearchParams,Intl,Date,Option:class{},matchMedia:()=>({matches:false,addEventListener(){}}),location,
     localStorage:{getItem:()=>null,setItem(){}},history:{},
     document:{getElementById:id=>ids[id],querySelector:()=>new Element(),querySelectorAll:()=>periods,
       addEventListener(){},body:{classList:{toggle(){}}},createElement:()=>new Element(),head:{append:script=>pending=script}},
