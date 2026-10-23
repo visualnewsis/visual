@@ -30,6 +30,12 @@ lead.feed('<header>Seoul</header><div id="textBody"><table><tr><td>Photo locatio
 assert 'Photo location' not in ''.join(lead.parts)
 assert 'Unrelated' not in ''.join(lead.parts)
 assert 'Actual lead' in ''.join(lead.parts)
+lead=C.ArticleLead()
+lead.feed('<div id="textBody"><div class="article_photo"><table><tbody><tr><td>서울 도심 자료사진</td></tr></tbody></table></div></div></div><br />[부산=뉴시스] 기자 = 부산 부산진구 전포동에서 정전이 발생했다.<br />소방당국이 현장을 확인 중이다.<br />◎공감언론 뉴시스 reporter@newsis.com<footer>다른 기사</footer>')
+actual=C.article_text(''.join(lead.parts))
+assert '자료사진' not in actual and '다른 기사' not in actual
+assert '부산진구 전포동' in actual,'Malformed photo divs must not truncate the real article lead.'
+assert '\n' in actual,'Preserve paragraph boundaries for location context.'
 matchers=C.compile_matchers(C.load_nodes())
 assert C.locate('주교회의 의장 선출','그는 과거 논산 부창동 주임신부를 거쳐 의장이 됐다.',matchers)[0]==[]
 assert C.locate('고성군 사고','고성군에서 사고가 났다.',matchers)[0]==[]
@@ -51,4 +57,8 @@ assert changed and len(payload['articles'])==21
 again,changed,_=C.collect(payload,now+timedelta(minutes=10),fetch=lambda url:good,enrich_limit=0)
 assert not changed,'No content change must not cause another deployment'
 assert len(again['articles'])==21,'Articles absent from a rotated feed must survive'
+legacy={**payload,'articles':[{**a,'locationMethod':'conservative-place-name-v2','places':['강원특별자치도/홍천군/내면']} for a in payload['articles']]}
+rechecked,changed,_=C.collect(legacy,now,fetch=lambda url:good,enrich_limit=0)
+assert changed
+assert all('강원특별자치도/홍천군/내면' not in a['places'] for a in rechecked['articles']), 'Matching fingerprints must not preserve a classification from an older algorithm.'
 print('PASS: rotation retention, ID deduplication, corrections, expiry, invalid feeds/items, article-only lead, biography/ambiguous-place exclusion, atomic writes, all-feed failure and unchanged-content detection.')

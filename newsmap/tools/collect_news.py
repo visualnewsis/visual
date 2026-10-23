@@ -28,6 +28,7 @@ FEEDS = ['sokbo', 'society', 'met', 'whol', 'economy', 'culture', 'industry', 'h
 RETENTION_DAYS = 30
 MAX_ARTICLES = 10000
 MAX_ENRICH = 24
+LOCATION_METHOD = "conservative-place-name-v3"
 
 def clean(text):
     return re.sub(r'\s+', ' ', html.unescape(re.sub(r'<[^>]+>', ' ', text or ''))).strip()
@@ -43,7 +44,10 @@ def request(url):
                 final = urlparse(response.url)
                 if final.scheme != 'https' or final.hostname not in {'www.newsis.com', 'nwww.newsis.com', 'visual.newsis.com'}:
                     raise ValueError('Unexpected source redirect')
-                return response.read(8_000_001)
+                data = response.read(32_000_001)
+                if len(data)>32_000_000:
+                    raise ValueError('Source exceeds the 32MB safety limit')
+                return data
         except Exception:
             if attempt:
                 raise
@@ -80,28 +84,70 @@ def compile_matchers(nodes):
         result.append((n,re.compile(pattern)))
     return result
 
+def article_text(source):
+    """Preserve paragraph boundaries so captions and secondary briefs can be isolated."""
+    source = re.sub(r'<br\s*/?>|</p\s*>', '\n', html.unescape(source or ''), flags=re.I)
+    return '\n'.join(clean(line) for line in source.splitlines() if clean(line))
+
+
+HISTORY = re.compile(r'과거|출신|수품|주임신부|거쳐|거쳤|역임|태어|출생|보유했었|일제강점기|조선시대|(?:1[0-9]{3}|200[0-9]|201[0-9])년|지난해|작품의 배경|사진 속|그림 속|사료|역사적 자료|당시|100여?\s*년')
+CAPTION = re.compile(r'사진\s*[=:＝]|사진\s*제공|재판매|DB\s*금지|[0-9]{4}\.[0-9]{1,2}\.[0-9]{1,2}')
+BODY_BYLINE = re.compile(r'(?:[가-힣·]+\s+){0,5}(?:수습기자|인턴기자|기자|공동취재단)\s*[=＝]')
+
+
+def focus_lead(text):
+    # Official HTML is parsed without photos; this also cleans legacy/RSS bylines.
+    byline = BODY_BYLINE.search(text)
+    if byline:
+        text = text[byline.end():]
+    text = re.split(r'◎\s*공감언론|\*?\s*재판매', text)[0]
+    text = re.sub(r'[\[【][^\]】]{0,180}[\]】]', ' ', text)
+    text = text.lstrip('◇ \n').split('◇',1)[0]
+    text = '\n'.join(line for line in text.splitlines() if not CAPTION.search(line))
+    units = re.split(r'\n+|(?<=[.!?])\s+|(?<=다)\.\s*', text[:2400])
+    selected = []
+    for unit in units:
+        unit = clean(unit)
+        if not unit or HISTORY.search(unit) or CAPTION.search(unit):
+            continue
+        selected.append(unit)
+    return ' '.join(selected)[:600]
+
+
+def relevant_hit(text, match):
+    context=text[max(0,match.start()-35):match.end()+90]
+    after=text[match.end():match.end()+40]
+    # A product's brand origin or an institution name alone is not an event site.
+    if re.search(r'^[^.!?\n]{0,22}(?:브랜드|출신|출생|교구장|대교구장)',after):
+        if not re.search(r'에서|일대|현장|소재|위치한',context):
+            return False
+    return True
+
+
 def locate(title, text, matchers):
     # 경기 광주 is Gwangju city in Gyeonggi, not the southern metropolitan area.
     title = re.sub(r'경기(?:도)?\s+광주(?:시)?', '경기도 광주시', title)
     text = re.sub(r'경기(?:도)?\s+광주(?:시)?', '경기도 광주시', text)
-    # Remove reporter datelines, photo captions and wire-service credits.
-    # RSS may begin with photo captions before the reporter's actual lead.
-    leads = re.split(r'[가-힣·]+ 기자\s*=', text)
-    if len(leads)>1:
-        text = leads[-1]
-    text = re.sub(r'\[[^\]]{0,180}\]', ' ', text)
-    text = re.sub(r'\S+ 기자\s*=', ' ', text)
-    # Biographical background is not the location of today's news.
-    sentences = re.split(r'(?<=[.!?])\s+|(?<=다)\.\s*', text)
-    text = ' '.join(sentence for sentence in sentences if not re.search(r'과거|출신|수품|주임신부|거쳐|역임했|태어났|보유했었', sentence))
-    lead = text[:420]
-    title_hits = [(n, p.search(title)) for n,p in matchers if p.search(title)]
-    body_hits = [(n, p.search(lead)) for n,p in matchers if p.search(lead)]
+    lead = focus_lead(text)
+    # A nationwide product launch is not an incident at the brand's origin.
+    if '편의점' in title and '브랜드' in lead and re.search(r'출시|신제품',lead):
+        return [],lead
+    subject = '' if HISTORY.search(title) else title
+    title_hits = [(n,m) for n,p in matchers if (m:=p.search(subject)) and relevant_hit(subject,m)]
+    body_hits = [(n,m) for n,p in matchers if (m:=p.search(lead)) and relevant_hit(lead,m)]
+    # Nationwide comparisons should not pick an arbitrary location from a ranking.
+    body_provinces={n['id'] for n,_ in body_hits if n['level']=='province'}
+    if not title_hits and len(body_provinces)>=3 and re.search(r'전국|지역별|집계|통계',lead):
+        return [],lead
     hits = title_hits + body_hits
     province_ids = {n['id'] for n,_ in hits if n['level']=='province'}
     candidates = []
     district_hits = {n['id'] for n,_ in hits if n['level']=='district'}
     for node, match in hits:
+        # Unique 읍/면 names can also be ordinary Korean words (e.g. 내면).
+        # Require a corroborating parent rather than treating uniqueness as proof.
+        if node['level']=='dong' and not any(node['id'].startswith(parent+'/') for parent in province_ids|district_hits):
+            continue
         if node['level'] != 'province' and province_ids and node['path'][0] not in province_ids:
             continue
         if node['level']=='dong' and district_hits and not any(node['id'].startswith(d+'/') for d in district_hits):
@@ -120,9 +166,8 @@ def locate(title, text, matchers):
     # A city/province mentioned as background must not become an extra map pin
     # when a more specific subject location was found elsewhere.
     specific = {n['id'] for n in candidates if n['id'] in ids and n['level']!='province'}
-    title_provinces = {n['id'] for n,_ in title_hits if n['level']=='province'}
     if specific:
-        ids = {i for i in ids if '/' in i or i in title_provinces or any(j.startswith(i+'/') for j in specific)}
+        ids = {i for i in ids if '/' in i or any(j.startswith(i+'/') for j in specific)}
     deepest = sorted(i for i in ids if not any(j.startswith(i+'/') for j in ids))
     return deepest[:5], lead
 
@@ -166,7 +211,7 @@ def parse_feed(source, feed, now):
             description = item.findtext('description') or ''
             image = re.search(r'<img[^>]+src=[\"\x27]([^\"\x27]+)', description)
             records[match[0]] = {'id':match[0], 'title':title, 'url':'https://www.newsis.com/view/'+match[0],
-                'publishedAt':published.isoformat(), 'text':clean(description),
+                'publishedAt':published.isoformat(), 'text':article_text(description),
                 'image':html.unescape(image[1]) if image else '', 'feed':feed}
         except (TypeError, ValueError, AttributeError, OverflowError):
             rejected += 1
@@ -174,37 +219,50 @@ def parse_feed(source, feed, now):
 
 
 class ArticleLead(HTMLParser):
-    """Read just the beginning of the official article body, never whole-page text."""
+    """Read article prose while ignoring photo wrappers, even malformed closing divs."""
     def __init__(self):
         super().__init__(convert_charrefs=True)
-        self.depth = 0
-        self.suppressed = 0
-        self.parts = []
-        self.chars = 0
-    def handle_starttag(self, tag, attrs):
-        attrs = dict(attrs)
-        if tag == 'div':
-            if self.depth:
-                self.depth += 1
-            elif attrs.get('id') == 'textBody':
-                self.depth = 1
-        if self.depth and tag in {'script', 'style', 'figure', 'table'}:
-            self.suppressed += 1
-    def handle_endtag(self, tag):
-        if self.depth and tag in {'script', 'style', 'figure', 'table'} and self.suppressed:
-            self.suppressed -= 1
-        if tag == 'div' and self.depth:
-            self.depth -= 1
-    def handle_data(self, value):
-        if self.depth and not self.suppressed and self.chars < 2400:
+        self.in_body=False
+        self.photo_depth=0
+        self.suppressed=0
+        self.parts=[]
+        self.chars=0
+        self.stopped=False
+    def handle_starttag(self,tag,attrs):
+        attrs=dict(attrs)
+        if tag=='div' and attrs.get('id')=='textBody':
+            self.in_body=True
+        if not self.in_body:
+            return
+        if tag=='footer':
+            self.stopped=True
+        if tag=='div':
+            if self.photo_depth:
+                self.photo_depth+=1
+            elif 'article_photo' in attrs.get('class','').split():
+                self.photo_depth=1
+        if tag in {'script','style','figure','table'}:
+            self.suppressed+=1
+        if tag in {'br','p'} and not self.photo_depth and not self.suppressed:
+            self.parts.append('\n')
+    def handle_endtag(self,tag):
+        if tag in {'script','style','figure','table'} and self.suppressed:
+            self.suppressed-=1
+        if tag=='div' and self.photo_depth:
+            self.photo_depth-=1
+    def handle_data(self,value):
+        if '◎' in value and '뉴시스' in value:
+            self.stopped=True
+        if self.in_body and not self.stopped and not self.photo_depth and not self.suppressed and self.chars<2400:
             self.parts.append(value[:2400-self.chars])
-            self.chars += len(value)
+            self.chars+=len(value)
+
 
 
 def enrich(article):
     parser = ArticleLead()
     parser.feed(request(article['url']).decode('utf-8', errors='replace'))
-    lead = clean(' '.join(parser.parts))
+    lead = article_text(''.join(parser.parts))
     if lead:
         return {**article, 'text':lead, 'locationSource':'article-lead'}
     return article
@@ -229,14 +287,16 @@ def build_article(raw, matchers, nodes):
         return None
     combined = raw['title']+' '+lead
     evidence = []
+    patterns = {n['id']:pattern for n,pattern in matchers}
     for place in places:
-        node = nodes[place]
-        found = re.search(re.escape(node['name']), combined)
-        evidence.append(combined[max(0,found.start()-18):found.end()+45] if found else lead[:90])
+        found = patterns[place].search(combined)
+        if not found:
+            return None
+        evidence.append(combined[max(0,found.start()-30):found.end()+70])
     return {key:raw.get(key, '') for key in ['id','title','url','publishedAt','image']} | {
         'places':places, 'category':category(raw['title']), 'evidence':evidence,
-        'summary':lead[:105].rstrip('. ')+'…', 'locationSource':raw.get('locationSource','rss'),
-        'locationMethod':'conservative-place-name-v2'}
+        'summary':lead[:105].rstrip('. …')+'…', 'locationSource':raw.get('locationSource','rss'),
+        'locationMethod':LOCATION_METHOD, 'locationLead':lead}
 
 
 def write_snapshot(path, payload):
@@ -284,7 +344,7 @@ def collect(previous, now, fetch=request, enrich_limit=MAX_ENRICH):
         places, _ = locate(article['title'],article['text'],matchers)
         fingerprint = hashlib.sha256('|'.join(article.get(k,'') for k in ['title','text','image','publishedAt']).encode()).hexdigest()
         article['sourceFingerprint'] = fingerprint
-        if old and old.get('sourceFingerprint') == fingerprint:
+        if old and old.get('sourceFingerprint') == fingerprint and old.get('locationMethod')==LOCATION_METHOD:
             continue
         if not places or all(nodes[p]['level']=='province' for p in places):
             pending.append(article)
@@ -302,7 +362,7 @@ def collect(previous, now, fetch=request, enrich_limit=MAX_ENRICH):
     current, unassigned, rejected_ids = [], [], set()
     for raw in records.values():
         old = old_by_id.get(raw['id'])
-        if old and old.get('sourceFingerprint')==raw['sourceFingerprint']:
+        if old and old.get('sourceFingerprint')==raw['sourceFingerprint'] and old.get('locationMethod')==LOCATION_METHOD:
             current.append(old)
             continue
         article = build_article(raw,matchers,nodes)
@@ -317,10 +377,10 @@ def collect(previous, now, fetch=request, enrich_limit=MAX_ENRICH):
     for old in previous.get('articles',[]):
         if old['id'] in records or old['id'] in rejected_ids:
             continue
-        if old.get('locationMethod')=='conservative-place-name-v2':
+        if old.get('locationMethod')==LOCATION_METHOD:
             retained.append(old)
         else:
-            revised = build_article({**old,'text':old.get('summary','')},matchers,nodes)
+            revised = build_article({**old,'text':old.get('locationLead') or (old.get('summary','')+' '+ ' '.join(old.get('evidence',[])))},matchers,nodes)
             if revised:
                 retained.append(revised)
     articles = merge_articles(retained,current,now)
