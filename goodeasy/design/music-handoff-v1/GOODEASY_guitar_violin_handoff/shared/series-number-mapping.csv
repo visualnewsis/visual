@@ -1,0 +1,10 @@
+previous_7_number,previous_title,current_9_number,current_title,route,status
+01,피아노,01,피아노,/goodeasy/piano/,기존 유지
+,신규,02,기타,/goodeasy/guitar/,신규 추가
+02,낚시 릴,03,낚시 릴,/goodeasy/fishing-reel/,기존 파일 보존
+03,카메라,04,카메라,/goodeasy/camera/,기존 파일 보존
+04,기계식 손목시계,05,기계식 손목시계,/goodeasy/watch/,기존 파일 보존
+,신규,06,바이올린,/goodeasy/violin/,신규 추가
+05,필름 영사기,07,필름 영사기,/goodeasy/projector/,기존 파일 보존
+06,기계식 키보드,08,기계식 키보드,/goodeasy/keyboard/,기존 파일 보존
+07,에스프레소 머신,09,에스프레소 머신,/goodeasy/espresso-machine/,기존 파일 보존
