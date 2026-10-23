@@ -1,7 +1,7 @@
-import {STEPS,timing,sampleAction,liveAction,smooth} from './motion.js';
+import {STEPS,timing,sampleAction} from './motion.js';
 const $=id=>document.getElementById(id),reduced=matchMedia('(prefers-reduced-motion:reduce)');
 const partData={key:['건반','Key','손가락이 누른 앞쪽은 내려가고, 밸런스 핀을 기준으로 뒤쪽이 올라갑니다.'],wippen:['위펜','Wippen','건반 후단의 캡스턴에서 받은 힘을 잭과 반복 레버로 전달하는 중간 지렛대입니다.'],jack:['잭','Jack','너클을 밀어 해머를 가속합니다. 타현 직전에 옆으로 이탈해 해머가 자유롭게 현을 치도록 합니다.'],hammer:['해머','Hammer','목재 생크와 펠트 헤드로 이루어집니다. 현을 친 뒤 반발하며, 눌린 건반의 백체크에 받아집니다.'],strings:['현','Strings','해머의 충격으로 진동합니다. 이 장면의 흔들림은 진동을 읽기 위한 과장 표현입니다.'],damper:['댐퍼','Damper','펠트가 현에 닿으면 진동이 줄어듭니다. 건반을 누르거나 서스테인 페달을 켜면 위로 들립니다.']};
-let performanceRecord=null,position=0,playing=false,exploded=false,explodeAmount=0,showLabels=true,selectedPart='hammer',manualPart=false,scenes=null,lastTick=0,raf=0,dirtyUntil=0,stageVisible=false,inFrame=false;
+let performanceRecord=null,position=0,playing=false,exploded=false,explodeAmount=0,showLabels=true,selectedPart='hammer',manualPart=false,scenes=null,lastTick=0,raf=0,dirtyUntil=0,stageVisible=false,inFrame=false,soundArmed=false;
 const getSnapshot=()=>window.PianoExperience?.snapshot()??{last:null,pedal:false,notes:[]};
 const name=midi=>['C','C♯','D','D♯','E','F','F♯','G','G♯','A','A♯','B'][midi%12]+(Math.floor(midi/12)-1);
 const duration=()=>timing(performanceRecord?.duration??300).duration;
@@ -12,7 +12,10 @@ for(const [key,data] of Object.entries(partData)){const button=document.createEl
 function selectPart(key,manual=false){selectedPart=key;manualPart=manual;const data=partData[key];$('anchor-name').textContent=data[0];$('part-description').replaceChildren();const b=document.createElement('b');b.textContent=`${data[0]} · ${data[1]}`;const p=document.createElement('p');p.textContent=data[2];$('part-description').append(b,p);$('part-list').querySelectorAll('button').forEach(el=>el.setAttribute('aria-pressed',String(el.dataset.part===key)));wake();}
 selectPart('hammer');
 function capture(){const last=getSnapshot().last;if(!last){$('scene-notice').textContent='먼저 위의 건반에서 한 음을 연주해 주세요.';return false;}performanceRecord=Object.freeze({...last,duration:Math.max(100,Math.min(1800,last.duration))});position=0;manualPart=false;exploded=false;setAssembly();$('detail-note').textContent=name(last.midi);$('snapshot-duration').textContent=`누른 시간 ${(last.duration/1000).toFixed(2)}초 · 페달 ${last.pedal?'ON':'OFF'}`;$('context-copy').textContent=`방금 연주한 ${name(last.midi)}. 같은 음의 움직임을 따라갑니다.`;$('replay').disabled=false;$('scene-notice').textContent='';return true;}
-function setPlaying(value){playing=value;$('replay').innerHTML=icon(value?'pause':'play');$('replay').setAttribute('aria-label',value?'관찰 일시정지':'관찰 재생');wake();}
+function setPlaying(value){
+ if(value){window.PianoExperience?.prepareObservation();soundArmed=position<=timing(performanceRecord?.duration??300).strike;lastTick=0;}
+ else {window.PianoExperience?.stopObservation();soundArmed=false;}
+ playing=value;$('replay').innerHTML=icon(value?'pause':'play');$('replay').setAttribute('aria-label',value?'관찰 일시정지':'관찰 재생');wake();}
 $('explore-link').addEventListener('click',()=>{if(capture())setPlaying(!reduced.matches);wake();});
 $('replay').addEventListener('click',()=>{if(!performanceRecord&&!capture())return;if(position>=duration())position=0;setPlaying(!playing);});
 $('restart').addEventListener('click',()=>{position=0;setPlaying(false);});
@@ -29,7 +32,13 @@ $('fullscreen').addEventListener('click',async()=>{const stage=$('observation-st
 function updateFullscreen(){const active=!!document.fullscreenElement||$('observation-stage').classList.contains('expanded');$('fullscreen').innerHTML=icon(active?'exit-fullscreen':'fullscreen')+`<span>${active?'원래 크기':'크게 보기'}</span>`;$('fullscreen').setAttribute('aria-label',active?'전체 화면 종료':'전체 화면');}
 document.addEventListener('fullscreenchange',()=>{updateFullscreen();wake();});document.addEventListener('keydown',e=>{if(e.key==='Escape'&&$('observation-stage').classList.contains('expanded')){$('observation-stage').classList.remove('expanded');updateFullscreen();wake();}});
 function wake(ms=500){dirtyUntil=Math.max(dirtyUntil,performance.now()+ms);if(!raf&&!inFrame&&!document.hidden)raf=requestAnimationFrame(frame);}
-function frame(now){raf=0;inFrame=true;const delta=lastTick?Math.min(70,now-lastTick):16;lastTick=now;if(playing&&stageVisible&&!$('parts-dialog').open){position=Math.min(duration(),position+delta*Number($('speed').value));if(position>=duration())setPlaying(false);}
+function frame(now){raf=0;inFrame=true;const delta=lastTick?Math.min(70,now-lastTick):16;lastTick=now;if(playing&&stageVisible&&!$('parts-dialog').open){
+ const before=position,e=timing(performanceRecord?.duration??300);
+ position=Math.min(duration(),position+delta*Number($('speed').value));
+ if(soundArmed&&performanceRecord&&position>=e.strike){soundArmed=false;window.PianoExperience?.strikeObservation(performanceRecord.midi);$('replay-status').textContent=`${name(performanceRecord.midi)} · 해머가 현을 치는 순간의 소리입니다.`;}
+ if(before<e.release&&position>=e.release&&!performanceRecord?.pedal)window.PianoExperience?.releaseObservation();
+ if(position>=duration())setPlaying(false);
+ }
  explodeAmount=reduced.matches?(exploded?1:0):explodeAmount+((exploded?1:0)-explodeAmount)*.12;
  const m=sampleAction(position,performanceRecord?.duration??300,performanceRecord?.pedal??false);const step=STEPS[m.step];if(!manualPart&&selectedPart!==step[2])selectPart(step[2]);
  $('step-count').textContent=`${String(m.step).padStart(2,'0')} / 05`;$('step-title').textContent=step[0];$('step-copy').textContent=step[1];$('step-list').querySelectorAll('button').forEach((b,i)=>{if(i===m.step)b.setAttribute('aria-current','step');else b.removeAttribute('aria-current');});
@@ -38,8 +47,8 @@ function frame(now){raf=0;inFrame=true;const delta=lastTick?Math.min(70,now-last
  if(scenes&&showLabels){const a=scenes.anchor(selectedPart),wrap=$('action-detail').getBoundingClientRect();$('part-anchor').hidden=!a?.visible;if(a?.visible){$('part-anchor').style.left=`${Math.max(12,Math.min(wrap.width-110,a.x*wrap.width+12))}px`;$('part-anchor').style.top=`${Math.max(12,Math.min(wrap.height-48,a.y*wrap.height-25))}px`;}}else $('part-anchor').hidden=true;
  updateFallback(m);inFrame=false;if(playing&&stageVisible||Math.abs(explodeAmount-(exploded?1:0))>.003||snapshot.notes.some(n=>n.down)||now<dirtyUntil)raf=requestAnimationFrame(frame);
 }
-window.addEventListener('piano:change',()=>wake(2200));window.addEventListener('piano:ready',()=>wake());window.addEventListener('resize',()=>wake());window.addEventListener('scroll',()=>wake(200),{passive:true});$('action-detail').addEventListener('pointermove',()=>wake(200));$('action-detail').addEventListener('wheel',()=>wake(200));$('action-detail').addEventListener('keydown',()=>wake(200));document.addEventListener('visibilitychange',()=>{if(!document.hidden){lastTick=0;wake();}});
-const observer=new IntersectionObserver(entries=>{for(const e of entries){if(e.target===$('inside'))stageVisible=e.isIntersecting;}lastTick=0;wake();});observer.observe($('inside'));observer.observe($('play'));
+window.addEventListener('piano:change',()=>wake(2200));window.addEventListener('piano:ready',()=>wake());window.addEventListener('resize',()=>wake());window.addEventListener('scroll',()=>wake(200),{passive:true});$('action-detail').addEventListener('pointermove',()=>wake(200));$('action-detail').addEventListener('wheel',()=>wake(200));$('action-detail').addEventListener('keydown',()=>wake(200));window.addEventListener('blur',()=>{if(playing)setPlaying(false);});document.addEventListener('visibilitychange',()=>{if(document.hidden)setPlaying(false);if(!document.hidden){lastTick=0;wake();}});
+const observer=new IntersectionObserver(entries=>{for(const e of entries){if(e.target===$('inside')){stageVisible=e.isIntersecting;if(!stageVisible&&playing)setPlaying(false);}}lastTick=0;wake();});observer.observe($('inside'));observer.observe($('play'));
 let fallback=null;
 function updateFallback(m){if(!fallback)return;fallback.querySelector('[data-hammer]').setAttribute('transform',`rotate(${-m.hammer*28} 500 210)`);fallback.querySelector('[data-damper]').setAttribute('transform',`translate(0 ${-m.damper*25})`);fallback.querySelector('[data-key]').setAttribute('transform',`rotate(${m.key*4} 300 310)`);}
 try{const {createPianoScenes}=await import('./scene.js');scenes=createPianoScenes($('action-preview'),$('action-detail'),part=>{selectPart(part,true);openParts();});$('scene-loading').hidden=true;wake();}

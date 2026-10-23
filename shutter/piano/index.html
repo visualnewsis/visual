@@ -17,12 +17,12 @@
   <meta name="twitter:title" content="자, 건반을 눌러볼까요? — 굳이구지">
   <meta name="twitter:description" content="보이는 건반을 바로 눌러보세요. 크리에이티브 디렉터 안재현.">
   <link rel="icon" href="icon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="piano.css?v=20261023-2">
+  <link rel="stylesheet" href="piano.css?v=20261023-3">
   <script type="application/ld+json">{"@context":"https://schema.org","@type":"CreativeWork","name":"굳이구지 — 피아노 인터랙션 시제품","inLanguage":"ko-KR","description":"직접 연주한 입력을 내부 기구 관찰로 연결하는 브라우저 실험","creditText":"크리에이티브 디렉터 = 안재현","contributor":{"@type":"Person","name":"안재현","jobTitle":"크리에이티브 디렉터"},"publisher":{"@type":"NewsMediaOrganization","name":"뉴시스","url":"https://www.newsis.com/"},"creativeWorkStatus":"Prototype"}</script>
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-6BKMWE02W5"></script>
   <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','G-6BKMWE02W5');</script>
-  <script defer src="piano.js?v=20261023-2"></script>
-  <script type="module" src="observation.js?v=20261023-2"></script>
+  <script defer src="piano.js?v=20261023-3"></script>
+  <script type="module" src="observation.js?v=20261023-3"></script>
 </head>
 <body>
   <a class="skip" href="#keyboard">건반으로 건너뛰기</a>
@@ -48,12 +48,12 @@
         <div class="scene-notice" id="scene-notice" role="status"></div>
         <div class="observation-dock">
           <div class="step-summary"><span id="step-count">00 / 05</span><strong id="step-title">첫 음을 기다리며</strong><span id="step-copy">연주한 음의 동작을 다시 살펴보세요.</span></div>
-          <div class="transport"><button id="replay" class="play-control" aria-label="관찰 재생" disabled><svg aria-hidden="true"><use href="icons.svg#play"></use></svg></button><button id="restart" class="icon-button" aria-label="처음부터 보기"><svg aria-hidden="true"><use href="icons.svg#restart"></use></svg></button><label class="timeline-label" for="timeline"><span class="sr-only">작동 단계 타임라인</span><input id="timeline" type="range" min="0" max="1000" value="0" aria-valuetext="대기"><span id="timecode">00:00</span></label><label class="speed-label" for="speed">속도<select id="speed" aria-label="관찰 속도"><option value="0.25">0.25×</option><option value="0.5" selected>0.5×</option><option value="1">1×</option><option value="2">2×</option></select></label><span class="silent-note">무음 관찰</span></div>
+          <div class="transport"><button id="replay" class="play-control" aria-label="관찰 재생" disabled><svg aria-hidden="true"><use href="icons.svg#play"></use></svg></button><button id="restart" class="icon-button" aria-label="처음부터 보기"><svg aria-hidden="true"><use href="icons.svg#restart"></use></svg></button><label class="timeline-label" for="timeline"><span class="sr-only">작동 단계 타임라인</span><input id="timeline" type="range" min="0" max="1000" value="0" aria-valuetext="대기"><span id="timecode">00:00</span></label><label class="speed-label" for="speed">속도<select id="speed" aria-label="관찰 속도"><option value="0.25">0.25×</option><option value="0.5" selected>0.5×</option><option value="1">1×</option><option value="2">2×</option></select></label><span class="silent-note">타현 시 소리</span></div>
           <div class="aux-tools"><button id="explode" aria-pressed="false"><svg aria-hidden="true"><use href="icons.svg#explode"></use></svg><span>분해 보기</span></button><button id="view" aria-pressed="false"><svg aria-hidden="true"><use href="icons.svg#side"></use></svg><span>측면 보기</span></button><button id="labels" aria-pressed="true"><svg aria-hidden="true"><use href="icons.svg#labels"></use></svg><span>부품 이름</span></button><button id="fullscreen"><svg aria-hidden="true"><use href="icons.svg#fullscreen"></use></svg><span>크게 보기</span></button></div>
         </div>
         <dialog id="parts-dialog" class="parts-dialog"><div class="dialog-head"><div><span class="micro">THE PARTS</span><h3>소리를 잇는 부품들</h3></div><button id="parts-close" class="icon-button" aria-label="부품 사전 닫기"><svg aria-hidden="true"><use href="icons.svg#close"></use></svg></button></div><p>부품을 선택하면 기구에서 위치를 확인할 수 있습니다.</p><div id="part-list"></div><div class="part-description" id="part-description"></div></dialog>
       </div>
-      <div class="observation-foot"><p id="replay-status" role="status">연주한 음을 무음으로 관찰합니다. 누른 시간을 반영하고 기구 동작은 이해하기 쉽게 확대합니다.</p><a href="#making">이렇게 만들어졌습니다 <span>↘</span></a></div>
+      <div class="observation-foot"><p id="replay-status" role="status">연주한 음이 해머의 타현 순간에 울립니다. 누른 시간을 반영하고 기구 동작은 이해하기 쉽게 확대합니다.</p><a href="#making">이렇게 만들어졌습니다 <span>↘</span></a></div>
       <details class="model-details"><summary>이 기구의 표현 범위</summary><p>일반적인 그랜드피아노 액션을 참고해 직접 만든 3D 관찰 모형입니다. 곡면 부품, 고정 회전축, 잭 이탈 → 타현 → 반발과 댐퍼 분기를 표현합니다. 특정 악기의 실측 CAD나 접촉·공명 물리 시뮬레이션은 아닙니다. 재생 시간은 이해를 위한 확대이며, 실제 타건의 고속 운동을 측정한 기록이 아닙니다.</p></details>
     </section>
 

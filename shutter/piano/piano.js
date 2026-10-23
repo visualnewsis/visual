@@ -12,6 +12,7 @@
   const notes = [];
   const inputs = new Map();
   const voices = new Map();
+  const observationVoices = new Map();
   const states = new Map();
   let last = null, pedal = false, audio = null, master = null, compressor = null;
   const noteName = midi => names[midi % 12] + (Math.floor(midi / 12) - 1);
@@ -75,10 +76,10 @@
       return null;
     }
   }
-  function endVoice(midi, hard = false) {
-    const voice = voices.get(midi);
+  function endVoice(midi, hard = false, voiceMap = voices) {
+    const voice = voiceMap.get(midi);
     if (!voice || !audio) return;
-    voices.delete(midi);
+    voiceMap.delete(midi);
     const t = audio.currentTime;
     voice.envelope.gain.cancelScheduledValues(t);
     // The common envelope is constant until release; per-partial gains carry decay.
@@ -86,11 +87,11 @@
     voice.envelope.gain.exponentialRampToValueAtTime(.00001, t + (hard ? .018 : .18));
     voice.nodes.forEach(node => { try { node.stop(t + (hard ? .025 : .22)); } catch (_) {} });
   }
-  function strike(midi) {
+  function strike(midi, voiceMap = voices, delay = .025) {
     const ctx = ensureAudio();
     if (!ctx) return;
-    endVoice(midi, true);
-    const start = ctx.currentTime + .025;
+    endVoice(midi, true, voiceMap);
+    const start = ctx.currentTime + delay;
     const envelope = ctx.createGain();
     const level = .17;
     envelope.gain.value = level;
@@ -122,11 +123,11 @@
         cleanup();
         if (++ended === nodes.length) {
           envelope.disconnect();
-          if (voices.get(midi) === voice) voices.delete(midi);
+          if (voiceMap.get(midi) === voice) voiceMap.delete(midi);
         }
       };
     });
-    voices.set(midi, voice);
+    voiceMap.set(midi, voice);
   }
   function refreshContext() {
     if (!last) return;
@@ -222,6 +223,13 @@
     last: last ? Object.freeze({...last, duration:last.duration ?? performance.now()-last.start, pedal}) : null,
     pedal, audioState:audio?.state??'uninitialized', activeVoices:voices.size, notes: [...states.entries()].map(([midi,s]) => ({midi,...s}))
   });
-  window.PianoExperience = Object.freeze({snapshot});
+  const stopObservation = () => [...observationVoices.keys()].forEach(midi => endVoice(midi, true, observationVoices));
+  window.addEventListener('blur', stopObservation);
+  document.addEventListener('visibilitychange', () => { if (document.hidden) stopObservation(); });
+  window.PianoExperience = Object.freeze({snapshot, prepareObservation:ensureAudio,
+    strikeObservation(midi) { if (!Number.isInteger(midi) || midi<60 || midi>84) return; stopObservation(); strike(midi, observationVoices, 0); },
+    releaseObservation() { [...observationVoices.keys()].forEach(midi => endVoice(midi, false, observationVoices)); },
+    stopObservation
+  });
   window.dispatchEvent(new Event('piano:ready'));
 })();
