@@ -48,7 +48,13 @@
       geolocation.getCurrentPosition(resolve,reject,{enableHighAccuracy:true,timeout:15000,maximumAge:60000});
     });
   }
-  const api={belongs,matches,filter,group,inBox,containsPoint,findRegion,requestPosition};
+  function cameraContext(regions,point,zoom){
+    if(zoom<8)return {national:true,node:null};
+    const local=findRegion(regions,point);
+    const id=local&&(zoom<11?local.path[0]:zoom<13?local.parent:local.id);
+    return {national:false,node:regions.find(n=>n.id===id)||null};
+  }
+  const api={belongs,matches,filter,group,inBox,containsPoint,findRegion,requestPosition,cameraContext};
   if(typeof module!=='undefined'&&module.exports) module.exports=api;
   else root.NewsmapRules=api;
 })(typeof window!=='undefined'?window:globalThis);

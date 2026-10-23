@@ -21,7 +21,7 @@
   // Record the visit only after the data has loaded successfully.
   store.set('newsmap:lastVisit:v1',sessionStarted);
   const state={...readUrl(),motion:store.get('newsmap:motion')!=='off'};
-  let restoring=false,refreshStatus='';
+  let restoring=false,refreshStatus='',userMapInteraction=false;
   const seenSignals=new Set();
   function savedJSON(key,fallback){try{return JSON.parse(store.get(key))||fallback;}catch{return fallback;}}
   const savedReads=savedJSON('newsmap:read:v1',[]);
@@ -91,8 +91,9 @@
   }
   function mapBox(){if(!map)return null;const b=map.getBounds();return [b.getSouth(),b.getWest(),b.getNorth(),b.getEast()];}
   function selectedArticles(onlyNew=state.onlyNew){return rules.filter(payload.articles,{region:state.region,period:state.period,onlyNew,cutoff,now:now(),bounds:state.viewport?mapBox():null,nodes});}
+  function visiblePlaces(article,box=state.viewport?mapBox():null){return article.places.filter(p=>rules.belongs(p,state.region)&&(!box||rules.inBox(nodes[p].center,box)));}
   function articleCard(a){
-    const n=nodes[a.places.find(p=>rules.belongs(p,state.region))||a.places[0]];
+    const n=nodes[visiblePlaces(a)[0]||a.places[0]];
     const url=safeUrl(a.url);
     const image=safeUrl(a.image);
     const level=n.level==='dong'?'동네 확인':n.level==='district'?'시·군·구 단위':'시·도 단위';
@@ -102,14 +103,19 @@
     syncPulseBatch();
     shown=selectedArticles();
     const n=nodes[state.region];
-    const region=n?shortName(n):'전국';
-    $('breadcrumb').textContent=n?n.path.join(' / '):'대한민국';
+    const center=map?.getCenter();
+    const camera=map&&state.viewport&&!state.region&&map.getZoom()>=8?rules.cameraContext(geo.nodes,[center.lat,center.lng],map.getZoom()):null;
+    const cameraName=camera?.node?shortName(camera.node):'현재 지도';
+    const region=camera?(camera.node?cameraName+' 주변':cameraName):n?shortName(n):'전국';
+    $('breadcrumb').textContent=camera?(camera.node?camera.node.path.join(' / ')+' · 지도 범위':'현재 지도 범위'):n?n.path.join(' / '):'대한민국';
     $('region-title').textContent=region+'의 소식';
     $('article-count').textContent=shown.length;
     sheet?.update(shown.length,region);
     $('new-count').textContent=selectedArticles(false).filter(isNew).length;
-    $('map-heading').textContent=n?region+'에서 전해온 이야기':'전국에서 전해온 이야기';
-    $('map-subheading').textContent=n?.level==='dong'?'이 동네가 확인된 기사만 모았습니다.':'빛나는 원을 눌러 그곳의 뉴스를 만나보세요.';
+    $('map-heading').textContent=camera?(camera.node?cameraName+' 주변에서 전해온 이야기':'현재 지도에서 전해온 이야기'):n?region+'에서 전해온 이야기':'전국에서 전해온 이야기';
+    const meters=camera?map.distance(center,map.getBounds().getNorthEast()):0;
+    const range=meters<1000?Math.max(100,Math.round(meters/100)*100)+'m':(meters<10000?(meters/1000).toFixed(1):Math.round(meters/1000))+'km';
+    $('map-subheading').textContent=camera?'지도 중심에서 약 '+range+' 범위 · 현재 지도 안의 기사':n?.level==='dong'?'이 동네가 확인된 기사만 모았습니다.':'빛나는 원을 눌러 그곳의 뉴스를 만나보세요.';
     $('article-list').innerHTML=shown.length?shown.slice(0,visibleLimit).map(articleCard).join('')+(shown.length>visibleLimit?'<button class="load-more" id="load-more">기사 더 보기 ('+Math.min(100,shown.length-visibleLimit)+'건)</button>':''):`<div class="empty"><span class="empty-mark" aria-hidden="true">⌖</span><h3>아직 모인 기사가 없어요.</h3><p>${state.onlyNew?'현재 기간·지역에 새 기사 기준을 충족하는 기사가 없습니다.':state.viewport?'현재 지도 안에 수집된 기사가 없습니다. 지도를 이동하거나 지도 안만을 해제해 보세요.':n?.level==='dong'?'이 동네까지 위치가 확인된 기사가 없습니다. 구·시 단위 기사를 이 동네로 추정해 넣지 않습니다.':'선택한 기간·지역에 수집된 기사가 없습니다.'}<br>기간을 넓히거나 상위 지역의 소식을 살펴보세요.</p><button id="empty-reset">${state.onlyNew?'전체 기사 보기':state.period!=='all'?'전체 기간으로 보기':n?'상위 지역 보기':'전국 기사 다시 보기'}</button></div>`;
     $('new-basis').textContent=(saved>0&&saved<=sessionStarted?'이 브라우저의 지난 방문 이후':'첫 방문 · 최근 24시간')+' 발행 기사 기준';
     $('view-status').textContent=(state.viewport?'현재 지도 안 · ':'선택 지역 전체 · ')+shown.length+'건';
@@ -119,7 +125,8 @@
   function renderMarkers(){
     if(!map)return;
     markers.clearLayers();
-    let groups=rules.group(shown,nodes,map.getZoom(),state.region);
+    const box=state.viewport?mapBox():null;
+    let groups=rules.group(shown.map(a=>({...a,places:visiblePlaces(a,box)})),nodes,map.getZoom(),state.region);
     if(map.getZoom()<8){
       const clusters=[];
       for(const g of groups){
@@ -157,7 +164,7 @@
     });
     const showEmpty=shown.length===0;
     $('map-message').hidden=!showEmpty;
-    if(showEmpty)$('map-message').textContent='이 조건에 수집된 기사가 없습니다. 기간을 넓히거나 상위 지역을 선택해보세요.';
+    if(showEmpty)$('map-message').textContent=state.viewport?'현재 지도 안에 모인 기사가 없습니다. 지도를 더 멀리 보거나 기간을 넓혀보세요.':'이 조건에 수집된 기사가 없습니다. 기간을 넓히거나 상위 지역을 선택해보세요.';
   }
   function render(mode='push'){if(mode==='push')visibleLimit=100;renderList();renderMarkers();updateUrl(mode);}
   function fitNational(){
@@ -174,6 +181,7 @@
     for(const shape of shapes)L.geoJSON(shape.geometry,{interactive:false,style:{color:'#647e53',weight:1.2,opacity:.6,fillColor:'#809b65',fillOpacity:.055}}).addTo(boundary);
   }
   function selectPlace(id,{fit=true,historyMode='push'}={}){
+    userMapInteraction=false;
     state.region=nodes[id]?id:'';
     $('place-search').value='';
     closeSearch();
@@ -248,8 +256,8 @@
   $('article-list').addEventListener('auxclick',markArticleRead);
   $('article-list').addEventListener('click',event=>{if(event.target.id==='load-more'){visibleLimit+=100;renderList();return;}if(event.target.id!=='empty-reset')return;if(state.onlyNew){state.onlyNew=false;render();}else if(state.period!=='all'){state.period='all';render();}else selectPlace(nodes[state.region]?.parent||'');});
   $('reset-map').addEventListener('click',()=>selectPlace(''));
-  $('zoom-in').addEventListener('click',()=>map?.zoomIn());
-  $('zoom-out').addEventListener('click',()=>map?.zoomOut());
+  $('zoom-in').addEventListener('click',()=>{userMapInteraction=true;map?.zoomIn();});
+  $('zoom-out').addEventListener('click',()=>{userMapInteraction=true;map?.zoomOut();});
   $('locate-me').addEventListener('click',async()=>{
     const button=$('locate-me'),status=$('location-status');
     status.hidden=false;
@@ -325,7 +333,20 @@
       tiles.addTo(map);
     };
     markers=L.layerGroup().addTo(map);boundary=L.layerGroup().addTo(map);
-    map.on('moveend',()=>{if(restoring)return;if(state.viewport){renderList();updateUrl('replace');}renderMarkers();});
+    const manualMove=()=>{userMapInteraction=true;};
+    map.on('dragstart',manualMove);
+    $('map').addEventListener('wheel',manualMove,{passive:true,capture:true});
+    $('map').addEventListener('dblclick',manualMove,{capture:true});
+    $('map').addEventListener('touchstart',event=>{if(event.touches.length>1)manualMove();},{passive:true});
+    $('map').addEventListener('keydown',event=>{if(['+','-','=','ArrowUp','ArrowDown','ArrowLeft','ArrowRight'].includes(event.key))manualMove();},{capture:true});
+    map.on('moveend',()=>{
+      if(restoring)return;
+      if(userMapInteraction){
+        userMapInteraction=false;state.region='';state.viewport=map.getZoom()>=8;visibleLimit=100;
+        drawBoundary();renderList();updateUrl('replace');
+      }else if(state.viewport){renderList();updateUrl('replace');}
+      renderMarkers();
+    });
     // The initial national fit must not overwrite a shared viewport URL.
     restoring=true;
     fitNational();

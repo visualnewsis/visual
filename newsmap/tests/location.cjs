@@ -13,6 +13,11 @@ assert.equal(R.findRegion(regions,[0,0]),null,'Outside Korea must not select an 
 assert.equal(R.findRegion(regions,[NaN,127]),null);
 assert.equal(R.findRegion(regions,[37.5665,126.978]).path[0],'서울특별시');
 assert.equal(R.findRegion(regions,[35.1796,129.0756]).path[0],'부산광역시');
+assert.equal(R.cameraContext(regions,[37.5665,126.978],7).national,true);
+assert.equal(R.cameraContext(regions,[37.5665,126.978],10).node.level,'province');
+assert.equal(R.cameraContext(regions,[37.5665,126.978],12).node.level,'district');
+assert.equal(R.cameraContext(regions,[37.5665,126.978],15).node.level,'dong');
+assert.equal(R.cameraContext(regions,[0,0],12).node,null);
 async function main(){
   let called=0;
   const fake={coords:{latitude:37.5665,longitude:126.978,accuracy:20}};

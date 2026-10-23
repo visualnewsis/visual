@@ -33,7 +33,7 @@
   <link rel="manifest" href="site.webmanifest?v=20261023-newsis">
   <link rel="stylesheet" href="../assets/visual-header.css?v=20261023-menu-rabbit">
   <link rel="stylesheet" href="vendor/leaflet.css">
-  <link rel="stylesheet" href="style.css?v=20261023-pulse-live-2">
+  <link rel="stylesheet" href="style.css?v=20261023-locate-top">
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-6BKMWE02W5"></script>
   <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','G-6BKMWE02W5');</script>
   <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"여기뉴스","alternateName":["여기 뉴스"],"url":"https://visual.newsis.com/newsmap/","description":"여기 무슨 일 있어? 전국부터 읍면동까지 뉴시스 기사를 지역별로 탐색하는 동네 뉴스 지도","applicationCategory":"NewsApplication","operatingSystem":"Any","inLanguage":"ko-KR","isAccessibleForFree":true,"publisher":{"@type":"NewsMediaOrganization","name":"뉴시스","url":"https://www.newsis.com/"},"@id":"https://visual.newsis.com/newsmap/#app","image":"https://visual.newsis.com/newsmap/assets/share-here-news-final-20261023.png?v=20261023-final","creator":{"@type":"Person","name":"안재현","jobTitle":["뉴시스 기자","크리에이티브 디렉터"]},"isPartOf":{"@type":"WebSite","name":"VISUAL NEWSIS","url":"https://visual.newsis.com/"},"keywords":["여기뉴스","여기 뉴스","지역 뉴스","동네 뉴스","뉴스 지도","뉴시스"]}</script>
@@ -41,10 +41,10 @@
   <script defer src="vendor/leaflet.js"></script>
   <script defer src="data/geography.js"></script>
   <script defer src="data/articles.js?v=20261023-final"></script>
-  <script defer src="core.js?v=20261022-2"></script>
+  <script defer src="core.js?v=20261023-camera"></script>
   <script defer src="basemap.js?v=20261022-3"></script>
   <script defer src="mobile-sheet.js?v=20261022-4"></script>
-  <script defer src="app.js?v=20261023-pulse-live-2"></script>
+  <script defer src="app.js?v=20261023-camera"></script>
 </head>
 <body>
   <a class="skip" href="#results">기사 목록으로 건너뛰기</a>
@@ -72,8 +72,8 @@
       </aside>
       <section class="map-stage" aria-label="뉴스 지도">
         <div id="map" aria-label="확대와 이동이 가능한 전국 뉴스 지도"></div>
-        <div class="map-top"><div class="map-context"><span class="eyebrow">NEWS ON THE MAP</span><strong id="map-heading">전국에서 전해온 이야기</strong><span id="map-subheading">빛나는 원을 눌러 그곳의 뉴스를 만나보세요.</span><p class="creative-credit">크리에이티브 디렉터 · <strong>안재현</strong></p></div><button id="reset-map" class="map-button" aria-label="전국 지도와 전체 기사로 돌아가기">⌂ <span>전국 보기</span></button></div>
-        <div class="map-tools"><button id="locate-me" class="map-button locate-button" aria-label="내 위치 보기" title="현재 위치를 지도에 표시하고 해당 지역의 뉴스를 봅니다"><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><circle cx="12" cy="12" r="6" fill="none" stroke="currentColor" stroke-width="1.5"/><circle cx="12" cy="12" r="2" fill="currentColor"/><path d="M12 2v4m0 12v4M2 12h4m12 0h4" stroke="currentColor" stroke-width="1.5"/></svg><span>내 위치</span></button><button id="zoom-in" class="map-button" aria-label="지도 확대">+</button><button id="zoom-out" class="map-button" aria-label="지도 축소">−</button></div>
+        <div class="map-top"><div class="map-context"><span class="eyebrow">NEWS ON THE MAP</span><strong id="map-heading">전국에서 전해온 이야기</strong><span id="map-subheading">빛나는 원을 눌러 그곳의 뉴스를 만나보세요.</span><p class="creative-credit">크리에이티브 디렉터 · <strong>안재현</strong></p></div><div class="map-actions" role="group" aria-label="지도 위치"><button id="reset-map" class="map-button" aria-label="전국 지도와 전체 기사로 돌아가기">⌂ <span>전국 보기</span></button><button id="locate-me" class="map-button locate-button" aria-label="내 위치 보기" title="현재 위치를 지도에 표시하고 해당 지역의 뉴스를 봅니다"><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><circle cx="12" cy="12" r="6" fill="none" stroke="currentColor" stroke-width="1.5"/><circle cx="12" cy="12" r="2" fill="currentColor"/><path d="M12 2v4m0 12v4M2 12h4m12 0h4" stroke="currentColor" stroke-width="1.5"/></svg><span>내 위치</span></button></div></div>
+        <div class="map-tools"><button id="zoom-in" class="map-button" aria-label="지도 확대">+</button><button id="zoom-out" class="map-button" aria-label="지도 축소">−</button></div>
         <div class="map-legend"><span><i class="legend-pulse"></i>새 기사 파동 · 10분</span><span><i class="legend-count"></i>원 안 숫자는 기사 수</span><button id="motion-toggle" aria-pressed="true">파동 켜짐</button></div>
         <div id="map-message" class="map-message" role="status" hidden></div>
         <div id="location-status" class="location-status" role="status" hidden></div>
