@@ -7,11 +7,12 @@
   const sheet=window.NewsmapSheet?.();
   if(!geo||!Array.isArray(payload?.articles)||!rules){$('article-list').textContent='데이터를 불러오지 못했습니다. 페이지를 새로고침해 주세요.';$('snapshot-time').textContent='데이터 로드 실패 · 페이지 새로고침이 필요합니다.';$('refresh').onclick=()=>location.reload();sheet?.expand();return;}
   const nodes=Object.fromEntries(geo.nodes.map(n=>[n.id,n]));
+  const categories=['','all','정치','경제','산업','사회','IT·바이오','문화','스포츠','연예','국제'];
   function readUrl(){
     const params=new URLSearchParams(location.search);
     const camera=['lat','lng','zoom'].map(key=>params.has(key)?Number(params.get(key)):NaN);
     const valid=camera.every(Number.isFinite)&&Math.abs(camera[0])<=90&&Math.abs(camera[1])<=180&&camera[2]>=4&&camera[2]<=18;
-    return {region:nodes[params.get('place')]?params.get('place'):'',period:['24','168','720','all'].includes(params.get('period'))?params.get('period'):'24',onlyNew:params.get('new')==='1',viewport:params.get('view')==='map',camera:valid?camera:null};
+    return {region:nodes[params.get('place')]?params.get('place'):'',period:['24','168','720','all'].includes(params.get('period'))?params.get('period'):'24',category:categories.includes(params.get('category'))?params.get('category'):'',onlyNew:params.get('new')==='1',viewport:params.get('view')==='map',camera:valid?camera:null};
   }
   const now=()=>Date.now();
   const store={get(key){try{return localStorage.getItem(key);}catch{return null;}},set(key,value){try{localStorage.setItem(key,String(value));}catch{/* Private browsing: session-only behavior. */}}};
@@ -58,6 +59,7 @@
     if(state.region)p.set('place',state.region);
     if(state.period!=='24')p.set('period',state.period);
     if(state.onlyNew)p.set('new','1');
+    if(state.category)p.set('category',state.category);
     if(state.viewport){
       p.set('view','map');
       // Never copy a browser-provided current position into a shareable URL.
@@ -91,17 +93,23 @@
     $('viewport-toggle').setAttribute('aria-pressed',String(state.viewport));
     $('motion-toggle').setAttribute('aria-pressed',String(state.motion));
     $('motion-toggle').textContent=state.motion?'파동 켜짐':'파동 꺼짐';
+    $('category-toggle').textContent=state.category?(state.category==='all'?'전체 분야':state.category):'카테고리';
+    document.querySelectorAll('[data-category]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.category===state.category)));
     document.body.classList.toggle('motion-off',!state.motion);
   }
   function mapBox(){if(!map)return null;const b=map.getBounds();return [b.getSouth(),b.getWest(),b.getNorth(),b.getEast()];}
-  function selectedArticles(onlyNew=state.onlyNew){return rules.filter(payload.articles,{region:state.region,period:state.period,onlyNew,cutoff,now:now(),bounds:state.viewport?mapBox():null,nodes});}
+  function selectedArticles(onlyNew=state.onlyNew){
+    const articles=state.category?payload.articles.map(a=>({...a,places:a.relatedPlaces||a.places})):payload.articles;
+    return rules.filter(articles,{region:state.region,period:state.period,onlyNew,cutoff,now:now(),category:state.category==='all'?'':state.category,includeUnlocated:!!state.category,bounds:state.viewport?mapBox():null,nodes});
+  }
   function visiblePlaces(article,box=state.viewport?mapBox():null){return article.places.filter(p=>rules.belongs(p,state.region)&&(!box||rules.inBox(nodes[p].center,box)));}
   function articleCard(a){
     const n=nodes[visiblePlaces(a)[0]||a.places[0]];
     const url=safeUrl(a.url);
     const image=safeUrl(a.image);
-    const level=n.level==='dong'?'동네 확인':n.level==='district'?'시·군·구 단위':'시·도 단위';
-    return `<article class="article-card" data-article="${esc(a.id)}"><div class="card-top">${isNew(a)?'<span class="new">NEW</span>':''}<span>${esc(a.category)}</span><span>·</span><time datetime="${esc(a.publishedAt)}">${esc(stamp(a.publishedAt))}</time></div><div class="card-body"><h3><a href="${esc(url)}" target="_blank" rel="noopener noreferrer">${esc(a.title)}</a></h3>${image?`<img src="${esc(image)}" alt="" loading="lazy" referrerpolicy="no-referrer" onerror="this.hidden=true">`:''}</div><div class="card-bottom"><button class="place-link" data-place="${esc(n.id)}" title="${esc(a.evidence?.join(' / ')||n.path.join(' '))}">⌖ ${esc(n.path.map((name,i)=>i===0?shortName(nodes[name]):name).join(' '))} <span class="precision">${level}</span></button><a class="source-link" href="${esc(url)}" target="_blank" rel="noopener noreferrer">뉴시스 ↗</a></div></article>`;
+    if(!n)return `<article class="article-card" data-article="${esc(a.id)}"><div class="card-top"><span>${esc(a.newsCategory||a.category)}</span><time datetime="${esc(a.publishedAt)}">${esc(stamp(a.publishedAt))}</time></div><h3><a href="${esc(url)}" target="_blank" rel="noopener noreferrer">${esc(a.title)}</a></h3><div class="card-bottom"><span class="precision">지도 위치 미지정</span><a class="source-link" href="${esc(url)}" target="_blank" rel="noopener noreferrer">뉴시스 ↗</a></div></article>`;
+    const level=state.category?(a.placeReasons?.[n.id]||'기사 관련 지역'):n.level==='dong'?'동네 확인':n.level==='district'?'시·군·구 단위':'시·도 단위';
+    return `<article class="article-card" data-article="${esc(a.id)}"><div class="card-top">${isNew(a)?'<span class="new">NEW</span>':''}<span>${esc(state.category?(a.newsCategory||a.category):a.category)}</span><span>·</span><time datetime="${esc(a.publishedAt)}">${esc(stamp(a.publishedAt))}</time></div><div class="card-body"><h3><a href="${esc(url)}" target="_blank" rel="noopener noreferrer">${esc(a.title)}</a></h3>${image?`<img src="${esc(image)}" alt="" loading="lazy" referrerpolicy="no-referrer" onerror="this.hidden=true">`:''}</div><div class="card-bottom"><button class="place-link" data-place="${esc(n.id)}" title="${esc(a.evidence?.join(' / ')||n.path.join(' '))}">⌖ ${esc(n.path.map((name,i)=>i===0?shortName(nodes[name]):name).join(' '))} <span class="precision">${level}</span></button><a class="source-link" href="${esc(url)}" target="_blank" rel="noopener noreferrer">뉴시스 ↗</a></div></article>`;
   }
   function renderList(){
     closeMapPreview();
@@ -123,7 +131,8 @@
     $('map-subheading').textContent=camera?'지도 중심에서 약 '+range+' 범위 · 현재 지도 안의 기사':n?.level==='dong'?'이 동네가 확인된 기사만 모았습니다.':'빛나는 원을 눌러 그곳의 뉴스를 만나보세요.';
     $('article-list').innerHTML=shown.length?shown.slice(0,visibleLimit).map(articleCard).join('')+(shown.length>visibleLimit?'<button class="load-more" id="load-more">기사 더 보기 ('+Math.min(100,shown.length-visibleLimit)+'건)</button>':''):`<div class="empty"><span class="empty-mark" aria-hidden="true">⌖</span><h3>아직 모인 기사가 없어요.</h3><p>${state.onlyNew?'현재 기간·지역에 새 기사 기준을 충족하는 기사가 없습니다.':state.viewport?'현재 지도 안에 수집된 기사가 없습니다. 지도를 이동하거나 지도 안만을 해제해 보세요.':n?.level==='dong'?'이 동네까지 위치가 확인된 기사가 없습니다. 구·시 단위 기사를 이 동네로 추정해 넣지 않습니다.':'선택한 기간·지역에 수집된 기사가 없습니다.'}<br>기간을 넓히거나 상위 지역의 소식을 살펴보세요.</p><button id="empty-reset">${state.onlyNew?'전체 기사 보기':state.period!=='all'?'전체 기간으로 보기':n?'상위 지역 보기':'전국 기사 다시 보기'}</button></div>`;
     $('new-basis').textContent=(saved>0&&saved<=sessionStarted?'이 브라우저의 지난 방문 이후':'첫 방문 · 최근 24시간')+' 발행 기사 기준';
-    $('view-status').textContent=(state.viewport?'현재 지도 안 · ':'선택 지역 전체 · ')+shown.length+'건';
+    const unlocated=shown.filter(a=>!a.places.length).length;
+    $('view-status').textContent=(state.category?(state.category==='all'?'전체 분야':state.category)+' · ':'')+(state.viewport?'현재 지도 안 · ':'선택 지역 전체 · ')+shown.length+'건'+(unlocated?' · 위치 미지정 '+unlocated+'건':'');
     $('snapshot-time').textContent=stamp(payload.collectedAt)+' 수집 · 일부 기사 · '+(payload.mode==='scheduled-snapshot'?'10분 주기 수집':'자동 갱신 미연결')+(refreshStatus?' · '+refreshStatus:'');
     syncControls();
   }
@@ -237,7 +246,7 @@
     const next=readUrl();
     restoring=true;
     try{
-      state.period=next.period;state.onlyNew=next.onlyNew;
+      state.period=next.period;state.onlyNew=next.onlyNew;state.category=next.category;
       selectPlace(next.region,{historyMode:'none'});
       state.viewport=next.viewport;
       if(map&&next.viewport&&next.camera)map.setView(next.camera.slice(0,2),next.camera[2],{animate:false});
@@ -281,6 +290,11 @@
   $('all-tab').addEventListener('click',()=>{state.onlyNew=false;render();});
   $('new-tab').addEventListener('click',()=>{state.onlyNew=true;render();});
   $('viewport-toggle').addEventListener('click',()=>{state.viewport=!state.viewport;render();});
+  function closeCategories(){$('category-panel').hidden=true;$('category-toggle').setAttribute('aria-expanded','false');}
+  $('category-toggle').addEventListener('click',()=>{const open=$('category-panel').hidden;$('category-panel').hidden=!open;$('category-toggle').setAttribute('aria-expanded',String(open));});
+  $('category-panel').addEventListener('click',event=>{const button=event.target.closest('[data-category]');if(!button)return;state.category=button.dataset.category;closeCategories();selectPlace('');});
+  $('category-panel').addEventListener('keydown',event=>{if(event.key==='Escape'){closeCategories();$('category-toggle').focus();}});
+  document.addEventListener('click',event=>{if(!event.target.closest('#category-panel,#category-toggle'))closeCategories();});
   $('motion-toggle').addEventListener('click',()=>{state.motion=!state.motion;store.set('newsmap:motion',state.motion?'on':'off');if(state.motion)seenSignals.clear();syncControls();renderMarkers();});
   function markArticleRead(event){
     if(event.type==='auxclick'&&event.button!==1)return;
@@ -341,7 +355,7 @@
     };
     script.onload=()=>{
       const next=window.NEWSMAP_ARTICLES;
-      const valid=Array.isArray(next?.articles)&&Number.isFinite(Date.parse(next?.collectedAt))&&next.articles.every(a=>a&&typeof a.id==='string'&&typeof a.title==='string'&&Number.isFinite(Date.parse(a.publishedAt))&&Array.isArray(a.places)&&a.places.length&&a.places.every(p=>nodes[p])&&safeUrl(a.url));
+      const valid=Array.isArray(next?.articles)&&Number.isFinite(Date.parse(next?.collectedAt))&&next.articles.every(a=>a&&typeof a.id==='string'&&typeof a.title==='string'&&Number.isFinite(Date.parse(a.publishedAt))&&Array.isArray(a.places)&&(a.places.length||a.newsCategory)&&a.places.every(p=>nodes[p])&&(!a.relatedPlaces||(Array.isArray(a.relatedPlaces)&&a.relatedPlaces.every(p=>nodes[p])))&&safeUrl(a.url));
       changed=valid&&next.collectedAt!==payload.collectedAt;
       if(valid)payload=next;
       finish(valid);

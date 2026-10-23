@@ -23,6 +23,12 @@ assert.equal(R.filter([a('future',[P],'2026-10-23T00:00:00+09:00')],options).len
 assert.equal(R.filter(articles,{...options,onlyNew:true,cutoff:Date.parse(time)}).length,0,'Revisit must not mark the same timestamp new.');
 const groups=R.group([a('multi',[N,D])],nodes,6);
 assert.equal(groups[0].articles.length,1,'A multi-location article counts once per group.');
+const multi=a('same',[P,'부산광역시']);
+assert.equal(R.filter([multi,multi],options).length,1,'A list must show a duplicated ID once.');
+assert.equal(R.group([multi,multi],nodes,6).length,2,'One article can appear in two regions.');
+assert(R.group([multi,multi],nodes,6).every(g=>g.articles.length===1));
+assert.equal(R.filter([{...multi,places:[],newsCategory:'정치'}],{...options,includeUnlocated:true,category:'정치'}).length,1);
+assert.equal(R.filter([{...multi,places:[],newsCategory:'정치'}],{...options,includeUnlocated:true,region:P}).length,0,'Unlocated news must not be guessed into a region.');
 assert.equal(R.group([a('broad',[D])],nodes,15)[0].node.id,D,'Broad articles retain their actual scope on zoom.');
 assert.equal(R.filter(articles,{...options,bounds:[0,0,1,1],nodes}).length,0);
 for(const n of geo.nodes){
@@ -31,7 +37,7 @@ for(const n of geo.nodes){
   if(n.parent)assert(nodes[n.parent], 'Missing parent '+n.id);
 }
 for(const article of snapshot.articles){
-  assert(article.places.length>0);
+  assert(article.places.length>0||article.newsCategory);
   for(const place of article.places)assert(nodes[place],place);
   assert.match(article.url,/^https:\/\/www\.newsis\.com\/view\/NISX\d+_\d+$/);
   assert(!/[\uFF00-\uFFEF\u00A0\u200B\uFEFF\s]/u.test(article.url));
