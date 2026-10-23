@@ -4,9 +4,15 @@
   const rules=window.NewsmapRules;
   const geo=window.NEWSMAP_GEOGRAPHY;
   let payload=window.NEWSMAP_ARTICLES;
-  if(!geo||!payload||!rules){$('article-list').textContent='데이터를 불러오지 못했습니다. 페이지를 새로고침해 주세요.';return;}
+  const sheet=window.NewsmapSheet?.();
+  if(!geo||!Array.isArray(payload?.articles)||!rules){$('article-list').textContent='데이터를 불러오지 못했습니다. 페이지를 새로고침해 주세요.';$('snapshot-time').textContent='데이터 로드 실패 · 페이지 새로고침이 필요합니다.';$('refresh').onclick=()=>location.reload();sheet?.expand();return;}
   const nodes=Object.fromEntries(geo.nodes.map(n=>[n.id,n]));
-  const params=new URLSearchParams(location.search);
+  function readUrl(){
+    const params=new URLSearchParams(location.search);
+    const camera=['lat','lng','zoom'].map(key=>params.has(key)?Number(params.get(key)):NaN);
+    const valid=camera.every(Number.isFinite)&&Math.abs(camera[0])<=90&&Math.abs(camera[1])<=180&&camera[2]>=4&&camera[2]<=18;
+    return {region:nodes[params.get('place')]?params.get('place'):'',period:['24','168','720','all'].includes(params.get('period'))?params.get('period'):'24',onlyNew:params.get('new')==='1',viewport:params.get('view')==='map',camera:valid?camera:null};
+  }
   const now=()=>Date.now();
   const store={get(key){try{return localStorage.getItem(key);}catch{return null;}},set(key,value){try{localStorage.setItem(key,String(value));}catch{/* Private browsing: session-only behavior. */}}};
   const saved=Number(store.get('newsmap:lastVisit:v1'));
@@ -14,9 +20,10 @@
   const sessionStarted=now();
   // Record the visit only after the data has loaded successfully.
   store.set('newsmap:lastVisit:v1',sessionStarted);
-  const state={region:nodes[params.get('place')]?params.get('place'):'',period:['24','168','720','all'].includes(params.get('period'))?params.get('period'):'24',onlyNew:params.get('new')==='1',viewport:false,motion:store.get('newsmap:motion')!=='off'};
-  let map,markers,boundary,locationLayer,shown=[],searchMatches=[];
-  const sheet=window.NewsmapSheet?.();
+  const state={...readUrl(),motion:store.get('newsmap:motion')!=='off'};
+  let restoring=false,refreshStatus='';
+  const seenSignals=new Set();
+  let map,markers,boundary,locationLayer,shown=[],searchMatches=[],visibleLimit=100;
   document.querySelector('.skip').addEventListener('click',event=>{if(matchMedia('(max-width:700px)').matches){event.preventDefault();sheet?.expand();$('results').focus({preventScroll:true});}});
   const formatter=new Intl.DateTimeFormat('ko-KR',{month:'numeric',day:'numeric',hour:'2-digit',minute:'2-digit',hour12:false,timeZone:'Asia/Seoul'});
   const stamp=value=>formatter.format(new Date(value));
@@ -24,12 +31,20 @@
   const shortName=n=>n.level==='province'?n.name.replace(/특별자치도|특별자치시|특별시|광역시/g,'').replace('전남광주통합','전남광주'):n.name;
   const isNew=a=>Date.parse(a.publishedAt)>cutoff&&Date.parse(a.publishedAt)<=now();
   const safeUrl=url=>{try{const u=new URL(url);return u.protocol==='https:'&&(/(^|\.)newsis\.com$/.test(u.hostname))?u.href:'';}catch{return '';}};
-  function updateUrl(){
+  function updateUrl(mode='push'){
+    if(restoring||mode==='none')return;
     const p=new URLSearchParams();
     if(state.region)p.set('place',state.region);
     if(state.period!=='24')p.set('period',state.period);
     if(state.onlyNew)p.set('new','1');
-    try{history.replaceState(null,'',location.pathname+(p.size?'?'+p.toString():'')+location.hash);}catch{/* Local file preview may restrict history. */}
+    if(state.viewport){
+      p.set('view','map');
+      // Never copy a browser-provided current position into a shareable URL.
+      if(map&&!locationLayer){const center=map.getCenter();p.set('lat',center.lat.toFixed(5));p.set('lng',center.lng.toFixed(5));p.set('zoom',String(map.getZoom()));}
+    }
+    const url=location.pathname+(p.size?'?'+p.toString():'')+location.hash;
+    if(url===location.pathname+location.search+location.hash)return;
+    try{history[mode==='replace'?'replaceState':'pushState'](null,'',url);}catch{/* Local file preview may restrict history. */}
   }
   function descendants(parent,level){return geo.nodes.filter(n=>n.level===level&&n.id.startsWith(parent+'/'));}
   function fillSelect(id,list,value,placeholder){
@@ -77,10 +92,11 @@
     $('new-count').textContent=selectedArticles(false).filter(isNew).length;
     $('map-heading').textContent=n?region+'에서 전해온 이야기':'전국에서 전해온 이야기';
     $('map-subheading').textContent=n?.level==='dong'?'이 동네가 확인된 기사만 모았습니다.':'빛나는 원을 눌러 그곳의 뉴스를 만나보세요.';
-    $('article-list').innerHTML=shown.length?shown.map(articleCard).join(''):`<div class="empty"><span class="empty-mark" aria-hidden="true">⌖</span><h3>아직 모인 기사가 없어요.</h3><p>${state.onlyNew?'마지막 방문 이후 새로 발행된 기사가 없습니다.':n?.level==='dong'?'이 동네까지 위치가 확인된 기사가 없습니다. 구·시 단위 기사를 이 동네로 추정해 넣지 않습니다.':'선택한 기간·지역에 수집된 기사가 없습니다.'}<br>기간을 넓히거나 상위 지역의 소식을 살펴보세요.</p><button id="empty-reset">${state.onlyNew?'전체 기사 보기':state.period!=='all'?'전체 기간으로 보기':n?'상위 지역 보기':'전국 기사 다시 보기'}</button></div>`;
-    $('snapshot-time').textContent=stamp(payload.collectedAt)+' 수집 · 일부 기사 · 자동 갱신 미연결';
+    $('article-list').innerHTML=shown.length?shown.slice(0,visibleLimit).map(articleCard).join('')+(shown.length>visibleLimit?'<button class="load-more" id="load-more">기사 더 보기 ('+Math.min(100,shown.length-visibleLimit)+'건)</button>':''):`<div class="empty"><span class="empty-mark" aria-hidden="true">⌖</span><h3>아직 모인 기사가 없어요.</h3><p>${state.onlyNew?'현재 기간·지역에 새 기사 기준을 충족하는 기사가 없습니다.':state.viewport?'현재 지도 안에 수집된 기사가 없습니다. 지도를 이동하거나 지도 안만을 해제해 보세요.':n?.level==='dong'?'이 동네까지 위치가 확인된 기사가 없습니다. 구·시 단위 기사를 이 동네로 추정해 넣지 않습니다.':'선택한 기간·지역에 수집된 기사가 없습니다.'}<br>기간을 넓히거나 상위 지역의 소식을 살펴보세요.</p><button id="empty-reset">${state.onlyNew?'전체 기사 보기':state.period!=='all'?'전체 기간으로 보기':n?'상위 지역 보기':'전국 기사 다시 보기'}</button></div>`;
+    $('new-basis').textContent=(saved>0&&saved<=sessionStarted?'이 브라우저의 지난 방문 이후':'첫 방문 · 최근 24시간')+' 발행 기사 기준';
+    $('view-status').textContent=(state.viewport?'현재 지도 안 · ':'선택 지역 전체 · ')+shown.length+'건';
+    $('snapshot-time').textContent=stamp(payload.collectedAt)+' 수집 · 일부 기사 · '+(payload.mode==='scheduled-snapshot'?'10분 주기 수집':'자동 갱신 미연결')+(refreshStatus?' · '+refreshStatus:'');
     syncControls();
-    updateUrl();
   }
   function renderMarkers(){
     if(!map)return;
@@ -104,9 +120,12 @@
       const size=Math.min(47,25+Math.sqrt(count)*3);
       const clustered=g.members?.length>1;
       const label=shortName(g.node)+(clustered?' 외 '+(g.members.length-1)+'곳':'');
-      const icon=L.divIcon({className:'news-marker'+(fresh?' has-new':''),iconSize:[size,size],iconAnchor:[size/2,size/2],html:`<span class="dot">${count}</span><span class="marker-label">${esc(label)}</span>`});
+      const signalKey=g.node.id+':'+g.articles.filter(isNew).map(a=>a.id).sort().join(',');
+      const animate=fresh&&state.motion&&!matchMedia('(prefers-reduced-motion:reduce)').matches&&!seenSignals.has(signalKey);
+      if(animate)seenSignals.add(signalKey);
+      const icon=L.divIcon({className:'news-marker'+(fresh?' has-new':'')+(animate?' animate-new':''),iconSize:[size,size],iconAnchor:[size/2,size/2],html:`<span class="dot">${count}</span><span class="marker-label">${esc(label)}</span>`});
       const marker=L.marker(g.node.center,{icon,keyboard:true,title:label+': '+count+'개 기사'+(fresh?', 새 기사 '+fresh+'개':''),alt:label+' 기사 보기',riseOnHover:true});
-      marker.on('add',()=>{const el=marker.getElement();el.style.setProperty('--size',size+'px');el.style.setProperty('--delay',-(i%8)*.37+'s');el.setAttribute('role','button');});
+      marker.on('add',()=>{const el=marker.getElement();el.style.setProperty('--size',size+'px');el.style.setProperty('--delay',(i%4)*.12+'s');el.setAttribute('role','button');});
       marker.bindTooltip(esc(g.node.path.join(' '))+' · '+count+'건'+(fresh?' / 새 기사 '+fresh+'건':''),{direction:'top',offset:[0,-12]});
       marker.on('click',()=>{
         if(clustered){map.setView(g.node.center,Math.max(8,map.getZoom()+1),{animate:!matchMedia('(prefers-reduced-motion:reduce)').matches});return;}
@@ -121,7 +140,7 @@
     $('map-message').hidden=!showEmpty;
     if(showEmpty)$('map-message').textContent='이 조건에 수집된 기사가 없습니다. 기간을 넓히거나 상위 지역을 선택해보세요.';
   }
-  function render(){renderList();renderMarkers();}
+  function render(mode='push'){if(mode==='push')visibleLimit=100;renderList();renderMarkers();updateUrl(mode);}
   function fitNational(){
     const mobile=matchMedia('(max-width:700px)').matches;
     const bounds=mobile?[[33.05,125.7],[38.65,129.65]]:[[33.05,124.9],[38.65,130.0]];
@@ -135,28 +154,42 @@
     const shapes=n.geometry?[n]:descendants(n.id,'dong').filter(x=>x.kind!=='locality');
     for(const shape of shapes)L.geoJSON(shape.geometry,{interactive:false,style:{color:'#647e53',weight:1.2,opacity:.6,fillColor:'#809b65',fillOpacity:.055}}).addTo(boundary);
   }
-  function selectPlace(id,{fit=true}={}){
+  function selectPlace(id,{fit=true,historyMode='push'}={}){
     state.region=nodes[id]?id:'';
     $('place-search').value='';
     closeSearch();
     state.viewport=false;
-    render();
+    if(!restoring)render(historyMode);
     drawBoundary();
     if(fit&&map){
       const n=nodes[state.region];
-      if(n)map.fitBounds([[n.bbox[0],n.bbox[1]],[n.bbox[2],n.bbox[3]]],{paddingTopLeft:[35,110],paddingBottomRight:[45,65],maxZoom:15,animate:!matchMedia('(prefers-reduced-motion:reduce)').matches});
+      if(n)map.fitBounds([[n.bbox[0],n.bbox[1]],[n.bbox[2],n.bbox[3]]],{paddingTopLeft:[35,110],paddingBottomRight:[45,65],maxZoom:15,animate:!restoring&&!matchMedia('(prefers-reduced-motion:reduce)').matches});
       else fitNational();
     }
     $('article-list').scrollTop=0;
   }
+  function restoreUrl(){
+    const next=readUrl();
+    restoring=true;
+    try{
+      state.period=next.period;state.onlyNew=next.onlyNew;
+      selectPlace(next.region,{historyMode:'none'});
+      state.viewport=next.viewport;
+      if(map&&next.viewport&&next.camera)map.setView(next.camera.slice(0,2),next.camera[2],{animate:false});
+      render('none');
+    }finally{restoring=false;}
+  }
+  window.addEventListener('popstate',restoreUrl);
   function closeSearch(){$('search-results').hidden=true;$('place-search').setAttribute('aria-expanded','false');}
   function search(){
     const q=$('place-search').value.trim().replace(/\s+/g,'');
     if(!q){closeSearch();return;}
+    const counts=new Map();
+    for(const article of payload.articles){const regions=new Set();for(const place of article.places){const parts=place.split('/');for(let i=1;i<=parts.length;i++)regions.add(parts.slice(0,i).join('/'));}for(const region of regions)counts.set(region,(counts.get(region)||0)+1);}
     searchMatches=geo.nodes.filter(n=>n.path.join('').includes(q)).sort((a,b)=>{
       const aExact=a.name===q?1:0,bExact=b.name===q?1:0;
       if(aExact!==bExact)return bExact-aExact;
-      const ac=payload.articles.filter(x=>rules.matches(x,a.id)).length,bc=payload.articles.filter(x=>rules.matches(x,b.id)).length;
+      const ac=counts.get(a.id)||0,bc=counts.get(b.id)||0;
       return bc-ac||a.path.length-b.path.length||a.id.localeCompare(b.id,'ko');
     }).slice(0,12);
     $('search-results').innerHTML=searchMatches.length?searchMatches.map(n=>`<button type="button" data-place="${esc(n.id)}"><strong>${esc(n.name)}</strong>${esc(n.path.join(' '))}</button>`).join(''):'<p>해당 이름의 지역을 찾지 못했습니다.<br>행정구역 이름으로 검색해 주세요.</p>';
@@ -184,7 +217,7 @@
   $('new-tab').addEventListener('click',()=>{state.onlyNew=true;render();});
   $('viewport-toggle').addEventListener('click',()=>{state.viewport=!state.viewport;render();});
   $('motion-toggle').addEventListener('click',()=>{state.motion=!state.motion;store.set('newsmap:motion',state.motion?'on':'off');syncControls();});
-  $('article-list').addEventListener('click',event=>{if(event.target.id!=='empty-reset')return;if(state.onlyNew){state.onlyNew=false;render();}else if(state.period!=='all'){state.period='all';render();}else selectPlace(nodes[state.region]?.parent||'');});
+  $('article-list').addEventListener('click',event=>{if(event.target.id==='load-more'){visibleLimit+=100;renderList();return;}if(event.target.id!=='empty-reset')return;if(state.onlyNew){state.onlyNew=false;render();}else if(state.period!=='all'){state.period='all';render();}else selectPlace(nodes[state.region]?.parent||'');});
   $('reset-map').addEventListener('click',()=>selectPlace(''));
   $('zoom-in').addEventListener('click',()=>map?.zoomIn());
   $('zoom-out').addEventListener('click',()=>map?.zoomOut());
@@ -218,13 +251,31 @@
   $('credits-button').addEventListener('click',()=>{openAbout();$('credits').scrollIntoView({block:'end'});});
   $('about').querySelector('.dialog-close').addEventListener('click',()=>$('about').close());
   $('about').addEventListener('click',event=>{if(event.target===$('about')){const rect=$('about').getBoundingClientRect();if(event.clientX<rect.left||event.clientX>rect.right||event.clientY<rect.top||event.clientY>rect.bottom)$('about').close();}});
-  $('refresh').addEventListener('click',()=>{
-    const button=$('refresh');button.disabled=true;
+  function refreshData(silent=false){
+    const button=$('refresh');button.disabled=true;button.setAttribute('aria-busy','true');
+    if(!silent){refreshStatus='데이터 다시 확인 중…';renderList();}
     const script=document.createElement('script');script.src='data/articles.js?v='+now();
-    script.onload=()=>{if(Array.isArray(window.NEWSMAP_ARTICLES?.articles)){payload=window.NEWSMAP_ARTICLES;render();}button.disabled=false;script.remove();};
-    script.onerror=()=>{$('snapshot-time').textContent='재확인 실패 · 기존 기사 데이터를 유지합니다.';button.disabled=false;script.remove();};
+    let finished=false,changed=false;
+    const timeout=window.setTimeout(()=>finish(false),15000);
+    const finish=ok=>{
+      if(finished)return;finished=true;window.clearTimeout(timeout);
+      refreshStatus=ok?'배포된 데이터 확인 완료':'재확인 실패 · 기존 기사 유지';
+      button.disabled=false;button.removeAttribute('aria-busy');script.remove();
+      if(!ok)window.NEWSMAP_ARTICLES=payload;
+      if(!silent||changed)render('replace');
+    };
+    script.onload=()=>{
+      const next=window.NEWSMAP_ARTICLES;
+      const valid=Array.isArray(next?.articles)&&Number.isFinite(Date.parse(next?.collectedAt))&&next.articles.every(a=>a&&typeof a.id==='string'&&typeof a.title==='string'&&Number.isFinite(Date.parse(a.publishedAt))&&Array.isArray(a.places)&&a.places.length&&a.places.every(p=>nodes[p])&&safeUrl(a.url));
+      changed=valid&&next.collectedAt!==payload.collectedAt;
+      if(valid)payload=next;
+      finish(valid);
+    };
+    script.onerror=()=>finish(false);
     document.head.append(script);
-  });
+  }
+  $('refresh').addEventListener('click',()=>refreshData());
+  window.setInterval(()=>{if(!document.hidden&&!$('refresh').disabled)refreshData(true);},60000);
   if(window.L){
     map=L.map('map',{zoomControl:false,minZoom:4,maxZoom:18,scrollWheelZoom:true,preferCanvas:true,zoomSnap:.25});
     map.attributionControl.setPrefix('<a href="https://leafletjs.com">Leaflet</a>');
@@ -245,13 +296,15 @@
       tiles.addTo(map);
     };
     markers=L.layerGroup().addTo(map);boundary=L.layerGroup().addTo(map);
-    map.on('moveend',()=>{if(state.viewport)renderList();renderMarkers();});
+    map.on('moveend',()=>{if(restoring)return;if(state.viewport){renderList();updateUrl('replace');}renderMarkers();});
+    // The initial national fit must not overwrite a shared viewport URL.
+    restoring=true;
     fitNational();
     new ResizeObserver(()=>map.invalidateSize({pan:false})).observe($('map'));
-    selectPlace(state.region);
+    restoreUrl();
     loadBackground();
   }else{
-    renderList();$('map-message').hidden=false;$('map-message').textContent='지도 라이브러리를 불러오지 못했습니다. 지역 선택과 기사 목록을 이용해 주세요.';
+    restoreUrl();$('map-message').hidden=false;$('map-message').textContent='지도 라이브러리를 불러오지 못했습니다. 지역 선택과 기사 목록을 이용해 주세요.';
   }
   window.NewsmapApp={state,nodes,get articles(){return payload.articles;},get shown(){return shown;},selectPlace,render,get map(){return map;},cutoff};
 })();

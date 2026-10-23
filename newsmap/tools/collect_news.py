@@ -4,7 +4,14 @@ Usage: python newsmap/tools/collect_news.py
 Conservative name matching: no dateline-only locations, no downward inference,
 ambiguous names remain unassigned. All matches carry a source excerpt for review.
 """
+import argparse
+import hashlib
 import html
+import os
+import time
+from concurrent.futures import ThreadPoolExecutor, as_completed
+from datetime import timedelta
+from urllib.parse import urlparse
 import json
 import re
 import urllib.request
@@ -17,15 +24,31 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.stdout.reconfigure(encoding='utf-8')
-FEEDS = ['society', 'sokbo', 'culture', 'economy']
-SEEDS = ['NISX20261016_0003829693','NISX20260917_0003794552','NISX20260629_0003687305','NISX20261021_0003835568','NISX20260514_0003629082']
+FEEDS = ['sokbo', 'society', 'met', 'whol', 'economy', 'culture', 'industry', 'health']
+RETENTION_DAYS = 30
+MAX_ARTICLES = 10000
+MAX_ENRICH = 24
 
 def clean(text):
     return re.sub(r'\s+', ' ', html.unescape(re.sub(r'<[^>]+>', ' ', text or ''))).strip()
 
 def request(url):
-    req = urllib.request.Request(url, headers={'User-Agent': 'VISUAL-NEWSIS-Newsmap/0.1'})
-    return urllib.request.urlopen(req, timeout=25).read()
+    parsed = urlparse(url)
+    if parsed.scheme != 'https' or parsed.hostname not in {'www.newsis.com', 'nwww.newsis.com', 'visual.newsis.com'}:
+        raise ValueError('Only approved NEWSIS HTTPS sources are supported')
+    for attempt in range(2):
+        try:
+            req = urllib.request.Request(url, headers={'User-Agent': 'VISUAL-NEWSIS-HereNews/1.0', 'Cache-Control': 'no-cache'})
+            with urllib.request.urlopen(req, timeout=18) as response:
+                final = urlparse(response.url)
+                if final.scheme != 'https' or final.hostname not in {'www.newsis.com', 'nwww.newsis.com', 'visual.newsis.com'}:
+                    raise ValueError('Unexpected source redirect')
+                return response.read(8_000_001)
+        except Exception:
+            if attempt:
+                raise
+            time.sleep(1)
+
 
 class Metadata(HTMLParser):
     def __init__(self):
@@ -68,6 +91,9 @@ def locate(title, text, matchers):
         text = leads[-1]
     text = re.sub(r'\[[^\]]{0,180}\]', ' ', text)
     text = re.sub(r'\S+ 기자\s*=', ' ', text)
+    # Biographical background is not the location of today's news.
+    sentences = re.split(r'(?<=[.!?])\s+|(?<=다)\.\s*', text)
+    text = ' '.join(sentence for sentence in sentences if not re.search(r'과거|출신|수품|주임신부|거쳐|역임했|태어났|보유했었', sentence))
     lead = text[:420]
     title_hits = [(n, p.search(title)) for n,p in matchers if p.search(title)]
     body_hits = [(n, p.search(lead)) for n,p in matchers if p.search(lead)]
@@ -106,62 +132,234 @@ def category(title):
             return name
     return '사회·행정'
 
-def main():
-    nodes = load_nodes()
-    matchers = compile_matchers(nodes)
-    records = {}
-    errors = []
-    for feed in FEEDS:
+def parse_time(value):
+    result = datetime.fromisoformat(value.replace('Z', '+00:00'))
+    if result.tzinfo is None:
+        raise ValueError('Timezone is required')
+    return result.astimezone(timezone.utc)
+
+
+def decode_snapshot(source):
+    text = source.decode('utf-8-sig') if isinstance(source, bytes) else source
+    prefix = 'window.NEWSMAP_ARTICLES='
+    if not text.strip().startswith(prefix):
+        raise ValueError('Not a news snapshot')
+    payload = json.loads(text.strip()[len(prefix):].rstrip(';'))
+    if payload.get('schemaVersion') != 1 or not isinstance(payload.get('articles'), list):
+        raise ValueError('Unsupported snapshot')
+    parse_time(payload['collectedAt'])
+    return payload
+
+
+def parse_feed(source, feed, now):
+    doc = ET.fromstring(source)
+    if doc.tag not in {'rss', 'feed'}:
+        raise ValueError('RSS endpoint returned a non-feed document')
+    records, rejected = {}, 0
+    for item in doc.findall('.//item'):
         try:
-            doc = ET.fromstring(request('https://www.newsis.com/RSS/'+feed+'.xml'))
-            for item in doc.findall('.//item'):
-                url = clean(item.findtext('link'))
-                m = re.search(r'NISX\d+_\d+', url)
-                if not m:
-                    continue
-                description = item.findtext('description') or ''
-                image = re.search(r'<img[^>]+src=[\"\x27]([^\"\x27]+)', description)
-                records.setdefault(m[0], {'id':m[0], 'title': clean(item.findtext('title')), 'url':'https://www.newsis.com/view/'+m[0], 'publishedAt':parsedate_to_datetime(item.findtext('pubDate')).isoformat(), 'text':clean(description), 'image':html.unescape(image[1]) if image else ''})
-        except Exception as exc:
-            errors.append(feed+': '+str(exc))
-    for seed in SEEDS:
-        if seed in records:
+            match = re.search(r'NISX\d+_\d+', clean(item.findtext('link')))
+            title = clean(item.findtext('title'))
+            published = parsedate_to_datetime(item.findtext('pubDate')).astimezone(timezone.utc)
+            if not match or not title or not now-timedelta(days=RETENTION_DAYS) <= published <= now:
+                continue
+            description = item.findtext('description') or ''
+            image = re.search(r'<img[^>]+src=[\"\x27]([^\"\x27]+)', description)
+            records[match[0]] = {'id':match[0], 'title':title, 'url':'https://www.newsis.com/view/'+match[0],
+                'publishedAt':published.isoformat(), 'text':clean(description),
+                'image':html.unescape(image[1]) if image else '', 'feed':feed}
+        except (TypeError, ValueError, AttributeError, OverflowError):
+            rejected += 1
+    return records, rejected
+
+
+class ArticleLead(HTMLParser):
+    """Read just the beginning of the official article body, never whole-page text."""
+    def __init__(self):
+        super().__init__(convert_charrefs=True)
+        self.depth = 0
+        self.suppressed = 0
+        self.parts = []
+        self.chars = 0
+    def handle_starttag(self, tag, attrs):
+        attrs = dict(attrs)
+        if tag == 'div':
+            if self.depth:
+                self.depth += 1
+            elif attrs.get('id') == 'textBody':
+                self.depth = 1
+        if self.depth and tag in {'script', 'style', 'figure', 'table'}:
+            self.suppressed += 1
+    def handle_endtag(self, tag):
+        if self.depth and tag in {'script', 'style', 'figure', 'table'} and self.suppressed:
+            self.suppressed -= 1
+        if tag == 'div' and self.depth:
+            self.depth -= 1
+    def handle_data(self, value):
+        if self.depth and not self.suppressed and self.chars < 2400:
+            self.parts.append(value[:2400-self.chars])
+            self.chars += len(value)
+
+
+def enrich(article):
+    parser = ArticleLead()
+    parser.feed(request(article['url']).decode('utf-8', errors='replace'))
+    lead = clean(' '.join(parser.parts))
+    if lead:
+        return {**article, 'text':lead, 'locationSource':'article-lead'}
+    return article
+
+
+def merge_articles(previous, current, now):
+    """Latest ID wins; keep old articles across feed rotations, not deleted stale files."""
+    merged = {}
+    for article in previous + current:
+        try:
+            timestamp = parse_time(article['publishedAt'])
+            if now-timedelta(days=RETENTION_DAYS) <= timestamp <= now:
+                merged[article['id']] = article
+        except (KeyError, TypeError, ValueError):
             continue
-        try:
-            source = request('https://www.newsis.com/view/'+seed).decode('utf-8')
-            parser = Metadata()
-            parser.feed(source)
-            m = parser.meta
-            date = re.search(r'"datePublished"\s*:\s*"([^"]+)"', source)
-            records[seed] = {'id':seed, 'title':m['og:title'], 'url':'https://www.newsis.com/view/'+seed,'publishedAt':date[1], 'text':clean(m.get('og:description','')), 'image':m.get('og:image','')}
-        except Exception as exc:
-            errors.append(seed+': '+str(exc))
-    articles, unassigned = [], []
+    return sorted(merged.values(), key=lambda a:parse_time(a['publishedAt']), reverse=True)[:MAX_ARTICLES]
+
+
+def build_article(raw, matchers, nodes):
+    places, lead = locate(raw['title'], raw['text'], matchers)
+    if not places:
+        return None
+    combined = raw['title']+' '+lead
+    evidence = []
+    for place in places:
+        node = nodes[place]
+        found = re.search(re.escape(node['name']), combined)
+        evidence.append(combined[max(0,found.start()-18):found.end()+45] if found else lead[:90])
+    return {key:raw.get(key, '') for key in ['id','title','url','publishedAt','image']} | {
+        'places':places, 'category':category(raw['title']), 'evidence':evidence,
+        'summary':lead[:105].rstrip('. ')+'…', 'locationSource':raw.get('locationSource','rss'),
+        'locationMethod':'conservative-place-name-v2'}
+
+
+def write_snapshot(path, payload):
+    content = 'window.NEWSMAP_ARTICLES='+json.dumps(payload,ensure_ascii=False,separators=(',',':'))+';\n'
+    # Parse the bytes before an atomic same-directory replace.
+    decode_snapshot(content)
+    temporary = path.with_suffix('.js.tmp')
+    try:
+        temporary.write_text(content,encoding='utf-8')
+        os.replace(temporary,path)
+    finally:
+        if temporary.exists():
+            temporary.unlink()
+
+
+def collect(previous, now, fetch=request, enrich_limit=MAX_ENRICH):
+    node_list = load_nodes()
+    nodes = {n['id']:n for n in node_list}
+    matchers = compile_matchers(node_list)
+    records, warnings, succeeded = {}, [], []
+    def feed_job(feed):
+        return feed, parse_feed(fetch('https://www.newsis.com/RSS/'+feed+'.xml'),feed,now)
+    with ThreadPoolExecutor(max_workers=4) as pool:
+        jobs = {pool.submit(feed_job,feed):feed for feed in FEEDS}
+        for future in as_completed(jobs):
+            feed = jobs[future]
+            try:
+                _, (items,rejected) = future.result()
+                succeeded.append(feed)
+                for key, article in items.items():
+                    if key not in records or len(article['text']) > len(records[key]['text']):
+                        records[key] = article
+                if rejected:
+                    warnings.append(feed+': invalid items '+str(rejected))
+            except Exception as exc:
+                warnings.append(feed+': '+str(exc)[:180])
+    if len(succeeded)<3 or not {'society','met','sokbo'}.intersection(succeeded):
+        raise RuntimeError('Insufficient live feeds; previous snapshot preserved. '+str(warnings))
+    if len(records)<15:
+        raise RuntimeError('Insufficient recent live articles; previous snapshot preserved.')
+    old_by_id = {a['id']:a for a in previous.get('articles',[])}
+    pending = []
     for article in records.values():
-        ids, lead = locate(article['title'], article['text'], matchers)
-        text = article.pop('text')
-        if not ids:
-            unassigned.append({'id':article['id'],'title':article['title']})
+        old = old_by_id.get(article['id'])
+        places, _ = locate(article['title'],article['text'],matchers)
+        fingerprint = hashlib.sha256('|'.join(article.get(k,'') for k in ['title','text','image','publishedAt']).encode()).hexdigest()
+        article['sourceFingerprint'] = fingerprint
+        if old and old.get('sourceFingerprint') == fingerprint:
             continue
-        evidence = []
-        for i in ids:
-            n = next(n for n in nodes if n['id']==i)
-            found = re.search(re.escape(n['name']), article['title']+' '+lead)
-            combined = article['title']+' '+lead
-            evidence.append(combined[max(0,found.start()-18):found.end()+45] if found else lead[:90])
-        article.update({'places':ids,'category':category(article['title']),'evidence':evidence, 'summary':lead[:105].rstrip('. ')+'…'})
-        articles.append(article)
-    articles.sort(key=lambda a:a['publishedAt'], reverse=True)
-    if len(articles) < 15:
-        raise RuntimeError('Too few matched articles; existing snapshot preserved. '+str(errors))
-    payload = {'schemaVersion':1, 'collectedAt':datetime.now(timezone.utc).isoformat(timespec='seconds'), 'source':'NEWSIS official RSS + public article metadata', 'mode':'snapshot', 'articles':articles, 'unassignedCount':len(unassigned)}
-    (ROOT/'data/articles.js').write_text('window.NEWSMAP_ARTICLES='+json.dumps(payload,ensure_ascii=False,separators=(',',':'))+';\n',encoding='utf-8')
-    print('Collected',len(records),'mapped',len(articles),'unassigned',len(unassigned))
-    print('Dong articles:', sum(any(i.count('/')>=2 for i in a['places']) for a in articles))
-    for a in articles[:65]:
-        print(a['publishedAt'], a['title'], ' | '.join(a['places']))
-    if errors:
-        print('Feed warnings:', errors)
+        if not places or all(nodes[p]['level']=='province' for p in places):
+            pending.append(article)
+    pending.sort(key=lambda a:parse_time(a['publishedAt']),reverse=True)
+    enriched = 0
+    with ThreadPoolExecutor(max_workers=3) as pool:
+        jobs = {pool.submit(enrich,a):a['id'] for a in pending[:enrich_limit]}
+        for future in as_completed(jobs):
+            try:
+                article = future.result()
+                records[article['id']] = article
+                enriched += int(article.get('locationSource')=='article-lead')
+            except Exception as exc:
+                warnings.append('lead '+jobs[future]+': '+str(exc)[:120])
+    current, unassigned, rejected_ids = [], [], set()
+    for raw in records.values():
+        old = old_by_id.get(raw['id'])
+        if old and old.get('sourceFingerprint')==raw['sourceFingerprint']:
+            current.append(old)
+            continue
+        article = build_article(raw,matchers,nodes)
+        if article:
+            article['sourceFingerprint'] = raw['sourceFingerprint']
+            current.append(article)
+        else:
+            rejected_ids.add(raw['id'])
+            unassigned.append({'id':raw['id'],'title':raw['title']})
+    # Recheck legacy records under the current matching rules, including biographies.
+    retained = []
+    for old in previous.get('articles',[]):
+        if old['id'] in records or old['id'] in rejected_ids:
+            continue
+        if old.get('locationMethod')=='conservative-place-name-v2':
+            retained.append(old)
+        else:
+            revised = build_article({**old,'text':old.get('summary','')},matchers,nodes)
+            if revised:
+                retained.append(revised)
+    articles = merge_articles(retained,current,now)
+    if len(current)<10 or len(articles)<15:
+        raise RuntimeError('Too few located live articles; previous snapshot preserved.')
+    payload = {'schemaVersion':1,'collectedAt':now.isoformat(timespec='seconds'),
+        'source':'NEWSIS official RSS + limited official article leads','mode':'scheduled-snapshot',
+        'retentionDays':RETENTION_DAYS,'articleLimit':MAX_ARTICLES,
+        'articles':articles,'unassignedCount':len(unassigned),
+        'collection':{'feedsSucceeded':sorted(succeeded),'feedWarnings':warnings,'enrichedCount':enriched}}
+    # Collection metadata alone must not trigger a content deployment.
+    changed = articles != previous.get('articles',[])
+    return payload, changed, {'fetched':len(records),'mapped':len(current),'retained':len(articles),
+        'unassigned':len(unassigned),'enriched':enriched,'warnings':warnings}
+
+
+def main():
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('--previous-url',help='Read the last published snapshot before merging')
+    parser.add_argument('--output',type=Path,default=ROOT/'data/articles.js')
+    parser.add_argument('--enrich-limit',type=int,default=MAX_ENRICH)
+    args = parser.parse_args()
+    if not 0<=args.enrich_limit<=50:
+        parser.error('enrich-limit must be between 0 and 50')
+    previous = decode_snapshot((ROOT/'data/articles.js').read_bytes())
+    if args.previous_url:
+        try:
+            previous = decode_snapshot(request(args.previous_url))
+        except Exception as exc:
+            # Never replace an unknown published history with a stale checkout.
+            raise RuntimeError('Cannot load published history; publication stopped') from exc
+    payload, changed, report = collect(previous,datetime.now(timezone.utc),enrich_limit=args.enrich_limit)
+    args.output.parent.mkdir(parents=True,exist_ok=True)
+    write_snapshot(args.output,payload if changed else previous)
+    print(json.dumps({'changed':changed,**report},ensure_ascii=False))
+    if os.environ.get('GITHUB_OUTPUT'):
+        with open(os.environ['GITHUB_OUTPUT'],'a',encoding='utf-8') as output:
+            output.write('changed='+str(changed).lower()+'\n')
+
 
 if __name__ == '__main__':
     main()
