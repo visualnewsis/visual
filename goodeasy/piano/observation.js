@@ -1,0 +1,84 @@
+import {STEPS,timing,sampleAction} from './motion.js';
+import {createExperiment} from './experiment.js';
+const $=id=>document.getElementById(id),reduced=matchMedia('(prefers-reduced-motion:reduce)');
+const partData={key:['건반','Key','손가락이 누른 앞쪽은 내려가고, 밸런스 핀을 기준으로 뒤쪽이 올라갑니다.'],wippen:['위펜','Wippen','건반 후단의 캡스턴에서 받은 힘을 잭과 반복 레버로 전달하는 중간 지렛대입니다.'],jack:['잭','Jack','너클을 밀어 해머를 가속합니다. 타현 직전에 옆으로 이탈해 해머가 자유롭게 현을 치도록 합니다.'],hammer:['해머','Hammer','목재 생크와 펠트 헤드로 이루어집니다. 현을 친 뒤 반발하며, 눌린 건반의 백체크에 받아집니다.'],strings:['현','Strings','해머의 충격으로 진동합니다. 진동이 보이도록 실제보다 느리고 크게 흔들리게 했습니다.'],damper:['댐퍼','Damper','펠트가 현에 닿으면 진동이 줄어듭니다. 건반을 누르거나 서스테인 페달을 켜면 위로 들립니다.']};
+let performanceRecord=null,position=0,playing=false,exploded=false,explodeAmount=0,showLabels=true,selectedPart='hammer',manualPart=false,scenes=null,lastTick=0,raf=0,dirtyUntil=0,stageVisible=false,inFrame=false,soundArmed=false;
+const getSnapshot=()=>window.PianoExperience?.snapshot()??{last:null,pedal:false,notes:[]};
+const name=midi=>['C','C♯','D','D♯','E','F','F♯','G','G♯','A','A♯','B'][midi%12]+(Math.floor(midi/12)-1);
+const duration=()=>timing(performanceRecord?.duration??300).duration;
+const icon=n=>`<svg aria-hidden="true"><use href="icons.svg#${n}"></use></svg>`;
+let experimentMode=false;
+const lab=createExperiment(Object.fromEntries(['prepareObservation','strikeObservation','releaseObservation','stopObservation'].map(method=>[method,(...args)=>window.PianoExperience?.[method](...args)])));
+function setExperiment(on){
+ setPlaying(false);lab.stop();
+ if(on&&!performanceRecord&&!capture())return;
+ experimentMode=on;manualPart=on;exploded=false;setAssembly();
+ $('observation-stage').classList.toggle('experiment-mode',on);$('experiment-controls').hidden=!on;
+ $('experiment-toggle').setAttribute('aria-pressed',String(on));$('experiment-toggle').textContent=on?'관찰로 돌아가기 ↗':'직접 만지기 ↗';
+ for(const id of ['replay','restart','timeline','speed','explode'])$(id).disabled=on||(id==='replay'&&!performanceRecord);
+ $('step-list').querySelectorAll('button').forEach(b=>b.disabled=on);
+ if(on){lab.enter(performanceRecord);$('lab-damper').setAttribute('aria-pressed','false');$('lab-damper').textContent='① 댐퍼 들기';$('lab-feedback').textContent='댐퍼가 현에 닿아 있습니다. 들었을 때와 소리를 비교해 보세요.';selectPart('damper',true);}
+ wake(600);
+}
+function labAction(part){if(!experimentMode)return;selectPart(part,true);
+ if(part==='strings'){lab.pluck();$('lab-feedback').textContent=lab.frame().damperUp?'현을 튕겼습니다. 댐퍼를 내리면 울림이 멎습니다.':'댐퍼가 현을 누르고 있어 소리가 짧게 멎습니다.';}
+ else if(part==='hammer'||part==='key'){lab.strike();$('lab-feedback').textContent='해머가 현에 닿는 순간 소리가 납니다.';}
+ else if(part==='damper'){const up=lab.toggleDamper();$('lab-damper').setAttribute('aria-pressed',String(up));$('lab-damper').textContent=up?'① 댐퍼 내리기':'① 댐퍼 들기';$('lab-feedback').textContent=up?'댐퍼를 들었습니다. 이제 현을 튕겨보세요.':'댐퍼가 현에 닿아 울림을 멈춥니다.';}
+ wake(5000);
+}
+$('experiment-toggle').addEventListener('click',()=>setExperiment(!experimentMode));
+$('lab-pluck').addEventListener('click',()=>labAction('strings'));$('lab-hammer').addEventListener('click',()=>labAction('hammer'));$('lab-damper').addEventListener('click',()=>labAction('damper'));
+
+STEPS.forEach((s,i)=>{const li=document.createElement('li'),button=document.createElement('button');button.innerHTML=`<span>${String(i).padStart(2,'0')}</span>${s[0]}`;button.type='button';button.addEventListener('click',()=>seek(i));li.append(button);$('step-list').append(li);});
+$('part-list').className='part-list';
+for(const [key,data] of Object.entries(partData)){const button=document.createElement('button');button.textContent=data[0];button.dataset.part=key;button.type='button';button.setAttribute('aria-pressed',String(key===selectedPart));button.addEventListener('click',()=>selectPart(key,true));$('part-list').append(button);}
+function selectPart(key,manual=false){selectedPart=key;manualPart=manual;const data=partData[key];$('anchor-name').textContent=data[0];$('part-description').replaceChildren();const b=document.createElement('b');b.textContent=`${data[0]} · ${data[1]}`;const p=document.createElement('p');p.textContent=data[2];$('part-description').append(b,p);$('part-list').querySelectorAll('button').forEach(el=>el.setAttribute('aria-pressed',String(el.dataset.part===key)));wake();}
+selectPart('hammer');
+function capture(){const last=getSnapshot().last;if(!last){$('scene-notice').textContent='먼저 위의 건반에서 한 음을 연주해 주세요.';return false;}performanceRecord=Object.freeze({...last,duration:Math.max(100,Math.min(1800,last.duration))});position=0;manualPart=false;exploded=false;setAssembly();$('detail-note').textContent=name(last.midi);$('snapshot-duration').textContent=`누른 시간 ${(last.duration/1000).toFixed(2)}초 · 페달 ${last.pedal?'ON':'OFF'}`;$('context-copy').textContent=`${name(last.midi)}의 작동 순서입니다. 재생 버튼을 눌러보세요.`;$('replay').disabled=false;$('scene-notice').textContent='';return true;}
+function setPlaying(value){
+ if(value){window.PianoExperience?.prepareObservation();soundArmed=position<=timing(performanceRecord?.duration??300).strike;lastTick=0;}
+ else {window.PianoExperience?.stopObservation();soundArmed=false;}
+ playing=value;$('replay').innerHTML=icon(value?'pause':'play');$('replay').setAttribute('aria-label',value?'관찰 일시정지':'관찰 재생');wake();}
+$('explore-link').addEventListener('click',()=>{if(experimentMode)setExperiment(false);if(capture())setPlaying(!reduced.matches);wake();});
+$('replay').addEventListener('click',()=>{if(!performanceRecord&&!capture())return;if(position>=duration())position=0;setPlaying(!playing);});
+$('restart').addEventListener('click',()=>{position=0;setPlaying(false);});
+function seek(step){if(exploded)return;const e=timing(performanceRecord?.duration??300);position=[0,200,e.escape+20,e.strike+10,e.rebound+80,e.release+160][step];manualPart=false;setPlaying(false);}
+$('timeline').addEventListener('input',e=>{position=Number(e.target.value)/1000*duration();manualPart=false;setPlaying(false);});
+$('timeline').addEventListener('keydown',e=>{if(!e.shiftKey)return;if(e.key==='ArrowRight'||e.key==='ArrowLeft'){e.preventDefault();position=Math.max(0,Math.min(duration(),position+(e.key==='ArrowRight'?10:-10)));setPlaying(false);}});
+function setAssembly(){setPlaying(false);$('explode').setAttribute('aria-pressed',String(exploded));$('explode').innerHTML=icon(exploded?'assemble':'explode')+`<span>${exploded?'조립하기':'분해 보기'}</span>`;$('replay').disabled=exploded||!performanceRecord;$('timeline').disabled=exploded;$('restart').disabled=exploded;$('step-list').querySelectorAll('button').forEach(b=>b.disabled=exploded);$('scene-notice').textContent=exploded?'분해 상태에서는 재생이 멈춥니다. 조립하면 다시 재생할 수 있습니다.':'';wake(1000);}
+$('explode').addEventListener('click',()=>{exploded=!exploded;setAssembly();});
+let side=false;$('view').addEventListener('click',()=>{side=!side;scenes?.view(side);$('view').setAttribute('aria-pressed',String(side));$('view').innerHTML=icon(side?'oblique':'side')+`<span>${side?'사선 보기':'측면 보기'}</span>`;wake();});
+$('labels').addEventListener('click',()=>{showLabels=!showLabels;$('labels').setAttribute('aria-pressed',String(showLabels));wake();});
+let dialogTrigger=null;function openParts(){if(experimentMode)setExperiment(false);dialogTrigger=document.activeElement;setPlaying(false);$('parts-dialog').showModal();$('parts-close').focus();}function closeParts(){if($('parts-dialog').open)$('parts-dialog').close();dialogTrigger?.focus();}
+$('parts-open').addEventListener('click',openParts);$('parts-close').addEventListener('click',closeParts);$('parts-dialog').addEventListener('cancel',e=>{e.preventDefault();closeParts();});
+$('fullscreen').addEventListener('click',async()=>{const stage=$('observation-stage');try{if(document.fullscreenElement)await document.exitFullscreen();else if(stage.requestFullscreen)await stage.requestFullscreen();else stage.classList.toggle('expanded');}catch{stage.classList.toggle('expanded');}updateFullscreen();wake();});
+function updateFullscreen(){const active=!!document.fullscreenElement||$('observation-stage').classList.contains('expanded');$('fullscreen').innerHTML=icon(active?'exit-fullscreen':'fullscreen')+`<span>${active?'원래 크기':'크게 보기'}</span>`;$('fullscreen').setAttribute('aria-label',active?'전체 화면 종료':'전체 화면');}
+document.addEventListener('fullscreenchange',()=>{updateFullscreen();wake();});document.addEventListener('keydown',e=>{if(e.key==='Escape'&&$('observation-stage').classList.contains('expanded')){$('observation-stage').classList.remove('expanded');updateFullscreen();wake();}});
+function wake(ms=500){dirtyUntil=Math.max(dirtyUntil,performance.now()+ms);if(!raf&&!inFrame&&!document.hidden)raf=requestAnimationFrame(frame);}
+function frame(now){raf=0;inFrame=true;const delta=lastTick?Math.min(70,now-lastTick):16;lastTick=now;if(playing&&stageVisible&&!$('parts-dialog').open){
+ const before=position,e=timing(performanceRecord?.duration??300);
+ position=Math.min(duration(),position+delta*Number($('speed').value));
+ if(soundArmed&&performanceRecord&&position>=e.strike){soundArmed=false;window.PianoExperience?.strikeObservation(performanceRecord.midi);$('replay-status').textContent=`${name(performanceRecord.midi)} · 해머가 현을 치는 순간의 소리입니다.`;}
+ if(before<e.release&&position>=e.release&&!performanceRecord?.pedal)window.PianoExperience?.releaseObservation();
+ if(position>=duration())setPlaying(false);
+ }
+ explodeAmount=reduced.matches?(exploded?1:0):explodeAmount+((exploded?1:0)-explodeAmount)*.12;
+ const m=experimentMode?lab.frame(now):sampleAction(position,performanceRecord?.duration??300,performanceRecord?.pedal??false);const step=STEPS[m.step];if(!manualPart&&selectedPart!==step[2])selectPart(step[2]);
+ $('step-count').textContent=`${String(m.step).padStart(2,'0')} / 05`;$('step-title').textContent=step[0];$('step-copy').textContent=step[1];$('step-list').querySelectorAll('button').forEach((b,i)=>{if(i===m.step)b.setAttribute('aria-current','step');else b.removeAttribute('aria-current');});
+ if(experimentMode){$('step-count').textContent='EXPERIMENT';$('step-title').textContent='울림은 어떻게 멎을까요?';$('step-copy').textContent='현·해머·댐퍼를 직접 조작하고 소리를 비교해 보세요.';}
+ $('timeline').value=String(Math.round(position/duration()*1000));$('timeline').setAttribute('aria-valuetext',`${m.step}단계 ${step[0]}`);$('timecode').textContent=`${(position/1000).toFixed(1)}s`;
+ const snapshot=getSnapshot();scenes?.draw(snapshot,m,explodeAmount,now);
+ if(scenes&&showLabels){const a=scenes.anchor(selectedPart),wrap=$('action-detail').getBoundingClientRect();$('part-anchor').hidden=!a?.visible;if(a?.visible){$('part-anchor').style.left=`${Math.max(12,Math.min(wrap.width-110,a.x*wrap.width+12))}px`;$('part-anchor').style.top=`${Math.max(12,Math.min(wrap.height-48,a.y*wrap.height-25))}px`;}}else $('part-anchor').hidden=true;
+ updateFallback(m);inFrame=false;if(experimentMode&&m.animating&&stageVisible||playing&&stageVisible||Math.abs(explodeAmount-(exploded?1:0))>.003||snapshot.notes.some(n=>n.down)||now<dirtyUntil)raf=requestAnimationFrame(frame);
+}
+window.addEventListener('piano:change',()=>wake(2200));window.addEventListener('piano:ready',()=>wake());window.addEventListener('resize',()=>wake());window.addEventListener('scroll',()=>wake(200),{passive:true});$('action-detail').addEventListener('pointermove',()=>wake(200));$('action-detail').addEventListener('wheel',()=>wake(200));$('action-detail').addEventListener('keydown',()=>wake(200));window.addEventListener('blur',()=>{if(playing)setPlaying(false);if(experimentMode)setExperiment(false);});document.addEventListener('visibilitychange',()=>{if(document.hidden){setPlaying(false);if(experimentMode)setExperiment(false);}if(!document.hidden){lastTick=0;wake();}});
+const observer=new IntersectionObserver(entries=>{for(const e of entries){if(e.target===$('observation-stage')){stageVisible=e.isIntersecting;if(!stageVisible&&playing)setPlaying(false);if(!stageVisible&&experimentMode)setExperiment(false);}}lastTick=0;wake();});observer.observe($('observation-stage'));observer.observe($('play'));
+let fallback=null;
+function updateFallback(m){if(!fallback)return;fallback.querySelector('[data-hammer]').setAttribute('transform',`rotate(${-m.hammer*28} 500 210)`);fallback.querySelector('[data-damper]').setAttribute('transform',`translate(0 ${-m.damper*25})`);fallback.querySelector('[data-key]').setAttribute('transform',`rotate(${m.key*4} 300 310)`);}
+try{const {createPianoScenes}=await import('./scene.js');scenes=createPianoScenes($('action-preview'),$('action-detail'),part=>{if(experimentMode)labAction(part);else {selectPart(part,true);openParts();}});$('scene-loading').hidden=true;wake();}
+catch(error){$('scene-loading').textContent='3D를 사용할 수 없어 측면 작동도로 표시합니다. 연주와 단계 관찰은 그대로 사용할 수 있습니다.';$('scene-loading').style.top='5%';const svg=document.createElementNS('http://www.w3.org/2000/svg','svg');svg.setAttribute('viewBox','0 0 700 400');svg.classList.add('fallback-diagram');svg.innerHTML='<path d="M70 100H650" stroke="#b69864" stroke-width="3"/><g data-damper><path d="M540 92V280" stroke="#b69864" stroke-width="3"/><rect x="515" y="79" width="52" height="18" rx="3" fill="#d9cdb1"/></g><g data-hammer><path d="M500 210L230 180" stroke="#bb8d56" stroke-width="10"/><ellipse cx="220" cy="166" rx="18" ry="31" fill="#ece0c3"/></g><g data-key><path d="M80 310H530" stroke="#c6a578" stroke-width="24"/><path d="M95 300H250" stroke="#f0eadb" stroke-width="24"/></g><path d="M300 330V310M440 308V260L370 235" stroke="#b69864" stroke-width="7"/><text x="70" y="65">현</text><text x="210" y="230">해머</text><text x="530" y="60">댐퍼</text><text x="90" y="365">건반</text>';$('action-detail').hidden=true;$('action-detail').parentElement.append(svg);fallback=svg;for(const id of ['view','labels']){$(id).disabled=true;$(id).title='3D를 사용할 수 없어 이 기능은 지원되지 않습니다.'} $('explode').disabled=true;wake();}
+wake();
+
+document.querySelector('.observation-foot a').addEventListener('click',()=>{setPlaying(false);if(experimentMode)setExperiment(false);});
+
+window.addEventListener('piano:study',()=>{setPlaying(false);if(experimentMode)setExperiment(false);});
