@@ -68,7 +68,7 @@
       }
       if (audio.state !== 'running') {
         audio.resume().then(() => {
-          audioMessage(audio.state === 'running' ? '소리 켜짐 · 헤드폰으로 작은 울림까지 들어보세요.' : '소리가 일시 정지됐습니다. 건반을 다시 눌러주세요.', audio.state !== 'running');
+          audioMessage(audio.state === 'running' ? '소리 켜짐 · 음량을 조절할 수 있습니다.' : '소리가 일시 정지됐습니다. 건반을 다시 눌러주세요.', audio.state !== 'running');
         }).catch(() => audioMessage('소리를 켜지 못했습니다. 브라우저의 사이트 소리 권한을 확인한 뒤 건반을 다시 눌러주세요.', true));
       } else audioMessage(Number($('volume').value) ? '소리 켜짐 · 합성음으로 연주 중' : '음량이 0입니다. 음량을 올려주세요.');
       return audio;
@@ -138,7 +138,7 @@
     $('note-name').textContent = name;
     $('note-caption').textContent = `${solfege[last.midi % 12]} · ${Math.round(440 * 2 ** ((last.midi - 69) / 12))} Hz`;
     $('detail-note').textContent = name;
-    $('context-copy').textContent = `방금 연주한 ${name}. 같은 음의 건반·해머·현·댐퍼를 보고 있습니다.`;
+    $('context-copy').textContent = `${name}의 건반·해머·현·댐퍼 움직임을 보여줍니다.`;
     $('replay').disabled = false;
   }
   function wake() { window.dispatchEvent(new Event('piano:change')); }
