@@ -28,6 +28,7 @@ a.vnh-section:hover,a.vnh-section:focus-visible{text-decoration:underline;text-u
 .vnh-nav a:hover,.vnh-nav a:focus-visible{text-decoration:underline;text-underline-offset:5px}
 .vnh-nav a[aria-current="page"]::after{content:"";position:absolute;left:0;right:0;bottom:10px;height:2px;background:#e6292f}
 .vnh-nav-icon{display:block;height:.85em;width:auto;flex:none}
+.vnh-nav-icon.vnh-character-icon{height:18px;width:18px;object-fit:contain}
 .vnh-nav-disabled{opacity:.4;cursor:default}
 body.vnh-lock{overflow:hidden}
 body.vnh-ready{padding-top:calc(64px + env(safe-area-inset-top,0px))!important}

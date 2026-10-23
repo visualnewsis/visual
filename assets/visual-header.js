@@ -6,7 +6,7 @@
   const current=script?.dataset.current||"";
   const labels={latest:"최신 기사",editshop:"편집#",newsystem:"뉴시스템",mapguide:"알아볼지도",onepoint:"닿소리 홀소리",arcade:"충무로딩",calculator:"계산대로",newsmap:"여기뉴스"};
   const links={latest:"https://visual.newsis.com/#latest",editshop:"https://visual.newsis.com/editshop/",newsystem:"https://visual.newsis.com/newsystem/",mapguide:"https://visual.newsis.com/bukang/",onepoint:"https://visual.newsis.com/onepoint/",arcade:"https://visual.newsis.com/arcade/",calculator:"https://visual.newsis.com/calculator/index.html",newsmap:"https://visual.newsis.com/newsmap/"};
-  const icons={arcade:"https://visual.newsis.com/assets/menu-icon-arcade.png",calculator:"https://visual.newsis.com/assets/menu-icon-calculator.png",newsmap:new URL("menu-icon-here-news.svg",script.src).href};
+  const icons={onepoint:new URL("menu-icon-onepoint.png",script.src).href,arcade:"https://visual.newsis.com/assets/menu-icon-arcade.png",calculator:"https://visual.newsis.com/assets/menu-icon-calculator.png",newsmap:new URL("menu-icon-here-news.svg",script.src).href};
   const start=()=>{
     const old=document.querySelector("body > header.masthead,body > header.topbar,body > header.visual-head");
     if(old) old.remove();
@@ -23,7 +23,7 @@
     overlay.dataset.open="false";
     overlay.dataset.theme=theme;
     const navItems=Object.keys(labels).map(key=>{
-      const icon=icons[key]?`<img class="vnh-nav-icon" src="${icons[key]}" alt="">`:"";
+      const icon=icons[key]?`<img class="vnh-nav-icon${key==='onepoint'?' vnh-character-icon':''}" src="${icons[key]}" alt="">`:"";
       if(!links[key]) return `<span class="vnh-nav-disabled" aria-disabled="true">${icon}${labels[key]}</span>`;
       return `<a${key==='newsmap'?' class="vnh-map-entry"':''} href="${links[key]}"${current===key?' aria-current="page"':''}>${icon}${labels[key]}</a>`;
     }).join("");

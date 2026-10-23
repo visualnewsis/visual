@@ -335,5 +335,7 @@
   }else{
     restoreUrl();$('map-message').hidden=false;$('map-message').textContent='지도 라이브러리를 불러오지 못했습니다. 지역 선택과 기사 목록을 이용해 주세요.';
   }
+  // Static script URLs may be cached across releases; verify current data immediately.
+  refreshData(true);
   window.NewsmapApp={state,nodes,get articles(){return payload.articles;},get shown(){return shown;},selectPlace,render,get map(){return map;},cutoff};
 })();

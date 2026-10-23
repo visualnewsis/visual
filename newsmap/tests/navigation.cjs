@@ -34,6 +34,7 @@ function boot({missing=false,search=''}={}){
   return {ctx,ids,periods,events,calls,get pending(){return pending;},get expanded(){return expanded;}};
 }
 const app=boot(),api=app.ctx.window.NewsmapApp;
+assert.match(app.pending.src,/^data\/articles\.js\?v=/,'Opening the page must immediately bypass the cached snapshot.');
 app.periods[3].events.click();
 assert.equal(api.state.period,'all');
 assert.equal(app.calls.at(-1).mode,'pushState');
