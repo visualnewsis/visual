@@ -13,6 +13,7 @@
   const inputs = new Map();
   const voices = new Map();
   const observationVoices = new Map();
+  const studyVoices = new Map();
   const states = new Map();
   let last = null, pedal = false, audio = null, master = null, compressor = null;
   const noteName = midi => names[midi % 12] + (Math.floor(midi / 12) - 1);
@@ -87,17 +88,19 @@
     voice.envelope.gain.exponentialRampToValueAtTime(.00001, t + (hard ? .018 : .18));
     voice.nodes.forEach(node => { try { node.stop(t + (hard ? .025 : .22)); } catch (_) {} });
   }
-  function strike(midi, voiceMap = voices, delay = .025) {
+  function strike(midi, voiceMap = voices, delay = .025, options = {}) {
     const ctx = ensureAudio();
     if (!ctx) return;
     endVoice(midi, true, voiceMap);
     const start = ctx.currentTime + delay;
     const envelope = ctx.createGain();
-    const level = .17;
+    const velocity = Math.max(.15,Math.min(1,options.velocity ?? 1));
+    const decay = Math.max(.06,Math.min(8,options.decay ?? 8));
+    const level = .17 * velocity ** .8;
     envelope.gain.value = level;
     envelope.connect(master);
     const nodes = [];
-    const frequency = 440 * 2 ** ((midi - 69) / 12);
+    const frequency = options.frequency ?? 440 * 2 ** ((midi - 69) / 12);
     const amplitudes = [1,.44,.27,.15,.09,.055,.025];
     amplitudes.forEach((amplitude, i) => {
       const partial = i + 1;
@@ -106,11 +109,11 @@
       oscillator.type = 'sine';
       oscillator.frequency.value = frequency * partial * Math.sqrt(1 + .00012 * partial * partial);
       gain.gain.setValueAtTime(.00001, start);
-      gain.gain.exponentialRampToValueAtTime(amplitude, start + .004);
-      gain.gain.exponentialRampToValueAtTime(.00001, start + 8 / Math.sqrt(partial));
+      gain.gain.exponentialRampToValueAtTime(amplitude * velocity ** (i * .16), start + .004);
+      gain.gain.exponentialRampToValueAtTime(.00001, start + decay / Math.sqrt(partial));
       oscillator.connect(gain).connect(envelope);
       oscillator.start(start);
-      oscillator.stop(start + 8.1);
+      oscillator.stop(start + decay + .1);
       oscillator.onended = () => { oscillator.disconnect(); gain.disconnect(); };
       nodes.push(oscillator);
     });
@@ -226,7 +229,16 @@
   const stopObservation = () => [...observationVoices.keys()].forEach(midi => endVoice(midi, true, observationVoices));
   window.addEventListener('blur', stopObservation);
   document.addEventListener('visibilitychange', () => { if (document.hidden) stopObservation(); });
-  window.PianoExperience = Object.freeze({snapshot, prepareObservation:ensureAudio,
+  const stopStudy = () => [...studyVoices.keys()].forEach(midi => endVoice(midi, true, studyVoices));
+  window.addEventListener('blur',stopStudy);
+  document.addEventListener('visibilitychange',()=>{if(document.hidden)stopStudy();});
+  window.PianoExperience = Object.freeze({snapshot, prepareObservation:ensureAudio, stopStudy,
+    playStudy(options={}) {
+      const midi=Number(options.midi??60),frequency=Number(options.frequency??440*2**((midi-69)/12));
+      if(!Number.isFinite(midi)||midi<24||midi>96||!Number.isFinite(frequency)||frequency<40||frequency>8000)return;
+      stopStudy();stopObservation();window.dispatchEvent(new Event('piano:study'));
+      strike(midi,studyVoices,0,{...options,frequency});
+    },
     strikeObservation(midi) { if (!Number.isInteger(midi) || midi<60 || midi>84) return; stopObservation(); strike(midi, observationVoices, 0); },
     releaseObservation() { [...observationVoices.keys()].forEach(midi => endVoice(midi, false, observationVoices)); },
     stopObservation

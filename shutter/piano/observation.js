@@ -80,3 +80,5 @@ catch(error){$('scene-loading').textContent='3D를 사용할 수 없어 측면 �
 wake();
 
 document.querySelector('.observation-foot a').addEventListener('click',()=>{setPlaying(false);if(experimentMode)setExperiment(false);});
+
+window.addEventListener('piano:study',()=>{setPlaying(false);if(experimentMode)setExperiment(false);});

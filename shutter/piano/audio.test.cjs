@@ -14,4 +14,6 @@ engine.strikeObservation(69);const observation=nodes.slice(7);assert.equal(obser
 engine.stopObservation();assert(observation.every(n=>n.stopped<10.03));assert(live.every(n=>n.stopped>18));
 engine.strikeObservation(72);const next=nodes.slice(14);assert.equal(next.length,7);engine.releaseObservation();assert(next.every(n=>Math.abs(n.stopped-10.22)<.001));
 engine.strikeObservation(999);assert.equal(nodes.length,21);
-console.log('PASS observation attack timing, note pitch, stop/release and isolation from live keyboard voices');
+engine.playStudy({midi:69,frequency:220,velocity:.25,decay:.08});
+const study=nodes.slice(21);assert.equal(study.length,7);assert(Math.abs(study[0].frequency.value-220)<1);assert(study.every(n=>Math.abs(n.stopped-10.18)<.001));engine.stopStudy();assert(study.every(n=>n.stopped<10.03));
+console.log('PASS observation/study attack, custom pitch/decay, stop and isolation from live keyboard voices');
