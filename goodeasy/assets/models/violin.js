@@ -1,9 +1,10 @@
-import {smoothOutline,shapeFromPoints,insetOutline,hollowRibs,archedPlate,violinTopY} from './surface-utils.js';
-import {mat,mesh,curveTube,cylinderBetween,ellipsoid,horizontalExtrude,outlineShape,assemblyGroup,orientedBox,addWoodGrain} from './model-utils.js';
+import {smoothOutline,shapeFromPoints,insetOutline,hollowRibs,archedPlate,violinTopY} from './surface-utils.js?v=20261024-r7';
+import {mat,mesh,curveTube,cylinderBetween,ellipsoid,horizontalExtrude,outlineShape,assemblyGroup,orientedBox,addWoodGrain} from './model-utils.js?v=20261024-r7';
 /** Violin: X scroll (-) to tail (+), Y soundboard normal (+), Z string spread.
  * The bow is a separately transformable group; animation is the caller's responsibility.
  * MIDI G3 D4 A4 E5 = [55,62,69,76]. Dimensions are visual assumptions, not CAD.
  */
+function fHole(T,side){const s=new T.Shape();s.moveTo(-.22,-.012);s.bezierCurveTo(-.24,-.055,-.17,-.045,-.175,-.014);s.bezierCurveTo(-.16,.015,-.09,.018,-.03,-.002);s.bezierCurveTo(.06,-.04,.19,-.035,.25,.015);s.bezierCurveTo(.29,.04,.35,.015,.325,-.018);s.bezierCurveTo(.30,-.045,.275,-.025,.283,-.005);s.bezierCurveTo(.19,-.055,.07,-.06,-.04,-.02);s.bezierCurveTo(-.1,.002,-.16,0,-.19,-.022);s.closePath();return s.getPoints(64).slice(0,-1).map(p=>new T.Vector2(.46+p.x*.8,side*(.245+p.y*.7)));}
 export function buildViolin(THREE,materials={}){
  const group=new THREE.Group();group.name='GOODEASY / 06 / violin';
  const wood=mat(THREE,materials.wood,'#b45d29'),dark=mat(THREE,materials.darkWood,'#49251b');
@@ -30,7 +31,7 @@ export function buildViolin(THREE,materials={}){
  parts.ribs=ribs;
  const back=horizontalExtrude(THREE,outline,.022,.003,wood,'back plate',parts.body);back.position.y=-.105;
  parts.back=back;
- const top=archedPlate(THREE,contour,.106,.032,varnish,parts.body,'continuous subdivided arched soundboard',.055);
+ const top=archedPlate(THREE,contour,.106,.032,varnish,parts.body,'continuous subdivided arched soundboard',.055,[-1,1].map(side=>fHole(THREE,side)));
  parts.top=top;
  // Purfling follows violin's actual C-bout contour, not a simple oval.
  const edge=contour.map(p=>[p.x,.108,p.y]);curveTube(THREE,edge,.0045,black,'purfling edge',parts.body,260,6);
@@ -46,6 +47,8 @@ export function buildViolin(THREE,materials={}){
    // F-hole wing notches.
    curveTube(THREE,[fh(.07,z-.028*side),fh(.09,z-.055*side)],.006,black,'f-hole notch',parts.fHoles,12,6);
  }
+ const darkInside=mesh(THREE,new THREE.PlaneGeometry(1.2,.8),new THREE.MeshStandardMaterial({color:0x140c08,roughness:1,side:THREE.DoubleSide}),'interior shadow plane',parts.body);darkInside.rotation.x=-Math.PI/2;darkInside.position.set(.4,-.045,0);parts.fHoles.visible=false; // Replaced by actual openings in the soundboard.
+ const chinrest=assemblyGroup(THREE,'chinrest',group);parts.chinrest=chinrest;ellipsoid(THREE,[.94,.17,-.23],[.23,.033,.15],black,'chin rest',chinrest,40);for(const z of [-.15,-.29])cylinderBetween(THREE,[1.12,.12,z],[1.12,-.10,z],.009,steel,'chinrest clamp',chinrest);
  // Neck, ebony fingerboard, nut, scroll and four side-mounted pegs.
  parts.neck=assemblyGroup(THREE,'neck and fingerboard',group);
  curveTube(THREE,[[-.67,.045,0],[-.98,.065,0],[-1.37,.085,0],[-1.66,.095,0]],.063,dark,'maple neck',parts.neck,90,16);
@@ -144,6 +147,6 @@ export function buildViolin(THREE,materials={}){
  bow.userData={selectedStringIndex,contactLocal:[contactX,contactY,contactZ],movementAxis:'Z',
    // Moving in Z changes which portion of hair contacts the string. Audio gating is external.
    hairCenterlineY:hairY,contactTolerance:.006};
- group.userData={instrument:'violin',coordinateSystem:'X along scroll-to-tail, Y top normal, Z string spread',dimensions:'visualization assumptions; NOT CAD',bowMovementAxis:'Z',bowDefaultPosition:[0,0,0],fHoles:'surface graphic approximation, NOT perforations',arch:'earcut outline triangulation + adaptive subdivision; not physical plate scan',bridgeOrientation:'upright YZ',speakingLength:'nut to bridge crown'};
+ group.userData={instrument:'violin',coordinateSystem:'X along scroll-to-tail, Y top normal, Z string spread',dimensions:'visualization assumptions; NOT CAD',bowMovementAxis:'Z',bowDefaultPosition:[0,0,0],fHoles:'cut-through top openings; silhouette approximation, NOT CAD',arch:'earcut outline triangulation + adaptive subdivision; not physical plate scan',bridgeOrientation:'upright YZ',speakingLength:'nut to bridge crown'};
  return {group,strings,bow,parts};
 }

@@ -1,4 +1,4 @@
-import {clamp,reelStep,exposure,wind,watchStep,filmStep,switchState,coffeeFlow} from './model.mjs';
+import {clamp,reelStep,exposure,wind,watchStep,filmStep,switchState,coffeeFlow} from './model.mjs?v=20261024-r7';
 const $=id=>document.getElementById(id),kind=document.body.dataset.experiment;
 const base={turns:0,rotor:0,distance:20,drag:50,slipping:false,aperture:2.8,shutter:250,shots:0,photo:null,reserve:0,elapsed:0,frames:0,frame:0,text:'',key:'A',travel:0,locked:false,brewing:false,volume:0,grind:50,pressure:9};
 let state={...base},record=null,step=0,animation=0,last=0,visible=true,frameTime=0;

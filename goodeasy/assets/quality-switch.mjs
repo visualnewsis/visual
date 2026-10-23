@@ -1,4 +1,4 @@
-import {T,materials as M,box,cyl,rod,tube,part,tag} from './quality-kit.mjs';
+import {T,materials as M,box,cyl,rod,tube,part,tag} from './quality-kit.mjs?v=20261024-r7';
 export function buildSwitch(){const group=new T.Group(),base=part(group,'body');box(base,2.5,.22,2.5,M.black,0,.12,0,.12);box(base,2.1,.09,2.1,new T.MeshStandardMaterial({color:0x254b3e}),0,.27,0,.04);
  const housing=part(group,'housing');for(const x of [-1,1])box(housing,.13,1.25,1.9,M.glass.clone(),x,.9,0,.03);box(housing,2.1,1.25,.12,M.glass.clone(),0,.9,-.95,.03);
  const cap=part(group,'cap');box(cap,2.5,.47,2.3,M.ivory,0,2.55,0,.15);box(cap,.52,1.35,.52,M.red,0,1.68,0,.04);box(cap,.95,.15,.25,M.red,0,1.18,0,.025);

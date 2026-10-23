@@ -11,6 +11,7 @@ assert.equal(guitar.group.userData.scaleLength,guitar.strings[0].to[0]-guitar.st
 assert.equal(guitar.group.userData.fretCount,guitar.parts.frets.children.length);
 for(const s of violin.strings){assert.equal(s.to[0],.18);assert.ok(s.to[1]>.25);assert.deepEqual(s.afterlengthMesh?true:false,true);}
 const top=violin.parts.top.geometry.attributes.normal;let positive=0;for(let i=0;i<top.count;i++)if(top.getY(i)>0)positive++;assert.ok(positive/top.count>.99,'arched plate normals face up');
+const holeRay=new T.Raycaster(new T.Vector3(.46,1,.23),new T.Vector3(0,-1,0));assert.equal(holeRay.intersectObject(violin.parts.top).length,0,'f-hole is an opening, not paint on a solid soundboard');assert.ok(violin.parts.top.geometry.attributes.uv,'soundboard has texture coordinates');
 const contact=violin.bow.userData.contactLocal;assert.ok(Math.abs(violin.bow.userData.hairCenterlineY-contact[1])<.006,'bow hair meets selected string');
 for(const model of [guitar,violin]){const rib=new T.Box3().setFromObject(model.parts.ribs);assert.ok(rib.max.y>0&&rib.min.y<-.1,'ribs connect upper and lower plates');}
 console.log('PASS instrument geometry: 10 tuned strings, finite meshes, fret scale, upright bridge endpoints, upward arch normals, bow contact and connected ribs');

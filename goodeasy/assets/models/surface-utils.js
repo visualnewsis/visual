@@ -23,11 +23,11 @@ export function hollowRibs(THREE,outer,inner,yTop,yBottom,material,parent,name='
   const o=new THREE.Mesh(geo,material);o.name=name;o.castShadow=true;o.receiveShadow=true;parent.add(o);return o;
 }
 function distanceToEdges(x,z,polygon){let d=Infinity;for(let i=0;i<polygon.length;i++){const a=polygon[i],b=polygon[(i+1)%polygon.length],vx=b.x-a.x,vz=b.y-a.y,t=Math.max(0,Math.min(1,((x-a.x)*vx+(z-a.y)*vz)/(vx*vx+vz*vz||1)));d=Math.min(d,Math.hypot(x-(a.x+t*vx),z-(a.y+t*vz)))}return d}
-export function archedPlate(THREE,outline,yEdge,archHeight,material,parent,name='arched plate',maxEdge=.055){
+export function archedPlate(THREE,outline,yEdge,archHeight,material,parent,name='arched plate',maxEdge=.055,holes=[]){
   // Earcut triangulation of the exact smooth outline, followed by uniform 1-to-4 subdivision.
   // No cell-centroid inclusion clipping: every boundary vertex belongs to the outline.
-  const contour=outline.map(p=>p.clone());const faces=THREE.ShapeUtils.triangulateShape(contour,[]);
-  const verts=contour.map(p=>[p.x,p.y]);let tris=faces.map(f=>f.slice());
+  const contour=outline.map(p=>p.clone());const faces=THREE.ShapeUtils.triangulateShape(contour,holes);
+  const verts=[...contour,...holes.flat()].map(p=>[p.x,p.y]);let tris=faces.map(f=>f.slice());
   // Three conforming 1-to-4 subdivision passes. Uniform refinement avoids T-junction cracks.
   for(let pass=0;pass<3;pass++){
     const edges=new Map(),next=[];
@@ -36,7 +36,7 @@ export function archedPlate(THREE,outline,yEdge,archHeight,material,parent,name=
   }
   const positions=[];for(const [x,z] of verts){const edgeDist=distanceToEdges(x,z,outline);const fade=1-Math.exp(-Math.pow(edgeDist/.19,1.45));const longitudinal=Math.max(.15,1-.20*Math.pow((x-.17)/1.1,2));positions.push(x,yEdge+archHeight*fade*longitudinal,z)}
   const indices=[];for(const tri of tris){let [a,b,c]=tri;const ax=positions[a*3],az=positions[a*3+2],bx=positions[b*3],bz=positions[b*3+2],cx=positions[c*3],cz=positions[c*3+2];const normalY=(bz-az)*(cx-ax)-(bx-ax)*(cz-az);if(normalY<0)[b,c]=[c,b];indices.push(a,b,c)}
-  const geo=new THREE.BufferGeometry();geo.setAttribute('position',new THREE.Float32BufferAttribute(positions,3));geo.setIndex(indices);geo.computeVertexNormals();const o=new THREE.Mesh(geo,material);o.name=name;o.castShadow=true;o.receiveShadow=true;parent.add(o);return o;
+  const geo=new THREE.BufferGeometry();geo.setAttribute('position',new THREE.Float32BufferAttribute(positions,3));geo.setIndex(indices);geo.setAttribute('uv',new THREE.Float32BufferAttribute(verts.flatMap(([x,z])=>[(x+.79)/1.97,(z+.48)/.96]),2));geo.computeVertexNormals();const o=new THREE.Mesh(geo,material);o.name=name;o.castShadow=true;o.receiveShadow=true;parent.add(o);return o;
 }
 export function violinTopY(outline,x,z){
  const edgeDist=distanceToEdges(x,z,outline);const fade=1-Math.exp(-Math.pow(edgeDist/.19,1.45));
