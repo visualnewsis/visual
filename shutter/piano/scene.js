@@ -41,7 +41,7 @@ export function createAction(parent,x=0){
  rod(key,[0,.1,.15],[0,.83,-.15],.025,material.brass);const check=block(key,.22,.24,.17,material.red,0,.88,-.15);check.rotation.x=-.2;
  rod(root,[.15,1.45,.76],[.15,1.95,.76],.025,material.brass);block(root,.2,.07,.2,material.felt,0,1.9,.76);
  const strings=new T.Group();root.add(strings);const lines=[];
- for(let i=-1;i<=1;i++){const points=[];for(let j=0;j<=20;j++)points.push(new T.Vector3(i*.075,3.66,-4+j*.5));const g=new T.BufferGeometry().setFromPoints(points);const line=new T.Line(g,new T.LineBasicMaterial({color:i===0?0xe8c37f:0x9c8050}));strings.add(line);lines.push(line);}
+ for(let i=-1;i<=1;i++){const points=[];for(let j=0;j<=20;j++)points.push(new T.Vector3(i*.075,3.66,-4+j*.5));const g=new T.BufferGeometry().setFromPoints(points);const line=new T.Line(g,new T.LineBasicMaterial({color:i===0?0xe8c37f:0x9c8050}));line.userData.part="strings";strings.add(line);lines.push(line);}
  const damper=new T.Group();damper.position.set(0,3.79,3.8);root.add(damper);block(damper,.31,.16,.68,material.black,0,.04,0);block(damper,.30,.15,.58,material.felt,0,-.10,0);rod(damper,[0,-.15,0],[0,-2.8,0],.023,material.steel);
  screw(root,0,-.18,-2.9);screw(root,0,-.18,3.6);
  const anchors={key:{object:key,point:new T.Vector3(0,.2,-2.7)},wippen:{object:wippen,point:new T.Vector3(0,.2,-.8)},jack:{object:jack,point:new T.Vector3(0,.4,0)},hammer:{object:head,point:new T.Vector3(0,.6,0)},strings:{object:strings,point:new T.Vector3(0,3.66,-.4)},damper:{object:damper,point:new T.Vector3(0,-.16,0)}};
@@ -61,7 +61,7 @@ export function createPianoScenes(previewCanvas,detailCanvas,onPart){
  const detailRoot=new T.Group();detail.scene.add(detailRoot);const selected=createAction(detailRoot,0);const neighbors=[createAction(detailRoot,-.55),createAction(detailRoot,.55)];
  neighbors.forEach(a=>a.root.traverse(v=>{if(v.isMesh){v.material=v.material.clone();v.material.transparent=true;v.material.opacity=.16;v.material.depthWrite=false;v.castShadow=false;}if(v.isLine){v.material=v.material.clone();v.material.transparent=true;v.material.opacity=.18;}}));
  block(detailRoot,1.9,.16,7.3,material.black,0,-.55,.3);
- let yaw=-.65,pitch=.3,distance=12.5,side=false,drag=null;const target=new T.Vector3(0,1.6,.4),ray=new T.Raycaster(),pointer=new T.Vector2();
+ let yaw=-.65,pitch=.3,distance=12.5,side=false,drag=null;const target=new T.Vector3(0,1.6,.4),ray=new T.Raycaster(),pointer=new T.Vector2();ray.params.Line.threshold=.045;
  const onDown=e=>{if(e.button!==0)return;drag={id:e.pointerId,x:e.clientX,y:e.clientY,yaw,pitch,start:performance.now()};detailCanvas.setPointerCapture(e.pointerId);};detailCanvas.addEventListener('pointerdown',onDown);
  detailCanvas.addEventListener('pointermove',e=>{if(!drag||drag.id!==e.pointerId)return;const dx=e.clientX-drag.x,dy=e.clientY-drag.y;yaw=drag.yaw+dx*.008;pitch=Math.max(.02,Math.min(.9,drag.pitch+dy*.004));});
  detailCanvas.addEventListener('pointerup',e=>{if(drag&&Math.hypot(e.clientX-drag.x,e.clientY-drag.y)<8&&performance.now()-drag.start<350){const r=detailCanvas.getBoundingClientRect();pointer.set((e.clientX-r.left)/r.width*2-1,-(e.clientY-r.top)/r.height*2+1);ray.setFromCamera(pointer,detail.camera);const hit=ray.intersectObject(selected.root,true).find(i=>i.object.userData.part);if(hit)onPart(hit.object.userData.part);}drag=null;});
