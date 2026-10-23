@@ -15,7 +15,7 @@
     }).sort((a,b)=>Date.parse(b.publishedAt)-Date.parse(a.publishedAt));
   }
   function group(articles,nodes,zoom,region=''){
-    const groups=new Map();
+    const groups=new Map(),seen=new Map();
     const depth=zoom<8?1:zoom<11?2:zoom<13?3:99;
     for(const a of articles) for(const place of a.places){
       if(!belongs(place,region)||!nodes[place]) continue;
@@ -23,9 +23,9 @@
       const minDepth=region?region.split('/').length:1;
       const target=parts.slice(0,Math.min(parts.length,Math.max(depth,minDepth))).join('/');
       if(!nodes[target]) continue;
-      if(!groups.has(target)) groups.set(target,{node:nodes[target],articles:[]});
+      if(!groups.has(target)){groups.set(target,{node:nodes[target],articles:[]});seen.set(target,new Set());}
       const g=groups.get(target);
-      if(!g.articles.some(x=>x.id===a.id)) g.articles.push(a);
+      if(!seen.get(target).has(a.id)){seen.get(target).add(a.id);g.articles.push(a);}
     }
     return [...groups.values()];
   }

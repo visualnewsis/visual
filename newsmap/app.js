@@ -7,6 +7,8 @@
   const sheet=window.NewsmapSheet?.();
   if(!geo||!Array.isArray(payload?.articles)||!rules){$('article-list').textContent='데이터를 불러오지 못했습니다. 페이지를 새로고침해 주세요.';$('snapshot-time').textContent='데이터 로드 실패 · 페이지 새로고침이 필요합니다.';$('refresh').onclick=()=>location.reload();sheet?.expand();return;}
   const nodes=Object.fromEntries(geo.nodes.map(n=>[n.id,n]));
+  const provinces=geo.nodes.filter(n=>n.level==='province'),descendantLists=new Map();
+  let projectedPayload,relatedArticles;
   const categories=['','all','정치','경제','산업','사회','IT·바이오','문화','스포츠','연예','국제'];
   function readUrl(){
     const params=new URLSearchParams(location.search);
@@ -41,7 +43,10 @@
     if(!pulseExpiry&&remaining>0)pulseExpiry=window.setTimeout(()=>renderMarkers(),remaining+20);
   }
   const hasUnreadPulse=a=>Date.parse(payload.collectedAt)+600000>now()&&(pulseBatch.active||[]).includes(a.id)&&!readArticles.has(a.id);
-  let map,markers,boundary,locationLayer,shown=[],searchMatches=[],visibleLimit=100;
+  const PAGE_SIZE=30;
+  let map,markers,boundary,locationLayer,shown=[],searchMatches=[],visibleLimit=PAGE_SIZE;
+  const markerLayers=new Map();
+  let lastListHtml='';
   const desktopPreview=matchMedia('(min-width:1100px) and (pointer:fine)');
   let mapPreview;
   function closeMapPreview(){if(mapPreview)mapPreview.hidden=true;}
@@ -69,11 +74,15 @@
     if(url===location.pathname+location.search+location.hash)return;
     try{history[mode==='replace'?'replaceState':'pushState'](null,'',url);}catch{/* Local file preview may restrict history. */}
   }
-  function descendants(parent,level){return geo.nodes.filter(n=>n.level===level&&n.id.startsWith(parent+'/'));}
+  function descendants(parent,level){const key=parent+'|'+level;if(!descendantLists.has(key))descendantLists.set(key,geo.nodes.filter(n=>n.level===level&&n.id.startsWith(parent+'/')));return descendantLists.get(key);}
   function fillSelect(id,list,value,placeholder){
     const select=$(id);
-    select.replaceChildren(new Option(placeholder,''));
-    list.sort((a,b)=>a.id.localeCompare(b.id,'ko')).forEach(n=>select.add(new Option(n.path.slice(id==='province'?0:1).join(' '),n.id)));
+    const key=list.map(n=>n.id).join('|');
+    if(select.dataset.optionsKey!==key){
+      select.replaceChildren(new Option(placeholder,''));
+      [...list].sort((a,b)=>a.id.localeCompare(b.id,'ko')).forEach(n=>select.add(new Option(n.path.slice(id==='province'?0:1).join(' '),n.id)));
+      select.dataset.optionsKey=key;
+    }
     select.value=value||'';
     select.disabled=list.length===0;
   }
@@ -81,7 +90,7 @@
     const n=nodes[state.region];
     const path=n?.path||[];
     const province=path[0]||'';
-    fillSelect('province',geo.nodes.filter(n=>n.level==='province'),province,'전국');
+    fillSelect('province',provinces,province,'전국');
     const districtList=province?descendants(province,'district'):[];
     const district=n?.level==='district'?n.id:(n?.level==='dong'?n.parent:'');
     fillSelect('district',districtList,district,'시·군·구 전체');
@@ -99,7 +108,8 @@
   }
   function mapBox(){if(!map)return null;const b=map.getBounds();return [b.getSouth(),b.getWest(),b.getNorth(),b.getEast()];}
   function selectedArticles(onlyNew=state.onlyNew){
-    const articles=state.category?payload.articles.map(a=>({...a,places:a.relatedPlaces||a.places})):payload.articles;
+    if(projectedPayload!==payload){projectedPayload=payload;relatedArticles=payload.articles.map(a=>({...a,places:a.relatedPlaces||a.places}));}
+    const articles=state.category?relatedArticles:payload.articles;
     return rules.filter(articles,{region:state.region,period:state.period,onlyNew,cutoff,now:now(),category:state.category==='all'?'':state.category,includeUnlocated:!!state.category,bounds:state.viewport?mapBox():null,nodes});
   }
   function visiblePlaces(article,box=state.viewport?mapBox():null){return article.places.filter(p=>rules.belongs(p,state.region)&&(!box||rules.inBox(nodes[p].center,box)));}
@@ -114,7 +124,8 @@
   function renderList(){
     closeMapPreview();
     syncPulseBatch();
-    shown=selectedArticles();
+    const allShown=selectedArticles(false);
+    shown=state.onlyNew?allShown.filter(isNew):allShown;
     const n=nodes[state.region];
     const center=map?.getCenter();
     const camera=map&&state.viewport&&!state.region&&map.getZoom()>=8?rules.cameraContext(geo.nodes,[center.lat,center.lng],map.getZoom()):null;
@@ -124,12 +135,13 @@
     $('region-title').textContent=region+'의 소식';
     $('article-count').textContent=shown.length;
     sheet?.update(shown.length,region);
-    $('new-count').textContent=selectedArticles(false).filter(isNew).length;
+    $('new-count').textContent=allShown.filter(isNew).length;
     $('map-heading').textContent=camera?(camera.node?cameraName+' 주변에서 전해온 이야기':'현재 지도에서 전해온 이야기'):n?region+'에서 전해온 이야기':'전국에서 전해온 이야기';
     const meters=camera?map.distance(center,map.getBounds().getNorthEast()):0;
     const range=meters<1000?Math.max(100,Math.round(meters/100)*100)+'m':(meters<10000?(meters/1000).toFixed(1):Math.round(meters/1000))+'km';
     $('map-subheading').textContent=camera?'지도 중심에서 약 '+range+' 범위 · 현재 지도 안의 기사':n?.level==='dong'?'이 동네가 확인된 기사만 모았습니다.':'빛나는 원을 눌러 그곳의 뉴스를 만나보세요.';
-    $('article-list').innerHTML=shown.length?shown.slice(0,visibleLimit).map(articleCard).join('')+(shown.length>visibleLimit?'<button class="load-more" id="load-more">기사 더 보기 ('+Math.min(100,shown.length-visibleLimit)+'건)</button>':''):`<div class="empty"><span class="empty-mark" aria-hidden="true">⌖</span><h3>아직 모인 기사가 없어요.</h3><p>${state.onlyNew?'현재 기간·지역에 새 기사 기준을 충족하는 기사가 없습니다.':state.viewport?'현재 지도 안에 수집된 기사가 없습니다. 지도를 이동하거나 지도 안만을 해제해 보세요.':n?.level==='dong'?'이 동네까지 위치가 확인된 기사가 없습니다. 구·시 단위 기사를 이 동네로 추정해 넣지 않습니다.':'선택한 기간·지역에 수집된 기사가 없습니다.'}<br>기간을 넓히거나 상위 지역의 소식을 살펴보세요.</p><button id="empty-reset">${state.onlyNew?'전체 기사 보기':state.period!=='all'?'전체 기간으로 보기':n?'상위 지역 보기':'전국 기사 다시 보기'}</button></div>`;
+    const listHtml=shown.length?shown.slice(0,visibleLimit).map(articleCard).join('')+(shown.length>visibleLimit?'<button class="load-more" id="load-more">기사 더 보기 ('+Math.min(PAGE_SIZE,shown.length-visibleLimit)+'건)</button>':''):`<div class="empty"><span class="empty-mark" aria-hidden="true">⌖</span><h3>아직 모인 기사가 없어요.</h3><p>${state.onlyNew?'현재 기간·지역에 새 기사 기준을 충족하는 기사가 없습니다.':state.viewport?'현재 지도 안에 수집된 기사가 없습니다. 지도를 이동하거나 지도 안만을 해제해 보세요.':n?.level==='dong'?'이 동네까지 위치가 확인된 기사가 없습니다. 구·시 단위 기사를 이 동네로 추정해 넣지 않습니다.':'선택한 기간·지역에 수집된 기사가 없습니다.'}<br>기간을 넓히거나 상위 지역의 소식을 살펴보세요.</p><button id="empty-reset">${state.onlyNew?'전체 기사 보기':state.period!=='all'?'전체 기간으로 보기':n?'상위 지역 보기':'전국 기사 다시 보기'}</button></div>`;
+    if(listHtml!==lastListHtml){$('article-list').innerHTML=listHtml;lastListHtml=listHtml;}
     $('new-basis').textContent=(saved>0&&saved<=sessionStarted?'이 브라우저의 지난 방문 이후':'첫 방문 · 최근 24시간')+' 발행 기사 기준';
     const unlocated=shown.filter(a=>!a.places.length).length;
     $('view-status').textContent=(state.category?(state.category==='all'?'전체 분야':state.category)+' · ':'')+(state.viewport?'현재 지도 안 · ':'선택 지역 전체 · ')+shown.length+'건'+(unlocated?' · 위치 미지정 '+unlocated+'건':'');
@@ -138,7 +150,6 @@
   }
   function renderMarkers(){
     if(!map)return;
-    markers.clearLayers();
     const box=state.viewport?mapBox():null;
     let groups=rules.group(shown.map(a=>({...a,places:visiblePlaces(a,box)})),nodes,map.getZoom(),state.region);
     if(map.getZoom()<8){
@@ -148,11 +159,13 @@
         const near=clusters.find(c=>map.latLngToContainerPoint(c.node.center).distanceTo(point)<48);
         if(near){
           near.members.push(g.node);
-          for(const a of g.articles)if(!near.articles.some(x=>x.id===a.id))near.articles.push(a);
-        }else clusters.push({...g,articles:[...g.articles],members:[g.node]});
+          for(const a of g.articles)if(!near.ids.has(a.id)){near.ids.add(a.id);near.articles.push(a);}
+        }else clusters.push({...g,articles:[...g.articles],ids:new Set(g.articles.map(a=>a.id)),members:[g.node]});
       }
       groups=clusters;
     }
+    const wanted=new Set(groups.map(g=>g.node.id));
+    for(const [id,entry] of markerLayers)if(!wanted.has(id)){markers.removeLayer(entry.marker);markerLayers.delete(id);}
     groups.forEach((g,i)=>{
       const count=g.articles.length;
       const fresh=g.articles.filter(isNew).length;
@@ -160,6 +173,10 @@
       const clustered=g.members?.length>1;
       const label=shortName(g.node)+(clustered?' 외 '+(g.members.length-1)+'곳':'');
       const unread=g.articles.some(hasUnreadPulse);
+      const signature=JSON.stringify([payload.collectedAt,g.articles.map(a=>a.id),fresh,unread,state.motion,label]);
+      const existing=markerLayers.get(g.node.id);
+      if(existing?.signature===signature)return;
+      if(existing)markers.removeLayer(existing.marker);
       const signalKey=g.node.id;
       const animate=state.motion&&!matchMedia('(prefers-reduced-motion:reduce)').matches&&(now()<sessionStarted+5500||!seenSignals.has(signalKey));
       if(animate)seenSignals.add(signalKey);
@@ -180,12 +197,13 @@
         }else selectPlace(g.node.id);
       });
       marker.addTo(markers);
+      markerLayers.set(g.node.id,{marker,signature});
     });
     const showEmpty=shown.length===0;
     $('map-message').hidden=!showEmpty;
     if(showEmpty)$('map-message').textContent=state.viewport?'현재 지도 안에 모인 기사가 없습니다. 지도를 더 멀리 보거나 기간을 넓혀보세요.':'이 조건에 수집된 기사가 없습니다. 기간을 넓히거나 상위 지역을 선택해보세요.';
   }
-  function render(mode='push'){if(mode==='push')visibleLimit=100;renderList();renderMarkers();updateUrl(mode);}
+  function render(mode='push'){if(mode==='push')visibleLimit=PAGE_SIZE;renderList();renderMarkers();updateUrl(mode);}
   function openMapPreview(group,clustered){
     if(!mapPreview){
       mapPreview=document.createElement('section');
@@ -306,7 +324,7 @@
   }
   $('article-list').addEventListener('click',markArticleRead);
   $('article-list').addEventListener('auxclick',markArticleRead);
-  $('article-list').addEventListener('click',event=>{if(event.target.id==='load-more'){visibleLimit+=100;renderList();return;}if(event.target.id!=='empty-reset')return;if(state.onlyNew){state.onlyNew=false;render();}else if(state.period!=='all'){state.period='all';render();}else selectPlace(nodes[state.region]?.parent||'');});
+  $('article-list').addEventListener('click',event=>{if(event.target.id==='load-more'){visibleLimit+=PAGE_SIZE;renderList();return;}if(event.target.id!=='empty-reset')return;if(state.onlyNew){state.onlyNew=false;render();}else if(state.period!=='all'){state.period='all';render();}else selectPlace(nodes[state.region]?.parent||'');});
   $('reset-map').addEventListener('click',()=>selectPlace(''));
   $('zoom-in').addEventListener('click',()=>{userMapInteraction=true;map?.zoomIn();});
   $('zoom-out').addEventListener('click',()=>{userMapInteraction=true;map?.zoomOut();});
@@ -395,7 +413,7 @@
     map.on('moveend',()=>{
       if(restoring)return;
       if(userMapInteraction){
-        userMapInteraction=false;state.region='';state.viewport=map.getZoom()>=8;visibleLimit=100;
+        userMapInteraction=false;state.region='';state.viewport=map.getZoom()>=8;visibleLimit=PAGE_SIZE;
         drawBoundary();renderList();updateUrl('replace');
       }else if(state.viewport){renderList();updateUrl('replace');}
       renderMarkers();
