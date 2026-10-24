@@ -1,5 +1,5 @@
-import {smoothOutline,shapeFromPoints,insetOutline,hollowRibs,archedPlate,violinTopY} from './surface-utils.js?v=20261024-r7';
-import {mat,mesh,curveTube,cylinderBetween,ellipsoid,horizontalExtrude,outlineShape,assemblyGroup,orientedBox,addWoodGrain} from './model-utils.js?v=20261024-r7';
+import {smoothOutline,shapeFromPoints,insetOutline,hollowRibs,archedPlate,violinTopY} from './surface-utils.js?v=20261024-r9';
+import {mat,mesh,curveTube,cylinderBetween,ellipsoid,horizontalExtrude,outlineShape,assemblyGroup,orientedBox,addWoodGrain} from './model-utils.js?v=20261024-r9';
 /** Violin: X scroll (-) to tail (+), Y soundboard normal (+), Z string spread.
  * The bow is a separately transformable group; animation is the caller's responsibility.
  * MIDI G3 D4 A4 E5 = [55,62,69,76]. Dimensions are visual assumptions, not CAD.
