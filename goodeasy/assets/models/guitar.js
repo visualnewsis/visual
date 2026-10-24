@@ -1,5 +1,5 @@
-import {smoothOutline,shapeFromPoints,insetOutline,hollowRibs} from './surface-utils.js?v=20261024-r9';
-import {mat,mesh,curveTube,cylinderBetween,ellipsoid,outlineShape,horizontalExtrude,ellipseRing,addWoodGrain,assemblyGroup,orientedBox} from './model-utils.js?v=20261024-r9';
+import {smoothOutline,shapeFromPoints,insetOutline,hollowRibs} from './surface-utils.js?v=20261024-editorial1';
+import {mat,mesh,curveTube,cylinderBetween,ellipsoid,outlineShape,horizontalExtrude,ellipseRing,addWoodGrain,assemblyGroup,orientedBox} from './model-utils.js?v=20261024-editorial1';
 /**
  * Six-string steel acoustic guitar, model X axis nut -> tail; Y is top normal; Z string spread.
  * Returns model-local string endpoints (world endpoints only if group has identity transform).

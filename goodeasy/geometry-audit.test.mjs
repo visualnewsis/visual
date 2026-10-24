@@ -24,3 +24,18 @@ const {buildCamera,buildWatch}=await import('./assets/quality-machines.mjs');
 const camera=buildCamera();camera.update({aperture:1.4});camera.group.updateMatrixWorld(true);const iris=camera.parts.aperture;
 const probe=new T.Raycaster(new T.Vector3(.15,1.45,5),new T.Vector3(0,0,-1));assert.equal(probe.intersectObject(iris,true).length,0,'large aperture clears off-axis ray');camera.update({aperture:8});camera.group.updateMatrixWorld(true);assert.ok(probe.intersectObject(iris,true).length>0,'small aperture blocks the same ray');
 const watch=buildWatch();watch.update({elapsed:60});const visibleWheels=watch.parts.gears.children.filter(o=>o.geometry?.type==='CylinderGeometry');console.log('PASS actual camera aperture ray occlusion at f/1.4 and f/8; watch first-view builder loaded');
+
+// A shared pressure must produce equal flows for equal grinds; changing only
+// the right grind changes only the right flow and makes its grains smaller.
+const coffeeComparison=otherBuilders.puck(),coffeeState={...coffeeComparison.defaults,grind:30};
+coffeeComparison.update(coffeeState);assert.deepEqual(coffeeState.comparison,[100,100]);
+const referenceBed=coffeeComparison.group.children[0],selectedBed=coffeeComparison.group.children[1];
+coffeeState.grind=70;coffeeComparison.update(coffeeState);
+assert.equal(coffeeState.comparison[0],100);assert.ok(coffeeState.comparison[1]<100);
+assert.ok(selectedBed.children[1].scale.x<referenceBed.children[1].scale.x,'finer grind uses smaller visual particles');
+coffeeState.pressure=6;coffeeComparison.update(coffeeState);assert.ok(coffeeState.comparison[0]<100);
+const beforeChannel=[...coffeeState.comparison];coffeeState.channel=1;coffeeComparison.update(coffeeState);assert.deepEqual(coffeeState.comparison,beforeChannel,'channel view does not invent a total-flow change');
+const waterPath=otherBuilders['water-path'](),waterState={phase:0,running:true};
+for(let i=0;i<5;i++){waterState.phase=(i+.5)/5;waterPath.update(waterState);assert.equal(waterState.activePart,i);}
+waterState.phase=.99;waterPath.advance(waterState,1);assert.equal(waterState.phase,1);assert.equal(waterState.running,false);
+console.log('PASS espresso comparisons: equal pressure and grinds, finer grain size and reduced relative flow, channel disclosure, five water stages and stop at cup.');

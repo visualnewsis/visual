@@ -1,4 +1,4 @@
-import {T,materials as M,mesh,box,cyl,ring,rod,tube,sphere,label,bolt,gear,part,tag,lathe} from './quality-kit.mjs?v=20261024-r9';
+import {T,materials as M,mesh,box,cyl,ring,rod,tube,sphere,label,bolt,gear,part,tag,lathe} from './quality-kit.mjs?v=20261024-editorial1';
 const TAU=Math.PI*2;
 export function buildWatch(){const group=new T.Group(),body=part(group,'case');cyl(body,2.15,.46,M.steel,0,.7,0);cyl(body,2.02,.15,M.black,0,.98,0);ring(body,2.08,.075,M.steel,0,1.04,0);ring(body,1.99,.025,M.brass,0,1.08,0);
  for(const sign of [-1,1]){box(body,2.5,.12,1.3,M.leather,sign*3.25,.6,0,.15);for(const z of [-.78,.78]){box(body,.55,.26,.22,M.steel,sign*2.15,.66,z);for(let x=2.5;x<4.4;x+=.15)rod(body,[sign*x,.68,z*.69],[sign*x+.06,.68,z*.69],.008,M.ivory);}}

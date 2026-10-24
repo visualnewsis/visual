@@ -1,4 +1,4 @@
-import {clamp,reelStep,exposure,wind,watchStep,filmStep,switchState,coffeeFlow} from './model.mjs?v=20261024-r9';
+import {clamp,reelStep,exposure,wind,watchStep,filmStep,switchState,coffeeFlow} from './model.mjs?v=20261024-editorial1';
 const $=id=>document.getElementById(id),kind=document.body.dataset.experiment;
 const base={turns:0,rotor:0,distance:20,drag:50,slipping:false,aperture:2.8,shutter:250,shots:0,photo:null,reserve:0,elapsed:0,frames:0,frame:0,text:'',key:'A',travel:0,locked:false,brewing:false,volume:0,grind:50,pressure:9};
 let state={...base},record=null,step=0,animation=0,last=0,visible=true,frameTime=0;
@@ -24,7 +24,10 @@ function render(){
  if(kind==='fishing-reel')say(`${state.turns.toFixed(1)}바퀴 · 남은 거리 ${state.distance.toFixed(1)}m · ${state.slipping?'드래그가 풀리며 줄이 나갑니다.':state.distance===0?'목표 지점까지 감았습니다.':state.turns?'줄을 감고 있습니다.':'손잡이를 돌려보세요.'}`);
  if(kind==='watch')say(`태엽 잔량 ${Math.round(state.reserve)}% · ${state.reserve?'작동 중':'멈춤'} · 시연 시간 ${state.elapsed.toFixed(1)}초`);
  if(kind==='projector')say(`${state.frame+1} / 24 프레임 · 누적 ${Math.floor(state.frames)}장`);
- if(kind==='espresso-machine')say(`${state.locked?'포터필터 장착':'포터필터를 먼저 끼우세요.'} · ${state.brewing?'추출 중':'정지'} · ${state.volume.toFixed(1)}mL`);
+ if(kind==='espresso-machine'){
+  $('action').disabled=!state.locked||state.volume>=40;$('action').textContent=state.brewing?'추출 멈추기':state.volume>=40?'잔을 비워주세요':'추출하기';$('action').setAttribute('aria-pressed',String(state.brewing));
+  say(!state.locked?'포터필터 끼우기를 눌러 손잡이를 장착하세요.':`${state.brewing?'추출 중':state.volume>=40?'잔이 찼습니다. 잔을 비우면 다시 내릴 수 있습니다.':'추출 버튼을 눌러보세요.'} · ${state.volume.toFixed(1)}mL · ${state.pressure}bar`);
+ }
 }
 function snapshot(){record=JSON.parse(JSON.stringify(state));step=0;showInside();}
 function showInside(){if(!record){$('record').textContent='위에서 조작한 뒤 파헤쳐보기를 누르세요.';return;}if(!document.body.classList.contains('has-3d'))$('detail').innerHTML=scene(record,true);window.dispatchEvent(new CustomEvent('goodeasy:record',{detail:{record:JSON.parse(JSON.stringify(record)),step}}));$('record').textContent=`직전 입력 기록 · ${kind==='keyboard'?record.key:kind==='camera'?record.shots+'번째 촬영':kind==='watch'?record.reserve.toFixed(0)+'% 잔량':kind==='projector'?(record.frame+1)+'번 프레임':kind==='fishing-reel'?record.turns.toFixed(1)+'바퀴':record.volume.toFixed(1)+'mL'}`;document.querySelectorAll('[data-step]').forEach((b,i)=>{b.setAttribute('aria-pressed',String(i===step));});$('part-copy').textContent=document.querySelectorAll('[data-step]')[step].dataset.copy;}
