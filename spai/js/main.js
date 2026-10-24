@@ -199,7 +199,7 @@
     const lines=[`선택한 네 구간 가운데 SPAI가 '맥락 확인 필요'나 '비업무 의심'으로 표시한 구간은 ${data.flags}개다. 이 중 실제로 일을 하지 않은 구간은 ${data.offTask?"개인 영상을 본 25분 하나다":"없다"}.`];
     if(missed.length){const w=missed.join(", ");lines.push(`기록에 제대로 잡히지 않은 일은 ${w}${josa(w,"이었다","였다")}.`)}
     if(inflated.length){const w=inflated.join(", ");lines.push(`${w}${josa(w,"은","는")} 업무 앱 사용으로 분류됐지만, 무엇을 남겼고 무슨 이야기를 했는지는 기록되지 않았다.`)}
-    lines.push(`고과는 ${data.grade}였다. 보고서에는 PC 사용 기록이 남았지만, 그 시간에 무엇을 했는지는 빠져 있었다.`);
+    lines.push(`고과 ${data.grade}는 PC 기록만으로 매겨졌다. 실제 업무 내용은 평가에 들어가지 않았다.`);
     $("verdictBody").innerHTML=lines.map(l=>`<p>${l}</p>`).join("");
   }
 

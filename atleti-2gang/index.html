@@ -612,7 +612,7 @@ footer.foot{display:flex;flex-wrap:wrap;gap:10px 24px;justify-content:space-betw
           <button class="chip" id="rPlay">▶ 처음부터 재생</button>
           <button class="chip" id="rNext" style="flex:0 0 auto;min-width:54px">›</button>
         </div>
-        <p class="note">경기를 그대로 재현한 게 아니라 흐름을 풀어 그린 해설입니다. 한 선수의 공으로 돌리지 않고, 상대의 약점과 팀 배치가 함께 만든 장면으로 봤습니다.</p>
+        <p class="note">상대의 약점과 팀 배치가 득점에 어떻게 연결됐는지 그렸습니다. 실제 선수 움직임을 그대로 재현한 장면은 아닙니다.</p>
       </div>
     </div>
   </div>
@@ -837,7 +837,7 @@ const STATES={
   DAVID_JULIAN_LEE:{kind:'virtual',fact:'세 명이 함께 뛴 경기는 아직 없음.',interp:'전체가 가상 조합.',head:'',label:'LEE + DAVID + JULIÁN 공존',status:'PUZZLE_HYPOTHESIS',conf:'LOW',src:['S10','S11'],
     copy:'지금 배치에 데이비드와 훌리안을 모두 넣으면 12명입니다. 한 명을 빼고 11명을 맞춰보세요.',
     gain:['데이비드의 마무리와 훌리안의 패스 연결'],cost:['바에나·줄리아노·바리오스·휼만 중 한 명 제외'],
-    why:'세 명이 동시에 뛴 경기는 아직 없습니다. 최선의 조합을 내놓으려는 게 아니라, 공격수 둘을 함께 쓰면 무엇을 내줘야 하는지 보여주는 그림입니다.'},
+    why:'세 명이 동시에 뛴 경기는 아직 없습니다. 공격수 둘을 함께 쓸 때 다른 선수의 역할이 어떻게 달라지는지 가정해 그렸습니다.'},
   REAL_MODE:{kind:'report',fact:'레알 왼쪽 공략, 줄리아노 PK 유도, 데이비드 골(엘파이스·경기 보도).',interp:'선수 위치는 흐름을 설명하는 그림.',head:'',label:'REAL 상대 · 오른쪽 공략',status:'SUPPORTED_SCENARIO',conf:'HIGH-MED',src:['S07','S08','S09','S10'],
     copy:'상대가 바뀌면 같은 자리라도 쓰임새가 달라집니다.',gain:[],cost:[],
     why:'엘파이스 전술 분석(S08), 경기 보도(S07·S09), 구단 공식 기록(S10)을 바탕으로 했습니다. 상대에 맞춘 계획을 설명한 것이지, 특정 선수가 다른 선수를 살렸다는 뜻은 아닙니다.'}
