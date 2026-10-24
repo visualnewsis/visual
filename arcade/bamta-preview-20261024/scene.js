@@ -1,13 +1,14 @@
 import * as T from './vendor/three.module.min.js';
 import {ROOMS} from './mission.js';
-import {createPerson} from './actors.js?v=20261024';
-import {dressInterior} from './interior.js?v=20261024';
+import {createPerson} from './actors.js?v=20261024-art3';
+import {dressInterior} from './interior.js?v=20261024-art3';
+import {createOfficeProps} from './props.js?v=20261024-art3';
 
-export function buildScene(scene){
+export function buildScene(scene,art={}){
   const colliders=[],batches=new Map(),materials=new Map(),unit=new T.BoxGeometry(1,1,1);
   let seed=84;const random=()=>{seed=(seed*1664525+1013904223)>>>0;return seed/4294967296;};
   function mat(color,options={}){const key=JSON.stringify([color,Object.fromEntries(Object.entries(options).map(([k,v])=>[k,v?.uuid||v]))]);if(!materials.has(key))materials.set(key,new T.MeshStandardMaterial({color,roughness:.7,...options}));return materials.get(key);}
-  const cream=mat('#9caea0'),black=mat('#17242a'),silver=mat('#8eaea5',{metalness:.65,roughness:.34}),white=mat('#e5e5dc'),wood=mat('#877252'),skin=mat('#d6ae95'),bronze=mat('#a58d60',{metalness:.7,roughness:.33});
+  const cream=mat('#d4d0c5'),black=mat('#252b2e'),silver=mat('#d5d8d4',{metalness:.65,roughness:.38}),white=mat('#e5e5dc'),wood=mat('#b5a68b'),skin=mat('#d6ae95'),bronze=mat('#c4b797',{metalness:.7,roughness:.33});
   const bright=mat('#fff1d3',{emissive:'#ffdda6',emissiveIntensity:2.1});
   const cool=mat('#e7f2ee',{emissive:'#e7f2ee',emissiveIntensity:1.2});
   const glass=mat('#76ad9b',{transparent:true,opacity:.34,metalness:.2,roughness:.25,depthWrite:false});
@@ -19,6 +20,7 @@ export function buildScene(scene){
   function mesh(geometry,m,x,y,z,parent=scene){const o=new T.Mesh(geometry,m);o.position.set(x,y,z);o.castShadow=true;o.receiveShadow=true;parent.add(o);return o;}
   function cyl(x,y,z,r,h,m,parent=scene){return mesh(new T.CylinderGeometry(r,r,h,16),m,x,y,z,parent);}
   function canvasTexture(draw,w=512,h=w){const c=document.createElement('canvas');c.width=w;c.height=h;draw(c.getContext('2d'),w,h);const t=new T.CanvasTexture(c);t.colorSpace=T.SRGBColorSpace;t.anisotropy=4;return t;}
+  const props=createOfficeProps({scene,mat,canvasTexture,art});
   function sign(text,x,y,z,w,h,ry=0,bg='#e0ddcc',fg='#27333b',size=70){
     const texture=canvasTexture((c,cw,ch)=>{c.fillStyle=bg;c.fillRect(0,0,cw,ch);c.fillStyle=fg;c.textAlign='center';c.font=`bold ${size}px sans-serif`;const lines=text.split('\n');lines.forEach((line,i)=>c.fillText(line,cw/2,ch/2+(i-(lines.length-1)/2)*90+24));},1024,256);
     const o=mesh(new T.PlaneGeometry(w,h),new T.MeshStandardMaterial({map:texture,roughness:.65,side:T.FrontSide}),x,y,z);o.rotation.y=ry;return o;
@@ -29,7 +31,9 @@ export function buildScene(scene){
   const brushed=canvasTexture((c,w,h)=>{c.fillStyle='#c2bba0';c.fillRect(0,0,w,h);for(let i=0;i<1000;i++){c.fillStyle=i%2?'#fff7c416':'#53442b12';c.fillRect(random()*w,0,.3+random(),h);}},256,256);bronze.map=brushed;
   const carpet=canvasTexture((c,w)=>{c.fillStyle='#7d7773';c.fillRect(0,0,w,w);for(let i=0;i<35000;i++){const v=70+random()*70;c.fillStyle=`rgb(${v+8},${v+4},${v})`;c.fillRect(random()*w,random()*w,1,3);}c.fillStyle='#55504e60';c.fillRect(0,0,w,1);c.fillRect(0,0,1,w);});carpet.wrapS=carpet.wrapT=T.RepeatWrapping;
   const stone=canvasTexture((c,w)=>{c.fillStyle='#b6b1a2';c.fillRect(0,0,w,w);for(let i=0;i<1400;i++){const x=random()*w,y=random()*w;c.strokeStyle=random()>.6?'#ebe8d724':'#6f715414';c.lineWidth=random()*4;c.beginPath();c.moveTo(x,y);c.lineTo(x+random()*70,y+random()*40);c.stroke();}c.fillStyle='#8e8d8150';c.fillRect(0,0,w,2);c.fillRect(0,0,2,w);});stone.wrapS=stone.wrapT=T.RepeatWrapping;
-  const floorMats={office:mat('#ffffff',{map:tile,roughness:.27}),hall:mat('#ffffff',{map:carpet,roughness:.97}),lobby:mat('#ffffff',{map:stone,roughness:.3})};
+  const stoneMap=art.stone||stone;
+  const floorMats={office:mat('#ffffff',{map:tile,roughness:.56}),hall:mat('#ffffff',{map:carpet,roughness:.97}),lobby:mat('#deded5',{map:stoneMap,roughness:.45})};
+  if(art.steel)bronze.map=art.steel;
   const cells=new Map();
   for(const r of ROOMS)for(let x=r.x0;x<r.x1;x++)for(let z=r.z0;z<r.z1;z++)cells.set(`${x},${z}`,{x,z,kind:r.id});
   // Every edge of the observed route remains physically enclosed; no invisible gaps.
@@ -40,13 +44,14 @@ export function buildScene(scene){
     if(office){const frameMat=mat('#687f78',{roughness:.85,metalness:.1});box(x+.5,3.079,z,1,.018,.017,frameMat);box(x,3.079,z+.5,.017,.018,1,frameMat);}
     for(const [dx,dz]of [[1,0],[-1,0],[0,1],[0,-1]])if(!cells.has(`${x+dx},${z+dz}`)){
       const xx=x+.5+dx*.5,zz=z+.5+dz*.5;
-      box(xx,1.55,zz,dx?.12:1,3.1,dz?.12:1,lobby?mat('#bdb6a2',{map:stone}):cream);
+      box(xx,1.55,zz,dx?.12:1,3.1,dz?.12:1,lobby?mat('#e1ded2',{map:stoneMap,roughness:.79}):cream);
       box(xx,.065,zz,dx?.15:1,.13,dz?.15:1,black);
       if(!office)box(xx-dx*.08,2.97,zz-dz*.08,dx?.055:1,.045,dz?.055:1,bright);
     }
   }
   // Warm desk grain and cool architectural surfaces retain the source office layout.
   const grain=canvasTexture((c,w,h)=>{c.fillStyle='#a5906d';c.fillRect(0,0,w,h);for(let i=0;i<850;i++){c.fillStyle=random()>.5?'#392f1f16':'#ead7a21a';c.fillRect(0,random()*h,w,random()*2+.4);}},512,512);grain.wrapS=grain.wrapT=T.RepeatWrapping;grain.repeat.set(2,1);wood.map=grain;wood.color.set('#c4bd9b');wood.roughness=.58;
+  if(art.wood){wood.map=art.wood;wood.color.set('#cfc8b9');wood.roughness=.52;}
   // Ceiling fixtures, grilles and sprinklers from the source video's suspended ceiling.
   for(let x=-6;x<=6;x+=4)for(let z=-4;z<=8;z+=4){
     box(x,3.052,z,1.25,.055,.64,silver);box(x,3.015,z,1.17,.025,.57,cool);
@@ -54,8 +59,8 @@ export function buildScene(scene){
     if(x===-2){for(let k=0;k<9;k++)box(x+1.3,3.035,z-.25+k*.056,.55,.012,.025,black);}
   }
   for(const [x,z]of [[11.5,-9],[11.5,-14],[16,-19],[22.5,-23],[22.5,-26]]){const light=new T.PointLight('#ffe5bf',3.8,8,2);light.position.set(x,2.72,z);scene.add(light);cyl(x,3.04,z,.085,.025,bright);}
-  const officeLight=new T.PointLight('#d0efd4',14,20,2);officeLight.position.set(0,2.85,2);scene.add(officeLight);
-  const deskGlow=new T.PointLight('#9ad0d5',5,9,2);deskGlow.position.set(4,1.8,4);scene.add(deskGlow);
+  const officeLight=new T.PointLight('#f1eadb',14,20,2);officeLight.position.set(0,2.85,2);scene.add(officeLight);
+  const deskGlow=new T.PointLight('#b8d5e2',2,9,2);deskGlow.position.set(4,1.8,4);scene.add(deskGlow);
   const doorwayGlow=new T.PointLight('#f7d19a',6,8,2);doorwayGlow.position.set(8,2.7,-4);scene.add(doorwayGlow);
   const elevatorGlow=new T.PointLight('#ffe0a3',9,7,2);elevatorGlow.position.set(22.5,2.7,-29.4);scene.add(elevatorGlow);
   // Long frosted mint-glass partition with real frame depth, leaving entrance open.
@@ -72,9 +77,7 @@ export function buildScene(scene){
   const contactTex=canvasTexture((c,w,h)=>{const g=c.createRadialGradient(w/2,h/2,w*.12,w/2,h/2,w*.5);g.addColorStop(0,'rgba(1,14,12,.56)');g.addColorStop(1,'rgba(1,14,12,0)');c.fillStyle=g;c.fillRect(0,0,w,h);},128,128);
   const contactMat=new T.MeshBasicMaterial({map:contactTex,transparent:true,depthWrite:false});
   function chair(x,z,own=false){
-    box(x,.49,z,.59,.09,.54,black);box(x,.91,z+.22,.59,.75,.09,mat('#343f47'));cyl(x,.28,z,.055,.42,silver);
-    for(const dx of [-.33,.33]){box(x+dx,.68,z,.055,.06,.52,black);box(x+dx,.54,z,.035,.28,.035,black);}
-    for(let i=0;i<5;i++){const a=i/5*Math.PI*2;const o=box(0,.1,0,.38,.035,.055,silver,new T.Group());const g=o.parent;g.position.set(x,.02,z);g.rotation.y=a;scene.add(g);cyl(x+Math.cos(a)*.3,.06,z+Math.sin(a)*.3,.045,.08,black);}
+    props.chair(x,z);
     if(!own)solid(x,z,.66,.7);
   }
   function desk(x,z,own=false){
@@ -82,9 +85,8 @@ export function buildScene(scene){
     box(x,.75,z,2.55,.055,1.15,wood);solid(x,z,2.55,1.15);
     for(const dx of [-1.12,1.12]){box(x+dx,.37,z,.055,.74,.85,silver);box(x+dx,.08,z,.3,.04,.8,silver);}
     box(x,.99,z-.35,2.5,.46,.035,mat('#a0aaa5'));
-    for(const dx of [-.56,.56]){box(x+dx,1.24,z-.1,1.01,.61,.055,black);box(x+dx,1.25,z-.065,.94,.53,.008,screenMat);box(x+dx,.91,z-.12,.055,.25,.065,black);box(x+dx,.8,z,.37,.024,.21,black);}
-    box(x,.797,z+.29,.79,.018,.25,black);for(let row=0;row<4;row++)for(let k=0;k<13;k++)box(x-.36+k*.058,.808,z+.2+row*.05,.043,.006,.03,mat('#68716e'));
-    mesh(new T.SphereGeometry(.065,12,8),black,x+.63,.82,z+.31).scale.set(.8,.35,1.2);
+    for(const dx of [-.56,.56])props.computer(x,z,dx);
+    props.keyboard(x,z);
     box(x+.65,.782,z+.3,.27,.009,.3,mat('#53615e'));
     for(let i=0;i<6;i++)box(x-1,.791+i*.006,z+.13,.3,.005,.39,white);
     cyl(x+.97,.88,z+.25,.062,.19,mat('#426778'));cyl(x+.97,.978,z+.25,.052,.006,mat('#262d29'));
@@ -100,8 +102,7 @@ export function buildScene(scene){
   // Personal desk note: no photographed documents or private screen contents are copied.
   sign('오늘은 정시 퇴근',-.53,1.01,4.89,.33,.1,0,'#e3cc6a','#403729',88);
   // Copier, paper boxes, recycling bin and office clock near the observed exit.
-  box(5.75,.58,-3.3,1.15,1.16,.88,black);box(5.75,.92,-3.3,1.19,.5,.92,white);box(5.75,1.22,-3.29,.85,.1,.78,white);
-  for(let y=.2;y<.85;y+=.22){box(5.75,y,-2.84,1,.025,.03,silver);box(5.75,y+.09,-2.8,.2,.025,.03,black);}box(6.12,1.22,-2.9,.23,.05,.2,screenMat);solid(5.75,-3.3,1.2,.95);
+  props.copier(5.75,-3.3);solid(5.75,-3.3,1.2,.95);
   for(let i=0;i<3;i++){box(4.63,.16+i*.3,-3.38,.75,.28,.55,mat('#d9d9c4'));sign('A4 COPY',4.63,.18+i*.3,-3.092,.64,.16,0,'#284c75','#faf7dc',85);}solid(4.63,-3.38,.75,.55);
   cyl(6.2,.36,-1.8,.26,.72,mat('#245c82'));solid(6.2,-1.8,.52,.52);
   const clock=mesh(new T.CylinderGeometry(.27,.27,.04,32),mat('#714c35'),5.7,2.5,-5.91);clock.rotation.x=Math.PI/2;
@@ -131,20 +132,22 @@ export function buildScene(scene){
   for(const x of [20.91,24.09])box(x,1.43,-28,.18,2.86,.23,black);
   box(22.5,2.85,-28,3.36,.18,.23,bronze);
   sign('12   ▼',22.5,2.84,-27.86,.7,.14,0,'#151716','#f8aa58',80);
-  box(24.84,1.32,-27.19,.13,.48,.055,black);sign('▼',24.84,1.32,-27.15,.1,.13,0,'#1c2629','#eacb7d',120);
+  const callPanel=props.callPanel(24.78,1.32,-27.90);
   sign('12',25.9,2.15,-25,1.1,.7,-Math.PI/2,'#bdb6a2','#594b3c',170);
   for(const z of [-23.4,-26]){box(20.075,1.4,z,.06,2.8,1.7,bronze);box(20.13,1.4,z,.04,2.62,1.5,mat('#584b3d',{metalness:.8,roughness:.3}));}
   sign('비상구  EXIT',23,2.72,-20.08,1.4,.22,Math.PI,'#356b52','#edfae0',75);
   // Cabin has warm metal panels, handrail and lit control buttons.
   box(22.5,1.5,-30.95,2.9,3,.04,bronze);box(21.07,1.5,-29.5,.04,3,2.9,bronze);box(23.93,1.5,-29.5,.04,3,2.9,bronze);
   box(22.5,.95,-30.8,2.65,.04,.06,silver);box(22.5,2.98,-29.5,1.2,.04,1.4,bright);
-  for(let i=0;i<7;i++){box(23.89,1.08+i*.085,-29,.017,.055,.06,white);}
-  dressInterior({scene,box,mesh,mat,canvasTexture,solid});
+  props.cabinPanel();
+  dressInterior({scene,box,mesh,mat,canvasTexture,solid,art});
   // Instanced furniture and architectural parts; materials are reused throughout.
   const matrix=new T.Matrix4();for(const [m,items]of batches){const o=new T.InstancedMesh(unit,m,items.length);items.forEach(([x,y,z,w,h,d],i)=>{matrix.makeScale(w,h,d);matrix.setPosition(x,y,z);o.setMatrixAt(i,matrix);});o.receiveShadow=true;o.castShadow=!m.transparent;scene.add(o);}
-  function person({female=false,boss=false,x,z}){
-    return createPerson({female,boss,x,z},scene);
+  function person(options){
+    return createPerson(options,scene,art);
   }
-  const woman=person({female:true,x:10.4,z:-4}),coworker=person({x:11.7,z:-12.5}),boss=person({boss:true,x:22.5,z:-26.7});boss.group.visible=false;boss.group.rotation.y=Math.PI;
-  return {colliders,doors,leftDoor,rightDoor,woman,coworker,boss,mat,box,person};
+  const woman=person({female:true,x:10.4,z:-4,id:'office',dialogue:'office'}),coworker=person({x:11.7,z:-12.5,id:'hallway',dialogue:'hallway'}),boss=person({boss:true,x:22.5,z:-26.7,id:'director'});boss.group.visible=false;boss.group.rotation.y=Math.PI;
+  const workers=[person({female:true,profile:'staff',seated:true,x:-4.8,z:5.58,id:'writer',dialogue:'writing'}),person({profile:'light',seated:true,x:-4.8,z:.68,id:'photo',dialogue:'photos'}),person({female:true,profile:'staff',seated:true,x:4,z:.68,id:'desk',dialogue:'desk'})];
+  workers.forEach(n=>n.group.rotation.y=Math.PI);
+  return {colliders,doors,leftDoor,rightDoor,woman,coworker,boss,workers,callPanel,mat,box,person};
 }
