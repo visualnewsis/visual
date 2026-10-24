@@ -28,7 +28,7 @@ FEEDS = {
 USER_AGENT = "VisualNewsis-Crossword/1.0"
 WOORIMAL_API_KEY = os.environ.get("WOORIMAL_API_KEY", "").strip()
 WOORIMAL_API_URL = "https://opendict.korean.go.kr/api/search"
-WORD_RE = re.compile(r"(?<![가-힣])[가-힣]{2,6}(?![가-힣])")
+WORD_RE = re.compile(r"(?<![가-힣0-9A-Za-z])[가-힣]{2,6}(?![가-힣0-9A-Za-z])")
 SPACE_RE = re.compile(r"\s+")
 SENTENCE_RE = re.compile(r"(?<=[.!?])\s+|\n+")
 STOP = {
@@ -157,6 +157,11 @@ def dictionary_definition(word: str) -> str | None:
 
         normalized = word.replace("^", "").replace("-", "")
 
+        # An incomplete result page cannot establish that the word is unambiguous.
+        if int(channel.get("total") or 0) > len(items):
+            return None
+
+        definitions: set[str] = set()
         for item in items:
             item_word = str(item.get("word") or "").replace("^", "").replace("-", "")
             if item_word != normalized:
@@ -173,7 +178,11 @@ def dictionary_definition(word: str) -> str | None:
                 definition = clean(str(sense.get("definition") or ""))
 
                 if definition:
-                    return definition
+                    definitions.add(definition)
+
+        # Do not choose the first homonym or sense without editorial review.
+        if len(definitions) == 1:
+            return next(iter(definitions))
 
     except Exception as exc:
         print(f"Dictionary lookup failed for {word}: {exc}")
@@ -606,10 +615,18 @@ def main() -> None:
             break
 
     if not puzzles:
-        raise RuntimeError(
-            f"Could not build a crossword from {len(deduped)} candidates; "
-            f"preserving previous data. {errors[:3]}"
-        )
+        message = f"Could not build a crossword from {len(deduped)} candidates. {errors[:3]}"
+        # A sparse, vetted candidate pool must not stop unrelated headline updates.
+        # Preserve an existing complete board; still fail if there is no usable data.
+        try:
+            previous = json.loads(OUTPUT.read_text(encoding="utf-8"))
+            previous_boards = previous.get("puzzles") or [previous]
+            if any(len(board.get("words") or []) >= 7 for board in previous_boards):
+                print(f"::warning::{message} Preserving previous crossword data.")
+                return
+        except (OSError, ValueError, TypeError, AttributeError):
+            pass
+        raise RuntimeError(message + " No complete previous crossword is available.")
 
     payload = {
         "updatedAt": datetime.now(timezone.utc).isoformat(timespec="seconds"),

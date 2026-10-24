@@ -56,7 +56,9 @@ function feedbackFor(accuracy){
   return['다시 도도독!','많이 달랐지만 읽을 기사는 놓치지 않았어요.'];
 }
 function submitCurrent(){
-  if(advancing)return;advancing=true;
+  if(advancing||!current)return;
+  if(!input.value.trim()){$('#status').textContent='첫 글자를 입력한 뒤 Enter를 눌러주세요.';return}
+  advancing=true;
   const score=metrics(),submittedAccuracy=score.typed.length?score.accuracy:0,feedback=feedbackFor(submittedAccuracy),panel=$('#roundFeedback'),stack=$('#articleStack');
   completed.push({...current,accuracy:submittedAccuracy,speed:score.speed});input.disabled=true;
   $('#acquiredCount').textContent=completed.length;stack.setAttribute('aria-label',`획득한 읽을 기사 ${completed.length}장`);stack.classList.remove('gain');void stack.offsetWidth;stack.classList.add('gain');

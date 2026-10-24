@@ -9,6 +9,8 @@ const CLICKBAIT=['충격','결국 터졌다','경악','모두 놀랐다','소름
 
 let bricks=[],ball,paddle,score=0,lives=3,running=false,animId=null,hasStarted=false,lastMilestone=0,audioCtx=null;
 let todayNews=[],prizeTitle='오늘의 뉴스는 벽돌 뒤에 숨어있습니다';
+const FRAME_MS=1000/60,heldKeys=new Set();
+let lastFrame=0,frameRemainder=0;
 
 const FALLBACK_NEWS=[
   {title:'오늘의 뉴스는 제목에서 시작됩니다',url:'https://www.newsis.com/'},
@@ -132,14 +134,15 @@ function movePaddleTo(x){
   if(!ball.launched)ball.x=paddle.x+paddle.w/2;
 }
 
-function step(){
-  if(!running)return;
+function updatePhysics(){
+  const direction=Number(heldKeys.has('ArrowRight'))-Number(heldKeys.has('ArrowLeft'));
+  if(direction)movePaddleTo(paddle.x+paddle.w/2+direction*paddle.speed);
   if(ball.launched){
     ball.x+=ball.dx;ball.y+=ball.dy;
     if(ball.x-ball.r<0){ball.x=ball.r;ball.dx*=-1}
     if(ball.x+ball.r>W){ball.x=W-ball.r;ball.dx*=-1}
     if(ball.y-ball.r<0){ball.y=ball.r;ball.dy*=-1}
-    if(ball.y-ball.r>H){loseLife();}
+    if(ball.y-ball.r>H){loseLife();return}
     if(ball.y+ball.r>=paddle.y&&ball.y-ball.r<=paddle.y+paddle.h&&ball.x>=paddle.x&&ball.x<=paddle.x+paddle.w&&ball.dy>0){
       const hitPos=(ball.x-(paddle.x+paddle.w/2))/(paddle.w/2);
       const angle=hitPos*60*Math.PI/180-Math.PI/2;
@@ -161,8 +164,19 @@ function step(){
       }
     }
   }
+}
+
+function step(timestamp){
+  if(!running)return;
+  // Keep the original 60 Hz physics, including collision checks, on every display.
+  frameRemainder+=Math.max(0,Math.min(100,timestamp-lastFrame));
+  lastFrame=timestamp;
+  while(frameRemainder+1e-7>=FRAME_MS&&running){
+    frameRemainder=Math.max(0,frameRemainder-FRAME_MS);
+    updatePhysics();
+  }
   drawBackground();drawPrizeText();drawBricks();drawPaddle();drawBall();
-  animId=requestAnimationFrame(step);
+  if(running)animId=requestAnimationFrame(step);
 }
 
 function loseLife(){
@@ -212,6 +226,7 @@ function startGame(){
   $('#newsPanel').hidden=true;
   $('#newsPanel').removeAttribute('data-show');
   running=true;
+  heldKeys.clear();lastFrame=performance.now();frameRemainder=0;
   window.gtag?.('event','brickrunch_start');
   if(replay)window.gtag?.('event','brickrunch_restart');
   announce('게임을 시작했습니다. 방향키나 마우스로 패들을 움직이고 스페이스바로 공을 발사하세요.');
@@ -239,10 +254,12 @@ canvas.addEventListener('touchmove',e=>{
 },{passive:false});
 document.addEventListener('keydown',e=>{
   if(!running)return;
-  if(e.key==='ArrowLeft')movePaddleTo(paddle.x+paddle.w/2-paddle.speed*3);
-  if(e.key==='ArrowRight')movePaddleTo(paddle.x+paddle.w/2+paddle.speed*3);
+  if(e.key==='ArrowLeft'||e.key==='ArrowRight'){e.preventDefault();heldKeys.add(e.key)}
   if(e.key===' '){e.preventDefault();launchBall()}
 });
+document.addEventListener('keyup',e=>heldKeys.delete(e.key));
+window.addEventListener('blur',()=>{heldKeys.clear();lastFrame=performance.now();frameRemainder=0;});
+document.addEventListener('visibilitychange',()=>{heldKeys.clear();lastFrame=performance.now();frameRemainder=0;});
 
 $('#startBtn').addEventListener('click',startGame);
 $('#overlayStart').addEventListener('click',startGame);
@@ -269,8 +286,10 @@ async function loadNews(){
     console.warn('오늘의 뉴스를 불러오지 못해 기본 문장을 사용합니다.',e);
   }
   if(!todayNews.length)todayNews=FALLBACK_NEWS;
-  buildBricks();
-  drawBackground();drawPrizeText();drawBricks();
+  if(!hasStarted){
+    buildBricks();
+    drawBackground();drawPrizeText();drawBricks();
+  }
 }
 
 resetBallAndPaddle();

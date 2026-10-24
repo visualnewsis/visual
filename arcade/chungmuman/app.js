@@ -126,7 +126,7 @@ function finish(){
 
 function frame(now){
   if(!playing)return;
-  const dt=Math.min(.04,(now-lastFrame)/1000||.016);lastFrame=now;distance+=dt*8;distanceEl.textContent=`${Math.round(distance)}m`;
+  const dt=Math.max(0,Math.min(.04,(now-lastFrame)/1000||.016));lastFrame=now;distance+=dt*8;distanceEl.textContent=`${Math.round(distance)}m`;
   if(jumpLevel>0){
     playerY+=verticalVelocity*dt;verticalVelocity-=1180*dt;
     if(playerY<=0&&verticalVelocity<0){playerY=0;verticalVelocity=0;jumpLevel=0;runner.classList.remove('is-jumping','is-double-jumping')}
@@ -140,7 +140,7 @@ function frame(now){
   if(now-lastSpawn>(stage.clientWidth<720?1950:1650)){spawn();lastSpawn=now}
   const runnerBox=runner.getBoundingClientRect();
   objects.forEach(object=>{
-    object.x-=speed;object.el.style.transform=`translateX(${object.x-stage.clientWidth}px)`;
+    object.x-=speed*dt*60;object.el.style.transform=`translateX(${object.x-stage.clientWidth}px)`;
     const box=object.el.getBoundingClientRect();
     const crossing=object.x<stage.clientWidth*.2&&object.x>stage.clientWidth*.02;
     if(!object.resolved&&crossing){

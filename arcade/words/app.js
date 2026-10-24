@@ -183,10 +183,16 @@ async function init(){
     if(!puzzles.length)throw new Error('invalid crossword');
 
     const storageKey=`crossword-puzzle-${payload.updatedAt||'current'}`;
-    const previous=Number(sessionStorage.getItem(storageKey));
-    const choices=puzzles.map((_,i)=>i).filter(i=>i!==previous);
+    let previous=null;
+    try{
+      const saved=sessionStorage.getItem(storageKey);
+      if(saved!==null&&saved.trim()!==''&&Number.isInteger(Number(saved)))previous=Number(saved);
+    }catch{/* 저장할 수 없어도 퍼즐은 플레이할 수 있습니다. */}
+    const indices=puzzles.map((_,i)=>i);
+    const alternatives=indices.filter(i=>i!==previous);
+    const choices=alternatives.length?alternatives:indices;
     currentPuzzleIndex=choices[Math.floor(Math.random()*choices.length)];
-    sessionStorage.setItem(storageKey,String(currentPuzzleIndex));
+    try{sessionStorage.setItem(storageKey,String(currentPuzzleIndex))}catch{}
     data=puzzles[currentPuzzleIndex];
     words=data.words;
 

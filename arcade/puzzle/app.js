@@ -14,6 +14,8 @@ let moves = 0;
 let startedAt = 0;
 let timerId = 0;
 let lastPuzzleId = '';
+const gameButtons = ['#hintButton', '#shuffleButton', '#nextButton'].map(selector => document.querySelector(selector));
+gameButtons.forEach(button => { button.disabled = true; });
 
 function shuffledTiles() {
   const values = Array.from({length: 9}, (_, index) => index);
@@ -80,15 +82,14 @@ function selectPiece(index) {
   if (isComplete()) finish();
 }
 
-function choosePuzzle() {
-  const candidates = puzzles.filter(puzzle => puzzle.id !== lastPuzzleId);
-  current = candidates[Math.floor(Math.random() * candidates.length)] || puzzles[0];
-  lastPuzzleId = current.id;
+function resetPuzzle() {
+  if (!current) return;
   order = shuffledTiles();
   selectedIndex = null;
   moves = 0;
   movesElement.textContent = '0';
   result.hidden = true;
+  hintImage.classList.remove('is-visible');
   puzzleMeta.textContent = '뉴시스 사진 · 9조각';
   hintImage.style.backgroundImage = `url('${current.image}')`;
   loading.hidden = true;
@@ -99,20 +100,27 @@ function choosePuzzle() {
   timerId = setInterval(updateTimer, 1000);
 }
 
+function choosePuzzle() {
+  if (!puzzles.length) return;
+  const candidates = puzzles.filter(puzzle => puzzle.id !== lastPuzzleId);
+  current = candidates[Math.floor(Math.random() * candidates.length)] || puzzles[0];
+  lastPuzzleId = current.id;
+  resetPuzzle();
+}
+
 board.addEventListener('click', event => {
   const piece = event.target.closest('.piece');
   if (piece && !piece.disabled) selectPiece(Number(piece.dataset.index));
 });
 
 document.querySelector('#hintButton').addEventListener('click', () => {
+  if (!current) return;
   hintImage.classList.add('is-visible');
   setTimeout(() => hintImage.classList.remove('is-visible'), 1300);
   window.gtag?.('event', 'photo_puzzle_hint', {article_id: current?.id});
 });
 
-document.querySelector('#shuffleButton').addEventListener('click', () => {
-  order = shuffledTiles(); selectedIndex = null; moves = 0; movesElement.textContent = '0'; startedAt = Date.now(); renderBoard();
-});
+document.querySelector('#shuffleButton').addEventListener('click', resetPuzzle);
 document.querySelector('#nextButton').addEventListener('click', choosePuzzle);
 
 fetch('./data/puzzles.json', {cache: 'no-store'})
@@ -121,6 +129,7 @@ fetch('./data/puzzles.json', {cache: 'no-store'})
     if (!Array.isArray(data.puzzles) || !data.puzzles.length) throw new Error('empty puzzle bank');
     puzzles = data.puzzles;
     choosePuzzle();
+    gameButtons.forEach(button => { button.disabled = false; });
   })
   .catch(() => {
     loading.textContent = '오늘의 사진을 준비하지 못했습니다. 잠시 뒤 다시 찾아주세요.';
