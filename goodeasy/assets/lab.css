@@ -6,3 +6,6 @@
 .primary:hover,.primary:active{background:var(--accent);color:#10201e;filter:brightness(1.08)}
 
 @media(max-width:700px){body[data-experiment=espresso-machine] .instrument svg,body[data-experiment=fishing-reel] .instrument svg{min-height:310px;max-height:46dvh} .keyrow{overflow-x:auto;justify-content:flex-start;padding:0 3px 7px;scrollbar-width:thin}.keyrow button{flex:0 0 44px}.keyrow .space{flex-basis:60%;margin:auto}}
+
+/* Quiet author byline above the series name. */
+.brand-byline{display:block;font-family:Arial,"Noto Sans KR",sans-serif;font-size:10px;font-weight:400;line-height:1.4;letter-spacing:.04em;color:var(--muted);margin:0 0 3px}.making details{margin-top:24px;font-size:12px;line-height:1.9}.making summary{cursor:pointer;color:var(--muted)}
