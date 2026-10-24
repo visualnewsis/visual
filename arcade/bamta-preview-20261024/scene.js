@@ -1,8 +1,8 @@
 import * as T from './vendor/three.module.min.js';
 import {ROOMS} from './mission.js';
-import {createPerson} from './actors.js?v=20261024-art3';
-import {dressInterior} from './interior.js?v=20261024-art3';
-import {createOfficeProps} from './props.js?v=20261024-art3';
+import {createPerson} from './actors.js?v=20261025-mesh1';
+import {dressInterior} from './interior.js?v=20261025-mesh1';
+import {createOfficeProps} from './props.js?v=20261025-mesh1';
 
 export function buildScene(scene,art={}){
   const colliders=[],batches=new Map(),materials=new Map(),unit=new T.BoxGeometry(1,1,1);

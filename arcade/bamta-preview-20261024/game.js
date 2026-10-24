@@ -1,10 +1,10 @@
 import * as T from './vendor/three.module.min.js';
-import {buildScene} from './scene.js?v=20261024-art3';
+import {buildScene} from './scene.js?v=20261025-mesh1';
 import {Mission,ROOMS,SPAWN,SEAT,CALL,onFloor} from './mission.js';
 import {OfficeAudio} from './sound.js?v=20261024';
 import {Dispatch,drawRoute} from './dispatch.js?v=20261024';
-import {art} from './art.js?v=20261024-art3';
-import {nextCoworkerLine} from './dialogue.js?v=20261024-art3';
+import {art} from './art.js?v=20261025-mesh1';
+import {nextCoworkerLine} from './dialogue.js?v=20261025-mesh1';
 const $=s=>document.querySelector(s),canvas=$('#game');
 const renderer=new T.WebGLRenderer({canvas,antialias:true,powerPreference:'high-performance'});
 renderer.setPixelRatio(Math.min(devicePixelRatio,1.6));renderer.outputColorSpace=T.SRGBColorSpace;renderer.toneMapping=T.ACESFilmicToneMapping;renderer.toneMappingExposure=1.25;renderer.shadowMap.enabled=true;renderer.shadowMap.type=T.PCFSoftShadowMap;
@@ -36,7 +36,7 @@ const headerShell=document.querySelector('.cgh-shell');
 if(headerShell)new ResizeObserver(entries=>{$('#stage').style.height=`calc(100dvh - ${entries[0].contentRect.height}px)`;}).observe(headerShell);
 $('#sound').onclick=()=>{sound=!sound;if(!soundscape.toggle(sound)){sound=false;toast('이 브라우저에서는 소리를 켤 수 없습니다.');}if(sound)tone(650,.15);$('#sound').textContent=`소리 ${sound?'ON':'OFF'}`;$('#sound').setAttribute('aria-pressed',sound);};
 function setEffects(){$('#effects').textContent=`화면 효과 ${effects?'ON':'OFF'}`;$('#effects').setAttribute('aria-pressed',effects);$('#stage').setAttribute('data-effects',String(effects));}setEffects();$('#effects').onclick=()=>{effects=!effects;setEffects();};
-function swing(){if(!running||paused||swingTime>0||['choice','escape','director','closing'].includes(mission.phase))return;swingTime=.48;soundscape.fx('paper');const near=[...colleagues,world.boss].find(n=>n.group.visible&&Math.hypot(n.group.position.x-player.x,n.group.position.z-player.z)<2);if(near){near.flinch=.5;toast(near===world.boss?'국장: 신문은 읽으라고 있는 겁니다.':'앗, 놀랐잖아. 신문 좀 내려 봐.');}}
+function swing(){if(!running||paused||swingTime>0||['choice','escape','director','closing'].includes(mission.phase))return;swingTime=.48;soundscape.fx('paper');const near=[...colleagues,world.boss].find(n=>n.group.visible&&Math.hypot(n.group.position.x-player.x,n.group.position.z-player.z)<2);if(near){near.flinch=.5;toast(near===world.boss?'국장: 신문은 읽으라고 있는 겁니다.':near===world.coworker?'앗, 깜짝이야. 신문 좀 내려 주시겠어요?':'앗, 놀랐잖아. 신문 좀 내려 봐.');}}
 function nearestCoworker(){return colleagues.filter(n=>n.group.visible).map(n=>({person:n,distance:Math.hypot(n.group.position.x-player.x,n.group.position.z-player.z)})).sort((a,b)=>a.distance-b.distance).find(n=>n.distance<1.8)?.person;}
 function interact(){if(!running||paused)return;if(action==='call'){mission.act('call');soundscape.fx('button');toast('엘리베이터를 불렀다.');}else if(action==='desk')mission.act('desk');else if(action==='board')toast('문 안쪽으로 들어가세요.');else if(action==='boardnote'){dispatch.remember('board');toast('만든사람 안재현 · 떠든사람 최승훈, 성주현');}else if(action==='note'){dispatch.remember('desk');toast('“오늘은 정시 퇴근.” 모니터 옆에 붙여 둔 메모다.');}else if(action==='printer'){dispatch.remember('printer');soundscape.noiseHit(740,.4,.18);toast('인쇄 대기 문서 3건. A4 용지함은 아직 넉넉하다.');}else if(action==='talk'){const person=nearestCoworker();if(person){talkTarget=person;talkUntil=elapsed+4;toast('동료: '+nextCoworkerLine(person));}}}
 $('#interact').onclick=interact;$('#swing').onclick=swing;
@@ -50,6 +50,8 @@ function idleActors(t){
     npc.body.position.y=npc.seatedY+(effects?Math.sin(t*1.7+npc.base.x)*.004:0);
     npc.head.rotation.x=npc.seated?.10:0;
     npc.head.rotation.y=effects?Math.sin(t*.65+npc.base.x)*.022:0;
+    const blink=(t+npc.base.x*.23+20)%4.7;
+    for(const eye of npc.eyes)eye.scale.y=effects&&blink<.16?Math.max(.06,Math.abs(blink-.08)/.08):1;
     if(npc.seated)for(let i=0;i<2;i++){
       npc.hands[i].rotation.x=effects?Math.sin(t*10+i*2+npc.base.x)*.045:0;
       npc.forearms[i].rotation.x=-.57+(effects?Math.sin(t*7+i*2)*.015:0);

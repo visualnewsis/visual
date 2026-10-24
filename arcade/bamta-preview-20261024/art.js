@@ -1,7 +1,7 @@
 import * as T from './vendor/three.module.min.js';
 
 export const art={};
-const sources={leaves:'foliage.webp',materials:'materials.webp',screen:'newsroom-screen.webp',woman:'woman-reference.webp',man:'male-colleague.webp',director:'director-reference.webp',staff:'female-staff.webp'};
+const sources={leaves:'foliage.webp',materials:'materials.webp',screen:'newsroom-screen.webp'};
 
 // Load and share a small set of generated textures instead of duplicating large assets.
 export async function prepareArt(){

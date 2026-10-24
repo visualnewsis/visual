@@ -1,4 +1,5 @@
 import * as T from './vendor/three.module.min.js';
+import {createFictionalHead} from './faces.js?v=20261025-mesh1';
 
 const materials=new Map();
 function mat(color,roughness=.8,metalness=0){const key=[color,roughness,metalness].join();if(!materials.has(key))materials.set(key,new T.MeshStandardMaterial({color,roughness,metalness}));return materials.get(key);}
@@ -17,28 +18,6 @@ function patch(parent,points,m){
   const n=14;for(let k=0;k<points.length;k+=3){const [a,b,c]=points.slice(k,k+3);for(let i=0;i<n;i++)for(let j=0;j<n-i;j++){output.push(...surface(a,b,c,i/n,j/n),...surface(a,b,c,(i+1)/n,j/n),...surface(a,b,c,i/n,(j+1)/n));if(i+j<n-1)output.push(...surface(a,b,c,(i+1)/n,j/n),...surface(a,b,c,(i+1)/n,(j+1)/n),...surface(a,b,c,i/n,(j+1)/n));}}
   const geometry=new T.BufferGeometry();geometry.setAttribute('position',new T.Float32BufferAttribute(output,3));geometry.computeVertexNormals();return mesh(parent,geometry,m);
 }
-const gaussian=(u,v,x,y,sx,sy)=>Math.exp(-(((u-x)/sx)**2)-(((v-y)/sy)**2));
-
-function portraitHead(head,texture,female){
-  // The generated portrait is projected onto a sculpted facial surface with a
-  // nose, cheeks, sockets and chin. A volumetric skull remains behind the face.
-  const width=female?.35:.34,height=.32,cols=48,rows=56,positions=[],uvs=[],indices=[];
-  for(let j=0;j<=rows;j++)for(let i=0;i<=cols;i++){
-    const u=i/cols,v=j/rows,x=(u-.5)*width,y=(.52-v)*height;
-    const dome=.065*Math.sqrt(Math.max(0,1-((u-.5)/.51)**2-((v-.49)/.68)**2));
-    const nose=.030*gaussian(u,v,.5,.565,.047,.075),bridge=.012*gaussian(u,v,.5,.49,.033,.11);
-    const cheeks=.010*(gaussian(u,v,.36,.56,.09,.09)+gaussian(u,v,.64,.56,.09,.09));
-    const sockets=.007*(gaussian(u,v,.4,.445,.065,.035)+gaussian(u,v,.6,.445,.065,.035));
-    const lips=.007*gaussian(u,v,.5,.70,.07,.025),chin=.009*gaussian(u,v,.5,.78,.1,.06);
-    positions.push(x,y,.018+dome+nose+bridge+cheeks-sockets+lips+chin);uvs.push(u,1-v*.9);
-    if(i<cols&&j<rows){const a=j*(cols+1)+i,b=a+cols+1;indices.push(a,b,a+1,b,b+1,a+1);}
-  }
-  const geometry=new T.BufferGeometry();geometry.setAttribute('position',new T.Float32BufferAttribute(positions,3));geometry.setAttribute('uv',new T.Float32BufferAttribute(uvs,2));geometry.setIndex(indices);geometry.computeVertexNormals();
-  const face=new T.MeshStandardMaterial({map:texture,roughness:.82,metalness:0,transparent:true,alphaTest:.16,side:T.FrontSide});mesh(head,geometry,face);
-  oval(head,mat('#20201e'),0,.045,-.04,female?.091:.092,.133,.092);
-  if(female){oval(head,mat('#20201e'),0,-.075,-.068,.11,.185,.073);for(const side of [-1,1])oval(head,mat('#252521'),side*.091,-.045,-.007,.028,.16,.045);}
-}
-
 export function createPerson({female=false,boss=false,x,z,seated=false,profile='',dialogue='desk',id=''},scene,art={}){
   const group=new T.Group();group.position.set(x,0,z);scene.add(group);const body=new T.Group();group.add(body);
   const skin=mat(female?'#d7b397':'#c8a184'),jacket=mat(boss?'#29313a':female?'#455650':profile==='light'?'#8e8f86':'#59616a',.94);
@@ -65,9 +44,7 @@ export function createPerson({female=false,boss=false,x,z,seated=false,profile='
     block(body,mat('#d8dfd6'),0,1.077,.139,.065,.087,.005);block(body,mat('#3b796d'),0,1.10,.144,.057,.017,.002);block(body,mat('#8f9e95'),0,1.068,.144,.034,.004,.002);
   }
   capsule(body,skin,0,1.46,0,.054,.11,1,.9);const head=new T.Group();head.position.set(0,1.60,0);body.add(head);
-  const texture=boss?art.director:profile==='staff'?art.staff:female?art.woman:art.man;
-  if(texture)portraitHead(head,texture,female);
-  else{oval(head,skin,0,.005,0,.083,.122,.083);oval(head,mat('#232523'),0,.085,-.02,.086,.06,.085);for(const side of [-1,1])oval(head,black,side*.029,.027,.075,.005,.006,.004);oval(head,skin,0,0,.083,.012,.021,.02);}
+  const eyes=createFictionalHead(head,{female,boss,profile});
   const arms=[],forearms=[],hands=[],legs=[],knees=[];
   for(const side of [-1,1]){
     const arm=new T.Group();arm.position.set(side*(shoulder+.008),1.345,0);arm.rotation.z=side*.045;body.add(arm);capsule(arm,jacket,0,-.14,0,female?.050:.058,.19,1,.94);
@@ -81,5 +58,5 @@ export function createPerson({female=false,boss=false,x,z,seated=false,profile='
   }
   if(seated){body.position.y=-.35;body.rotation.x=.045;for(let i=0;i<2;i++){legs[i].rotation.x=-Math.PI/2;knees[i].rotation.x=Math.PI/2;arms[i].rotation.x=-1;forearms[i].rotation.x=-.57;}}
   const shadow=new T.Mesh(new T.CircleGeometry(.17,28),new T.MeshBasicMaterial({color:'#18211c',transparent:true,opacity:.10,depthWrite:false}));shadow.rotation.x=-Math.PI/2;shadow.position.y=.005;group.add(shadow);
-  return {group,body,head,arms,forearms,hands,legs,knees,base:{x,z},flinch:0,female,boss,seated,dialogue,id,talkIndex:0,seatedY:seated?-.35:0};
+  return {group,body,head,eyes,arms,forearms,hands,legs,knees,base:{x,z},flinch:0,female,boss,seated,dialogue,id,talkIndex:0,seatedY:seated?-.35:0};
 }
