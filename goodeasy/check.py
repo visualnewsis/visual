@@ -23,7 +23,10 @@ for p in pages:
  if p.parent.name!='review':
   if len(h.blocks)!=1:errors.append(str(p)+' JSON-LD count')
   if s.count("gtag('config','G-6BKMWE02W5')")!=1:errors.append(str(p)+' GA config count')
-  if 'noindex,nofollow' not in s:errors.append(str(p)+' prototype indexing')
+  if p.parent.name=='piano':
+   if 'index,follow,max-image-preview:large' not in s or 'noindex' in s:errors.append(str(p)+' published piano indexing')
+   if 'https://visual.newsis.com/goodeasy/piano/' not in s:errors.append(str(p)+' published piano URL')
+  elif 'noindex,nofollow' not in s:errors.append(str(p)+' prototype indexing')
  for r in h.refs:
   u=urlsplit(r)
   if u.scheme or u.netloc:continue
@@ -34,5 +37,5 @@ for p in pages:
   elif u.fragment and target.suffix=='.html':
    t=Page();t.feed(target.read_text(encoding='utf8'))
    if u.fragment not in t.ids:errors.append(f'{p}: missing anchor {r}')
-print('\n'.join(errors) if errors else f'PASS {len(pages)} GOODEASY routes: local links/assets, IDs, JSON-LD, GA and noindex')
+print('\n'.join(errors) if errors else f'PASS {len(pages)} GOODEASY routes: local links/assets, IDs, JSON-LD, GA and release/prototype indexing')
 sys.exit(bool(errors))

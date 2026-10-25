@@ -22,3 +22,9 @@
 
 /* Quiet author byline above the series name. */
 .brand-byline{display:block;font-family:Arial,"Noto Sans KR",sans-serif;font-size:10px;font-weight:400;line-height:1.4;letter-spacing:.04em;color:var(--muted);margin:0 0 3px}.making details{margin-top:24px;font-size:12px;line-height:1.9}.making summary{cursor:pointer;color:var(--muted)}
+
+/* Published piano: shared header and photo attribution. */
+body.vnh-ready .play{height:calc(100svh - 64px - env(safe-area-inset-top,0px))}
+.skip:focus{top:72px;z-index:10001}
+footer{flex-wrap:wrap}.photo-credit{flex-basis:100%;margin:0;font-size:10px;color:var(--muted);line-height:1.8}.photo-credit a{text-decoration:underline;text-underline-offset:3px}
+.research-index a:focus-visible,.research-controls button:focus-visible{outline:2px solid #d8c09c;outline-offset:4px}
