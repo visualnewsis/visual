@@ -34,3 +34,6 @@ footer{flex-wrap:wrap}.photo-credit{flex-basis:100%;margin:0;font-size:10px;colo
 @media(max-width:700px){.opening-quote{padding:46px 24px}.opening-quote blockquote p{font-size:clamp(18px,4.8vw,25px);line-height:1.95}.opening-quote figcaption{margin-top:22px;gap:8px}.opening-quote figcaption span{font-size:11px}.opening-quote figcaption a{font-size:9px}}
 
 .wordmark .brand-lab{display:flex;align-items:center;gap:5px;font:400 10px/1.4 Arial,"Malgun Gothic",sans-serif;letter-spacing:.15em;color:#b8c4bb;margin:7px 0 0}.wordmark .brand-lab img{display:block;width:16px;height:20px;object-fit:contain}
+
+.piano-lab-signature{display:flex;align-items:center;gap:8px;color:#e1e1d5;flex:none}.piano-lab-signature>img{display:block;object-fit:contain;width:22px;height:28px}.piano-lab-signature>span{display:grid;gap:3px}.piano-lab-signature small{font-size:8px;letter-spacing:.03em;color:var(--muted)}.piano-lab-signature strong{font-size:12px;letter-spacing:-.04em;font-weight:500}.piano-lab-signature em{font-size:9px;letter-spacing:.08em;font-weight:400;font-style:normal;color:#a9b9ae;margin-left:4px}
+@media(max-width:700px){.piano-lab-signature{gap:5px}.piano-lab-signature>img{width:18px;height:23px}.piano-lab-signature strong{font-size:11px}.piano-lab-signature small{font-size:7px}.piano-lab-signature em{font-size:8px;margin-left:3px}}
