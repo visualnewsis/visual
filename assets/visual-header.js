@@ -21,6 +21,8 @@
     overlay.className="vnh-overlay";
     overlay.id="vnh-menu";
     overlay.dataset.open="false";
+    overlay.setAttribute("aria-hidden","true");
+    overlay.inert=true;
     overlay.dataset.theme=theme;
     const navItems=Object.keys(labels).map(key=>{
       const icon=icons[key]?`<img class="vnh-nav-icon${key==='onepoint'?' vnh-character-icon':key==='goodeasy'?' vnh-lab-icon':''}" src="${icons[key]}" alt="">`:"";
@@ -32,8 +34,13 @@
     document.body.prepend(header);
     document.body.classList.add("vnh-ready");
     const button=header.querySelector(".vnh-toggle");
-    const close=()=>{header.dataset.open="false";overlay.dataset.open="false";button.setAttribute("aria-expanded","false");button.setAttribute("aria-label","전체 메뉴 열기")};
-    const open=()=>{header.dataset.open="true";overlay.dataset.open="true";button.setAttribute("aria-expanded","true");button.setAttribute("aria-label","전체 메뉴 닫기")};
+    const background=new Map();
+    const restoreBackground=()=>{background.forEach((value,el)=>{el.inert=value});background.clear()};
+    const close=()=>{header.dataset.open="false";overlay.dataset.open="false";button.setAttribute("aria-expanded","false");button.setAttribute("aria-label","전체 메뉴 열기");restoreBackground();button.focus({preventScroll:true});overlay.inert=true;overlay.setAttribute("aria-hidden","true")};
+    const open=()=>{header.dataset.open="true";overlay.dataset.open="true";button.setAttribute("aria-expanded","true");button.setAttribute("aria-label","전체 메뉴 닫기");overlay.inert=false;overlay.setAttribute("aria-hidden","false");[...document.body.children,...header.querySelectorAll("a")].forEach(el=>{if(el===header||el===overlay||/^(SCRIPT|STYLE|LINK)$/.test(el.tagName))return;background.set(el,el.inert);el.inert=true});requestAnimationFrame(()=>{if(header.dataset.open==="true")overlay.querySelector("a")?.focus({preventScroll:true})})};
+    const focusable=()=>[...overlay.querySelectorAll("a[href]"),button];
+    document.addEventListener("focusin",event=>{if(header.dataset.open==="true"&&!overlay.contains(event.target)&&event.target!==button)focusable()[0]?.focus({preventScroll:true})});
+    document.addEventListener("keydown",event=>{if(header.dataset.open!=="true"||event.key!=="Tab")return;const items=focusable(),index=items.indexOf(document.activeElement);event.preventDefault();items[(index+(event.shiftKey?-1:1)+items.length)%items.length]?.focus({preventScroll:true})});
     button.addEventListener("click",()=>header.dataset.open==="true"?close():open());
     overlay.addEventListener("click",event=>{if(event.target===overlay||event.target.closest("a")) close()});
     document.addEventListener("keydown",event=>{if(event.key==="Escape"&&header.dataset.open==="true"){close();button.focus()}});
