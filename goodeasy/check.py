@@ -16,7 +16,7 @@ class Page(HTMLParser):
   if self.ld:self.json.append(s)
  def handle_endtag(self,tag):
   if tag=='script' and self.ld:self.blocks.append(json.loads(''.join(self.json)));self.ld=False
-pages=list(base.glob('*/index.html'));errors=[]
+pages=[base/'index.html',*base.glob('*/index.html')];errors=[]
 for p in pages:
  s=p.read_text(encoding='utf8');h=Page();h.feed(s)
  if len(h.ids)!=len(set(h.ids)):errors.append(str(p)+' duplicate IDs')

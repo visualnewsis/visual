@@ -6,8 +6,11 @@ const gain=()=>({value:0,cancelScheduledValues(){},setValueAtTime(){},exponentia
 class AudioContext{constructor(){this.currentTime=10;this.state='running';this.destination={};}createGain(){return {gain:gain(),connect(v){return v},disconnect(){}};}createDynamicsCompressor(){return {threshold:gain(),knee:gain(),ratio:gain(),connect(v){return v}};}createOscillator(){const o={frequency:gain(),connect(v){return v},start(t){this.started=t},stop(t){this.stopped=t},disconnect(){}};nodes.push(o);return o;}}
 const window={AudioContext,addEventListener(){},dispatchEvent(){}};
 const document={hidden:false,getElementById:get,createElement:element,addEventListener(type,fn){listeners[type]=fn;}};
-vm.runInNewContext(fs.readFileSync(__dirname+'/piano.js','utf8'),{window,document,matchMedia:()=>({matches:false,addEventListener(){}}),performance:{now:()=>100},Event:class{},setTimeout});
+vm.runInNewContext(fs.readFileSync(__dirname+'/piano.js','utf8'),{window,document,matchMedia:()=>({matches:false,addEventListener(){}}),performance:{now:()=>100},Event:class{},setTimeout,URLSearchParams,location:{search:'?landing-note=64&duration=99999'}});
 const engine=window.PianoExperience;
+assert.equal(nodes.length,0,'landing handoff must not autoplay');
+assert.equal(engine.snapshot().last.midi,64);
+assert.equal(engine.snapshot().last.duration,1800,'landing duration is bounded');
 listeners.keydown({code:'KeyA',target:{closest:()=>null},preventDefault(){}});
 const live=nodes.slice();assert.equal(live.length,7);
 engine.strikeObservation(69);const observation=nodes.slice(7);assert.equal(observation.length,7);assert.equal(observation[0].started,10);assert(Math.abs(observation[0].frequency.value-440)<1);

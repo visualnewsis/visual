@@ -243,5 +243,15 @@
     releaseObservation() { [...observationVoices.keys()].forEach(midi => endVoice(midi, false, observationVoices)); },
     stopObservation
   });
+  // Carry only bounded pitch/duration from the landing. Never play audio on navigation.
+  const landingParams = new URLSearchParams(location.search);
+  const landingPitch = Number(landingParams.get('landing-note'));
+  const landingDuration = Number(landingParams.get('duration'));
+  if (landingParams.has('landing-note') && Number.isInteger(landingPitch) && landingPitch>=60 && landingPitch<=76) {
+    last = {midi:landingPitch, start:performance.now()-300, duration:Number.isFinite(landingDuration)?Math.max(100,Math.min(1800,landingDuration)):250};
+    refreshContext();
+    $('context-copy').textContent = `모음 화면에서 누른 ${noteName(landingPitch)}입니다. 재생 버튼을 누르면 안쪽 움직임을 볼 수 있습니다.`;
+    $('replay-status').textContent = '모음 화면에서 연주한 음을 이어받았습니다.';
+  }
   window.dispatchEvent(new Event('piano:ready'));
 })();
