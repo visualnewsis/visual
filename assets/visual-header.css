@@ -37,3 +37,5 @@ body.vnh-ready{padding-top:calc(64px + env(safe-area-inset-top,0px))!important}
 @media(prefers-reduced-motion:reduce){.vnh-overlay,.vnh-panel,.vnh-toggle-lines,.vnh-toggle-lines::before,.vnh-toggle-lines::after{transition:none}}
 
 @media(min-width:521px) and (max-width:900px){.vnh-nav{gap:18px}.vnh-nav a{font-size:12px}}@media(max-width:520px){.vnh-nav .vnh-map-entry{margin-inline-start:8px}}
+
+.vnh-nav-icon.vnh-lab-icon,.vnh-icon.vnh-lab-icon{height:20px;width:16px;object-fit:contain}
