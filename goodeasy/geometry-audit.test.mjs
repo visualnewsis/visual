@@ -32,7 +32,8 @@ coffeeComparison.update(coffeeState);assert.deepEqual(coffeeState.comparison,[10
 const referenceBed=coffeeComparison.group.children[0],selectedBed=coffeeComparison.group.children[1];
 coffeeState.grind=70;coffeeComparison.update(coffeeState);
 assert.equal(coffeeState.comparison[0],100);assert.ok(coffeeState.comparison[1]<100);
-assert.ok(selectedBed.children[1].scale.x<referenceBed.children[1].scale.x,'finer grind uses smaller visual particles');
+const grains=bed=>{let found;bed.traverse(o=>{if(o.isInstancedMesh&&o.name==='irregular coffee particles')found=o;});return found;};
+const coarseGrains=grains(referenceBed),fineGrains=grains(selectedBed);assert.ok(coarseGrains&&fineGrains);assert.ok(fineGrains.userData.grainRadius<coarseGrains.userData.grainRadius,'finer grind uses smaller visual particles');assert.ok(fineGrains.count>coarseGrains.count,'more fine particles fill the same section');
 coffeeState.pressure=6;coffeeComparison.update(coffeeState);assert.ok(coffeeState.comparison[0]<100);
 const beforeChannel=[...coffeeState.comparison];coffeeState.channel=1;coffeeComparison.update(coffeeState);assert.deepEqual(coffeeState.comparison,beforeChannel,'channel view does not invent a total-flow change');
 const waterPath=otherBuilders['water-path'](),waterState={phase:0,running:true};

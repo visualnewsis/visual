@@ -204,8 +204,8 @@ export function buildGramophone(T, M) {
   const springGeometry=new T.BufferGeometry();springGeometry.setAttribute('position',new T.Float32BufferAttribute(springPoints,3));barrel.add(new T.Line(springGeometry,new T.LineBasicMaterial({color:0xd3d5cb})));
   ring(.38,.019,steel,barrel,0,.135,0,'barrel lid seam');
   cyl(.075,.075,.36,steel,barrel,0,0,0,'spring arbor');
-  const gearA=new T.Group();gearA.position.set(.08,.65,.24);motor.add(gearA);
-  const gearB=new T.Group();gearB.position.set(.54,.65,.24);motor.add(gearB);
+  const gearA=new T.Group();gearA.name="Motor gear 20 teeth";gearA.position.set(.12,.65,.47);motor.add(gearA);
+  const gearB=new T.Group();gearB.name="Motor pinion 12 teeth";gearB.position.set(.65,.65,.47);motor.add(gearB);
   function gear(parent,r,teeth) {
     cyl(r,r,.054,brass,parent,0,0,0,'gear disc');
     for(let i=0;i<teeth;i++) {
@@ -215,8 +215,8 @@ export function buildGramophone(T, M) {
     cyl(.065,.065,.12,steel,parent,0,0,0,'gear hub');
   }
   gear(gearA,.29,20);gear(gearB,.155,12);
-  rod(V(.08,.5,.24),V(.08,.89,.24),.034,steel,motor,'gear arbor 1');
-  rod(V(.54,.5,.24),V(.54,.91,.24),.031,steel,motor,'gear arbor 2');
+  rod(V(.12,.5,.47),V(.12,.89,.47),.034,steel,motor,'gear arbor 1');
+  rod(V(.65,.5,.47),V(.65,.91,.47),.031,steel,motor,'gear arbor 2');
   const spindle=rod(V(0,.5,0),V(0,1.17,0),.044,steel,motor,'platter spindle');
   const governor=new T.Group(); governor.name='Centrifugal flyweight governor'; governor.position.set(.79,.66,-.55);motor.add(governor);
   const governorSpin=new T.Group();governor.add(governorSpin);const weights=[],leaves=[];
@@ -248,7 +248,7 @@ export function buildGramophone(T, M) {
     lever.rotation.y=signal*.018;
     // Down position (lift=0, signal=0) is EXACTLY the circle intersection.
     crankRotor.rotation.x=crankAngle;
-    gearA.rotation.y=angle*.31;gearB.rotation.y=-angle*.56;
+    gearA.rotation.y=angle*.31;gearB.rotation.y=-gearA.rotation.y*20/12;
     governorSpin.rotation.y=angle*2.9;
     const spread=Number.isFinite(state.governorRpm)?T.MathUtils.clamp(state.governorRpm/120,0,1):.65;const wr=.08+.14*spread;
     weights.forEach(({weight,u,v})=>weight.position.set(wr*u,.13,wr*v));

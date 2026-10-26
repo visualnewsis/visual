@@ -100,7 +100,7 @@ export function buildSewingMachine(T, M = {}) {
     s.lineTo(a,b+r); s.quadraticCurveTo(a,b,a+r,b);
     const g = new T.ExtrudeGeometry(s, {
       depth:d, bevelEnabled:true, bevelSegments:3,
-      steps:1, bevelSize:0.025, bevelThickness:0.025,
+      steps:1, bevelSize:Math.min(.025,r*.5), bevelThickness:Math.min(.025,r*.5),
       curveSegments:8
     });
     return mesh(parent,g,material,name,x,y,z-d/2);
@@ -208,8 +208,8 @@ export function buildSewingMachine(T, M = {}) {
 
   // Needle: eye is local origin; all movement is applied to this group.
   needle.position.set(N.x,1.65,N.z);
-  cylinder(needle,.026,.026,.81,steel,
-    "Needle shank",0,.49,0,16);
+  cylinder(needle,.026,.026,1.35,steel,
+    "Needle shank",0,.76,0,16);
   cylinder(needle,.012,.012,.18,steel,
     "Needle blade",0,.13,0,12);
   const eyeRing=torus(needle,.025,.009,steel,
@@ -383,10 +383,10 @@ export function buildSewingMachine(T, M = {}) {
   clothTop.color.setHex(0x799489);clothBottom.color.setHex(0x435e53);
   clothTop.transparent=true;
   clothBottom.transparent=true;
-  const topSheet=rounded(fabric,1.3,.018,4.4,.045,
-    clothTop,"Upper fabric layer",0,.021,0);
-  const bottomSheet=rounded(fabric,1.3,.018,4.4,.045,
-    clothBottom,"Lower fabric layer",0,-.03,0);
+  const topSheet=rounded(fabric,1.3,.020,4.4,.045,
+    clothTop,"Upper fabric layer",0,.015,0);
+  const bottomSheet=rounded(fabric,1.3,.020,4.4,.045,
+    clothBottom,"Lower fabric layer",0,-.015,0);
 
   // Local needle entry is z=-.8; the moving cloth translates below it.
   const seamTop=new T.Group(), seamBottom=new T.Group();

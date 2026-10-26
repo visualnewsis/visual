@@ -2,10 +2,10 @@
 export const PLATE_Y=1.05,NEEDLE_X=-.85,NEEDLE_Z=0,CATCH_PHASE=.58,MM=.045,MAX_STITCHES=12;
 export const clamp=(x,a=0,b=1)=>Math.max(a,Math.min(b,x));
 export function smooth(a,b,x){const q=clamp((x-a)/(b-a));return q*q*(3-2*q);}
-export function cycleAt(phase,length=3){const p=((phase%1)+1)%1,eyeY=1.20+.45*Math.cos(2*Math.PI*p),tipY=eyeY-.16,feed=smooth(.84,.96,p),dogLift=smooth(.79,.83,p)*(1-smooth(.96,.99,p)),dogZ=p<.2?-.5+smooth(0,.2,p):.5-feed,loopGrow=smooth(.50,.58,p),carry=smooth(.58,.81,p),recover=smooth(.83,.94,p),takeupY=1.55+.62*(1-smooth(.03,.48,p)+smooth(.83,.98,p));
- const stage=p<.5?0:p<.58?1:p<.83?2:p<.94?3:4;
- return {phase:p,eyeY,tipY,needleX:NEEDLE_X,needleZ:NEEDLE_Z,hookAngle:4*Math.PI*(p-CATCH_PHASE),takeupY,feed,feedZ:dogZ*length*MM,feedY:1.005+.06*dogLift,loop:loopGrow*(1-recover),carry,recover,length,stage};}
-export const STAGES=[['바늘이 내려갑니다','바늘 눈에 꿴 윗실이 천 아래로 들어갑니다.'],['고리가 생깁니다','최저점을 지난 바늘이 조금 올라오며 스카프 쪽에 윗실 고리가 생깁니다.'],['훅이 고리를 운반합니다','회전 훅이 윗실 고리를 잡아 보빈 케이스의 위아래로 통과시킵니다.'],['실을 회수하며 천을 옮깁니다','실채기가 윗실을 회수하고, 바늘이 빠진 사이 이송톱니가 다음 땀으로 천을 보냅니다.'],['천이 옮겨집니다','바늘이 천에서 빠져나온 동안 이송톱니가 다음 땀 간격만큼 천을 옮깁니다.']];
+export function cycleAt(phase,length=3){const p=((phase%1)+1)%1,eyeY=1.20+.45*Math.cos(2*Math.PI*p),tipY=eyeY-.16,feed=smooth(.84,.96,p),dogLift=smooth(.79,.83,p)*(1-smooth(.96,.99,p)),dogZ=p<.2?-.5+smooth(0,.2,p):.5-feed,loopGrow=smooth(.50,.58,p),carry=smooth(.58,.81,p),recover=smooth(.83,.94,p),takeupY=2.36+.56*(1-smooth(.03,.48,p)+smooth(.83,.98,p));
+ const stage=p<.5?0:p<.58?1:p<.83?2:p<.94?3:p<.96?4:5;
+ return {phase:p,eyeY,tipY,needleX:NEEDLE_X,needleZ:NEEDLE_Z,hookAngle:4*Math.PI*(p-CATCH_PHASE),takeupY,feed,feedZ:dogZ*length*MM,feedY:.995+.06*dogLift,loop:loopGrow*(1-recover),carry,recover,length,stage};}
+export const STAGES=[['바늘이 내려갑니다','바늘 눈에 꿴 윗실이 천 아래로 들어갑니다.'],['고리가 생깁니다','최저점을 지난 바늘이 조금 올라오며 스카프 쪽에 윗실 고리가 생깁니다.'],['훅이 고리를 운반합니다','회전 훅이 윗실 고리를 잡아 보빈 케이스의 위아래로 통과시킵니다.'],['실을 회수하며 천을 옮깁니다','실채기가 윗실을 회수하고, 바늘이 빠진 사이 이송톱니가 다음 땀으로 천을 보냅니다.'],['천이 옮겨집니다','바늘이 천에서 빠져나온 동안 이송톱니가 다음 땀 간격만큼 천을 옮깁니다.'],['다음 땀을 준비합니다','이송톱니가 내려가고 바늘은 위쪽으로 돌아옵니다.']];
 export class SewingState {
  constructor(){this.phase=0;this.length=3;this.nextLength=3;this.stitches=[];this.travel=0;this.holding=false;this.single=false;this.speed=1;this.snapshot=null;this.pressStart=0;}
  setLength(value){this.nextLength=clamp(Number(value),2,5);if(this.phase===0&&!this.running)this.length=this.nextLength;}

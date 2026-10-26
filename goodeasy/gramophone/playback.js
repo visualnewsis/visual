@@ -3,7 +3,7 @@ export const REFERENCE_RPM=78;
 export const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
 export class Playback {
  constructor(duration=24){this.duration=duration;this.position=0;this.rpm=78;this.reserve=.65;this.playing=false;this.needleDown=false;this.started=0;this.origin=0;this.crank=0;this.snapshot=null;}
- read(now){return clamp(this.position+(this.playing?Math.max(0,now-this.started)*this.rpm/78:0),0,this.duration);}
+ read(now){return clamp(this.position+(this.playing?Math.min(Math.max(0,now-this.started)*this.rpm/78,this.reserve*90):0),0,this.duration);}
  commit(now){const next=this.read(now),advance=next-this.position;this.reserve=Math.max(0,this.reserve-advance/90);this.position=next;this.started=now;return next;}
  start(now){if(this.reserve<=0||this.position>=this.duration)return false;this.started=now;this.playing=true;this.needleDown=true;return true;}
  pause(now){this.commit(now);this.playing=false;}

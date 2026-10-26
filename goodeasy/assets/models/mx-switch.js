@@ -20,15 +20,15 @@ export function buildMXSwitch(T,M={}) {
  // Rest stem geometry stays above lower floor even at 4mm; central slider bottom rest -.30, full -.70.
  mesh(stem,box(.37,.35,.37),red,0,-.005,0);
  mesh(stem,box(.14,.36,.47),red,0,.35,0);mesh(stem,box(.47,.36,.14),red,0,.35,0);
- for(const sx of [-1,1])mesh(stem,box(.12,.16,.17),red,sx*.31,-.23,0);
- // Cam pushes a leaf along X while contact buttons share the SAME Z plane.
- mesh(stem,new T.SphereGeometry(.065,16,12),red,.315,-.25,0);
+ for(const sx of [-1,1])mesh(stem,box(.12,.16,.17),red,sx*.31,-.23,sx>0?.14:0);
+ // The cam acts beside the electrical contacts; both contact buttons remain in Z=0.
+ mesh(stem,new T.SphereGeometry(.065,16,12),red,.315,-.25,.14);
  const fixedButton=mesh(fixed,new T.SphereGeometry(.052,16,12),steel,.48,-.359049,0);
  mesh(fixed,box(.065,.36,.10),brass,.53,-.515,0);
  // Leaf anchored at lower pivot, bends towards fixed button. Contact at exactly 2 mm.
  const pivot=new T.Group();pivot.position.set(.28,-.68,0);leaf.add(pivot);
  const leafStrip=mesh(pivot,box(.046,.335,.075),brass,0,.1675,0);
- const movingButton=mesh(pivot,new T.SphereGeometry(.052,16,12),steel,0,.335,0);
+ const movingButton=mesh(pivot,new T.SphereGeometry(.052,16,12),steel,0,.335,0);mesh(pivot,box(.046,.075,.16),brass,0,.245,.085);
  // Moving button center at rest x=.28, fixed x=.48; at 2 mm: moving center x=.376.
  // Button surfaces touch when center distance=.104. Geometry rotation around lower pivot.
  const targetAngle=Math.asin(.096/.335);
