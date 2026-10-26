@@ -1,6 +1,6 @@
-import {clamp,reelStep,exposure,wind,watchStep,filmStep,switchState,coffeeFlow} from './model.js?v=20261026-runtime1';
+import {clamp,reelStep,reelPull,observationRecord,exposure,wind,watchStep,filmStep,switchState,coffeeFlow} from './model.js?v=20261026-release3';
 const $=id=>document.getElementById(id),kind=document.body.dataset.experiment;
-const base={turns:0,rotor:0,distance:20,drag:50,slipping:false,aperture:2.8,shutter:250,shots:0,photo:null,reserve:0,elapsed:0,frames:0,frame:0,text:'',key:'A',travel:0,locked:false,brewing:false,volume:0,grind:50,pressure:9};
+const base={turns:0,rotor:0,distance:20,drag:50,pull:35,payout:0,slipping:false,aperture:2.8,shutter:250,shots:0,photo:null,reserve:0,elapsed:0,frames:0,frame:0,text:'',key:'A',travel:0,locked:false,brewing:false,volume:0,grind:50,pressure:9};
 let state={...base},record=null,step=0,animation=0,last=0,visible=true,frameTime=0;
 const reduced=matchMedia('(prefers-reduced-motion: reduce)');
 const svg=(body)=>`<svg viewBox="${innerWidth<700?({'espresso-machine':'210 30 580 480',watch:'280 0 560 580','fishing-reel':'220 50 570 490'}[kind]||'0 0 1000 580'):'0 0 1000 580'}" role="img" aria-label="${document.body.dataset.name} 조작 모형"><defs><linearGradient id="steel" x2=".3" y2="1"><stop stop-color="#d5d6d1"/><stop offset=".2" stop-color="#7e8789"/><stop offset=".5" stop-color="#222b31"/><stop offset=".8" stop-color="#a4aba9"/><stop offset="1" stop-color="#343b40"/></linearGradient><linearGradient id="black" x2="0" y2="1"><stop stop-color="#394047"/><stop offset=".5" stop-color="#12191e"/><stop offset="1" stop-color="#090d10"/></linearGradient><radialGradient id="glass"><stop stop-color="#313e44"/><stop offset=".4" stop-color="#14292e"/><stop offset=".8" stop-color="#0c161b"/><stop offset="1" stop-color="#657578"/></radialGradient><linearGradient id="brass" x2=".7" y2="1"><stop stop-color="#e6d5a5"/><stop offset=".5" stop-color="#8b6b37"/><stop offset="1" stop-color="#d8bd79"/></linearGradient></defs>${body}</svg>`;
@@ -21,7 +21,7 @@ function clickSound(f=160){try{audio??=new (window.AudioContext||window.webkitAu
 function say(text){$('feedback').textContent=text;}
 function render(){
  if(!document.body.classList.contains('has-3d'))$('instrument').innerHTML=scene(state);window.GoodeasyRenderState={...state};window.dispatchEvent(new CustomEvent('goodeasy:state',{detail:{...state}}));
- if(kind==='fishing-reel')say(`${state.turns.toFixed(1)}바퀴 · 남은 거리 ${state.distance.toFixed(1)}m · ${state.slipping?'드래그가 풀리며 줄이 나갑니다.':state.distance===0?'목표 지점까지 감았습니다.':state.turns?'줄을 감고 있습니다.':'손잡이를 돌려보세요.'}`);
+ if(kind==='fishing-reel')say(`${state.turns.toFixed(1)}바퀴 · 가상 거리 ${state.distance.toFixed(1)}m · ${state.slipping?'당기는 힘이 드랙 저항보다 커 줄이 나갑니다.':state.distance===0?'줄을 모두 감았습니다.':state.turns?'손잡이를 돌리면 로터가 줄을 감습니다.':'손잡이를 돌리거나 줄을 당겨보세요.'}`);
  if(kind==='watch')say(`태엽 잔량 ${Math.round(state.reserve)}% · ${state.reserve?'작동 중':'멈춤'} · 시연 시간 ${state.elapsed.toFixed(1)}초`);
  if(kind==='projector')say(`${state.frame+1} / 24 프레임 · 누적 ${Math.floor(state.frames)}장`);
  if(kind==='espresso-machine'){
@@ -29,8 +29,8 @@ function render(){
   say(!state.locked?'포터필터 끼우기를 눌러 손잡이를 장착하세요.':`${state.brewing?'추출 중':state.volume>=40?'잔이 찼습니다. 잔을 비우면 다시 내릴 수 있습니다.':'추출 버튼을 눌러보세요.'} · ${state.volume.toFixed(1)}mL · ${state.pressure}bar`);
  }
 }
-function snapshot(){record=JSON.parse(JSON.stringify(state));step=0;showInside();}
-function showInside(){if(!record){$('record').textContent='위에서 조작한 뒤 파헤쳐보기를 누르세요.';return;}if(!document.body.classList.contains('has-3d'))$('detail').innerHTML=scene(record,true);window.dispatchEvent(new CustomEvent('goodeasy:record',{detail:{record:JSON.parse(JSON.stringify(record)),step}}));$('record').textContent=`직전 입력 기록 · ${kind==='keyboard'?record.key:kind==='camera'?record.shots+'번째 촬영':kind==='watch'?record.reserve.toFixed(0)+'% 잔량':kind==='projector'?(record.frame+1)+'번 프레임':kind==='fishing-reel'?record.turns.toFixed(1)+'바퀴':record.volume.toFixed(1)+'mL'}`;document.querySelectorAll('[data-step]').forEach((b,i)=>{b.setAttribute('aria-pressed',String(i===step));});$('part-copy').textContent=document.querySelectorAll('[data-step]')[step].dataset.copy;}
+function snapshot(){record=observationRecord(kind,state);step=0;showInside();}
+function showInside(){if(!record){$('record').textContent='위에서 조작한 뒤 파헤쳐보기를 누르세요.';return;}if(!document.body.classList.contains('has-3d'))$('detail').innerHTML=scene(record,true);window.dispatchEvent(new CustomEvent('goodeasy:record',{detail:{record:JSON.parse(JSON.stringify(record)),step}}));$('record').textContent=`직전 입력 기록 · ${kind==='keyboard'?record.key:kind==='camera'?record.shots+'번째 촬영 · f/'+record.aperture+' · 1/'+record.shutter+'초':kind==='watch'?record.reserve.toFixed(0)+'% 잔량':kind==='projector'?(record.frame+1)+'번 프레임':kind==='fishing-reel'?record.turns.toFixed(1)+'바퀴 · 드랙 '+record.drag+' · 당기는 힘 '+record.pull:record.volume.toFixed(1)+'mL'}`;document.querySelectorAll('[data-step]').forEach((b,i)=>{b.setAttribute('aria-pressed',String(i===step));});$('part-copy').textContent=document.querySelectorAll('[data-step]')[step].dataset.copy;}
 function action(){
  if(kind==='fishing-reel'){state=reelStep(state,1);clickSound(110);}
  if(kind==='watch'){state=wind(state,1);clickSound(230);wake();}
@@ -39,10 +39,11 @@ function action(){
  if(kind==='espresso-machine'){if(!state.locked){say('먼저 포터필터를 끼우세요.');return;}state.brewing=!state.brewing;wake();}
  render();
 }
-$('action')?.addEventListener('click',action);$('explore').addEventListener('click',snapshot);
+$('action')?.addEventListener('click',action);$('explore').addEventListener('click',e=>{if(kind==='camera'&&!state.photo){e.preventDefault();say('먼저 셔터를 눌러 한 장 찍어보세요.');$('action').focus();return;}snapshot();});
 document.querySelectorAll('[data-step]').forEach(b=>b.addEventListener('click',()=>{if(!record)snapshot();step=Number(b.dataset.step);showInside();}));
-function number(id,key){$(id)?.addEventListener('input',e=>{state[key]=Number(e.target.value);$(id+'-value').textContent=e.target.selectedOptions?.[0]?.textContent??e.target.value;render();});}
-number('drag','drag');number('aperture','aperture');number('shutter','shutter');number('grind','grind');number('pressure','pressure');
+function number(id,key){$(id)?.addEventListener('input',e=>{state[key]=Number(e.target.value);if(kind==='fishing-reel'&&(key==='drag'||key==='pull'))state.slipping=false;$(id+'-value').textContent=e.target.selectedOptions?.[0]?.textContent??e.target.value;render();});}
+number('drag','drag');number('pull','pull');
+$('pull-line')?.addEventListener('click',()=>{state=reelPull(state);clickSound(120);render();if(!state.slipping)say('드랙이 버팁니다. 당기는 힘을 높이거나 드랙 저항을 낮춰보세요.');});number('aperture','aperture');number('shutter','shutter');number('grind','grind');number('pressure','pressure');
 $('lock')?.addEventListener('click',()=>{if(state.brewing)return;state.locked=!state.locked;$('lock').setAttribute('aria-pressed',state.locked);$('lock').textContent=state.locked?'포터필터 빼기':'포터필터 끼우기';render();});
 $('empty')?.addEventListener('click',()=>{state.brewing=false;state.volume=0;render();});
 $('reset')?.addEventListener('click',()=>{state={...base};record=null;step=0;window.dispatchEvent(new CustomEvent('goodeasy:record',{detail:{record:null,step:0}}));document.querySelectorAll('[data-initial]').forEach(el=>{el.value=el.dataset.initial;el.dispatchEvent(new Event('input'));});if($('typing'))$('typing').value='';if($('lock')){$('lock').textContent='포터필터 끼우기';$('lock').setAttribute('aria-pressed','false');}render();$('detail').innerHTML='';$('record').textContent='조작 기록이 없습니다.';$('part-copy').textContent='부품을 선택하면 설명이 나옵니다.';});
@@ -54,7 +55,7 @@ if(kind==='keyboard'){
  $('travel').addEventListener('input',e=>{state.travel=Number(e.target.value);$('travel-value').textContent=state.travel.toFixed(1)+' mm';if(record){record.travel=state.travel;showInside();}else snapshot();$('contact-state').textContent=switchState(state.travel).closed?'접점 닫힘 · 입력 지점 통과':'접점 열림 · 아직 입력되지 않음';});
 }
 let pointer=null,dragAngle=0,dragY=0;
-$('turn-area')?.addEventListener('pointerdown',e=>{pointer=e.pointerId;e.currentTarget.setPointerCapture(pointer);const r=e.currentTarget.getBoundingClientRect();dragAngle=Math.atan2(e.clientY-r.top-r.height/2,e.clientX-r.left-r.width/2);dragY=e.clientY;});
+$('turn-area')?.addEventListener('pointerdown',e=>{if((kind==='watch'||kind==='fishing-reel')&&matchMedia('(max-width:700px)').matches&&!e.currentTarget.classList.contains('is-gesture-mode'))return;pointer=e.pointerId;e.currentTarget.setPointerCapture(pointer);const r=e.currentTarget.getBoundingClientRect();dragAngle=Math.atan2(e.clientY-r.top-r.height/2,e.clientX-r.left-r.width/2);dragY=e.clientY;});
 $('turn-area')?.addEventListener('pointermove',e=>{if(pointer!==e.pointerId)return;const r=e.currentTarget.getBoundingClientRect(),a=Math.atan2(e.clientY-r.top-r.height/2,e.clientX-r.left-r.width/2);let delta=a-dragAngle;if(delta>Math.PI)delta-=Math.PI*2;if(delta<-Math.PI)delta+=Math.PI*2;dragAngle=a;
  if(kind==='watch'){const turns=Math.abs(e.clientY-dragY)/80;dragY=e.clientY;state=wind(state,turns);wake();}else if(kind==='fishing-reel')state=reelStep(state,Math.max(0,delta)/(Math.PI*2));else if(kind==='projector')state=filmStep(state,Math.max(0,delta)/(Math.PI*2)*24);render();});
 for(const event of ['pointerup','pointercancel','lostpointercapture'])$('turn-area')?.addEventListener(event,()=>pointer=null);

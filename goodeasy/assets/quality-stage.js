@@ -1,8 +1,8 @@
-import {buildMXStudy,buildEspressoStudy} from './quality-replacements.js?v=20261026-runtime1';
-import {buildSwitch} from './quality-switch.js?v=20261026-runtime1';
-import {cameraResult} from './quality-camera.js?v=20261026-runtime1';
-import {T,materials,makeStage} from './quality-kit.js?v=20261026-runtime1';
-import {machineBuilders} from './quality-machines.js?v=20261026-runtime1';
+import {buildMXStudy,buildEspressoStudy} from './quality-replacements.js?v=20261026-release3';
+import {buildSwitch} from './quality-switch.js?v=20261026-release3';
+import {cameraResult} from './quality-camera.js?v=20261026-release3';
+import {T,materials,makeStage} from './quality-kit.js?v=20261026-release3';
+import {machineBuilders} from './quality-machines.js?v=20261026-release3';
 const kind=document.body.dataset.music||document.body.dataset.experiment;if(!kind)throw Error('Missing experiment');
 const musical=!!document.body.dataset.music,host=musical?(kind==='guitar'?document.querySelector('.string-bench'):document.getElementById('bow-pad')):document.querySelector('.stage');
 const canvas=document.createElement('canvas');canvas.className='quality-canvas';canvas.setAttribute('aria-label',`${document.body.dataset.name||kind} 3D 조작 모형`);canvas.setAttribute('role','img');
@@ -15,7 +15,7 @@ function draw(now){raf=0;if(document.hidden)return;if(visible){model.update?.(st
 function action(code){if(code?.startsWith('key:'))document.querySelector(`[data-key="${CSS.escape(code.slice(4))}"]`)?.click();else if(code==='lock')document.getElementById('lock')?.click();else if(code==='drag')document.getElementById('drag')?.focus();else if(code==='action')document.getElementById('action')?.click();}
 function pluckAt(e){if(kind!=='guitar'||!model.strings)return;const r=canvas.getBoundingClientRect(),p=new T.Vector2(e.clientX-r.left,e.clientY-r.top);let chosen=null,best=innerWidth<700?18:10;model.group.updateMatrixWorld(true);for(const s of model.strings){const A=model.group.localToWorld(new T.Vector3(...s.from)).project(stage.camera),B=model.group.localToWorld(new T.Vector3(...s.to)).project(stage.camera),a=new T.Vector2((A.x+1)*r.width/2,(1-A.y)*r.height/2),b=new T.Vector2((B.x+1)*r.width/2,(1-B.y)*r.height/2),d=b.clone().sub(a),t=Math.max(0,Math.min(1,p.clone().sub(a).dot(d)/d.lengthSq())),dist=p.distanceTo(a.addScaledVector(d,t));if(dist<best){chosen=s;best=dist;}}if(chosen&&!visited.has(chosen.midi)){visited.add(chosen.midi);document.querySelector(`[data-midi="${chosen.midi}"]`)?.click();}}
 async function boot(){
- let builder=kind==='espresso-machine'?()=>buildEspressoStudy(T,materials):machineBuilders[kind];if(musical){const b=await import('./quality-instruments.js?v=20261026-runtime1');builder=kind==='guitar'?()=>b.buildGuitar(T,materials):()=>b.buildViolin(T,materials);}
+ let builder=kind==='espresso-machine'?()=>buildEspressoStudy(T,materials):machineBuilders[kind];if(musical){const b=await import('./quality-instruments.js?v=20261026-release3');builder=kind==='guitar'?()=>b.buildGuitar(T,materials):()=>b.buildViolin(T,materials);}
  if(!builder)throw Error('No model builder');const mount=musical?host:(document.getElementById('turn-area')||host);mount.prepend(canvas);stage=makeStage(canvas);model=builder();model.group.updateMatrixWorld(true);if(kind==='guitar'&&state.midi&&performance.now()<pulse)model.pluck?.(state.midi,performance.now());if(model.bow)model.bow.userData.restZ=model.bow.position.z;stage.setModel(model,model.eye||(kind==='guitar'?[2,7,6]:[3,8,6]));
  const detailHost=document.createElement('div');detailHost.className='quality-detail';const detailCanvas=document.createElement('canvas');detailCanvas.setAttribute('aria-label','3D 부품 관찰 · 드래그로 시점 변경');detailHost.append(detailCanvas);const old=document.getElementById('detail')||document.getElementById('diagram');old.before(detailHost);detailStage=makeStage(detailCanvas);detailModel=kind==='keyboard'?buildMXStudy(T,materials):builder();detailStage.setModel(detailModel,detailModel.eye||[3,8,6]);
  document.body.classList.add('has-3d');document.getElementById('quality-status')?.remove();

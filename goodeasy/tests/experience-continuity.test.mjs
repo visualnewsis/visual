@@ -1,0 +1,16 @@
+import assert from 'node:assert/strict';
+import {observationRecord,reelStep,reelPull} from '../assets/model.js';
+const camera={aperture:8,shutter:30,photo:{a:2.8,d:250},shots:1};
+const record=observationRecord('camera',camera);
+assert.equal(record.aperture,2.8);assert.equal(record.shutter,250);
+record.photo.a=4;assert.equal(camera.photo.a,2.8);
+const reel={turns:0,rotor:0,distance:20,drag:50,pull:35,payout:0};
+assert.equal(reelPull(reel).distance,20);
+const release=reelPull({...reel,pull:80});
+assert.ok(release.distance>20);assert.ok(release.payout>0);
+assert.equal(release.turns,0);assert.equal(release.rotor,0);
+assert.ok(reelStep({...reel,drag:0},1).distance<20);
+assert.equal(reelStep(reel,-1).distance,20);
+assert.equal(reelPull({...reel,distance:30,pull:100}).distance,30);
+assert.equal(reel.turns,0);assert.equal(reel.distance,20);
+console.log('PASS captured-camera settings and independent reel pull/retrieval');

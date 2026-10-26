@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import {reelStep,exposure,wind,watchStep,filmStep,switchState,coffeeFlow} from '../assets/model.js';
 const reel={turns:0,rotor:0,distance:20,drag:50};
-assert.ok(reelStep(reel,1).distance<20);assert.ok(reelStep({...reel,drag:0},1).distance>20);assert.equal(reel.turns,0);
+assert.ok(reelStep(reel,1).distance<20);assert.ok(reelStep({...reel,drag:0},1).distance<20);assert.equal(reel.turns,0);
 assert.equal(exposure(2.8,250),1);assert.ok(exposure(5.6,250)<1);assert.ok(exposure(2.8,125)>1);
 let watch=wind({turns:0,reserve:0,elapsed:0},2);assert.equal(watch.reserve,16);assert.equal(watchStep(watch,2).elapsed,2);assert.equal(watchStep({...watch,reserve:0},2).elapsed,0);assert.equal(wind(watch,100).reserve,100);
 assert.equal(filmStep({frames:23,frame:23},1).frame,0);

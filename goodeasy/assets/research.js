@@ -1,7 +1,7 @@
-import {T,materials as M} from './quality-kit.js?v=20261026-runtime1';
-import {watchBuilders} from './research-watch.js?v=20261026-runtime1';
-import {otherBuilders} from './research-other.js?v=20261026-runtime1';
-import {clamp} from './research-math.js?v=20261026-runtime1';
+import {T,materials as M} from './quality-kit.js?v=20261026-release3';
+import {watchBuilders} from './research-watch.js?v=20261026-release3';
+import {otherBuilders} from './research-other.js?v=20261026-release3';
+import {clamp} from './research-math.js?v=20261026-release3';
 const cards=[...document.querySelectorAll('[data-research]')],views=[],reduced=matchMedia('(prefers-reduced-motion: reduce)');
 let renderer,environment,raf=0,last=0;const snapshot={value:null};
 function engine(){if(renderer)return;renderer=new T.WebGLRenderer({antialias:true,alpha:true,powerPreference:'low-power'});renderer.outputColorSpace=T.SRGBColorSpace;renderer.toneMapping=T.ACESFilmicToneMapping;renderer.toneMappingExposure=1.05;const room=new T.Scene();room.background=new T.Color(0x69716c);for(const [x,y,z,w,h] of [[-4,6,3,4,7],[5,3,-4,3,6]]){const p=new T.Mesh(new T.PlaneGeometry(w,h),new T.MeshBasicMaterial({color:new T.Color(1,.9,.76).multiplyScalar(3)}));p.position.set(x,y,z);p.lookAt(0,0,0);room.add(p);}const generator=new T.PMREMGenerator(renderer);environment=generator.fromScene(room,.04).texture;generator.dispose();}

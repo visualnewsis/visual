@@ -1,10 +1,10 @@
-import {buildCoffeeComparison,buildCoffeeWaterPath} from './espresso-lessons.js?v=20261026-runtime1';
-import {curtainWindow,filmCycle,debounceSample,crankX,bowedDisplacement} from './mechanism-checks.js?v=20261026-runtime1';
-import {buildMXStudy,buildEspressoStudy} from './quality-replacements.js?v=20261026-runtime1';
-import {T,materials as M,mesh,box,cyl,ring,rod,tube,part} from './quality-kit.js?v=20261026-runtime1';
-import {buildGuitar,buildViolin} from './quality-instruments.js?v=20261026-runtime1';
-import {buildReel,buildEspresso} from './quality-machines.js?v=20261026-runtime1';
-import {TAU,clamp,stringHz,lightRatio} from './research-math.js?v=20261026-runtime1';
+import {buildCoffeeComparison,buildCoffeeWaterPath} from './espresso-lessons.js?v=20261026-release3';
+import {curtainWindow,filmCycle,debounceSample,crankX,bowedDisplacement} from './mechanism-checks.js?v=20261026-release3';
+import {buildMXStudy,buildEspressoStudy} from './quality-replacements.js?v=20261026-release3';
+import {T,materials as M,mesh,box,cyl,ring,rod,tube,part} from './quality-kit.js?v=20261026-release3';
+import {buildGuitar,buildViolin} from './quality-instruments.js?v=20261026-release3';
+import {buildReel,buildEspresso} from './quality-machines.js?v=20261026-release3';
+import {TAU,clamp,stringHz,lightRatio} from './research-math.js?v=20261026-release3';
 const ink=new T.MeshStandardMaterial({color:0x1f3e3c,roughness:.6}),blue=new T.MeshStandardMaterial({color:0x569da9,roughness:.25}),red=M.red,signal=new T.MeshStandardMaterial({color:0xe7c47a,emissive:0x6b471a,roughness:.3});
 const finish=(group,update,extra={})=>({group,eye:[4,5,7],update,...extra});
 function wave(parent,length=4){const geo=new T.BufferGeometry(),a=new Float32Array(129*3);geo.setAttribute('position',new T.BufferAttribute(a,3));const o=new T.Line(geo,new T.LineBasicMaterial({color:0xddc28e}));parent.add(o);return (L,t,amp,mode=1,bowed=false)=>{for(let i=0;i<=128;i++){const x=i/128;a[i*3]=-length/2+x*length*L;a[i*3+1]=.65+Math.sin(x*Math.PI*mode)*amp*(bowed?((t%1)*2-1):Math.sin(t*6*mode));a[i*3+2]=0;}geo.attributes.position.needsUpdate=true;geo.computeBoundingSphere();geo.computeBoundingBox();};}
