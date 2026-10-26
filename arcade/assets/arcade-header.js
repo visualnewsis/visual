@@ -5,7 +5,9 @@
  const onepoint=nav.querySelector('a[href="/onepoint/"]');
  if(onepoint&&!onepoint.querySelector('img')){const face=document.createElement('img');face.src='/assets/menu-icon-onepoint.png';face.alt='';face.className='cgh-character-icon';onepoint.prepend(face);}
  if(!nav.querySelector('a[href="/newsmap/"]')){const entry=document.createElement('a');entry.href='/newsmap/';entry.className='cgh-map-entry';entry.innerHTML='<img src="/assets/menu-icon-here-news.svg" alt="">여기뉴스';nav.append(entry);}
- if(!nav.querySelector('a[href="/goodeasy/"]')){const entry=document.createElement('a');entry.href='/goodeasy/';entry.className='cgh-lab-entry';entry.innerHTML='<img src="/assets/menu-icon-goodeasy.svg" alt="">굳이구지';const arcade=nav.querySelector('a[href="/arcade/"]');arcade?arcade.after(entry):nav.append(entry);}
+ let labEntry=nav.querySelector('a[href="/goodeasy/"]');
+ if(!labEntry){labEntry=document.createElement('a');labEntry.href='/goodeasy/';labEntry.className='cgh-lab-entry';labEntry.innerHTML='<img src="/assets/menu-icon-goodeasy.svg" alt="">굳이구지';nav.append(labEntry);}
+ if(onepoint)onepoint.before(labEntry);
  function close(){nav.hidden=true;button.setAttribute('aria-expanded','false');button.setAttribute('aria-label','전체 메뉴 열기')}
  button.addEventListener('click',()=>{const open=nav.hidden;nav.hidden=!open;button.setAttribute('aria-expanded',String(open));button.setAttribute('aria-label',open?'전체 메뉴 닫기':'전체 메뉴 열기')});
  shell.addEventListener('keydown',event=>{if(event.key==='Escape'&&!nav.hidden){close();button.focus()}});

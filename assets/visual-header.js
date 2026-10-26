@@ -4,7 +4,7 @@
   const theme=script?.dataset.headerTheme==="dark"?"dark":"light";
   const sectionHref=script?.dataset.sectionHref||"";
   const current=script?.dataset.current||"";
-  const labels={latest:"최신 기사",editshop:"편집#",newsystem:"뉴시스템",mapguide:"알아볼지도",onepoint:"닿소리 홀소리",arcade:"충무로딩",goodeasy:"굳이구지",calculator:"계산대로",newsmap:"여기뉴스"};
+  const labels={latest:"최신 기사",editshop:"편집#",newsystem:"뉴시스템",mapguide:"알아볼지도",goodeasy:"굳이구지",onepoint:"닿소리 홀소리",arcade:"충무로딩",calculator:"계산대로",newsmap:"여기뉴스"};
   const links={latest:"https://visual.newsis.com/#latest",editshop:"https://visual.newsis.com/editshop/",newsystem:"https://visual.newsis.com/newsystem/",mapguide:"https://visual.newsis.com/bukang/",onepoint:"https://visual.newsis.com/onepoint/",arcade:"https://visual.newsis.com/arcade/",goodeasy:"https://visual.newsis.com/goodeasy/",calculator:"https://visual.newsis.com/calculator/index.html",newsmap:"https://visual.newsis.com/newsmap/"};
   const icons={goodeasy:new URL("menu-icon-goodeasy.svg",script.src).href,onepoint:new URL("menu-icon-onepoint.png",script.src).href,arcade:"https://visual.newsis.com/assets/menu-icon-arcade.png",calculator:"https://visual.newsis.com/assets/menu-icon-calculator.png",newsmap:new URL("menu-icon-here-news.svg",script.src).href};
   const start=()=>{
