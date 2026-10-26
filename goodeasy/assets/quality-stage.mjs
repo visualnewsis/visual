@@ -1,6 +1,6 @@
 import {buildMXStudy,buildEspressoStudy} from './quality-replacements.mjs?v=20261024-editorial1';
 import {buildSwitch} from './quality-switch.mjs?v=20261024-editorial1';
-import {cameraResult} from './quality-camera.mjs?v=20261024-editorial1';
+import {cameraResult} from './quality-camera.mjs?v=20261026-viewfinder1';
 import {T,materials,makeStage} from './quality-kit.mjs?v=20261024-editorial1';
 import {machineBuilders} from './quality-machines.mjs?v=20261024-editorial1';
 const kind=document.body.dataset.music||document.body.dataset.experiment;if(!kind)throw Error('Missing experiment');
