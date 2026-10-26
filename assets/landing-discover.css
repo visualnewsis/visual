@@ -1,0 +1,29 @@
+/* Landing-only destinations: existing GPT artwork, live HTML labels. */
+.landing-discover{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:22px;margin:30px 0 40px;font-family:"Noto Sans KR",Arial,sans-serif;word-break:keep-all}
+.landing-discover *{box-sizing:border-box}
+.landing-discover .ld-card{display:grid;grid-template-columns:minmax(0,1fr) 136px;align-items:center;gap:16px;min-width:0;padding:28px;background:#172326;color:#f4f2e9;text-decoration:none;border:1px solid #344143;border-radius:12px;overflow:hidden}
+.landing-discover .ld-copy{min-width:0}
+.landing-discover .ld-kicker{display:block;color:#a9c6c5;font-size:13px;font-weight:600;line-height:1.6;letter-spacing:.04em}
+.landing-discover h2,.landing-discover h3{margin:9px 0 14px;font-size:30px;font-weight:800;line-height:1.28;letter-spacing:-.05em;color:inherit}
+.landing-discover .ld-card p{margin:0;color:#c0ccca;font-size:13px;line-height:1.85}
+.landing-discover .ld-cta{display:flex;align-items:center;gap:16px;min-height:44px;margin-top:14px;color:#75edf0;font-size:13px;font-weight:700;line-height:1.5}
+.landing-discover .ld-cta>span{transition:transform .2s ease}
+.landing-discover .ld-card:hover .ld-cta>span{transform:translate(3px,-3px)}
+.landing-discover .ld-card:focus-visible{outline:3px solid #00b4c9;outline-offset:4px}
+.landing-discover .ld-art{display:block;width:136px;height:auto;aspect-ratio:16/9;object-fit:cover;object-position:50% 50%;border-radius:8px}
+.landing-discover .ld-map{background:#071d2d;border-color:#243e50}
+.landing-discover .ld-map .ld-art{height:auto;aspect-ratio:16/9;object-position:50% 35%}
+.landing-discover .ld-lab{background:#20211d;border-color:#45483b}
+.landing-discover .ld-lab .ld-kicker{color:#c8c5b3}
+.landing-discover .ld-brand{display:flex;flex-wrap:wrap;align-items:center;gap:6px;letter-spacing:-.055em}
+.landing-discover .ld-brand>span{font-size:13px;font-weight:500;letter-spacing:0;color:#c8c5b3}
+.landing-discover .ld-brand>img{width:20px;height:25px;object-fit:contain;margin-left:2px}
+.landing-discover.ld-editshop{display:block;max-width:1600px;margin:0 auto 64px;padding-inline:var(--pad)}
+.ld-editshop .ld-strip{grid-template-columns:minmax(0,1fr) minmax(180px,30%);padding:28px 34px;gap:30px}
+.ld-editshop .ld-strip .ld-art{width:100%;max-width:280px;height:auto;aspect-ratio:16/9;object-position:center;justify-self:end}
+.ld-editshop .ld-brand{font-size:34px;margin-top:6px;margin-bottom:10px}
+@media(max-width:1000px) and (min-width:651px){.landing-discover .ld-card{grid-template-columns:minmax(0,1fr) 96px;padding:22px;gap:12px}.landing-discover .ld-art{width:96px;height:auto}.landing-discover h2,.landing-discover h3{font-size:27px}.ld-editshop .ld-strip{grid-template-columns:minmax(0,1fr) 30%}}
+@media(max-width:650px){.landing-discover{grid-template-columns:1fr;grid-auto-rows:1fr;gap:16px;margin:24px 0 30px}.landing-discover .ld-card{padding:24px;grid-template-columns:minmax(0,1fr) 100px;gap:14px}.landing-discover h2,.landing-discover h3{font-size:28px}.landing-discover .ld-art{width:100px;height:auto}.landing-discover.ld-editshop{margin-bottom:40px}.ld-editshop .ld-strip .ld-art{width:100px;height:auto}.ld-editshop .ld-brand{font-size:28px}.landing-discover .ld-brand>span{font-size:13px}}
+@media(max-width:370px){.landing-discover .ld-card{padding:20px;grid-template-columns:minmax(0,1fr) 76px;gap:10px}.landing-discover .ld-art,.ld-editshop .ld-strip .ld-art{width:76px;height:auto}.landing-discover h2,.landing-discover h3,.ld-editshop .ld-brand{font-size:25px}}
+@media(prefers-reduced-motion:reduce){.landing-discover .ld-cta>span{transition:none}}
+
