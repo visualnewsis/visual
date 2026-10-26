@@ -1,5 +1,6 @@
 import * as T from './vendor/three.module.min.js';
 import {liveAction} from './motion.js';
+import {PREVIEW_SCALE_X,previewOffsetX} from './preview-layout.js?v=20261026-runtime1';
 // Authored procedural study. Contact dimensions remain visual assumptions.
 const geometryCache=new Map();
 const rounded=(w,h,d,r=.03)=>{const k=[w,h,d,r].join(',');if(geometryCache.has(k))return geometryCache.get(k);const s=new T.Shape(),x=-w/2,y=-h/2;
@@ -57,7 +58,7 @@ function makeScene(canvas,shadows=false){const renderer=new T.WebGLRenderer({can
  let w=0,h=0;return {renderer,scene,camera,fit(){const r=canvas.getBoundingClientRect();if(r.width<1||r.height<1)return false;if(w!==r.width||h!==r.height){w=r.width;h=r.height;renderer.setSize(w,h,false);camera.aspect=w/h;camera.updateProjectionMatrix();}return true;},draw(){renderer.render(scene,camera);}};
 }
 export function createPianoScenes(previewCanvas,detailCanvas,onPart){
- const preview=makeScene(previewCanvas),detail=makeScene(detailCanvas,true);const previewRoot=new T.Group();preview.scene.add(previewRoot);previewRoot.scale.x=3.4;
+ const preview=makeScene(previewCanvas),detail=makeScene(detailCanvas,true);const previewRoot=new T.Group();preview.scene.add(previewRoot);previewRoot.scale.x=PREVIEW_SCALE_X;
  const actions=[];let slot=-1;for(let midi=60;midi<=84;midi++){const black=[1,3,6,8,10].includes(midi%12);if(!black)slot++;const x=(slot+(black?.5:0)-7)*.44;const a=createAction(previewRoot,x);actions.push({midi,...a});}
  block(previewRoot,7.2,.4,1.0,material.black,0,-.65,-2.8);block(previewRoot,7.3,.25,.3,material.brass,0,2.5,5.7);block(previewRoot,7.3,.4,.3,material.darkwood,0,.4,2.5);block(previewRoot,7.3,.13,7.8,material.darkwood,0,-.6,1);block(previewRoot,7.3,.09,.12,material.red,0,3.62,5.3);
  for(let i=-3;i<=3;i++){rod(previewRoot,[i*1.1,3.5,5.5],[i*1.1,3.5,6.4],.07,material.brass);}
@@ -71,7 +72,7 @@ export function createPianoScenes(previewCanvas,detailCanvas,onPart){
  ['pointercancel','lostpointercapture'].forEach(event=>detailCanvas.addEventListener(event,()=>{drag=null;}));
  detailCanvas.addEventListener('wheel',e=>{if(!e.ctrlKey){e.preventDefault();distance=Math.max(7.5,Math.min(20,distance+e.deltaY*.008));}},{passive:false});detailCanvas.addEventListener('keydown',e=>{if(e.key==='ArrowLeft'||e.key==='ArrowRight'){e.preventDefault();yaw+=(e.key==='ArrowLeft'?-.12:.12);}});
  return {preview,detail,view(isSide){side=isSide;yaw=isSide?-Math.PI/2:-.65;pitch=isSide?.03:.3;distance=isSide?12.5:12.5;},reset(){yaw=-.65;pitch=.3;distance=12.5;},draw(snapshot,m,explode,time){
- const p=previewCanvas.getBoundingClientRect();if(p.bottom>0&&p.top<innerHeight&&preview.fit()){const mobile=p.width<700;previewRoot.position.x=mobile?5.24:0;previewRoot.rotation.y=0;const visibleMax=mobile?72:84;actions.forEach(a=>{a.root.visible=a.midi<=visibleMax;const s=snapshot.notes.find(n=>n.midi===a.midi);a.update(s?liveAction(s,time,snapshot.pedal):{key:0,hammer:0,jack:0,damper:snapshot.pedal?1:0,vibration:0},0,time);});preview.camera.position.set(0,7.2,mobile?-12.8:-13.0);preview.camera.fov=mobile?42:34;preview.camera.updateProjectionMatrix();preview.camera.lookAt(0,1.8,1.0);preview.draw();}
+ const p=previewCanvas.getBoundingClientRect();if(p.bottom>0&&p.top<innerHeight&&preview.fit()){const mobile=p.width<700;previewRoot.position.x=previewOffsetX(p.width);previewRoot.rotation.y=0;const visibleMax=mobile?72:84;actions.forEach(a=>{a.root.visible=a.midi<=visibleMax;const s=snapshot.notes.find(n=>n.midi===a.midi);a.update(s?liveAction(s,time,snapshot.pedal):{key:0,hammer:0,jack:0,damper:snapshot.pedal?1:0,vibration:0},0,time);});preview.camera.position.set(0,7.2,mobile?-12.8:-13.0);preview.camera.fov=mobile?42:34;preview.camera.updateProjectionMatrix();preview.camera.lookAt(0,1.8,1.0);preview.draw();}
  const d=detailCanvas.getBoundingClientRect();if(d.bottom>0&&d.top<innerHeight&&detail.fit()){selected.update(m,explode,time);neighbors.forEach(a=>a.update({key:0,hammer:0,jack:0,damper:0,vibration:0},explode,time));const t=target.clone();t.y+=explode*.65;detail.camera.position.set(t.x+Math.sin(yaw)*distance, t.y+Math.sin(pitch)*distance,t.z-Math.cos(yaw)*distance);detail.camera.lookAt(t);detail.draw();}
  },anchor(part){const a=selected.anchors[part];if(!a)return null;const v=a.object.localToWorld(a.point.clone()).project(detail.camera);return {x:(v.x+1)/2,y:(1-v.y)/2,visible:v.z<1&&v.x>-1&&v.x<1&&v.y>-1&&v.y<1};},dispose(){preview.renderer.dispose();detail.renderer.dispose();}};
 }

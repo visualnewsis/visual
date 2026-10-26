@@ -1,5 +1,5 @@
 import assert from 'node:assert/strict';
-import {reelStep,exposure,wind,watchStep,filmStep,switchState,coffeeFlow} from '../assets/model.mjs';
+import {reelStep,exposure,wind,watchStep,filmStep,switchState,coffeeFlow} from '../assets/model.js';
 const reel={turns:0,rotor:0,distance:20,drag:50};
 assert.ok(reelStep(reel,1).distance<20);assert.ok(reelStep({...reel,drag:0},1).distance>20);assert.equal(reel.turns,0);
 assert.equal(exposure(2.8,250),1);assert.ok(exposure(5.6,250)<1);assert.ok(exposure(2.8,125)>1);

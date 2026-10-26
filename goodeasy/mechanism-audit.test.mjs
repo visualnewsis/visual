@@ -1,8 +1,8 @@
 import assert from 'node:assert/strict';
 import * as T from './piano/vendor/three.module.min.js';
-import {curtainWindow,filmCycle,debounceSample,crankX,bowedDisplacement} from './assets/mechanism-checks.mjs';
-import {stringHz,handAngles,escapeState,period} from './assets/research-math.mjs';
-import {exposure,watchStep,filmStep,switchState,coffeeFlow} from './assets/model.mjs';
+import {curtainWindow,filmCycle,debounceSample,crankX,bowedDisplacement} from './assets/mechanism-checks.js';
+import {stringHz,handAngles,escapeState,period} from './assets/research-math.js';
+import {exposure,watchStep,filmStep,switchState,coffeeFlow} from './assets/model.js';
 import {sampleAction,timing} from './piano/motion.js';
 import {stringRatio,repeatedStrikeReady,toneFor} from './piano/study-model.js';
 import {buildMXSwitch} from './assets/models/mx-switch.js';

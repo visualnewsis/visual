@@ -1,7 +1,7 @@
 from pathlib import Path
 from html.parser import HTMLParser
 from urllib.parse import urlsplit,unquote
-import json,sys
+import json,sys,re
 root=Path(sys.argv[1]); base=root/'goodeasy'
 class Page(HTMLParser):
  def __init__(self):super().__init__();self.ids=[];self.refs=[];self.ld=False;self.json=[];self.blocks=[]
@@ -29,6 +29,7 @@ for p in pages:
   elif 'noindex,nofollow' not in s:errors.append(str(p)+' prototype indexing')
  for r in h.refs:
   u=urlsplit(r)
+  if u.path.endswith(".mjs"):errors.append(f"{p}: server does not serve .mjs with a JavaScript MIME type: {r}")
   if u.scheme or u.netloc:continue
   target=(root/u.path.lstrip('/')) if u.path.startswith('/') else p.parent/unquote(u.path)
   if not u.path:target=p
@@ -37,5 +38,17 @@ for p in pages:
   elif u.fragment and target.suffix=='.html':
    t=Page();t.feed(target.read_text(encoding='utf8'))
    if u.fragment not in t.ids:errors.append(f'{p}: missing anchor {r}')
+# This production host serves .mjs as application/octet-stream with nosniff.
+# Check the transitive local module paths as well as HTML entrypoints.
+for folder in [base/'assets',base/'piano']:
+ for module in folder.rglob('*.js'):
+  if 'vendor' in module.parts:continue
+  source=module.read_text(encoding='utf8')
+  for ref in re.findall(r"(?:from\s*|import\s*\()\s*['\"]([^'\"]+)['\"]",source):
+   u=urlsplit(ref)
+   if u.scheme or not u.path.startswith('.'):continue
+   target=module.parent/unquote(u.path)
+   if target.suffix=='.mjs':errors.append(f'{module}: unsupported browser module MIME: {ref}')
+   if not target.is_file():errors.append(f'{module}: missing imported module {ref}')
 print('\n'.join(errors) if errors else f'PASS {len(pages)} GOODEASY routes: local links/assets, IDs, JSON-LD, GA and release/prototype indexing')
 sys.exit(bool(errors))

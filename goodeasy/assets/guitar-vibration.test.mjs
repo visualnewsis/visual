@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import * as T from '../piano/vendor/three.module.min.js';
-import {attachGuitarVibration,stringDisplacement,VIBRATION_DURATION} from './guitar-vibration.mjs';
+import {attachGuitarVibration,stringDisplacement,VIBRATION_DURATION} from './guitar-vibration.js';
 for(const end of [0,1])assert.deepEqual(stringDisplacement(end,150,40),{normal:0,lateral:0});
 const group=new T.Group();
 const strings=[40,64].map((midi,i)=>{const mesh=new T.Mesh(new T.CylinderGeometry(.002,.002,2,8),new T.MeshStandardMaterial());mesh.rotation.z=-Math.PI/2;mesh.position.z=i*.066;group.add(mesh);return {midi,from:[-1,0,i*.066],to:[1,0,i*.066],mesh};});

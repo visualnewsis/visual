@@ -3,8 +3,8 @@ import * as T from './piano/vendor/three.module.min.js';
 // Texture-only canvas stand-in for geometric checks; this does not test WebGL or audio.
 const context=new Proxy({createImageData:(w,h)=>({data:new Uint8ClampedArray(w*h*4)}),measureText:()=>({width:100}),createLinearGradient:()=>({addColorStop(){}})},{get:(o,k)=>o[k]??(()=>{})});
 globalThis.document={createElement:()=>({width:1,height:1,getContext:()=>context,style:{}})};
-const {watchBuilders}=await import('./assets/research-watch.mjs');
-const {otherBuilders}=await import('./assets/research-other.mjs');
+const {watchBuilders}=await import('./assets/research-watch.js');
+const {otherBuilders}=await import('./assets/research-other.js');
 const {createAction}=await import('./piano/scene.js');
 let meshes=0,models=0;
 for(const [name,build] of Object.entries({...watchBuilders,...otherBuilders})){
@@ -20,7 +20,7 @@ assert.ok(Math.abs(maxY-3.66)<1e-5,'felt crown meets the string at strike withou
 console.log('PIANO hammer peak at strike:',maxY.toFixed(6),'string plane:',3.66,'difference:',(maxY-3.66).toFixed(6));
 console.log(`PASS ${models} builders, ${meshes} meshes through six geometry states, actual motionwork and center/fourth rotations. Texture stubs are not a visual quality test.`);
 
-const {buildCamera,buildWatch}=await import('./assets/quality-machines.mjs');
+const {buildCamera,buildWatch}=await import('./assets/quality-machines.js');
 const camera=buildCamera();camera.update({aperture:1.4});camera.group.updateMatrixWorld(true);const iris=camera.parts.aperture;
 const probe=new T.Raycaster(new T.Vector3(.15,1.45,5),new T.Vector3(0,0,-1));assert.equal(probe.intersectObject(iris,true).length,0,'large aperture clears off-axis ray');camera.update({aperture:8});camera.group.updateMatrixWorld(true);assert.ok(probe.intersectObject(iris,true).length>0,'small aperture blocks the same ray');
 const watch=buildWatch();watch.update({elapsed:60});const visibleWheels=watch.parts.gears.children.filter(o=>o.geometry?.type==='CylinderGeometry');console.log('PASS actual camera aperture ray occlusion at f/1.4 and f/8; watch first-view builder loaded');

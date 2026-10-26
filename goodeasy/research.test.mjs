@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import * as T from './piano/vendor/three.module.min.js';
-import {layerOffset,gearAngle,escapeState,handAngles,period,stringHz,lightRatio} from './assets/research-math.mjs';
+import {layerOffset,gearAngle,escapeState,handAngles,period,stringHz,lightRatio} from './assets/research-math.js';
 import {buildMXSwitch} from './assets/models/mx-switch.js';
 import {buildEspresso} from './assets/models/espresso.js';
 for(let i=0;i<8;i++){assert.equal(layerOffset(0,i,3),0);assert.equal(layerOffset(1,i,3),3);for(let t=0;t<=1;t+=.05)assert.ok(layerOffset(t,i,3)>=0&&layerOffset(t,i,3)<=3);}

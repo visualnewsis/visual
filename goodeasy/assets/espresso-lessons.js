@@ -1,6 +1,6 @@
-import {T,materials as M,box,cyl,rod,tube,part} from './quality-kit.mjs?v=20261024-editorial1';
-import {buildEspressoStudy} from './quality-replacements.mjs?v=20261024-editorial1';
-import {coffeeFlow} from './model.mjs?v=20261024-editorial1';
+import {T,materials as M,box,cyl,rod,tube,part} from './quality-kit.js?v=20261026-runtime1';
+import {buildEspressoStudy} from './quality-replacements.js?v=20261026-runtime1';
+import {coffeeFlow} from './model.js?v=20261026-runtime1';
 
 const water=new T.MeshStandardMaterial({color:0x70cbd5,emissive:0x164651,roughness:.25});
 const clamp=x=>Math.max(0,Math.min(1,x));
