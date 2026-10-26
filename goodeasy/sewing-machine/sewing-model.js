@@ -307,9 +307,12 @@ export function buildSewingMachine(T, M = {}) {
   group.add(bobbin);
 
   // Handwheel, shaft, flywheel rim, hub and handle.
+  // Keep the vertical wheel mount fixed; spin only around its local axle.
+  const flyMount=new T.Group();
+  flyMount.position.set(2.47,2.65,0);
+  flyMount.rotation.z=Math.PI/2;
   const fly=new T.Group();
-  fly.position.set(2.24,2.65,0);
-  fly.rotation.z=Math.PI/2;
+  flyMount.add(fly);
   torus(fly,.33,.047,black,"Handwheel rim",0,0,0);
   cylinder(fly,.095,.095,.13,brass,
     "Handwheel centre hub",0,0,0,32);
@@ -320,7 +323,9 @@ export function buildSewingMachine(T, M = {}) {
   }
   rod(fly,[.24,.025,0],[.24,.19,0],
     .035,wood,"Handwheel grip");
-  mechanism.add(fly);
+  mechanism.add(flyMount);
+  rod(mechanism,[2.15,2.65,0],[2.47,2.65,0],
+    .065,steel,"Handwheel shaft");
 
   // Spool spindle and wound upper thread.
   rod(mechanism,[.88,3.18,.04],[.88,3.67,.04],
@@ -488,7 +493,8 @@ export function buildSewingMachine(T, M = {}) {
 
     // Finished case stays fixed; wound bobbin turns only on recovery.
     bobbin.rotation.y=-(travel+length*smooth(.83,.94,p))*.04;
-    fly.rotation.y=angle/2;
+    // One turn per stitch; the top of the rim travels toward the operator (+Z).
+    fly.rotation.y=-PI2*p;
 
     const cut=Math.max(0,Math.min(1,Number(state.cutaway)||0));
     covers.visible=cut<.95;
@@ -545,6 +551,8 @@ export function buildSewingMachine(T, M = {}) {
     return group;
   }
 
+  parts.handwheel=fly;
+  parts.handwheelMount=flyMount;
   parts.needle=needle;
   parts.presser=presser;
   parts.feed=feed;

@@ -15,3 +15,20 @@ test('thread route uses local coordinates even after scene transform',()=>{const
 
 test('a short pedal tap still finishes one stitch and cancelled presses cannot resume',()=>{const s=new SewingState();s.start();s.release();assert.ok(s.running);s.advance(5);assert.equal(s.stitches.length,1);s.start();s.advance(.3);s.stop();s.release();assert.equal(s.running,false);});
 test('a one-stitch action cannot replace an active pedal session',()=>{const s=new SewingState();s.start(false);s.start(true);assert.equal(s.holding,true);});
+
+
+test('handwheel spins in a fixed vertical plane, once per stitch, toward the operator',()=>{
+ const model=buildSewingMachine(T,{}), wheel=model.parts.handwheel;
+ const localTop=new T.Vector3(.31,0,0), axle=new T.Vector3(0,1,0);
+ for(const phase of [0,.125,.25,.5,.75,.99]){
+  model.update({...cycleAt(phase),travel:0,stitches:[]});
+  model.group.updateMatrixWorld(true);
+  const normal=axle.clone().transformDirection(wheel.matrixWorld);
+  assert.ok(Math.abs(Math.abs(normal.x)-1)<1e-10);
+  assert.ok(Math.abs(normal.y)<1e-10&&Math.abs(normal.z)<1e-10);
+  const point=wheel.localToWorld(localTop.clone());
+  assert.ok(Math.abs(point.x-2.47)<1e-10);
+  assert.ok(Math.abs(wheel.rotation.y+2*Math.PI*phase)<1e-10);
+  if(phase===.125)assert.ok(point.z>0,'top of wheel must move toward operator');
+ }
+});

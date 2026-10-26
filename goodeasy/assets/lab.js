@@ -21,12 +21,12 @@ function clickSound(f=160){try{audio??=new (window.AudioContext||window.webkitAu
 function say(text){$('feedback').textContent=text;}
 function render(){
  if(!document.body.classList.contains('has-3d'))$('instrument').innerHTML=scene(state);window.GoodeasyRenderState={...state};window.dispatchEvent(new CustomEvent('goodeasy:state',{detail:{...state}}));
- if(kind==='fishing-reel')say(`${state.turns.toFixed(1)}바퀴 · 가상 거리 ${state.distance.toFixed(1)}m · ${state.slipping?'당기는 힘이 드랙 저항보다 커 줄이 나갑니다.':state.distance===0?'줄을 모두 감았습니다.':state.turns?'손잡이를 돌리면 로터가 줄을 감습니다.':'손잡이를 돌리거나 줄을 당겨보세요.'}`);
+ if(kind==='fishing-reel')say(`${state.turns.toFixed(1)}바퀴 · 남은 줄 ${state.distance.toFixed(1)}m · ${state.slipping?'당기는 힘이 드랙 저항을 넘어 스풀이 돌며 줄이 풀립니다.':state.distance===0?'줄을 모두 감았습니다.':state.turns?'손잡이를 돌리면 로터가 줄을 감습니다.':'손잡이를 돌리거나 줄을 당겨보세요.'}`);
  if(kind==='watch')say(`태엽 잔량 ${Math.round(state.reserve)}% · ${state.reserve?'작동 중':'멈춤'} · 시연 시간 ${state.elapsed.toFixed(1)}초`);
  if(kind==='projector')say(`${state.frame+1} / 24 프레임 · 누적 ${Math.floor(state.frames)}장`);
  if(kind==='espresso-machine'){
   $('action').disabled=!state.locked||state.volume>=40;$('action').textContent=state.brewing?'추출 멈추기':state.volume>=40?'잔을 비워주세요':'추출하기';$('action').setAttribute('aria-pressed',String(state.brewing));
-  say(!state.locked?'포터필터 끼우기를 눌러 손잡이를 장착하세요.':`${state.brewing?'추출 중':state.volume>=40?'잔이 찼습니다. 잔을 비우면 다시 내릴 수 있습니다.':'추출 버튼을 눌러보세요.'} · ${state.volume.toFixed(1)}mL · ${state.pressure}bar`);
+  say(!state.locked?'‘포터필터 끼우기’를 눌러 머신에 끼우세요.':`${state.brewing?'추출 중':state.volume>=40?'잔이 찼습니다. 잔을 비우면 다시 내릴 수 있습니다.':'추출 버튼을 눌러보세요.'} · ${state.volume.toFixed(1)}mL · ${state.pressure}bar`);
  }
 }
 function snapshot(){record=observationRecord(kind,state);step=0;showInside();}
@@ -43,7 +43,7 @@ $('action')?.addEventListener('click',action);$('explore').addEventListener('cli
 document.querySelectorAll('[data-step]').forEach(b=>b.addEventListener('click',()=>{if(!record)snapshot();step=Number(b.dataset.step);showInside();}));
 function number(id,key){$(id)?.addEventListener('input',e=>{state[key]=Number(e.target.value);if(kind==='fishing-reel'&&(key==='drag'||key==='pull'))state.slipping=false;$(id+'-value').textContent=e.target.selectedOptions?.[0]?.textContent??e.target.value;render();});}
 number('drag','drag');number('pull','pull');
-$('pull-line')?.addEventListener('click',()=>{state=reelPull(state);clickSound(120);render();if(!state.slipping)say('드랙이 버팁니다. 당기는 힘을 높이거나 드랙 저항을 낮춰보세요.');});number('aperture','aperture');number('shutter','shutter');number('grind','grind');number('pressure','pressure');
+$('pull-line')?.addEventListener('click',()=>{state=reelPull(state);clickSound(120);render();if(!state.slipping)say('스풀이 멈춰 있습니다. 당기는 힘을 키우거나 드랙 저항을 낮춰보세요.');});number('aperture','aperture');number('shutter','shutter');number('grind','grind');number('pressure','pressure');
 $('lock')?.addEventListener('click',()=>{if(state.brewing)return;state.locked=!state.locked;$('lock').setAttribute('aria-pressed',state.locked);$('lock').textContent=state.locked?'포터필터 빼기':'포터필터 끼우기';render();});
 $('empty')?.addEventListener('click',()=>{state.brewing=false;state.volume=0;render();});
 $('reset')?.addEventListener('click',()=>{state={...base};record=null;step=0;window.dispatchEvent(new CustomEvent('goodeasy:record',{detail:{record:null,step:0}}));document.querySelectorAll('[data-initial]').forEach(el=>{el.value=el.dataset.initial;el.dispatchEvent(new Event('input'));});if($('typing'))$('typing').value='';if($('lock')){$('lock').textContent='포터필터 끼우기';$('lock').setAttribute('aria-pressed','false');}render();$('detail').innerHTML='';$('record').textContent='조작 기록이 없습니다.';$('part-copy').textContent='부품을 선택하면 설명이 나옵니다.';});
