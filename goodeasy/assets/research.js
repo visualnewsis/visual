@@ -1,7 +1,7 @@
 import {lessonAnnotations} from './lesson-annotations.js?v=20261027-detail1';
 import {T,materials as M} from './quality-kit.js?v=20261026-release3';
 import {watchBuilders} from './research-watch.js?v=20261027-detail1';
-import {otherBuilders} from './research-other.js?v=20261027-detail1';
+import {otherBuilders} from './research-other.js?v=20261027-depth3';
 import {clamp} from './research-math.js?v=20261026-release3';
 const refined=!!(document.body.dataset.experiment||document.body.dataset.music);
 const cards=[...document.querySelectorAll('[data-research]')],views=[],reduced=matchMedia('(prefers-reduced-motion: reduce)');
