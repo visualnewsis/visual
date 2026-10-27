@@ -1,12 +1,12 @@
 import {smoothOutline,shapeFromPoints,insetOutline,hollowRibs} from './surface-utils.js?v=20261024-editorial1';
 import {mesh,curveTube,cylinderBetween,ellipsoid,outlineShape,horizontalExtrude as bevelExtrude,ellipseRing,assemblyGroup} from './model-utils.js?v=20261024-editorial1';
-import {guitarWood,woodUV,edgeDistance,plateGeometry,neckGeometry} from './guitar-craft.js?v=20261027-craft3';
+import {guitarWood,woodUV,edgeDistance,plateGeometry,neckGeometry} from './guitar-craft.js?v=20261027-craft5';
 // A connected six-string steel acoustic guitar. Dimensions are illustrative, not a product survey.
 function horizontalExtrude(T,shape,depth,bevel,material,name,parent){if(bevel>0)return bevelExtrude(T,shape,depth,bevel,material,name,parent);const g=new T.ExtrudeGeometry(shape,{depth,steps:1,curveSegments:32,bevelEnabled:false});g.rotateX(Math.PI/2);return mesh(T,g,material,name,parent);}
 const sharedGeometry=new Map();
 export const GUITAR_LAYOUT={nutX:-2.34,saddleX:.63,boardEnd:-.345,topOuter:.126,topInner:.110,backInner:-.270,backOuter:-.285,nutSeat:.1645,saddleSeat:.183};
 export function buildGuitar(T,materials={}){
- const buildStart=performance.now(),group=new T.Group();group.name='GOODEASY / acoustic guitar';const P=GUITAR_LAYOUT,parts={},strings=[];
+ const buildStart=performance.now(),group=new T.Group();group.name='GOODEASY / acoustic guitar';group.scale.z=-1;const P=GUITAR_LAYOUT,parts={},strings=[];
  const spruce=guitarWood(T,'spruce'),rosewood=guitarWood(T,'rosewood'),mahogany=guitarWood(T,'mahogany'),ebony=guitarWood(T,'ebony'),braceWood=guitarWood(T,'brace');
  const bone=new T.MeshPhysicalMaterial({color:0xe6dbc1,roughness:.55,clearcoat:.12}),steel=new T.MeshStandardMaterial({color:0xbec5c7,metalness:.92,roughness:.25}),bronze=new T.MeshStandardMaterial({color:0xae8250,metalness:.88,roughness:.36}),binding=new T.MeshPhysicalMaterial({color:0xd3ba8b,roughness:.42}),black=new T.MeshPhysicalMaterial({color:0x201b17,roughness:.37,clearcoat:.25});
  const controls=[[-.92,0],[-.86,.285],[-.69,.438],[-.46,.485],[-.24,.455],[-.075,.365],[.085,.363],[.24,.455],[.43,.575],[.65,.632],[.86,.582],[1.02,.408],[1.085,.20],[1.095,0],[1.085,-.20],[1.02,-.408],[.86,-.582],[.65,-.632],[.43,-.575],[.24,-.455],[.085,-.363],[-.075,-.365],[-.24,-.455],[-.46,-.485],[-.69,-.438],[-.86,-.285]].map(([x,z])=>[-.92+(x+.92)*1.12,z*1.25]);
@@ -73,6 +73,6 @@ export function buildGuitar(T,materials={}){
  }
  parts.pickguard=assemblyGroup(T,'pickguard',parts.top);const pg=new T.Shape(),start=[-.1+Math.cos(2.1)*.254,Math.sin(2.1)*.254];pg.moveTo(...start);pg.absarc(-.1,0,.254,2.1,.25,true);pg.bezierCurveTo(.40,.12,.59,.34,.46,.43);pg.bezierCurveTo(.20,.49,-.18,.43,...start);pg.closePath();const guardMaterial=new T.MeshPhysicalMaterial({color:0x583b2b,roughness:.32,clearcoat:.55,clearcoatRoughness:.2}),pick=horizontalExtrude(T,pg,.002,0,guardMaterial,'thin treble side pickguard',parts.pickguard);const pp=pick.geometry.attributes.position;for(let i=0;i<pp.count;i++)pp.setY(i,pp.getY(i)+dome(pp.getX(i),pp.getZ(i)));pick.geometry.computeVertexNormals();pick.position.y=P.topOuter+.002;
  parts.endpin=ellipsoid(T,[1.35,-.072,0],[.031,.018,.021],steel,'strap endpin',group,18);
- group.userData={instrument:'guitar',coordinateSystem:'X nut to tail, Y top normal, Z string spread',dimensions:'illustrative 12-fret steel-string acoustic; not CAD',scaleLength:scale,fretCount:19,bodyShell:'connected spruce / rosewood shell; open soundhole',layout:{...P},nutStringSpan:.16,saddleStringSpan:.25};
+ group.userData={instrument:'guitar',coordinateSystem:'X nut to tail, Y top normal, Z string spread',dimensions:'illustrative right-handed 12-fret steel-string acoustic; not CAD',scaleLength:scale,fretCount:19,bodyShell:'connected spruce / rosewood shell; open soundhole',layout:{...P},nutStringSpan:.16,saddleStringSpan:.25};
  group.userData.buildMs=performance.now()-buildStart;return {group,strings,parts};
 }

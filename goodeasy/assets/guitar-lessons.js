@@ -1,5 +1,5 @@
 import * as T from '../piano/vendor/three.module.min.js';
-import {buildGuitar,GUITAR_LAYOUT as P} from './models/guitar.js?v=20261027-premium3';
+import {buildGuitar,GUITAR_LAYOUT as P} from './models/guitar.js?v=20261027-premium5';
 const clamp=x=>Math.max(0,Math.min(1,x)),frequency=m=>440*2**((m-69)/12);
 function wire(parent,color,radius=.0025){
  const rings=128,sides=7,positions=new Float32Array((rings+1)*sides*3),indices=[];
@@ -14,11 +14,11 @@ function context(){
  return {model,group,active,rest,finger};
 }
 export function buildLengthStudy(){
- const {model,group,active,rest,finger}=context();let current,currentEnd;
- const result={group,allowZoom:true,portrait:true,eye:[.15,5.2,3],defaults:{length:100,tension:70,midi:64,referenceHz:frequency(64)},advance(s,dt){s.time=(s.time||0)+dt;},
- update(s){const selected=model.strings.find(n=>n.midi===(s.midi||64))||model.strings[5],L=Math.max(.35,Math.min(1,(s.length||100)/100)),a=selected.from,b=selected.to,x=b[0]-(b[0]-a[0])*L,u=(x-a[0])/(b[0]-a[0]),z=a[2]+(b[2]-a[2])*u,y=L>.995?a[1]:.1626+selected.radius,point=[x,y,z];current=point;currentEnd=b;finger.visible=L<.995;finger.position.set(x,y+.0625,z);active.update(point,b,(s.time||0)*Math.sqrt((s.tension||70)/70)/L,1,.012);rest.mesh.visible=L<.995;rest.update(a,point,0,1,0);s.hz=(s.referenceHz||frequency(s.midi||64))*Math.sqrt((s.tension||70)/70)/L;},
- reading:s=>'진동 길이 '+(.65*(s.length||100)/100).toFixed(3)+'m · 장력 '+s.tension+'N · '+s.hz.toFixed(1)+'Hz',
- annotations:[{text:'새들 · 고정된 끝',point:()=>[P.saddleX,.21,currentEnd?.[2]||0]},{text:s=>(s.length||100)<99.5?'짚은 프렛 쪽 · 새 고정 끝':'너트 · 개방현의 고정 끝',point:()=>current||[P.nutX,.18,0]},{text:'진동하는 현',object:active.mesh}]};result.update({...result.defaults,time:0});return result;
+ const {model,group,active,rest,finger}=context();let current,currentEnd;const fretLight=new T.Mesh(new T.CylinderGeometry(.0051,.0051,1,12),new T.MeshStandardMaterial({color:0x56bab7,metalness:.6,roughness:.3,emissive:0x164847}));fretLight.rotation.x=Math.PI/2;fretLight.name='selected fret contact highlight';group.add(fretLight);
+ const result={group,allowZoom:true,portrait:true,eye:[.15,5.2,3],defaults:{fret:0,length:100,tension:70,midi:64,referenceHz:frequency(64)},advance(s,dt){s.time=(s.time||0)+dt;},
+ update(s){const selected=model.strings.find(n=>n.midi===(s.midi||64))||model.strings[5],n=Math.max(0,Math.min(19,Math.round(s.fret||0))),L=2**(-n/12),a=selected.from,b=selected.to,x=b[0]-(b[0]-a[0])*L,u=(x-a[0])/(b[0]-a[0]),z=a[2]+(b[2]-a[2])*u,y=L>.995?a[1]:.1626+selected.radius,point=[x,y,z];s.fret=n;s.length=L*100;current=point;currentEnd=b;finger.visible=n>0;finger.position.set(x-.035,y+selected.radius+.0625,z);fretLight.visible=n>0;fretLight.position.set(x,.1578,0);fretLight.scale.y=.205+.085*(x-P.nutX)/(P.boardEnd-P.nutX)-.006;active.update(point,b,(s.time||0)*Math.sqrt((s.tension||70)/70)/L,1,.012);rest.mesh.visible=L<.995;rest.update(a,point,0,1,0);s.hz=(s.referenceHz||frequency(s.midi||64))*Math.sqrt((s.tension||70)/70)/L;},
+ reading:s=>(s.fret?s.fret+'프렛':'개방현')+' · 진동 길이 '+s.length.toFixed(1)+'% ('+(.65*s.length/100).toFixed(3)+'m) · 장력 '+s.tension+'N · '+s.hz.toFixed(1)+'Hz',
+ annotations:[{text:'새들 · 고정된 끝',point:()=>[P.saddleX,.21,currentEnd?.[2]||0]},{text:s=>s.fret?s.fret+'프렛 · 새 고정 끝':'너트 · 개방현의 고정 끝',point:()=>current||[P.nutX,.18,0]},{text:'진동하는 현',object:active.mesh}]};result.update({...result.defaults,time:0});return result;
 }
 export function buildHarmonicStudy(){
  const {model,group,active,rest,finger}=context();rest.mesh.visible=false;finger.visible=false;const nodes=[];for(let i=0;i<3;i++){const m=new T.Mesh(new T.SphereGeometry(.012,12,8),new T.MeshStandardMaterial({color:0x00b4c9,emissive:0x005960,roughness:.45}));m.name='stationary node '+i;group.add(m);nodes.push(m);}

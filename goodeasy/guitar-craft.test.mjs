@@ -19,7 +19,7 @@ test('bracing clears the soundhole and binding moves with its own plate',()=>{
  const plate=box(model.group.getObjectByName('maple bridge plate with six pin holes'));for(let i=1;i<=6;i++)near(box(model.group.getObjectByName('string ball end '+i)).max.y,plate.min.y);
 });
 test('length and tension alter the same calculated note; opened body keeps bridge attached to soundboard',()=>{
- const m=buildLengthStudy(),s={...m.defaults,time:.2,midi:40,referenceHz:82.406889};m.update(s);const f=s.hz;s.length=50;m.update(s);near(s.hz/f,2);s.tension=100;m.update(s);near(s.hz/f,2*Math.sqrt(100/70));
+ const m=buildLengthStudy(),s={...m.defaults,time:.2,midi:40,referenceHz:82.406889};m.update(s);const f=s.hz;s.fret=12;m.update(s);near(s.length,50);near(s.hz/f,2);s.tension=100;m.update(s);near(s.hz/f,2*Math.sqrt(100/70));for(let fret=0;fret<=19;fret++){s.fret=fret;m.update(s);near(s.length,100*2**(-fret/12));}
  const h=buildHarmonicStudy();h.update({...h.defaults,mode:3,time:0});const wave=h.group.getObjectByName('observed speaking string').geometry.attributes.position,rest=wave.array.slice();h.update({...h.defaults,mode:3,time:2*Math.PI/21});assert.ok(wave.array.every((value,i)=>Math.abs(value-rest[i])<1e-7),'third harmonic returns after one third of the fundamental visual period');h.update({...h.defaults,mode:3,time:.2});assert.equal(h.group.children.filter(o=>o.name.startsWith('stationary node')&&o.visible).length,2);
  const b=buildBodyStudy(),p=b.parts;for(const explode of [0,.3,1,0]){b.update({explode,coupled:1,time:.8});b.group.updateMatrixWorld(true);const a=p.top.localToWorld(new T.Vector3(.63,.132,0)),c=p.bridge.localToWorld(new T.Vector3(.63,.132,0));assert.ok(a.distanceTo(c)<1e-8,'bridge separates from soundboard');}
 });
