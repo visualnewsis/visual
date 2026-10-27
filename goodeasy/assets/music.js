@@ -36,3 +36,6 @@ $('explore').addEventListener('click',()=>{if(lastRecord){if(bowVoice)lastRecord
 document.querySelectorAll('[data-part]').forEach(b=>b.addEventListener('click',()=>{$('part-copy').textContent=b.dataset.copy;$('diagram').dataset.active=b.dataset.part;window.dispatchEvent(new CustomEvent('goodeasy:part',{detail:b.dataset.part}));document.querySelectorAll('[data-part]').forEach(x=>x.setAttribute('aria-pressed',String(x===b)));}));
 window.addEventListener('blur',stopAll);document.addEventListener('visibilitychange',()=>{if(document.hidden)stopAll();});
 new IntersectionObserver(([e])=>{if(!e.isIntersecting)stopAll();}).observe($('play'));
+
+// Continue the last string chosen on the collection landing without playing audio.
+if(isGuitar){const midi=Number(new URLSearchParams(location.search).get('landing-midi'));if([40,45,50,55,59,64].includes(midi)){selected=midi;lastRecord={midi,hz:frequency(midi),action:'pluck',duration:0,at:Date.now()};record={...lastRecord};$('record').textContent=`랜딩에서 튕긴 ${noteName(midi)} · ${frequency(midi).toFixed(1)} Hz · 같은 줄의 안쪽을 살펴봅니다.`;$('diagram').dataset.active='strings';const send=()=>window.dispatchEvent(new CustomEvent('goodeasy:record',{detail:{record:{...record},step:0}}));if(document.readyState==='loading')window.addEventListener('DOMContentLoaded',send,{once:true});else send();}}

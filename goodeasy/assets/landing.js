@@ -5,6 +5,7 @@
   const reveal=el=>{el.style.backgroundImage='url("'+el.dataset.art+'")';};
   if('IntersectionObserver' in window){const observer=new IntersectionObserver(entries=>entries.forEach(entry=>{if(entry.isIntersecting){reveal(entry.target);observer.unobserve(entry.target);}}),{rootMargin:'160px'});artwork.forEach(el=>observer.observe(el));}else artwork.forEach(reveal);
   const bed=document.getElementById('landing-keys'),status=document.getElementById('sound-status');
+  if(!bed)return;
   const pitches=['C','C♯','D','D♯','E','F','F♯','G','G♯','A','A♯','B'];
   const codes=['KeyA','KeyW','KeyS','KeyE','KeyD','KeyF','KeyT','KeyG','KeyY','KeyH','KeyU','KeyJ','KeyK','KeyO','KeyL','KeyP','Semicolon'];
   const letters=['A','W','S','E','D','F','T','G','Y','H','U','J','K','O','L','P',';'];
