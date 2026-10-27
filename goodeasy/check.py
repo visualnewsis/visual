@@ -2,6 +2,7 @@ from pathlib import Path
 from html.parser import HTMLParser
 from urllib.parse import urlsplit,unquote
 import json,sys,re
+import xml.etree.ElementTree as ET
 root=Path(sys.argv[1]); base=root/'goodeasy'
 class Page(HTMLParser):
  def __init__(self):super().__init__();self.ids=[];self.refs=[];self.ld=False;self.json=[];self.blocks=[]
@@ -23,9 +24,10 @@ for p in pages:
  if p.parent.name!='review':
   if len(h.blocks)!=1:errors.append(str(p)+' JSON-LD count')
   if s.count("gtag('config','G-6BKMWE02W5')")!=1:errors.append(str(p)+' GA config count')
-  if p.parent.name=='piano':
-   if 'index,follow,max-image-preview:large' not in s or 'noindex' in s:errors.append(str(p)+' published piano indexing')
-   if 'https://visual.newsis.com/goodeasy/piano/' not in s:errors.append(str(p)+' published piano URL')
+  if p==base/'index.html' or p.parent.name in {'piano','camera'}:
+   if 'index,follow,max-image-preview:large' not in s or 'noindex' in s:errors.append(str(p)+' published page indexing')
+   published_url='https://visual.newsis.com/goodeasy/'+('' if p==base/'index.html' else p.parent.name+'/')
+   if published_url not in s:errors.append(str(p)+' published page URL')
   elif 'noindex,nofollow' not in s:errors.append(str(p)+' prototype indexing')
  for r in h.refs:
   u=urlsplit(r)
@@ -38,6 +40,10 @@ for p in pages:
   elif u.fragment and target.suffix=='.html':
    t=Page();t.feed(target.read_text(encoding='utf8'))
    if u.fragment not in t.ids:errors.append(f'{p}: missing anchor {r}')
+# Only released episodes and their collection belong in the public sitemap.
+sitemap_urls={e.text for e in ET.parse(root/'sitemap-sections.xml').getroot().findall('{*}url/{*}loc')}
+released={'https://visual.newsis.com/goodeasy/','https://visual.newsis.com/goodeasy/piano/','https://visual.newsis.com/goodeasy/camera/'}
+if {u for u in sitemap_urls if '/goodeasy/' in u}!=released:errors.append('GOODEASY published sitemap mismatch')
 # This production host serves .mjs as application/octet-stream with nosniff.
 # Check the transitive local module paths as well as HTML entrypoints.
 for folder in [base/'assets',base/'piano']:
