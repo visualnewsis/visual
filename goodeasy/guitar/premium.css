@@ -14,3 +14,6 @@ body[data-music=guitar] .pluck-string[aria-pressed=true]{border-color:#00b4c9;co
 @media(max-width:700px){body[data-music=guitar] .guitar-signal{margin-left:23px;margin-right:23px}}
 
 body[data-music=guitar] #play{scroll-margin-top:64px}
+
+.guitar-lesson-view{position:relative;right:auto;bottom:auto;width:max-content;max-width:calc(100% - 24px);margin:4px 12px 12px auto}
+@media(max-width:700px){.guitar-lesson-view{right:auto;bottom:auto;margin-right:8px;margin-bottom:8px}}
