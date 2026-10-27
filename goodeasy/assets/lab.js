@@ -74,3 +74,5 @@ render();
 $('live')?.addEventListener('click',()=>{state.photo=null;render();wake();});
 
 window.addEventListener('resize',()=>{render();if(record)showInside();});
+
+if(kind==='camera'&&new URLSearchParams(location.search).get('landing-shot')==='1'){const inherit=()=>{const t=Number(new URLSearchParams(location.search).get('scene-time'));state.shots=1;state.photo={t:Number.isFinite(t)&&t>=0?t:0,a:state.aperture,d:state.shutter};render();snapshot();};if(document.readyState==='complete')inherit();else window.addEventListener('DOMContentLoaded',inherit,{once:true});}
