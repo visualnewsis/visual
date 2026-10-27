@@ -238,22 +238,14 @@ export function buildFence(terrain, z0, side, low) {
   inst(new THREE.BoxGeometry(0.52,0.34,0.035),signs,new THREE.MeshLambertMaterial({color:'#cbc4a1',map:warningMap()}),(p,i,o)=>{o.position.set(p.x,p.y,p.z+side*0.08);o.rotation.set(0,-Math.atan2(fenceZ(p.x+0.5,z0,side)-fenceZ(p.x-0.5,z0,side),1),(hash(i,z0)-0.5)*0.1);});
   inst(new THREE.ConeGeometry(0.065,1,3).translate(0,0.5,0),grass,new THREE.MeshLambertMaterial({color:'#64704b'}),(p,i,o)=>{o.position.set(p.x,terrain.heightAt(p.x,p.z),p.z);o.rotation.set((hash(i,1)-0.5)*0.4,hash(i,2)*6,(hash(i,3)-0.5)*0.4);o.scale.set(1,p.h,1);});
   if(side===1){
-    // 철책 발밑의 자갈과 낮은 풀. 근경에만 작은 고정 자산을 두고 두 번의 인스턴스 draw로 묶는다.
-    const stones=[],tufts=[],tuftP=[],tuftN=[];
+    // 철책 발밑의 자갈. 근경의 작은 고정 자산을 한 번의 인스턴스 draw로 묶는다.
+    const stones=[];
     const count=low?110:220;
     for(let i=0;i<count;i++){
       const x=-34+hash(i,71)*68,d=.25+hash(i,72)*7.5,z=fenceZ(x,z0,side)+d;
       const p={x,z,y:terrain.heightAt(x,z),s:.06+hash(i,73)*.13};
       if(i%3===0)stones.push(p);
-      if(Math.abs(d-3.4)>1.25)tufts.push(p);
     }
-    for(let i=0;i<5;i++){
-      const angle=i*2.4,dx=Math.cos(angle),dz=Math.sin(angle),h=.45+hash(i,74)*.55;
-      tuftP.push(-dz*.10,0,dx*.10,dz*.10,0,-dx*.10,dx*.23,h,dz*.23);
-      for(let j=0;j<3;j++)tuftN.push(dx*.3,.8,dz*.3);
-    }
-    const tuftGeo=new THREE.BufferGeometry();tuftGeo.setAttribute('position',new THREE.Float32BufferAttribute(tuftP,3));tuftGeo.setAttribute('normal',new THREE.Float32BufferAttribute(tuftN,3));
-    inst(tuftGeo,tufts,new THREE.MeshLambertMaterial({color:'#7d875e',side:THREE.DoubleSide}),(p,i,o)=>{o.position.set(p.x,p.y-.025,p.z);o.rotation.y=hash(i,75)*6.28;o.scale.setScalar(.24+hash(i,76)*.32);});
     inst(new THREE.IcosahedronGeometry(1,0),stones,new THREE.MeshPhongMaterial({color:'#96988b',shininess:2}),(p,i,o)=>{o.position.set(p.x,p.y+p.s*.18,p.z);o.rotation.set(hash(i,77),hash(i,78)*6.28,hash(i,79));o.scale.set(p.s,p.s*.42,p.s*.8);});
   }
   out.update = camera => {

@@ -4,7 +4,7 @@ import {
   W, Terrain, rawHeight, noise, riverZ, roadX, wallZ, fenceZ, forestMask, rng, smooth, lerp,
   drapeStrip, geomFrom, linePts, circlePts,
 } from './terrain.js?v=20261005-3';
-import { buildFence, concertinaGeometry } from './fence.js?v=20261027-1';
+import { buildFence, concertinaGeometry } from './fence.js?v=20261027-2';
 import { buildVegetation } from './vegetation.js?v=20261027-1';
 
 export const COLORS = {
