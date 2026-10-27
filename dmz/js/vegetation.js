@@ -1,7 +1,8 @@
 // 식생: 절차적 수목 모델(여러 수종·형태 변형) + 관목. 모두 인스턴싱.
 // 공 하나짜리 나무 대신, 불규칙한 수관 덩어리·줄기·높이별 음영(가짜 AO)으로 저고도에서도 자연스럽게 보이게 한다.
 import * as THREE from './three.js?v=20261001-12';
-import { W, forestMask, riverZ, roadX, wallZ, rng, smooth, noise } from './terrain.js?v=20261005-3';
+import { W, forestMask, riverZ, roadX, wallZ, rng, smooth, noise } from './terrain.js?v=20261027-world2';
+import { createTreeDetail } from './tree-detail.js?v=20261027-world2';
 
 const V = new THREE.Vector3();
 
@@ -156,7 +157,7 @@ function distantCrown(seed, con) {
   return merge(parts);
 }
 
-export function buildVegetation(terrain, { low, cutPlanes, foliageImage }) {
+export function buildVegetation(terrain, { low, cutPlanes, foliageImage, canopyImage }) {
   const R = rng(27);
   const target = low ? 7500 : 18000;
   const items = [];
@@ -208,6 +209,8 @@ export function buildVegetation(terrain, { low, cutPlanes, foliageImage }) {
   const shrubCols = ['#566b3a', '#5f723d', '#4e6236', '#677440'].map(h => new THREE.Color(h));
 
   const meshes = [];
+  const treeDetail=createTreeDetail({low,cutPlanes});
+  const white=[new THREE.Color('#ffffff')];
   const leafMap = foliageImage ? new THREE.Texture(foliageImage) : foliageTexture();
   leafMap.colorSpace=THREE.SRGBColorSpace;leafMap.anisotropy=2;leafMap.needsUpdate=true;
   const leafMat = new THREE.MeshPhongMaterial({map:leafMap,vertexColors:true,side:THREE.DoubleSide,alphaTest:0.35,shininess:7,specular:'#35442d',emissive:'#ffffff',emissiveMap:leafMap,emissiveIntensity:.1,clippingPlanes:cutPlanes,clipIntersection:true});
@@ -236,20 +239,23 @@ export function buildVegetation(terrain, { low, cutPlanes, foliageImage }) {
     mesh.instanceMatrix.needsUpdate = true;
     mesh.instanceColor.needsUpdate = true;
     meshes.push(mesh);
+    return mesh;
   };
   for (let v = 0; v < nB; v++) {
     const bs = (t, s) => { const k = (0.9 + t.b * 1.25) * (1.25 + 0.35 * noise(t.x*.021,t.z*.021)); s.set(k * (0.78 + t.c * 0.36), k * (0.8 + t.a * 0.55), k * (0.8 + t.a * 0.35)); };
     const mine = items.filter(t => !t.con && Math.floor(t.a * 997) % nB === v);
-    make(distantCrown(701+v*23,false), mine.filter(t => !near(t)), leafColors, bs, leafMat);
+    const distant=make(distantCrown(701+v*23,false), mine.filter(t => !near(t)), leafColors, bs, leafMat);
+    if(distant) distant.userData.canopyReplaced=!!canopyImage;
     make(foliageCards(401+v*19,low,false,!foliageImage),mine.filter(near),foliageImage?leafColors:broadCols,bs,leafMat);
-    make(trunk(1.3,0.07,4),mine.filter(near),[new THREE.Color('#b4a089')],bs);
+    make(treeDetail.geometry,mine.filter(near),white,bs,treeDetail.material);
   }
   for (let v = 0; v < nC; v++) {
     const mine=items.filter(t=>t.con&&Math.floor(t.a*991)%nC===v);
     const scale=(t,s)=>{const k=(1.0+t.b*0.9)*(1.1+0.25*noise(t.x*.021,t.z*.021));s.set(k,k*(1.0+t.c*0.6),k);};
-    make(distantCrown(811+v*23,true),mine.filter(t=>!near(t)),leafColors,scale,leafMat);
+    const distant=make(distantCrown(811+v*23,true),mine.filter(t=>!near(t)),leafColors,scale,leafMat);
+    if(distant) distant.userData.canopyReplaced=!!canopyImage;
     make(foliageCards(501+v*17,low,true,!foliageImage),mine.filter(near),foliageImage?leafColors:conCols,scale,leafMat);
-    make(trunk(1.2,0.06,4),mine.filter(near),[new THREE.Color('#a7947c')],scale);
+    make(treeDetail.geometry,mine.filter(near),white,scale,treeDetail.material);
   }
   make(geoS, shrubs, shrubCols, (t, s) => { const k = 0.6 + t.b * 0.6; s.set(k * (1 + t.c * 0.4), k * (0.9 + t.a * 0.5), k); });
   // 수관 아래의 부드러운 접지 음영. 실시간 shadow map 없이 1개 draw call.
@@ -272,6 +278,6 @@ export function buildVegetation(terrain, { low, cutPlanes, foliageImage }) {
   });
   const shadowGeo=new THREE.BufferGeometry();shadowGeo.setAttribute('position',new THREE.BufferAttribute(shadowP,3));shadowGeo.setAttribute('uv',new THREE.BufferAttribute(shadowUV,2));shadowGeo.setIndex(new THREE.BufferAttribute(shadowI,1));
   const contact=new THREE.Mesh(shadowGeo,new THREE.MeshBasicMaterial({map:shadowMap,transparent:true,depthWrite:false,polygonOffset:true,polygonOffsetFactor:-1,clippingPlanes:cutPlanes,clipIntersection:true}));
-  contact.frustumCulled=false;meshes.push(contact);
+  contact.frustumCulled=false;contact.userData.canopyReplaced=!!canopyImage;meshes.push(contact);
   return meshes;
 }

@@ -2,14 +2,14 @@
 // 장면 상태는 모두 (보간된) 스크롤 위치의 함수다. 따라서 어느 방향으로 스크롤해도 같은 화면이 나온다.
 // 예외: 사고 장면의 진동은 한 번 재생되는 시간 기반 이벤트.
 import * as THREE from './three.js?v=20261001-12';
-import { W, smooth, riverZ } from './terrain.js?v=20261005-3';
-import { createWorld, SPOTS } from './scene3d.js?v=20261027-2';
-import { createXray } from './xray.js?v=20261005-6';
-import { CameraRig, KEYS } from './camera.js?v=20261027-1';
-import { Scroller } from './scroll.js?v=20261001-12';
-import { createMorph, sm } from './typography.js?v=20261001-12';
-import { Labels, Track, Timeline } from './ui.js?v=20261005-3';
-import { createHeroIntro, sequenceAt } from './hero.js?v=20261027-1';
+import { W, smooth, riverZ } from './terrain.js?v=20261027-world2';
+import { createWorld, SPOTS } from './scene3d.js?v=20261027-world2';
+import { createXray } from './xray.js?v=20261027-world2';
+import { CameraRig, KEYS } from './camera.js?v=20261027-world2';
+import { Scroller } from './scroll.js?v=20261027-world2';
+import { createMorph, sm } from './typography.js?v=20261027-world2';
+import { Labels, Track, Timeline } from './ui.js?v=20261027-world2';
+import { createHeroIntro, sequenceAt } from './hero.js?v=20261027-world2';
 
 const T0 = performance.now();
 const params = new URLSearchParams(location.search);
@@ -27,14 +27,17 @@ const recap = $('#range-recap');
 // (엔딩 안개 레이어는 사용하지 않음)
 
 // 잎 텍스처는 초기화 전에 한 번 읽어 스크롤 도중 수관이 바뀌지 않게 한다.
-const foliageImage = await new Promise(resolve => {
+const loadEnvironmentImage = file => new Promise(resolve => {
   const img = new Image();let done=false;
   const finish=value=>{if(done)return;done=true;clearTimeout(timer);resolve(value);};
   const timer=setTimeout(()=>finish(null),4000);
   img.onload=()=>finish(img);img.onerror=()=>finish(null);
-  img.src=new URL('../images/web/foliage-cluster-v1.webp',import.meta.url).href;
+  img.src=new URL(`../images/web/${file}`,import.meta.url).href;
 });
-const world = createWorld(canvas, { low, foliageImage });
+const [foliageImage,canopyImage,groundImage] = await Promise.all([
+  loadEnvironmentImage('foliage-cluster-v1.webp'),loadEnvironmentImage('forest-canopy-atlas-v2.webp'),loadEnvironmentImage('ground-hillside-v2.webp')
+]);
+const world = createWorld(canvas, { low, foliageImage, canopyImage, groundImage });
 const xray = createXray(world);
 const rig = new CameraRig(world.terrain);
 const scroller = new Scroller($('#story'));
@@ -326,7 +329,7 @@ function tick(now) {
   const BLAST_DROP = 0.10;
   const isp = scroller.span('incident'), ivh = scroller.vh;
   const blastDrop = vw < vh ? (sSm < isp.a ? smooth(isp.a - ivh, isp.a, sSm) : 1 - smooth(isp.b, isp.b + 0.6 * ivh, sSm)) : 0;
-  const oy = vw < vh ? Math.round(vh * (0.13 * st.travel * (1 - blastFocus) - BLAST_DROP * blastDrop)) : 0;
+  const oy = vw < vh ? Math.round(vh * (0.13 * st.travel * (1 - blastFocus) - BLAST_DROP * blastDrop + .12 * st.structure)) : 0;
   // MAP→3D 구간에서 MAP 화면 이동과 같은 만큼 3D 화면을 옮긴다(entry). 그 외 구간은 0.
   const ox = -Math.round(seq.dx || 0), vy = oy - Math.round(seq.dy || 0);
   if (Math.abs(cam.fov - fov) > 0.01 || Math.abs(cam.zoom - seq.zoom) > .00001 || vy !== lastOy || ox !== lastOx || viewDirty) {
@@ -353,7 +356,7 @@ function tick(now) {
   world.clear.set(st.clear);
   world.dust.update(reduceMotion ? null : st.dustT);
   xray.update(st.scanT, st.open, st.reveal, exploreMix, exploreX);
-  world.hemi.intensity = 1.2 * (1 - 0.28 * st.open);
+  world.hemi.intensity = .9 * (1 - 0.28 * st.open);
   world.scene.background.copy(sky).lerp(skyX, st.open * 0.8);
   world.scene.fog.color.copy(world.scene.background);
 
@@ -455,6 +458,8 @@ function tick(now) {
   }
 }
 
+// 실제 이동 중 처음 만나는 수목·표면 재질의 셰이더와 텍스처를 미리 준비한다.
+await world.prepare();
 window.__dmzReady = true;
 window.__dmzInitMs = Math.round(performance.now() - T0);
 document.body.classList.add('gl-ready');

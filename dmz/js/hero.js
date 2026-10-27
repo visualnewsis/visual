@@ -1,12 +1,12 @@
 // 진입과 귀환은 같은 좌표계의 역방향. 시간 기반 재생·CSS transition 없음.
-import { smooth } from './terrain.js?v=20261005-3';
+import { smooth } from './terrain.js?v=20261027-world2';
 // 랜드마크 좌표 데이터만 사용(변형 보간 코드는 실행하지 않음).
-import { landmarks } from './image-morph.js?v=20261005-5';
+import { landmarks } from './image-morph.js?v=20261027-world2';
 const clamp = p => Math.max(0, Math.min(1, p));
 // 오프닝 전용 스크롤 → 진행도 배분. 사진→단순화(p 0~0.31)를 압축하고 MAP→3D(p 0.78~1)는 스크롤 여유 유지.
 // 꺾이는 지점은 단계 경계(전환 속도 0)에 둔다. 클로징은 별도 경로라 영향 없음.
 // 각 그림을 짧게 정착시킨 뒤 교차한다. 전체 오프닝 길이와 입력 반응은 그대로다.
-const OPEN = [[0,0],[0.24,0.31],[0.70,0.78],[1,1]];
+const OPEN = [[0,0],[0.24,0.31],[0.82,0.86],[1,1]];
 const openingP = u => {
   let i = 0; while (i < OPEN.length-2 && u > OPEN[i+1][0]) i++;
   const [u0,p0] = OPEN[i], [u1,p1] = OPEN[i+1];
@@ -18,7 +18,7 @@ export function sequenceAt(s, scroller) {
   // sticky가 풀리기 전에 문장 노출을 마친다. 섹션 높이 전체가 아닌 실제 sticky 이동 거리.
   const endProgress = clamp((s - finale.T) / Math.max(1, finale.H - scroller.vh));
   const p = returning ? 1 - clamp((endProgress - 0.14) / 0.54) : openingP(clamp(s / hero.b));
-  const bridge = smooth(0.78, 1, p);
+  const bridge = smooth(0.94, 1, p);
   return { p, bridge, returning, active: (returning && s < finale.T + finale.H) || s <= hero.b,
     dolly: 1,
     title: returning ? smooth(0.82, 0.94, endProgress) : 0 };
@@ -26,7 +26,7 @@ export function sequenceAt(s, scroller) {
 export function createHeroIntro(root, { reduceMotion, disabled, onReady, renderer, low }) {
   const layers = [...root.querySelectorAll('picture img')];
   // MAP 직전 그림(hero-between-map)은 혼자 확대돼 보여 제외. lift-2 → MAP으로 바로 교차.
-  const knots = [0,0.10,0.21,0.31,0.42,0.52,0.62,0.78];
+  const knots = [0,0.10,0.21,0.31,0.42,0.52,0.72,0.94];
   const map = root.querySelector('.intro-map'), source = root.querySelector('.intro-source');
   const frames = [...layers, map], hero = document.querySelector('.hero');
   // 변형 보간(GPU) 미사용: 기존 CSS 이미지 레이어 합성으로 전환한다.
@@ -79,6 +79,10 @@ export function createHeroIntro(root, { reduceMotion, disabled, onReady, rendere
     return {T:T.map((t,i)=>comp(i<3?GA:GB,t)), GB};
   };
 
+  // 화면 회전 뒤 srcset 이미지가 늦게 도착해도 새 원본 크기로 다시 맞춘다.
+  layers.forEach(img => img.addEventListener?.('load', () => {
+    alignKey = ''; last = ''; onReady();
+  }));
   Promise.all(layers.map(img => img.decode().catch(() => null).then(() => img.naturalWidth > 0))).then(ok => {
     settled = true; ready = ok.every(Boolean);
     onReady();
@@ -108,7 +112,7 @@ export function createHeroIntro(root, { reduceMotion, disabled, onReady, rendere
       root.style.visibility = 'visible';
       if (!ready) { root.style.opacity = '1'; return 1; }
       const key = `${p}:${returning}:${width}:${height}`;
-      const opacity = 1 - smooth(0.86, 1, p);
+      const opacity = 1 - smooth(0.95, 1, p);
       if (key === last) return opacity;
       last = key;
       root.style.opacity = opacity.toFixed(5);
@@ -118,7 +122,7 @@ export function createHeroIntro(root, { reduceMotion, disabled, onReady, rendere
       while (index < knots.length-1 && p >= knots[index+1]) index++;
       // 정착 10% → 교차 80% → 정착 10%. 중간 윤곽이 오래 겹치지 않게 하되
       // 스크롤 위치로 즉시 계산한다. 시간 지연·실시간 이미지 변형은 추가하지 않는다.
-      const mix = index < knots.length-1 ? smooth(knots[index]+.10*(knots[index+1]-knots[index]),knots[index+1]-.10*(knots[index+1]-knots[index]),p) : 0;
+      const mix = index === layers.length-1 ? smooth(.86,.94,p) : index < knots.length-1 ? smooth(knots[index]+.10*(knots[index+1]-knots[index]),knots[index+1]-.10*(knots[index+1]-knots[index]),p) : 0;
       if (index !== previous) {
         for (let i=0;i<frames.length;i++) {
           frames[i].style.opacity = i === index ? '1' : '0';
@@ -135,6 +139,18 @@ export function createHeroIntro(root, { reduceMotion, disabled, onReady, rendere
           img.style.transformOrigin = '0 0';
           img.style.transform = `translate3d(${t.tx.toFixed(2)}px,${t.ty.toFixed(2)}px,0) scale(${t.s.toFixed(5)})`;
         });
+      }
+      // 세로 조감 그림의 전폭을 갑자기 드러내지 않는다. 앞 가로 그림과 비슷한
+      // 화각·강 굽이에서 시작해 스크롤 위치에 따라 지형 전체로 물러난다.
+      if(width<820&&layers[6].naturalHeight>layers[6].naturalWidth){
+        const before=natural(5,width,height)[7],after=natural(6,width,height)[7];
+        const A=align.T[5],B=align.T[6],pullback=reduceMotion?1:smooth(.67,.86,p);
+        // 800px 원본의 선명도를 지키며, 교차와 pull-back의 시간을 분리한다.
+        const crop=Math.min(2,(layers[5].naturalWidth/layers[5].naturalHeight)/(layers[6].naturalWidth/layers[6].naturalHeight));
+        const start={s:crop,tx:A.s*before[0]+A.tx-crop*(B.s*after[0]+B.tx),ty:A.s*before[1]+A.ty-crop*(B.s*after[1]+B.ty)};
+        const motion={s:1+(start.s-1)*(1-pullback),tx:start.tx*(1-pullback),ty:start.ty*(1-pullback)};
+        const t=comp(motion,B);
+        layers[6].style.transform=`translate3d(${t.tx.toFixed(2)}px,${t.ty.toFixed(2)}px,0) scale(${t.s.toFixed(5)})`;
       }
       // MAP 정지 프레임과 실제 카메라는 같은 광학 배율·화면 이동(entry)을 공유한다.
       const G = align.GB;

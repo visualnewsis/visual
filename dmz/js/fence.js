@@ -1,6 +1,6 @@
 // 일반화된 경계 시설. 결정적 변주·공유 망 텍스처·인스턴싱으로 반복과 비용을 제한한다.
 import * as THREE from './three.js?v=20261001-12';
-import { W, fenceZ, roadX, drapeStrip, geomFrom, smooth } from './terrain.js?v=20261005-3';
+import { W, fenceZ, roadX, drapeStrip, geomFrom, smooth } from './terrain.js?v=20261027-world2';
 const hash = (a, b = 0) => { const s = Math.sin(a * 127.1 + b * 311.7) * 43758.5453; return s - Math.floor(s); };
 let meshTexture, warningTexture, soilTexture, weatherTexture;
 // 연속 나선과 양날 가시를 한 지오메트리로 공유한다. 고리를 따로 찍어내지 않는다.

@@ -3,9 +3,11 @@ import * as THREE from './three.js?v=20261001-12';
 import {
   W, Terrain, rawHeight, noise, riverZ, roadX, wallZ, fenceZ, forestMask, rng, smooth, lerp,
   drapeStrip, geomFrom, linePts, circlePts,
-} from './terrain.js?v=20261005-3';
-import { buildFence, concertinaGeometry } from './fence.js?v=20261027-2';
-import { buildVegetation } from './vegetation.js?v=20261027-1';
+} from './terrain.js?v=20261027-world2';
+import { buildFence, concertinaGeometry } from './fence.js?v=20261027-world2';
+import { buildVegetation } from './vegetation.js?v=20261027-world2';
+import { createCanopy } from './canopy.js?v=20261027-world2';
+import { createSurfaceDetail } from './surface-detail.js?v=20261027-world2';
 
 export const COLORS = {
   sky: new THREE.Color('#dfe3dd'),
@@ -22,12 +24,12 @@ export const SPOTS = {
 
 const hash = (a, b = 0) => { const s = Math.sin(a * 127.1 + b * 311.7) * 43758.5453; return s - Math.floor(s); };
 
-export function createWorld(canvas, { low, foliageImage }) {
+export function createWorld(canvas, { low, foliageImage, canopyImage, groundImage }) {
   const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, powerPreference: 'high-performance', stencil: false });
   renderer.localClippingEnabled = true;
   renderer.setClearColor(COLORS.sky, 1);
   renderer.toneMapping=THREE.ACESFilmicToneMapping;
-  renderer.toneMappingExposure=.97;
+  renderer.toneMappingExposure=.90;
 
   const scene = new THREE.Scene();
   scene.background = COLORS.sky.clone();
@@ -44,11 +46,11 @@ export function createWorld(canvas, { low, foliageImage }) {
   }));
   skyDome.frustumCulled=false;scene.add(skyDome);
 
-  const hemi = new THREE.HemisphereLight('#e4ece8', '#4a554b', 1.2);
+  const hemi = new THREE.HemisphereLight('#e4ece8', '#4a554b', .9);
   scene.add(hemi);
-  const sun = new THREE.DirectionalLight('#f8f2e5', 1.75);
+  const sun = new THREE.DirectionalLight('#f8f2e5', 2.15);
   sun.position.set(-150, 260, 360);
-  sun.intensity=1.75;
+  sun.intensity=2.15;
   scene.add(sun);
 
   // X-ray에서 지표를 잘라내는 평면 (구간 내부를 잘라냄)
@@ -64,7 +66,8 @@ export function createWorld(canvas, { low, foliageImage }) {
 
   // ---------- 지형 ----------
   const terrain = low ? new Terrain(200, 164) : new Terrain(320, 260);
-  const groundTexture = (() => {
+  const surfaceDetail=createSurfaceDetail(terrain,{low,groundImage,cutPlanes});
+  const groundTexture = surfaceDetail.ground.map || (() => {
     const size=low?256:512,c=document.createElement('canvas');c.width=c.height=size;
     const ctx=c.getContext('2d'),R=rng(844),pixels=ctx.createImageData(size,size);
     for(let y=0;y<size;y++)for(let x=0;x<size;x++){
@@ -75,11 +78,11 @@ export function createWorld(canvas, { low, foliageImage }) {
     for(let i=0;i<(low?1800:5800);i++){const x=R()*size,y=R()*size;ctx.strokeStyle=R()>.5?'rgba(62,65,48,.21)':'rgba(251,246,226,.25)';ctx.lineWidth=.6;ctx.beginPath();ctx.moveTo(x,y);ctx.lineTo(x+R()*3-1.5,y-1-R()*5);ctx.stroke();}
     const t=new THREE.CanvasTexture(c);t.wrapS=t.wrapT=THREE.RepeatWrapping;t.colorSpace=THREE.SRGBColorSpace;t.anisotropy=2;return t;
   })();
-  const groundMat = new THREE.MeshPhongMaterial({ vertexColors: true, map:groundTexture, bumpMap:groundTexture, bumpScale:low?.045:.08, shininess:3, specular:'#192118', clippingPlanes: cutPlanes, clipIntersection: true });
+  const groundMat = new THREE.MeshPhongMaterial({ vertexColors: true, map:groundTexture, bumpMap:groundTexture, bumpScale:low?.045:.08, shininess:3, specular:'#192118',...surfaceDetail.ground,clippingPlanes: cutPlanes, clipIntersection: true });
   const groundGeo=terrain.buildMesh(),uv=new Float32Array(groundGeo.attributes.position.count*2);
   const groundColors=groundGeo.attributes.color;
   // 고주파 능선의 삼각 면 음영 대신 넓은 사면의 연속 법선. 지형·높이 판정은 그대로.
-  const normal = new THREE.Vector3(), delta = low ? 4.5 : 3.5;
+  const normal = new THREE.Vector3(), delta = low ? 3.0 : 2.5;
   for(let i=0;i<groundGeo.attributes.position.count;i++){
     const p=groundGeo.attributes.position;uv[i*2]=p.getX(i)/18;uv[i*2+1]=p.getZ(i)/18;
     // 초지의 노란 기운을 낮춰 젖은 흙과 숲의 색을 가깝게 한다.
@@ -100,6 +103,7 @@ export function createWorld(canvas, { low, foliageImage }) {
   groundGeo.setAttribute('uv',new THREE.BufferAttribute(uv,2));
   const ground = new THREE.Mesh(groundGeo, groundMat);
   scene.add(ground);
+  surfaceDetail.meshes.forEach(mesh=>scene.add(mesh));
 
   const skirt = new THREE.Mesh(terrain.buildSkirt(), new THREE.MeshLambertMaterial({ vertexColors: true, side: THREE.DoubleSide }));
   scene.add(skirt);
@@ -124,8 +128,16 @@ export function createWorld(canvas, { low, foliageImage }) {
       const n=new THREE.Vector3(a[2]-b[2],Math.max(.001,b[0]-a[0]),0).normalize();
       for(let j=0;j<2;j++)waterGeo.attributes.normal.setXYZ(i*2+j,n.x,n.y,n.z);
     }
+    const rippleCanvas=document.createElement('canvas');rippleCanvas.width=rippleCanvas.height=128;
+    const rippleContext=rippleCanvas.getContext('2d'),ripplePixels=rippleContext.createImageData(128,128);
+    for(let y=0;y<128;y++)for(let x=0;x<128;x++){
+      const wave=128+12*Math.sin(y*.48+Math.sin(x*.13)*2.2)+6*Math.sin(y*1.2+x*.11);
+      ripplePixels.data.set([wave,wave,wave,255],(y*128+x)*4);
+    }
+    rippleContext.putImageData(ripplePixels,0,0);
+    const ripple=new THREE.CanvasTexture(rippleCanvas);ripple.wrapS=ripple.wrapT=THREE.RepeatWrapping;
     const water = new THREE.Mesh(waterGeo,
-      new THREE.MeshPhongMaterial({ color: '#7d9e9d', specular: '#8ba7a6', shininess: 35, clippingPlanes: cutPlanes, clipIntersection: true }));
+      new THREE.MeshPhongMaterial({ color: '#789992', specular: '#b7c8c2', shininess: 58, bumpMap:ripple,bumpScale:.055,clippingPlanes: cutPlanes, clipIntersection: true }));
     scene.add(water);
   }
   const waterY = x => terrain.heightAt(x, riverZ(x)) + 0.9;
@@ -135,13 +147,13 @@ export function createWorld(canvas, { low, foliageImage }) {
   {
     const mk = (z0, z1) => {
       const pts = [];
-      for (let z = z0; z >= z1; z -= 2) {
+      for (let z = z0; z >= z1; z -= 1) {
         const x = roadX(z);
         const nearRiver = smooth(14, 5, Math.abs(z - riverZ(x)));
         const g = terrain.heightAt(x, z);
         pts.push([x, z, nearRiver > 0 ? Math.max(g, lerp(g, waterY(x) + 1.2, nearRiver)) : undefined]);
       }
-      return geomFrom(drapeStrip(terrain, pts, 4.4, 0.32, undefined, 3));
+      return geomFrom(drapeStrip(terrain, pts, 4.4, 0.5, undefined, 4));
     };
     const roadMap=(()=>{
       const c=document.createElement('canvas');c.width=256;c.height=128;
@@ -154,7 +166,7 @@ export function createWorld(canvas, { low, foliageImage }) {
       g.putImageData(pixels,0,0);
       const t=new THREE.CanvasTexture(c);t.wrapS=THREE.RepeatWrapping;t.repeat.x=.11;t.colorSpace=THREE.SRGBColorSpace;t.anisotropy=low?2:4;return t;
     })();
-    const mat = new THREE.MeshPhongMaterial({ color: '#939888', map:roadMap, shininess:2, polygonOffset: true, polygonOffsetFactor: -1 });
+    const mat = new THREE.MeshPhongMaterial({ color: '#aaa998', map:roadMap,bumpMap:roadMap,bumpScale:.045,shininess:2,polygonOffset: true, polygonOffsetFactor: -1 });
     road.south = new THREE.Mesh(mk(W.zMax - 1, -30), mat);
     road.gap = new THREE.Mesh(mk(-30, -58), mat.clone());
     road.north = new THREE.Mesh(mk(-58, W.zMin + 1), mat);
@@ -162,8 +174,10 @@ export function createWorld(canvas, { low, foliageImage }) {
   }
 
   // ---------- 수목 (인스턴싱) ----------
-  const trees = buildVegetation(terrain, { low, cutPlanes, foliageImage });
+  const trees = buildVegetation(terrain, { low, cutPlanes, foliageImage, canopyImage });
   trees.forEach(m => scene.add(m));
+  const canopy = createCanopy(terrain, {low, canopyImage, cutPlanes});
+  if(canopy) scene.add(canopy.shadow,canopy.mesh);
 
   // ---------- 경계선 (남방한계선·군사분계선·북방한계선) ----------
   const lineMat = (color) => new THREE.MeshBasicMaterial({ color, transparent: true, opacity: 0, depthWrite: false, polygonOffset: true, polygonOffsetFactor: -4 });
@@ -183,11 +197,19 @@ export function createWorld(canvas, { low, foliageImage }) {
   // 비무장지대 면 (구조 장면에서만)
   const band = new THREE.Mesh(
     (() => {
-      const P = [], I = [], UV = [];
-      for (let z = W.SLL; z >= W.NLL; z -= 8) drapeStrip(terrain, linePts(W.xMin + 1, z, W.xMax - 1, z, 8).map(p => p), 8, 0.4, { P, I, UV });
-      return geomFrom({ P, I, UV });
+      // 별도 거친 격자는 지형을 관통한다. 실제 지표의 삼각분할을 그대로 사용한다.
+      const geometry = new THREE.BufferGeometry(), position = groundGeo.attributes.position.clone(), indices = [];
+      const source = groundGeo.index.array;
+      for(let i=0;i<position.count;i++)position.setY(i,position.getY(i)+.08);
+      for(let i=0;i<source.length;i+=3){
+        const a=source[i],b=source[i+1],c=source[i+2];
+        const zs=[position.getZ(a),position.getZ(b),position.getZ(c)];
+        if(Math.min(...zs)<=W.SLL&&Math.max(...zs)>=W.NLL)indices.push(a,b,c);
+      }
+      geometry.setAttribute('position',position);geometry.setIndex(indices);return geometry;
     })(),
-    new THREE.MeshBasicMaterial({ color: '#ffffff', transparent: true, opacity: 0, depthWrite: false }));
+    new THREE.MeshBasicMaterial({ color: '#ffffff', transparent: true, opacity: 0, depthWrite: false,polygonOffset:true,polygonOffsetFactor:-2,
+      clippingPlanes:[new THREE.Plane(new THREE.Vector3(0,0,-1),W.SLL),new THREE.Plane(new THREE.Vector3(0,0,1),-W.NLL)] }));
   band.renderOrder = 1;
   scene.add(band);
 
@@ -269,9 +291,23 @@ export function createWorld(canvas, { low, foliageImage }) {
     setSize(w, h, dpr) { renderer.setPixelRatio(dpr); renderer.setSize(w, h, false); camera.aspect = w / h; camera.updateProjectionMatrix(); },
     setFog(camHeight) {
       const far = Math.min(3000, Math.max(320, 300 + camHeight * 3.4));
-      scene.fog.far = far; scene.fog.near = far * 0.22;
+      scene.fog.far = far; scene.fog.near = far * (.22+.20*smooth(100,500,camHeight));
     },
-    render() { skyDome.position.copy(camera.position); fences.forEach(f => f.update(camera)); renderer.render(scene, camera); },
+    render() {
+      skyDome.position.copy(camera.position);fences.forEach(f=>f.update(camera));
+      band.visible=band.material.opacity>.001;
+      for(const mesh of trees)if(mesh.userData.canopyReplaced)mesh.visible=false;
+      renderer.render(scene,camera);
+    },
+    async prepare(){
+      const textures=new Set();
+      scene.traverse(object=>{
+        const materials=Array.isArray(object.material)?object.material:[object.material];
+        for(const material of materials)if(material)for(const value of Object.values(material))if(value?.isTexture)textures.add(value);
+      });
+      textures.forEach(texture=>renderer.initTexture(texture));
+      if(renderer.compileAsync)await renderer.compileAsync(scene,camera);else renderer.compile(scene,camera);
+    },
   };
   return api;
 }
