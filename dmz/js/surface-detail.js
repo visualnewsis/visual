@@ -1,6 +1,6 @@
 // 지형에 고정된 표면·강둑·암반. 초기화 이후에는 렌더만 한다.
 import * as THREE from './three.js?v=20261001-12';
-import { W, riverZ, roadX, wallZ, fenceZ, forestMask, rng, noise } from './terrain.js?v=20261027-world2';
+import { W, riverZ, roadX, wallZ, fenceZ, forestMask, rng, noise } from './terrain.js?v=20261027-forest3';
 
 export function createSurfaceDetail(terrain,{low,groundImage,cutPlanes=[]}){
   const meshes=[],textures=[],ground={};

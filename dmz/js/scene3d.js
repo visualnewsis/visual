@@ -3,11 +3,10 @@ import * as THREE from './three.js?v=20261001-12';
 import {
   W, Terrain, rawHeight, noise, riverZ, roadX, wallZ, fenceZ, forestMask, rng, smooth, lerp,
   drapeStrip, geomFrom, linePts, circlePts,
-} from './terrain.js?v=20261027-world2';
-import { buildFence, concertinaGeometry } from './fence.js?v=20261027-world2';
-import { buildVegetation } from './vegetation.js?v=20261027-world2';
-import { createCanopy } from './canopy.js?v=20261027-world2';
-import { createSurfaceDetail } from './surface-detail.js?v=20261027-world2';
+} from './terrain.js?v=20261027-forest3';
+import { buildFence, concertinaGeometry } from './fence.js?v=20261027-forest3';
+import { buildVegetation } from './vegetation.js?v=20261027-forest3';
+import { createSurfaceDetail } from './surface-detail.js?v=20261027-forest3';
 
 export const COLORS = {
   sky: new THREE.Color('#dfe3dd'),
@@ -24,12 +23,12 @@ export const SPOTS = {
 
 const hash = (a, b = 0) => { const s = Math.sin(a * 127.1 + b * 311.7) * 43758.5453; return s - Math.floor(s); };
 
-export function createWorld(canvas, { low, foliageImage, canopyImage, groundImage }) {
+export function createWorld(canvas, { low, foliageImage, groundImage }) {
   const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, powerPreference: 'high-performance', stencil: false });
   renderer.localClippingEnabled = true;
   renderer.setClearColor(COLORS.sky, 1);
   renderer.toneMapping=THREE.ACESFilmicToneMapping;
-  renderer.toneMappingExposure=.90;
+  renderer.toneMappingExposure=.98;
 
   const scene = new THREE.Scene();
   scene.background = COLORS.sky.clone();
@@ -46,11 +45,11 @@ export function createWorld(canvas, { low, foliageImage, canopyImage, groundImag
   }));
   skyDome.frustumCulled=false;scene.add(skyDome);
 
-  const hemi = new THREE.HemisphereLight('#e4ece8', '#4a554b', .9);
+  const hemi = new THREE.HemisphereLight('#edf2e5', '#81846b', 1.15);
   scene.add(hemi);
   const sun = new THREE.DirectionalLight('#f8f2e5', 2.15);
   sun.position.set(-150, 260, 360);
-  sun.intensity=2.15;
+  sun.intensity=2.05;
   scene.add(sun);
 
   // X-ray에서 지표를 잘라내는 평면 (구간 내부를 잘라냄)
@@ -95,7 +94,7 @@ export function createWorld(canvas, { low, foliageImage, canopyImage, groundImag
       const sx=Math.max(W.xMin,Math.min(W.xMax,x-distance*.385)),sz=Math.max(W.zMin,Math.min(W.zMax,z+distance*.923));
       occlusion=Math.max(occlusion,(terrain.heightAt(sx,sz)-p.getY(i))/distance);
     }
-    const damp=(1-.17*wood+patch)*(1-.16*smooth(.025,.24,occlusion));
+    const damp=(1-.08*wood+patch)*(1-.10*smooth(.025,.24,occlusion));
     // 비탈의 드러난 암반과 얕은 토양. 조감 장면의 단색 면을 초기 vertex color로 분해한다.
     const rock=smooth(.94,.67,normal.y)*smooth(9,28,p.getY(i))*(.35+.3*noise(x*.055,z*.055));
     groundColors.setXYZ(i,groundColors.getX(i)*.88*damp*(1-rock)+.31*rock,groundColors.getY(i)*.94*damp*(1-rock)+.33*rock,groundColors.getZ(i)*1.02*damp*(1-rock)+.28*rock);
@@ -174,10 +173,8 @@ export function createWorld(canvas, { low, foliageImage, canopyImage, groundImag
   }
 
   // ---------- 수목 (인스턴싱) ----------
-  const trees = buildVegetation(terrain, { low, cutPlanes, foliageImage, canopyImage });
+  const trees = buildVegetation(terrain, { low, cutPlanes, foliageImage });
   trees.forEach(m => scene.add(m));
-  const canopy = createCanopy(terrain, {low, canopyImage, cutPlanes});
-  if(canopy) scene.add(canopy.shadow,canopy.mesh);
 
   // ---------- 경계선 (남방한계선·군사분계선·북방한계선) ----------
   const lineMat = (color) => new THREE.MeshBasicMaterial({ color, transparent: true, opacity: 0, depthWrite: false, polygonOffset: true, polygonOffsetFactor: -4 });
@@ -296,7 +293,6 @@ export function createWorld(canvas, { low, foliageImage, canopyImage, groundImag
     render() {
       skyDome.position.copy(camera.position);fences.forEach(f=>f.update(camera));
       band.visible=band.material.opacity>.001;
-      for(const mesh of trees)if(mesh.userData.canopyReplaced)mesh.visible=false;
       renderer.render(scene,camera);
     },
     async prepare(){

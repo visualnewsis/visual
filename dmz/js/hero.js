@@ -1,7 +1,7 @@
 // 진입과 귀환은 같은 좌표계의 역방향. 시간 기반 재생·CSS transition 없음.
-import { smooth } from './terrain.js?v=20261027-world2';
+import { smooth } from './terrain.js?v=20261027-forest3';
 // 랜드마크 좌표 데이터만 사용(변형 보간 코드는 실행하지 않음).
-import { landmarks } from './image-morph.js?v=20261027-world2';
+import { landmarks } from './image-morph.js?v=20261027-forest3';
 const clamp = p => Math.max(0, Math.min(1, p));
 // 오프닝 전용 스크롤 → 진행도 배분. 사진→단순화(p 0~0.31)를 압축하고 MAP→3D(p 0.78~1)는 스크롤 여유 유지.
 // 꺾이는 지점은 단계 경계(전환 속도 0)에 둔다. 클로징은 별도 경로라 영향 없음.

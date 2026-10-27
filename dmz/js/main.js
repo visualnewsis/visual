@@ -2,14 +2,14 @@
 // 장면 상태는 모두 (보간된) 스크롤 위치의 함수다. 따라서 어느 방향으로 스크롤해도 같은 화면이 나온다.
 // 예외: 사고 장면의 진동은 한 번 재생되는 시간 기반 이벤트.
 import * as THREE from './three.js?v=20261001-12';
-import { W, smooth, riverZ } from './terrain.js?v=20261027-world2';
-import { createWorld, SPOTS } from './scene3d.js?v=20261027-world2';
-import { createXray } from './xray.js?v=20261027-world2';
-import { CameraRig, KEYS } from './camera.js?v=20261027-world2';
-import { Scroller } from './scroll.js?v=20261027-world2';
-import { createMorph, sm } from './typography.js?v=20261027-world2';
-import { Labels, Track, Timeline } from './ui.js?v=20261027-world2';
-import { createHeroIntro, sequenceAt } from './hero.js?v=20261027-world2';
+import { W, smooth, riverZ } from './terrain.js?v=20261027-forest3';
+import { createWorld, SPOTS } from './scene3d.js?v=20261027-forest3';
+import { createXray } from './xray.js?v=20261027-forest3';
+import { CameraRig, KEYS } from './camera.js?v=20261027-forest3';
+import { Scroller } from './scroll.js?v=20261027-forest3';
+import { createMorph, sm } from './typography.js?v=20261027-forest3';
+import { Labels, Track, Timeline } from './ui.js?v=20261027-forest3';
+import { createHeroIntro, sequenceAt } from './hero.js?v=20261027-forest3';
 
 const T0 = performance.now();
 const params = new URLSearchParams(location.search);
@@ -34,10 +34,10 @@ const loadEnvironmentImage = file => new Promise(resolve => {
   img.onload=()=>finish(img);img.onerror=()=>finish(null);
   img.src=new URL(`../images/web/${file}`,import.meta.url).href;
 });
-const [foliageImage,canopyImage,groundImage] = await Promise.all([
-  loadEnvironmentImage('foliage-cluster-v1.webp'),loadEnvironmentImage('forest-canopy-atlas-v2.webp'),loadEnvironmentImage('ground-hillside-v2.webp')
+const [foliageImage,groundImage] = await Promise.all([
+  loadEnvironmentImage('foliage-cluster-v1.webp'),loadEnvironmentImage('ground-hillside-v2.webp')
 ]);
-const world = createWorld(canvas, { low, foliageImage, canopyImage, groundImage });
+const world = createWorld(canvas, { low, foliageImage, groundImage });
 const xray = createXray(world);
 const rig = new CameraRig(world.terrain);
 const scroller = new Scroller($('#story'));
@@ -356,7 +356,7 @@ function tick(now) {
   world.clear.set(st.clear);
   world.dust.update(reduceMotion ? null : st.dustT);
   xray.update(st.scanT, st.open, st.reveal, exploreMix, exploreX);
-  world.hemi.intensity = .9 * (1 - 0.28 * st.open);
+  world.hemi.intensity = 1.15 * (1 - 0.28 * st.open);
   world.scene.background.copy(sky).lerp(skyX, st.open * 0.8);
   world.scene.fog.color.copy(world.scene.background);
 

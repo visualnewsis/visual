@@ -147,8 +147,8 @@ export class Terrain {
     g.computeVertexNormals();
     // 정점 색: 9월 말 초지 + 숲 바닥 + 사면 + 하천변
     const nrm = g.attributes.normal.array;
-    const meadowA = new THREE.Color('#a7a77a'), meadowB = new THREE.Color('#8e9a68');
-    const floor = new THREE.Color('#4a5f3d'), rock = new THREE.Color('#8f8873'), sand = new THREE.Color('#bcb39a');
+    const meadowA = new THREE.Color('#b6b18a'), meadowB = new THREE.Color('#a2ad80');
+    const floor = new THREE.Color('#81916d'), rock = new THREE.Color('#a19b85'), sand = new THREE.Color('#c6bda4');
     const c = new THREE.Color();
     for (let k = 0; k < r * (nz + 1); k++) {
       const x = pos[k * 3], z = pos[k * 3 + 2];

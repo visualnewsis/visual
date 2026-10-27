@@ -1,8 +1,8 @@
 // 식생: 절차적 수목 모델(여러 수종·형태 변형) + 관목. 모두 인스턴싱.
 // 공 하나짜리 나무 대신, 불규칙한 수관 덩어리·줄기·높이별 음영(가짜 AO)으로 저고도에서도 자연스럽게 보이게 한다.
 import * as THREE from './three.js?v=20261001-12';
-import { W, forestMask, riverZ, roadX, wallZ, rng, smooth, noise } from './terrain.js?v=20261027-world2';
-import { createTreeDetail } from './tree-detail.js?v=20261027-world2';
+import { W, forestMask, riverZ, roadX, wallZ, rng, smooth, noise } from './terrain.js?v=20261027-forest3';
+import { createTreeDetail } from './tree-detail.js?v=20261027-forest3';
 
 const V = new THREE.Vector3();
 
@@ -124,15 +124,18 @@ function card(cx, cy, cz, w, h, rot) {
   g.setAttribute('uv',new THREE.Float32BufferAttribute(U,2));g.setAttribute('normal',new THREE.Float32BufferAttribute(N,3));
   return g;
 }
-function foliageCards(seed, low, con, solid) {
+function foliageCards(seed, low, con, solid, sparse = false) {
   const R=rng(seed),parts=[],count=low?9:14;
+  const baseCards=new Set([0,Math.floor((count-1)*.25),Math.floor((count-1)*.5),Math.floor((count-1)*.75),count-1]);
   for(let i=0;i<count;i++){
     // 수관 부피 안에 중심을 흩고, 침엽수는 위로 갈수록 작게 해 원뿔 실루엣을 유지한다.
     const a=i*2.4+R()*0.4,level=(i+R())/count;
     const y=con?0.85+level*1.75:1.15+level*0.8;
     const radius=con?0.22*(1-level*0.6)*Math.sqrt(R()):0.55*Math.sqrt(R())*(1-Math.abs(level-0.45)*0.6);
     const size=con?1.15*(1-level*0.62):0.85+R()*0.45;
-    parts.push(paint(card(Math.cos(a)*radius,y,Math.sin(a)*radius,size,size*(con?1.05:0.92),R()*6.283),'#ffffff',0.4,2.7,0.62+level*0.1,1.03));
+    const rotation=R()*6.283;
+    // 원경도 동일 나무의 하·중·상부 카드를 그대로 쓴다. 별도 군집으로 교체하지 않는다.
+    if(!sparse||baseCards.has(i))parts.push(paint(card(Math.cos(a)*radius,y,Math.sin(a)*radius,size,size*(con?1.05:0.92),rotation),'#ffffff',0.4,2.7,0.78+level*0.06,1.08));
   }
   // 잎 카드만 남으면 위에서 나뭇가지처럼 보인다. 내부는 작은 불규칙 수관으로 채운다.
   for(let i=0;solid && i<(low?3:4);i++){
@@ -157,9 +160,9 @@ function distantCrown(seed, con) {
   return merge(parts);
 }
 
-export function buildVegetation(terrain, { low, cutPlanes, foliageImage, canopyImage }) {
+export function buildVegetation(terrain, { low, cutPlanes, foliageImage }) {
   const R = rng(27);
-  const target = low ? 7500 : 18000;
+  const target = low ? 11000 : 22000;
   const items = [];
   let tries = 0;
   while (items.length < target && tries < target * 30) {
@@ -195,7 +198,14 @@ export function buildVegetation(terrain, { low, cutPlanes, foliageImage, canopyI
   const nB = low ? 2 : 3, nC = 2;
   const geoB = Array.from({ length: nB }, (_, i) => broadleaf(101 + i * 31, low));
   // 카메라 경로 주변만 잎 카드로 바꾸고 원거리 모델은 유지한다.
-  const near = t => Math.abs(t.x) < (low ? 70 : 115) && t.z > -230 && t.z < 245;
+  // 상세 수목도 고정 배치한다. 경로 가장자리는 개체별로 섞어 직선 밀도 경계를 없앤다.
+  const near = t => {
+    const dx=Math.max(0,Math.abs(t.x)-(low?70:115)),dz=Math.max(0,-230-t.z,t.z-245);
+    const coverage=1-smooth(0,60,Math.hypot(dx,dz));
+    return (t.a*691)%1<coverage;
+  };
+  // 가지가 읽히는 이동로 주변에만 상세 줄기를 둔다. 수관은 전 거리에서 고정된다.
+  const stemNear = t => Math.abs(t.x)<(low?50:80)&&t.z>-230&&t.z<245;
   const geoC = Array.from({ length: nC }, (_, i) => conifer(203 + i * 17, low));
   // 납작하고 갈라진 하층 식생. 기존 구형 관목 대신 잎 묶음을 하나의 모델로 합친다.
   const under = [];
@@ -213,16 +223,18 @@ export function buildVegetation(terrain, { low, cutPlanes, foliageImage, canopyI
   const white=[new THREE.Color('#ffffff')];
   const leafMap = foliageImage ? new THREE.Texture(foliageImage) : foliageTexture();
   leafMap.colorSpace=THREE.SRGBColorSpace;leafMap.anisotropy=2;leafMap.needsUpdate=true;
-  const leafMat = new THREE.MeshPhongMaterial({map:leafMap,vertexColors:true,side:THREE.DoubleSide,alphaTest:0.35,shininess:7,specular:'#35442d',emissive:'#ffffff',emissiveMap:leafMap,emissiveIntensity:.1,clippingPlanes:cutPlanes,clipIntersection:true});
+  const leafMat = new THREE.MeshPhongMaterial({map:leafMap,vertexColors:true,side:THREE.DoubleSide,alphaTest:0.35,shininess:5,specular:'#35442d',emissive:'#ffffff',emissiveMap:leafMap,emissiveIntensity:.18,clippingPlanes:cutPlanes,clipIntersection:true});
   // corner가 0이 아닌 정점은 카메라 평면으로 펼친다(인스턴스 배율 반영). 줄기(corner 0)는 그대로.
   leafMat.onBeforeCompile=sh=>{
+    // 사진 잎의 깊은 음영을 약하게 들어 올려 수종별 색 차이가 그늘에도 남게 한다.
+    sh.fragmentShader=sh.fragmentShader.replace('#include <map_fragment>','#include <map_fragment>\ndiffuseColor.rgb += .32 * diffuseColor.rgb * (vec3(1.0) - diffuseColor.rgb);');
     sh.vertexShader=sh.vertexShader.replace('#include <common>','#include <common>\nattribute vec2 corner;')
       .replace('#include <project_vertex>',['vec4 mvPosition = vec4( transformed, 1.0 );','float bbScale = 1.0;',
         '#ifdef USE_INSTANCING','mvPosition = instanceMatrix * mvPosition;','bbScale = length( instanceMatrix[0].xyz );','#endif',
         'mvPosition = modelViewMatrix * mvPosition;','mvPosition.xy += corner * bbScale;','gl_Position = projectionMatrix * mvPosition;'].join('\n'));
   };
   leafMat.customProgramCacheKey=()=>'leaf-billboard';
-  const leafColors=['#e3eddd','#d5dfc7','#e8e5ce','#c3d3be'].map(c=>new THREE.Color(c));
+  const leafColors=['#e7efda','#c9e2d3','#f1e5bb','#d4dfbb','#e7d8aa','#d2e6dd','#d9e7c2','#eee7cd'].map(c=>new THREE.Color(c));
   const m4 = new THREE.Matrix4(), q = new THREE.Quaternion(), e = new THREE.Euler(), pos = new THREE.Vector3(), scl = new THREE.Vector3(), col = new THREE.Color();
   const make = (geo, list, colors, scaleFn, material) => {
     if (!list.length) return;
@@ -234,35 +246,36 @@ export function buildVegetation(terrain, { low, cutPlanes, foliageImage, canopyI
       q.setFromEuler(e);
       pos.set(t.x, t.y - 0.12 - (t.sink || 0), t.z);
       mesh.setMatrixAt(i, m4.compose(pos, q, scl));
-      mesh.setColorAt(i, col.copy(colors[Math.floor(t.c * colors.length) % colors.length]).multiplyScalar(0.88 + t.b * 0.24));
+      const patch=.5+.5*noise(t.x*.025+11,t.z*.025-7);
+      const palette=Math.min(colors.length-1,Math.floor((.65*patch+.35*t.c)*colors.length));
+      mesh.setColorAt(i, col.copy(colors[palette]).multiplyScalar(0.96 + t.b * 0.14));
     });
     mesh.instanceMatrix.needsUpdate = true;
     mesh.instanceColor.needsUpdate = true;
+    mesh.computeBoundingSphere();
     meshes.push(mesh);
     return mesh;
   };
   for (let v = 0; v < nB; v++) {
-    const bs = (t, s) => { const k = (0.9 + t.b * 1.25) * (1.25 + 0.35 * noise(t.x*.021,t.z*.021)); s.set(k * (0.78 + t.c * 0.36), k * (0.8 + t.a * 0.55), k * (0.8 + t.a * 0.35)); };
+    const bs = (t, s) => { const growth=1+.9*smooth(20,100,Math.abs(t.x));const k = growth * (0.9 + t.b * 1.25) * (1.25 + 0.35 * noise(t.x*.021,t.z*.021)); s.set(k * (0.78 + t.c * 0.36), k * (0.8 + t.a * 0.55), k * (0.8 + t.a * 0.35)); };
     const mine = items.filter(t => !t.con && Math.floor(t.a * 997) % nB === v);
-    const distant=make(distantCrown(701+v*23,false), mine.filter(t => !near(t)), leafColors, bs, leafMat);
-    if(distant) distant.userData.canopyReplaced=!!canopyImage;
+    make(foliageCards(401+v*19,low,false,!foliageImage,true), mine.filter(t => !near(t)), leafColors, bs, leafMat);
     make(foliageCards(401+v*19,low,false,!foliageImage),mine.filter(near),foliageImage?leafColors:broadCols,bs,leafMat);
-    make(treeDetail.geometry,mine.filter(near),white,bs,treeDetail.material);
+    make(treeDetail.geometry,mine.filter(stemNear),white,bs,treeDetail.material);
   }
   for (let v = 0; v < nC; v++) {
     const mine=items.filter(t=>t.con&&Math.floor(t.a*991)%nC===v);
-    const scale=(t,s)=>{const k=(1.0+t.b*0.9)*(1.1+0.25*noise(t.x*.021,t.z*.021));s.set(k,k*(1.0+t.c*0.6),k);};
-    const distant=make(distantCrown(811+v*23,true),mine.filter(t=>!near(t)),leafColors,scale,leafMat);
-    if(distant) distant.userData.canopyReplaced=!!canopyImage;
+    const scale=(t,s)=>{const growth=1+.75*smooth(20,100,Math.abs(t.x));const k=growth*(1.0+t.b*0.9)*(1.1+0.25*noise(t.x*.021,t.z*.021));s.set(k,k*(1.0+t.c*0.6),k);};
+    make(foliageCards(501+v*17,low,true,!foliageImage,true),mine.filter(t=>!near(t)),leafColors,scale,leafMat);
     make(foliageCards(501+v*17,low,true,!foliageImage),mine.filter(near),foliageImage?leafColors:conCols,scale,leafMat);
-    make(treeDetail.geometry,mine.filter(near),white,scale,treeDetail.material);
+    make(treeDetail.geometry,mine.filter(stemNear),white,scale,treeDetail.material);
   }
   make(geoS, shrubs, shrubCols, (t, s) => { const k = 0.6 + t.b * 0.6; s.set(k * (1 + t.c * 0.4), k * (0.9 + t.a * 0.5), k); });
   // 수관 아래의 부드러운 접지 음영. 실시간 shadow map 없이 1개 draw call.
   const c=document.createElement('canvas');c.width=c.height=64;const ctx=c.getContext('2d');
-  const grad=ctx.createRadialGradient(32,32,3,32,32,30);grad.addColorStop(0,'rgba(32,39,27,.14)');grad.addColorStop(.5,'rgba(32,39,27,.06)');grad.addColorStop(1,'rgba(32,39,27,0)');ctx.fillStyle=grad;ctx.fillRect(0,0,64,64);
+  const grad=ctx.createRadialGradient(32,32,3,32,32,30);grad.addColorStop(0,'rgba(64,74,53,.09)');grad.addColorStop(.5,'rgba(64,74,53,.035)');grad.addColorStop(1,'rgba(64,74,53,0)');ctx.fillStyle=grad;ctx.fillRect(0,0,64,64);
   // 항공 시점에서도 나무가 지형에 접지되도록 원경까지 같은 한 번의 인스턴스 draw call.
-  const shadowMap=new THREE.CanvasTexture(c),shadowItems=items;
+  const shadowMap=new THREE.CanvasTexture(c),shadowItems=items.filter((t,i)=>near(t)&&i%2===0);
   // 평면 그림자가 굴곡진 지표를 관통하면 검은 삼각 조각이 생긴다. 각 꼭짓점을 지표에 붙인다.
   const shadowP=new Float32Array(shadowItems.length*27),shadowUV=new Float32Array(shadowItems.length*18),shadowI=new Uint32Array(shadowItems.length*24);
   shadowItems.forEach((t,i)=>{
@@ -278,6 +291,6 @@ export function buildVegetation(terrain, { low, cutPlanes, foliageImage, canopyI
   });
   const shadowGeo=new THREE.BufferGeometry();shadowGeo.setAttribute('position',new THREE.BufferAttribute(shadowP,3));shadowGeo.setAttribute('uv',new THREE.BufferAttribute(shadowUV,2));shadowGeo.setIndex(new THREE.BufferAttribute(shadowI,1));
   const contact=new THREE.Mesh(shadowGeo,new THREE.MeshBasicMaterial({map:shadowMap,transparent:true,depthWrite:false,polygonOffset:true,polygonOffsetFactor:-1,clippingPlanes:cutPlanes,clipIntersection:true}));
-  contact.frustumCulled=false;contact.userData.canopyReplaced=!!canopyImage;meshes.push(contact);
+  contact.frustumCulled=false;meshes.push(contact);
   return meshes;
 }
