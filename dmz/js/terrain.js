@@ -110,6 +110,9 @@ export class Terrain {
       let value=0;for(let k=-2;k<=2;k++)value+=temp[Math.max(0,Math.min(nz,j+k*strideZ))*r+i]*kernel[k+2];
       result[j*r+i]=value/16;
     }
+    // 큰 지형은 유지하되 평활화로 지워졌던 능선의 잔차 일부를 되돌린다.
+    // 메시·시설·카메라 모두 같은 최종 높이를 사용해 접지와 충돌 판정을 일치시킨다.
+    for(let k=0;k<n;k++)result[k]+=(this.h[k]-result[k])*.32;
     this.h=result;
   }
   // 메시 삼각분할과 정확히 같은 보간

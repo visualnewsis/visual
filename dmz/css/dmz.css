@@ -422,4 +422,5 @@ body.no-webgl .revisit,body.og .revisit{display:none}
   .xr-card{-webkit-backdrop-filter:none;backdrop-filter:none}
   .evi img{max-height:52svh}
   .evi-tag{font-size:10px;letter-spacing:.04em}
+  [data-key="structure"] .cap-wrap{padding-bottom:calc(24px + env(safe-area-inset-bottom,0px))}
 }
