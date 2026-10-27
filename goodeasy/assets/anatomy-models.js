@@ -1,5 +1,5 @@
 import {T,M,TAU,clamp,colors,metal,assembly,part,box,cyl,ring,rod} from './anatomy-core.js?v=20261027-depth3';
-import {buildGuitar,buildViolin} from './quality-instruments.js?v=20261027-premium5';
+import {buildGuitar,buildViolin} from './quality-instruments.js?v=20261027-premium6';
 import {buildReel} from './quality-machines.js?v=20261027-detail1';
 import {buildMXStudy} from './quality-replacements.js?v=20261027-detail1';
 import {buildGramophone} from '../gramophone/gramophone-model.js?v=20261027-detail1';
