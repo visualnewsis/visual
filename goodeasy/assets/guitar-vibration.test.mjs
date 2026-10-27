@@ -16,7 +16,7 @@ for(let i=0;i<positions.count;i++){
  const delta=Math.abs(positions.array[i*3]-bases[0][i*3]);peak=Math.max(peak,delta);
  if(Math.abs(Math.abs(bases[0][i*3+1])-1)<1e-6)assert(delta<1e-6,'both ends remain fixed');
 }
-assert(peak>.03,'the selected string visibly bends');
+assert(peak>.002&&peak<.005,'the selected string bends subtly within the fret clearance');
 assert.deepEqual(strings[1].mesh.geometry.attributes.position.array,bases[1],'unplayed strings remain still');
 model.pluck(64,250);model.update({},false,300);
 assert(model.isVibrating(40,300)&&model.isVibrating(64,300),'strummed notes animate independently');
@@ -25,6 +25,7 @@ for(let i=0;i<2;i++)assert.deepEqual(strings[i].mesh.geometry.attributes.positio
 console.log('PASS fixed ends, visible curvature, per-string overlap and exact decay reset');
 
 const sweeps=Array.from({length:40},(_,i)=>stringDisplacement(.5,i*25,40).lateral);
-assert(Math.max(...sweeps)>.10&&Math.min(...sweeps)<-.08,"string travels visibly to both sides, not just a color pulse");
-assert(Math.abs(stringDisplacement(.5,1050,40).lateral)>.04,"motion remains visible after one second");
-console.log("PASS visible side-to-side sweep and sustained motion");
+assert(Math.max(...sweeps)>.004&&Math.min(...sweeps)<-.004,"string moves to both sides without crossing the neighbouring string");
+assert(Math.max(...sweeps.map(Math.abs))<=.0076,"hero displacement stays below one fifth of the new centre string spacing");
+assert(Math.hypot(...Object.values(stringDisplacement(.5,1050,40)))<.002,"the first movement settles naturally rather than flapping for seconds");
+console.log("PASS restrained sweep, neighbour clearance and natural settling");

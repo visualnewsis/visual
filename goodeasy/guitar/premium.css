@@ -1,0 +1,16 @@
+body[data-music=guitar] .guitar-signal{max-width:620px;margin:12px 0 0;color:#b9cbbd;font-size:12px;line-height:1.8}
+body[data-music=guitar] .research-stage{border:1px solid #7b968329;border-radius:8px;background:radial-gradient(ellipse at 48% 40%,#56604c2b,transparent 72%);overflow:hidden}
+body[data-music=guitar] .research-stage canvas{height:500px}
+.guitar-lesson-view{position:absolute;right:12px;bottom:12px;display:flex;gap:3px;align-items:center;border:1px solid #829e7f75;border-radius:24px;padding:4px;background:#13211eea;box-shadow:0 4px 20px #0002}
+.guitar-lesson-view button{min-width:35px;min-height:35px;padding:6px 10px;border:0;border-radius:20px;background:transparent;color:#dce6d8;font:12px Arial,sans-serif;cursor:pointer}
+.guitar-lesson-view button:last-child{font-size:10px;border-left:1px solid #829e7f55;border-radius:0 20px 20px 0}
+.guitar-lesson-view button:hover{background:#c5d9b420}
+.guitar-lesson-view button:focus-visible{outline:2px solid #00b4c9;outline-offset:1px}
+.guitar-lesson-view output{min-width:39px;text-align:center;color:#becdb5;font:10px Arial,sans-serif}
+@media(max-width:700px){body[data-music=guitar] .research-stage canvas{height:380px}.guitar-lesson-view{right:8px;bottom:8px}.guitar-lesson-view button{min-width:40px;min-height:40px}body[data-music=guitar] .guitar-signal{font-size:11px;max-width:340px}}
+
+body[data-music=guitar] .guitar-signal{margin-left:4vw;margin-right:4vw}
+body[data-music=guitar] .pluck-string[aria-pressed=true]{border-color:#00b4c9;color:#ebf4e8;background:#12404766}
+@media(max-width:700px){body[data-music=guitar] .guitar-signal{margin-left:23px;margin-right:23px}}
+
+body[data-music=guitar] #play{scroll-margin-top:64px}
