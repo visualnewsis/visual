@@ -7,7 +7,7 @@ import {buildSewingMachine} from '../sewing-machine/sewing-model.js?v=20261027-d
 import {cycleAt} from '../sewing-machine/motion.js?v=20261027-detail1';
 import {cameraAssembly,projectorAssembly} from './anatomy-optics.js?v=20261027-depth3';
 import {watchAssembly} from './anatomy-watch.js?v=20261027-depth3';
-import {espressoAssembly} from './anatomy-espresso.js?v=20261027-depth3';
+import {espressoAssembly} from './anatomy-espresso.js?v=20261027-depth4';
 function entry(id,title,description,object,offset=[0,0,0],color=colors.frame){return {id,title,description,object,offset:new T.Vector3(...offset),color};}
 function bundle(root,name,objects){const g=part(root,name);root.updateMatrixWorld(true);for(const o of objects.filter(Boolean))g.attach(o);return g;}
 function instrument(kind){

@@ -1,4 +1,4 @@
-import {espressoAssembly} from './anatomy-espresso.js?v=20261027-depth3';
+import {espressoAssembly} from './anatomy-espresso.js?v=20261027-depth4';
 import {buildBrewRatio as detailedBrewRatio} from './coffee-detail.js?v=20261027-detail1';
 import {buildIris as detailedIris,buildShutter as detailedShutter,buildExposure as detailedExposure} from './camera-lessons.js?v=20261027-detail1';
 import {buildCoffeeComparison,buildCoffeeWaterPath} from './espresso-lessons.js?v=20261027-detail1';
