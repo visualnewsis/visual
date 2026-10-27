@@ -1,0 +1,10 @@
+let context,bus,current,pendingOwner,serial=0;
+export const midiFrequency=midi=>440*2**((midi-69)/12);
+function stopVoice(){if(!current||!context)return;const v=current;current=null;try{v.gain.gain.cancelScheduledValues(context.currentTime);v.gain.gain.setTargetAtTime(.00001,context.currentTime,.012);}catch{}for(const node of v.nodes)try{node.stop(context.currentTime+.06);}catch{}}
+export function stopStudyTone(owner){if(!owner||pendingOwner===owner){serial++;pendingOwner=null;}if(!owner||current?.owner===owner)stopVoice();}
+export async function playStudyTone(owner,hz,duration=2.4){
+ if(!Number.isFinite(hz)||hz<20||hz>5000)return {state:'silent'};
+ const ticket=++serial;pendingOwner=owner;
+ try{if(!context){const Audio=globalThis.AudioContext||globalThis.webkitAudioContext;if(!Audio)return {state:'unavailable'};context=new Audio({latencyHint:'interactive'});bus=context.createGain();bus.gain.value=.65;const compressor=context.createDynamicsCompressor();bus.connect(compressor).connect(context.destination);}await context.resume();if(ticket!==serial)return {state:'cancelled'};pendingOwner=null;if(context.state!=='running')return {state:context.state};stopVoice();const gain=context.createGain(),nodes=[],now=context.currentTime+.006;gain.connect(bus);const voice={owner,gain,nodes};current=voice;let ended=0;for(let n=1;n<=6;n++){const o=context.createOscillator(),g=context.createGain();o.type='sine';o.frequency.value=hz*n;g.gain.setValueAtTime(.00001,now);g.gain.exponentialRampToValueAtTime(.075/n**1.35,now+.008);g.gain.exponentialRampToValueAtTime(.00001,now+duration/Math.sqrt(n));o.connect(g).connect(gain);o.start(now);o.stop(now+duration+.05);nodes.push(o);o.onended=()=>{o.disconnect();g.disconnect();if(++ended===nodes.length){gain.disconnect();if(current===voice)current=null;}};}return {state:context.state,hz};}catch{return {state:'unavailable'};}
+}
+if(typeof document!=='undefined')document.addEventListener('visibilitychange',()=>{if(document.hidden)stopStudyTone();});if(typeof window!=='undefined')window.addEventListener('blur',()=>stopStudyTone());

@@ -22,6 +22,7 @@ export function attachGuitarVibration(T,model){
   })};
  });
  model.vibrationDuration=VIBRATION_DURATION;
+ model.resetPlucks=()=>active.clear();
  model.pluck=(midi,now)=>{if(model.strings.some(s=>s.midi===midi))active.set(midi,now);};
  model.isVibrating=(midi,now)=>active.has(midi)&&now-active.get(midi)<VIBRATION_DURATION;
  model.update=(state,detail,now)=>{

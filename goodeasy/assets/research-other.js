@@ -5,7 +5,7 @@ import {buildCoffeeComparison,buildCoffeeWaterPath} from './espresso-lessons.js?
 import {curtainWindow,filmCycle,debounceSample,crankX,bowedDisplacement} from './mechanism-checks.js?v=20261026-release3';
 import {buildMXStudy,buildEspressoStudy} from './quality-replacements.js?v=20261027-detail1';
 import {T,materials as M,mesh,box,cyl,ring,rod,tube,part} from './quality-kit.js?v=20261026-release3';
-import {buildGuitar,buildViolin} from './quality-instruments.js?v=20261027-detail1';
+import {buildGuitar,buildViolin} from './quality-instruments.js?v=20261027-audio1';
 import {buildReel,buildEspresso} from './quality-machines.js?v=20261027-detail1';
 import {TAU,clamp,stringHz,lightRatio} from './research-math.js?v=20261026-release3';
 const ink=new T.MeshStandardMaterial({color:0x1f3e3c,roughness:.6}),blue=new T.MeshStandardMaterial({color:0x569da9,roughness:.25}),red=M.red,signal=new T.MeshStandardMaterial({color:0xe7c47a,emissive:0x6b471a,roughness:.3});

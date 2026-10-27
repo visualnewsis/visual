@@ -1,5 +1,5 @@
 import {attachViolinVibration} from './violin-vibration.js?v=20261027-detail1';
-import {attachGuitarVibration} from './guitar-vibration.js?v=20261026-release3';
+import {attachGuitarVibration} from './guitar-vibration.js?v=20261027-audio1';
 import {buildGuitar as guitar} from './models/guitar.js?v=20261024-editorial1';
 import {buildViolin as violin} from './models/violin.js?v=20261024-editorial1';
 function prepare(model,eye){model.eye=eye;for(const s of model.strings)s.mesh.material=s.mesh.material.clone();

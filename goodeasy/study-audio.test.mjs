@@ -1,0 +1,9 @@
+import test from 'node:test';import assert from 'node:assert/strict';
+let contexts=0,starts=0,stops=0;
+const param=()=>({value:0,setValueAtTime(){},exponentialRampToValueAtTime(){},cancelScheduledValues(){},setTargetAtTime(){}});
+class AudioContext{constructor(){contexts++;this.currentTime=1;this.state='running';this.destination={};}async resume(){}createGain(){return {gain:param(),connect(n){return n;},disconnect(){}};}createDynamicsCompressor(){return {connect(n){return n;}};}createOscillator(){return {frequency:param(),connect(n){return n;},start(){starts++;},stop(){stops++;},disconnect(){}};}}
+globalThis.AudioContext=AudioContext;
+const {playStudyTone,stopStudyTone,midiFrequency}=await import('./assets/study-audio.js');
+test('study sound stays silent on load, starts at requested pitch and respects owner stop',async()=>{assert.equal(contexts,0);assert.equal(starts,0);const result=await playStudyTone('anatomy-guitar',midiFrequency(40));assert.equal(result.state,'running');assert.ok(Math.abs(result.hz-82.406889)<.0001);assert.equal(starts,6);const scheduled=stops;stopStudyTone('research-string');assert.equal(stops,scheduled);stopStudyTone('anatomy-guitar');assert.equal(stops,scheduled+6);});
+test('invalid calculated frequency does not create an unwanted attack',async()=>{const before=starts;assert.equal((await playStudyTone('research-string',NaN)).state,'silent');assert.equal(starts,before);});
+test('pause before audio resume finishes cannot cause a delayed unwanted note',async()=>{let resume;const original=AudioContext.prototype.resume;AudioContext.prototype.resume=()=>new Promise(r=>resume=r);const before=starts,pending=playStudyTone('research-string',220);stopStudyTone('research-string');resume();assert.equal((await pending).state,'cancelled');assert.equal(starts,before);AudioContext.prototype.resume=original;});
