@@ -210,7 +210,7 @@ export function buildVegetation(terrain, { low, cutPlanes, foliageImage }) {
   const meshes = [];
   const leafMap = foliageImage ? new THREE.Texture(foliageImage) : foliageTexture();
   leafMap.colorSpace=THREE.SRGBColorSpace;leafMap.anisotropy=2;leafMap.needsUpdate=true;
-  const leafMat = new THREE.MeshLambertMaterial({map:leafMap,vertexColors:true,side:THREE.DoubleSide,alphaTest:0.35,emissive:'#ffffff',emissiveMap:leafMap,emissiveIntensity:.20,clippingPlanes:cutPlanes,clipIntersection:true});
+  const leafMat = new THREE.MeshPhongMaterial({map:leafMap,vertexColors:true,side:THREE.DoubleSide,alphaTest:0.35,shininess:7,specular:'#35442d',emissive:'#ffffff',emissiveMap:leafMap,emissiveIntensity:.1,clippingPlanes:cutPlanes,clipIntersection:true});
   // corner가 0이 아닌 정점은 카메라 평면으로 펼친다(인스턴스 배율 반영). 줄기(corner 0)는 그대로.
   leafMat.onBeforeCompile=sh=>{
     sh.vertexShader=sh.vertexShader.replace('#include <common>','#include <common>\nattribute vec2 corner;')
@@ -219,7 +219,7 @@ export function buildVegetation(terrain, { low, cutPlanes, foliageImage }) {
         'mvPosition = modelViewMatrix * mvPosition;','mvPosition.xy += corner * bbScale;','gl_Position = projectionMatrix * mvPosition;'].join('\n'));
   };
   leafMat.customProgramCacheKey=()=>'leaf-billboard';
-  const leafColors=['#ffffff','#eee8d5','#d2dcc9','#e5e8dd'].map(c=>new THREE.Color(c));
+  const leafColors=['#e3eddd','#d5dfc7','#e8e5ce','#c3d3be'].map(c=>new THREE.Color(c));
   const m4 = new THREE.Matrix4(), q = new THREE.Quaternion(), e = new THREE.Euler(), pos = new THREE.Vector3(), scl = new THREE.Vector3(), col = new THREE.Color();
   const make = (geo, list, colors, scaleFn, material) => {
     if (!list.length) return;

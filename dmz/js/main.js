@@ -3,13 +3,13 @@
 // 예외: 사고 장면의 진동은 한 번 재생되는 시간 기반 이벤트.
 import * as THREE from './three.js?v=20261001-12';
 import { W, smooth, riverZ } from './terrain.js?v=20261005-3';
-import { createWorld, SPOTS } from './scene3d.js?v=20261005-6';
+import { createWorld, SPOTS } from './scene3d.js?v=20261027-1';
 import { createXray } from './xray.js?v=20261005-6';
-import { CameraRig, KEYS } from './camera.js?v=20261005-3';
+import { CameraRig, KEYS } from './camera.js?v=20261027-1';
 import { Scroller } from './scroll.js?v=20261001-12';
 import { createMorph, sm } from './typography.js?v=20261001-12';
 import { Labels, Track, Timeline } from './ui.js?v=20261005-3';
-import { createHeroIntro, sequenceAt } from './hero.js?v=20261005-8';
+import { createHeroIntro, sequenceAt } from './hero.js?v=20261027-1';
 
 const T0 = performance.now();
 const params = new URLSearchParams(location.search);
@@ -23,6 +23,7 @@ const $ = s => document.querySelector(s);
 const canvas = $('#gl');
 const stageEl = $('#stage');
 const veil = $('#veil');
+const recap = $('#range-recap');
 // (엔딩 안개 레이어는 사용하지 않음)
 
 // 잎 텍스처는 초기화 전에 한 번 읽어 스크롤 도중 수관이 바뀌지 않게 한다.
@@ -267,6 +268,7 @@ function state(s, now) {
 
 function frame(now) { requestAnimationFrame(frame); tick(now); }
 function tick(now) {
+  const frameStarted = bench ? performance.now() : 0;
   const dt = Math.min(0.1, (now - lastT) / 1000); lastT = now;
   const target = OG ? 0 : scrollY;
   const direct = target <= scroller.span('hero').b || target >= scroller.span('rise').b ||
@@ -290,8 +292,8 @@ function tick(now) {
   // 오프닝 직후(HERO→descend 이동)와 클로징 직전(end4km→rise 이동)에만 entry 보정을 풀고 건다.
   const hsp = scroller.span('hero'), dsp = scroller.span('descend'), esp = scroller.span('end4km'), rsp = scroller.span('rise');
   const entryK = OG ? 0 : sSm <= hsp.b || sSm >= rsp.a ? 1 : sSm < dsp.a ? 1 - smooth(hsp.b, dsp.a, sSm) : sSm > esp.b ? smooth(esp.b, rsp.a, sSm) : 0;
-  heroIntro.entry(seq, vw, vh, entryK);
   const introOpacity = heroIntro.update(seq, sSm, scroller.vh, vw, vh);
+  heroIntro.entry(seq, vw, vh, entryK);
   const animating = st.bt !== null && st.bt < 4.5;
   // 이야기 끝 이후(출처·엔딩 배너)에서는 렌더를 멈춘다
   const past = sSm > scroller.span('finale').b + scroller.vh * 1.15;
@@ -327,8 +329,8 @@ function tick(now) {
   const oy = vw < vh ? Math.round(vh * (0.13 * st.travel * (1 - blastFocus) - BLAST_DROP * blastDrop)) : 0;
   // MAP→3D 구간에서 MAP 화면 이동과 같은 만큼 3D 화면을 옮긴다(entry). 그 외 구간은 0.
   const ox = -Math.round(seq.dx || 0), vy = oy - Math.round(seq.dy || 0);
-  if (Math.abs(cam.fov - fov) > 0.01 || vy !== lastOy || ox !== lastOx || viewDirty) {
-    cam.fov = fov; lastOy = vy; lastOx = ox; viewDirty = false;
+  if (Math.abs(cam.fov - fov) > 0.01 || Math.abs(cam.zoom - seq.zoom) > .00001 || vy !== lastOy || ox !== lastOx || viewDirty) {
+    cam.fov = fov; cam.zoom = seq.zoom; lastOy = vy; lastOx = ox; viewDirty = false;
     if (ox || vy) cam.setViewOffset(vw, vh, ox, vy, vw, vh); else cam.clearViewOffset();
     cam.updateProjectionMatrix();
   }
@@ -351,7 +353,7 @@ function tick(now) {
   world.clear.set(st.clear);
   world.dust.update(reduceMotion ? null : st.dustT);
   xray.update(st.scanT, st.open, st.reveal, exploreMix, exploreX);
-  world.hemi.intensity = 1.15 * (1 - 0.28 * st.open);
+  world.hemi.intensity = 1.2 * (1 - 0.28 * st.open);
   world.scene.background.copy(sky).lerp(skyX, st.open * 0.8);
   world.scene.fog.color.copy(world.scene.background);
 
@@ -361,7 +363,8 @@ function tick(now) {
   track.update(camPos.z, st.travel * (1 - st.hanja) * (1 - st.tl) * (1 - st.inv));
   const labelState = OG ? {} : { ...st.lbl };
   for (const k of ['h-s', 'h-0', 'h-n']) labelState[k] *= 1 - introOpacity;
-  const recap = $('#range-recap'), recapOpacity = Math.max(Math.min(labelState['h-s'] || 0,labelState['h-n'] || 0),st.structure);
+  // 4km 구조 장면은 본문과 지형의 거리 표지만 읽는다. 같은 수식의 중복 노출을 없앤다.
+  const recapOpacity = Math.min(labelState['h-s'] || 0,labelState['h-n'] || 0) * (1 - st.structure);
   recap.style.opacity = recapOpacity.toFixed(3);
   recap.style.visibility = recapOpacity > 0.01 ? 'visible' : 'hidden';
   const windowLabels = xray.labelVisibility();
@@ -371,6 +374,7 @@ function tick(now) {
   cam.updateMatrixWorld();
   labels.update(cam, vw, vh, labelState);
   document.body.classList.toggle('dark-phase', st.hanja > 0.5 || st.tl > 0.5);
+  document.body.classList.toggle('inv-summary', st.inv > 0.5 && chapterProgress('investigation', sSm) >= 0.8);
 
   // 非 → 悲 (본문)
   // 앞 48%: 정전협정 → 북측 작업 → 폭발·조사 장면(phase 요소), 뒤 50%: 非→悲
@@ -401,11 +405,11 @@ function tick(now) {
   // 중간 X-ray에서 resize해도 캡처를 미루므로 단면이 MAP에 섞이지 않는다.
   if (!mapValid && seq.active && !OG) {
     const savedPos = cam.position.clone(), savedQuat = cam.quaternion.clone();
-    const savedFov = cam.fov, savedFog = [world.scene.fog.near, world.scene.fog.far];
+    const savedFov = cam.fov, savedZoom = cam.zoom, savedFog = [world.scene.fog.near, world.scene.fog.far];
     const mapPos = new THREE.Vector3(), mapTarget = new THREE.Vector3();
     cam.fov = rig.sample(0, mapPos, mapTarget);
     // MAP은 HERO 카메라 거리 그대로 찍는다(앞 조감 그림과 같은 크기). 별도 당김·줌 없음.
-    cam.position.copy(mapPos); cam.lookAt(mapTarget); cam.clearViewOffset(); cam.updateProjectionMatrix();
+    cam.position.copy(mapPos); cam.lookAt(mapTarget); cam.zoom = 1; cam.clearViewOffset(); cam.updateProjectionMatrix();
     const mats = [world.band.material, ...Object.values(world.marks).filter(m => m.material).map(m => m.material),
       ...Object.values(L).flatMap(m => [m.material, m.thin.material])];
     const savedOpacity = mats.map(m => m.opacity);
@@ -422,21 +426,24 @@ function tick(now) {
     mats.forEach((m, i) => { m.opacity = savedOpacity[i]; });
     world.north.update(st.front ?? camPos.z, world.road); world.clear.set(st.clear);
     [world.scene.fog.near, world.scene.fog.far] = savedFog;
-    cam.position.copy(savedPos); cam.quaternion.copy(savedQuat); cam.fov = savedFov;
+    cam.position.copy(savedPos); cam.quaternion.copy(savedQuat); cam.fov = savedFov; cam.zoom = savedZoom;
     if (ox || vy) cam.setViewOffset(vw, vh, ox, vy, vw, vh); else cam.clearViewOffset();
-    cam.updateProjectionMatrix(); mapValid = true;
+    cam.updateProjectionMatrix(); mapValid = true; dirty = true;
   }
 
   // 귀환 중 처음과 같은 지형 상태로 수렴. 사진에 덮인 후에는 렌더하지 않는다.
   if (seq.returning) world.north.update(-999 + 1998 * smooth(0, 0.18, 1 - seq.p), world.road);
 
-  if (!(heroIntro.gpu && introOpacity >= .9999) && (!seq.returning || seq.p > 0)) world.render();
+  // 불투명한 사진/그림/MAP 뒤의 3D는 그리지 않는다. 최초 MAP 캡처는 위에서 완료한다.
+  // 실제 3D가 드러나는 프레임부터 즉시 렌더하며 스크롤 입력·카메라 계산은 계속 유지한다.
+  const drawWorld = (OG || introOpacity < .9999) && (!seq.returning || seq.p > 0);
+  if (drawWorld) world.render();
   if(seq.active && seq.p>=.69){cam.updateMatrixWorld();heroIntro.mapTargetChanged(mapLandmarks(cam));}
   heroIntro.render();
   if(bench){
     bench.push(performance.now()-drawStarted);if(bench.length>90)bench.shift();
     const sorted=[...bench].sort((a,b)=>a-b),info=world.renderer.info;
-    stageEl.dataset.bench=JSON.stringify({frames:bench.length,meanMs:+(bench.reduce((a,b)=>a+b,0)/bench.length).toFixed(2),p95Ms:+sorted[Math.floor((sorted.length-1)*.95)].toFixed(2),drawCalls:info.render.calls,triangles:info.render.triangles,textures:info.memory.textures,geometries:info.memory.geometries,dpr,low});
+    stageEl.dataset.bench=JSON.stringify({frames:bench.length,meanMs:+(bench.reduce((a,b)=>a+b,0)/bench.length).toFixed(2),p95Ms:+sorted[Math.floor((sorted.length-1)*.95)].toFixed(2),totalMs:+(performance.now()-frameStarted).toFixed(2),scrollLagPx:+Math.abs(target-sSm).toFixed(2),drawCalls:drawWorld?info.render.calls:0,triangles:drawWorld?info.render.triangles:0,textures:info.memory.textures,geometries:info.memory.geometries,dpr,low});
   }
 
   // 적응형 해상도: 렌더가 느리면 DPR을 낮춘다

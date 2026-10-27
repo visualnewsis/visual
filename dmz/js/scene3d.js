@@ -4,8 +4,8 @@ import {
   W, Terrain, rawHeight, noise, riverZ, roadX, wallZ, fenceZ, forestMask, rng, smooth, lerp,
   drapeStrip, geomFrom, linePts, circlePts,
 } from './terrain.js?v=20261005-3';
-import { buildFence, concertinaGeometry } from './fence.js?v=20261005-3';
-import { buildVegetation } from './vegetation.js?v=20261005-6';
+import { buildFence, concertinaGeometry } from './fence.js?v=20261027-1';
+import { buildVegetation } from './vegetation.js?v=20261027-1';
 
 export const COLORS = {
   sky: new THREE.Color('#dfe3dd'),
@@ -27,19 +27,28 @@ export function createWorld(canvas, { low, foliageImage }) {
   renderer.localClippingEnabled = true;
   renderer.setClearColor(COLORS.sky, 1);
   renderer.toneMapping=THREE.ACESFilmicToneMapping;
-  renderer.toneMappingExposure=.93;
+  renderer.toneMappingExposure=.97;
 
   const scene = new THREE.Scene();
   scene.background = COLORS.sky.clone();
   scene.fog = new THREE.Fog(COLORS.sky.clone(), 300, 1400);
 
   const camera = new THREE.PerspectiveCamera(40, 1, 1, 5000);
+  // 회색 단색 배경 대신 낮은 수평선의 따뜻한 안개와 차가운 상공을 연결한다.
+  // 한 개의 저해상도 구체·단순 색 보간만 사용하며 후처리나 실시간 구름은 없다.
+  const skyDome = new THREE.Mesh(new THREE.SphereGeometry(2400,24,12),new THREE.ShaderMaterial({
+    side:THREE.BackSide,depthWrite:false,
+    uniforms:{zenith:{value:new THREE.Color('#a6becb')},horizon:{value:new THREE.Color('#e1e5dc')}},
+    vertexShader:'varying vec3 direction; void main(){direction=position;gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.0);}',
+    fragmentShader:'uniform vec3 zenith;uniform vec3 horizon;varying vec3 direction;void main(){float h=smoothstep(-.04,.65,normalize(direction).y);gl_FragColor=vec4(mix(horizon,zenith,h),1.0);\n#include <colorspace_fragment>\n}'
+  }));
+  skyDome.frustumCulled=false;scene.add(skyDome);
 
-  const hemi = new THREE.HemisphereLight('#e1ebe6', '#465246', 1.15);
+  const hemi = new THREE.HemisphereLight('#e4ece8', '#4a554b', 1.2);
   scene.add(hemi);
-  const sun = new THREE.DirectionalLight('#faf1dd', 1.9);
+  const sun = new THREE.DirectionalLight('#f8f2e5', 1.75);
   sun.position.set(-150, 260, 360);
-  sun.intensity=1.9;
+  sun.intensity=1.75;
   scene.add(sun);
 
   // X-ray에서 지표를 잘라내는 평면 (구간 내부를 잘라냄)
@@ -56,14 +65,17 @@ export function createWorld(canvas, { low, foliageImage }) {
   // ---------- 지형 ----------
   const terrain = low ? new Terrain(200, 164) : new Terrain(320, 260);
   const groundTexture = (() => {
-    const c=document.createElement('canvas');c.width=c.height=256;
-    const ctx=c.getContext('2d'),R=rng(844),pixels=ctx.createImageData(256,256);
-    for(let i=0;i<256*256;i++){const v=Math.floor(230+R()*24);pixels.data.set([v,v,v-3,255],i*4);}
+    const size=low?256:512,c=document.createElement('canvas');c.width=c.height=size;
+    const ctx=c.getContext('2d'),R=rng(844),pixels=ctx.createImageData(size,size);
+    for(let y=0;y<size;y++)for(let x=0;x<size;x++){
+      const patch=noise(x/size*7,y/size*7)*12+noise(x/size*23,y/size*23)*5;
+      const v=Math.floor(225+R()*25+patch);pixels.data.set([v,v,v-4,255],(y*size+x)*4);
+    }
     ctx.putImageData(pixels,0,0);
-    for(let i=0;i<1600;i++){const x=R()*256,y=R()*256;ctx.strokeStyle=R()>.5?'rgba(62,65,48,.13)':'rgba(251,246,226,.13)';ctx.lineWidth=.5;ctx.beginPath();ctx.moveTo(x,y);ctx.lineTo(x+R()*2-1,y-1-R()*3);ctx.stroke();}
+    for(let i=0;i<(low?1800:5800);i++){const x=R()*size,y=R()*size;ctx.strokeStyle=R()>.5?'rgba(62,65,48,.21)':'rgba(251,246,226,.25)';ctx.lineWidth=.6;ctx.beginPath();ctx.moveTo(x,y);ctx.lineTo(x+R()*3-1.5,y-1-R()*5);ctx.stroke();}
     const t=new THREE.CanvasTexture(c);t.wrapS=t.wrapT=THREE.RepeatWrapping;t.colorSpace=THREE.SRGBColorSpace;t.anisotropy=2;return t;
   })();
-  const groundMat = new THREE.MeshPhongMaterial({ vertexColors: true, map:groundTexture, shininess:3, specular:'#192118', clippingPlanes: cutPlanes, clipIntersection: true });
+  const groundMat = new THREE.MeshPhongMaterial({ vertexColors: true, map:groundTexture, bumpMap:groundTexture, bumpScale:low?.045:.08, shininess:3, specular:'#192118', clippingPlanes: cutPlanes, clipIntersection: true });
   const groundGeo=terrain.buildMesh(),uv=new Float32Array(groundGeo.attributes.position.count*2);
   const groundColors=groundGeo.attributes.color;
   // 고주파 능선의 삼각 면 음영 대신 넓은 사면의 연속 법선. 지형·높이 판정은 그대로.
@@ -81,7 +93,9 @@ export function createWorld(canvas, { low, foliageImage }) {
       occlusion=Math.max(occlusion,(terrain.heightAt(sx,sz)-p.getY(i))/distance);
     }
     const damp=(1-.17*wood+patch)*(1-.16*smooth(.025,.24,occlusion));
-    groundColors.setXYZ(i,groundColors.getX(i)*.88*damp,groundColors.getY(i)*.94*damp,groundColors.getZ(i)*1.02*damp);
+    // 비탈의 드러난 암반과 얕은 토양. 조감 장면의 단색 면을 초기 vertex color로 분해한다.
+    const rock=smooth(.94,.67,normal.y)*smooth(9,28,p.getY(i))*(.35+.3*noise(x*.055,z*.055));
+    groundColors.setXYZ(i,groundColors.getX(i)*.88*damp*(1-rock)+.31*rock,groundColors.getY(i)*.94*damp*(1-rock)+.33*rock,groundColors.getZ(i)*1.02*damp*(1-rock)+.28*rock);
   }
   groundGeo.setAttribute('uv',new THREE.BufferAttribute(uv,2));
   const ground = new THREE.Mesh(groundGeo, groundMat);
@@ -257,7 +271,7 @@ export function createWorld(canvas, { low, foliageImage }) {
       const far = Math.min(3000, Math.max(320, 300 + camHeight * 3.4));
       scene.fog.far = far; scene.fog.near = far * 0.22;
     },
-    render() { fences.forEach(f => f.update(camera)); renderer.render(scene, camera); },
+    render() { skyDome.position.copy(camera.position); fences.forEach(f => f.update(camera)); renderer.render(scene, camera); },
   };
   return api;
 }

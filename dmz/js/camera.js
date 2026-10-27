@@ -14,7 +14,7 @@ export const KEYS = [
   { name: 'descend', aerial: { target: [6, 0, 34], az: 20, el: 27, cover: 175, fov: 34 }, m: { el: 38, fov: 50, cover: 150 } },
   { name: 'structure', aerial: { target: [-40, 0, 0], az: 6, el: 62, cover: 335, fov: 32 }, m: { el: 66, fov: 48, cover: 300 } },
   { pos: [70, 300, 88], target: [12, 196, 0], fov: 44 },
-  { name: 'start', pos: [6, 226, 15], target: [0, 182, 2], fov: 50 },   // 남방한계선 철책 바깥에서 철책 너머를 본다
+  { name: 'start', pos: [10, 211, 4.8], target: [-5, 196, 1.5], fov: 50 },   // 철망·가시철선이 읽히는 거리에서 경계를 비스듬히 통과한다
   { name: 'forest', pos: [-6, 180, 15], target: [-14, 138, 1], fov: 50 },
   { pos: [-4, 150, 14], target: [-2, 112, 1.5], fov: 50 },
   { name: 'incident', pos: [6, 121, 12], target: [-4, 94, 0], fov: 50 },
@@ -97,7 +97,11 @@ export class CameraRig {
     const n = KEYS.length - 1, s = Math.min(n - 1e-6, t * n), i = Math.floor(s), f = s - i;
     const fov = this.fov[i] + (this.fov[i + 1] - this.fov[i]) * (f * f * (3 - 2 * f));
     // 지면 아래로 파고들지 않도록 부드러운 하한
-    const g = this.terrain.heightAt(Math.max(W.xMin, Math.min(W.xMax, outPos.x)), Math.max(W.zMin, Math.min(W.zMax, outPos.z))) + 7.5;
+    // 남방 철책 접근 때만 지면 여유를 낮춘다. 다른 장면의 구도·안전 높이는 유지한다.
+    const startT = this.anchors[3] / (KEYS.length - 1);
+    const closeFence = Math.max(0,1-Math.abs(t-startT)/.042);
+    const clearance = 7.5 - 3.7 * closeFence * closeFence * (3 - 2 * closeFence);
+    const g = this.terrain.heightAt(Math.max(W.xMin, Math.min(W.xMax, outPos.x)), Math.max(W.zMin, Math.min(W.zMax, outPos.z))) + clearance;
     const a = outPos.y, k = 4;
     outPos.y = (a + g + Math.sqrt((a - g) * (a - g) + k * k)) / 2;
     return fov;

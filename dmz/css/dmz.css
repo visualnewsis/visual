@@ -360,3 +360,66 @@ body.no-webgl .xr-hint{display:none}
 .revisit-labels{display:flex;justify-content:space-between;font-size:11px}
 .revisit p{margin:12px 0 0;font-size:11px;color:#495653}
 body.no-webgl .revisit,body.og .revisit{display:none}
+
+/* 장면의 주인공이 먼저 읽히도록: 작은 설명 면, 차분한 재질, 일관된 여백. */
+.hero h1{letter-spacing:-.055em;text-shadow:0 2px 28px #dfe3dd70}
+.hero-subject{white-space:nowrap}
+.hero .hero-head .byline{font-weight:500;letter-spacing:.025em}
+.cap{max-width:390px;padding:24px 26px;background:rgba(247,248,244,.95);border-left-width:2px;box-shadow:0 6px 24px #1420200d}
+.cap p{font-weight:400;line-height:1.85}
+.cap.lines p{font-size:clamp(18px,1.45vw,21px);font-weight:600;line-height:1.75}
+.cap .date{font-size:clamp(28px,3vw,42px);letter-spacing:-.045em;margin-bottom:16px}
+.cap.note{max-width:350px;border-left-color:#78867b;background:rgba(247,248,244,.91)}
+.cap.note p{font-size:13px;line-height:1.9}
+.inv-card{width:min(370px,100%);padding:26px;background:rgba(12,20,18,.96);border-top-width:2px}
+.flow li{font-size:17px;font-weight:600}
+.facts{grid-template-columns:32px 1fr;font-size:14px;line-height:1.75;gap:12px 14px}
+.facts dt{font-size:12px;padding-top:2px}
+.inv-ph{width:min(380px,32vw)}
+.ph{padding:8px 8px 14px;box-shadow:0 8px 28px #0002;background:#101916}
+.ph figcaption{font-size:11.5px;line-height:1.8;color:#c2cbc6}
+.inv-summary .flow{display:none}
+.inv-summary .facts{margin-top:0;padding-top:0;border-top:0}
+.inv-summary .inv-card h2{margin-bottom:20px}
+.inv-summary .inv-note{line-height:1.7}
+.inv-summary #labels{opacity:0}
+.evi{background:rgba(7,12,10,.97)}
+.evi-tag{font-size:11px;letter-spacing:.08em}
+.evi figcaption{font-size:12.5px;line-height:1.85;color:#bdc7c1}
+.lbl.big.range .lbl-in{background:rgba(12,25,23,.92);border-color:#c6d9ce77;box-shadow:0 3px 12px #0002}
+.lbl.big.range .lbl-in b{font-weight:800}
+.lbl.structure-mdl .lbl-in{font-size:11px}
+#track{padding:25px 16px 10px;width:min(590px,calc(100% - 32px));background:linear-gradient(transparent,#f4f5f1d9);border-radius:3px}
+.tr-labels{font-size:10px;letter-spacing:.02em}
+.tr-read{font-size:11px;font-weight:700}
+.tl-rail{padding:12px 24px 0;background:rgba(10,20,16,.9)}
+.tl-state b{letter-spacing:-.06em}
+.xr-card{background:rgba(12,20,18,.95);border-left-width:2px}
+@media(max-width:800px){
+  .hero{padding:clamp(42px,7svh,68px) 20px 0}
+  .hero .kicker{font-size:10px;letter-spacing:.18em}
+  .hero h1{margin-top:20px}
+  .hero h1 .t1{font-size:clamp(17px,4.9vw,24px);font-weight:600;letter-spacing:-.025em}
+  .hero h1 .t2{font-size:clamp(29px,8.7vw,48px);line-height:1.27;margin-top:15px}
+  .hero-lead{display:block;font-size:.83em;margin-bottom:3px}
+  .hero h1 .bi::after{font-size:11px;top:calc(100% + 2px);color:#566467}
+  .hero .hero-head .byline{font-size:11px;margin-top:32px;line-height:1.7}
+  .cap{max-width:none;padding:20px 21px;-webkit-backdrop-filter:none;backdrop-filter:none}
+  .cap.lines p{font-size:17px;line-height:1.8}
+  .cap .date{font-size:29px}
+  .cap.note{max-width:none}
+  .inv-card{width:100%;padding:20px;-webkit-backdrop-filter:none;backdrop-filter:none}
+  .inv-ph{width:auto}
+  .flow li{font-size:16px}
+  .flow li+li{margin-top:20px}
+  .facts{font-size:13px;gap:9px 12px;line-height:1.7}
+  .inv-summary .inv-card{margin-bottom:20px}
+  .inv-summary .inv-ph .ph img{max-height:25svh;object-fit:contain}
+  .ph figcaption{font-size:11px}
+  .lbl.big.range .lbl-in{padding:6px 9px;font-size:10px}
+  .lbl.big.range .lbl-in b{font-size:21px}
+  #track{bottom:calc(12px + env(safe-area-inset-bottom,0px));width:calc(100% - 24px);padding-left:12px;padding-right:12px}
+  .xr-card{-webkit-backdrop-filter:none;backdrop-filter:none}
+  .evi img{max-height:52svh}
+  .evi-tag{font-size:10px;letter-spacing:.04em}
+}

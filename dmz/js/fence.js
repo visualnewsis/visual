@@ -84,6 +84,9 @@ export function buildFence(terrain, z0, side, low) {
   const out = [], pts = [], P = [], UV = [], C = [], I = [], wires = [], posts = [], braces = [], signs = [], grass = [];
   const color = new THREE.Color();
   const bay = 6, baySamples = 8; // 0.75 단위 샘플 × 8: 좌우로 긴 철책 한 칸
+  // 카메라가 통과하는 남측 중앙 구간만 철망 자체를 입체로 만든다.
+  // 원경 전체에 세부 모델을 복제하지 않아 모바일의 삼각형·draw call 증가를 제한한다.
+  const detailMin = low ? -16 : -28, detailMax = low ? 20 : 32;
   const height = x => 2.25 + 0.14 * Math.sin(x * 0.17) + 0.07 * (hash(Math.floor(x / bay), side) - 0.5);
   const top = x => {
     const a = W.xMin + 2 + Math.floor((x - W.xMin - 2) / bay) * bay, b = a + bay, t = (x - a) / bay;
@@ -101,7 +104,7 @@ export function buildFence(terrain, z0, side, low) {
     UV.push(len / 1.2, 0, len / 1.2, 2.25);
     color.set('#c2c5b7').lerp(new THREE.Color('#89755a'), hash(Math.floor(x / 9), z0) * 0.4);
     C.push(color.r * 0.7, color.g * 0.7, color.b * 0.7, color.r, color.g, color.b);
-    if (i) { const a = (i - 1) * 2; I.push(a, a + 2, a + 1, a + 1, a + 2, a + 3); }
+    if (i && !(side === 1 && x > detailMin && x <= detailMax)) { const a = (i - 1) * 2; I.push(a, a + 2, a + 1, a + 1, a + 2, a + 3); }
     if (i) for (const h of [0.02, 0.55, 1.4]) {
       const [px, pz] = pts[i - 1];
       wires.push(px, top(px) - h, pz, x, top(x) - h, z);
@@ -138,6 +141,47 @@ export function buildFence(terrain, z0, side, low) {
   }
   const g = geomFrom({P,I,UV}); g.setAttribute('color',new THREE.Float32BufferAttribute(C,3));
   out.push(new THREE.Mesh(g,new THREE.MeshLambertMaterial({map:wireTexture(),vertexColors:true,alphaTest:0.22,side:THREE.DoubleSide})));
+  if (side === 1) {
+    // 서로 엇갈린 아연도금 철선: 경사·처짐을 따르는 작은 원통들을 초기화 때 하나로 합친다.
+    const meshP=[],meshN=[],wireShadow={P:[],I:[],UV:[]};
+    const unit = new THREE.CylinderGeometry(.009,.009,1,low?3:4,1,true).toNonIndexed();
+    const a=new THREE.Vector3(),b=new THREE.Vector3(),direction=new THREE.Vector3(),mid=new THREE.Vector3();
+    const q=new THREE.Quaternion(),scale=new THREE.Vector3(),matrix=new THREE.Matrix4(),up=new THREE.Vector3(0,1,0);
+    const point=(x,v,target)=>{
+      const z=fenceZ(x,z0,side),bottom=terrain.heightAt(x,z)+.04;
+      return target.set(x,bottom+(top(x)-bottom)*v,z+side*.025);
+    };
+    const H=2.2,pitch=.24;
+    for(let x0=detailMin;x0<detailMax;x0+=bay){
+      for(let start=-H;start<bay;start+=pitch)for(const slope of [-1,1]){
+        const left=Math.max(0,start),right=Math.min(bay,start+H);
+        for(let x=left;x<right-1e-5;x+=.65){
+          const end=Math.min(right,x+.65);
+          const v=u=>slope>0?(u-start)/H:1-(u-start)/H;
+          point(x0+x,v(x),a);point(x0+end,v(end),b);
+          // 철망의 투영 음영도 초기화 때 지표에 붙여 합친다. 실시간 shadow pass는 없다.
+          const project=p=>{
+            let drop=p.y-terrain.heightAt(p.x,p.z),sx=p.x,sz=p.z;
+            for(let n=0;n<2;n++){sx=p.x+drop*.577;sz=p.z-drop*1.385;drop=Math.max(0,p.y-terrain.heightAt(sx,sz));}
+            return [sx,sz];
+          };
+          drapeStrip(terrain,[project(a),project(b)],.018,.12,wireShadow);
+          direction.subVectors(b,a);const length=direction.length();
+          q.setFromUnitVectors(up,direction.normalize());mid.addVectors(a,b).multiplyScalar(.5);
+          scale.set(1,length,1);matrix.compose(mid,q,scale);
+          const part=unit.clone().applyMatrix4(matrix);
+          meshP.push(...part.attributes.position.array);meshN.push(...part.attributes.normal.array);part.dispose();
+        }
+      }
+    }
+    unit.dispose();
+    const detailGeo=new THREE.BufferGeometry();
+    detailGeo.setAttribute('position',new THREE.Float32BufferAttribute(meshP,3));
+    detailGeo.setAttribute('normal',new THREE.Float32BufferAttribute(meshN,3));
+    detailGeo.computeBoundingSphere();
+    out.push(new THREE.Mesh(detailGeo,new THREE.MeshPhongMaterial({color:'#a5ada6',shininess:54,specular:'#7a8b88'})));
+    out.push(new THREE.Mesh(geomFrom(wireShadow),new THREE.MeshBasicMaterial({color:'#26312b',transparent:true,opacity:.2,depthWrite:false,polygonOffset:true,polygonOffsetFactor:-2})));
+  }
   // A continuous helical wire follows each bay; distant coils share the wire draw call.
   const closeCoils=[];
   for(let i=0;i<pts.length-baySamples;i+=baySamples){
@@ -193,6 +237,25 @@ export function buildFence(terrain, z0, side, low) {
   inst(new THREE.BoxGeometry(.14,.06,.12),braces,new THREE.MeshLambertMaterial({color:'#746d58'}),(p,i,o)=>{o.position.set(p.x,p.y+.03,p.z+side*1.05);});
   inst(new THREE.BoxGeometry(0.52,0.34,0.035),signs,new THREE.MeshLambertMaterial({color:'#cbc4a1',map:warningMap()}),(p,i,o)=>{o.position.set(p.x,p.y,p.z+side*0.08);o.rotation.set(0,-Math.atan2(fenceZ(p.x+0.5,z0,side)-fenceZ(p.x-0.5,z0,side),1),(hash(i,z0)-0.5)*0.1);});
   inst(new THREE.ConeGeometry(0.065,1,3).translate(0,0.5,0),grass,new THREE.MeshLambertMaterial({color:'#64704b'}),(p,i,o)=>{o.position.set(p.x,terrain.heightAt(p.x,p.z),p.z);o.rotation.set((hash(i,1)-0.5)*0.4,hash(i,2)*6,(hash(i,3)-0.5)*0.4);o.scale.set(1,p.h,1);});
+  if(side===1){
+    // 철책 발밑의 자갈과 낮은 풀. 근경에만 작은 고정 자산을 두고 두 번의 인스턴스 draw로 묶는다.
+    const stones=[],tufts=[],tuftP=[],tuftN=[];
+    const count=low?110:220;
+    for(let i=0;i<count;i++){
+      const x=-34+hash(i,71)*68,d=.25+hash(i,72)*7.5,z=fenceZ(x,z0,side)+d;
+      const p={x,z,y:terrain.heightAt(x,z),s:.06+hash(i,73)*.13};
+      if(i%3===0)stones.push(p);
+      if(Math.abs(d-3.4)>1.25)tufts.push(p);
+    }
+    for(let i=0;i<5;i++){
+      const angle=i*2.4,dx=Math.cos(angle),dz=Math.sin(angle),h=.45+hash(i,74)*.55;
+      tuftP.push(-dz*.10,0,dx*.10,dz*.10,0,-dx*.10,dx*.23,h,dz*.23);
+      for(let j=0;j<3;j++)tuftN.push(dx*.3,.8,dz*.3);
+    }
+    const tuftGeo=new THREE.BufferGeometry();tuftGeo.setAttribute('position',new THREE.Float32BufferAttribute(tuftP,3));tuftGeo.setAttribute('normal',new THREE.Float32BufferAttribute(tuftN,3));
+    inst(tuftGeo,tufts,new THREE.MeshLambertMaterial({color:'#7d875e',side:THREE.DoubleSide}),(p,i,o)=>{o.position.set(p.x,p.y-.025,p.z);o.rotation.y=hash(i,75)*6.28;o.scale.setScalar(.24+hash(i,76)*.32);});
+    inst(new THREE.IcosahedronGeometry(1,0),stones,new THREE.MeshPhongMaterial({color:'#96988b',shininess:2}),(p,i,o)=>{o.position.set(p.x,p.y+p.s*.18,p.z);o.rotation.set(hash(i,77),hash(i,78)*6.28,hash(i,79));o.scale.set(p.s,p.s*.42,p.s*.8);});
+  }
   out.update = camera => {
     const x=Math.max(W.xMin+2,Math.min(W.xMax-2,camera.position.x));
     const z=fenceZ(x,z0,side), y=terrain.heightAt(x,z);
