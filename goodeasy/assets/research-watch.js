@@ -1,4 +1,4 @@
-import {watchAssembly} from './anatomy-watch.js?v=20261028-watchmechanism2';
+import {watchAssembly} from './anatomy-watch.js?v=20261028-watchguide2';
 import {T,materials as M,mesh,box,cyl,ring,rod,tube,gear,part,bolt} from './quality-kit.js?v=20261028-watchmechanism2';
 import {TAU,clamp,layerOffset,gearAngle,escapeState,handAngles,period} from './research-math.js?v=20261026-release3';
 import {cycloidalPairSpec,makeWatchGear,pinionPhase} from './watch-wheel-geometry.js?v=20261028-watchmechanism2';

@@ -4,7 +4,7 @@ import {buildMXStudy,buildEspressoStudy} from './quality-replacements.js?v=20261
 import {buildSwitch} from './quality-switch.js?v=20261028-craft7';
 import {cameraResult} from './quality-camera.js?v=20261026-release3';
 import {T,materials,makeStage} from './quality-kit.js?v=20261028-watchmechanism2';
-import {machineBuilders} from './quality-machines.js?v=20261028-watchmechanism2';
+import {machineBuilders} from './quality-machines.js?v=20261028-watchguide2';
 const kind=document.body.dataset.music||document.body.dataset.experiment;if(!kind)throw Error('Missing experiment');
 const musical=!!document.body.dataset.music,host=musical?(kind==='guitar'?document.querySelector('.string-bench'):document.getElementById('bow-pad')):document.querySelector('.stage');
 const canvas=document.createElement('canvas');canvas.className='quality-canvas';canvas.setAttribute('aria-label',`${document.body.dataset.name||kind} 3D 조작 모형`);canvas.setAttribute('role','img');

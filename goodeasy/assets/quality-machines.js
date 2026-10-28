@@ -1,4 +1,4 @@
-import {buildWatch,buildReel} from './release-machine-models.js?v=20261028-watchmechanism2';
+import {buildWatch,buildReel} from './release-machine-models.js?v=20261028-watchguide2';
 export {buildWatch,buildReel};
 import {paintFilmFrame} from './projector-frames.js?v=20261028-release3';
 import {curtainWindow} from './mechanism-checks.js?v=20261026-release3';

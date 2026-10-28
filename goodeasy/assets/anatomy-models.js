@@ -1,14 +1,14 @@
 import {gramophoneVisualSignal,GRAMOPHONE_DURATION} from '../gramophone/audio.js?v=20261028-uxaudio2';
 import {T,M,TAU,clamp,colors,metal,assembly,part,box,cyl,ring,rod} from './anatomy-core.js?v=20261028-watchmechanism2';
 import {buildGuitar,buildViolin} from './quality-instruments.js?v=20261028-craft7';
-import {buildReel} from './quality-machines.js?v=20261028-watchmechanism2';
+import {buildReel} from './quality-machines.js?v=20261028-watchguide2';
 import {buildMXStudy} from './quality-replacements.js?v=20261028-craft7';
 import {buildGramophone} from '../gramophone/gramophone-model.js?v=20261028-release3';
 import {buildSewingMachine} from '../sewing-machine/sewing-model.js?v=20261028-craft7';
 import {cycleAt} from '../sewing-machine/motion.js?v=20261027-detail1';
 import {projectorAssembly} from './anatomy-optics.js?v=20261028-craft7';
 import {cameraAssembly} from './camera-optics-detail.js?v=20261028-craft7';
-import {watchAssembly} from './anatomy-watch.js?v=20261028-watchmechanism2';
+import {watchAssembly} from './anatomy-watch.js?v=20261028-watchguide2';
 import {espressoAssembly} from './anatomy-espresso.js?v=20261028-craft7';
 function entry(id,title,description,object,offset=[0,0,0],color=colors.frame){return {id,title,description,object,offset:new T.Vector3(...offset),color};}
 function bundle(root,name,objects){const g=part(root,name);root.updateMatrixWorld(true);for(const o of objects.filter(Boolean))g.attach(o);return g;}
@@ -31,5 +31,5 @@ const rawBuilders={camera:cameraAssembly,watch:watchAssembly,'espresso-machine':
 
 const pairs={camera:{'front-curtain':['rear-curtain','sensor'],iris:['rear-glass','mount']},watch:{'wheel-0':['wheel-1'],'wheel-1':['wheel-0','wheel-2'],'wheel-2':['wheel-1','wheel-3'],'wheel-3':['wheel-2','wheel-4'],pallet:['wheel-4','balance','hairspring'],balance:['pallet','hairspring']},'espresso-machine':{head:['screen','basket','filter'],pump:['tank','boiler','opv']},projector:{gate:['film','shutter','intermittent'],intermittent:['film']},guitar:{bridge:['top'],strings:['bridge','neck']},violin:{bridge:['top','post'],bow:['strings']},'fishing-reel':{drive:['pinion'],rotor:['spool','shaft']},keyboard:{stem:['fixed','leaf','spring'],leaf:['fixed','stem']},gramophone:{soundbox:['arm'],motor:['crank']},'sewing-machine':{hook:['case','needle','thread'],needle:['takeup','thread']}};
 const focusIds={camera:'front-curtain',watch:'pallet','espresso-machine':'head',projector:'gate',guitar:'bridge',violin:'bridge','fishing-reel':'drive',keyboard:'stem',gramophone:'soundbox','sewing-machine':'hook'};
-function decorate(m,slug){m.focusId=focusIds[slug];m.focusPhase={camera:.25,watch:.0725,'espresso-machine':.55,projector:.825,guitar:.1,violin:.25,'fishing-reel':.15,keyboard:.20,gramophone:.05,'sewing-machine':.58}[slug];m.focusEye=slug==='sewing-machine'?[1.2,3,4]:slug==='watch'?[1,6,3]:slug==='fishing-reel'?[.5,1,5]:null;for(const c of m.components)c.related=pairs[slug]?.[c.id]||[];if(slug==='sewing-machine')m.components.find(c=>c.id==='hook').focusWith=['case'];if(slug==='watch'){const centers=[[-1.1,.3],[-.264,.3],[.484,.3],[.880,-.3858921198],[1.254,.2618948822]];for(const c of m.components){if(c.id.startsWith('wheel-'))c.anchor=[0,0,0];if(c.id==='bridges')c.joints=centers.map(([x,z])=>({rest:[x,.09,z],point:[x,1.34,z]}));if(c.id==='balance-bridge')c.joints=[{rest:[.65,.09,-1.05],point:[.65,1.5,-1.05]}];}}return m;}
+function decorate(m,slug){m.focusId=focusIds[slug];m.focusPhase={camera:.25,watch:.0725,'espresso-machine':.55,projector:.825,guitar:.1,violin:.25,'fishing-reel':.15,keyboard:.20,gramophone:.05,'sewing-machine':.58}[slug];m.focusEye=slug==='sewing-machine'?[1.2,3,4]:slug==='watch'?[1,6,3]:slug==='fishing-reel'?[.5,1,5]:null;for(const c of m.components)c.related=pairs[slug]?.[c.id]||[];if(slug==='sewing-machine')m.components.find(c=>c.id==='hook').focusWith=['case'];if(slug==='watch'){const centers=[[-1.1,.3],[-.264,.3],[.484,.3],[.880,-.3858921198],[.8002535033467502,-1.1074990046559672]];for(const c of m.components){if(c.id.startsWith('wheel-'))c.anchor=[0,0,0];if(c.id==='bridges')c.joints=centers.map(([x,z])=>({rest:[x,.034,z],point:[x,.886,z]}));if(c.id==='balance-bridge')c.joints=[{rest:[-.13173301713587432,.034,-1.155837204740957],point:[-.13173301713587432,.946,-1.155837204740957]}];}}return m;}
 export const anatomyBuilders=Object.fromEntries(Object.entries(rawBuilders).map(([slug,build])=>[slug,()=>decorate(build(),slug)]));

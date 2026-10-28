@@ -2,7 +2,7 @@ import {zoomDistance,wheelZoom,pinchZoom,zoomPercent} from './anatomy-controls.j
 import {playStudyTone,stopStudyTone,midiFrequency} from './study-audio.js?v=20261028-release3';
 import {lessonAnnotations} from './lesson-annotations.js?v=20261027-detail1';
 import {T,materials as M} from './quality-kit.js?v=20261028-watchmechanism2';
-import {watchBuilders} from './research-watch.js?v=20261028-watchmechanism2';
+import {watchBuilders} from './research-watch.js?v=20261028-watchguide2';
 import {otherBuilders} from './research-other.js?v=20261028-craft7';
 import {clamp} from './research-math.js?v=20261026-release3';
 const refined=!!(document.body.dataset.experiment||document.body.dataset.music);
