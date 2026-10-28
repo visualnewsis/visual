@@ -1,7 +1,8 @@
-// coffee-detail.js
+// coffee-detail.js?v=20261028-release3
 // VISUAL NEWSIS · 굳이구지 · Espresso Detail
 // Three.js ES module · Y-up
-// No DOM, canvas, external textures, additional packages or runtime geometry rebuilds.
+// No DOM, canvas, external textures or additional packages.
+// Pore-route buffers update only when the particle layout changes.
 // Flow and fill are educational visualizations, not fluid-dynamics simulations.
 
 import {
@@ -15,7 +16,7 @@ import {
   tube,
   part,
   lathe
-} from './quality-kit.js?v=20261026-release3';
+} from './quality-kit.js?v=20261028-release3';
 
 import {
   coffeeFlow
@@ -726,8 +727,10 @@ function createParticleBed(parent, seed) {
     particles.userData.grainRadius = radius;
 
     let index = 0;
+    const poreRows=[];
 
     for (let row = 0; row < rows; row++) {
+      const rowGrains=[];
       for (let col = 0; col < cols; col++) {
         const d = matrices[index];
 
@@ -768,17 +771,20 @@ function createParticleBed(parent, seed) {
         );
 
         particleDummy.scale.set(
-          spacingX * .57 * d.size,
-          spacingY * .57 * d.size,
+          spacingX * .39 * d.size,
+          spacingY * .39 * d.size,
           r * .92
         );
 
         particleDummy.updateMatrix();
         particles.setMatrixAt(index, particleDummy.matrix);
+        rowGrains.push({x,y,z,rx:spacingX*.39*d.size,ry:spacingY*.39*d.size});
 
         index++;
       }
+      poreRows.push(rowGrains);
     }
+    particles.userData.poreRows=poreRows;
 
     particles.instanceMatrix.needsUpdate = true;
   }
@@ -1003,11 +1009,12 @@ function createBasketHousing(parent) {
   return housing;
 }
 
-function createFlowSystem(parent, seed) {
+function createFlowSystem(parent, seed, grains) {
   const flow = part(parent, 'continuous inter-grain flow');
 
   const paths = [];
   const streamSegments = [];
+  let lastLayout="";
   const trailCount = 12;
 
   // Preallocated, thin continuous interstitial paths.
@@ -1027,7 +1034,7 @@ function createFlowSystem(parent, seed) {
       points.push([
         x0 + wiggle,
         lerp(0.682, -0.138, v),
-        0.225 + Math.cos(v * 9 + i) * 0.012
+        0.125 + Math.cos(v * 9 + i) * 0.012
       ]);
     }
 
@@ -1099,14 +1106,44 @@ function createFlowSystem(parent, seed) {
     upperWetting.push(o);
   }
 
+  function routeThroughPores(grind,channel){
+    const key=grind+':'+channel;if(key===lastLayout)return;lastLayout=key;
+    const rows=grains.particles.userData.poreRows||[];
+    for(const path of paths){
+      const points=[[path.x0,.682,.125]];let previous=path.x0;
+      for(const row of [...rows].reverse()){
+        const gaps=[];
+        for(let i=0;i<row.length-1;i++){
+          const a=row[i],b=row[i+1],left=a.x+a.rx,right=b.x-b.rx;
+          if(right-left>.004)gaps.push({x:(left+right)/2,y:(a.y+b.y)/2,width:right-left});
+        }
+        if(!gaps.length)continue;
+        const preferred=channel?lerp(path.x0,.48,.72):path.x0;
+        gaps.sort((a,b)=>(Math.abs(a.x-preferred)+Math.abs(a.x-previous)*.45)-(Math.abs(b.x-preferred)+Math.abs(b.x-previous)*.45));
+        const g=gaps[0];points.push([g.x,g.y,.125]);previous=g.x;
+      }
+      points.push([previous,-.138,.125]);
+      const curve=new T.CatmullRomCurve3(points.map(p=>new T.Vector3(...p)),false,'centripetal'),geo=path.object.geometry,n=geo.parameters.tubularSegments,k=geo.parameters.radialSegments,frames=curve.computeFrenetFrames(n,false),positions=geo.attributes.position,normals=geo.attributes.normal,r=lerp(.005,.0025,grind/100);
+      for(let i=0;i<=n;i++){
+        const c=curve.getPointAt(i/n),N=frames.normals[i],B=frames.binormals[i];
+        for(let j=0;j<=k;j++){
+          const a=j/k*TAU,nx=-Math.cos(a)*N.x+Math.sin(a)*B.x,ny=-Math.cos(a)*N.y+Math.sin(a)*B.y,nz=-Math.cos(a)*N.z+Math.sin(a)*B.z,index=i*(k+1)+j;
+          positions.setXYZ(index,c.x+r*nx,c.y+r*ny,c.z+r*nz);normals.setXYZ(index,nx,ny,nz);
+        }
+      }
+      positions.needsUpdate=true;normals.needsUpdate=true;geo.computeBoundingSphere();path.object.userData.poreRoute=points;
+    }
+  }
   function update(grind, pressure, channel, time, ratio) {
     const g = clamp(grind, 0, 100);
     const p = Math.max(0, finite(pressure, 9));
     const t = finite(time, 0);
     const preferential = !!channel;
+    routeThroughPores(g,preferential);
 
     const throughput = clamp(ratio / 1.7, 0, 1);
-    const wetness = smooth(0, 1.8, t);
+    const delay = 0.75 + (g / 100) * 0.25;
+    const wetness = smooth(0, delay, t);
 
     for (let i = 0; i < paths.length; i++) {
       const path = paths[i];
@@ -1124,19 +1161,6 @@ function createFlowSystem(parent, seed) {
       path.object.visible =
         isActive && p > 0 && wetness > 0.02;
 
-      // Subtle shifting sheen without rebuilding tubes.
-      const shimmer =
-        0.87 +
-        0.13 * Math.sin(
-          t * (1.1 + throughput * 1.7) +
-          path.phase * TAU
-        );
-
-      const radiusFactor =
-        preferential
-          ? lerp(0.65, 1.65, nearChannel)
-          : lerp(0.70, 1.20, throughput);
-
       path.object.material.uniforms.uTime.value=t*(.5+throughput);
       path.object.scale.set(
         1,
@@ -1150,7 +1174,6 @@ function createFlowSystem(parent, seed) {
     }
 
     // Pressure and elapsed time control the brown outlet streams.
-    const delay = 0.75 + (g / 100) * 0.25;
     const running =
       p > 0 && t > delay && t < 16 && ratio > 0.005;
 
@@ -1170,11 +1193,10 @@ function createFlowSystem(parent, seed) {
 
       o.scale.x = width;
       o.scale.z = width;
-      o.scale.y = clamp(
-        (t - delay) * 1.9,
-        0.02,
-        1
-      );
+      const extension=clamp((t-delay)/.5,0,1);
+      // Grow from the fixed filter outlet, never from the middle of the stream.
+      o.scale.y=extension;
+      o.position.y=-.423-(.802*extension)/2;
     }
 
     for (let i = 0; i < upperWetting.length; i++) {
@@ -1207,7 +1229,7 @@ function createSectionAssembly(parent, side, seed) {
   box(bed,1.86,.72,.09,P.groundDark,0,.23,-.01,.025);
   const grains = createParticleBed(bed, seed);
 
-  const flow = createFlowSystem(root, seed);
+  const flow = createFlowSystem(root, seed, grains);
 
   // A grounded cup under each visible filter outlet.
   const cup = createCoffeeCup();
@@ -1424,7 +1446,7 @@ export function buildCoffeeComparison() {
       // The cup is a time-dependent visual accumulator.
       // This does not purport to calculate real beverage mass.
       const extractionProgress =
-        clamp((time - 0.8) / 15.2);
+        clamp((time - (1.25 + sideGrind / 100 * .25)) / (16 - (1.25 + sideGrind / 100 * .25)));
 
       const illustrativeFill = clamp(
         extractionProgress * ratio * 0.73,
@@ -1435,7 +1457,7 @@ export function buildCoffeeComparison() {
       bed.cup.setFill(
         illustrativeFill,
         time,
-        pressure > 0 && time > .8 && time < 16
+        pressure > 0 && time > (1.25 + sideGrind / 100 * .25) && time < 16
       );
     }
 

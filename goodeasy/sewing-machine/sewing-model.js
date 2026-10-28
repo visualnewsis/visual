@@ -1,4 +1,4 @@
-import {threadPath} from './thread-path.js';
+import {threadMechanismState} from './thread-path.js?v=20261028-release3';
 
 export function buildSewingMachine(T, M = {}) {
   const group = new T.Group();
@@ -389,8 +389,8 @@ export function buildSewingMachine(T, M = {}) {
     clothBottom,"Lower fabric layer",0,-.015,0);
 
   // Local needle entry is z=-.8; the moving cloth translates below it.
-  const seamTop=new T.Group(), seamBottom=new T.Group();
-  fabric.add(seamTop,seamBottom);
+  const seamTop=new T.Group(), seamBottom=new T.Group(),seamLocks=new T.Group();
+  fabric.add(seamTop,seamBottom,seamLocks);
   group.add(fabric);
 
   const upper=pathLine(threads,mint,"Continuous upper thread",.008);
@@ -436,6 +436,11 @@ export function buildSewingMachine(T, M = {}) {
     p.needsUpdate=true;
     line.geometry.computeBoundingSphere();
   }
+  const lockLines=Array.from({length:12},(_,i)=>{
+    const make=(color,name)=>{const g=new T.BufferGeometry();g.setAttribute("position",new T.Float32BufferAttribute(new Float32Array(21),3));const line=new T.Line(g,new T.LineBasicMaterial({color}));line.name=name;seamLocks.add(line);return line;};
+    return {upper:make(0x00b4c9,"Upper stitch loop "+i),lower:make(0xd8af58,"Lower stitch lock "+i)};
+  });
+  function updateLock(line,points,visible){line.visible=visible;if(!visible)return;const a=line.geometry.attributes.position;points.forEach((p,i)=>a.setXYZ(i,...p));a.needsUpdate=true;line.geometry.computeBoundingSphere();}
   function updateSeam(stitches) {
     let distance=0;
     for(let i=0;i<12;i++) {
@@ -448,9 +453,11 @@ export function buildSewingMachine(T, M = {}) {
         const b=-.8+distance*MM;
         segment(s.top,[0,.041,a],[0,.041,b],true);
         segment(s.bottom,[0,-.051,a],[0,-.051,b],true);
+        updateLock(lockLines[i].upper,[[0,.041,a],[-.012,.015,a],[-.012,-.010,a],[0,-.014,a],[.012,-.010,a],[.012,.015,a],[0,.041,a]],true);
+        updateLock(lockLines[i].lower,[[0,-.051,a],[-.025,-.030,a],[-.025,-.004,a],[0,.002,a],[.025,-.004,a],[.025,-.030,a],[0,-.051,a]],true);
       } else {
         segment(s.top,[0,0,0],[0,0,0],false);
-        segment(s.bottom,[0,0,0],[0,0,0],false);
+        segment(s.bottom,[0,0,0],[0,0,0],false);lockLines[i].upper.visible=false;lockLines[i].lower.visible=false;
       }
     }
   }
@@ -536,10 +543,10 @@ export function buildSewingMachine(T, M = {}) {
     ));
 
     // A single continuous upper thread: no separate floating branch ends.
-    setPath(upper,threadPath({...state,phase:p,eyeY,takeupY:takeup.position.y,length}));
+    const threadState=threadMechanismState({...state,phase:p,eyeY,takeupY:takeup.position.y,length});
+    setPath(upper,threadState.upper);
     upperLoopA.visible=false;upperLoopB.visible=false;
-    const previous=state.stitches?.at(-1)||length;const holeZ=p<.25&&state.stitches?.length?-previous*MM:-length*progress*MM;
-    setPath(lower,[[H.x,.72,H.z],[H.x+.14,.79,H.z+.18],[H.x+.18,.80,H.z+.25],[-.85,.94,-.11],[-.85,1.04,holeZ+.025],[-.85,1.078,holeZ+.025],[-.85,1.078,holeZ-.025],[-.85,1.04,holeZ-.04]]);
+    setPath(lower,threadState.lower);
 
     // A single model state drives all transforms and thread paths.
     group.userData.phase=p;

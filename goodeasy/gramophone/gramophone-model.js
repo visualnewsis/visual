@@ -178,12 +178,13 @@ export function buildGramophone(T, M) {
   // Diaphragm face is vertical, in YZ plane, with longitudinal (X) displacement.
   const orientX=o=>{o.rotation.z=Math.PI/2;return o;};
   orientX(cyl(.205,.205,.082,brass,soundbox,0,0,0,'soundbox rim'));
-  orientX(cyl(.165,.165,.009,ivory,soundbox,.048,0,0,'vertical diaphragm'));
+  const diaphragmMesh=orientX(cyl(.165,.165,.009,ivory,soundbox,.048,0,0,'vertical diaphragm'));
+  const diaphragmBase=diaphragmMesh.geometry.attributes.position.array.slice();
   for(let i=0;i<8;i++) {
     const a=i*Math.PI/4,y=.181*Math.sin(a),z=.181*Math.cos(a);
     orientX(cyl(.015,.015,.02,steel,soundbox,.049,y,z,'rim screw',10));
   }
-  orientX(cyl(.063,.063,.018,black,soundbox,.056,0,0,'diaphragm center pad'));
+  const diaphragmPad=orientX(cyl(.063,.063,.018,black,soundbox,.056,0,0,'diaphragm center pad'));
   // Needle lever: lateral input along tangential groove motion converted to X motion.
   const lever=new T.Group(); lever.name='Soundbox needle lever'; soundbox.add(lever);
   rod(V(.055,0,0),V(.085,-.16,0),.018,steel,lever,'needle lever');
@@ -192,43 +193,57 @@ export function buildGramophone(T, M) {
   cyl(.028,.03,.04,brass,lever,.085,-.215,0,'needle screw',12).rotation.z=Math.PI/2;
   const stylus=rod(V(.085,-.215,0),V(.085,-.315,0),.008,steel,lever,'steel stylus');
   const stylusTip=new T.Object3D(); stylusTip.name='Stylus contact anchor'; stylusTip.position.set(.085,-.315,0); lever.add(stylusTip);
+  const leverBearing=V(.085,-.16,0);lever.position.copy(leverBearing);
+  for(const child of lever.children)child.position.sub(leverBearing);
   // Positioning needs an exact local tip offset, enforced at runtime (not visual guesswork).
   const swivelAnchor=new T.Object3D(); swivelAnchor.position.set(0,0,0); armPivot.add(swivelAnchor);
   const motor=new T.Group(); motor.name='Cabinet motor inspection'; group.add(motor);
   const bedMaterial=steel.clone();bedMaterial.color.setHex(0x293436);bedMaterial.metalness=.22;bedMaterial.roughness=.7;
   box(2.66,.055,2.38,bedMaterial,motor,0,.44,0,'motor bedplate');
-  const barrel=new T.Group(); barrel.name='Mainspring barrel'; barrel.position.set(-.63,.63,.12); motor.add(barrel);
+  const barrel=new T.Group(); barrel.name='Mainspring barrel'; barrel.position.set(-.95,.63,.2); motor.add(barrel);
   const barrelWall=make(new T.CylinderGeometry(.43,.43,.25,64,1,true),brass,barrel,'open spring barrel');barrelWall.position.y=0;
   cyl(.43,.43,.018,brass,barrel,0,-.125,0,'barrel bottom');
   const springPoints=[];for(let i=0;i<600;i++){const t=i/599,a=t*Math.PI*2*9,r=.085+.3*t;springPoints.push(r*Math.cos(a),.11,r*Math.sin(a));}
   const springGeometry=new T.BufferGeometry();springGeometry.setAttribute('position',new T.Float32BufferAttribute(springPoints,3));barrel.add(new T.Line(springGeometry,new T.LineBasicMaterial({color:0xd3d5cb})));
   ring(.38,.019,steel,barrel,0,.135,0,'barrel lid seam');
   cyl(.075,.075,.36,steel,barrel,0,0,0,'spring arbor');
-  const gearA=new T.Group();gearA.name="Motor gear 20 teeth";gearA.position.set(.12,.65,.47);motor.add(gearA);
-  const gearB=new T.Group();gearB.name="Motor pinion 12 teeth";gearB.position.set(.65,.65,.47);motor.add(gearB);
-  function gear(parent,r,teeth) {
-    cyl(r,r,.054,brass,parent,0,0,0,'gear disc');
-    for(let i=0;i<teeth;i++) {
-      const a=i*2*Math.PI/teeth;
-      box(.075,.055,.066,brass,parent,(r+.024)*Math.cos(a),0,(r+.024)*Math.sin(a),'gear tooth').rotation.y=-a;
-    }
+  // A shared pitch module connects the barrel to the platter spindle and governor.
+  // Tooth profiles are schematic; pitch circles and axle positions determine the ratios.
+  const module=1/30,d=Math.hypot(.95,.2),ra=1/3,rb=.2;
+  const along=((.5+ra)**2-(ra+rb)**2+d*d)/(2*d),across=Math.sqrt((.5+ra)**2-along*along);
+  const ex=.95/d,ez=-.2/d,ax=-.95+ex*along-ez*across,az=.2+ez*along+ex*across;
+  function gear(parent,r,teeth,phase=0){
+    const outline=new T.Shape(),root=r-module*.95,tip=r+module;
+    for(let i=0;i<teeth*4;i++){const a=i*Math.PI*2/(teeth*4)+phase,R=i%4===1||i%4===2?tip:root;
+      i?outline.lineTo(R*Math.cos(a),R*Math.sin(a)):outline.moveTo(R*Math.cos(a),R*Math.sin(a));}
+    outline.closePath();const bore=new T.Path();bore.absarc(0,0,.045,0,Math.PI*2,true);outline.holes.push(bore);
+    const geometry=new T.ExtrudeGeometry(outline,{depth:.045,bevelEnabled:false});geometry.rotateX(Math.PI/2);
+    make(geometry,brass,parent,'meshing toothed wheel');
     cyl(.065,.065,.12,steel,parent,0,0,0,'gear hub');
   }
-  gear(gearA,.29,20);gear(gearB,.155,12);
-  rod(V(.12,.5,.47),V(.12,.89,.47),.034,steel,motor,'gear arbor 1');
-  rod(V(.65,.5,.47),V(.65,.91,.47),.031,steel,motor,'gear arbor 2');
-  const spindle=rod(V(0,.5,0),V(0,1.17,0),.044,steel,motor,'platter spindle');
-  const governor=new T.Group(); governor.name='Centrifugal flyweight governor'; governor.position.set(.79,.66,-.55);motor.add(governor);
+  const barrelGear=new T.Group();barrelGear.name='Barrel wheel 30 teeth';barrelGear.position.y=.52-.63;barrel.add(barrelGear);gear(barrelGear,.5,30);
+  const gearA=new T.Group();gearA.name='Motor gear 20 teeth';gearA.position.set(ax,.52,az);motor.add(gearA);gear(gearA,ra,20);
+  const gearB=new T.Group();gearB.name='Motor pinion 12 teeth';gearB.position.set(0,.52,0);motor.add(gearB);gear(gearB,rb,12,Math.PI/12);
+  rod(V(ax,.48,az),V(ax,.91,az),.034,steel,motor,'gear arbor 1');
+  rod(V(0,.48,0),V(0,1.17,0),.044,steel,motor,'platter spindle');
+  const governorDrive=new T.Group();governorDrive.name='Platter governor wheel 18 teeth';governorDrive.position.set(0,.68,0);motor.add(governorDrive);gear(governorDrive,.3,18);
+  const governorZ=-(.3+4/30),governorPinion=new T.Group();governorPinion.name='Governor pinion 8 teeth';governorPinion.position.set(0,.68,governorZ);motor.add(governorPinion);gear(governorPinion,4/30,8,Math.PI/8);
+  const governor=new T.Group();governor.name='Centrifugal flyweight governor';governor.position.set(0,.72,governorZ);motor.add(governor);
   const governorSpin=new T.Group();governor.add(governorSpin);const weights=[],leaves=[];
-  rod(V(0,-.28,0),V(0,.32,0),.025,steel,governorSpin,'governor spindle');
-  for(let i=0;i<3;i++) {
+  rod(V(0,-.28,0),V(0,.47,0),.025,steel,governorSpin,'governor spindle');
+  const collar=cyl(.055,.055,.045,steel,governorSpin,0,.31,0,'sliding governor collar');
+  const frictionDisc=cyl(.2,.2,.028,steel,governorSpin,0,.31,0,'governor friction disc');
+  for(let i=0;i<3;i++){
     const a=i*2*Math.PI/3,u=Math.cos(a),v=Math.sin(a);
-    const leaf=rod(V(.055*u,-.2,.055*v),V(.18*u,.12,.18*v),.014,brass,governorSpin,'leaf spring');leaves.push({leaf,u,v});
-    const weight=ball(.09,steel,governorSpin,.18*u,.13,.18*v,'governor flyweight');weights.push({weight,u,v});
+    const weight=ball(.065,steel,governorSpin,.18*u,.10,.18*v,'governor flyweight');weights.push({weight,u,v});
+    for(const top of [false,true]){
+      const A=V(.045*u,top?.31:-.2,.045*v),B=V(.18*u,.1,.18*v),leaf=rod(A,B,.012,brass,governorSpin,'governor flexible link');
+      leaves.push({leaf,u,v,top,length:A.distanceTo(B)});
+    }
   }
-  cyl(.2,.2,.028,steel,governorSpin,0,.31,0,'governor friction disc');
-  box(.28,.035,.12,steel,motor,1.02,.99,-.55,'friction felt shoe support');
-  box(.13,.028,.11,felt,motor,.91,.968,-.55,'friction pad');
+  box(.33,.035,.12,steel,motor,.27,1.16,governorZ,'friction felt shoe support');
+  const padMaterial=felt.clone();box(.13,.028,.11,padMaterial,motor,.14,1.12,governorZ,'friction pad');
+  const motorSpec={module,barrel:[-.95,.52,.2],intermediate:[ax,.52,az],output:[0,.52,0],radii:[.5,ra,rb],teeth:[30,20,12],governorZ};
   // All moving parts use a single caller-provided state, no internal clock.
   function update(state={}) {
     const angle=Number.isFinite(state.angle)?state.angle:0;
@@ -245,14 +260,25 @@ export function buildGramophone(T, M) {
     hinge.rotation.z=lift*.34;
     soundbox.position.set(.155,.105,0);
     // Exaggerated vibration belongs to the lever/diaphragm, not tracking radius.
-    lever.rotation.y=signal*.018;
+    lever.rotation.z=signal*.028;
+    const shift=-.16*Math.sin(lever.rotation.z)+.03*(1-Math.cos(lever.rotation.z));
+    const dp=diaphragmMesh.geometry.attributes.position;
+    for(let i=0;i<dp.count;i++){const j=i*3,r2=diaphragmBase[j]**2+diaphragmBase[j+2]**2;
+      dp.setY(i,diaphragmBase[j+1]-shift*Math.max(0,1-r2/(.165*.165)));}
+    dp.needsUpdate=true;diaphragmPad.position.x=.056+shift;
     // Down position (lift=0, signal=0) is EXACTLY the circle intersection.
     crankRotor.rotation.x=crankAngle;
-    gearA.rotation.y=angle*.31;gearB.rotation.y=-gearA.rotation.y*20/12;
-    governorSpin.rotation.y=angle*2.9;
-    const spread=Number.isFinite(state.governorRpm)?T.MathUtils.clamp(state.governorRpm/120,0,1):.65;const wr=.08+.14*spread;
-    weights.forEach(({weight,u,v})=>weight.position.set(wr*u,.13,wr*v));
-    leaves.forEach(({leaf,u,v})=>{const A=V(.055*u,-.2,.055*v),B=V(wr*u,.13,wr*v),d=B.clone().sub(A);leaf.position.copy(A.add(B).multiplyScalar(.5));leaf.scale.y=d.length()/Math.hypot(.125,.32);leaf.quaternion.setFromUnitVectors(V(0,1,0),d.normalize());});
+    gearA.rotation.y=angle*12/20;gearB.rotation.y=-angle;barrel.rotation.y=-angle*12/30;
+    governorDrive.rotation.y=-angle;governorPinion.rotation.y=angle*18/8;governorSpin.rotation.y=governorPinion.rotation.y;
+    const spread=Number.isFinite(state.governorRpm)?T.MathUtils.clamp(state.governorRpm/120,0,1):.65;
+    const wr=.08+.14*spread,shiftCollar=Math.min(.062,(.062/.65)*spread);
+    collar.position.y=frictionDisc.position.y=.31+shiftCollar;
+    weights.forEach(({weight,u,v})=>weight.position.set(wr*u,.1,wr*v));
+    leaves.forEach(({leaf,u,v,top,length})=>{const A=V(.045*u,top?.31+shiftCollar:-.2,.045*v),B=V(wr*u,.1,wr*v),delta=B.clone().sub(A);
+      leaf.position.copy(A).add(B).multiplyScalar(.5);leaf.scale.y=delta.length()/length;
+      leaf.quaternion.setFromUnitVectors(V(0,1,0),delta.normalize());});
+    motor.userData.governorContact=spread>=.65;motor.userData.collarShift=shiftCollar;
+    padMaterial.color.setHex(spread>=.65?0x985549:0x232c26);
     platterLayer.position.y=explode*.48;
     top.position.y=explode*.18;
     motor.position.y=-explode*1.3;
@@ -261,5 +287,5 @@ export function buildGramophone(T, M) {
   const anchors={stylusTip,swivel:swivelAnchor,recordCenter:C.clone(),tonearmPivot:P.clone(),hornThroat:throat.clone()};
   const spec={discCenter:[0,1.23,0],pivot:[P.x,P.y,P.z],outerRadius,innerRadius,armLength};
   return {group,eye:[5,4,7],parts:{record,tonearm:armPivot,soundbox,horn,crank,cabinet,motor},
-    anchors,update,spec,needlePoint};
+    anchors,update,spec,needlePoint,motorSpec};
 }

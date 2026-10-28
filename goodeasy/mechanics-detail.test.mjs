@@ -29,9 +29,9 @@ test('bow hair stays on selected arched string during a user-controlled stroke',
  const m=buildViolin(T,materials),x=.03;
  for(const st of m.strings)for(const travel of [-.3,0,.3]){
   m.bow.position.z=travel;m.update({midi:st.midi,bowing:false},false,0);m.group.updateMatrixWorld(true);
-  const t=(x-st.from[0])/(st.to[0]-st.from[0]),y=st.from[1]+t*(st.to[1]-st.from[1]),z=st.from[2]+t*(st.to[2]-st.from[2]),angle=m.bow.rotation.x,original=m.bow.userData.hairCenterlineY-.0014;
+  const t=(x-st.from[0])/(st.to[0]-st.from[0]),y=st.from[1]+t*(st.to[1]-st.from[1]),z=st.from[2]+t*(st.to[2]-st.from[2]),angle=m.bow.rotation.x,original=m.bow.userData.hairCenterlineY;
   const localZ=(z-travel-original*Math.sin(angle))/Math.cos(angle),p=new T.Vector3(x,original,localZ).applyMatrix4(m.bow.matrixWorld);
-  assert.ok(Math.abs(p.y-y)<1e-8);assert.ok(Math.abs(p.z-z)<1e-8);
+  const expected=new T.Vector3(x,y+st.radius+.0014,z).applyMatrix4(m.group.matrixWorld);assert.ok(p.distanceTo(expected)<1e-8);
  }
 });
 test('only the bowed string vibrates and it returns to rest on release',()=>{
@@ -57,7 +57,21 @@ test('needle shank stays inside its guide throughout stroke and take-up releases
 test('gramophone motor gears keep tooth ratio and clear the platter spindle',()=>{
  const m=buildGramophone(T,{});m.update({angle:2,needleLift:1});const a=m.group.getObjectByName('Motor gear 20 teeth'),b=m.group.getObjectByName('Motor pinion 12 teeth');assert.ok(Math.abs(b.rotation.y/a.rotation.y+20/12)<1e-10);assert.ok(Math.hypot(a.position.x,a.position.z)>.396);assert.ok(Math.hypot(b.position.x-a.position.x,b.position.z-a.position.z)>.52);
 });
-test('MX stem cam passes beside electrical contact buttons',()=>{
- const m=buildMXSwitch(T,materials),cam=m.parts.stem.children.find(o=>o.geometry?.type==='SphereGeometry');let button;m.parts.movingLeaf.traverse(o=>{if(o.geometry?.type==='SphereGeometry')button=o;});
- for(let travel=0;travel<=4;travel+=.1){m.update({travel,explode:0});m.group.updateMatrixWorld(true);assert.ok(cam.getWorldPosition(new T.Vector3()).distanceTo(button.getWorldPosition(new T.Vector3()))>=.117-1e-6);}
+test('MX release cam touches the leaf tab before actuation and clears both electrical buttons',()=>{
+ const m=buildMXSwitch(T,materials),cam=m.group.getObjectByName('contact release cam'),profile=cam.userData.profile;
+ const faceX=y=>{for(let i=1;i<profile.length;i++)if(y<=profile[i][1]){const a=profile[i-1],b=profile[i],q=(y-a[1])/(b[1]-a[1]);return a[0]+(b[0]-a[0])*q;}return profile.at(-1)[0];};
+ let button,tab;m.parts.movingLeaf.traverse(o=>{if(o.geometry?.type==='SphereGeometry')button=o;if(o.geometry?.parameters?.height===.075)tab=o;});
+ for(let i=0;i<=80;i++){const travel=i/20;m.update({travel,explode:0});m.group.updateMatrixWorld(true);
+  const bounds=new T.Box3().setFromObject(cam),b=button.getWorldPosition(new T.Vector3());
+  const tabBounds=new T.Box3().setFromObject(tab);for(const name of ['cam outer support','cam slider web'])assert.equal(tabBounds.intersectsBox(new T.Box3().setFromObject(m.group.getObjectByName(name))),false);
+  assert.ok(bounds.min.z>b.z+.052); // the cam never enters the electrical contact plane
+  const angle=Math.asin(.096/.335)*Math.min(travel/2,1);
+  // Bottom outer corner of the leaf tab is the follower on the releasing cam.
+  const x=.28+.023*Math.cos(angle)+.4125*Math.sin(angle),y=-.68-.023*Math.sin(angle)+.4125*Math.cos(angle)+travel*.1;
+  if(travel<=2)assert.ok(Math.abs(faceX(y)-x)<2e-5);
+  else assert.ok(faceX(y)>x); // overtravel opens clearance, never pushes the closed contacts through each other
+  // Every point above the follower on the tab's outer face must remain left of the cam.
+  for(let j=0;j<=20;j++){const v=.4125+j/20*.075,tx=.28+.023*Math.cos(angle)+v*Math.sin(angle),ty=-.68-.023*Math.sin(angle)+v*Math.cos(angle)+travel*.1;
+   assert.ok(faceX(ty)>=tx-2e-5);}
+ }
 });

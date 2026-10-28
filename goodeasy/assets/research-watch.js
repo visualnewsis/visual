@@ -1,4 +1,4 @@
-import {T,materials as M,mesh,box,cyl,ring,rod,tube,gear,part,bolt} from './quality-kit.js?v=20261026-release3';
+import {T,materials as M,mesh,box,cyl,ring,rod,tube,gear,part,bolt} from './quality-kit.js?v=20261028-release3';
 import {TAU,clamp,layerOffset,gearAngle,escapeState,handAngles,period} from './research-math.js?v=20261026-release3';
 const silver=M.steel, gold=M.brass, ruby=new T.MeshPhysicalMaterial({color:0x862d4b,roughness:.2,metalness:.2,clearcoat:1});
 const palette={silver,gold,ruby};
@@ -21,10 +21,69 @@ export function buildAssembly(){const group=new T.Group(),layers=[];const make=(
  const guide=rod(group,[0,-1.15,0],[0,4.5,0],.006,new T.MeshBasicMaterial({color:0x6c817b,transparent:true,opacity:.35}));guide.visible=false;guide.userData.noFit=true;
  return {group,layers,eye:[5,3.2,7],update(s){const e=clamp(s.explode||0);layers.forEach((g,i)=>g.position.y=g.userData.restY+layerOffset(e,i,g.userData.shift*.35));guide.visible=false;const t=s.time||0,esc=escapeState(t*3.75),fourthAngle=esc.angle*8/60,a=handAngles(fourthAngle*60/TAU);for(const k in h)h[k].rotation.y=-a[k];tr.wheels[4].rotation.y=esc.angle;tr.wheels[3].rotation.y=-fourthAngle;tr.wheels[2].rotation.y=fourthAngle*8/64;tr.wheels[1].rotation.y=-fourthAngle*8/64*8/60;tr.wheels[0].rotation.y=fourthAngle*8/64*8/60*12/64;tr.b.update(esc.balance);tr.fork.rotation.y=esc.fork;barrelSpring.update((s.charge??50)/100);barrelSpring.mesh.rotation.y=tr.wheels[0].rotation.y;cannon.rotation.y=-a.minute;hourWheel.rotation.y=-a.hour;intermediate.rotation.y=a.minute/4;intermediatePinion.rotation.y=intermediate.rotation.y;}};
 }
-export function buildPower(){const group=new T.Group(),barrel=part(group,'barrel');const wheel=toothWheel(barrel,64,.028,0,0,0,gold);cyl(barrel,.08,.4,silver,0,.15,0);ring(barrel,.91,.035,silver,0,.15,0);const spring=springRibbon(barrel,.83);spring.mesh.position.y=.08;const lid=plate(group,.89,.32,[[0,0,.09]],silver);return {group,eye:[4,6,6],update(s){spring.update((s.charge||0)/100);barrel.rotation.y=-(s.time||0)*.35;lid.position.y=.32+(s.open??.8)*1.2;}};}
+function anchoredPowerSpring(parent){
+ const n=640,positions=new Float32Array((n+1)*6),indices=[];
+ for(let i=0;i<n;i++){const a=i*2;indices.push(a,a+2,a+1,a+1,a+2,a+3);}
+ const g=new T.BufferGeometry();g.setAttribute('position',new T.BufferAttribute(positions,3));g.setIndex(indices);
+ const o=mesh(parent,g,new T.MeshStandardMaterial({color:0xb5a99b,metalness:.84,roughness:.3,side:T.DoubleSide}));o.name='Mainspring anchored to arbor and barrel';
+ return {mesh:o,update(charge,innerAngle,outerAngle){
+  for(let i=0;i<=n;i++){const t=i/n,a=innerAngle+t*(8*TAU+outerAngle-innerAngle),r=.10+.72*t**(1+charge*1.8);positions[i*6]=positions[i*6+3]=Math.cos(a)*r;positions[i*6+1]=.12;positions[i*6+4]=.24;positions[i*6+2]=positions[i*6+5]=Math.sin(a)*r;}
+  g.attributes.position.needsUpdate=true;g.computeVertexNormals();g.computeBoundingSphere();g.computeBoundingBox();
+  o.userData.inner=[positions[0],.18,positions[2]];o.userData.outer=[positions[n*6],.18,positions[n*6+2]];
+ }};
+}
+export function buildPower(){
+ const group=new T.Group(),barrel=part(group,'barrel'),arbor=part(group,'winding arbor');
+ const wheel=toothWheel(barrel,64,.028,0,0,0,gold),shape=wheel.geometry.parameters.shapes.clone(),bore=new T.Path();bore.absarc(0,0,.10,0,TAU,true);shape.holes[shape.holes.length-1]=bore;
+ const wg=new T.ExtrudeGeometry(shape,{depth:.045,bevelEnabled:true,bevelSize:.002,bevelThickness:.004,bevelSegments:2,curveSegments:20});wg.rotateX(-Math.PI/2);wheel.geometry.dispose();wheel.geometry=wg;
+ for(const child of [...wheel.children]){wheel.remove(child);child.geometry?.dispose();}
+ plate(barrel,.87,.025,[[0,0,.10]],silver);const outerShape=new T.Shape();outerShape.absarc(0,0,.91,0,TAU,false);const wallHole=new T.Path();wallHole.absarc(0,0,.86,0,TAU,true);outerShape.holes.push(wallHole);
+ const wallGeo=new T.ExtrudeGeometry(outerShape,{depth:.25,bevelEnabled:false,curveSegments:64});wallGeo.rotateX(-Math.PI/2);const wall=mesh(barrel,wallGeo,silver);wall.name='Barrel wall with open interior';
+ const outerHook=rod(barrel,[.82,.18,0],[.875,.18,0],.012,gold);outerHook.name='Outer spring hook';
+ cyl(arbor,.075,.53,gold,0,.22,0);const innerHook=rod(arbor,[.075,.18,0],[.10,.18,0],.012,gold);innerHook.name='Inner spring hook';
+ const ratchet=toothWheel(arbor,24,.028,0,.50,0,gold);box(arbor,.035,.02,.18,M.red,0,.56,-.13,.004);
+ const click=part(group,'fixed winding click');rod(click,[-.48,.52,.12],[-.32,.52,.02],.025,silver);bolt(click,-.48,.49,.12);
+ const lid=plate(barrel,.89,.32,[[0,0,.10]],silver);lid.name='Barrel lid';
+ const spring=anchoredPowerSpring(group);let lastCharge=null,lastTime=0,innerAngle=0,outerAngle=0;
+ const result={group,allowZoom:true,eye:[4,6,6],parts:{barrel,arbor,wheel,ratchet,lid,spring:spring.mesh,innerHook,outerHook},defaults:{time:0,charge:50,open:.8},
+ update(s){
+  const charge=clamp((s.charge??50)/100),t=s.time||0;
+  if(lastCharge===null||t<lastTime-1e-7){innerAngle=-charge*3*TAU;outerAngle=0;}
+  else if(charge>lastCharge)innerAngle-=(charge-lastCharge)*3*TAU;
+  else outerAngle-=(lastCharge-charge)*3*TAU;
+  lastCharge=charge;lastTime=t;arbor.rotation.y=-innerAngle;barrel.rotation.y=-outerAngle;lid.position.y=.32+(s.open??.8)*1.2;
+  spring.update(charge,innerAngle,outerAngle);s.arborAngle=innerAngle;s.barrelAngle=outerAngle;
+ },
+ advance(s,dt){s.time=(s.time||0)+dt;s.charge=Math.max(0,(s.charge??50)-dt*12);if(!s.charge)s.running=false;},
+ reading:s=>'저장량 '+Math.round(s.charge)+'% · '+(s.running?'감기축은 멈추고 태엽통이 도는 중':'태엽의 양 끝을 따라보세요'),
+ annotations:[{text:'감기축 · 풀리는 동안 고정',object:arbor},{text:'회전하는 태엽통과 바깥 고정점',object:outerHook},{text:'축과 통에 각각 연결된 태엽',object:spring.mesh}]};
+ result.update({...result.defaults});return result;
+}
 export function buildGears(){const group=new T.Group();const A=toothWheel(group,48,.04,-.6,0,0,gold),B=toothWheel(group,12,.04,.6,0,0,silver,false);B.rotation.y=Math.PI/12;for(const x of [-.6,.6])rod(group,[x,-.18,0],[x,.25,0],.04,silver);const marker=M.red.clone();cyl(A,.035,.02,marker,.7,.065,0);cyl(B,.025,.02,marker,.16,.065,0);const contact=cyl(group,.035,.025,ruby,.36,.08,0);return {group,eye:[1,8,4],update(s){A.rotation.y=s.angle||0;B.rotation.y=Math.PI/12+gearAngle(s.angle||0,48,12);contact.visible=!!s.contact;}};}
-export function buildEscapement(){const group=new T.Group();const wheel=part(group,'escape wheel');for(let i=0;i<15;i++){const a=i/15*TAU,shape=new T.Shape();shape.moveTo(.57,0);shape.lineTo(.83,.09);shape.lineTo(.72,.14);shape.lineTo(.58,.13);shape.closePath();const geo=new T.ExtrudeGeometry(shape,{depth:.05,bevelEnabled:true,bevelThickness:.005,bevelSize:.005,bevelSegments:2});geo.rotateX(-Math.PI/2);const o=mesh(wheel,geo,silver);o.rotation.y=a;}ring(wheel,.48,.055,silver);for(let i=0;i<5;i++){const a=i/5*TAU;rod(wheel,[0,0,0],[Math.cos(a)*.5,0,Math.sin(a)*.5],.028,silver);}cyl(wheel,.07,.2,gold);
- const fork=part(group,'pallet fork');fork.position.set(0,.07,1.18);rod(fork,[0,0,0],[-.50,0,-.5],.03,gold);rod(fork,[0,0,0],[.50,0,-.5],.03,gold);box(fork,.13,.08,.14,ruby,-.5,0,-.5,.015);box(fork,.13,.08,.14,ruby,.5,0,-.5,.015);rod(fork,[0,0,0],[0,0,.49],.035,gold);for(const x of [-.10,.10])rod(fork,[0,0,.42],[x,0,.65],.025,gold);const b=balance(group,0,.05,2.45,.62);return {group,eye:[4,8,5],update(s){const p=escapeState(s.phase||0);wheel.rotation.y=-p.angle;fork.rotation.y=p.fork;b.update(p.balance);s.caption=p.phase;}};}
+export function buildEscapement(){
+ const group=new T.Group(),wheel=part(group,'escape wheel');
+ for(let i=0;i<15;i++){const a=i/15*TAU,shape=new T.Shape();shape.moveTo(.57,0);shape.lineTo(.83,.09);shape.lineTo(.72,.14);shape.lineTo(.58,.13);shape.closePath();const geo=new T.ExtrudeGeometry(shape,{depth:.05,bevelEnabled:true,bevelThickness:.005,bevelSize:.005,bevelSegments:2});geo.rotateX(-Math.PI/2);const o=mesh(wheel,geo,silver);o.rotation.y=a;}
+ ring(wheel,.48,.055,silver);for(let i=0;i<5;i++){const a=i/5*TAU;rod(wheel,[0,0,0],[Math.cos(a)*.5,0,Math.sin(a)*.5],.028,silver);}cyl(wheel,.07,.2,gold);
+ const fork=part(group,'pallet fork');fork.position.set(0,.07,1.18);
+ const stones=[];for(const x of [-.422,.422]){rod(fork,[0,0,0],[x,0,-.449],.03,gold);const stone=box(fork,.13,.08,.14,ruby.clone(),x,0,-.449,.015);stone.name=x<0?'Entry pallet stone':'Exit pallet stone';stones.push(stone);}
+ rod(fork,[0,0,0],[0,-.07,.18],.035,gold);rod(fork,[0,-.07,.18],[0,-.07,1.10],.035,gold);
+ const horns=[];for(const x of [-.111,.111]){rod(fork,[0,-.07,1.10],[x,-.07,1.10],.020,gold);horns.push(rod(fork,[x,-.07,1.10],[x,-.07,1.35],.020,gold));}
+ const b=balance(group,0,.30,2.45,.62),roller=cyl(b.root,.16,.05,silver,0,-.25,0),impulsePin=cyl(b.root,.024,.075,ruby,0,-.31,-.11);
+ cyl(b.root,.025,.64,silver,0,-.04,0);roller.name='Balance roller below rim';impulsePin.name='Roller impulse pin between fork horns';
+ const bridge=part(group,'balance support');rod(bridge,[.76,.0,2.45],[.76,.56,2.45],.05,silver);rod(bridge,[.76,.56,2.45],[0,.56,2.45],.045,silver);cyl(bridge,.06,.11,ruby,0,.56,2.45);box(bridge,.14,.10,.14,silver,.43,.40,2.45,.012);rod(bridge,[.43,.45,2.45],[.43,.56,2.45],.035,silver);cyl(bridge,.06,.07,silver,0,-.035,2.45);
+ let freeAt=null,freeAngle=0;
+ const result={group,allowZoom:true,eye:[4,8,5],defaults:{phase:0,regulated:1},parts:{wheel,fork,entryStone:stones[0],exitStone:stones[1],balance:b.root,hairspring:b.hair,roller,impulsePin,horns},
+ update(s){
+  const t=s.phase||0,p=escapeState(t),free=s.regulated===0;
+  if(free){if(freeAt===null){freeAt=t;freeAngle=p.angle;}const dt=Math.max(0,t-freeAt);wheel.rotation.y=-(freeAngle+dt*TAU*1.25);fork.position.x=1.65;fork.rotation.y=0;b.update(p.balance*Math.exp(-dt*.85));s.caption='팔렛 분리 · 연속 회전';}
+  else{freeAt=null;fork.position.x=0;wheel.rotation.y=-p.angle;fork.rotation.y=p.fork*.325;b.update(p.balance);s.caption=p.phase;}
+  stones.forEach((o,i)=>o.material.emissive.setHex(!free&&i===p.side&&p.phase==='잠김'?0x43111e:0x000000));
+ },
+ advance(s,dt){s.phase=(s.phase||0)+dt*.8;},
+ reading:s=>s.regulated===0?'팔렛을 빼면 바퀴가 계속 돌고 밸런스의 진폭은 줄어듭니다.':(s.caption||'잠김')+' · '+Math.floor(s.phase||0)+' 비트',
+ annotations:[{text:s=>s.regulated===0?'잠금 없이 연속 회전':'잠겼다가 풀리는 탈진바퀴',object:wheel},{text:'두 팔렛 · 반 톱니 위상 차이',object:fork},{text:'포크 뿔 사이의 롤러 핀',object:impulsePin},{text:'왕복하는 밸런스와 고정된 스프링 끝',object:b.root}]};
+ result.update({...result.defaults});return result;
+}
 export function buildBalance(){const group=new T.Group(),b=balance(group,0,0,0,1.15);cyl(group,.08,.65,silver,0,-.2,0);const anchor=box(group,.2,.1,.2,silver,.43,.13,0);return {group,eye:[3,7,5],update(s){const I=(s.inertia||100)/100,k=(s.stiffness||100)/100,t=s.time||0,damping=s.driven?1:Math.exp(-.15*t);b.update(Math.cos(t*TAU/(period(I,k)/4))*.9*damping);s.caption=(period(I,k)/4).toFixed(2)+'초';}};}
 export function buildHands(){const group=new T.Group();dial(group,1.8,0);const h=hands(group,.15);return {group,eye:[0,9,2],update(s){const a=handAngles(s.seconds||0);for(const k in h)h[k].rotation.y=-a[k];}};}
 export const watchBuilders={assembly:buildAssembly,power:buildPower,gears:buildGears,escapement:buildEscapement,balance:buildBalance,hands:buildHands};

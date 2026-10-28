@@ -13,3 +13,8 @@ select{font:inherit;background:#17201d;color:var(--paper);border:1px solid var(-
 .part-label{position:absolute;top:0;left:0;pointer-events:none;color:#c5d2c8;background:#0c1111c9;border-left:1px solid #00b4c9;padding:3px 7px;font-size:10px;line-height:1.5;white-space:nowrap}.part-label[hidden]{display:none}
 
 #pedal{-webkit-touch-callout:none}
+
+.hero-stage canvas,.study-stage canvas{height:calc(100% - 64px)}
+.hero-stage>.inspect-controls,.study-stage>.inspect-controls{margin-top:8px;position:relative;z-index:4}
+.study-stage .thread-key{bottom:70px}.hero-stage .model-note{bottom:65px}
+@media(max-width:600px){.hero-stage{height:370px}.study-stage{height:420px}.hero-stage>.inspect-controls,.study-stage>.inspect-controls{font-size:10px}.diagram{height:340px}}

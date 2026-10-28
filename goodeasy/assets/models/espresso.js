@@ -61,8 +61,9 @@ export function buildEspresso(T,M={}){
  add(tank,cyl(.48,.48,.06,48),black,1.02,.36,-.54);add(tank,cyl(.48,.48,.06,48),black,1.02,2.17,-.54);
  add(pump,cyl(.20,.20,.66),black,.80,.57,.24).rotation.z=Math.PI/2;
  add(boiler,cyl(.53,.53,1.33),brass,-.43,1.47,-.43).rotation.z=Math.PI/2;
- tube(pipes,[[1.01,.61,-.54],[.78,.71,-.35],[.67,.78,.10],[.35,1.00,.10]],.035,brass);
- tube(pipes,[[-.38,1.81,-.43],[-.56,2.12,-.25],[-.61,2.34,.62],[-.62,2.37,1.49]],.037,brass);
+ const inlet=tube(pipes,[[1.02,.33,-.54],[1.02,.23,-.2],[1.32,.3,.24],[1.13,.57,.24]],.035,brass);inlet.name='tank outlet to pump inlet';
+ const delivery=tube(pipes,[[.47,.57,.24],[.28,.57,.24],[.26,1.15,-.43],[.235,1.47,-.43]],.035,brass);delivery.name='pump outlet to boiler endcap';
+ const heatedPipe=tube(pipes,[[-.43,2.00,-.43],[-.56,2.12,-.25],[-.61,2.34,.62],[-.62,2.37,1.27647]],.037,brass);heatedPipe.name='boiler surface to grouphead inlet';
  // Steam wand and cup warmer / slotted tray.
  add(wand,new T.SphereGeometry(.14,24,16),brass,1.40,2.27,1.40);
  tube(wand,[[1.4,2.27,1.4],[1.70,2.05,1.62],[1.86,1.43,1.84],[1.80,1.03,1.87]],.045,steel);
@@ -73,19 +74,19 @@ export function buildEspresso(T,M={}){
  // Cup / fill 0..40mL, two streams tied to locked+brewing+pressure.
  add(cup,new T.CylinderGeometry(.38,.30,.62,48,1,true),ivory,HX,.59,2.04);
  add(cup,cyl(.30,.30,.028),ivory,HX,.29,2.04);
- add(cup,new T.TorusGeometry(.18,.042,10,32),ivory,HX+.45,.58,2.04);
+ const cupHandle=add(cup,new T.TorusGeometry(.18,.042,10,32),ivory,HX+.54,.58,2.04);cupHandle.name='cup handle attached outside wall';
  const liquid=add(cup,cyl(.295,.295,.011,48),coffee,HX,.31,2.04);
- const streamA=add(cup,cyl(.017,.013,.37,12),coffee,HX-.12,.94,1.99);
- const streamB=add(cup,cyl(.017,.013,.37,12),coffee,HX+.12,.94,1.99);
+ const streamA=add(cup,cyl(.017,.013,1,12),coffee,HX-.12,.94,1.99);
+ const streamB=add(cup,cyl(.017,.013,1,12),coffee,HX+.12,.94,1.99);
  function update(state={},detail=0){
   const s={locked:false,brewing:false,volume:0,pressure:0,grind:.5,...state},d=T.MathUtils.clamp(Number(detail)||0,0,1);
   filter.position.set(HX,FILTER_Y-(s.locked?0:.32),HZ+(s.locked?0:.31));
   filter.rotation.y=s.locked?0:.35; // rotates around basket center
   leverPivot.rotation.z=s.brewing?-.27:0;
-  needlePivot.rotation.z=T.MathUtils.lerp(-.9,.9,T.MathUtils.clamp((Number(s.pressure)||0)/12,0,1));
+  needlePivot.rotation.z=-T.MathUtils.lerp(-.75*Math.PI,.75*Math.PI,T.MathUtils.clamp((Number(s.pressure)||0)/12,0,1));
   const fill=T.MathUtils.clamp((Number(s.volume)||0)/40,0,1);
   liquid.position.y=.31+.45*fill;cup.userData.fill=fill;cup.userData.volumeMl=40*fill;
-  const pouring=!!(s.locked&&s.brewing&&Number(s.pressure)>0);streamA.visible=streamB.visible=pouring;
+  const pouring=!!(s.locked&&s.brewing&&Number(s.pressure)>0);streamA.visible=streamB.visible=pouring;for(const stream of [streamA,streamB]){stream.name='coffee from spout to current surface';stream.scale.y=.96-liquid.position.y;stream.position.y=(.96+liquid.position.y)/2;}
   // Rear panel slides off to reveal internals; body side/front remain stable and recognizable.
   rear.position.z=-1.4*d;rear.visible=d<.98;
   pump.position.x=1.15*d;boiler.position.x=-1.12*d;tank.position.z=-.5*d;pipes.position.x=.25*d;

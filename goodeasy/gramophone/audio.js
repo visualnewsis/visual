@@ -7,6 +7,14 @@ export class GramophoneAudio {
   if(!this.context){const Audio=window.AudioContext||window.webkitAudioContext;if(!Audio)throw Error('이 브라우저는 웹 오디오를 지원하지 않습니다.');this.context=new Audio();this.gain=this.context.createGain();this.gain.gain.value=.3;this.filter=this.context.createBiquadFilter();this.filter.type='lowpass';this.filter.frequency.value=3000;this.filter.Q.value=.45;this.filter.connect(this.gain);this.gain.connect(this.context.destination);this.buffer=this.context.createBuffer(1,this.samples.length,24000);this.buffer.copyToChannel(this.samples,0);}
   return this.context.resume();
  }
+ // A slowed display signal follows the same note, envelope and record position as the PCM.
+ // The carrier is divided by 90 so a screen can show the displacement; it is not an audio-rate measurement.
+ visualSignal(position){
+  const t=Math.max(0,Math.min(this.duration,Number(position)||0)),local=t%.75;
+  const f=440*2**((notes[Math.floor(t/.75)%notes.length]-69)/12);
+  const env=Math.min(1,local/.015)*Math.exp(-local*4)*Math.min(1,(.75-local)/.035)*Math.min(1,(this.duration-t)/.15);
+  return env>0?env*Math.sin(2*Math.PI*f*t/90):0;
+ }
  now(){return this.context?.currentTime||0;}
  play(offset,rpm){this.stop();if(offset>=this.duration)return;const source=this.context.createBufferSource();source.buffer=this.buffer;source.playbackRate.value=rpm/78;const voice=this.context.createGain();voice.gain.setValueAtTime(0,this.now());voice.gain.linearRampToValueAtTime(1,this.now()+.012);source.connect(voice);voice.connect(this.filter);this.voice=voice;source.start(0,Math.max(0,offset));this.source=source;}
  rate(rpm){if(this.source)this.source.playbackRate.setValueAtTime(rpm/78,this.now());}

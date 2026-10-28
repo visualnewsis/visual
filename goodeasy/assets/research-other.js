@@ -1,13 +1,17 @@
+import {buildBowStudy,buildBridgeStudy,buildViolinBodyStudy} from './violin-lessons.js?v=20261028-release3';
+import {buildReelRetrieve as reelRetrieve,buildReelOscillation,buildReelDrag} from './reel-lessons.js?v=20261028-release3';
+import {buildKeyboardSpringStudy,buildKeyboardDebounceStudy} from './keyboard-lessons.js?v=20261028-release3';
+import {buildProjectorGateStudy,buildProjectorFramesStudy} from './projector-lessons.js?v=20261028-release3';
 import {buildLengthStudy,buildHarmonicStudy,buildBodyStudy} from './guitar-lessons.js?v=20261027-premium6';
-import {espressoAssembly} from './anatomy-espresso.js?v=20261027-depth4';
-import {buildBrewRatio as detailedBrewRatio} from './coffee-detail.js?v=20261027-detail1';
-import {buildIris as detailedIris,buildShutter as detailedShutter,buildExposure as detailedExposure} from './camera-lessons.js?v=20261027-detail1';
-import {buildCoffeeComparison,buildCoffeeWaterPath} from './espresso-lessons.js?v=20261027-detail1';
+import {espressoAssembly} from './anatomy-espresso.js?v=20261028-release3';
+import {buildBrewRatio as detailedBrewRatio} from './coffee-detail.js?v=20261028-release3';
+import {buildIris as detailedIris,buildShutter as detailedShutter,buildExposure as detailedExposure} from './camera-lessons.js?v=20261028-release3';
+import {buildCoffeeComparison,buildCoffeeWaterPath} from './espresso-lessons.js?v=20261028-release3';
 import {curtainWindow,filmCycle,debounceSample,crankX,bowedDisplacement} from './mechanism-checks.js?v=20261026-release3';
-import {buildMXStudy,buildEspressoStudy} from './quality-replacements.js?v=20261027-detail1';
-import {T,materials as M,mesh,box,cyl,ring,rod,tube,part} from './quality-kit.js?v=20261026-release3';
-import {buildGuitar,buildViolin} from './quality-instruments.js?v=20261027-premium6';
-import {buildReel,buildEspresso} from './quality-machines.js?v=20261027-detail1';
+import {buildMXStudy,buildEspressoStudy} from './quality-replacements.js?v=20261028-release3';
+import {T,materials as M,mesh,box,cyl,ring,rod,tube,part} from './quality-kit.js?v=20261028-release3';
+import {buildGuitar,buildViolin} from './quality-instruments.js?v=20261028-release3';
+import {buildReel,buildEspresso} from './quality-machines.js?v=20261028-release3';
 import {TAU,clamp,stringHz,lightRatio} from './research-math.js?v=20261026-release3';
 const ink=new T.MeshStandardMaterial({color:0x1f3e3c,roughness:.6}),blue=new T.MeshStandardMaterial({color:0x569da9,roughness:.25}),red=M.red,signal=new T.MeshStandardMaterial({color:0xe7c47a,emissive:0x6b471a,roughness:.3});
 const finish=(group,update,extra={})=>({group,eye:[4,5,7],update,...extra});
@@ -41,4 +45,4 @@ export function buildConnectedWaterPath(){
  const captions=['물탱크 바닥의 흡입구 → 펌프 입구','펌프 출구 → 보일러 입구','보일러의 히터 → 데워진 물의 출구','그룹헤드 → 샤워스크린 → 커피층','바스켓의 구멍 → 추출구 → 잔'];
  return {...m,defaults:{phase:0,explode:0},annotations:ids.map((id,i)=>({object:m.components.find(c=>c.id===id).object,text:['물탱크','펌프','보일러','그룹헤드','잔'][i]})),update(s){s.activePart=Math.min(4,Math.floor(clamp(s.phase||0)*5));update(s);},advance(s,dt){s.phase=Math.min(1,(s.phase||0)+dt/12);if(s.phase>=1)s.running=false;},reading:s=>captions[s.activePart||0]+' · 관은 실제 접속점을 잇습니다. 펌프식 단일 보일러의 개념 구조입니다.'};
 }
-export const otherBuilders={'mx-structure':()=>buildMXStudy(T,M),string:buildString,'guitar-body':buildGuitarBody,harmonics:buildHarmonics,bow:buildBowContact,'violin-bridge':buildViolinBridge,'violin-body':buildViolinBody,retrieve:buildReelRetrieve,oscillation:buildOscillation,drag:buildDrag,iris:detailedIris,shutter:detailedShutter,exposure:detailedExposure,'film-gate':buildFilmGate,frames:buildFrames,'spring-force':buildSpringForce,debounce:buildDebounce,puck:buildCoffeeComparison,'brew-ratio':detailedBrewRatio,'water-path':buildConnectedWaterPath,hammer:buildHammer,damper:buildDamper};
+export const otherBuilders={'mx-structure':()=>buildMXStudy(T,M),string:buildString,'guitar-body':buildGuitarBody,harmonics:buildHarmonics,bow:buildBowStudy,'violin-bridge':buildBridgeStudy,'violin-body':buildViolinBodyStudy,retrieve:reelRetrieve,oscillation:buildReelOscillation,drag:buildReelDrag,iris:detailedIris,shutter:detailedShutter,exposure:detailedExposure,'film-gate':buildProjectorGateStudy,frames:buildProjectorFramesStudy,'spring-force':buildKeyboardSpringStudy,debounce:buildKeyboardDebounceStudy,puck:buildCoffeeComparison,'brew-ratio':detailedBrewRatio,'water-path':buildConnectedWaterPath,hammer:buildHammer,damper:buildDamper};

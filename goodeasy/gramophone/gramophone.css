@@ -6,3 +6,8 @@
 .related a{display:block;text-decoration:none;border-top:1px solid var(--line);padding:25px 0}.related small{color:var(--gold);font-size:11px}.related h3{font-family:Arial,"Malgun Gothic",sans-serif;font-size:24px;line-height:1.5;letter-spacing:-.04em;margin:15px 0}.related p{color:var(--muted);font-size:14px}.related span{font-size:12px;color:var(--gold)}
 
 button:disabled{opacity:.35;cursor:default}input[type=range]{min-height:32px}
+
+.hero-stage canvas,.motor-stage canvas{height:calc(100% - 64px)}
+.hero-stage>.inspect-controls,.motor-stage>.inspect-controls{margin-top:8px;position:relative;z-index:4}
+.hero-stage .model-note{bottom:66px}
+@media(max-width:600px){.hero-stage{height:390px}.motor-stage{height:420px}}

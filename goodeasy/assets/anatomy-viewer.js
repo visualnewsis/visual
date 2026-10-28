@@ -1,7 +1,7 @@
-import {playStudyTone,stopStudyTone,midiFrequency} from './study-audio.js?v=20261027-audio1';
+import {playStudyTone,stopStudyTone,midiFrequency} from './study-audio.js?v=20261028-release3';
 import {zoomDistance,wheelZoom,pinchZoom,zoomPercent} from './anatomy-controls.js?v=20261027-orbit1';
-import {T,makeStage} from './quality-kit.js?v=20261027-premium6';
-import {anatomyBuilders} from './anatomy-models.js?v=20261027-premium6';
+import {T,makeStage} from './quality-kit.js?v=20261028-release3';
+import {anatomyBuilders} from './anatomy-models.js?v=20261028-release3';
 const slug=document.body.dataset.experiment||document.body.dataset.music||location.pathname.split('/').filter(Boolean).at(-1),build=anatomyBuilders[slug],inside=document.getElementById('inside');
 let capturedMusic=window.GoodeasyMusicState?{...window.GoodeasyMusicState}:null;window.addEventListener('goodeasy:music',e=>{capturedMusic={...e.detail};});
 let capturedRecord=window.GoodeasyMusicRecord?{...window.GoodeasyMusicRecord}:null;window.addEventListener('goodeasy:record',e=>{capturedRecord=e.detail?.record?{...e.detail.record}:null;});

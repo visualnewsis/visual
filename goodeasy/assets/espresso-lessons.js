@@ -1,6 +1,8 @@
-import {buildCoffeeComparison as detailedCoffeeComparison} from './coffee-detail.js?v=20261027-detail1';
-import {T,materials as M,box,cyl,rod,tube,part} from './quality-kit.js?v=20261026-release3';
-import {buildEspressoStudy} from './quality-replacements.js?v=20261027-detail1';
+import {espressoAssembly} from './anatomy-espresso.js?v=20261028-release3';
+import {espressoSequence} from './espresso-sequence.js?v=20261028-release3';
+import {buildCoffeeComparison as detailedCoffeeComparison} from './coffee-detail.js?v=20261028-release3';
+import {T,materials as M,box,cyl,rod,tube,part} from './quality-kit.js?v=20261028-release3';
+import {buildEspressoStudy} from './quality-replacements.js?v=20261028-release3';
 import {coffeeFlow} from './model.js?v=20261026-release3';
 
 const water=new T.MeshStandardMaterial({color:0x70cbd5,emissive:0x164651,roughness:.25});
@@ -35,26 +37,9 @@ function legacyCoffeeComparison(){
 }
 
 export function buildCoffeeWaterPath(){
- const m=buildEspressoStudy(T,M),group=m.group;
- const points=[[1.02,1.26,-.54],[.80,.57,.24],[-.43,1.47,-.43],[-.62,2.37,1.72],[-.62,1.15,1.99],[-.62,.65,1.99]];
- for(let i=0;i<points.length-1;i++){const pipe=rod(group,points[i],points[i+1],i===4?.012:.027,i===4?M.coffee:water);pipe.userData.noFit=true;}
- const bead=new T.Mesh(new T.SphereGeometry(.085,20,12),new T.MeshBasicMaterial({color:0xc2f5f5}));bead.userData.noFit=true;group.add(bead);
- const names=['tank','pump','boiler','filter','cup'];
- const texts=['① 물탱크','② 펌프','③ 보일러','④ 커피층','⑤ 잔'];
- const annotations=names.map((key,i)=>({text:texts[i],part:key,point:points[[0,1,2,4,5][i]]}));
- for(const name of [...names,'head'])m.parts[name]?.traverse(o=>{if(o.isMesh&&o.material.emissive)o.material=o.material.clone();});
- return {...m,eye:[4,3.8,8],defaults:{phase:0},annotations,
-  update(s){m.update({locked:true,brewing:s.phase>=.8,volume:Math.max(0,(s.phase-.8)/.2)*20,pressure:9},true);
-   for(const name of ['tank','pump','boiler','pipes'])m.parts[name]?.position.set(0,0,0);
-   const active=Math.min(4,Math.floor(clamp(s.phase)*5));s.activePart=active;
-   // Equal slider intervals per named stage, with the dot passing through each part.
-   const section=Math.min(4,Math.floor(clamp(s.phase)*5)),local=clamp(s.phase)*5-section;
-   const a=new T.Vector3(...points[section===4?4:section]),b=new T.Vector3(...points[section===4?5:section+1]);
-   bead.position.copy(a.lerp(b,clamp(local)));
-   for(const [i,name] of names.entries())m.parts[name]?.traverse(o=>{if(o.isMesh&&o.material.emissive)o.material.emissive.setHex(i===active?0x265f69:0);});
-  },advance(s,dt){s.phase=Math.min(1,s.phase+dt*.15);if(s.phase===1)s.running=false;},
-  action(a,s){if(a==='path-start'){s.phase=0;s.running=true;}},
-  reading:s=>['① 물탱크 · 추출에 쓸 물을 담습니다.','② 펌프 · 커피층 쪽으로 물을 밀어 보냅니다.','③ 보일러 · 추출에 쓸 물을 데웁니다.','④ 커피층 · 뜨거운 물이 가루 사이를 통과합니다.','⑤ 잔 · 커피층을 지난 액체가 내려옵니다.'][s.activePart||0]};
+ const m=espressoAssembly(),update=m.update.bind(m),ids=['tank','pump','boiler','head','cup'];
+ const captions=['물탱크 바닥의 흡입구 → 펌프 입구','펌프 출구 → 보일러 입구','보일러의 히터 → 데워진 물의 출구','그룹헤드 → 샤워스크린 → 커피층','바스켓의 구멍 → 추출구 → 잔'];
+ return {...m,allowZoom:true,defaults:{phase:0,explode:0},annotations:ids.map((id,i)=>({object:m.components.find(c=>c.id===id).object,text:['물탱크','펌프','보일러','그룹헤드','잔'][i]})),update(s){s.activePart=espressoSequence(s.phase).stage;update(s);},advance(s,dt){s.phase=Math.min(1,(s.phase||0)+Math.max(0,dt)/12);if(s.phase>=1)s.running=false;},reading:s=>captions[s.activePart||0]+' · 펌프식 단일 보일러의 개념 구조입니다.'};
 }
 
 export {detailedCoffeeComparison as buildCoffeeComparison};
