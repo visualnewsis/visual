@@ -14,14 +14,14 @@ test('winding visibly tightens the same mainspring in hero and assembly, not an 
  assert.ok(spring.geometry.attributes.position.array.some((v,i)=>Math.abs(v-loose[i])>.02));
  a.update({charge:80,turns:10,phase:0});const other=a.group.getObjectByName('Visible winding mainspring');
  assert.deepEqual([...spring.geometry.attributes.position.array],[...other.geometry.attributes.position.array]);
- close(h.parts.movement.group.scale.y,.45);close(a.group.scale.y,.30);
+ for(const group of [h.parts.movement.group,a.group]){close(group.scale.x,group.scale.y);close(group.scale.y,group.scale.z);}
 });
 test('movement spring ends stay fixed to their own independently rotating arbor and barrel',()=>{
  const m=watchAssembly(),barrel=m.components.find(c=>c.id==='wheel-0').object;
  for(const [turns,charge,phase] of [[0,0,0],[4,32,.2],[8,64,.7],[8,50,1.1]]){
   m.update({turns,charge,phase});m.group.updateMatrixWorld(true);
   const spring=m.group.getObjectByName('Visible winding mainspring'),inner=new T.Vector3(...spring.userData.inner).applyMatrix4(spring.matrixWorld),outer=new T.Vector3(...spring.userData.outer).applyMatrix4(spring.matrixWorld);
-  const arbor=barrel.children.find(o=>o.geometry?.type==='LatheGeometry'),expectedInner=new T.Vector3(.075,.46,0).applyMatrix4(arbor.matrixWorld),expectedOuter=new T.Vector3(.58,.46,0).applyMatrix4(barrel.matrixWorld);
+  const arbor=barrel.children.find(o=>o.geometry?.type==='LatheGeometry'),expectedInner=new T.Vector3(.075,.23,0).applyMatrix4(arbor.matrixWorld),expectedOuter=new T.Vector3(.58,.23,0).applyMatrix4(barrel.matrixWorld);
   assert.ok(inner.distanceTo(expectedInner)<1e-6);assert.ok(outer.distanceTo(expectedOuter)<1e-6);
  }
 });
@@ -54,7 +54,7 @@ test('skeleton bridge leaves more than half of every wheel inspection area open 
  // threshold is one model unit, hundreds of times wider than these marks.
  const opaqueBridge=[];bridge.traverse(o=>{if(o.isMesh&&(!o.material.transparent||o.material.opacity>=.95))opaqueBridge.push(o);});assert.ok(opaqueBridge.length);
  for(const c of m.components.filter(c=>/^wheel-/.test(c.id))){
-  const center=c.object.getWorldPosition(new T.Vector3()),wheel=c.object.children.find(o=>o.userData.teeth),radius=wheel.userData.pitchRadius;
+  const center=c.object.getWorldPosition(new T.Vector3()),wheel=c.object.children.filter(o=>o.userData.teeth).sort((a,b)=>b.userData.pitchRadius-a.userData.pitchRadius)[0],radius=wheel.userData.pitchRadius;
   let open=0,total=0;
   for(const r of [.45,.65,.85])for(let i=0;i<32;i++){const a=i/32*Math.PI*2;ray.set(new T.Vector3(center.x+Math.cos(a)*radius*r,2,center.z+Math.sin(a)*radius*r),new T.Vector3(0,-1,0));total++;if(!ray.intersectObjects(opaqueBridge,false).length)open++;}
   assert.ok(open/total>.5,c.id+' visible fraction '+open/total);
@@ -66,8 +66,16 @@ test('normal watch cadence is independent of available spring reserve',()=>{
  close(run(5).elapsed,run(90).elapsed);close(run(5).elapsed,1);
 });
 
-test('case has a curved flank and padded straps keep thin physical edges and textured surfaces',()=>{
- const h=buildWatch(),shell=h.group.getObjectByName('Curved polished case flank');assert.equal(shell.geometry.type,'LatheGeometry');const radii=shell.geometry.parameters.points.map(p=>p.x);assert.ok(Math.max(...radii)-Math.min(...radii)>.12);
- let count=0;h.group.traverse(o=>{if(o.name!=='Tapered stitched leather strap')return;count++;const p=o.geometry.attributes.position,uv=o.geometry.attributes.uv;assert.equal(uv.count,p.count);const n=p.count/2;for(let i=0;i<n;i++)close(p.getY(i)-p.getY(i+n),.078,1e-6);assert.ok(p.getY(10)-p.getY(56*21+10)>.28,'strap bends away from the case');});assert.equal(count,2);
- const a=watchAssembly(),floor=a.group.getObjectByName('Blind machined recess floor');assert.ok(floor);const b=new T.Box3().setFromObject(floor);assert.ok(b.max.y<.025&&b.min.y>=-1e-6,'recess has real floor below the mainplate top');
+test('head-only case has curved metal, bored lugs and seated spring bars',()=>{
+ const h=buildWatch(),shell=h.group.getObjectByName('contoured-case-middle');assert.equal(shell.geometry.type,'LatheGeometry');const radii=shell.geometry.parameters.points.map(p=>p.x);assert.ok(Math.max(...radii)-Math.min(...radii)>.12);
+ assert.equal(h.group.getObjectByName('Tapered stitched leather strap'),undefined);assert.equal(h.parts.exterior.parts.lugs.length,4);assert.equal(h.parts.exterior.inspect.verifyBoresWithRaycaster().passed,true);assert.equal(h.parts.exterior.inspect.verifySpringBarFit().passed,true);
+});
+
+
+test('winding accepts only remaining capacity and rejects extra turns at full reserve',()=>{
+ let state={turns:12,reserve:96,visualTurns:11.75,visualReserve:94,elapsed:0,winding:true,regulated:true};const announcements=[];let commits=0;const c=createWatchExperience({getState:()=>state,setState:s=>{state=s;commits++;},announce:s=>announcements.push(s)});c.wind(2);close(state.turns,12.5);close(state.reserve,100);close(state.visualTurns,11.75);const full=state;c.wind(3);assert.equal(state,full,'full winding does not change the accumulated arbor target');assert.equal(commits,1);assert.ok(announcements.at(-1).includes('가득'));assert.equal(state.winding,true,'pending visual winding is preserved');c.tick(.1);assert.ok(state.visualTurns>11.75&&state.visualTurns<12.5);close(state.turns,12.5);c.tick(.1);close(state.visualTurns,12.5);assert.equal(state.winding,false);
+});
+
+test('after power is spent, winding adds exactly the newly available capacity',()=>{
+ let state={turns:12.5,reserve:100,visualTurns:12.5,visualReserve:100,elapsed:0,regulated:true};const c=createWatchExperience({getState:()=>state,setState:s=>state=s});c.wind(1);close(state.turns,12.5);c.tick(.1);close(state.reserve,99.95);c.wind(1);close(state.reserve,100);close(state.turns,12.5+.05/8);
 });

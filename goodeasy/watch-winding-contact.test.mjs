@@ -1,0 +1,56 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import * as T from './piano/vendor/three.module.min.js';
+import {buildWatchWinding} from './assets/watch-winding.js';
+const TAU=Math.PI*2;
+const cross=(a,b,c)=>(b[0]-a[0])*(c[1]-a[1])-(b[1]-a[1])*(c[0]-a[0]);
+function pd(p,a,b){const x=b[0]-a[0],y=b[1]-a[1],t=Math.max(0,Math.min(1,((p[0]-a[0])*x+(p[1]-a[1])*y)/(x*x+y*y)));return Math.hypot(p[0]-a[0]-t*x,p[1]-a[1]-t*y);}
+function contact(a,b){let gap=1,intersections=0;for(const e of a)for(const f of b){if(Math.min(e[0][0],e[1][0])-Math.max(f[0][0],f[1][0])>gap||Math.min(f[0][0],f[1][0])-Math.max(e[0][0],e[1][0])>gap||Math.min(e[0][1],e[1][1])-Math.max(f[0][1],f[1][1])>gap||Math.min(f[0][1],f[1][1])-Math.max(e[0][1],e[1][1])>gap)continue;if(cross(...e,f[0])*cross(...e,f[1])<-1e-20&&cross(...f,e[0])*cross(...f,e[1])<-1e-20)intersections++;gap=Math.min(gap,pd(e[0],...f),pd(e[1],...f),pd(f[0],...e),pd(f[1],...e));}return {gap,intersections};}
+const normal=new T.Vector3(-2,1,0).normalize(),tangent=new T.Vector3(1,2,0).normalize(),apex=new T.Vector3(-2.06,.45,.3);
+function bevelBoundary(o,inner=false){const a=o.geometry.attributes.position,n=o.geometry.userData.boundaryCount,out=[];for(let i=0;i<n;i++){const v=new T.Vector3().fromBufferAttribute(a,i+(inner?n:0)).applyMatrix4(o.matrixWorld).sub(apex),dn=v.dot(normal);out.push(dn>.24?[v.dot(tangent)/dn,v.z/dn]:null);}return out.map((p,i)=>[p,out[(i+1)%n]]).filter(e=>!e.includes(null)&&e.every(p=>Math.abs(p[0])<.20&&Math.abs(p[1])<.25));}
+function section(o,y){const a=o.geometry.index?o.geometry.toNonIndexed():o.geometry,p=a.attributes.position,out=[];for(let i=0;i<p.count;i+=3){const v=[0,1,2].map(k=>new T.Vector3().fromBufferAttribute(p,i+k).applyMatrix4(o.matrixWorld)),h=[];for(let j=0;j<3;j++){const A=v[j],B=v[(j+1)%3];if((A.y-y)*(B.y-y)<0){const t=(y-A.y)/(B.y-A.y);h.push([A.x+(B.x-A.x)*t,A.z+(B.z-A.z)*t]);}}if(h.length===2)out.push(h);}if(a!==o.geometry)a.dispose();return out;}
+
+test('actual perpendicular bevel meshes: full tooth cycle, outer and inner face, no crossing',()=>{
+ const m=buildWatchWinding(T);let maxGap=0;
+ for(let i=0;i<=360;i++){m.update({arborTurns:i/360/40});for(const inner of [false,true]){const r=contact(bevelBoundary(m.parts.pinionBevel,inner),bevelBoundary(m.parts.crownBevel,inner));assert.equal(r.intersections,0,`bevel pose ${i}, inner ${inner}`);assert.ok(r.gap>.00015&&r.gap<.0012,`bevel working gap ${r.gap}`);maxGap=Math.max(maxGap,r.gap);}}
+ assert.ok(Math.abs(m.parts.pinion.rotation.x/m.parts.crown.rotation.y-2)<1e-12);assert.ok(maxGap<.0012);
+});
+
+test('actual crown output spur and keyed winding wheel stay engaged through full tooth cycle',()=>{
+ const m=buildWatchWinding(T),{crownSpur,ratchet}=m.parts;
+ for(let i=0;i<=180;i++){m.update({arborTurns:i/180/40});const clip=a=>a.filter(e=>e.every(([x,z])=>Math.abs(x+1.7)<.08&&Math.abs(z-.3)<.15)),r=contact(clip(section(crownSpur,.965)),clip(section(ratchet,.965)));assert.equal(r.intersections,0,`spur pose ${i}`);assert.ok(r.gap<.0005,`spur gap ${r.gap}`);}
+});
+
+test('click tip touches actual asymmetric ratchet mesh at every winding pose and its support touches mainplate',()=>{
+ const m=buildWatchWinding(T);for(let i=0;i<=180;i++){m.update({arborTurns:i/180/20});const p=m.parts.clickTip.getWorldPosition(new T.Vector3()),edges=section(m.parts.clickRing,1.025);let dist=Infinity;for(const e of edges)dist=Math.min(dist,pd([p.x,p.z],...e));assert.ok(dist>=.01818&&dist<.01822,`click pose ${i}: distance ${dist}`);}
+ for(const name of ['Click post fixed to mainplate','Click spring fixed post','Yoke pivot anchored to mainplate','Yoke spring anchor fixed to mainplate','Crown wheel lower bearing fixed to mainplate']){const o=m.group.getObjectByName(name),b=new T.Box3().setFromObject(o);assert.ok(Math.abs(b.min.y-.073)<1e-7,`${name} mainplate contact`);const center=b.getCenter(new T.Vector3());assert.ok(Math.hypot(center.x+.264,center.z-.3)<2.4,`${name} lies on mainplate`);}
+});
+
+test('continuous shafts, bore clearance, arbor parenting, ratios and reverse freewheel',()=>{
+ const external=new T.Group(),m=buildWatchWinding(T,{arbor:external});assert.equal(m.parts.ratchet.parent,external);assert.equal(m.parts.clickRing.parent,external);const b=m.parts.pinionBevel.geometry.attributes.position,n=m.parts.pinionBevel.geometry.userData.boundaryCount;for(let i=2*n;i<4*n;i++)assert.ok(Math.abs(Math.hypot(b.getX(i),b.getZ(i))-.035)<1e-7);
+ const standalone=buildWatchWinding(T);let r=standalone.update({crownTurns:2});assert.ok(Math.abs(r.arborTurns-.6)<1e-12);assert.ok(Math.abs(standalone.parts.stem.rotation.x+TAU*2)<1e-12);const held=standalone.parts.arbor.rotation.y;r=standalone.update({crownTurns:1.5});assert.equal(r.arborTurns,.6);assert.equal(standalone.parts.arbor.rotation.y,held);assert.equal(r.reverse,true);assert.ok(standalone.parts.clutch.position.x<-.44);r=standalone.update({crownTurns:2});assert.ok(Math.abs(r.arborTurns-.75)<1e-12);
+});
+
+test('active assembly uses the same winding mesh and common barrel arbor across running states',async()=>{
+ const ctx=new Proxy({createImageData:(w,h)=>({data:new Uint8ClampedArray(w*h*4)}),measureText:()=>({width:100}),createLinearGradient:()=>({addColorStop(){}})},{get:(o,k)=>o[k]??(()=>{})});globalThis.document={createElement:()=>({getContext:()=>ctx,style:{}})};
+ const {watchAssembly}=await import('./assets/anatomy-watch.js');const m=watchAssembly(),ring=m.group.getObjectByName('20 asymmetric teeth keyed click ratchet'),wheel=m.group.getObjectByName('40 tooth winding wheel keyed to barrel arbor'),springCore=m.group.getObjectByName('Mainspring core fixed to winding arbor'),crown=m.group.getObjectByName('24 tooth crown output spur');assert.ok(ring&&wheel&&crown);assert.equal(ring.parent,springCore.parent);assert.equal(wheel.parent,springCore.parent);assert.equal(m.group.scale.y,1);
+ for(const [turns,phase] of [[0,0],[1,.3],[5,.8]]){m.update({turns,phase,charge:50});m.group.updateMatrixWorld(true);const clip=a=>a.filter(e=>e.every(([x,z])=>Math.abs(x+1.7)<.08&&Math.abs(z-.3)<.15)),r=contact(clip(section(crown,.965)),clip(section(wheel,.965)));assert.equal(r.intersections,0);assert.ok(r.gap<.0005);const wheelCenter=wheel.getWorldPosition(new T.Vector3()),coreCenter=springCore.getWorldPosition(new T.Vector3());assert.ok(Math.hypot(wheelCenter.x-coreCenter.x,wheelCenter.z-coreCenter.z)<1e-9);}
+ const journal=m.group.getObjectByName('Crown wheel upper journal'),shaft=m.group.getObjectByName('Crown wheel continuous vertical staff'),jb=new T.Box3().setFromObject(journal),sb=new T.Box3().setFromObject(shaft);assert.ok(sb.min.y<jb.min.y&&sb.max.y>jb.max.y);const geo=journal.geometry.attributes.position;let min=Infinity;for(let i=0;i<geo.count;i++)min=Math.min(min,Math.hypot(geo.getX(i),geo.getZ(i)));assert.ok(min>.025&&min<.027,'upper journal has real clearance around .025 staff');const bevel=m.group.getObjectByName('24 tooth bevel crown wheel');assert.ok(new T.Box3().setFromObject(bevel).max.y<.812,'bevel wheel clears barrel bridge underside');
+});
+
+
+test('only round crown stem exits the case cavity, including reverse clutch travel',()=>{
+ const m=buildWatchWinding(T),v=new T.Vector3();
+ for(const crownTurns of [0,.037,.19,.15,.14,.25,1.3]){m.update({crownTurns});m.group.updateMatrixWorld(true);assert.ok(Math.abs(m.parts.yokeFork.position.x-(m.parts.clutch.position.x+.39))<1e-10,'yoke tracks the clutch groove during reverse travel');m.group.traverse(o=>{if(!o.geometry||o===m.parts.shaft)return;const p=o.geometry.attributes.position;for(let i=0;i<p.count;i++){v.fromBufferAttribute(p,i).applyMatrix4(o.matrixWorld);const radius=Math.hypot(v.x+.264,v.z-.3);assert.ok(radius<2.425,`${o.name} vertex ${i} exits cavity R=${radius}`);}});}
+ const {clutchDogs,pinionDogs,pinionBevel}=m.parts;m.update({arborTurns:0});m.group.updateMatrixWorld(true);const driving=new T.Box3().setFromObject(clutchDogs[0]),receiving=new T.Box3().setFromObject(pinionDogs[0]),bevel=new T.Box3().setFromObject(pinionBevel);assert.ok(Math.abs(driving.min.x-receiving.min.x)<1e-6&&Math.abs(driving.max.x-receiving.max.x)<1e-6,'dog axial faces remain aligned');assert.ok(bevel.min.x-receiving.max.x>.0024,'dogs stop before actual bevel back face');const sleeve=new T.Box3().setFromObject(m.group.getObjectByName('Square bored sliding clutch sleeve')),hub=new T.Box3().setFromObject(m.group.getObjectByName('Winding pinion clutch hub'));assert.ok(Math.abs(sleeve.max.x-driving.min.x)<1e-6,'driving dogs physically meet their sleeve');assert.ok(Math.abs(hub.min.x-receiving.max.x)<1e-6,'receiving dogs physically meet their shortened hub');const key=new T.Box3().setFromObject(m.parts.square),outerStem=new T.Box3().setFromObject(m.parts.shaft),innerStem=new T.Box3().setFromObject(m.parts.innerStem);assert.ok(Math.abs(outerStem.max.x-key.min.x)<1e-6,'round stem joins square key');assert.ok(innerStem.min.x<key.max.x&&innerStem.min.x>key.max.x-.001,'square key joins inner round stem');assert.ok(key.max.x<hub.min.x,'square corners stop before the pinion round bore');
+});
+
+
+test('compact winding uses designed heights and a low back face without distorting working cones',()=>{
+ const m=buildWatchWinding(T);m.group.updateMatrixWorld(true);assert.equal(m.dims.stemY,.45);assert.equal(m.dims.ratchetY,.94);const crown=new T.Box3().setFromObject(m.parts.crownBevel);assert.ok(crown.max.y<.663&&crown.max.y>.66);assert.ok(new T.Box3().setFromObject(m.parts.arborScrew).max.y<1.070001);const anchor=m.group.getObjectByName('Click spring fixed post').getWorldPosition(new T.Vector3());assert.ok(Math.abs(anchor.z-1.29)<1e-9);
+ for(const o of [m.parts.pinionBevel,m.parts.crownBevel]){assert.deepEqual(o.scale.toArray(),[1,1,1]);const g=o.geometry,p=g.attributes.position,n=g.userData.boundaryCount;for(let i=0;i<n;i++)assert.ok(Math.abs(Math.hypot(p.getX(i),p.getY(i),p.getZ(i))-m.dims.coneDistance)<1e-7,'outer working cone radial length unchanged');}
+});
+
+test('crown upper bush is seated in the real two-post barrel bridge and its posts meet the plate',async()=>{
+ const {watchAssembly}=await import('./assets/anatomy-watch.js');const m=watchAssembly();m.update({phase:0,charge:50,explode:0});m.group.updateMatrixWorld(true);const bridge=m.group.getObjectByName('Two-post barrel bridge'),bush=m.group.getObjectByName('Crown wheel upper journal'),shaft=m.group.getObjectByName('Crown wheel continuous vertical staff'),ray=new T.Raycaster();assert.ok(bridge&&bush&&shaft);const center=bush.getWorldPosition(new T.Vector3());assert.ok(Math.abs(center.x+2.06)<1e-8&&Math.abs(center.z-.3)<1e-8);for(let i=0;i<8;i++){const a=i/8*TAU;ray.set(new T.Vector3(-2.06+Math.cos(a)*.06,1.2,.3+Math.sin(a)*.06),new T.Vector3(0,-1,0));assert.ok(ray.intersectObject(bridge,false).length,'upper bush has bridge metal around its seat');}for(const i of [0,1]){const post=m.group.getObjectByName('Train bridge support '+i),b=new T.Box3().setFromObject(post),p=post.getWorldPosition(new T.Vector3());ray.set(new T.Vector3(p.x+.055,.1,p.z),new T.Vector3(0,1,0));const hits=ray.intersectObject(bridge,false);assert.ok(hits.length);assert.ok(Math.abs(hits[0].point.y-b.max.y)<1e-6,'bridge meets supporting post');}const bb=new T.Box3().setFromObject(bush);assert.ok(bb.min.y>.87&&bb.max.y<.90);assert.ok(new T.Box3().setFromObject(shaft).max.y>bb.max.y);
+});

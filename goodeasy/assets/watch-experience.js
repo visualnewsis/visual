@@ -4,8 +4,10 @@ export function createWatchExperience({getState,setState,render=()=>{},announce=
  let paused=false;
  const commit=state=>{setState(state);render();};
  return {
-  wind(turns=1){const s=getState(),n=clamp(Number(turns)||0,0,12.5);if(!n)return;
-   paused=false;commit({...s,turns:(s.turns||0)+n,reserve:clamp((s.reserve||0)+n*8,0,100),
+  wind(turns=1){const s=getState(),requested=clamp(Number(turns)||0,0,12.5);if(!requested)return;
+   const reserve=clamp(Number(s.reserve)||0,0,100),n=Math.min(requested,(100-reserve)/8);
+   if(!n){announce('태엽이 가득 감겼습니다. 더 감을 수 없습니다.');wake();return;}
+   paused=false;commit({...s,turns:(s.turns||0)+n,reserve:clamp(reserve+n*8,0,100),
     visualTurns:s.visualTurns??s.turns??0,visualReserve:s.visualReserve??s.reserve??0,winding:true,freeAge:s.freeAge||0,regulated:s.regulated!==false});
    announce('용두가 감기축을 돌리고, 태엽이 안쪽으로 감깁니다.');wake();
   },

@@ -7,22 +7,13 @@ function facedMetal(T,geometry,face,edge){
  const mesh=new T.Mesh(geometry,face),wall=new T.Mesh(wallGeometry,edge);wall.name='Polished machined sidewall';wall.castShadow=wall.receiveShadow=true;mesh.add(wall);return mesh;
 }
 export function buildMachinedMainplate(T,{center,radius,bores}={}){
- const group=new T.Group(),top=new T.MeshStandardMaterial({color:0x9ca49c,metalness:.86,roughness:.38}),edge=new T.MeshStandardMaterial({color:0xd2d5ca,metalness:.94,roughness:.22}),floorMat=new T.MeshStandardMaterial({color:0x778286,metalness:.72,roughness:.43});
+ const group=new T.Group(),top=new T.MeshStandardMaterial({color:0x9ca49c,metalness:.86,roughness:.38}),edge=new T.MeshStandardMaterial({color:0xd2d5ca,metalness:.94,roughness:.22});
  const outline=new T.Shape();outline.absarc(0,0,radius,0,TAU,false);
  for(const [x,z,r] of bores){const p=new T.Path();p.absarc(x,-z,r,0,TAU,true);outline.holes.push(p);}
- const contours=[
-  [[-2.12,-.30],[-2.02,-.85],[-1.50,-1.45],[-.85,-1.68],[-.38,-1.30],[-.47,-.75],[-1.15,-.50]],
-  [[-1.90,1.45],[-1.65,2.05],[-.85,2.40],[-.20,2.25],[.15,1.85],[-.20,1.55],[-1.10,1.35]]
- ];
- for(const contour of contours){
-  const cx=contour.reduce((sum,p)=>sum+p[0],0)/contour.length,cz=contour.reduce((sum,p)=>sum+p[1],0)/contour.length,scale=Math.sqrt(.40);
-  const path=new T.CatmullRomCurve3(contour.map(([x,z])=>new T.Vector3(cx+(x-cx)*scale-center[0],0,cz+(z-cz)*scale-center[1])),true,'centripetal'),points=path.getPoints(100).map(p=>new T.Vector2(p.x,-p.z));const hole=new T.Path(points);hole.closePath();outline.holes.push(hole);
-  const f=new T.Shape(points),fg=new T.ExtrudeGeometry(f,{depth:.035,bevelEnabled:false,curveSegments:32});fg.rotateX(-Math.PI/2);const floor=new T.Mesh(fg,floorMat);floor.position.set(center[0],0,center[1]);floor.name='Blind machined recess floor';floor.receiveShadow=true;group.add(floor);
- }
  const g=new T.ExtrudeGeometry(outline,{depth:.065,bevelEnabled:true,bevelSize:.008,bevelThickness:.008,bevelSegments:3,curveSegments:96});g.rotateX(-Math.PI/2);const mainplate=facedMetal(T,g,top,edge);mainplate.name='Concentric movement mainplate';mainplate.userData.radius=radius;mainplate.position.set(center[0],0,center[1]);mainplate.castShadow=mainplate.receiveShadow=true;group.add(mainplate);
  return {group,mainplate};
 }
-export function buildMovementFinishing(T,{centers,anchors,steel,gold}={}){
+export function buildMovementFinishing(T,{centers,anchors,steel,gold,bridgeY=.82}={}){
  const group=new T.Group();group.name='Sculpted pierced train bridge';
  const face=new T.MeshStandardMaterial({color:0xb3b8af,metalness:.9,roughness:.32});
  const bevel=new T.MeshStandardMaterial({color:0xd2d8d2,metalness:.96,roughness:.17});
@@ -30,24 +21,28 @@ export function buildMovementFinishing(T,{centers,anchors,steel,gold}={}){
  const jewel=new T.MeshPhysicalMaterial({color:0x591329,metalness:.12,roughness:.18,clearcoat:1});
  function add(g,m,name,x=0,y=0,z=0){const o=new T.Mesh(g,m);o.name=name;o.position.set(x,y,z);o.castShadow=o.receiveShadow=true;group.add(o);return o;}
  function bore(s,x,z,r){const h=new T.Path();h.absarc(x,-z,r,0,TAU,true);s.holes.push(h);}
- function surface(s,name){const g=new T.ExtrudeGeometry(s,{depth:.07,bevelEnabled:true,bevelSize:.008,bevelThickness:.008,bevelSegments:3,curveSegments:40});g.rotateX(-Math.PI/2);const o=facedMetal(T,g,face,bevel);o.name=name;o.position.y=1.30;o.castShadow=o.receiveShadow=true;group.add(o);return o;}
+ function surface(s,name){const g=new T.ExtrudeGeometry(s,{depth:.07,bevelEnabled:true,bevelSize:.008,bevelThickness:.008,bevelSegments:3,curveSegments:40});g.rotateX(-Math.PI/2);const o=facedMetal(T,g,face,bevel);o.name=name;o.position.y=bridgeY;o.castShadow=o.receiveShadow=true;group.add(o);return o;}
  function annulus(x,z,outer,inner,y,depth,mat,name){const s=new T.Shape();s.absarc(0,0,outer,0,TAU,false);bore(s,0,0,inner);const g=new T.ExtrudeGeometry(s,{depth,bevelEnabled:false,curveSegments:32});g.rotateX(-Math.PI/2);return add(g,mat,name,x,y,z);}
- // Wide, asymmetric feet narrow into a bearing boss. The screw ends remain
- // exactly over the five existing posts; polished sidewalls reveal real thickness.
+ // Two physical plates: a two-screw barrel bridge and a three-screw train
+ // bridge. Windows are through cuts in one connected piece, not separate arms.
+ const contour=points=>{const curve=new T.CatmullRomCurve3(points.map(([x,z])=>new T.Vector3(x,0,z)),true,'centripetal');return curve.getPoints(points.length*8).map(p=>new T.Vector2(p.x,-p.z));};
+ const barrel=new T.Shape(contour([[-1.78,1.03],[-1.82,.73],[-1.91,.49],[-2.23,.46],[-2.30,.30],[-2.22,.14],[-1.97,.14],[-1.70,.40],[-1.51,.44],[-1.30,.38],[-1.25,.20],[-1.06,.14],[-.91,.25],[-.88,.65],[-.65,.80],[-.52,.95],[-.65,1.12],[-1.12,1.04],[-1.59,1.14]]));
+ bore(barrel,...centers[0],.056);bore(barrel,-2.06,.3,.050);for(const i of [0,1])bore(barrel,...anchors[i],.036);const barrelPlate=surface(barrel,'Two-post barrel bridge');barrelPlate.userData.mountCenters=anchors.slice(0,2);barrelPlate.userData.bearingCenters=[centers[0]];
+ annulus(-2.06,.3,.055,.0261,bridgeY+.054,.020,steel,'Crown wheel upper journal');
+ const train=new T.Shape(contour([[-.43,.22],[-.35,.10],[-.12,.13],[.30,.15],[.58,.12],[.70,-.30],[.73,-.48],[.68,-1.00],[.68,-1.22],[.98,-1.55],[1.12,-1.63],[1.25,-1.52],[1.18,-1.38],[1.0,-1.22],[.94,-1.13],[.99,-.83],[1.32,-.72],[1.68,-.49],[1.88,-.44],[1.98,-.25],[1.87,-.08],[1.4,.12],[.89,.66],[.65,1.31],[.17,1.47],[-.04,1.40],[-.11,1.22],[-.05,.91],[-.25,.65],[-.39,.43]]));
+ const windows=[
+  [[-.14,.50],[.04,.43],[.30,.47],[.37,.70],[.31,1.06],[.08,1.12],[.01,.88]],
+  [[.69,.48],[.92,.35],[1.13,.15],[1.52,-.10],[1.63,-.27],[1.48,-.39],[1.18,-.58],[1.02,-.56],[.995,-.386],[1.01,-.19],[.99,-.05],[.82,.13],[.62,.22]]
+ ];
+ for(const points of windows){const h=new T.Path(contour(points));h.closePath();train.holes.push(h);}for(let i=1;i<5;i++)bore(train,...centers[i],.056);for(const i of [2,3,4])bore(train,...anchors[i],.036);
+ const trainPlate=surface(train,'Three-post pierced train bridge');trainPlate.userData.mountCenters=anchors.slice(2);trainPlate.userData.bearingCenters=centers.slice(1);
  for(let i=0;i<centers.length;i++){
-  const A=centers[i],B=anchors[i],dx=B[0]-A[0],dz=B[1]-A[1],L=Math.hypot(dx,dz),u=[dx/L,dz/L],n=[-u[1],u[0]];
-  const p=(t,w)=>new T.Vector2(A[0]+u[0]*t+n[0]*w,-A[1]-u[1]*t-n[1]*w),s=new T.Shape(),r=i===4?.11:.135;
-  const move=(t,w)=>{const v=p(t,w);s.moveTo(v.x,v.y);},line=(t,w)=>{const v=p(t,w);s.lineTo(v.x,v.y);},curve=(a,b,c,d,e,f)=>{const q=p(a,b),v=p(c,d),w=p(e,f);s.bezierCurveTo(q.x,q.y,v.x,v.y,w.x,w.y);};
-  move(-r,0);curve(-r,-r,.04,-r,.18,-r*.8);curve(L*.5,-.10,L*.72,-.25,L,-.23);curve(L+.25,-.23,L+.27,.20,L,.22);curve(L*.72,.23,L*.42,.21,.12,r);curve(-.03,r,-r,r,-r,0);s.closePath();bore(s,...A,.056);bore(s,...B,.036);
-  const o=surface(s,'Machined train bridge '+i);o.userData.bearingCenter=[...A];o.userData.mountCenter=[...B];
-  annulus(...A,.076,.052,1.365,.009,gold,'Recessed jewel setting '+i);
-  annulus(...A,.050,.0105,1.354,.014,jewel,'Upper pierced jewel bearing');
-  annulus(...A,.056,.050,1.350,.008,blue,'Jewel counterbore shadow '+i);
-  add(new T.CylinderGeometry(.055,.055,.018,32),blue,'Heat blued bridge screw '+i,B[0],1.378,B[1]);
-  const slot=add(new T.BoxGeometry(.075,.003,.011),steel,'Bridge screw slot '+i,B[0],1.389,B[1]);slot.rotation.y=Math.atan2(dx,dz);
-  // Directional, short grain lies on the solid foot, not across its bores.
-  const strokes=[];for(let k=-4;k<=4;k++){const w=k*.025;for(let t=L*.52;t<L+.10;t+=.018){const q=p(t,w);if(Math.hypot(q.x-B[0],-q.y-B[1])<.07)continue;strokes.push(q.x,1.378,-q.y,q.x+u[0]*.012,1.378,-q.y+u[1]*.012);}}
-  const g=new T.BufferGeometry();g.setAttribute('position',new T.Float32BufferAttribute(strokes,3));const grain=new T.LineSegments(g,new T.LineBasicMaterial({color:0xe1e0ce,transparent:true,opacity:.12}));grain.name='Straight graining on bridge foot';group.add(grain);
+  const A=centers[i],B=anchors[i];
+  annulus(...A,.076,.052,bridgeY+.065,.009,gold,'Recessed jewel setting '+i);
+  annulus(...A,.050,.0105,bridgeY+.054,.014,jewel,'Upper pierced jewel bearing');
+  annulus(...A,.056,.050,bridgeY+.050,.008,blue,'Jewel counterbore shadow '+i);
+  add(new T.CylinderGeometry(.055,.055,.018,32),blue,'Heat blued bridge screw '+i,B[0],bridgeY+.078,B[1]);
+  const slot=add(new T.BoxGeometry(.075,.003,.011),steel,'Bridge screw slot '+i,B[0],bridgeY+.089,B[1]);slot.rotation.y=i*.61;
  }
  return {group,materials:{face,bevel,blue,jewel}};
 }
@@ -61,7 +56,7 @@ export function refineWatchWheel(T,wheel,module,escape=false){
   const a=i/N*TAU+.11,b=(i+1)/N*TAU-.11,h=new T.Path();
   h.moveTo(Math.cos(a)*inner,Math.sin(a)*inner);h.lineTo(Math.cos(a+.035)*outer,Math.sin(a+.035)*outer);h.absarc(0,0,outer,a+.035,b-.035,false);h.lineTo(Math.cos(b)*inner,Math.sin(b)*inner);h.absarc(0,0,inner,b,a,true);h.closePath();s.holes.push(h);
  }
- const bore=new T.Path();bore.absarc(0,0,module*1.4,0,TAU,true);s.holes.push(bore);
+ const bore=new T.Path();bore.absarc(0,0,.019,0,TAU,true);s.holes.push(bore);
  const g=new T.ExtrudeGeometry(s,{depth:.035,bevelEnabled:true,bevelSize:.0015,bevelThickness:.002,bevelSegments:2,curveSegments:32});g.rotateX(-Math.PI/2);wheel.geometry.dispose();wheel.geometry=g;wheel.name=escape?'Fine steel escape wheel':'Thin brass wheel with tapered spokes';
  const rim=new T.Mesh(new T.TorusGeometry(r-module*1.8,.003,5,96),wheel.material);rim.rotation.x=Math.PI/2;rim.position.y=.037;rim.name='Turned wheel rim';wheel.add(rim);
 }

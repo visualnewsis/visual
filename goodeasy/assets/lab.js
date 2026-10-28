@@ -97,7 +97,7 @@ if(kind==='fishing-reel'){
  reelExperience=createReelExperience(experienceOptions);
 }
 if(kind==='watch'){
- const {createWatchExperience}=await import('./watch-experience.js?v=20261028-craft7');
+ const {createWatchExperience}=await import('./watch-experience.js?v=20261028-watchmechanism2');
  watchExperience=createWatchExperience(experienceOptions);
  for(const [id,mode] of [['watch-regulated',true],['watch-free','free']])$(id)?.addEventListener('click',()=>{watchExperience.regulate(mode);$('watch-regulated')?.setAttribute('aria-pressed',String(mode===true));$('watch-free')?.setAttribute('aria-pressed',String(mode==='free'));});
 }
