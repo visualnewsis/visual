@@ -48,12 +48,32 @@ $('lock')?.addEventListener('click',()=>{if(state.brewing)return;state.locked=!s
 $('empty')?.addEventListener('click',()=>{state.brewing=false;state.volume=0;render();});
 $('reset')?.addEventListener('click',()=>{state={...base};record=null;step=0;window.dispatchEvent(new CustomEvent('goodeasy:record',{detail:{record:null,step:0}}));document.querySelectorAll('[data-initial]').forEach(el=>{el.value=el.dataset.initial;el.dispatchEvent(new Event('input'));});if($('typing'))$('typing').value='';if($('lock')){$('lock').textContent='포터필터 끼우기';$('lock').setAttribute('aria-pressed','false');}render();$('detail').innerHTML='';$('record').textContent='조작 기록이 없습니다.';$('part-copy').textContent='부품을 선택하면 설명이 나옵니다.';});
 if(kind==='keyboard'){
- window.addEventListener('keydown',e=>{if(e.ctrlKey||e.metaKey||e.altKey||e.repeat||e.isComposing||/INPUT|TEXTAREA|SELECT|BUTTON|A/.test(e.target.tagName)||e.key.length!==1)return;e.preventDefault();key(e.key===' '?' ':e.key.toUpperCase());});
- function key(k){state.key=k;state.travel=4;state.text=(state.text+k).slice(-2000);$('typing').value=state.text;render();clickSound(175);setTimeout(()=>{state.travel=0;render();},100);}
- document.querySelectorAll('[data-key]').forEach(b=>b.addEventListener('click',()=>key(b.dataset.key)));
- $('typing').addEventListener('input',e=>{state.text=e.target.value.slice(-2000);state.key=Array.from(state.text).at(-1)||'A';state.travel=4;render();clickSound(175);setTimeout(()=>{state.travel=0;render();},100);});
- $('travel').addEventListener('input',e=>{state.travel=Number(e.target.value);$('travel-value').textContent=state.travel.toFixed(1)+' mm';if(record){record.travel=state.travel;showInside();}else snapshot();$('contact-state').textContent=switchState(state.travel).closed?'접점 닫힘 · 입력 지점 통과':'접점 열림 · 아직 입력되지 않음';});
+ const {pressKeyboard,releaseKeyboard,stopKeyboard,setKeyboardAudioEnabled}=await import('./keyboard-audio.js?v=20261028-uxaudio1');
+ const owner='keyboard-hero',travelOwner='keyboard-travel',held=new Map(),pointerHeld=new Map(),timers=new Set();let tapSerial=0,visualSerial=0,atBottom=false;
+ function pressSound(token,strength=.85){void pressKeyboard(owner,token,strength).then(result=>{$('typing').dataset.audioState=result.state;if(result.state==='unavailable')say('스위치 소리를 재생하지 못했습니다. 브라우저의 소리 설정을 확인해 주세요.');});}
+ function displayKey(k,append=false){state.key=k;state.travel=4;if(append){state.text=(state.text+k).slice(-2000);$('typing').value=state.text;}render();}
+ function releaseVisual(){if(!held.size&&!pointerHeld.size){state.travel=0;render();}}
+ function tap(k,append=false){const token='tap-'+(++tapSerial),version=++visualSerial;displayKey(k,append);pressSound(token,k===' '?1:.85);const timer=setTimeout(()=>{timers.delete(timer);releaseKeyboard(owner,token);if(version===visualSerial)releaseVisual();},85);timers.add(timer);}
+ function stopInput(){visualSerial++;for(const t of timers)clearTimeout(t);timers.clear();held.clear();pointerHeld.clear();atBottom=false;stopKeyboard(owner);stopKeyboard(travelOwner);state.travel=0;render();}
+ window.addEventListener('keydown',e=>{
+  const native=e.target===$('typing');if(e.ctrlKey||e.metaKey||e.altKey||e.isComposing||(!native&&(/INPUT|TEXTAREA|SELECT|BUTTON|A/.test(e.target.tagName)||e.target.isContentEditable)))return;
+  if(e.key.length!==1&&!(native&&['Backspace','Delete','Enter'].includes(e.key)))return;if(!native)e.preventDefault();if(e.repeat)return;
+  const token=e.code||e.key;if(held.has(token))return;const k=e.key===' '?' ':e.key.toUpperCase();held.set(token,k);visualSerial++;displayKey(k,!native);pressSound(token,k===' '?1:.85);
+ });
+ window.addEventListener('keyup',e=>{const token=e.code||e.key;if(!held.has(token))return;held.delete(token);releaseKeyboard(owner,token);releaseVisual();});
+ document.querySelectorAll('[data-key]').forEach(b=>{
+  let pointerClickUntil=0;
+  b.addEventListener('pointerdown',e=>{if(e.button!==0)return;e.preventDefault();const token='pointer-'+e.pointerId;pointerHeld.set(e.pointerId,token);pointerClickUntil=performance.now()+500;visualSerial++;displayKey(b.dataset.key,true);pressSound(token,b.dataset.key===' '?1:.85);b.setPointerCapture?.(e.pointerId);});
+  function releasePointer(e){const token=pointerHeld.get(e.pointerId);if(!token)return;pointerHeld.delete(e.pointerId);releaseKeyboard(owner,token);pointerClickUntil=performance.now()+500;releaseVisual();}
+  for(const name of ['pointerup','pointercancel','lostpointercapture'])b.addEventListener(name,releasePointer);
+  b.addEventListener('click',e=>{if(e.detail>0&&performance.now()<pointerClickUntil)return;tap(b.dataset.key,true);});
+ });
+ $('typing').addEventListener('input',e=>{state.text=e.target.value.slice(-2000);state.key=Array.from(state.text).at(-1)||'A';if(held.size){state.travel=4;render();}else tap(state.key);});
+ $('travel').addEventListener('input',e=>{state.travel=Number(e.target.value);$('travel-value').textContent=state.travel.toFixed(1)+' mm';if(record){record.travel=state.travel;showInside();}else snapshot();$('contact-state').textContent=switchState(state.travel).closed?'접점 닫힘 · 입력 지점 통과':'접점 열림 · 아직 입력되지 않음';if(state.travel>=3.95&&!atBottom){atBottom=true;void pressKeyboard(travelOwner,'switch');}else if(state.travel<=.05&&atBottom){atBottom=false;releaseKeyboard(travelOwner,'switch');}});
+ $('keyboard-sound')?.addEventListener('click',e=>{const next=e.currentTarget.getAttribute('aria-pressed')!=='true';setKeyboardAudioEnabled(next);e.currentTarget.setAttribute('aria-pressed',String(next));e.currentTarget.textContent=next?'스위치 소리 켜짐':'스위치 소리 꺼짐';if(!next)stopInput();});
+ $('reset')?.addEventListener('click',stopInput);window.addEventListener('blur',stopInput);document.addEventListener('visibilitychange',()=>{if(document.hidden)stopInput();});
 }
+
 let pointer=null,dragAngle=0,dragY=0;
 $('turn-area')?.addEventListener('pointerdown',e=>{if((kind==='watch'||kind==='fishing-reel')&&matchMedia('(max-width:700px)').matches&&!e.currentTarget.classList.contains('is-gesture-mode'))return;pointer=e.pointerId;e.currentTarget.setPointerCapture(pointer);const r=e.currentTarget.getBoundingClientRect();dragAngle=Math.atan2(e.clientY-r.top-r.height/2,e.clientX-r.left-r.width/2);dragY=e.clientY;});
 $('turn-area')?.addEventListener('pointermove',e=>{if(pointer!==e.pointerId)return;const r=e.currentTarget.getBoundingClientRect(),a=Math.atan2(e.clientY-r.top-r.height/2,e.clientX-r.left-r.width/2);let delta=a-dragAngle;if(delta>Math.PI)delta-=Math.PI*2;if(delta<-Math.PI)delta+=Math.PI*2;dragAngle=a;
