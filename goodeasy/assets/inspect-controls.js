@@ -4,7 +4,7 @@ import {wheelZoom,pinchZoom,zoomDistance,zoomPercent} from './anatomy-controls.j
 export function attachInspectControls(stage,canvas,{label='3D 모형',resetButton=null,onChange=null}={}){
  if(canvas.dataset.inspectControls)return stage.inspectControls;
  canvas.dataset.inspectControls='true';
- if(!document.getElementById('goodeasy-inspect-css')){const link=document.createElement('link');link.id='goodeasy-inspect-css';link.rel='stylesheet';link.href=new URL('./inspect-controls.css?v=20261028-uxaudio1',import.meta.url).href;document.head.append(link);}
+ if(!document.getElementById('goodeasy-inspect-css')){const link=document.createElement('link');link.id='goodeasy-inspect-css';link.rel='stylesheet';link.href=new URL('./inspect-controls.css?v=20261028-uxaudio2',import.meta.url).href;document.head.append(link);}
  const tools=document.createElement('div');tools.className='inspect-controls';
  tools.innerHTML='<label><input type="checkbox" checked>돌려서 보기</label><button type="button" class="inspect-zoom" aria-label="모형 축소"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 12h14"/></svg></button><output aria-label="확대 비율">100%</output><button type="button" class="inspect-zoom" aria-label="모형 확대"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 12h14M12 5v14"/></svg></button><button type="button">전체 보기</button>';
  canvas.after(tools);const enabled=tools.querySelector('input'),buttons=tools.querySelectorAll('button'),output=tools.querySelector('output');

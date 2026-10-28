@@ -1,4 +1,4 @@
-import {gramophoneVisualSignal,GRAMOPHONE_DURATION} from '../gramophone/audio.js?v=20261028-uxaudio1';
+import {gramophoneVisualSignal,GRAMOPHONE_DURATION} from '../gramophone/audio.js?v=20261028-uxaudio2';
 import {T,M,TAU,clamp,colors,metal,assembly,part,box,cyl,ring,rod} from './anatomy-core.js?v=20261028-release3';
 import {buildGuitar,buildViolin} from './quality-instruments.js?v=20261028-release3';
 import {buildReel} from './quality-machines.js?v=20261028-watchfit1';

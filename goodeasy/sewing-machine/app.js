@@ -1,4 +1,4 @@
-import {attachInspectControls} from '../assets/inspect-controls.js?v=20261028-uxaudio1';
+import {attachInspectControls} from '../assets/inspect-controls.js?v=20261028-uxaudio2';
 import {threadMechanismState} from './thread-path.js?v=20261028-release3';
 import {stabilizeStage} from '../assets/stable-stage.js?v=20261027-detail1';
 import {SewingState,cycleAt,STAGES,clamp,smooth,MM,MAX_STITCHES} from './motion.js?v=20261027-detail1';

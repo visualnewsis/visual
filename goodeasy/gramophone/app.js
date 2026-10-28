@@ -1,8 +1,8 @@
-import {playGramophoneStudy,readGramophoneStudy,stopGramophoneStudy,setGramophoneStudyVolume,gramophoneStudySignal} from '../assets/gramophone-study-audio.js?v=20261028-uxaudio1';
-import {attachInspectControls} from '../assets/inspect-controls.js?v=20261028-uxaudio1';
+import {playGramophoneStudy,readGramophoneStudy,stopGramophoneStudy,setGramophoneStudyVolume,gramophoneStudySignal} from '../assets/gramophone-study-audio.js?v=20261028-uxaudio2';
+import {attachInspectControls} from '../assets/inspect-controls.js?v=20261028-uxaudio2';
 import {stabilizeStage} from '../assets/stable-stage.js?v=20261027-detail1';
 import {Playback,speedFacts,clamp} from './playback.js?v=20261027-detail1';
-import {GramophoneAudio} from './audio.js?v=20261028-uxaudio1';
+import {GramophoneAudio} from './audio.js?v=20261028-uxaudio2';
 const $=id=>document.getElementById(id),clock=new Playback(),comparisonClock=new Playback(),audio=new GramophoneAudio();
 let model,stage,motor,motorStage,comparison=false,comparisonEnd=0,busy=false,groovePlaying=false,diaphragmPlaying=false,previous=performance.now(),visualTime=0,lastText=0,motorRunning=false,motorAngle=0,crankDisplay=0;
 const grooveOwner=Symbol('expanded-groove');let grooveRequest=0,heroIntent=0;

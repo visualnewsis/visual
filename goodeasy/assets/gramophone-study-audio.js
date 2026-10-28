@@ -1,5 +1,5 @@
-import {GramophoneAudio,gramophoneNoteAt} from '../gramophone/audio.js?v=20261028-uxaudio1';
-export {GRAMOPHONE_DURATION as STUDY_DURATION,gramophoneVisualSignal} from '../gramophone/audio.js?v=20261028-uxaudio1';
+import {GramophoneAudio,gramophoneNoteAt} from '../gramophone/audio.js?v=20261028-uxaudio2';
+export {GRAMOPHONE_DURATION as STUDY_DURATION,gramophoneVisualSignal} from '../gramophone/audio.js?v=20261028-uxaudio2';
 const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
 // The study replays the hero's original PCM at the same source position.
 // Slower record playback lowers the pitch too. Only the drawn carrier is divided by 90.

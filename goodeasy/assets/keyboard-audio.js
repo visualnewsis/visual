@@ -50,3 +50,10 @@ export function setKeyboardAudioEnabled(value){enabled=!!value;if(!enabled)stopK
 export const keyboardAudioEnabled=()=>enabled;
 if(typeof document!=='undefined')document.addEventListener('visibilitychange',()=>{if(document.hidden)stopKeyboard();});
 if(typeof window!=='undefined')window.addEventListener('blur',()=>stopKeyboard());
+
+// A complete press/release may cross bottom-out between rendered frames.
+export function keyboardTravelCue(previousPhase,phase,held=false){
+ const before=Math.max(0,Math.min(1,Number(previousPhase)||0)),now=Math.max(0,Math.min(1,Number(phase)||0)),travel=Math.sin(now*Math.PI)*4;
+ const crossed=(before<.5&&now>=.5)||(before>.5&&now<=.5),down=!held&&(travel>=3.9||crossed),up=(held||down)&&travel<=.1;
+ return {down,up,held:(held||down)&&!up};
+}

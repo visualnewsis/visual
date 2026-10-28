@@ -48,7 +48,7 @@ $('lock')?.addEventListener('click',()=>{if(state.brewing)return;state.locked=!s
 $('empty')?.addEventListener('click',()=>{state.brewing=false;state.volume=0;render();});
 $('reset')?.addEventListener('click',()=>{state={...base};record=null;step=0;window.dispatchEvent(new CustomEvent('goodeasy:record',{detail:{record:null,step:0}}));document.querySelectorAll('[data-initial]').forEach(el=>{el.value=el.dataset.initial;el.dispatchEvent(new Event('input'));});if($('typing'))$('typing').value='';if($('lock')){$('lock').textContent='포터필터 끼우기';$('lock').setAttribute('aria-pressed','false');}render();$('detail').innerHTML='';$('record').textContent='조작 기록이 없습니다.';$('part-copy').textContent='부품을 선택하면 설명이 나옵니다.';});
 if(kind==='keyboard'){
- const {pressKeyboard,releaseKeyboard,stopKeyboard,setKeyboardAudioEnabled}=await import('./keyboard-audio.js?v=20261028-uxaudio1');
+ const {pressKeyboard,releaseKeyboard,stopKeyboard,setKeyboardAudioEnabled}=await import('./keyboard-audio.js?v=20261028-uxaudio2');
  const owner='keyboard-hero',travelOwner='keyboard-travel',held=new Map(),pointerHeld=new Map(),timers=new Set();let tapSerial=0,visualSerial=0,atBottom=false;
  function pressSound(token,strength=.85){void pressKeyboard(owner,token,strength).then(result=>{$('typing').dataset.audioState=result.state;if(result.state==='unavailable')say('스위치 소리를 재생하지 못했습니다. 브라우저의 소리 설정을 확인해 주세요.');});}
  function displayKey(k,append=false){state.key=k;state.travel=4;if(append){state.text=(state.text+k).slice(-2000);$('typing').value=state.text;}render();}
