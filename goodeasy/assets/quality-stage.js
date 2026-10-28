@@ -2,7 +2,7 @@ import {stabilizeStage} from './stable-stage.js?v=20261027-detail1';
 import {buildMXStudy,buildEspressoStudy} from './quality-replacements.js?v=20261027-detail1';
 import {buildSwitch} from './quality-switch.js?v=20261026-release3';
 import {cameraResult} from './quality-camera.js?v=20261026-release3';
-import {T,materials,makeStage} from './quality-kit.js?v=20261027-premium6';
+import {T,materials,makeStage} from './quality-kit.js?v=20261028-guitar-angle1';
 import {machineBuilders} from './quality-machines.js?v=20261027-detail1';
 const kind=document.body.dataset.music||document.body.dataset.experiment;if(!kind)throw Error('Missing experiment');
 const musical=!!document.body.dataset.music,host=musical?(kind==='guitar'?document.querySelector('.string-bench'):document.getElementById('bow-pad')):document.querySelector('.stage');

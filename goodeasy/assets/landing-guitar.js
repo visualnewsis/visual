@@ -1,4 +1,4 @@
-import {stringDisplacement,VIBRATION_DURATION} from './guitar-vibration.js?v=20261026-release3';
+import {stringDisplacement,VIBRATION_DURATION} from './guitar-vibration.js?v=20261028-guitar1';
 const bed=document.getElementById('landing-strings'),status=document.getElementById('sound-status'),next=document.getElementById('guitar-next'),mute=document.getElementById('mute');
 if(bed){
  const notes=[['E4',64],['B3',59],['G3',55],['D3',50],['A2',45],['E2',40]],rows=[],active=new Map(),voices=new Map();let context,master,muted=false,frame=0,pointer=null,visited=new Set(),visible=true;
