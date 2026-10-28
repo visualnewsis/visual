@@ -1,5 +1,5 @@
 import {buildBowStudy,buildBridgeStudy,buildViolinBodyStudy} from './violin-lessons.js?v=20261028-release3';
-import {buildReelRetrieve as reelRetrieve,buildReelOscillation,buildReelDrag} from './reel-lessons.js?v=20261028-release3';
+import {buildReelRetrieve as reelRetrieve,buildReelOscillation,buildReelDrag} from './reel-lessons.js?v=20261028-watchfit1';
 import {buildKeyboardSpringStudy,buildKeyboardDebounceStudy} from './keyboard-lessons.js?v=20261028-release3';
 import {buildProjectorGateStudy,buildProjectorFramesStudy} from './projector-lessons.js?v=20261028-release3';
 import {buildLengthStudy,buildHarmonicStudy,buildBodyStudy} from './guitar-lessons.js?v=20261027-premium6';
@@ -11,7 +11,7 @@ import {curtainWindow,filmCycle,debounceSample,crankX,bowedDisplacement} from '.
 import {buildMXStudy,buildEspressoStudy} from './quality-replacements.js?v=20261028-release3';
 import {T,materials as M,mesh,box,cyl,ring,rod,tube,part} from './quality-kit.js?v=20261028-release3';
 import {buildGuitar,buildViolin} from './quality-instruments.js?v=20261028-release3';
-import {buildReel,buildEspresso} from './quality-machines.js?v=20261028-release3';
+import {buildReel,buildEspresso} from './quality-machines.js?v=20261028-watchfit1';
 import {TAU,clamp,stringHz,lightRatio} from './research-math.js?v=20261026-release3';
 const ink=new T.MeshStandardMaterial({color:0x1f3e3c,roughness:.6}),blue=new T.MeshStandardMaterial({color:0x569da9,roughness:.25}),red=M.red,signal=new T.MeshStandardMaterial({color:0xe7c47a,emissive:0x6b471a,roughness:.3});
 const finish=(group,update,extra={})=>({group,eye:[4,5,7],update,...extra});

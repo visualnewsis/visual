@@ -1,12 +1,12 @@
 import {T,M,TAU,clamp,colors,metal,assembly,part,box,cyl,ring,rod} from './anatomy-core.js?v=20261028-release3';
 import {buildGuitar,buildViolin} from './quality-instruments.js?v=20261028-release3';
-import {buildReel} from './quality-machines.js?v=20261028-release3';
+import {buildReel} from './quality-machines.js?v=20261028-watchfit1';
 import {buildMXStudy} from './quality-replacements.js?v=20261028-release3';
 import {buildGramophone} from '../gramophone/gramophone-model.js?v=20261028-release3';
 import {buildSewingMachine} from '../sewing-machine/sewing-model.js?v=20261028-release3';
 import {cycleAt} from '../sewing-machine/motion.js?v=20261027-detail1';
 import {cameraAssembly,projectorAssembly} from './anatomy-optics.js?v=20261028-release3';
-import {watchAssembly} from './anatomy-watch.js?v=20261028-release3';
+import {watchAssembly} from './anatomy-watch.js?v=20261028-watchfit1';
 import {espressoAssembly} from './anatomy-espresso.js?v=20261028-release3';
 function entry(id,title,description,object,offset=[0,0,0],color=colors.frame){return {id,title,description,object,offset:new T.Vector3(...offset),color};}
 function bundle(root,name,objects){const g=part(root,name);root.updateMatrixWorld(true);for(const o of objects.filter(Boolean))g.attach(o);return g;}
