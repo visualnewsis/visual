@@ -1,0 +1,10 @@
+body[data-experiment=watch]{--watch-accent:#d3bd8c}
+body[data-experiment=watch] .hero>.intro h1{letter-spacing:-.055em}
+body[data-experiment=watch] .watch-mode-tools{display:flex;gap:8px;flex-wrap:wrap;border-left:1px solid #ffffff25;padding-left:16px;margin-left:8px}
+body[data-experiment=watch] .watch-mode-tools button{font-size:12px;min-height:44px;padding:10px 16px;background:transparent;border:1px solid #ffffff25}
+body[data-experiment=watch] .watch-mode-tools button[aria-pressed=true]{color:#efe5ca;background:#25342f;border-color:#aebc9d}
+body[data-experiment=watch] .feedback{font-variant-numeric:tabular-nums;color:#d8c69e}
+@media(min-width:1000px){body.has-3d[data-experiment=watch] #play{padding-inline:4vw}body.has-3d[data-experiment=watch] .intro{left:4vw;max-width:330px}body.has-3d[data-experiment=watch] .intro>p:last-child{max-width:300px;line-height:1.9}body.has-3d[data-experiment=watch] .stage{height:650px;min-height:550px}body.has-3d[data-experiment=watch] .tools{padding-inline:0}}
+@media(max-width:700px){body[data-experiment=watch] .watch-mode-tools{width:100%;border-left:0;padding:4px 0 0;margin:0}body[data-experiment=watch] .watch-mode-tools button{flex:1;font-size:11px}body.has-3d[data-experiment=watch] .stage{height:410px;min-height:340px}body[data-experiment=watch] .intro>p:last-child{font-size:13px;line-height:1.8}body[data-experiment=watch] .feedback{min-height:64px}}
+
+.watch-focus-links{display:flex;gap:22px;flex-wrap:wrap;font-size:12px;color:#d5c393;padding:0 0 16px}.watch-focus-links a{text-underline-offset:5px}@media(max-width:700px){.watch-focus-links{padding:0 23px 20px;gap:20px}}

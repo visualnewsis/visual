@@ -77,11 +77,14 @@ export function buildViolin(THREE,materials={}){
  const nutTop=z=>violinBoardY(-1.59,z)+.003;
  const nutProfile=new THREE.Shape();nutProfile.moveTo(-.111,.193);nutProfile.lineTo(-.111,nutTop(.111));for(let i=1;i<=32;i++){const z=-.111+.222*i/32;nutProfile.lineTo(z,nutTop(-z));}nutProfile.lineTo(.111,.193);nutProfile.closePath();const nutGeometry=new THREE.ExtrudeGeometry(nutProfile,{depth:.027,bevelEnabled:false});nutGeometry.rotateY(Math.PI/2);nutGeometry.translate(-1.59-.0135,0,0);parts.nut=mesh(THREE,nutGeometry,ivory,'arched nut supporting four strings',parts.neck);
  parts.scroll=assemblyGroup(THREE,'pegbox and carved scroll',group);
- const pegbox=orientedBox(THREE,[.42,.094,.137],[-1.80,.115,0],dark,'pegbox',parts.scroll,.018);
- for(let side of [-1,1])for(let i=0;i<2;i++){
-   const x=-1.72-i*.20,z=side*.13;
-   cylinderBetween(THREE,[x,.13,0],[x,.13,z],.018,dark,`peg ${side}/${i}`,parts.scroll);
-   ellipsoid(THREE,[x,.13,side*.175],[.042,.020,.020],black,'peg grip',parts.scroll,16);
+ orientedBox(THREE,[.42,.020,.137],[-1.80,.080,0],dark,'pegbox bottom beneath open channel',parts.scroll,.006);
+ for(const side of [-1,1])orientedBox(THREE,[.42,.106,.022],[-1.80,.127,side*.057],wood,'pegbox carved cheek '+side,parts.scroll,.008);
+ orientedBox(THREE,[.13,.065,.10],[-2.055,.12,0],wood,'scroll throat joined to pegbox',parts.scroll,.012);
+ const pegXs=[-1.67,-1.87,-1.77,-1.97];
+ for(let i=0;i<4;i++){
+   const side=i<2?-1:1,x=pegXs[i];
+   cylinderBetween(THREE,[x,.145,-side*.072],[x,.145,side*.13],.018,dark,'tuning peg shaft '+i,parts.scroll);
+   ellipsoid(THREE,[x,.145,side*.175],[.042,.020,.020],black,'peg grip '+i,parts.scroll,16);
  }
  // Volute scroll: coiled wooden tube (explicit geometry), positioned at the instrument tip.
  for(const side of [-1,1]){
@@ -144,7 +147,7 @@ export function buildViolin(THREE,materials={}){
    strings.push({midi:midi[i],from:nut,to:crest,radius:rad,mesh:speaking,afterlengthMesh:after,tailEndpoint:tail});
    ellipsoid(THREE,[.75,.204,z*1.05],[.019,.013,.017],brass,`fine tuner ${i+1}`,parts.tailpiece,14);
    const side=i<2?-1:1,j=i%2;
-   curveTube(THREE,[nut,[-1.69,.216,z*.85],[-1.72-j*.20,.145,side*.13]],rad*.75,steel,`pegbox wire ${i+1}`,group,32,7);
+   curveTube(THREE,[nut,[-1.69,.216,z*.85],[pegXs[i],.145,side*.025]],rad*.75,steel,`pegbox wire ${i+1}`,group,32,7);
  }
  // Bow: independently movable. Hair contacts selected open A4 string (index 2)
  // at x=.03, z interpolated from the ACTUAL nut-to-crest segment.
@@ -163,10 +166,16 @@ export function buildViolin(THREE,materials={}){
    const x=contactX+(k-5)*.0025;
    curveTube(THREE,[[x,hairY,-.67],[x,hairY,-.22],[x,hairY,.22],[x,hairY,.67]],.0014,ivory,`bow hair ${k+1}`,parts.bowHair,64,5);
  }
- curveTube(THREE,[[contactX+.035,hairY+.042,-.78],[contactX+.04,hairY+.068,-.4],[contactX+.046,hairY+.077,0],[contactX+.04,hairY+.064,.42],[contactX+.035,hairY+.044,.78]],.015,dark,'cambered bow stick',bow,100,12);
+ curveTube(THREE,[[contactX+.035,hairY+.065,-.78],[contactX+.04,hairY+.048,-.4],[contactX+.046,hairY+.035,0],[contactX+.04,hairY+.046,.42],[contactX+.035,hairY+.065,.78]],.015,dark,'cambered bow stick',bow,100,12);
  orientedBox(THREE,[.068,.062,.115],[contactX+.035,hairY+.037,-.67],black,'frog',bow,.012);
  ellipsoid(THREE,[contactX+.035,hairY+.047,-.67],[.018,.012,.018],brass,'frog eye',bow,14);
  cylinderBetween(THREE,[contactX+.035,hairY+.045,-.82],[contactX+.035,hairY+.045,-.74],.012,brass,'bow adjuster',bow);
+ orientedBox(THREE,[.060,.012,.050],[contactX,hairY+.004,-.665],steel,'frog ferrule anchoring hair',bow,.003);
+ const headShape=new THREE.Shape();headShape.moveTo(.78,hairY+.065);headShape.lineTo(.73,hairY+.073);headShape.lineTo(.64,hairY+.015);headShape.lineTo(.64,hairY-.012);headShape.lineTo(.69,hairY-.012);headShape.lineTo(.70,hairY+.022);headShape.lineTo(.78,hairY+.045);headShape.closePath();
+ const headGeo=new THREE.ExtrudeGeometry(headShape,{depth:.040,bevelEnabled:true,bevelSize:.002,bevelThickness:.002,bevelSegments:2});headGeo.rotateY(-Math.PI/2);headGeo.translate(contactX+.020,0,0);
+ mesh(THREE,headGeo,wood,'carved bow head anchoring hair tip',bow);
+ orientedBox(THREE,[.044,.006,.050],[contactX,hairY-.008,.665],ivory,'bow head protective ivory tip',bow,.002);
+
  bow.userData={selectedStringIndex,contactLocal:[contactX,contactY,contactZ],movementAxis:'Z',
    // Moving in Z changes which portion of hair contacts the string. Audio gating is external.
    hairCenterlineY:hairY,contactTolerance:.006};

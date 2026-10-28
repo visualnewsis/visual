@@ -1,4 +1,4 @@
-import {T,materials as M,part,mesh,box,cyl,ring,rod,bolt} from './quality-kit.js?v=20261028-release3';
+import {T,materials as M,part,mesh,box,cyl,ring,rod,bolt} from './quality-kit.js?v=20261028-craft5';
 export {T,M,part,mesh,box,cyl,ring,rod,bolt};
 export const TAU=Math.PI*2,clamp=x=>Math.max(0,Math.min(1,x));
 export const colors={frame:0x9baaa7,drive:0xc8a65d,optics:0x6cabb7,spring:0xb87157,balance:0x9682ad,water:0x419aa6,coffee:0x774229};

@@ -437,10 +437,14 @@ export function buildSewingMachine(T, M = {}) {
     line.geometry.computeBoundingSphere();
   }
   const lockLines=Array.from({length:12},(_,i)=>{
-    const make=(color,name)=>{const g=new T.BufferGeometry();g.setAttribute("position",new T.Float32BufferAttribute(new Float32Array(21),3));const line=new T.Line(g,new T.LineBasicMaterial({color}));line.name=name;seamLocks.add(line);return line;};
+    const make=(color,name)=>{const g=new T.BufferGeometry();g.setAttribute("position",new T.Float32BufferAttribute(new Float32Array(21),3));const line=new T.Line(g,new T.LineBasicMaterial({color}));line.name=name;seamLocks.add(line);
+ const coords=name.startsWith('Upper')?[[0,.041,0],[-.012,.015,0],[-.012,-.010,0],[0,-.014,0],[.012,-.010,0],[.012,.015,0],[0,.041,0]]:[[0,-.051,0],[-.025,-.030,0],[-.025,-.004,0],[0,.002,0],[.025,-.004,0],[.025,-.030,0],[0,-.051,0]];
+ const curve=new T.CatmullRomCurve3(coords.map(p=>new T.Vector3(...p)),false,'centripetal');
+ const tube=new T.Mesh(new T.TubeGeometry(curve,24,.0035,5,false),new T.MeshStandardMaterial({color,roughness:.8}));tube.name=name+' visible thread thickness';line.add(tube);
+ return line;};
     return {upper:make(0x00b4c9,"Upper stitch loop "+i),lower:make(0xd8af58,"Lower stitch lock "+i)};
   });
-  function updateLock(line,points,visible){line.visible=visible;if(!visible)return;const a=line.geometry.attributes.position;points.forEach((p,i)=>a.setXYZ(i,...p));a.needsUpdate=true;line.geometry.computeBoundingSphere();}
+  function updateLock(line,points,visible){line.visible=visible;if(!visible)return;const a=line.geometry.attributes.position;points.forEach((p,i)=>a.setXYZ(i,...p));a.needsUpdate=true;line.geometry.computeBoundingSphere();if(line.children[0])line.children[0].position.z=points[0][2];}
   function updateSeam(stitches) {
     let distance=0;
     for(let i=0;i<12;i++) {

@@ -1,4 +1,4 @@
-import {T,materials as M,tag} from './quality-kit.js?v=20261028-release3';
+import {T,materials as M,tag} from './quality-kit.js?v=20261028-craft5';
 import {buildMXSwitch} from './models/mx-switch.js?v=20261028-release3';
 // The main cutaway and research lessons use the same stem, spring and contact geometry.
 export function buildSwitch(){

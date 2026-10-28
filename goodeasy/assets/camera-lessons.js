@@ -9,7 +9,7 @@ import {
   rod,
   tube,
   part
-} from './quality-kit.js?v=20261028-release3';
+} from './quality-kit.js?v=20261028-craft5';
 
 import {
   curtainWindow
@@ -53,8 +53,11 @@ const screwDark = mat(0x374143, 0.76, 0.4);
 const guideMetal = mat(0x778181, 0.84, 0.32);
 const glassCore = new T.MeshPhysicalMaterial({
   color: 0x254249,
-  metalness: 0.24,
-  roughness: 0.12,
+  metalness: 0.04,
+  roughness: 0.08,
+  transparent: true,
+  opacity: 0.42,
+  depthWrite: false,
   clearcoat: 0.94,
   clearcoatRoughness: 0.09,
   side: T.FrontSide
@@ -274,11 +277,11 @@ export function buildIris() {
   const hardware = part(group, 'retaining hardware');
 
   // Rear mounting shoulder and several axial barrel steps.
-  circlePlate(barrel, 1.37, 0.09, satinBlack, -0.55);
-  circlePlate(barrel, 1.31, 0.22, edgeBlack, -0.40);
-  circlePlate(barrel, 1.38, 0.16, satinBlack, -0.23);
+  annulus(barrel, 1.37, 1.21, -0.595, satinBlack, 0.09);
+  annulus(barrel, 1.31, 1.21, -0.51, edgeBlack, 0.22);
+  annulus(barrel, 1.38, 1.21, -0.31, satinBlack, 0.16);
 
-  annulus(barrel, 1.44, 1.17, -0.08, graphite, 0.16);
+  annulus(barrel, 1.44, 1.21, -0.08, graphite, 0.16);
   annulus(barrel, 1.47, 1.22, 0.14, satinBlack, 0.16);
   annulus(barrel, 1.45, 1.235, 0.31, graphite, 0.14);
 
@@ -308,7 +311,7 @@ export function buildIris() {
   }
 
   // Deep dark optical well, with two curved elements.
-  circlePlate(optics, 1.145, 0.035, edgeBlack, -0.055);
+  annulus(optics, 1.235, 1.19, -0.0725, edgeBlack, 0.035);
 
   lensElement(optics, 1.13, 0.016, 0.135, glassCore);
   lensElement(optics, 0.97, 0.145, 0.075, glassCore);
@@ -382,12 +385,12 @@ export function buildIris() {
 
   function update(state = defaults) {
     const f = clamp(state.fstop ?? BASE_F, 1.4, 22);
-    if (f === last) return;
+    const changed=f!==last;
 
     last = f;
     const a = irisApothem(f);
 
-    for (let i = 0; i < blades.length; i++) {
+    for (let i = 0; changed && i < blades.length; i++) {
       setIrisBlade(blades[i].geometry, i, a);
     }
 
@@ -411,6 +414,8 @@ export function buildIris() {
   return {
     group,
     eye: [3.8, 6.5, 5.2],
+    allowZoom:true,
+    parts:{barrel,optics,mechanism,hardware,blades},
     defaults,
     update,
     reading,
@@ -576,13 +581,14 @@ export function buildShutter() {
 
   const defaults = {
     cycle: 0,
-    fast: 0
+    fast: 0,
+    explode: 0
   };
 
   function update(state = defaults) {
     const cycle = ((Number(state.cycle) || 0) % 1 + 1) % 1;
     const fast = !!state.fast;
-
+    const separation=clamp(state.explode??0,0,1);sensor.position.y=-separation*.25;first.position.y=.195+separation*.48;second.position.y=.274+separation*.96;
     const w = curtainWindow(cycle, fast);
 
     // The checked mechanism supplies displacement values.
@@ -647,16 +653,17 @@ export function buildShutter() {
   return {
     group,
     eye: [3, 2.5, 7],
+    allowZoom:true,
+    parts:{base,sensor,track,first,second,exposureStrip},
     defaults,
     update,
     advance,
     reading,
     annotations: [
-      { text: '선막 · 첫 번째 커튼', point: [-0.65, 0.25, 0.42] },
-      { text: '후막 · 두 번째 커튼', point: [0.55, 0.31, -0.53] },
-      { text: '셔터 가이드레일', point: [1.39, 0.31, 0.25] },
-      { text: '이미지 센서', point: [0, 0.05, 0] },
-      { text: '셔터 슬랫', point: [-0.45, 0.23, 0.68] }
+      { text: '선막 · 센서를 드러냅니다', object:first },
+      { text: '후막 · 선막을 뒤따라 가립니다', object:second },
+      { text: '커튼 양쪽 가이드레일', object:track },
+      { text: '두 커튼 뒤의 이미지 센서', object:sensor }
     ]
   };
 }

@@ -1,4 +1,4 @@
-// coffee-detail.js?v=20261028-release3
+// coffee-detail.js?v=20261028-craft5
 // VISUAL NEWSIS · 굳이구지 · Espresso Detail
 // Three.js ES module · Y-up
 // No DOM, canvas, external textures or additional packages.
@@ -16,7 +16,7 @@ import {
   tube,
   part,
   lathe
-} from './quality-kit.js?v=20261028-release3';
+} from './quality-kit.js?v=20261028-craft5';
 
 import {
   coffeeFlow

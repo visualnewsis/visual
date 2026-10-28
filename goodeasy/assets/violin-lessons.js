@@ -1,5 +1,5 @@
-import {T,materials as M} from './quality-kit.js?v=20261028-release3';
-import {buildViolin} from './quality-instruments.js?v=20261028-release3';
+import {T,materials as M} from './quality-kit.js?v=20261028-craft5';
+import {buildViolin} from './quality-instruments.js?v=20261028-craft5';
 const TAU=Math.PI*2;
 function base(){const m=buildViolin(T,M);m.bow.visible=false;return m;}
 function segment(s,x){const t=(x-s.from[0])/(s.to[0]-s.from[0]);return new T.Vector3(x,s.from[1]+t*(s.to[1]-s.from[1]),s.from[2]+t*(s.to[2]-s.from[2]));}

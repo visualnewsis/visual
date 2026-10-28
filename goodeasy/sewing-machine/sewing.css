@@ -18,3 +18,5 @@ select{font:inherit;background:#17201d;color:var(--paper);border:1px solid var(-
 .hero-stage>.inspect-controls,.study-stage>.inspect-controls{margin-top:8px;position:relative;z-index:4}
 .study-stage .thread-key{bottom:70px}.hero-stage .model-note{bottom:65px}
 @media(max-width:600px){.hero-stage{height:370px}.study-stage{height:420px}.hero-stage>.inspect-controls,.study-stage>.inspect-controls{font-size:10px}.diagram{height:340px}}
+
+.sewing-focus{display:flex;gap:8px;flex-wrap:wrap;margin:16px 0 0}.sewing-focus button{min-height:44px;font-size:12px;padding:8px 16px}.sewing-focus button[aria-pressed=true]{color:#d9efe5;border-color:#00b4c9;background:#17312c}@media(max-width:600px){.sewing-focus{gap:6px}.sewing-focus button{font-size:11px;padding:8px 11px}}

@@ -12,8 +12,8 @@ for(const [name,build] of Object.entries({...watchBuilders,...otherBuilders})){
  for(const t of [0,.2,.5,.65,.8,1]){Object.assign(s,{time:t,explode:t,phase:t,cycle:t,angle:t,travel:t*4,seconds:t*3600});m.update(s);m.group.updateMatrixWorld(true);m.group.traverse(o=>{assert.ok(o.position.toArray().every(Number.isFinite),name+' transform');if(!o.geometry)return;const a=o.geometry.attributes.position;if(!a)return;for(let i=0;i<a.array.length;i++)assert.ok(Number.isFinite(a.array[i]),name+' finite mesh');});}
  m.group.traverse(o=>{if(o.isMesh)meshes++;});models++;
 }
-const assembly=watchBuilders.assembly();assembly.update({time:30,charge:50,explode:0});const drive=assembly.layers.find(l=>l.userData.id==='윤열'),motion=assembly.layers.find(l=>l.userData.id==='모션워크');
-const center=drive.getObjectByName('train-1'),fourth=drive.getObjectByName('train-3');assert.ok(Math.abs(fourth.rotation.y/center.rotation.y-60)<1e-8,'actual center/fourth rotations');
+const assembly=watchBuilders.assembly();assembly.update({time:30,charge:50,explode:0});const component=id=>assembly.components.find(c=>c.id===id).object,motion=component('motion');
+const center=component('wheel-1'),fourth=component('wheel-3');assert.ok(Math.abs(fourth.rotation.y/center.rotation.y-60)<1e-8,'actual center/fourth rotations');
 const pair=motion.children.filter(o=>o.userData.teeth&&o.position.x===.75);assert.equal(pair.length,2);assert.equal(pair[0].rotation.y,pair[1].rotation.y,'actual intermediate wheel/pinion share angle');
 const root=new T.Group(),action=createAction(root);action.update({key:1,hammer:1,jack:1,damper:1,vibration:0},0,0);root.updateMatrixWorld(true);const head=action.anchors.hammer.object;let maxY=-Infinity;head.traverse(o=>{if(!o.isMesh)return;const a=o.geometry.attributes.position;for(let i=0;i<a.count;i++)maxY=Math.max(maxY,new T.Vector3().fromBufferAttribute(a,i).applyMatrix4(o.matrixWorld).y);});
 assert.ok(Math.abs(maxY-3.66)<1e-5,'felt crown meets the string at strike without penetrating');

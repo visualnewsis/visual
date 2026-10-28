@@ -1,4 +1,5 @@
-import {T,materials as M,mesh,box,cyl,ring,rod,tube,gear,part,bolt} from './quality-kit.js?v=20261028-release3';
+import {watchAssembly} from './anatomy-watch.js?v=20261028-craft5';
+import {T,materials as M,mesh,box,cyl,ring,rod,tube,gear,part,bolt} from './quality-kit.js?v=20261028-craft5';
 import {TAU,clamp,layerOffset,gearAngle,escapeState,handAngles,period} from './research-math.js?v=20261026-release3';
 const silver=M.steel, gold=M.brass, ruby=new T.MeshPhysicalMaterial({color:0x862d4b,roughness:.2,metalness:.2,clearcoat:1});
 const palette={silver,gold,ruby};
@@ -11,25 +12,22 @@ function balance(parent,x,y,z,r=.65){const root=part(parent,'balance');root.posi
 function dial(parent,r=1.8,y=0){plate(parent,r,y,[[0,0,.09]],M.ivory);for(let i=0;i<60;i++){const a=i/60*TAU,o=box(parent,i%5?.012:.035,.015,i%5?.055:.15,M.black,Math.sin(a)*(r-.12),y+.1,Math.cos(a)*(r-.12),.003);o.rotation.y=a;}}
 function hands(parent,y=0,r=1.6){const h={};for(const [name,len,w,mat,offset] of [['hour',r*.52,.06,M.black,.0],['minute',r*.82,.038,M.black,.04],['second',r*.96,.014,M.red,.08]]){const g=part(parent,name);box(g,w,.025,len,mat,0,y+offset,-len/2+.06,.007);cyl(g,.06,.025,silver,0,y+offset,0);h[name]=g;}return h;}
 function train(parent){const centers=[[-1.1,.3],[-.264,.3],[.484,.3],[.880,-.3858921198],[1.254,.2618948822]],m=.022;const wheels=[];const specs=[[64,0,.15],[60,1,.28],[64,2,.41],[60,3,.54],[15,4,.69]];for(let i=0;i<specs.length;i++){const [N,index,y]=specs[i],[x,z]=centers[index],root=part(parent,'train-'+i);root.position.set(x,0,z);const wheel=toothWheel(root,N,i===4?.046:m,0,y,0,i===4?silver:gold);if(i>0){const pinN=[0,12,8,8,8][i];toothWheel(root,pinN,m,0,y-.13,0,silver,false);}rod(root,[0,.0,0],[0,.89,0],.025,silver);wheels.push(root);}const b=balance(parent,.65,.75,-1.05,.62),fork=part(parent,'pallet');fork.position.set(1.02,.73,-.28);rod(fork,[0,0,0],[.277,0,.175],.022,silver);rod(fork,[0,0,0],[-.063,0,.321],.022,silver);box(fork,.08,.055,.06,ruby,.277,0,.175,.01);box(fork,.08,.055,.06,ruby,-.063,0,.321,.01);rod(fork,[0,0,0],[-.35,0,-.25],.022,silver);return {wheels,b,fork};}
-export function buildAssembly(){const group=new T.Group(),layers=[];const make=(id,y,shift)=>{const g=part(group,id);g.position.y=y;g.userData={id,restY:y,shift};layers.push(g);return g;};
- const back=make('후면 덮개',-1.13,-3.5);plate(back,1.9,0,[[0,0,.12]]);ring(back,1.8,.018,gold,0,.095,0);for(let i=0;i<6;i++){const a=i/6*TAU;bolt(back,Math.cos(a)*1.63,.095,Math.sin(a)*1.63);}
- const bridges=make('브리지',-.96,-2.5);for(const [x,z,w,d] of [[-.72,.3,1.6,.45],[.5,.3,.8,.4],[.95,-.36,.5,1.0]]){const b=box(bridges,w,.095,d,silver,x,0,z,.12);for(const dx of [-w*.34,w*.34]){bolt(bridges,x+dx,.08,z);cyl(bridges,.045,.02,ruby,x+dx,.07,z);}}
- const drive=make('윤열',-.85,-1.45),tr=train(drive);const barrelSpring=springRibbon(drive,.58);barrelSpring.mesh.position.set(-1.1,.2,.3);ring(drive,.70,.025,silver,-1.1,.2,.3);
- const mainplate=make('메인플레이트',0,0);plate(mainplate,1.9,0,[[-1.1,.3,.14],[-.264,.3,.08],[.484,.3,.08],[.880,-.3858921198,.08],[1.254,.2618948822,.08],[.65,-1.05,.32]]);for(const [x,z] of [[-1.1,.3],[-.264,.3],[.484,.3],[.880,-.3858921198],[1.254,.2618948822]]){ring(mainplate,.08,.015,ruby,x,.1,z);}
- const motion=make('모션워크',.15,.85);const cannon=toothWheel(motion,12,.025,0,0,0,gold),intermediate=toothWheel(motion,48,.025,.75,0,0,silver);cyl(motion,.07,.28,silver);const intermediatePinion=toothWheel(motion,15,.025,.75,.1,0,silver,false);const hourWheel=toothWheel(motion,45,.025,0,.1,0,gold);
- const face=make('다이얼',.34,1.9);dial(face);const needles=make('바늘',.48,2.85),h=hands(needles,0);const glass=make('유리·베젤',.66,3.75);ring(glass,1.89,.035,silver);const cg=new T.MeshPhysicalMaterial({color:0xffffff,roughness:.08,metalness:0,transparent:true,opacity:.10,depthWrite:false});cyl(glass,1.86,.04,cg);
- const guide=rod(group,[0,-1.15,0],[0,4.5,0],.006,new T.MeshBasicMaterial({color:0x6c817b,transparent:true,opacity:.35}));guide.visible=false;guide.userData.noFit=true;
- return {group,layers,eye:[5,3.2,7],update(s){const e=clamp(s.explode||0);layers.forEach((g,i)=>g.position.y=g.userData.restY+layerOffset(e,i,g.userData.shift*.35));guide.visible=false;const t=s.time||0,esc=escapeState(t*3.75),fourthAngle=esc.angle*8/60,a=handAngles(fourthAngle*60/TAU);for(const k in h)h[k].rotation.y=-a[k];tr.wheels[4].rotation.y=esc.angle;tr.wheels[3].rotation.y=-fourthAngle;tr.wheels[2].rotation.y=fourthAngle*8/64;tr.wheels[1].rotation.y=-fourthAngle*8/64*8/60;tr.wheels[0].rotation.y=fourthAngle*8/64*8/60*12/64;tr.b.update(esc.balance);tr.fork.rotation.y=esc.fork;barrelSpring.update((s.charge??50)/100);barrelSpring.mesh.rotation.y=tr.wheels[0].rotation.y;cannon.rotation.y=-a.minute;hourWheel.rotation.y=-a.hour;intermediate.rotation.y=a.minute/4;intermediatePinion.rotation.y=intermediate.rotation.y;}};
+export function buildAssembly(){
+ const model=watchAssembly(),update=model.update.bind(model);
+ return {...model,allowZoom:true,annotations:model.components.filter(c=>['wheel-0','wheel-1','wheel-3','pallet','balance'].includes(c.id)).map(c=>({text:c.title,object:c.object})),defaults:{time:0,charge:0,explode:0},
+  update(s){update({phase:(s.time||0)*3.75/8,charge:s.charge??0,turns:s.turns??(s.charge||0)/8,regulated:s.regulated!==0,explode:s.explode||0});},
+  reading:s=>'분해 '+Math.round((s.explode||0)*100)+'% · 첫 체험과 같은 태엽·윤열·브리지'
+ };
 }
-function anchoredPowerSpring(parent){
+export function anchoredPowerSpring(parent,{inner=.10,outer=.82,y=.12,height=.12}={}){
  const n=640,positions=new Float32Array((n+1)*6),indices=[];
  for(let i=0;i<n;i++){const a=i*2;indices.push(a,a+2,a+1,a+1,a+2,a+3);}
  const g=new T.BufferGeometry();g.setAttribute('position',new T.BufferAttribute(positions,3));g.setIndex(indices);
  const o=mesh(parent,g,new T.MeshStandardMaterial({color:0xb5a99b,metalness:.84,roughness:.3,side:T.DoubleSide}));o.name='Mainspring anchored to arbor and barrel';
  return {mesh:o,update(charge,innerAngle,outerAngle){
-  for(let i=0;i<=n;i++){const t=i/n,a=innerAngle+t*(8*TAU+outerAngle-innerAngle),r=.10+.72*t**(1+charge*1.8);positions[i*6]=positions[i*6+3]=Math.cos(a)*r;positions[i*6+1]=.12;positions[i*6+4]=.24;positions[i*6+2]=positions[i*6+5]=Math.sin(a)*r;}
+  for(let i=0;i<=n;i++){const t=i/n,a=innerAngle+t*(8*TAU+outerAngle-innerAngle),r=inner+(outer-inner)*t**(1+charge*1.8);positions[i*6]=positions[i*6+3]=Math.cos(a)*r;positions[i*6+1]=y;positions[i*6+4]=y+height;positions[i*6+2]=positions[i*6+5]=Math.sin(a)*r;}
   g.attributes.position.needsUpdate=true;g.computeVertexNormals();g.computeBoundingSphere();g.computeBoundingBox();
-  o.userData.inner=[positions[0],.18,positions[2]];o.userData.outer=[positions[n*6],.18,positions[n*6+2]];
+  o.userData.inner=[positions[0],y+height/2,positions[2]];o.userData.outer=[positions[n*6],y+height/2,positions[n*6+2]];o.userData.charge=charge;
  }};
 }
 export function buildPower(){
@@ -45,7 +43,7 @@ export function buildPower(){
  const click=part(group,'fixed winding click');rod(click,[-.48,.52,.12],[-.32,.52,.02],.025,silver);bolt(click,-.48,.49,.12);
  const lid=plate(barrel,.89,.32,[[0,0,.10]],silver);lid.name='Barrel lid';
  const spring=anchoredPowerSpring(group);let lastCharge=null,lastTime=0,innerAngle=0,outerAngle=0;
- const result={group,allowZoom:true,eye:[4,6,6],parts:{barrel,arbor,wheel,ratchet,lid,spring:spring.mesh,innerHook,outerHook},defaults:{time:0,charge:50,open:.8},
+ const result={group,allowZoom:true,eye:[4,6,6],parts:{barrel,arbor,wheel,ratchet,lid,spring:spring.mesh,innerHook,outerHook},defaults:{time:0,charge:50,open:.8,regulated:0},
  update(s){
   const charge=clamp((s.charge??50)/100),t=s.time||0;
   if(lastCharge===null||t<lastTime-1e-7){innerAngle=-charge*3*TAU;outerAngle=0;}
@@ -54,8 +52,11 @@ export function buildPower(){
   lastCharge=charge;lastTime=t;arbor.rotation.y=-innerAngle;barrel.rotation.y=-outerAngle;lid.position.y=.32+(s.open??.8)*1.2;
   spring.update(charge,innerAngle,outerAngle);s.arborAngle=innerAngle;s.barrelAngle=outerAngle;
  },
- advance(s,dt){s.time=(s.time||0)+dt;s.charge=Math.max(0,(s.charge??50)-dt*12);if(!s.charge)s.running=false;},
- reading:s=>'저장량 '+Math.round(s.charge)+'% · '+(s.running?'감기축은 멈추고 태엽통이 도는 중':'태엽의 양 끝을 따라보세요'),
+ advance(s,dt){const before=s.time||0;s.time=before+dt;
+ const release=s.regulated===1?(escapeState(s.time*.8).angle-escapeState(before*.8).angle)/(Math.PI/15)*3:dt*12;
+ s.charge=Math.max(0,(s.charge??50)-release);if(!s.charge)s.running=false;},
+
+ reading:s=>'저장량 '+Math.round(s.charge)+'% · '+(s.running?(s.regulated===1?'조금씩 풀기 · 멈춤과 진행을 반복합니다.':'그냥 풀기 · 빠르게 돌아 힘을 소진합니다.'):'감기축과 태엽통에 붙은 두 끝을 보세요.'),
  annotations:[{text:'감기축 · 풀리는 동안 고정',object:arbor},{text:'회전하는 태엽통과 바깥 고정점',object:outerHook},{text:'축과 통에 각각 연결된 태엽',object:spring.mesh}]};
  result.update({...result.defaults});return result;
 }

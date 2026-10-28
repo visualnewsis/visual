@@ -1,6 +1,6 @@
-import {T,materials as M,mesh,box,cyl,ring,rod,part} from './quality-kit.js?v=20261028-release3';
-import {buildReel} from './quality-machines.js?v=20261028-watchfit1';
-import {snapReelRatio} from './release-machine-models.js?v=20261028-watchfit1';
+import {T,materials as M,mesh,box,cyl,ring,rod,part} from './quality-kit.js?v=20261028-craft5';
+import {buildReel} from './quality-machines.js?v=20261028-craft5';
+import {snapReelRatio} from './release-machine-models.js?v=20261028-craft5';
 
 const TAU=Math.PI*2;
 const clamp=(x,a,b)=>Math.max(a,Math.min(b,x));
@@ -29,17 +29,17 @@ export function buildReelRetrieve(){
  const m=buildReel(),spool=m.parts.spool;
  const shell=m.parts.core||spool.children.find(o=>o.geometry?.type==='CylinderGeometry'&&o.geometry.parameters.radiusTop===.77);
  shell.geometry.dispose();shell.geometry=new T.CylinderGeometry(.39,.39,.65,64);shell.name='Spool core below minimum line radius';
- const coils=spool.children.filter(o=>o.geometry?.type==='TorusGeometry'&&o.geometry.parameters.tube<.02);
+ const coils=m.parts.coils||spool.children.filter(o=>o.geometry?.type==='TorusGeometry'&&o.geometry.parameters.tube<.02);
  const scale=.79/26;
  const radiusLine=markLine(spool,'Displayed line radius',[[.37,0,0],[.37,0,.79]],new T.LineBasicMaterial({color:0x00b4c9,depthTest:false}));radiusLine.userData.noFit=true;
  const marker=cyl(spool,.019,.028,accent,.37,0,.79);marker.rotation.z=Math.PI/2;marker.name='Line radius marker';
  const defaults={turns:0,ratio:5.2,radius:22};
  const result={...m,allowZoom:true,defaults,parts:{...m.parts,core:shell,coils,radiusLine},update(s){
   const radius=clamp(Number(s.radius)||22,15,26),turns=Math.max(0,Number(s.turns)||0),ratio=snapReelRatio(s.ratio);s.ratio=ratio;
-  for(const o of coils)o.scale.set(1,radius/26,radius/26);
+  for(const o of coils)o.scale.set(radius/26,radius/26,1);
   const drawn=radius*scale;radiusLine.geometry.attributes.position.setXYZ(1,.37,0,drawn);radiusLine.geometry.attributes.position.needsUpdate=true;radiusLine.geometry.computeBoundingSphere();marker.position.z=drawn;
   m.update({turns,rotor:turns*ratio,payout:0,ratio,radius},true);s.displayedRadius=drawn;s.retrievalCm=TAU*radius*ratio/10;
- },advance(s,dt){s.turns=(s.turns||0)+dt*.4;},action(a,s){if(a==='turn')s.turns=(s.turns||0)+1;},
+ },advance(s,dt){const next=(s.turns||0)+dt*.5;if(Number.isFinite(s.turnTarget)){s.turns=Math.min(s.turnTarget,next);if(s.turns>=s.turnTarget){delete s.turnTarget;s.running=false;}}else s.turns=next;},action(a,s){if(a==='turn'){s.turnTarget=(s.turnTarget??s.turns??0)+1;s.running=true;}},
  reading:s=>'반지름 '+s.radius+'mm · 기어비 '+s.ratio+':1 · 손잡이 한 바퀴에 약 '+(TAU*(Number(s.radius)||22)*(Number(s.ratio)||5.2)/10).toFixed(1)+'cm',
  annotations:[{text:'손잡이의 한 바퀴',object:m.parts.handle},{text:'줄을 감는 로터와 베일',object:m.parts.rotor},{text:s=>'감긴 줄의 반지름 '+s.radius+'mm',object:marker}]};
  result.update({...defaults});return result;
@@ -69,9 +69,13 @@ export function buildReelOscillation(){
  const coils=[];for(let i=0;i<49;i++){const o=ring(spool,.55,.012,i%4?M.ivory:bronze,-.6+i*.025,0,0,'x');o.name='Line winding '+i;coils.push(o);}
  const contact=sphereMarker(spool,'Fixed guide contact on moving spool',accent,0,0,.565,.035);
  const incoming=markLine(group,'Line arriving at a fixed axial position',[[1.75,.25,1.28],[1.75,.25,.565]],new T.LineBasicMaterial({color:0xc9dbc4}));incoming.userData.noFit=true;
- rod(base,[1.75,-.45,1.15],[1.75,.16,1.15],.04,steel);ring(base,.09,.016,bronze,1.75,.25,1.15,'z');
- const result={group,allowZoom:true,eye:[3.2,3.1,8],defaults:{angle:0},parts:{crank,pin,follower,slotBody,spool,contact,coils},update(s){
-  const angle=Number(s.angle)||0,dx=.60*Math.sin(angle);crank.rotation.z=-angle;follower.position.x=-1.55+dx;contact.position.x=-dx;
+ const guide=part(group,'Rotating line guide at fixed axial station');guide.position.set(.10,.25,0);const guideBearing=annulus(base,'Guide carrier bearing',.15,.075,.22,bronze,.10,.25,0);guideBearing.rotation.z=Math.PI/2;rod(base,[.1,-.45,0],[.1,.09,0],.05,steel);
+ rod(guide,[0,0,.16],[0,0,1.15],.025,steel);rod(guide,[0,0,1.15],[1.55,0,1.15],.025,steel);ring(guide,.09,.016,bronze,1.65,0,1.15,'z');
+ const laidGeometry=new T.BufferGeometry();laidGeometry.setAttribute('position',new T.BufferAttribute(new Float32Array(257*3),3));const laidLine=new T.Line(laidGeometry,new T.LineBasicMaterial({color:0x00b4c9}));laidLine.name='New turns distributed by spool oscillation';group.add(laidLine);
+ const result={group,allowZoom:true,eye:[3.2,3.1,8],defaults:{angle:0},parts:{crank,pin,follower,slotBody,spool,contact,coils,guide,incoming,laidLine},update(s){
+  const angle=Number(s.angle)||0,dx=.60*Math.sin(angle),theta=-angle*5.2;crank.rotation.z=-angle;follower.position.x=-1.55+dx;guide.rotation.x=-theta;contact.position.set(-dx,Math.sin(theta)*.565,Math.cos(theta)*.565);
+ const incomingPoints=incoming.geometry.attributes.position;incomingPoints.setXYZ(0,1.75,.25+Math.sin(theta)*1.28,Math.cos(theta)*1.28);incomingPoints.setXYZ(1,1.75,.25+Math.sin(theta)*.565,Math.cos(theta)*.565);incomingPoints.needsUpdate=true;incoming.geometry.computeBoundingSphere();
+ const history=Math.min(8,Math.max(0,angle*5.2/TAU)),points=laidGeometry.attributes.position;for(let i=0;i<257;i++){const old=history*i/256,at=angle-old*TAU/5.2,a=theta+old*TAU;points.setXYZ(i,1.75+dx-.60*Math.sin(at),.25+Math.sin(a)*.565,Math.cos(a)*.565);}points.needsUpdate=true;laidGeometry.computeBoundingSphere();
   s.spoolTravel=dx;s.guidePosition=-dx;
  },advance(s,dt){s.angle=(s.angle||0)+dt;},
  reading:s=>'스풀의 왕복 위치 '+(Number(s.spoolTravel)||0).toFixed(2)+' · 들어오는 줄의 위치는 고정',
@@ -96,12 +100,12 @@ export function buildReelDrag(){
  const knob=part(group,'drag adjustment knob');cyl(knob,.45,.15,M.black,0,.543,0);for(let i=0;i<24;i++){const a=i/24*TAU;rod(knob,[Math.cos(a)*.45,.49,Math.sin(a)*.45],[Math.cos(a)*.45,.59,Math.sin(a)*.45],.014,steel);}
  const line=markLine(group,'Line leaving spool',[[.82,.28,0],[2.10,.28,0]],new T.LineBasicMaterial({color:0xdfd0b1}));line.userData.noFit=true;
  const indicator=sphereMarker(group,'Drag slipping indicator',accent,1.27,.28,0,.05);
- const result={group,allowZoom:true,eye:[3.5,3,5],defaults:{load:30,setting:50,time:0},parts:{washers,discs,fixed,moving,shaft,carrier,pressure,knob},update(s){
-  const slipping=Number(s.load)>Number(s.setting),a=slipping?(Number(s.time)||0):0;
+ const result={group,allowZoom:true,eye:[3.5,3,5],defaults:{load:30,setting:50,time:0,slipAngle:0},parts:{washers,discs,fixed,moving,shaft,carrier,pressure,knob},update(s){
+  const slipping=Number(s.load)>Number(s.setting),a=Number.isFinite(s.slipAngle)?s.slipAngle:(slipping?(Number(s.time)||0):0);
   for(const d of fixed)d.rotation.y=0;for(const d of moving)d.rotation.y=a;carrier.rotation.y=a;knob.rotation.y=-(Number(s.setting)||50)/100*TAU*.65;
   indicator.material=slipping?red:accent;indicator.scale.setScalar(slipping?1.3:1);s.slipping=slipping;
   s.caption=slipping?'스풀 쪽 판이 미끄러지며 줄이 풀립니다.':'축 쪽 판과 스풀 쪽 판이 함께 버팁니다.';
- },advance(s,dt){s.time=(s.time||0)+dt;},reading:s=>s.caption+' · 당기는 힘 '+s.load+' / 저항 '+s.setting+' (상대값)',
+ },advance(s,dt){s.time=(s.time||0)+dt;if(Number(s.load)>Number(s.setting))s.slipAngle=(s.slipAngle||0)+dt;},reading:s=>s.caption+' · 당기는 힘 '+s.load+' / 저항 '+s.setting+' (상대값)',
  annotations:[{text:'축에 고정된 금속판',object:fixed[2]},{text:'스풀 쪽 마찰판과 회전 표시',object:moving[1]},{text:'판을 누르는 조절 노브',object:knob}]};
  result.update({...result.defaults});return result;
 }
