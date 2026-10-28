@@ -1,14 +1,14 @@
 import {gramophoneVisualSignal,GRAMOPHONE_DURATION} from '../gramophone/audio.js?v=20261028-uxaudio2';
 import {T,M,TAU,clamp,colors,metal,assembly,part,box,cyl,ring,rod} from './anatomy-core.js?v=20261028-watchmechanism2';
 import {buildGuitar,buildViolin} from './quality-instruments.js?v=20261028-craft7';
-import {buildReel} from './quality-machines.js?v=20261028-watchguide2';
+import {buildReel} from './quality-machines.js?v=20261028-watchguide4';
 import {buildMXStudy} from './quality-replacements.js?v=20261028-craft7';
 import {buildGramophone} from '../gramophone/gramophone-model.js?v=20261028-release3';
 import {buildSewingMachine} from '../sewing-machine/sewing-model.js?v=20261028-craft7';
 import {cycleAt} from '../sewing-machine/motion.js?v=20261027-detail1';
 import {projectorAssembly} from './anatomy-optics.js?v=20261028-craft7';
 import {cameraAssembly} from './camera-optics-detail.js?v=20261028-craft7';
-import {watchAssembly} from './anatomy-watch.js?v=20261028-watchguide2';
+import {watchAssembly} from './anatomy-watch.js?v=20261028-watchguide4';
 import {espressoAssembly} from './anatomy-espresso.js?v=20261028-craft7';
 function entry(id,title,description,object,offset=[0,0,0],color=colors.frame){return {id,title,description,object,offset:new T.Vector3(...offset),color};}
 function bundle(root,name,objects){const g=part(root,name);root.updateMatrixWorld(true);for(const o of objects.filter(Boolean))g.attach(o);return g;}

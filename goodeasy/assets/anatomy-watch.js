@@ -1,5 +1,5 @@
 import {T,M,TAU,clamp,colors,metal,component,assembly,part,mesh,box,cyl,ring,rod,bolt,plate,sleeve,spiral} from './anatomy-core.js?v=20261028-watchmechanism2';
-import {anchoredPowerSpring} from './research-watch.js?v=20261028-watchguide2';
+import {anchoredPowerSpring} from './research-watch.js?v=20261028-watchguide4';
 import {handAngles} from './research-math.js?v=20261026-release3';
 import {buildMovementFinishing,buildMachinedMainplate} from './watch-art-direction.js?v=20261028-watchmechanism2';
 import {cycloidalPairSpec,makeWatchGear,pinionPhase} from './watch-wheel-geometry.js?v=20261028-watchmechanism2';
@@ -62,7 +62,7 @@ export function watchAssembly(){
  powerSpring.update(charge,-windAngle,-angles[0]);spring.rotation.y=-angles[0];
 const attr=hairMesh.geometry.attributes.position;for(let i=0;i<attr.count;i++){const x=hairRest[i*3],y=hairRest[i*3+1],z=hairRest[i*3+2],a=-esc.balanceAngle*(1-clamp((Math.hypot(x,z)-.08)/.32));attr.setXYZ(i,x*Math.cos(a)-z*Math.sin(a),y,x*Math.sin(a)+z*Math.cos(a));}attr.needsUpdate=true;const a=handAngles(fourth*60/TAU);hands[0].rotation.y=-a.hour;hands[1].rotation.y=-a.minute;sec.rotation.y=-a.second;cannon.rotation.y=-a.minute;inter.rotation.y=interPhase+a.minute/4;ip.rotation.y=inter.rotation.y;hour.rotation.y=hourPhase-a.hour;},{eye:[4,6,7],duration:8,phaseLabel:'탈진기 여덟 비트',note:'수동 무브먼트의 대표 구조입니다. 부품을 펼쳐도 각 휠과 피니언은 원래 축을 유지합니다. 작동은 느리게 확대했습니다.'});
  // Preserve true circles and right-angle gear contacts: never compress one axis.
- result.windingRig=winding;result.escapementRig=escapement;result.handAngles=()=>handAngles(escapement.state.wheelAdvance/10*60/TAU);result.update();return result;
+ result.escapementFrame=bankingFrame;result.windingRig=winding;result.escapementRig=escapement;result.handAngles=()=>handAngles(escapement.state.wheelAdvance/10*60/TAU);result.update();return result;
 }
 
 function bridgePlate(parent,A,B,y,material,r=.205){const dx=B[0]-A[0],dz=B[1]-A[1],L=Math.hypot(dx,dz),s=new T.Shape();s.moveTo(0,-r);s.bezierCurveTo(-r*1.25,-r,-r*1.25,r,0,r);s.bezierCurveTo(L*.3,r*.9,L*.45,r*.36,L*.68,r*.50);s.quadraticCurveTo(L*.84,r*.70,L,r*.70);s.bezierCurveTo(L+r,r*.70,L+r,-r*.70,L,-r*.70);s.quadraticCurveTo(L*.75,-r*.75,L*.58,-r*.36);s.quadraticCurveTo(L*.25,-r*.6,0,-r);s.closePath();for(const x of [0,L]){const h=new T.Path();h.absarc(x,0,x===0?.052:.034,0,TAU,true);s.holes.push(h);}const g=new T.ExtrudeGeometry(s,{depth:.07,bevelEnabled:true,bevelSize:.008,bevelThickness:.008,bevelSegments:2,curveSegments:20});g.rotateX(-Math.PI/2);const o=mesh(parent,g,material,A[0],y,A[1]);o.rotation.y=-Math.atan2(dz,dx);return o;}

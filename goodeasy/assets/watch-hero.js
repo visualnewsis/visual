@@ -1,5 +1,5 @@
 import {T,materials as M,mesh,box,cyl,ring,rod,tube,sphere,part,tag} from './quality-kit.js?v=20261028-watchmechanism2';
-import {watchAssembly} from './anatomy-watch.js?v=20261028-watchguide2';
+import {watchAssembly} from './anatomy-watch.js?v=20261028-watchguide4';
 import {buildWatchCase} from './watch-case.js?v=20261028-watchmechanism2';
 import {createCaseSection} from './watch-cutaway.js?v=20261028-watchmechanism2';
 const TAU=Math.PI*2;
