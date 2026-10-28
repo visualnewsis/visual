@@ -1,7 +1,7 @@
-import {T,M,TAU,clamp,colors,metal,component,assembly,part,mesh,box,cyl,ring,rod,bolt,plate,sleeve,spiral} from './anatomy-core.js?v=20261028-craft5';
-import {toothWheel,anchoredPowerSpring} from './research-watch.js?v=20261028-craft5';
+import {T,M,TAU,clamp,colors,metal,component,assembly,part,mesh,box,cyl,ring,rod,bolt,plate,sleeve,spiral} from './anatomy-core.js?v=20261028-craft7';
+import {toothWheel,anchoredPowerSpring} from './research-watch.js?v=20261028-craft7';
 import {escapeState,handAngles} from './research-math.js?v=20261026-release3';
-import {buildMovementFinishing,refineWatchWheel,buildMachinedMainplate} from './watch-art-direction.js?v=20261028-craft5';
+import {buildMovementFinishing,refineWatchWheel,buildMachinedMainplate} from './watch-art-direction.js?v=20261028-craft7';
 export function watchAssembly(){
  const group=new T.Group(),C=[],add=(...a)=>{const c=component(group,...a);C.push(c);return c.object;},steel=metal(0xaeb8b4),gold=metal(0xbea46b),ruby=new T.MeshPhysicalMaterial({color:0x591329,metalness:.18,roughness:.2,clearcoat:1}),violet=metal(0xa88d52),centers=[[-1.1,.3],[-.264,.3],[.484,.3],[.880,-.3858921198],[1.254,.2618948822]],levels=[.30,.48,.66,.84,1.02],Ns=[64,60,64,60,15],pins=[0,12,8,8,8],m=.022;
  const plateCenter=[-.264,.3],plateRadius=2.4,bridgeAnchors=[[-1.60,.95],[-.72,.95],[.12,1.25],[1.75,-.25],[1.55,.78]];

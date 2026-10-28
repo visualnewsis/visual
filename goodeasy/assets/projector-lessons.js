@@ -1,5 +1,5 @@
-import {T,M,box,cyl,rod,part} from './anatomy-core.js?v=20261028-craft5';
-import {projectorAssembly} from './anatomy-optics.js?v=20261028-craft5';
+import {T,M,box,cyl,rod,part} from './anatomy-core.js?v=20261028-craft7';
+import {projectorAssembly} from './anatomy-optics.js?v=20261028-craft7';
 import {paintFilmFrame,frameNumber,FILM_FRAME_COUNT} from './projector-frames.js?v=20261028-release3';
 const TAU=Math.PI*2,pitch=.75,clamp=x=>Math.max(0,Math.min(1,x));
 function canvas(w=256,h=192){const c=document.createElement('canvas');c.width=w;c.height=h;return c;}

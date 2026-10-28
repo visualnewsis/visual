@@ -1,5 +1,5 @@
-import {T,materials as M,mesh,box,cyl,ring,rod,tube,sphere,part,tag,lathe} from './quality-kit.js?v=20261028-craft5';
-import {buildReelExterior} from './reel-exterior.js?v=20261028-craft5';
+import {T,materials as M,mesh,box,cyl,ring,rod,tube,sphere,part,tag,lathe} from './quality-kit.js?v=20261028-craft7';
+import {buildReelExterior} from './reel-exterior.js?v=20261028-craft7';
 const TAU=Math.PI*2;
 export function snapReelRatio(value){const ratio=Number.isFinite(Number(value))?Number(value):5.2;return [4.8,5.2,6.2].reduce((a,b)=>Math.abs(b-ratio)<Math.abs(a-ratio)?b:a);}
 function annulus(p,r,h,height,mat,x=0,y=0,z=0){const s=new T.Shape();s.absarc(0,0,r,0,TAU,false);const hole=new T.Path();hole.absarc(0,0,h,0,TAU,true);s.holes.push(hole);const g=new T.ExtrudeGeometry(s,{depth:height,bevelEnabled:false,curveSegments:64});g.rotateX(-Math.PI/2);g.translate(0,-height/2,0);return mesh(p,g,mat,x,y,z);}

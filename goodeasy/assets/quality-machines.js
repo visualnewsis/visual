@@ -1,8 +1,8 @@
-import {buildWatch,buildReel} from './release-machine-models.js?v=20261028-craft5';
+import {buildWatch,buildReel} from './release-machine-models.js?v=20261028-craft7';
 export {buildWatch,buildReel};
 import {paintFilmFrame} from './projector-frames.js?v=20261028-release3';
 import {curtainWindow} from './mechanism-checks.js?v=20261026-release3';
-import {T,materials as M,mesh,box,cyl,ring,rod,tube,sphere,label,bolt,gear,part,tag,lathe} from './quality-kit.js?v=20261028-craft5';
+import {T,materials as M,mesh,box,cyl,ring,rod,tube,sphere,label,bolt,gear,part,tag,lathe} from './quality-kit.js?v=20261028-craft7';
 const TAU=Math.PI*2;
 function legacyBuildWatch(){const group=new T.Group(),body=part(group,'case');cyl(body,2.15,.46,M.steel,0,.7,0);cyl(body,2.02,.15,M.black,0,.98,0);ring(body,2.08,.075,M.steel,0,1.04,0);ring(body,1.99,.025,M.brass,0,1.08,0);
  const band=part(body,'Strap and lugs');band.rotation.y=Math.PI/2;

@@ -1,6 +1,6 @@
-import {T,materials as M,mesh,box,cyl,ring,rod,part} from './quality-kit.js?v=20261028-craft5';
-import {buildReel} from './quality-machines.js?v=20261028-craft5';
-import {snapReelRatio} from './release-machine-models.js?v=20261028-craft5';
+import {T,materials as M,mesh,box,cyl,ring,rod,part} from './quality-kit.js?v=20261028-craft7';
+import {buildReel} from './quality-machines.js?v=20261028-craft7';
+import {snapReelRatio} from './release-machine-models.js?v=20261028-craft7';
 
 const TAU=Math.PI*2;
 const clamp=(x,a,b)=>Math.max(a,Math.min(b,x));

@@ -93,16 +93,16 @@ function tick(now){animation=0;const dt=Math.min(.1,(now-last)/1000||0);last=now
 function wake(){if(!animation&&visible&&!document.hidden){last=performance.now();animation=requestAnimationFrame(tick);}}
 const experienceOptions={getState:()=>state,setState:next=>{state=next;},render,announce:say,wake};
 if(kind==='fishing-reel'){
- const {createReelExperience}=await import('./reel-experience.js?v=20261028-craft5');
+ const {createReelExperience}=await import('./reel-experience.js?v=20261028-craft7');
  reelExperience=createReelExperience(experienceOptions);
 }
 if(kind==='watch'){
- const {createWatchExperience}=await import('./watch-experience.js?v=20261028-craft5');
+ const {createWatchExperience}=await import('./watch-experience.js?v=20261028-craft7');
  watchExperience=createWatchExperience(experienceOptions);
  for(const [id,mode] of [['watch-regulated',true],['watch-free','free']])$(id)?.addEventListener('click',()=>{watchExperience.regulate(mode);$('watch-regulated')?.setAttribute('aria-pressed',String(mode===true));$('watch-free')?.setAttribute('aria-pressed',String(mode==='free'));});
 }
 if(kind==='espresso-machine'){
- const {createEspressoExperience}=await import('./espresso-experience.js?v=20261028-craft5');
+ const {createEspressoExperience}=await import('./espresso-experience.js?v=20261028-craft7');
  espressoExperience=createEspressoExperience(experienceOptions);espressoExperience.reset();
 }
 new IntersectionObserver(([e])=>{visible=e.isIntersecting;if(visible)wake();else{cancelAnimationFrame(animation);animation=0;}}).observe($('play'));

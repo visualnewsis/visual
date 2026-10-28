@@ -1,5 +1,5 @@
-import {watchAssembly} from './anatomy-watch.js?v=20261028-craft5';
-import {T,materials as M,mesh,box,cyl,ring,rod,tube,gear,part,bolt} from './quality-kit.js?v=20261028-craft5';
+import {watchAssembly} from './anatomy-watch.js?v=20261028-craft7';
+import {T,materials as M,mesh,box,cyl,ring,rod,tube,gear,part,bolt} from './quality-kit.js?v=20261028-craft7';
 import {TAU,clamp,layerOffset,gearAngle,escapeState,handAngles,period} from './research-math.js?v=20261026-release3';
 const silver=M.steel, gold=M.brass, ruby=new T.MeshPhysicalMaterial({color:0x862d4b,roughness:.2,metalness:.2,clearcoat:1});
 const palette={silver,gold,ruby};

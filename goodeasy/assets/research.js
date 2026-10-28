@@ -1,9 +1,9 @@
 import {zoomDistance,wheelZoom,pinchZoom,zoomPercent} from './anatomy-controls.js?v=20261027-orbit1';
 import {playStudyTone,stopStudyTone,midiFrequency} from './study-audio.js?v=20261028-release3';
 import {lessonAnnotations} from './lesson-annotations.js?v=20261027-detail1';
-import {T,materials as M} from './quality-kit.js?v=20261028-craft5';
-import {watchBuilders} from './research-watch.js?v=20261028-craft5';
-import {otherBuilders} from './research-other.js?v=20261028-craft5';
+import {T,materials as M} from './quality-kit.js?v=20261028-craft7';
+import {watchBuilders} from './research-watch.js?v=20261028-craft7';
+import {otherBuilders} from './research-other.js?v=20261028-craft7';
 import {clamp} from './research-math.js?v=20261026-release3';
 const refined=!!(document.body.dataset.experiment||document.body.dataset.music);
 const cards=[...document.querySelectorAll('[data-research]')],views=[],reduced=matchMedia('(prefers-reduced-motion: reduce)');

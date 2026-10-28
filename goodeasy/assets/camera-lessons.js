@@ -9,7 +9,7 @@ import {
   rod,
   tube,
   part
-} from './quality-kit.js?v=20261028-craft5';
+} from './quality-kit.js?v=20261028-craft7';
 
 import {
   curtainWindow

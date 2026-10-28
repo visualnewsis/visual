@@ -1,3 +1,3 @@
 // Stable public builder entry points; each experiment owns its model.
-export {buildWatch} from './watch-hero.js?v=20261028-craft5';
-export {buildReel,snapReelRatio} from './reel-hero.js?v=20261028-craft5';
+export {buildWatch} from './watch-hero.js?v=20261028-craft7';
+export {buildReel,snapReelRatio} from './reel-hero.js?v=20261028-craft7';

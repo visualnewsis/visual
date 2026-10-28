@@ -1,22 +1,22 @@
-import {T,materials as M,mesh,box,cyl,ring,rod,tube,sphere,part,tag} from './quality-kit.js?v=20261028-craft5';
-import {watchAssembly} from './anatomy-watch.js?v=20261028-craft5';
+import {T,materials as M,mesh,box,cyl,ring,rod,tube,sphere,part,tag} from './quality-kit.js?v=20261028-craft7';
+import {watchAssembly} from './anatomy-watch.js?v=20261028-craft7';
 import {escapeState,handAngles} from './research-math.js?v=20261026-release3';
-import {buildWatchExterior} from './watch-art-direction.js?v=20261028-craft5';
+import {buildWatchExterior} from './watch-art-direction.js?v=20261028-craft7';
 const TAU=Math.PI*2;
 function annulus(p,r,h,height,mat,x=0,y=0,z=0){const s=new T.Shape();s.absarc(0,0,r,0,TAU,false);const hole=new T.Path();hole.absarc(0,0,h,0,TAU,true);s.holes.push(hole);const g=new T.ExtrudeGeometry(s,{depth:height,bevelEnabled:false,curveSegments:64});g.rotateX(-Math.PI/2);g.translate(0,-height/2,0);return mesh(p,g,mat,x,y,z);}
 export function buildWatch(){
  const group=new T.Group(),body=part(group,'case'),movement=watchAssembly();
  const polished=M.steel.clone();polished.roughness=.22;polished.metalness=.87;
- const satin=M.steel.clone();satin.roughness=.42;satin.metalness=.68;group.add(movement.group);movement.group.position.set(.264,.30,-.3);movement.group.scale.y=.45;
+ const satin=M.steel.clone();satin.roughness=.42;satin.metalness=.68;group.add(movement.group);movement.group.position.set(.264,.44,-.3);movement.group.scale.y=.45;
  const component=id=>movement.components.find(c=>c.id===id).object;
  component('dial').visible=false;component('motion').visible=false;component('barrel-lid').visible=false;
- const caseProfile=[[2.54,.29],[2.59,.30],[2.64,.35],[2.665,.43],[2.63,.48],[2.63,.78],[2.67,.88],[2.665,.96],[2.61,1.035],[2.55,1.08],[2.54,1.08],[2.54,.29]].map(p=>new T.Vector2(...p));
+ const caseProfile=[[2.54,.29],[2.59,.30],[2.64,.35],[2.65,.43],[2.63,.48],[2.63,.75],[2.65,.84],[2.65,.91],[2.61,.965],[2.55,1.00],[2.54,1.00],[2.56,.95],[2.56,.36],[2.51,.30],[2.54,.29]].map(p=>new T.Vector2(...p));
  const caseShell=mesh(body,new T.LatheGeometry(caseProfile,128),polished);caseShell.name='Curved polished case flank';
- const seat=annulus(body,2.54,2.33,.035,satin,0,.2789,0);seat.name='Movement mounting seat';
- cyl(body,2.56,.035,M.black,0,.245,0);ring(body,2.575,.023,polished,0,1.07,0);ring(body,2.65,.012,satin,0,.42,0);
- const front=part(body,'Skeleton chapter ring');annulus(front,2.53,2.16,.045,M.ivory,0,1.09,0);
- for(let i=0;i<60;i++){const a=i/60*TAU,o=box(front,i%5?.022:.055,.024,i%5?.08:.17,M.black,Math.sin(a)*2.35,1.13,Math.cos(a)*2.35,.004);o.rotation.y=a;}
- for(let i=0;i<12;i++){const a=i/12*TAU,index=box(front,.065,.035,.14,polished,Math.sin(a)*2.39,1.153,Math.cos(a)*2.39,.009);index.rotation.y=a;}
+ const seat=annulus(body,2.54,2.33,.035,satin,0,.4189,0);seat.name='Movement mounting seat';
+ const caseback=cyl(body,2.56,.035,M.black,0,.385,0);caseback.name='Caseback supporting mounting seat';ring(body,2.575,.023,polished,0,.99,0);ring(body,2.638,.012,satin,0,.42,0);
+ const front=part(body,'Skeleton chapter ring'),chapter=annulus(front,2.53,2.28,.028,M.ivory,0,1.00,0);chapter.name='Narrow ivory chapter ring';
+ for(let i=0;i<60;i++){const a=i/60*TAU,o=box(front,i%5?.018:.040,.018,i%5?.055:.13,M.black,Math.sin(a)*2.41,1.03,Math.cos(a)*2.41,.003);o.rotation.y=a;}
+ for(let i=0;i<12;i++){const a=i/12*TAU,index=box(front,.045,.025,.110,polished,Math.sin(a)*2.41,1.051,Math.cos(a)*2.41,.006);index.rotation.y=a;}
  const crystal=M.glass.clone();crystal.opacity=.035;crystal.transparent=true;crystal.depthWrite=false;const glass=cyl(body,2.51,.018,crystal,0,1.31,0);glass.name='Sapphire crystal above hands';
  const band=part(body,'Strap and lugs');
  const hide=M.leather.clone();hide.color.setHex(0x392b23);hide.bumpScale=.009;hide.roughness=.64;
@@ -47,7 +47,7 @@ export function buildWatch(){
  band.add(buildWatchExterior(T,{leather:hide,polished}).group);
  const hands=part(group,'hands'),hour=part(hands,'Hour hand'),minute=part(hands,'Minute hand'),seconds=part(hands,'Small seconds');hour.position.y=1.2;minute.position.y=1.24;seconds.position.set(1.144,1.2,-.6858921198);
  box(hour,.105,.035,1.03,polished,0,0,-.43,.012);box(hour,.040,.039,.76,M.black,0,0,-.43,.008);box(minute,.070,.03,1.75,polished,0,0,-.75,.01);box(minute,.023,.034,1.40,M.black,0,0,-.75,.006);box(seconds,.022,.025,.36,M.red,0,0,-.14,.004);ring(hands,.39,.012,M.brass,1.144,1.17,-.6858921198);
- rod(hands,[0,.67,0],[0,1.28,0],.032,M.steel);rod(hands,[1.144,.75,-.6858921198],[1.144,1.23,-.6858921198],.02,M.steel);cyl(hands,.09,.05,M.brass,0,1.28,0);
+ rod(hands,[0,.67,0],[0,1.28,0],.032,M.steel);rod(hands,[1.144,.75,-.6858921198],[1.144,1.23,-.6858921198],.02,M.steel);cyl(hands,.09,.028,M.brass,0,1.272,0);
  const crown=part(group,'crown');crown.position.set(2.84,.65,0);crown.rotation.y=Math.PI/2;const spin=part(crown,'Crown spindle');const c=cyl(spin,.24,.4,M.steel);c.rotation.x=Math.PI/2;for(let i=0;i<32;i++){const a=i/32*TAU;rod(spin,[Math.cos(a)*.24,Math.sin(a)*.24,-.17],[Math.cos(a)*.24,Math.sin(a)*.24,.17],.012,M.steel);}rod(crown,[0,0,-.28],[0,0,.12],.07,M.steel);
  tag(crown,'crown','action');tag(body,'case');tag(movement.group,'gears');tag(hands,'hands');
  const result={group,eye:[4,8,5],parts:{case:body,crown,gears:movement.group,barrel:component('wheel-0'),escapement:component('pallet'),balance:component('balance'),hands,movement},

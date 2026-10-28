@@ -1,6 +1,6 @@
-import {T,M,TAU,clamp,colors,metal,component,assembly,part,mesh,box,cyl,ring,rod,bolt,sleeve,tube} from './anatomy-core.js?v=20261028-craft5';
+import {T,M,TAU,clamp,colors,metal,component,assembly,part,mesh,box,cyl,ring,rod,bolt,sleeve,tube} from './anatomy-core.js?v=20261028-craft7';
 import {espressoSequence} from './espresso-sequence.js?v=20261028-release3';
-import {createCoffeeCup} from './coffee-detail.js?v=20261028-craft5';
+import {createCoffeeCup} from './coffee-detail.js?v=20261028-craft7';
 export function espressoAssembly(){
  const group=new T.Group(),C=[],add=(...a)=>{const c=component(group,...a);C.push(c);return c.object;},steel=metal(0xa9b9b7),copper=metal(0xba875b),water=new T.MeshPhysicalMaterial({color:0x459dad,transparent:true,opacity:.55,roughness:.15}),connections=[];
  const chassis=add('chassis','프레임과 드립 트레이','펌프·보일러·그룹헤드를 같은 프레임에 고정합니다.',[0,-.35,-.3]);box(chassis,5.2,.12,2.3,M.black,0,-.1,0);for(const x of [-2.3,2.3])rod(chassis,[x,0,-.6],[x,3,-.6],.065,steel);box(chassis,5.2,.12,1.4,metal(0x31544a),0,3,-.6);for(let i=0;i<17;i++)box(chassis,.045,.04,1.0,steel,.8+i*.08,.04,.55,.005);

@@ -7,24 +7,19 @@ function facedMetal(T,geometry,face,edge){
  const mesh=new T.Mesh(geometry,face),wall=new T.Mesh(wallGeometry,edge);wall.name='Polished machined sidewall';wall.castShadow=wall.receiveShadow=true;mesh.add(wall);return mesh;
 }
 export function buildMachinedMainplate(T,{center,radius,bores}={}){
- const group=new T.Group(),top=new T.MeshStandardMaterial({color:0x9ca49c,metalness:.86,roughness:.38}),edge=new T.MeshStandardMaterial({color:0xd2d5ca,metalness:.94,roughness:.22}),floorMat=new T.MeshStandardMaterial({color:0x596762,metalness:.77,roughness:.49});
+ const group=new T.Group(),top=new T.MeshStandardMaterial({color:0x9ca49c,metalness:.86,roughness:.38}),edge=new T.MeshStandardMaterial({color:0xd2d5ca,metalness:.94,roughness:.22}),floorMat=new T.MeshStandardMaterial({color:0x778286,metalness:.72,roughness:.43});
  const outline=new T.Shape();outline.absarc(0,0,radius,0,TAU,false);
  for(const [x,z,r] of bores){const p=new T.Path();p.absarc(x,-z,r,0,TAU,true);outline.holes.push(p);}
  const contours=[
   [[-2.12,-.30],[-2.02,-.85],[-1.50,-1.45],[-.85,-1.68],[-.38,-1.30],[-.47,-.75],[-1.15,-.50]],
   [[-1.90,1.45],[-1.65,2.05],[-.85,2.40],[-.20,2.25],[.15,1.85],[-.20,1.55],[-1.10,1.35]]
  ];
- const polygons=[];
  for(const contour of contours){
-  const path=new T.CatmullRomCurve3(contour.map(([x,z])=>new T.Vector3(x-center[0],0,z-center[1])),true,'centripetal'),points=path.getPoints(100).map(p=>new T.Vector2(p.x,-p.z));polygons.push(points);const hole=new T.Path(points);hole.closePath();outline.holes.push(hole);
-  const f=new T.Shape(points),fg=new T.ExtrudeGeometry(f,{depth:.018,bevelEnabled:false,curveSegments:32});fg.rotateX(-Math.PI/2);const floor=new T.Mesh(fg,floorMat);floor.position.set(center[0],0,center[1]);floor.name='Blind machined recess floor';floor.receiveShadow=true;group.add(floor);
+  const cx=contour.reduce((sum,p)=>sum+p[0],0)/contour.length,cz=contour.reduce((sum,p)=>sum+p[1],0)/contour.length,scale=Math.sqrt(.40);
+  const path=new T.CatmullRomCurve3(contour.map(([x,z])=>new T.Vector3(cx+(x-cx)*scale-center[0],0,cz+(z-cz)*scale-center[1])),true,'centripetal'),points=path.getPoints(100).map(p=>new T.Vector2(p.x,-p.z));const hole=new T.Path(points);hole.closePath();outline.holes.push(hole);
+  const f=new T.Shape(points),fg=new T.ExtrudeGeometry(f,{depth:.035,bevelEnabled:false,curveSegments:32});fg.rotateX(-Math.PI/2);const floor=new T.Mesh(fg,floorMat);floor.position.set(center[0],0,center[1]);floor.name='Blind machined recess floor';floor.receiveShadow=true;group.add(floor);
  }
  const g=new T.ExtrudeGeometry(outline,{depth:.065,bevelEnabled:true,bevelSize:.008,bevelThickness:.008,bevelSegments:3,curveSegments:96});g.rotateX(-Math.PI/2);const mainplate=facedMetal(T,g,top,edge);mainplate.name='Concentric movement mainplate';mainplate.userData.radius=radius;mainplate.position.set(center[0],0,center[1]);mainplate.castShadow=mainplate.receiveShadow=true;group.add(mainplate);
- const inside=(x,z,poly)=>{let yes=false;for(let i=0,j=poly.length-1;i<poly.length;j=i++){const a=poly[i],b=poly[j];if(((a.y>z)!==(b.y>z))&&(x<(b.x-a.x)*(z-a.y)/(b.y-a.y)+a.x))yes=!yes;}return yes;};
- const lines=[];for(let z=-radius;z<radius;z+=.17)for(let x=-radius;x<radius;x+=.17){if(Math.hypot(x,z)>radius-.22||bores.some(([bx,bz,r])=>Math.hypot(x-bx,z-bz)<r+.11))continue;const pocket=polygons.some(p=>inside(x,-z,p)),y=pocket?.019:.074;
-  for(let i=0;i<24;i++){const a=i/24*TAU,b=(i+1)/24*TAU,ax=x+Math.cos(a)*.096,az=z+Math.sin(a)*.096,bx=x+Math.cos(b)*.096,bz=z+Math.sin(b)*.096;if(polygons.some(p=>inside(ax,-az,p))!==pocket||polygons.some(p=>inside(bx,-bz,p))!==pocket)continue;lines.push(ax+center[0],y,az+center[1],bx+center[0],y,bz+center[1]);}
- }
- const mark=new T.BufferGeometry();mark.setAttribute('position',new T.Float32BufferAttribute(lines,3));const finish=new T.LineSegments(mark,new T.LineBasicMaterial({color:0xcbd1bd,transparent:true,opacity:.045,depthWrite:false}));finish.name='Overlapping circular polishing marks';group.add(finish);
  return {group,mainplate};
 }
 export function buildMovementFinishing(T,{centers,anchors,steel,gold}={}){
