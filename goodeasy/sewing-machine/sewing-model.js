@@ -278,10 +278,16 @@ export function buildSewingMachine(T, M = {}) {
     crescent.push([.34*Math.sin(a),.073,.34*Math.cos(a)]);
   }
   tube(hook,crescent,.032,steel,"Rotary hook crescent");
-  tube(hook,[
-    [-.065,.09,.285],[-.038,.13,.325],
-    [-.01,.18,.367],[0,.21,.38]
-  ],.008,steel,"Hook beak",false);
+  // A tapered crescent blade joins the race and ends tangentially at the needle.
+  // Keep the contact anchor fixed; this replaces the misleading wire-like beak.
+  const bladeRows=[],bladePositions=[];
+  for(let i=0;i<=12;i++){const t=i/12,e=t*t*(3-2*t),a=-.48*(1-t),ri=.28+.10*e,ro=.38,lo=.065+.135*e,hi=.08+.13*e;
+    bladeRows.push([[ri*Math.sin(a),lo,ri*Math.cos(a)],[ro*Math.sin(a),lo,ro*Math.cos(a)],[ri*Math.sin(a),hi,ri*Math.cos(a)],[ro*Math.sin(a),hi,ro*Math.cos(a)]]);}
+  const bladeQuad=(a,b,c,d)=>bladePositions.push(...a,...b,...c,...a,...c,...d);
+  for(let i=0;i<12;i++){const a=bladeRows[i],b=bladeRows[i+1];bladeQuad(a[2],a[3],b[3],b[2]);bladeQuad(a[0],b[0],b[1],a[1]);bladeQuad(a[1],b[1],b[3],a[3]);bladeQuad(a[0],a[2],b[2],b[0]);}
+  bladeQuad(...[bladeRows[0][0],bladeRows[0][1],bladeRows[0][3],bladeRows[0][2]]);
+  const bladeGeometry=new T.BufferGeometry();bladeGeometry.setAttribute('position',new T.Float32BufferAttribute(bladePositions,3));bladeGeometry.computeVertexNormals();
+  mesh(hook,bladeGeometry,steel,"Hook beak",0,0,0);
   sphere(hook,.008,steel,"Hook actual tip",0,.21,.38);
   group.add(hook);
 
