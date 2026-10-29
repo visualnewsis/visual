@@ -13,7 +13,7 @@ export function attachInspectControls(stage,canvas,{label='3D 모형',resetButto
  stage.fit=()=>{if(!nativeFit())return false;const r=canvas.getBoundingClientRect();if(!base||r.width!==width||r.height!==height){width=r.width;height=r.height;pivot=stage.target.clone();base=stage.camera.position.clone().sub(pivot);}
  const offset=base.clone().applyAxisAngle(up,yaw);right.crossVectors(up,offset).normalize();offset.applyAxisAngle(right,pitch).multiplyScalar(zoom);stage.camera.position.copy(pivot).add(offset);stage.camera.lookAt(pivot);stage.camera.updateMatrixWorld();return true;};
  function draw(){output.textContent=zoomPercent(zoom)+'%';canvas.dataset.inspectZoom=String(zoom);canvas.dataset.inspectYaw=String(yaw);canvas.dataset.inspectPitch=String(pitch);stage.draw();onChange?.();canvas.dispatchEvent(new Event('inspectchange'));}
- function reset(){yaw=pitch=0;zoom=1;draw();}
+ function reset(){pivot=stage.target.clone();yaw=pitch=0;zoom=1;draw();}
  function mode(){pointers.clear();pinch=0;canvas.style.touchAction=enabled.checked?'none':'pan-y';canvas.setAttribute('aria-label',label+(enabled.checked?' · 드래그 회전, 휠 또는 두 손가락 확대·축소':' · 회전 꺼짐'));canvas.dataset.inspectEnabled=String(enabled.checked);}
  enabled.addEventListener('change',mode);buttons[0].onclick=()=>{zoom=zoomDistance(zoom,1.25);draw();};buttons[1].onclick=()=>{zoom=zoomDistance(zoom,.8);draw();};buttons[2].onclick=reset;resetButton?.addEventListener('click',reset);
  const gap=()=>{const a=[...pointers.values()];return a.length>1?Math.hypot(a[0].x-a[1].x,a[0].y-a[1].y):0;};
@@ -22,5 +22,5 @@ export function attachInspectControls(stage,canvas,{label='3D 모형',resetButto
  canvas.addEventListener('pointermove',e=>{const previous=pointers.get(e.pointerId);if(!previous)return;const dx=e.clientX-previous.x,dy=e.clientY-previous.y;pointers.set(e.pointerId,{...previous,x:e.clientX,y:e.clientY});if(Math.hypot(e.clientX-previous.startX,e.clientY-previous.startY)>6)dragged=true;if(pointers.size>1){dragged=true;const next=gap();zoom=pinchZoom(zoom,pinch,next);pinch=next;}else{yaw-=dx*.008;pitch=Math.max(-1.3,Math.min(1.3,pitch-dy*.008));}draw();});
  const release=e=>{if(!pointers.has(e.pointerId))return;pointers.delete(e.pointerId);pinch=gap();if(dragged)shieldUntil=performance.now()+250;};for(const event of ['pointerup','pointercancel','lostpointercapture'])canvas.addEventListener(event,release);
  window.addEventListener('blur',()=>{pointers.clear();pinch=0;});mode();draw();
- return stage.inspectControls={reset,consumeClick:()=>performance.now()<shieldUntil,get enabled(){return enabled.checked;},get zoom(){return zoom;}};
+ return stage.inspectControls={reset,focus(point,factor=.55,angles={}){if(!base)stage.fit();pivot=point.clone();yaw=angles.yaw||0;pitch=angles.pitch||0;zoom=zoomDistance(1,factor);draw();},consumeClick:()=>performance.now()<shieldUntil,get enabled(){return enabled.checked;},get zoom(){return zoom;}};
 }

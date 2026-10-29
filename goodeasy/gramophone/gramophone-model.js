@@ -13,8 +13,8 @@ export function buildGramophone(T, M) {
   const brass = mat('brass', 0xb38a49, .83, .3), steel = mat('steel', 0x888b8d, .77, .35);
   const black = mat('black', 0x171716, .15, .65), felt = mat('felt', 0x232c26);
   const ivory = mat('ivory', 0xe4d3a5), red = mat('red', 0x71332b);
-  wood.color.setHex(0x91613f); darkWood.color.setHex(0x3c2419);
-  wood.clearcoat=.08;wood.roughness=.65;darkWood.clearcoat=.05;darkWood.roughness=.7;
+  wood.color.setHex(wood.map?0xf0d4b0:0x91613f);darkWood.color.setHex(0x5b3926);
+  wood.clearcoat=.35;wood.roughness=.40;darkWood.clearcoat=.05;darkWood.roughness=.7;
   black.metalness=.04; black.roughness=.72; black.clearcoat=0;
   const innerBrass = brass.clone(); innerBrass.color.multiplyScalar(.58); innerBrass.side=T.DoubleSide;
   const grooveMat = new T.LineBasicMaterial({color:0x77736b, transparent:true, opacity:.33});
@@ -108,11 +108,11 @@ export function buildGramophone(T, M) {
     if(u.lengthSq()<.01)u=V(1,0,0);
     const v=tangent.clone().cross(u).normalize(); return {center,u,v};
   }
-  const radial=(t,a)=>.065+(.88-.065)*Math.pow(t,1.72)*(1+.016*Math.cos(8*a)*Math.pow(t,5));
+  const radial=(t,a)=>.065+(.88-.065)*Math.pow(t,1.72)*(1+.055*Math.cos(8*a)*Math.pow(t,5));
   for(let skin=0;skin<2;skin++)for(let j=0;j<=steps;j++) {
     const t=j/steps,{center,u,v}=frame(t);
     for(let k=0;k<=sides;k++) {
-      const a=2*Math.PI*k/sides,r=Math.max(.012,radial(t,a)-(skin?.022:0));
+      const a=2*Math.PI*k/sides,r=Math.max(.012,radial(t,a)-(skin?.010:0));
       const pos=center.clone().addScaledVector(u,Math.cos(a)*r).addScaledVector(v,Math.sin(a)*r);
       verts.push(pos.x,pos.y,pos.z); uv.push(k/sides,t);
     }
@@ -137,7 +137,7 @@ export function buildGramophone(T, M) {
   for(let k=0;k<=128;k++) {const a=k*2*Math.PI/128,r=radial(1,a);
     lipPoints.push(f.center.clone().addScaledVector(f.u,r*Math.cos(a)).addScaledVector(f.v,r*Math.sin(a)));
   }
-  tube(lipPoints,.026,brass,horn,'rolled bell rim',128);
+  tube(lipPoints,.014,brass,horn,'rolled bell rim',128);const seamMaterial=new T.LineBasicMaterial({color:0x78623b,transparent:true,opacity:.35});for(let k=0;k<8;k++){const a=k*Math.PI*2/8,pts=[];for(let j=8;j<=steps;j++){const t=j/steps,f=frame(t),r=radial(t,a)+.0015;pts.push(f.center.clone().addScaledVector(f.u,Math.cos(a)*r).addScaledVector(f.v,Math.sin(a)*r));}const line=new T.Line(new T.BufferGeometry().setFromPoints(pts),seamMaterial);line.name='Horn sheet joint';horn.add(line);}
   rod(throat.clone().add(V(0,-.1,0)),throat.clone().add(V(0,.07,0)),.09,brass,horn,'horn throat collar');
   tube([V(1.8,1.15,-1.06),V(1.8,1.65,-1.06),V(1.62,2.15,-.82)],.034,steel,horn,'fixed horn support');
   ball(.085,brass,horn,1.8,1.15,-1.06,'support mounting foot');

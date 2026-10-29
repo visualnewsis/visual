@@ -32,3 +32,8 @@ test('handwheel spins in a fixed vertical plane, once per stitch, toward the ope
   if(phase===.125)assert.ok(point.z>0,'top of wheel must move toward operator');
  }
 });
+
+import {PIERCE_PHASE} from './motion.js';
+test('pierce cue occurs exactly when the descending needle crosses the cloth top',()=>{assert.ok(Math.abs(cycleAt(PIERCE_PHASE).tipY-1.11)<1e-10);const s=new SewingState();s.start();assert.equal(s.advance((PIERCE_PHASE-1e-5)*1.6).includes('pierce'),false);assert.equal(s.advance(2e-5*1.6).includes('pierce'),true);assert.equal(s.advance(.05).includes('pierce'),false);});
+
+test('completed seam bridges the prior pierced hole to the current thread at mixed stitch lengths',()=>{const a=buildSewingMachine(T,{});a.update({...cycleAt(.7,5),travel:8,stitches:[3,5]});const line=a.group.getObjectByName('Top lockstitch 1');assert.ok(line.visible);const pos=line.geometry.attributes.position;assert.ok(Math.abs((pos.getZ(1)-pos.getZ(0))/.045-5)<1e-5);const end=line.localToWorld(new T.Vector3().fromBufferAttribute(pos,1));assert.ok(Math.abs(end.x+.85)<1e-7);assert.ok(Math.abs(end.z)<1e-7);const start=line.localToWorld(new T.Vector3().fromBufferAttribute(pos,0));assert.ok(Math.abs(start.z+5*.045)<1e-7);});

@@ -4,11 +4,11 @@ export const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
 export class Playback {
  constructor(duration=24){this.duration=duration;this.position=0;this.rpm=78;this.reserve=.65;this.playing=false;this.needleDown=false;this.started=0;this.origin=0;this.crank=0;this.snapshot=null;}
  read(now){return clamp(this.position+(this.playing?Math.min(Math.max(0,now-this.started)*this.rpm/78,this.reserve*90):0),0,this.duration);}
- commit(now){const next=this.read(now),advance=next-this.position;this.reserve=Math.max(0,this.reserve-advance/90);this.position=next;this.started=now;return next;}
- start(now){if(this.reserve<=0||this.position>=this.duration)return false;this.started=now;this.playing=true;this.needleDown=true;return true;}
+ commit(now){const next=this.read(now),advance=next-this.position;this.reserve=Math.max(0,this.reserve-advance/90);if(this.reserve<1e-9)this.reserve=0;this.position=next;this.started=now;if(this.reserve<=0||this.position>=this.duration)this.playing=false;return next;}
+ start(now){if(this.playing)this.commit(now);if(this.reserve<=0||this.position>=this.duration)return false;this.started=now;this.playing=true;this.needleDown=true;return true;}
  pause(now){this.commit(now);this.playing=false;}
  speed(rpm,now){this.commit(now);this.rpm=clamp(Number(rpm),60,96);}
- wind(){this.reserve=clamp(this.reserve+.18,0,1);this.crank+=1;}
+ wind(now=this.started){this.commit(now);this.reserve=clamp(this.reserve+.18,0,1);this.crank+=1;}
  lift(now){this.pause(now);this.needleDown=false;}
  reset(now){this.lift(now);this.position=0;this.origin=0;}
  capture(now){this.commit(now);this.snapshot=Object.freeze({position:this.position,rpm:this.rpm,reserve:this.reserve,progress:this.position/this.duration,ratio:this.rpm/78});return this.snapshot;}

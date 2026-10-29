@@ -206,6 +206,16 @@ export function buildSewingMachine(T, M = {}) {
     for (const z of [-.42,.42]) screw(group,x,1.056,z);
   }
 
+  // Visible service-cover seams and calibrated stitch-length control.
+  const face=rounded(covers,.55,.60,.025,.065,steel,"Brushed needle-head service cover",-1.19,2.62,.487);
+  for(const x of [-1.38,-1.00]) for(const y of [2.42,2.82]) {const screwHead=cylinder(covers,.022,.022,.014,steel,"Front service screw",x,y,.509,16);screwHead.rotation.x=Math.PI/2;mesh(covers,new T.BoxGeometry(.030,.005,.006),black,"Machined screw slot",x,y,.519);}
+  const regulator=new T.Group();regulator.position.set(1.80,2.20,.55);covers.add(regulator);
+  const dial=cylinder(regulator,.165,.165,.048,steel,"Stitch-length dial",0,0,0,64);dial.rotation.x=Math.PI/2;
+  for(let i=0;i<40;i++){const a=i/40*PI2;rod(regulator,[Math.sin(a)*.153,Math.cos(a)*.153,.018],[Math.sin(a)*.153,Math.cos(a)*.153,.038],.005,black,"Dial knurl");}
+  const dialPointer=new T.Group();regulator.add(dialPointer);rod(dialPointer,[0,.06,.032],[0,.13,.032],.010,mint,"Stitch-length pointer");
+  for(let i=0;i<7;i++){const a=(i-3)*.34;rod(covers,[1.8+Math.sin(a)*.205,2.2+Math.cos(a)*.205,.558],[1.8+Math.sin(a)*.23,2.2+Math.cos(a)*.23,.558],.004,steel,"Length index");}
+  for(const x of [-1.55,-1.43,-1.31])rod(group,[x,1.052,-.35],[x,1.052,.35],.0025,black,"Etched seam guide");
+
   // Needle: eye is local origin; all movement is applied to this group.
   needle.position.set(N.x,1.65,N.z);
   cylinder(needle,.026,.026,1.35,steel,
@@ -240,7 +250,7 @@ export function buildSewingMachine(T, M = {}) {
   }
   rod(presser,[-1.05,1.155,.19],[-1.04,1.24,.36],
     .04,steel,"Presser foot raised toe");
-  sphere(presser,.074,brass,"Presser screw",-.61,1.28,.26);
+  const presserScrew=cylinder(presser,.045,.045,.028,steel,"Presser screw",-.61,1.28,.26,24);presserScrew.rotation.x=Math.PI/2;mesh(presser,new T.BoxGeometry(.060,.008,.006),black,"Presser screw slot",-.61,1.28,.277);
   group.add(presser);
 
   // Four-motion feed dogs; slots remain stationary in the plate.
@@ -379,13 +389,13 @@ export function buildSewingMachine(T, M = {}) {
   const clothTop=felt.clone();
   const clothBottom=felt.clone();
   clothBottom.color.multiplyScalar(.73);
-  if(typeof document!=='undefined'){const canvas=document.createElement('canvas');canvas.width=canvas.height=128;const ctx=canvas.getContext('2d');ctx.fillStyle='#708a80';ctx.fillRect(0,0,128,128);for(let i=0;i<128;i+=3){ctx.strokeStyle=i%2?'#789389':'#577166';ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(i,0);ctx.lineTo(i,128);ctx.moveTo(0,i);ctx.lineTo(128,i);ctx.stroke();}const weave=new T.CanvasTexture(canvas);weave.wrapS=weave.wrapT=T.RepeatWrapping;weave.repeat.set(8,14);weave.colorSpace=T.SRGBColorSpace;clothTop.map=weave;clothTop.bumpMap=weave;clothTop.bumpScale=.006;clothBottom.map=weave;}
-  clothTop.color.setHex(0x799489);clothBottom.color.setHex(0x435e53);
+  if(typeof document!=='undefined'){const canvas=document.createElement('canvas');canvas.width=canvas.height=128;const ctx=canvas.getContext('2d');ctx.fillStyle='#708a80';ctx.fillRect(0,0,128,128);for(let i=0;i<128;i+=3){ctx.strokeStyle=i%2?'#789389':'#577166';ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(i,0);ctx.lineTo(i,128);ctx.moveTo(0,i);ctx.lineTo(128,i);ctx.stroke();}const weave=new T.CanvasTexture(canvas);weave.wrapS=weave.wrapT=T.RepeatWrapping;weave.repeat.set(2.2,4.4);weave.colorSpace=T.SRGBColorSpace;clothTop.map=weave;clothTop.bumpMap=weave;clothTop.bumpScale=.006;clothBottom.map=weave;}
+  clothTop.color.setHex(0x9caaa5);clothBottom.color.setHex(0x667c73);clothTop.roughness=.98;clothTop.bumpScale=.012;
   clothTop.transparent=true;
   clothBottom.transparent=true;
-  const topSheet=rounded(fabric,1.3,.020,4.4,.045,
+  const topSheet=rounded(fabric,1.3,.014,4.4,.025,
     clothTop,"Upper fabric layer",0,.015,0);
-  const bottomSheet=rounded(fabric,1.3,.020,4.4,.045,
+  const bottomSheet=rounded(fabric,1.3,.014,4.4,.025,
     clothBottom,"Lower fabric layer",0,-.015,0);
 
   // Local needle entry is z=-.8; the moving cloth translates below it.
@@ -393,7 +403,7 @@ export function buildSewingMachine(T, M = {}) {
   fabric.add(seamTop,seamBottom,seamLocks);
   group.add(fabric);
 
-  const upper=pathLine(threads,mint,"Continuous upper thread",.008);
+  const upper=pathLine(threads,mint,"Continuous upper thread",.011);
   const upperLoopA=pathLine(threads,mint.clone(),"Upper loop upper race",.009);
   const upperLoopB=pathLine(threads,mint.clone(),"Upper loop lower race",.009);
   const lower=pathLine(threads,gold,"Continuous bobbin thread",.008);
@@ -505,7 +515,7 @@ export function buildSewingMachine(T, M = {}) {
     // Finished case stays fixed; wound bobbin turns only on recovery.
     bobbin.rotation.y=-(travel+length*smooth(.83,.94,p))*.04;
     // One turn per stitch; the top of the rim travels toward the operator (+Z).
-    fly.rotation.y=-PI2*p;
+    fly.rotation.y=-PI2*p;dialPointer.rotation.z=-(length-3)*.34;
 
     const cut=Math.max(0,Math.min(1,Number(state.cutaway)||0));
     covers.visible=cut<.95;
