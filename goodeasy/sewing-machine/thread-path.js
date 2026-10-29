@@ -18,10 +18,11 @@ export function threadPath(state){
  const lowerY=mix(mix(eyeY-.01*grow,.505,spread),1.11,clear);
  const polar=(a,y)=>[NX+radius*Math.sin(a),y,HZ+radius*Math.cos(a)];
  for(let i=0;i<=20;i++)path.push(polar(mix(startPhi,endPhi,i/20),upperY));
- path.push(polar(endPhi,mix(.87,1.11,clear)));
+ for(let j=1;j<=8;j++){const q=j/8;path.push(polar(endPhi+.18*Math.sin(Math.PI*q),mix(upperY,lowerY,.5-.5*Math.cos(Math.PI*q))));}
  const lowerEnd=mix(endPhi,2*Math.PI,smooth(.66,.82,p));
  for(let i=0;i<=20;i++)path.push(polar(mix(endPhi,lowerEnd,i/20),lowerY));
- path.push(polar(2*Math.PI,lowerY),polar(2*Math.PI,mix(lowerY,1.11,.5)),hole);
+ path.push(polar(2*Math.PI,lowerY));
+ for(let j=1;j<=8;j++){const q=j/8;path.push([NX-.06*Math.sin(Math.PI*q),mix(lowerY,1.11,q),mix(HZ+radius,holeZ,q)]);}
  return path.filter((point,i,all)=>i===0||Math.hypot(...point.map((v,j)=>v-all[i-1][j]))>1e-5);
 }
 

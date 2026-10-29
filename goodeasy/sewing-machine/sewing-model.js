@@ -1,4 +1,4 @@
-import {threadMechanismState} from './thread-path.js?v=20261028-release3';
+import {threadMechanismState} from './thread-path.js?v=20261029-stitch-section1';
 
 export function buildSewingMachine(T, M = {}) {
   const group = new T.Group();
@@ -11,7 +11,7 @@ export function buildSewingMachine(T, M = {}) {
     color: 0x00b4c9, roughness: 0.52
   });
   const gold = new T.MeshStandardMaterial({
-    color: 0xd8af58, metalness: 0.28, roughness: 0.45
+    color: 0xffcd69, metalness: 0.08, roughness: 0.45, emissive:0x674100, emissiveIntensity:.18
   });
   const ivory = M.ivory?.clone() || new T.MeshStandardMaterial({
     color: 0xe9e3d6, metalness: 0.16, roughness: 0.36
@@ -225,8 +225,7 @@ export function buildSewingMachine(T, M = {}) {
   const eyeRing=torus(needle,.025,.009,steel,
     "Actual needle eye rim",0,0,0);
   eyeRing.rotation.set(0,0,Math.PI/2);
-  rod(needle,[0,-.16,0],[0,-.038,0],
-    .011,steel,"Needle point");
+  cylinder(needle,.011,0,.122,steel,"Needle point",0,-.099,0,16);
   // Scarf is behind the needle (-Z); thread enters from +Z.
   const scarf=mesh(needle,new T.SphereGeometry(
     .017,12,8,0,PI2,0,Math.PI
@@ -272,7 +271,7 @@ export function buildSewingMachine(T, M = {}) {
   // Horizontal-axis-y rotary hook: body below Y=.82.
   hook.position.copy(H);
   torus(hook,.267,.052,steel,"Rotary hook race",0,.075,0);
-  torus(hook,.337,.018,brass,"Rotary outer race",0,.064,0);
+  torus(hook,.337,.018,steel,"Rotary outer race",0,.064,0);
   const crescent=[];
   for(let i=0;i<=14;i++) {
     const a=-.45+i/14*1.25;
@@ -393,10 +392,14 @@ export function buildSewingMachine(T, M = {}) {
   clothTop.color.setHex(0x9caaa5);clothBottom.color.setHex(0x667c73);clothTop.roughness=.98;clothTop.bumpScale=.012;
   clothTop.transparent=true;
   clothBottom.transparent=true;
-  const topSheet=rounded(fabric,1.3,.014,4.4,.025,
-    clothTop,"Upper fabric layer",0,.015,0);
-  const bottomSheet=rounded(fabric,1.3,.014,4.4,.025,
-    clothBottom,"Lower fabric layer",0,-.015,0);
+  const topSheet=mesh(fabric,new T.BoxGeometry(1.3,.030,4.4),clothTop,"Upper fabric layer",0,.015,0);
+  const bottomSheet=mesh(fabric,new T.BoxGeometry(1.3,.030,4.4),clothBottom,"Lower fabric layer",0,-.015,0);
+
+  // Inspection uses an explicit section cut, rather than a transparent sheet
+  // hiding the mechanism with its shadow. Full fabric remains in the hero.
+  const sectionTop=mesh(fabric,new T.BoxGeometry(.65,.030,4.4),clothTop.clone(),"Sectioned upper fabric",-.325,.015,0);
+  const sectionBottom=mesh(fabric,new T.BoxGeometry(.65,.030,4.4),clothBottom.clone(),"Sectioned lower fabric",-.325,-.015,0);
+  for(const sheet of [sectionTop,sectionBottom]){sheet.visible=false;sheet.material.transparent=false;sheet.material.opacity=1;sheet.castShadow=false;}
 
   // Local needle entry is z=-.8; the moving cloth translates below it.
   const seamTop=new T.Group(), seamBottom=new T.Group(),seamLocks=new T.Group();
@@ -406,7 +409,8 @@ export function buildSewingMachine(T, M = {}) {
   const upper=pathLine(threads,mint,"Continuous upper thread",.011);
   const upperLoopA=pathLine(threads,mint.clone(),"Upper loop upper race",.009);
   const upperLoopB=pathLine(threads,mint.clone(),"Upper loop lower race",.009);
-  const lower=pathLine(threads,gold,"Continuous bobbin thread",.008);
+  const lower=pathLine(threads,gold,"Continuous bobbin thread",.010);
+  const lockAnchor=new T.Object3D();lockAnchor.name="Current thread interlock";threads.add(lockAnchor);anchors.lock=lockAnchor;
   group.add(threads,mechanism,covers);
 
   const eyeAnchor=new T.Object3D(),tipAnchor=new T.Object3D(),hookAnchor=new T.Object3D();tipAnchor.position.set(0,-.16,0);hookAnchor.position.set(0,.21,.38);needle.add(eyeAnchor,tipAnchor);hook.add(hookAnchor);
@@ -448,7 +452,7 @@ export function buildSewingMachine(T, M = {}) {
   }
   const lockLines=Array.from({length:12},(_,i)=>{
     const make=(color,name)=>{const g=new T.BufferGeometry();g.setAttribute("position",new T.Float32BufferAttribute(new Float32Array(21),3));const line=new T.Line(g,new T.LineBasicMaterial({color}));line.name=name;seamLocks.add(line);
- const coords=name.startsWith('Upper')?[[0,.041,0],[-.012,.015,0],[-.012,-.010,0],[0,-.014,0],[.012,-.010,0],[.012,.015,0],[0,.041,0]]:[[0,-.051,0],[-.025,-.030,0],[-.025,-.004,0],[0,.002,0],[.025,-.004,0],[.025,-.030,0],[0,-.051,0]];
+ const coords=name.startsWith('Upper')?[[0,.031,0],[-.012,.015,0],[-.012,-.010,0],[0,-.014,0],[.012,-.010,0],[.012,.015,0],[0,.031,0]]:[[0,-.031,0],[-.025,-.030,0],[-.025,-.004,0],[0,.002,0],[.025,-.004,0],[.025,-.030,0],[0,-.031,0]];
  const curve=new T.CatmullRomCurve3(coords.map(p=>new T.Vector3(...p)),false,'centripetal');
  const tube=new T.Mesh(new T.TubeGeometry(curve,24,.0035,5,false),new T.MeshStandardMaterial({color,roughness:.8}));tube.name=name+' visible thread thickness';line.add(tube);
  return line;};
@@ -465,10 +469,10 @@ export function buildSewingMachine(T, M = {}) {
         const a=-.8+distance*MM;
         distance+=length;
         const b=-.8+distance*MM;
-        segment(s.top,[0,.041,a],[0,.041,b],true);
-        segment(s.bottom,[0,-.051,a],[0,-.051,b],true);
-        updateLock(lockLines[i].upper,[[0,.041,a],[-.012,.015,a],[-.012,-.010,a],[0,-.014,a],[.012,-.010,a],[.012,.015,a],[0,.041,a]],true);
-        updateLock(lockLines[i].lower,[[0,-.051,a],[-.025,-.030,a],[-.025,-.004,a],[0,.002,a],[.025,-.004,a],[.025,-.030,a],[0,-.051,a]],true);
+        segment(s.top,[0,.031,a],[0,.031,b],true);
+        segment(s.bottom,[0,-.031,a],[0,-.031,b],true);
+        updateLock(lockLines[i].upper,[[0,.031,a],[-.012,.015,a],[-.012,-.010,a],[0,-.014,a],[.012,-.010,a],[.012,.015,a],[0,.031,a]],true);
+        updateLock(lockLines[i].lower,[[0,-.031,a],[-.025,-.030,a],[-.025,-.004,a],[0,.002,a],[.025,-.004,a],[.025,-.030,a],[0,-.031,a]],true);
       } else {
         segment(s.top,[0,0,0],[0,0,0],false);
         segment(s.bottom,[0,0,0],[0,0,0],false);lockLines[i].upper.visible=false;lockLines[i].lower.visible=false;
@@ -526,8 +530,10 @@ export function buildSewingMachine(T, M = {}) {
         o.material.depthWrite=cut<.5;
       }
     });
-    clothTop.opacity=1-cut*.90;
-    clothBottom.opacity=1-cut*.93;
+    topSheet.visible=bottomSheet.visible=cut<.5;
+    sectionTop.visible=sectionBottom.visible=cut>=.5;
+    clothTop.opacity=clothBottom.opacity=1;
+    topSheet.castShadow=bottomSheet.castShadow=cut<.5;
 
     // Spool -> guides -> tension discs -> check spring ->
     // take-up eye -> needle guide -> eye. Every joint is continuous.
@@ -560,7 +566,7 @@ export function buildSewingMachine(T, M = {}) {
     const threadState=threadMechanismState({...state,phase:p,eyeY,takeupY:takeup.position.y,length});
     setPath(upper,threadState.upper);
     upperLoopA.visible=false;upperLoopB.visible=false;
-    setPath(lower,threadState.lower);
+    setPath(lower,threadState.lower);lockAnchor.position.fromArray(threadState.lock);
 
     // A single model state drives all transforms and thread paths.
     group.userData.phase=p;
@@ -586,6 +592,8 @@ export function buildSewingMachine(T, M = {}) {
   parts.mechanism=mechanism;
   parts.threads=threads;
 
+  // Cover fading must never change the shared steel/brass of the mechanism.
+  covers.traverse(o=>{if(o.isMesh)o.material=Array.isArray(o.material)?o.material.map(m=>m.clone()):o.material.clone();});
   update({
     phase:0,eyeY:1.65,tipY:1.49,
     hookAngle:4*Math.PI*(0-.58),

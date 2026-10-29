@@ -17,3 +17,7 @@ test('completed upper and lower locks have real thread thickness, stay at old ho
   }
  }
 });
+
+test('section cut cannot fade the needle, rotary hook, presser or bobbin along with the covers',()=>{const m=buildSewingMachine(T,{}),coverMaterials=new Set();m.parts.covers.traverse(o=>{if(o.isMesh)coverMaterials.add(o.material);});for(let i=0;i<=100;i++){m.update({...cycleAt(i/101),travel:0,stitches:[],cutaway:1});for(const part of ['needle','hook','presser','bobbinCase','bobbin','feed'])m.parts[part].traverse(o=>{if(o.isMesh){assert.ok(!coverMaterials.has(o.material),part+' shares fading cover material');assert.ok(o.material.opacity>=.99,part+' disappeared during section cut');}});}assert.equal(m.group.getObjectByName('Upper fabric layer').visible,false);assert.equal(m.group.getObjectByName('Sectioned upper fabric').visible,true);m.update({...cycleAt(0),cutaway:0});assert.equal(m.group.getObjectByName('Upper fabric layer').visible,true);assert.equal(m.group.getObjectByName('Sectioned upper fabric').visible,false);});
+
+test('two cloth layers touch, bottom meets needle plate and upper face agrees with pierce timing',()=>{const m=buildSewingMachine(T,{});m.update({...cycleAt(0),travel:0,stitches:[],cutaway:0});m.group.updateMatrixWorld(true);const top=new T.Box3().setFromObject(m.group.getObjectByName('Upper fabric layer')),bottom=new T.Box3().setFromObject(m.group.getObjectByName('Lower fabric layer'));assert.ok(Math.abs(top.min.y-bottom.max.y)<1e-7);assert.ok(Math.abs(top.max.y-1.11)<1e-7);assert.ok(Math.abs(bottom.min.y-1.05)<1e-7);});
