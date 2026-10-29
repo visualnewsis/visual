@@ -53,56 +53,18 @@
   .visual-nav a{position:relative;white-space:nowrap}
   .visual-nav a::after{content:"";position:absolute;left:0;right:100%;bottom:-6px;height:2px;background:#19e5c0;transition:right .2s ease}
   .visual-nav a:hover::after,.visual-nav a:focus-visible::after,.visual-nav a[aria-current="page"]::after{right:0}
-  .wrap{width:min(1024px,100%);margin:0 auto;background:white;position:relative;box-shadow:0 0 28px rgba(0,0,0,.05);overflow:hidden}
-  .art{display:none}
-  .art-clean{display:block;width:100%;height:auto;margin-top:-19%}
-  .hint{position:relative;width:max-content;max-width:calc(100% - 32px);margin:24px auto 18px;
-    background:rgba(17,17,17,.9);color:#fff;padding:12px 18px;border-radius:999px;
-    font-size:13px;text-align:center;z-index:20;box-shadow:0 6px 24px rgba(0,0,0,.16)}
-  .page-credit{padding:0 18px 28px;text-align:center;color:#918d84;letter-spacing:.02em}.page-credit strong{font-size:8px;letter-spacing:.05em}.page-credit p{max-width:720px;margin:7px auto 0;font-size:10px;line-height:1.6;font-weight:500}
-  .hot{position:absolute;z-index:6;border:0;background:rgba(0,0,0,0);cursor:pointer;border-radius:7px}
-  .hot:hover{background:rgba(0,160,180,.08);box-shadow:inset 0 0 0 2px rgba(0,160,180,.4)}
-  .hot:focus-visible{outline:3px solid #00a2b6;outline-offset:2px}
-  /* one generous click target per calculator shop card */
-  .card-hot{top:72.05%;height:12.2%;border-radius:12px}
-  .card-labor{left:1.8%;width:22.7%}.card-bank{left:25.8%;width:22.7%}.card-stock{left:50%;width:22.7%}.card-mart{left:74.1%;width:22.7%}
-  /* storefront signs are also clickable */
-  .store-labor{left:7.2%;top:34.4%;width:19.5%;height:12.9%}
-  .store-bank{left:28.0%;top:33.7%;width:20.2%;height:13.6%}
-  .store-stock{left:49.5%;top:33.7%;width:21.5%;height:13.6%}
-  .store-mart{left:73.0%;top:34.5%;width:18.5%;height:12.6%}
-  .sign-copy{position:absolute;z-index:5;text-align:center;pointer-events:none;display:flex;flex-direction:column;align-items:center;justify-content:center;color:#fff;text-shadow:0 2px 2px rgba(0,0,0,.9);line-height:1.1}
-  .sign-copy strong{font-size:clamp(12px,3.05vw,34px);font-weight:950;letter-spacing:-.08em;white-space:nowrap}
-  .sign-copy span{margin-top:.12em;font-size:clamp(6px,1.15vw,13px);font-weight:900;white-space:nowrap}
-  .labor-sign{left:7.6%;top:36.1%;width:16.1%;height:6.5%}
-  .bank-sign{left:28.4%;top:33.85%;width:18.9%;height:7.6%;color:#082742;text-shadow:0 1px 1px rgba(255,255,255,.8)}
-  .stock-sign{left:49.2%;top:33.75%;width:20.2%;height:7.8%}
-  .mart-sign{left:72.15%;top:36.0%;width:16.4%;height:6.7%}
-  .board-copy{position:absolute;z-index:5;pointer-events:none;text-align:center;color:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;line-height:1.12;text-shadow:0 1px 2px #000}
-  .board-copy small{font-size:clamp(6px,.95vw,11px);font-weight:800}.board-copy strong{font-size:clamp(9px,1.75vw,21px);margin-top:.2em}
-  .labor-board{left:9.65%;top:43.15%;width:12.3%;height:5.2%}.labor-board small{color:#ffd84c}
-  .bank-board{left:31.8%;top:42.4%;width:12.0%;height:5.6%}.bank-board small{color:#51a8ff}
-  .stock-board{left:51.7%;top:42.7%;width:14.5%;height:6.2%}.stock-board strong{color:#ff3b23}
-  .mart-board{left:74.65%;top:43.4%;width:13.0%;height:5.2%}
-  .bank-sign span,.stock-sign span{transform:none}
-  .tagline-mask{position:absolute;z-index:7;top:76.15%;height:1.9%;background:#fff;pointer-events:none}
-  .tagline-labor{left:3.15%;width:20.35%}.tagline-bank{left:26.8%;width:20.4%}.tagline-stock{left:50.65%;width:20.2%}.tagline-mart{left:74.35%;width:20.2%}
-  .news-link{position:absolute;z-index:8;top:90.1%;bottom:2.1%;width:22.7%;display:flex;flex-direction:column;justify-content:center;gap:clamp(3px,.55vw,7px);padding:1.4% 3%;border-top:1px solid currentColor;font-weight:900}
-  .news-link::before{content:"";position:absolute;z-index:-1;left:0;right:0;top:-73%;height:73%;background:#fff}
-  .news-link span{font-size:clamp(6px,.9vw,10px);font-weight:750;opacity:.72}.news-link strong{font-size:clamp(8px,1.18vw,14px)}.news-link:hover strong{text-decoration:underline}
-  .news-labor{left:1.8%;color:#2f7d50;background:linear-gradient(145deg,#f3faf6,#fff)}.news-bank{left:25.8%;color:#2968a3;background:linear-gradient(145deg,#f2f7fb,#fff)}.news-stock{left:50%;color:#d4462f;background:linear-gradient(145deg,#fff4f1,#fff)}.news-mart{left:74.1%;color:#ee8a20;background:linear-gradient(145deg,#fff8ef,#fff)}
-  .sr-only{position:absolute!important;width:1px!important;height:1px!important;padding:0!important;margin:-1px!important;overflow:hidden!important;clip:rect(0,0,0,0)!important;white-space:nowrap!important;border:0!important}
 
+  .page-credit{padding:0 18px 28px;text-align:center;color:#918d84;letter-spacing:.02em}.page-credit strong{font-size:8px;letter-spacing:.05em}.page-credit p{max-width:720px;margin:7px auto 0;font-size:10px;line-height:1.6;font-weight:500}
   @media(max-width:650px){
     body{padding-top:102px}
     .visual-head{height:102px;padding:0 14px;align-items:flex-start}
     .visual-brand{height:58px;font-size:11px}.visual-brand::before{display:none}.visual-brand small{display:none}
     .visual-logo{top:29px;width:94px;height:34px}
     .visual-nav{position:absolute;left:0;right:0;bottom:0;height:44px;justify-content:center;gap:20px;border-top:1px solid #eee;font-size:11px}
-    .hint{font-size:11px;max-width:92%;margin:18px auto 16px;padding:11px 15px;text-align:center}
   }
 </style>
 <link rel="stylesheet" href="../assets/visual-header.css?v=20261026-goodeasy-lab1">
+<link rel="stylesheet" href="./calculator.css?v=20261029-5">
 <script defer src="../assets/visual-header.js?v=20261026-menuorder1" data-section="계산대로" data-section-href="https://visual.newsis.com/calculator/index.html" data-current="calculator" data-header-theme="light"></script>
 </head>
 <body>
@@ -113,278 +75,51 @@
     <a href="../#latest">최신 기사</a><a href="../editshop/">편집#</a><a href="../arcade/">충무로딩</a><a href="./index.html" aria-current="page">계산대로</a>
   </nav>
 </header>
-<div class="wrap">
-  <img class="art-clean" src="./assets/street-clean-signs.png?v=20260825-3" alt="넌 너무 계산적이야 - 서울 중구 계산대로 3가">
+<main class="calc-page">
+  <div class="street-scene" role="group" aria-label="계산대로 3가의 네 가게">
+    <img class="street-art" src="./assets/street-clean-signs.png?v=20260825-3" srcset="./assets/street-clean-signs.png?v=20260825-3 1x, ./assets/street-clean-signs-2x.webp?v=20261029-1 2x" width="1004" height="1566" alt="넌 너무 계산적이야. 서울 중구 계산대로 3가. 돈 빌릴 때, 벌 때, 굴릴 때, 쓸 때 계산하고 삽시다.">
+    <a class="street-sign sign-labor" href="#shop-labor" aria-label="계산인력소 계산기 목록으로 이동"><strong>계산인력소</strong><span>연봉 · 시급 · 퇴직금</span></a>
+    <a class="street-sign sign-bank" href="#shop-bank" aria-label="계산은행 계산기 목록으로 이동"><strong>계산은행</strong><span>대출 · 예적금</span></a>
+    <a class="street-sign sign-stock" href="#shop-stock" aria-label="계산증권 계산기 목록으로 이동"><strong>계산증권</strong><span>주식 · 투자</span></a>
+    <a class="street-sign sign-mart" href="#shop-mart" aria-label="계산마트 계산기 목록으로 이동"><strong>계산마트</strong><span>할인 · 물가</span></a>
+    <div class="street-board board-labor" aria-hidden="true"><small>내 월급의</small><strong>진짜 금액은?</strong></div>
+    <div class="street-board board-bank" aria-hidden="true"><small>빌리기 전에</small><strong>이자부터</strong></div>
+    <div class="street-board board-stock" aria-hidden="true"><small>더 사기 전에</small><strong>평단부터</strong></div>
+    <div class="street-board board-mart" aria-hidden="true"><small>할인에 할인</small><strong>얼마일까?</strong></div>
+  </div>
+  <p class="street-guide">간판은 가게로, 계산기 이름은 계산으로.</p>
+  <section class="shop-directory" aria-labelledby="directory-title">
+    <div class="directory-intro"><div><span class="directory-eyebrow">GYESANDAERO 3-GA</span><h1 id="directory-title">어떤 계산이 필요하세요?</h1></div><p>돈 벌 때부터 쓸 때까지.<br>필요한 계산기를 바로 골라보세요.</p></div>
+    <div class="shop-grid">
+      <section class="shop-card labor" id="shop-labor" tabindex="-1" aria-labelledby="labor-title"><h2 id="labor-title">계산인력소</h2><p>내 노동의 가치를 계산합니다.</p><div class="tool-list">
+        <button class="tool-link" data-shop="labor" data-calc="salary">연봉 실수령액</button><button class="tool-link" data-shop="labor" data-calc="hourly">시급</button><button class="tool-link" data-shop="labor" data-calc="severance">퇴직금</button>
+      </div><a class="news-shortcut" href="https://www.newsis.com/society/list/?cid=10200&amp;scid=10221">노동 기사 보러 가기 ↗</a></section>
+      <section class="shop-card bank" id="shop-bank" tabindex="-1" aria-labelledby="bank-title"><h2 id="bank-title">계산은행</h2><p>빌릴 때도, 모을 때도 계산부터.</p><div class="tool-list">
+        <button class="tool-link" data-shop="bank" data-calc="loan">대출이자</button><button class="tool-link" data-shop="bank" data-calc="deposit">예·적금</button>
+      </div><a class="news-shortcut" href="https://www.newsis.com/money/?cid=15000">금융 기사 보러 가기 ↗</a></section>
+      <section class="shop-card stock" id="shop-stock" tabindex="-1" aria-labelledby="stock-title"><h2 id="stock-title">계산증권</h2><p>수익도 손실도 숫자로 봅니다.</p><div class="tool-list">
+        <button class="tool-link" data-shop="stock" data-calc="average">물타기·불타기</button><button class="tool-link" data-shop="stock" data-calc="return">주식 수익률</button>
+      </div><a class="news-shortcut" href="https://www.newsis.com/money/list/?cid=15000&amp;scid=10403">증권 기사 보러 가기 ↗</a></section>
+      <section class="shop-card mart" id="shop-mart" tabindex="-1" aria-labelledby="mart-title"><h2 id="mart-title">계산마트</h2><p>싸다고 다 싼 건 아니니까.</p><div class="tool-list"><button class="tool-link" data-shop="mart" data-calc="discount">할인율</button></div><a class="news-shortcut" href="https://www.newsis.com/business/list/?cid=13000&amp;scid=10408">유통·생활경제 보러 가기 ↗</a></section>
+    </div>
+    <p class="directory-note">계산 결과는 입력 조건에 따른 예상치입니다. 적용 기준과 생략한 항목은 각 계산기에서 확인하세요.</p>
+    <noscript><p>계산기를 사용하려면 브라우저에서 JavaScript를 켜 주세요.</p></noscript>
+  </section>
+</main>
+<dialog class="calc-dialog" id="calc-dialog" aria-labelledby="calc-title" aria-describedby="calc-kicker">
+  <header class="calc-top"><div class="calc-top-row"><div><p class="calc-address">서울 중구 · 계산대로 3가</p><div class="calc-shop-name" id="calc-shop-name"></div><h2 class="calc-current" id="calc-title" tabindex="-1"></h2></div><button type="button" class="close-calc" id="close-calc" aria-label="계산기 닫기">닫기 ×</button></div><nav class="calc-tabs" id="calc-tabs" aria-label="가게 안 계산기"></nav></header>
+  <div class="calc-content"><p class="calc-kicker" id="calc-kicker"></p>
+    <form id="calc-form" novalidate><div class="calc-fields" id="calc-fields"></div><button class="calc-submit" type="submit">계산하기</button></form>
+    <section class="calc-result" id="calc-result" tabindex="-1" aria-labelledby="result-caption result-big" hidden><p class="result-caption" id="result-caption"></p><div class="result-big" id="result-big"></div><dl class="result-rows" id="result-rows"></dl><p class="result-detail" id="result-detail"></p><div class="result-actions"><button type="button" id="copy-result">결과 복사</button></div></section>
+    <p class="calc-status" id="calc-status" role="status" aria-live="polite"></p>
+    <details class="calc-basis"><summary>계산 기준과 알아둘 점</summary><p id="calc-note"></p><div id="calc-sources"></div></details>
+    <div class="calc-tools-footer"><p>입력값은 이 탭에서만 유지됩니다.<br>계산기는 가볍게, 뉴스는 계속.</p><button class="copy-link" id="copy-link" type="button">계산기 링크 복사</button></div>
+  </div>
+</dialog>
 
-  <div class="sign-copy labor-sign"><strong>계산인력소</strong><span>연봉 · 시급 · 퇴직금</span></div>
-  <div class="sign-copy bank-sign"><strong>계산은행</strong><span>대출 · 예적금</span></div>
-  <div class="sign-copy stock-sign"><strong>계산증권</strong><span>주식 · 투자</span></div>
-  <div class="sign-copy mart-sign"><strong>계산마트</strong><span>할인 · 물가</span></div>
-  <div class="board-copy labor-board"><small>일당</small><strong>150,000원</strong></div>
-  <div class="board-copy bank-board"><small>정기예금</small><strong>3.15%</strong></div>
-  <div class="board-copy stock-board"><small>계산전자</small><strong>72,400 ▲1.82%</strong></div>
-  <div class="board-copy mart-board"><small>정가 39,800원</small><strong>27,860원</strong></div>
-  <div class="tagline-mask tagline-labor" aria-hidden="true"></div><div class="tagline-mask tagline-bank" aria-hidden="true"></div><div class="tagline-mask tagline-stock" aria-hidden="true"></div><div class="tagline-mask tagline-mart" aria-hidden="true"></div>
-  <img class="art" src="./assets/street-original.jpg?v=20260828" alt="넌 너무 계산적이야 - 서울 중구 계산대로 3가 시안">
-
-  <!-- storefront shortcuts -->
-  <button class="hot store-labor" aria-label="계산인력소 열기" onclick="openCalc('labor','salary')"></button>
-  <button class="hot store-bank" aria-label="계산은행 열기" onclick="openCalc('bank','loan')"></button>
-  <button class="hot store-stock" aria-label="계산증권 열기" onclick="openCalc('stock','average')"></button>
-  <button class="hot store-mart" aria-label="계산마트 열기" onclick="openCalc('mart','discount')"></button>
-
-  <!-- one large shortcut per shop; detailed calculators are selected inside the popup -->
-  <button class="hot card-hot card-labor" aria-label="계산인력소 계산기 열기" onclick="openCalc('labor','salary')"></button>
-  <button class="hot card-hot card-bank" aria-label="계산은행 계산기 열기" onclick="openCalc('bank','loan')"></button>
-  <button class="hot card-hot card-stock" aria-label="계산증권 계산기 열기" onclick="openCalc('stock','average')"></button>
-  <button class="hot card-hot card-mart" aria-label="계산마트 계산기 열기" onclick="openCalc('mart','discount')"></button>
-
-  <a class="news-link news-labor" href="https://www.newsis.com/society/list/?cid=10200&amp;scid=10221"><span>NEWSIS · 노동</span><strong>노동 기사 보러 가기 ↗</strong></a>
-  <a class="news-link news-bank" href="https://www.newsis.com/money/?cid=15000"><span>NEWSIS · 금융</span><strong>금융 기사 보러 가기 ↗</strong></a>
-  <a class="news-link news-stock" href="https://www.newsis.com/money/list/?cid=15000&amp;scid=10403"><span>NEWSIS · 증권</span><strong>증권 기사 보러 가기 ↗</strong></a>
-  <a class="news-link news-mart" href="https://www.newsis.com/business/list/?cid=13000&amp;scid=10408"><span>NEWSIS · 유통·생활경제</span><strong>유통·생활경제 보러 가기 ↗</strong></a>
-  <section class="sr-only" aria-label="계산대로 계산기 목록"><h2>계산인력소</h2><p>연봉 실수령액 계산기, 시급 계산기, 퇴직금 계산기</p><h2>계산은행</h2><p>대출이자 계산기, 예적금 계산기</p><h2>계산증권</h2><p>물타기·불타기 계산기, 주식 수익률 계산기</p><h2>계산마트</h2><p>할인율 계산기</p></section>
-</div>
-
-<div class="hint">가게 간판이나 계산기 이름을 눌러보세요</div>
 <footer class="page-credit"><strong>크리에이티브 디렉터 = 안재현</strong><p>‘넌 너무 계산적이야 | 계산대로 3가’는 뉴시스 안재현 기자가 크리에이티브 디렉터로 기획·디렉팅한 VISUAL NEWSIS 생활 계산 콘텐츠입니다.</p></footer>
 
-<script>
-const shops = {
-  labor: {
-    name:'계산인력소', color:'#2f7d50',
-    items:[
-      {id:'salary', label:'연봉 실수령액', title:'연봉 실수령액 계산기', kicker:'연봉은 이건데, 통장에는 얼마?',
-        fields:[
-          ['연봉','만원','5000'], ['부양가족 수','명','1'], ['20세 이하 자녀','명','0']
-        ],
-        result:'예상 월 실수령액',
-        note:'국민연금·건강보험·장기요양보험·고용보험과 근로소득세·지방소득세를 반영한 예상치입니다. 실제 급여명세서는 회사와 개인별 공제 조건에 따라 달라질 수 있습니다.'},
-      {id:'hourly', label:'시급', title:'시급 계산기', kicker:'내 한 시간은 얼마짜리일까요?',
-        fields:[
-          ['월급 또는 연봉','원','4000000'], ['급여 기준','월급 / 연봉','월급'],
-          ['주당 근무시간','시간','40'], ['주휴시간 포함','선택','포함']
-        ],
-        result:'나의 실질 시급',
-        note:'월급 또는 연봉을 월 환산 근로시간으로 나눕니다. 주휴시간 포함 여부에 따라 결과가 달라집니다.'},
-      {id:'severance', label:'퇴직금', title:'퇴직금 계산기', kicker:'오늘 그만두면, 얼마를 받을까요?',
-        fields:[
-          ['입사일','날짜','2021-03-02'], ['퇴사 예정일','날짜','2026-08-31'],
-          ['최근 3개월 임금 합계','원','10500000'], ['최근 1년 상여금','원','3000000']
-        ],
-        result:'예상 퇴직금',
-        note:'1일 평균임금 × 30일 × 재직일수 ÷ 365 방식의 예상치입니다. 미사용 연차수당 등 실제 평균임금 포함 항목에 따라 달라질 수 있습니다.'}
-    ]
-  },
-  bank: {
-    name:'계산은행', color:'#2968a3',
-    items:[
-      {id:'loan', label:'대출이자', title:'대출이자 계산기', kicker:'빌리기 전에, 매달 얼마인지부터.',
-        fields:[
-          ['대출금','원','300000000'], ['연이율','%','4.2'],
-          ['기간','년','30'], ['상환 방식','선택','원리금균등']
-        ],
-        result:'예상 월 상환액',
-        note:'원리금균등·원금균등·만기일시 상환을 선택하게 하고 총 이자와 총 상환액도 함께 보여줍니다.'},
-      {id:'deposit', label:'예·적금', title:'예·적금 계산기', kicker:'금리보다 중요한 건, 만기에 얼마냐는 것.',
-        fields:[
-          ['상품','예금 / 적금','예금'], ['원금 또는 월 납입액','원','10000000'],
-          ['연이율','%','3.2'], ['기간','개월','12']
-        ],
-        result:'예상 만기 수령액',
-        note:'예금/적금 전환 탭을 두고 세전 이자·이자과세·세후 이자·만기 수령액을 나눠 보여줍니다.'}
-    ]
-  },
-  stock: {
-    name:'계산증권', color:'#d4462f',
-    items:[
-      {id:'average', label:'물타기·불타기', title:'물타기·불타기 계산기', kicker:'더 사면, 내 평단은 어디로 갈까요?',
-        fields:[
-          ['현재 평단','원','72300'], ['보유 수량','주','120'],
-          ['추가 매수가','원','65000'], ['추가 수량','주','50']
-        ],
-        result:'새로운 평균단가',
-        note:'추가 매수가가 기존 평단보다 낮으면 💧 물타기, 높으면 🔥 불타기로 결과 문구와 아이콘이 바뀌게 합니다.'},
-      {id:'return', label:'주식 수익률', title:'주식 수익률 계산기', kicker:'그래서 얼마 벌고, 얼마 잃었나요?',
-        fields:[
-          ['매수가','원','68000'], ['매도가 또는 현재가','원','74000'],
-          ['수량','주','100'], ['매매 수수료','%','0']
-        ],
-        result:'예상 수익률',
-        note:'수익률과 손익금액을 동시에 보여주고, 손실일 경우 본전까지 필요한 상승률도 함께 표시합니다.'}
-    ]
-  },
-  mart: {
-    name:'계산마트', color:'#ee8a20',
-    items:[
-      {id:'discount', label:'할인율', title:'할인율 계산기', kicker:'',
-        fields:[
-          ['정가','원','189000'], ['1차 할인','%','30'],
-          ['추가 할인','%','20'], ['금액 쿠폰','원','5000']
-        ],
-        result:'최종 결제금액',
-        note:'연속 할인은 각 할인율을 순서대로 적용하고 마지막에 금액 쿠폰을 차감해 실제 할인율을 계산합니다.'}
-    ]
-  }
-};
-
-function openCalc(shopKey, itemId) {
-  const mobile = window.matchMedia('(max-width: 700px)').matches;
-  const features = mobile ? '' : 'popup=yes,width=470,height=760,resizable=yes,scrollbars=yes';
-  const w = window.open('', `calcStreetTool_${shopKey}_${itemId}`, features);
-  if(!w) {
-    alert('팝업이 차단되었습니다. 브라우저에서 팝업 허용 후 다시 눌러주세요.');
-    return;
-  }
-  renderPopup(w, shopKey, itemId);
-}
-
-function calculateItem(id, raw) {
-  const n = v => Number(String(v ?? '').replace(/[^0-9.-]/g,'')) || 0;
-  const won = v => `${Math.round(v).toLocaleString('ko-KR')}원`;
-  const pct = v => `${v >= 0 ? '+' : ''}${v.toFixed(2)}%`;
-  const need = (ok, msg) => { if(!ok) throw new Error(msg); };
-  const v = raw.map(n);
-
-  if(id === 'salary') {
-    const annual = v[0] * 10000;
-    need(annual > 0, '연봉을 입력해 주세요.');
-    const monthly = annual / 12, taxableMonthly = monthly;
-    const pension = Math.min(taxableMonthly, 6370000) * .045;
-    const health = taxableMonthly * .03545, care = health * .1295, employment = taxableMonthly * .009;
-    const grossTaxable = taxableMonthly * 12;
-    const earnedDeduction = grossTaxable<=5000000?grossTaxable*.7:grossTaxable<=15000000?3500000+(grossTaxable-5000000)*.4:grossTaxable<=45000000?7500000+(grossTaxable-15000000)*.15:grossTaxable<=100000000?12000000+(grossTaxable-45000000)*.05:14750000+(grossTaxable-100000000)*.02;
-    const annualInsurance = (pension+health+care+employment)*12;
-    const taxableAnnual = Math.max(0, grossTaxable-earnedDeduction-annualInsurance-Math.max(1,v[1])*1500000-v[2]*1500000);
-    const brackets = [[14000000,.06,0],[50000000,.15,1260000],[88000000,.24,5760000],[150000000,.35,15440000],[300000000,.38,19940000],[500000000,.40,25940000],[1000000000,.42,35940000],[Infinity,.45,65940000]];
-    const b = brackets.find(x => taxableAnnual <= x[0]);
-    const calculatedTax = Math.max(0, taxableAnnual * b[1] - b[2]);
-    const taxCredit = Math.min(660000, calculatedTax<=1300000?calculatedTax*.55:715000+(calculatedTax-1300000)*.3);
-    const incomeTax = Math.max(0,calculatedTax-taxCredit)/12, localTax = incomeTax * .1;
-    const deductions = pension + health + care + employment + incomeTax + localTax;
-    return {big:`약 ${won(monthly-deductions)}`, detail:`월 급여 ${won(monthly)} · 예상 공제 ${won(deductions)}\n국민연금 ${won(pension)} · 건강·장기요양 ${won(health+care)} · 고용보험 ${won(employment)} · 소득·지방세 ${won(incomeTax+localTax)}`};
-  }
-  if(id === 'hourly') {
-    need(v[0] > 0 && v[2] > 0, '급여와 주당 근무시간을 입력해 주세요.');
-    const monthlyPay = raw[1] === '연봉' ? v[0]/12 : v[0];
-    const monthlyHours = raw[3] === '포함' ? v[2] * 4.345 + Math.min(v[2]/5*4.345, 8*4.345) : v[2] * 4.345;
-    const hourly = monthlyPay / monthlyHours;
-    return {big:`약 ${won(hourly)}`, detail:`월 환산 근로시간 ${monthlyHours.toFixed(1)}시간 · 월 급여 ${won(monthlyPay)}`};
-  }
-  if(id === 'severance') {
-    const start = new Date(raw[0]), end = new Date(raw[1]);
-    need(!isNaN(start) && !isNaN(end) && end > start, '입사일과 퇴사 예정일을 확인해 주세요.');
-    const serviceDays = Math.floor((end-start)/86400000)+1;
-    need(serviceDays >= 365, '퇴직금은 계속근로기간 1년 이상을 기준으로 계산합니다.');
-    const threeMonthsAgo = new Date(end); threeMonthsAgo.setMonth(threeMonthsAgo.getMonth()-3);
-    const periodDays = Math.max(1, Math.round((end-threeMonthsAgo)/86400000));
-    const avgDaily = (v[2] + v[3]*3/12) / periodDays;
-    const total = avgDaily * 30 * serviceDays / 365;
-    return {big:`약 ${won(total)}`, detail:`재직 ${serviceDays.toLocaleString('ko-KR')}일 · 1일 평균임금 ${won(avgDaily)} · 산정기간 ${periodDays}일`};
-  }
-  if(id === 'loan') {
-    const principal=v[0], rate=v[1]/100/12, months=Math.round(v[2]*12); need(principal>0&&months>0,'대출금과 기간을 입력해 주세요.');
-    let first, total;
-    if(raw[3]==='원금균등'){const principalPart=principal/months; first=principalPart+principal*rate; total=principal+principal*rate*(months+1)/2;}
-    else if(raw[3]==='만기일시'){first=principal*rate; total=principal+first*months;}
-    else {first=rate===0?principal/months:principal*rate*Math.pow(1+rate,months)/(Math.pow(1+rate,months)-1); total=first*months;}
-    return {big:`약 ${won(first)}`,detail:`${raw[3]} · 총 이자 ${won(total-principal)} · 총 상환액 ${won(total)}`};
-  }
-  if(id === 'deposit') {
-    const amount=v[1], annual=v[2]/100, months=Math.round(v[3]); need(amount>0&&months>0,'금액과 기간을 입력해 주세요.');
-    const principal=raw[0]==='적금'?amount*months:amount;
-    const interest=raw[0]==='적금'?amount*annual/12*(months*(months+1)/2):amount*annual*months/12;
-    const tax=interest*.154, maturity=principal+interest-tax;
-    return {big:`약 ${won(maturity)}`,detail:`원금 ${won(principal)} · 세전 이자 ${won(interest)} · 이자과세 ${won(tax)} · 세후 이자 ${won(interest-tax)}`};
-  }
-  if(id === 'average') {
-    need(v[0]>0&&v[1]>=0&&v[2]>0&&v[3]>0,'가격과 수량을 입력해 주세요.');
-    const avg=(v[0]*v[1]+v[2]*v[3])/(v[1]+v[3]);
-    return {big:won(avg),detail:`${v[2]<v[0]?'💧 물타기':v[2]>v[0]?'🔥 불타기':'같은 가격 추가매수'} · 총 ${Math.round(v[1]+v[3]).toLocaleString('ko-KR')}주 · 총 매입금 ${won(v[0]*v[1]+v[2]*v[3])}`};
-  }
-  if(id === 'return') {
-    need(v[0]>0&&v[1]>=0&&v[2]>0,'매수가·현재가·수량을 입력해 주세요.');
-    const buy=v[0]*v[2], sell=v[1]*v[2], fee=(buy+sell)*v[3]/100, profit=sell-buy-fee, rate=profit/buy*100;
-    return {big:`${pct(rate)} · ${profit>=0?'+':''}${won(profit)}`,detail:`매입금 ${won(buy)} · 평가/매도금 ${won(sell)} · 수수료 ${won(fee)}${profit<0?` · 본전까지 약 ${(-profit/(sell-fee)*100).toFixed(2)}% 상승 필요`:''}`};
-  }
-  if(id === 'discount') {
-    need(v[0]>0,'정가를 입력해 주세요.');
-    const final=Math.max(0,v[0]*(1-v[1]/100)*(1-v[2]/100)-v[3]), saved=v[0]-final;
-    return {big:won(final),detail:`총 할인액 ${won(saved)} · 실제 할인율 ${(saved/v[0]*100).toFixed(2)}%`};
-  }
-  throw new Error('계산식을 찾지 못했습니다.');
-}
-
-function renderPopup(w, shopKey, itemId) {
-  const shop = shops[shopKey];
-  const item = shop.items.find(x=>x.id===itemId) || shop.items[0];
-  const tabs = shop.items.map(x =>
-    `<button class="tab ${x.id===item.id?'active':''}" onclick="opener.renderPopup(window,'${shopKey}','${x.id}')">${x.label}</button>`
-  ).join('');
-
-  const fields = item.fields.map((f,i)=>{
-    const [label, unit, value] = f;
-    const isDate = unit==='날짜';
-    const isSelectish = unit.includes('/') || unit==='선택';
-    if(isSelectish) {
-      const special = {'급여 기준':['월급','연봉'],'주휴시간 포함':['포함','미포함'],'상환 방식':['원리금균등','원금균등','만기일시'],'상품':['예금','적금']};
-      const choices = special[label] || unit.split(' / ');
-      const opts = choices.map(v=>`<option ${v===value?'selected':''}>${v}</option>`).join('');
-      return `<label class="field"><span>${label}</span><select data-field="${i}">${opts}</select></label>`;
-    }
-    return `<label class="field"><span>${label}</span><div class="inputbox"><input data-field="${i}" type="${isDate?'date':'text'}" inputmode="${isDate?'':'decimal'}" value="${value}"><em>${isDate?'':unit}</em></div></label>`;
-  }).join('');
-
-  w.document.open();
-  w.document.write(`<!doctype html><html lang="ko"><head><meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>${item.title} | 계산대로 3가</title>
-  <style>
-    *{box-sizing:border-box} html,body{margin:0;background:#f3f2ee;color:#111;
-    font-family:-apple-system,BlinkMacSystemFont,"Pretendard","Noto Sans KR","Apple SD Gothic Neo",Arial,sans-serif}
-    .top{position:sticky;top:0;z-index:5;background:rgba(255,255,255,.94);backdrop-filter:blur(10px);border-bottom:1px solid #e5e2da}
-    .topin{padding:13px 18px 11px} .crumb{font-size:11px;color:#777;letter-spacing:.02em}
-    .shopname{font-weight:900;color:${shop.color};font-size:15px;margin-top:3px}
-    .tabs{display:flex;gap:6px;padding:0 14px 12px;overflow-x:auto}
-    .tab{border:1px solid #dedbd4;background:#fff;border-radius:999px;padding:8px 11px;white-space:nowrap;font-weight:700;font-size:12px;cursor:pointer}
-    .tab.active{background:${shop.color};color:#fff;border-color:${shop.color}}
-    main{padding:22px 18px 34px} h1{font-size:28px;line-height:1.15;letter-spacing:-1.3px;margin:0 0 7px}
-    .kicker{font-size:14px;color:#666;margin-bottom:22px}
-    .fields{display:grid;gap:12px} .field span{display:block;font-size:12px;font-weight:800;margin-bottom:6px}
-    .inputbox{display:flex;align-items:center;border:1px solid #d9d6ce;background:#fff;border-radius:12px;padding:0 12px}
-    input,select{width:100%;height:48px;border:0;outline:0;background:#fff;font:inherit;font-size:16px}
-    select{border:1px solid #d9d6ce;border-radius:12px;padding:0 12px}
-    .inputbox em{font-style:normal;color:#777;font-size:12px;white-space:nowrap}
-    .calc{width:100%;border:0;border-radius:12px;background:#111;color:#fff;font-weight:900;padding:14px;margin-top:16px;cursor:pointer}
-    .result{margin-top:20px;padding:18px;border:1px solid #e0ddd5;border-radius:15px;background:#fff}
-    .rlabel{font-size:12px;color:#777} .big{font-size:29px;font-weight:950;letter-spacing:-1.2px;margin:6px 0}.detail{font-size:12px;line-height:1.55;color:#666;white-space:pre-line}
-    .result[hidden]{display:none}.note{margin-top:15px;font-size:11px;line-height:1.55;color:#777}
-    .foot{margin-top:22px;border-top:1px solid #e7e4dc;padding-top:13px;color:#888;font-size:11px;text-align:center}
-    .egg{margin-top:5px;color:#d0cdc5;font-size:7px;letter-spacing:.03em}
-  </style></head><body>
-  <div class="top"><div class="topin"><div class="crumb">서울 중구 · 계산대로 3가</div><div class="shopname">${shop.name}</div></div>
-  <div class="tabs">${tabs}</div></div>
-  <main>
-    <h1>${item.title}</h1><div class="kicker">${item.kicker}</div>
-    <div class="fields">${fields}</div>
-    <button class="calc" id="calculate">계산하기</button>
-    <div class="result" id="r" hidden>
-      <div class="rlabel">${item.result}</div><div class="big" id="resultBig"></div>
-      <div class="detail" id="resultDetail"></div>
-    </div>
-    <div class="note">${item.note}</div>
-    <div class="foot">계산기는 가볍게, 뉴스는 계속 보세요. · 계산대로 3가<div class="egg">크리에이티브 디렉터 = 안재현</div></div>
-  </main><script>
-    document.getElementById('calculate').addEventListener('click',function(){
-      const values=[...document.querySelectorAll('[data-field]')].sort((a,b)=>a.dataset.field-b.dataset.field).map(el=>el.value);
-      const box=document.getElementById('r');
-      try{const out=opener.calculateItem('${item.id}',values);document.getElementById('resultBig').textContent=out.big;document.getElementById('resultDetail').textContent=out.detail;box.hidden=false;}
-      catch(err){document.getElementById('resultBig').textContent='입력값을 확인해 주세요';document.getElementById('resultDetail').textContent=err.message;box.hidden=false;}
-    });
-  <\/script></body></html>`);
-  w.document.close();
-  try{ w.focus(); }catch(e){}
-}
-</script>
+<script src="./calculations.js?v=20261029-5"></script>
+<script src="./calculator.js?v=20261029-5"></script>
 </body>
 </html>
