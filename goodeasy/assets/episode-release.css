@@ -13,3 +13,6 @@ body .vnh-header{padding:env(safe-area-inset-top,0px) 18px 0}.vnh-header .vnh-to
 @media(prefers-reduced-motion:reduce){.episode-related-list>a{transition:none}}
 
 .opening-quote{scroll-margin-top:90px}
+
+/* Preserve authored light panels in browsers with automatic page darkening. */
+.vns-carousel,.vns-carousel *{color-scheme:only light}.vns-carousel-copy,.vns-carousel-copy small,.vns-carousel-copy strong,.vns-carousel-copy i{background:transparent}.anatomy-viewport canvas,.research-stage canvas{color-scheme:only light}canvas[data-context-lost=true]{opacity:.35}
