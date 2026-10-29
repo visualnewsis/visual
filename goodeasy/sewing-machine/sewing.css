@@ -24,3 +24,5 @@ select{font:inherit;background:#17201d;color:var(--paper);border:1px solid var(-
 .inspect-controls{gap:6px}.inspect-controls button:last-child{border-color:#91a594;color:#e6dfcf}.hero-stage>.inspect-controls{min-height:52px;align-content:start}.diagram canvas,.study-stage canvas,.motor-stage canvas,.hero-stage canvas{color-scheme:only light}.vns-carousel,.vns-carousel *{color-scheme:only light}.vns-carousel-copy,.vns-carousel-copy strong,.vns-carousel-copy small,.vns-carousel-copy i{background:transparent}@media(max-width:600px){.hero-stage{height:430px}.hero-stage canvas{height:calc(100% - 100px)}.hero-stage>.inspect-controls button{font-size:10px;padding:7px 10px;min-height:40px}.hero-stage .model-note{bottom:104px}}
 
 @media(min-width:1000px){.hero>.hero-stage{margin-left:34%;width:66%;height:540px}.invitation{width:30%;top:58px}.hero-stage>.inspect-controls{font-size:11px}.hero-stage .model-note{max-width:70%;font-size:9px}}
+
+.primary:hover,.primary[aria-pressed="true"]{color:var(--paper)}
