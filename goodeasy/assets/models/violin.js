@@ -1,3 +1,4 @@
+import {violinFinish,finishViolinTop} from './violin-finish.js?v=20261030-craft-release1';
 import {plateGeometry,neckGeometry,guitarWood,woodUV,edgeDistance} from './guitar-craft.js?v=20261027-craft5';
 import {smoothOutline,shapeFromPoints,insetOutline,hollowRibs,archedPlate,violinTopY} from './surface-utils.js?v=20261024-editorial1';
 import {mat,mesh,curveTube,cylinderBetween,ellipsoid,horizontalExtrude,outlineShape,assemblyGroup,orientedBox,addWoodGrain} from './model-utils.js?v=20261024-editorial1';
@@ -8,7 +9,7 @@ import {mat,mesh,curveTube,cylinderBetween,ellipsoid,horizontalExtrude,outlineSh
 function fHole(T,side){const s=new T.Shape();s.moveTo(-.22,-.012);s.bezierCurveTo(-.24,-.055,-.17,-.045,-.175,-.014);s.bezierCurveTo(-.16,.015,-.09,.018,-.03,-.002);s.bezierCurveTo(.06,-.04,.19,-.035,.25,.015);s.bezierCurveTo(.29,.04,.35,.015,.325,-.018);s.bezierCurveTo(.30,-.045,.275,-.025,.283,-.005);s.bezierCurveTo(.19,-.055,.07,-.06,-.04,-.02);s.bezierCurveTo(-.1,.002,-.16,0,-.19,-.022);s.closePath();return s.getPoints(64).slice(0,-1).map(p=>new T.Vector2(.18+p.x*.8,side*(.210+p.y*.7)));}
 const violinGeometry=new Map(),plateFits=new Map();
 let archContour=[];
-export const violinDome=(x,z)=>{const d=archContour.length?Math.min(1,edgeDistance(x,z,archContour)/.065):1,fade=d*d*(3-2*d);return .032*Math.max(0,1-((x-.19)/1.12)**2-(z/.44)**2)*fade;};
+export const violinDome=(x,z)=>{const d=archContour.length?Math.min(1,edgeDistance(x,z,archContour)/.065):1,fade=d*d*(3-2*d);return .078*Math.max(0,1-((x-.19)/1.12)**2-(z/.44)**2)*fade;};
 export const violinTopInsideY=(x,z)=>.092+violinDome(x,z);
 export const violinBackInsideY=(x,z)=>-.105-violinDome(x,z)*.7;
 const boardWidth=x=>.218+(Math.max(-1.59,Math.min(-.535,x))+1.59)/1.055*.105;
@@ -23,10 +24,10 @@ function fingerboardGeometry(T){
 }
 export function buildViolin(THREE,materials={}){
  const group=new THREE.Group();group.name='GOODEASY / violin';group.scale.z=-1;
- const wood=mat(THREE,materials.wood,'#b45d29'),dark=mat(THREE,materials.darkWood,'#49251b');
+ const wood=violinFinish(THREE,'maple'),dark=violinFinish(THREE,'maple');
  const ivory=mat(THREE,materials.ivory,'#e8d9b4'),steel=mat(THREE,materials.steel,'#c3c8ca',.32,.53);
  const brass=mat(THREE,materials.brass,'#b69b5b',.35,.55),black=mat(THREE,materials.black,'#14100d');
- const felt=mat(THREE,materials.felt,'#6b5641');const varnish=guitarWood(THREE,'spruce');varnish.color.setHex(0xffc291);const ebony=guitarWood(THREE,'ebony');const braceWood=guitarWood(THREE,'brace');
+ const felt=mat(THREE,materials.felt,'#6b5641');const varnish=violinFinish(THREE,'spruce');const ebony=guitarWood(THREE,'ebony');const braceWood=guitarWood(THREE,'brace');
  const parts={};
  // The violin outline has upper/lower bouts, concave C-bouts and projecting corners.
  // Violin-specific upper bouts, inward C-bouts, four corner tips and larger lower bouts.
@@ -50,6 +51,7 @@ export function buildViolin(THREE,materials={}){
  const back=mesh(THREE,violinGeometry.get('back'),wood,'closed arched maple back',parts.body);
  parts.back=back;
  if(!violinGeometry.has('top'))violinGeometry.set('top',plateGeometry(THREE,contour,[-1,1].map(side=>fHole(THREE,side)),.106,.092,violinDome));
+ finishViolinTop(THREE,violinGeometry.get('top'),contour,edgeDistance);
  const top=mesh(THREE,violinGeometry.get('top'),varnish,'closed arched spruce soundboard with real f openings',parts.body);
  parts.top=top;
  // Inlaid edge follows the actual curved plate and stays attached when opened.
@@ -97,7 +99,8 @@ export function buildViolin(THREE,materials={}){
  // shape y -> model Y); extruded thickness is along model X.
  // Soundboard near bridge x=.18: .106 + .032*(1-(.18-.19)^2/1.15^2) ~= .138.
  parts.bridge=assemblyGroup(THREE,'upright violin bridge with feet and windows',group);
- const bridgeX=.18, topAtBridge=plateY(top,.18,.145), bridgeFootY=topAtBridge;
+ const bridgeX=.18, topAtBridge=plateY(top,.18,.145), bridgeLift=(topAtBridge-.106)*(1-.032/.078), bridgeFootY=topAtBridge-bridgeLift;
+ const bridgeWood=new THREE.MeshStandardMaterial({color:0xc99a62,roughness:.65,side:THREE.DoubleSide});
  const bridgeShape=new THREE.Shape();
  // local u maps to -model Z; local v maps to model Y (absolute coordinates).
  bridgeShape.moveTo(-.166,bridgeFootY);
@@ -118,16 +121,16 @@ export function buildViolin(THREE,materials={}){
  const heart=new THREE.Path();heart.absellipse(0,.245,.023,.014,0,Math.PI*2,true);bridgeShape.holes.push(windowL,windowR,heart);
  const bridgeGeo=new THREE.ExtrudeGeometry(bridgeShape,{depth:.017,steps:1,curveSegments:64,bevelEnabled:true,bevelThickness:.002,bevelSize:.001,bevelSegments:3});
  bridgeGeo.rotateY(Math.PI/2); // shape u -> -Z, v -> Y, extrusion -> X
- bridgeGeo.translate(bridgeX-.0085,0,0);
- const bridge=mesh(THREE,bridgeGeo,ivory,'vertical carved bridge YZ profile',parts.bridge);
+ bridgeGeo.translate(bridgeX-.0085,bridgeLift,0);
+ const bridge=mesh(THREE,bridgeGeo,bridgeWood,'vertical carved bridge YZ profile',parts.bridge);
  parts.bridgePlate=bridge;
  for(const side of [-1,1]){
-   const foot=mesh(THREE,new THREE.BoxGeometry(.048,.010,.044),ivory,`bridge foot ${side}`,parts.bridge),fp=foot.geometry.attributes.position;for(let i=0;i<fp.count;i++){const x=bridgeX+fp.getX(i),z=side*.145+fp.getZ(i),lower=plateY(top,x,z);fp.setXYZ(i,x,lower+(fp.getY(i)>0?.009:0),z);}foot.geometry.computeVertexNormals();
+   const foot=mesh(THREE,new THREE.BoxGeometry(.048,.010,.044),bridgeWood,`bridge foot ${side}`,parts.bridge),fp=foot.geometry.attributes.position;for(let i=0;i<fp.count;i++){const x=bridgeX+fp.getX(i),z=side*.145+fp.getZ(i),lower=plateY(top,x,z);fp.setXYZ(i,x,lower+(fp.getY(i)>0?.009:0),z);}foot.geometry.computeVertexNormals();
  }
  // The crest contact heights are individually arched, rather than a single flat saddle.
  const bridgeZ=[-.1095,-.0365,.0365,.1095];
- const bridgeY=[.256,.273,.273,.256];
- parts.bridgeCrest=curveTube(THREE,bridgeZ.map((z,i)=>[bridgeX,bridgeY[i],z]),.003,ivory,'arched string-bearing bridge crown',parts.bridge,60,8);
+ const bridgeY=[.256,.273,.273,.256].map(y=>y+bridgeLift);
+ parts.bridgeCrest=curveTube(THREE,bridgeZ.map((z,i)=>[bridgeX,bridgeY[i],z]),.003,bridgeWood,'arched string-bearing bridge crown',parts.bridge,60,8);
  parts.tailpiece=assemblyGroup(THREE,'tailpiece and fine tuners',group);
  const tailShape=outlineShape(THREE,[[.60,-.14],[.95,-.10],[1.02,-.04],[1.02,.04],[.95,.10],[.60,.14]]);
  const tail=horizontalExtrude(THREE,tailShape,.028,.007,black,'tapered ebony tailpiece',parts.tailpiece);tail.position.y=.16;

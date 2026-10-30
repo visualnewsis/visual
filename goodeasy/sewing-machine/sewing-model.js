@@ -1,4 +1,4 @@
-import {threadMechanismState} from './thread-path.js?v=20261029-stitch-section1';
+import {threadMechanismState} from './thread-path.js?v=20261030-thread-route1';
 
 export function buildSewingMachine(T, M = {}) {
   const group = new T.Group();
@@ -358,10 +358,12 @@ export function buildSewingMachine(T, M = {}) {
 
   // Upper thread guides, twin tension discs and check spring.
   const guidePositions=[
-    [.63,3.05,.45],[-1.08,2.97,.49],
-    [-1.39,2.57,.53],[-1.14,2.18,.51],
+    [.63,3.32,.58],[-1.08,3.08,.60],
+    [-1.39,2.57,.64],[-1.14,1.94,.62],
     [-.85,1.84,.30]
   ];
+  rod(mechanism,[.63,3.22,.36],[.63,3.275,.58],.014,steel,"Spool guide mounting stalk");
+  rod(mechanism,[-1.08,3.035,.44],[-1.08,3.035,.60],.014,steel,"Head guide mounting stalk");
   for(let i=0;i<guidePositions.length;i++) {
     const [x,y,z]=guidePositions[i];
     const g=torus(mechanism,.045,.012,steel,
@@ -382,10 +384,10 @@ export function buildSewingMachine(T, M = {}) {
   screw(mechanism,-1.33,2.35,.62);
 
   // Take-up lever: its eye moves at the externally provided Y.
-  rod(takeup,[-1.13,-.20,.53],[-1.31,0,.57],
+  rod(takeup,[-1.13,-.20,.53],[-1.31,0,.62],
     .038,steel,"Take-up lever");
   torus(takeup,.042,.012,steel,
-    "Moving take-up eye",-1.31,0,.57);
+    "Moving take-up eye",-1.31,0,.62);
   takeup.position.y=2.8;
   mechanism.add(takeup);
 
@@ -543,18 +545,6 @@ export function buildSewingMachine(T, M = {}) {
 
     // Spool -> guides -> tension discs -> check spring ->
     // take-up eye -> needle guide -> eye. Every joint is continuous.
-    const takeupEye=[-1.31,takeup.position.y,.57];
-    const eye=[eyePos.x,eyePos.y,eyePos.z];
-    const fixedUpper=[
-      [.88,3.47,.22],[.88,3.74,.04],
-      [.63,3.05,.45],[-1.08,2.97,.49],
-      [-1.39,2.57,.59],[-1.39,2.55,.613],
-      [-1.41,2.35,.64],[-1.14,2.18,.51],
-      takeupEye,[-.85,1.84,.30],
-      [-.85,eyeY+.12,.10],[-.85,eyeY,.025],
-      eye
-    ];
-
     const loopAmount=Math.max(0,Math.min(1,
       Number.isFinite(state.loop)?state.loop:
       smooth(.50,.58,p)*(1-smooth(.80,.94,p))

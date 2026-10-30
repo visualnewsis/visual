@@ -1,5 +1,5 @@
 import * as T from '../piano/vendor/three.module.min.js';
-import {buildMXSwitch} from './models/mx-switch.js?v=20261028-release3';
+import {buildMXSwitch} from './models/mx-switch.js?v=20261030-craft-release1';
 import {debounceSample} from './mechanism-checks.js?v=20261026-release3';
 const clamp=(x,a=0,b=1)=>Math.max(a,Math.min(b,x));
 function inspectSwitch(){

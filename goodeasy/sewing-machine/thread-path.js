@@ -4,7 +4,7 @@ export function threadPath(state){
  const p=state.phase||0,eyeY=state.eyeY??1.65,takeupY=state.takeupY??2.17;
  const clamp=x=>Math.max(0,Math.min(1,x));const smooth=(a,b,x)=>{const q=clamp((x-a)/(b-a));return q*q*(3-2*q);};
  const mix=(a,b,t)=>a+(b-a)*t,NX=-.85,HZ=-.42;
- const path=[[.88,3.47,.22],[.88,3.74,.04],[.63,3.05,.45],[-1.08,2.97,.49],[-1.39,2.57,.59],[-1.39,2.55,.613],[-1.41,2.35,.64],[-1.31,takeupY,.57],[-.85,1.84,.30],[-.85,eyeY+.12,.10],[-.85,eyeY,.025],[NX,eyeY,0]];
+ const path=[[.88,3.47,.22],[.63,3.32,.58],[-1.08,3.08,.60],[-1.39,2.57,.64],[-1.39,2.55,.613],[-1.41,2.35,.64],[-1.31,takeupY,.62],[-1.14,1.94,.62],[-.85,1.84,.30],[NX,Math.max(1.70,eyeY+.18)+.10,.14],[NX,Math.max(1.70,eyeY+.18)+.045,.065],[NX,Math.max(1.70,eyeY+.18),.045],[NX,Math.max(1.45,eyeY+.12),.045],[NX,eyeY+.08,.045],[NX,eyeY+.035,.025],[NX,eyeY,0]];
  const previous=state.stitches?.at(-1)||state.length||3;
  const prior=state.stitches?.length?-previous*.045:0;
  const holeZ=mix(prior,0,smooth(.25,.30,p))-(state.length||3)*smooth(.84,.96,p)*.045;
