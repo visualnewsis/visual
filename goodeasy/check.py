@@ -24,7 +24,7 @@ for p in pages:
  if p.parent.name!='review':
   if len(h.blocks)!=1:errors.append(str(p)+' JSON-LD count')
   if s.count("gtag('config','G-6BKMWE02W5')")!=1:errors.append(str(p)+' GA config count')
-  if p==base/'index.html' or p.parent.name in {'piano','camera','guitar','fishing-reel'}:
+  if p==base/'index.html' or p.parent.name in {'piano','camera','guitar','fishing-reel','watch'}:
    if 'index,follow,max-image-preview:large' not in s or 'noindex' in s:errors.append(str(p)+' published page indexing')
    published_url='https://visual.newsis.com/goodeasy/'+('' if p==base/'index.html' else p.parent.name+'/')
    if published_url not in s:errors.append(str(p)+' published page URL')
@@ -42,7 +42,7 @@ for p in pages:
    if u.fragment not in t.ids:errors.append(f'{p}: missing anchor {r}')
 # Only released episodes and their collection belong in the public sitemap.
 sitemap_urls={e.text for e in ET.parse(root/'sitemap-sections.xml').getroot().findall('{*}url/{*}loc')}
-released={'https://visual.newsis.com/goodeasy/','https://visual.newsis.com/goodeasy/piano/','https://visual.newsis.com/goodeasy/camera/','https://visual.newsis.com/goodeasy/guitar/','https://visual.newsis.com/goodeasy/fishing-reel/'}
+released={'https://visual.newsis.com/goodeasy/','https://visual.newsis.com/goodeasy/piano/','https://visual.newsis.com/goodeasy/camera/','https://visual.newsis.com/goodeasy/guitar/','https://visual.newsis.com/goodeasy/fishing-reel/','https://visual.newsis.com/goodeasy/watch/'}
 if {u for u in sitemap_urls if '/goodeasy/' in u}!=released:errors.append('GOODEASY published sitemap mismatch')
 # This production host serves .mjs as application/octet-stream with nosniff.
 # Check the transitive local module paths as well as HTML entrypoints.
