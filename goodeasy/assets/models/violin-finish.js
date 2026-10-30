@@ -15,6 +15,8 @@ export function violinFinish(T,kind='spruce'){
  return new T.MeshPhysicalMaterial({color:kind==='spruce'?0xffffff:0x703315,map:textures.get(kind),bumpMap:textures.get(kind),bumpScale:.00035,roughness:kind==='spruce'?.32:.34,metalness:0,clearcoat:.65,clearcoatRoughness:.18,side:T.DoubleSide,vertexColors:kind==='spruce'});
 }
 export function finishViolinTop(T,geometry,contour,edgeDistance){
+ // The arched plate geometry is immutable and shared by every violin instance.
+ if(geometry.hasAttribute('color'))return geometry;
  const p=geometry.attributes.position,colors=[],edge=new T.Color('#713514'),middle=new T.Color('#A65320'),light=new T.Color('#C47738');
  for(let i=0;i<p.count;i++){
   const x=p.getX(i),z=p.getZ(i),d=edgeDistance(x,z,contour),a=T.MathUtils.smoothstep(d,0,.09);

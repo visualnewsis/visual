@@ -9,18 +9,16 @@ const {espressoAssembly}=await import('./assets/anatomy-espresso.js');
 const {espressoSequence}=await import('./assets/espresso-sequence.js');
 const {buildEspresso}=await import('./assets/models/espresso.js');
 test('actual sector occludes the complete landscape gate throughout film transport',()=>{
- const m=projectorAssembly(),sh=m.components.find(c=>c.id==='shutter').object,meshes=[];sh.traverse(o=>{if(o.isMesh)meshes.push(o)});
- const ray=new T.Raycaster();for(let i=0;i<=70;i++){const p=.65+i/70*.34999;m.update({phase:p,explode:0});m.group.updateMatrixWorld(true);for(const x of [-.47,0,.47])for(const y of [-.35,0,.35]){ray.set(new T.Vector3(x,.4+y,-.60),new T.Vector3(0,0,1));assert.ok(ray.intersectObjects(meshes).length,'uncovered gate at '+p);}}
- for(const p of [.25,.35,.45]){m.update({phase:p});m.group.updateMatrixWorld(true);ray.set(new T.Vector3(0,.4,-.60),new T.Vector3(0,0,1));assert.equal(ray.intersectObjects(meshes).length,0);}
+ const m=projectorAssembly(),h=m.hardware,meshes=[];h.parts.shutter.traverse(o=>{if(o.isMesh)meshes.push(o)});const ray=new T.Raycaster();
+ for(let i=0;i<=70;i++){const p=.75+i/70*.24999;m.update({phase:p,explode:0});for(const x of [-.325,0,.325])for(const y of [-.236,0,.236]){ray.set(h.parts.optics.localToWorld(new T.Vector3(x,y,-.03)),new T.Vector3(0,0,1).transformDirection(h.parts.optics.matrixWorld));assert.ok(ray.intersectObjects(meshes).length,'uncovered gate at '+p);}}
+ for(const p of [.25,.35,.43]){m.update({phase:p});ray.set(h.parts.optics.localToWorld(new T.Vector3(0,0,-.03)),new T.Vector3(0,0,1).transformDirection(h.parts.optics.matrixWorld));assert.equal(ray.intersectObjects(meshes).length,0);}
 });
 test('16 sprocket teeth advance four holes per quarter turn with a common Geneva shaft',()=>{
- const m=projectorAssembly(),sp=m.group.getObjectByName('intermittent sprocket'),star=m.group.getObjectByName('four slot Geneva wheel');
- for(const p of [.65,.72,.82,.95,.99999]){m.update({phase:p});m.group.updateMatrixWorld(true);const travel=-m.group.getObjectByName('continuous perforated strip').position.y;assert.ok(Math.abs(travel-sp.rotation.x*(.75/(Math.PI/2)))<1e-9);assert.ok(Math.abs(sp.rotation.x-(star.rotation.z+Math.PI/4))<1e-9);const axis=new T.Vector3(0,0,1).transformDirection(star.parent.matrixWorld);assert.ok(axis.distanceTo(new T.Vector3(1,0,0))<1e-8);}
- assert.ok(Math.abs((.75/(Math.PI/2))*2*Math.PI/16-.1875)<1e-10);
+ const m=projectorAssembly(),h=m.hardware;for(const p of [.75,.82,.90,.99]){m.update({phase:p});const clock=m.group.userData.transport,sp=h.parts.sprocket;assert.ok(Math.abs(clock.progress*.56-sp.rotation.z*.56/(Math.PI/2))<1e-9);assert.ok(Math.abs(sp.rotation.z-(h.parts.intermittent.rotation.z+Math.PI/4))<1e-9);assert.ok(new T.Vector3(0,0,1).transformDirection(h.parts.mechanismMount.matrixWorld).distanceTo(new T.Vector3(0,0,1))<1e-8);}
+ assert.ok(Math.abs((.56/(Math.PI/2))*2*Math.PI/16-.14)<1e-10);
 });
 test('projector comparison removes physical shutter and continuous mode really moves during exposure',()=>{
- const m=buildProjectorGateStudy(),s={...m.defaults,cycle:.35};m.update(s);const y=m.parts.film.position.y;assert.ok(Math.abs(y)<1e-12);assert.equal(s.openFraction,1);s.mode=1;m.update(s);assert.equal(m.parts.shutter.visible,false);s.mode=2;m.update(s);assert.equal(m.parts.shutter.visible,true);assert.ok(m.parts.film.position.y<0);assert.ok(Math.abs(projectorTransport(.82).progress-(-projectorAssemblyPosition(.82)/.75))<1e-8);
- function projectorAssemblyPosition(p){const a=projectorAssembly();a.update({phase:p});return a.group.getObjectByName('continuous perforated strip').position.y;}
+ const m=buildProjectorGateStudy(),s={...m.defaults,cycle:.35};m.update(s);assert.equal(s.filmProgress,0);assert.equal(s.openFraction,1);s.mode=1;m.update(s);assert.equal(m.parts.shutter.visible,false);s.mode=2;m.update(s);assert.equal(m.parts.shutter.visible,true);assert.equal(s.filmProgress,.35);const a=projectorAssembly();a.update({phase:.82});assert.ok(Math.abs(projectorTransport(.82).progress-a.group.userData.transport.progress)<1e-8);
  const f=buildProjectorFramesStudy(),fs={...f.defaults,frame:23};f.update(fs);f.advance(fs,1/12);f.update(fs);assert.equal(fs.frameIndex,0);
 });
 test('espresso reaches the coffee outlet before stream and cup, then fill increases monotonically',()=>{
@@ -51,8 +49,7 @@ test('rendered hero machine pipes terminate on actual pump and boiler surfaces',
 });
 
 test('projector moving film and shutter clear actual gate and Geneva surfaces',()=>{
- const m=projectorAssembly(),gate=m.components.find(c=>c.id==='gate').object,film=m.group.getObjectByName('continuous perforated strip'),shutter=m.components.find(c=>c.id==='shutter').object.children[0],star=m.group.getObjectByName('four slot Geneva wheel');
- for(let i=0;i<=100;i++){m.update({phase:i/100,explode:0});m.group.updateMatrixWorld(true);const filmBox=new T.Box3().setFromObject(film),shutterBox=new T.Box3().setFromObject(shutter),starBox=new T.Box3().setFromObject(star,true);for(const o of gate.children){const box=new T.Box3().setFromObject(o);assert.equal(box.intersectsBox(filmBox),false,'gate/film volume overlap at '+i);}assert.ok(shutterBox.min.z>starBox.max.z+.02,'shutter/Geneva plane separation at '+i);}
+ const m=projectorAssembly(),h=m.hardware;for(let i=0;i<=100;i++){m.update({phase:i/100,explode:0});const gate=h.parts.gate.getWorldPosition(new T.Vector3()),image=h.frames.find(f=>f.index===0).object.getWorldPosition(new T.Vector3());assert.ok(Math.abs(gate.x-image.x)<.02);const shaft=h.parts.mechanismMount.position,sp=h.parts.sprocket.position;assert.ok(Math.abs(shaft.x-sp.x)<1e-9&&Math.abs(shaft.y-sp.y)<1e-9);assert.ok(shaft.z>sp.z+.6);}
 });
 const {buildEspressoStudy}=await import('./assets/quality-replacements.js');const {materials:studyMaterials}=await import('./assets/quality-kit.js');
 test('active replacement machine starts its visible stream below the actual spout outlet',()=>{

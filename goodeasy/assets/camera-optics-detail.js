@@ -1,5 +1,5 @@
 import {T,M,mesh,box,cyl,ring,rod,part} from './anatomy-core.js?v=20261028-craft7';
-import {cameraAssembly as baseCameraAssembly} from './anatomy-optics.js?v=20261028-craft7';
+import {cameraAssembly as baseCameraAssembly} from './anatomy-optics.js?v=20261030-reviewed11';
 const TAU=Math.PI*2;
 function clear(group){for(const child of [...group.children]){group.remove(child);child.traverse(o=>o.geometry?.dispose());}}
 function retainingRing(parent,outer,inner,z,material){const shape=new T.Shape();shape.absarc(0,0,outer,0,TAU,false);const hole=new T.Path();hole.absarc(0,0,inner,0,TAU,true);shape.holes.push(hole);const g=new T.ExtrudeGeometry(shape,{depth:.04,bevelEnabled:false,curveSegments:64});return mesh(parent,g,material,0,0,z-.02);}

@@ -1,4 +1,4 @@
-// coffee-detail.js?v=20261028-craft7
+// coffee-detail.js?v=20261030-reviewed11
 // VISUAL NEWSIS · 굳이구지 · Espresso Detail
 // Three.js ES module · Y-up
 // No DOM, canvas, external textures or additional packages.
@@ -264,10 +264,78 @@ function roundedLabelPlate(parent, w, h, x, y, z) {
 const CUP_BOTTOM = 0.19;
 const CUP_MAX_SURFACE = 0.985;
 const CUP_LIQUID_DEPTH = CUP_MAX_SURFACE - CUP_BOTTOM;
+// Ascending inner-wall profile, shared by the porcelain and ratio fill cue.
+const CUP_INNER_PROFILE = [[0.342,0.190],[0.378,0.330],[0.425,0.620],[0.468,0.920],[0.480,1.030]];
+
+function cupVolumeBelow(height) {
+  let volume = 0;
+  for (let i = 1; i < CUP_INNER_PROFILE.length; i++) {
+    const [ra,ya] = CUP_INNER_PROFILE[i-1], [rb,yb] = CUP_INNER_PROFILE[i];
+    const top = Math.min(height,yb);
+    if (top <= ya) break;
+    // Match the liquid's radial clearance from the porcelain wall.
+    const r0 = ra-.026, r1 = lerp(ra,rb,(top-ya)/(yb-ya))-.026;
+    volume += Math.PI*(top-ya)*(r0*r0+r0*r1+r1*r1)/3;
+    if (top < yb) break;
+  }
+  return volume;
+}
+
+function cupHeightForVolumeFraction(fraction) {
+  const desired = clamp(fraction)*cupVolumeBelow(CUP_MAX_SURFACE);
+  let lo=CUP_BOTTOM, hi=CUP_MAX_SURFACE;
+  for(let i=0;i<40;i++) {
+    const mid=(lo+hi)/2;
+    if(cupVolumeBelow(mid)<desired)lo=mid;else hi=mid;
+  }
+  return ((lo+hi)/2-CUP_BOTTOM)/CUP_LIQUID_DEPTH;
+}
+
 
 function innerCupRadius(y) {
-  const t = clamp((y - CUP_BOTTOM) / CUP_LIQUID_DEPTH);
-  return lerp(0.342, 0.465, t);
+  const height = clamp(y,CUP_BOTTOM,CUP_MAX_SURFACE);
+  for(let i=1;i<CUP_INNER_PROFILE.length;i++) {
+    const [ra,ya]=CUP_INNER_PROFILE[i-1], [rb,yb]=CUP_INNER_PROFILE[i];
+    if(height<=yb)return lerp(ra,rb,(height-ya)/(yb-ya));
+  }
+  return CUP_INNER_PROFILE.at(-1)[0];
+}
+
+// One continuous liquid surface: pigment and microscopic foam vary in color,
+// never as separate floating solids. Deterministic textures need no canvas/DOM.
+let coffeeSurfaceMaps;
+function createCoffeeSurfaceMaterial() {
+  if (!coffeeSurfaceMaps) {
+    const size = 512, color = new Uint8Array(size * size * 4), rough = new Uint8Array(size * size * 4);
+    const random = (x, y) => { const a = Math.sin(x * 127.1 + y * 311.7 + 19.3) * 43758.5453; return a - Math.floor(a); };
+    const noise = (x, y) => {
+      const ix = Math.floor(x), iy = Math.floor(y), fx = x - ix, fy = y - iy;
+      const u = fx * fx * (3 - 2 * fx), v = fy * fy * (3 - 2 * fy);
+      return lerp(lerp(random(ix, iy), random(ix + 1, iy), u), lerp(random(ix, iy + 1), random(ix + 1, iy + 1), u), v);
+    };
+    for (let y = 0; y < size; y++) for (let x = 0; x < size; x++) {
+      const u = x / (size - 1), v = y / (size - 1), r = Math.hypot(u - .5, v - .5) * 2;
+      const warp = noise(u * 4.1 + 12, v * 4.1 + 7);
+      const cloud = .65 * noise(u * 5.4 + warp * 1.5, v * 5.4 - warp) + .35 * noise(u * 13.3 + 8, v * 13.3 + 3);
+      const body = smooth(.20, .80, cloud);
+      // The crema accumulation is a soft thin perimeter, not a raised torus.
+      const edge = smooth(.87, .98, r) * .60;
+      const coverage = clamp(.35 + body * .55 + edge * .10);
+      const micro = random(x, y), fine = noise(u * 83, v * 83);
+      const tint = clamp(.22 + cloud * .5 + fine * .19);
+      const coffee = [50, 23, 13], amber = [lerp(166, 201, tint), lerp(106, 148, tint), lerp(50, 85, tint)];
+      const pore = micro > .982 ? -.11 : (micro < .027 ? .045 : 0);
+      const i = (y * size + x) * 4;
+      for (let c = 0; c < 3; c++) color[i + c] = Math.round(clamp(lerp(coffee[c], amber[c], coverage) * (1 + pore), 0, 255));
+      color[i + 3] = 255;
+      const roughness = Math.round(255 * lerp(.25, .38, clamp(coverage * .8 + fine * .2)));
+      rough[i] = rough[i + 1] = rough[i + 2] = roughness; rough[i + 3] = 255;
+    }
+    const texture = data => { const t = new T.DataTexture(data, size, size, T.RGBAFormat); t.magFilter = T.LinearFilter; t.minFilter = T.LinearMipmapLinearFilter; t.generateMipmaps = true; t.needsUpdate = true; return t; };
+    coffeeSurfaceMaps = { color: texture(color), rough: texture(rough) };
+    coffeeSurfaceMaps.color.colorSpace = T.SRGBColorSpace;
+  }
+  return new T.MeshPhysicalMaterial({ color: 0xffffff, map: coffeeSurfaceMaps.color, roughness: 1, roughnessMap: coffeeSurfaceMaps.rough, clearcoat: .12, clearcoatRoughness: .3, side: T.DoubleSide });
 }
 
 export function createCoffeeCup() {
@@ -293,11 +361,7 @@ export function createCoffeeCup() {
     [0.555, 1.100],
     [0.515, 1.100],
     [0.496, 1.082],
-    [0.480, 1.030],
-    [0.468, 0.920],
-    [0.425, 0.620],
-    [0.378, 0.330],
-    [0.342, 0.190],
+    ...[...CUP_INNER_PROFILE].reverse(),
     [0.250, 0.168],
     [0.000, 0.168]
   ];
@@ -413,8 +477,7 @@ export function createCoffeeCup() {
     [0.335, 0.030],
     [0.355, 0.190],
     [0.410, 0.510],
-    [0.455, CUP_LIQUID_DEPTH],
-    [0.000, CUP_LIQUID_DEPTH]
+    [0.455, CUP_LIQUID_DEPTH]
   ];
 
   const liquidBody = lathe(
@@ -429,97 +492,16 @@ export function createCoffeeCup() {
   const surface = horizontalDisc(
     group,
     1,
-    P.coffeeSurface,
+    createCoffeeSurfaceMaterial(),
     0,
     CUP_BOTTOM,
     0
   );
   surface.name = 'coffee surface';
 
-  // Meniscus is separate from the cup rim.
-  const meniscus = torusHorizontal(
-    group,
-    1,
-    0.009,
-    P.cremaLight,
-    0,
-    CUP_BOTTOM,
-    0
-  );
-  meniscus.name = 'coffee meniscus';
-
-  const cremaGroup = part(group, 'irregular micro crema');
-
-  // A deterministic, sparse set of organic flecks.
-  // These are flattened irregular ovals, not bubbles or beads.
-  const flecks = [];
-
-  const fleckGeometry = new T.SphereGeometry(
-    1,
-    10,
-    6
-  );
-
-  for (let i = 0; i < 42; i++) {
-    const angle = hash(i * 5 + 11) * TAU;
-    const radial = Math.sqrt(hash(i * 7 + 19)) * 0.88;
-
-    const material =
-      i % 7 === 0
-        ? P.cremaDark
-        : i % 3 === 0
-          ? P.cremaLight
-          : P.crema;
-
-    const f = makeMesh(
-      cremaGroup,
-      fleckGeometry,
-      material,
-      `crema fleck ${i}`
-    );
-
-    f.castShadow = false;
-    f.receiveShadow = false;
-
-    const sx = lerp(0.035, 0.12, hash(i * 13 + 3));
-    const sz = lerp(0.014, 0.065, hash(i * 17 + 7));
-
-    f.scale.set(sx, 0.0015, sz);
-    f.rotation.y = hash(i * 23 + 5) * TAU;
-
-    flecks.push({
-      object: f,
-      angle,
-      radial,
-      phase: hash(i * 29 + 9) * TAU,
-      originalX: sx,
-      originalZ: sz
-    });
-  }
-
-  // Three faint discontinuous arcs add crema structure.
-  const cremaArcs = [];
-
-  for (let i = 0; i < 3; i++) {
-    const arc = makeMesh(
-      cremaGroup,
-      new T.TorusGeometry(
-        1,
-        0.006 + i * 0.0015,
-        5,
-        36,
-        PI * (0.52 + i * 0.14)
-      ),
-      i === 1 ? P.cremaDark : P.cremaLight,
-      `crema irregular arc ${i}`
-    );
-
-    arc.rotation.x = PI / 2;
-    arc.rotation.z = i * 1.91;
-
-    arc.castShadow = false;
-    cremaArcs.push(arc);
-  }
+  surface.castShadow = false;
+  surface.userData.continuousLiquid = true;
+  surface.userData.cremaPerimeterFraction = .05;
 
   let previousFraction = -1;
   let previousTime = NaN;
@@ -546,8 +528,6 @@ export function createCoffeeCup() {
 
     liquid.visible = visible;
     surface.visible = visible;
-    meniscus.visible = visible;
-    cremaGroup.visible = visible;
 
     if (!visible) {
       liquid.scale.y = 0.0001;
@@ -571,65 +551,17 @@ export function createCoffeeCup() {
     liquid.scale.z = topRadius / 0.455;
 
     const wobble = isPouring
-      ? Math.sin(t * 8.2) * 0.0027
+      ? Math.sin(t * 8.2) * Math.min(0.0012, CUP_LIQUID_DEPTH * f * .15)
       : 0;
 
+    // The open volume meets the single pigment surface exactly, avoiding
+    // coplanar caps/z-fighting or a plain brown cap hiding crema on downswing.
+    liquid.scale.y = f + wobble / CUP_LIQUID_DEPTH;
     surface.position.y = surfaceY + wobble;
     surface.scale.set(topRadius, topRadius, 1);
 
-    // CircleGeometry is horizontal. Scale X/Y in its local XY plane.
-    meniscus.position.y = surfaceY + 0.001;
-    meniscus.scale.set(
-      topRadius * 1.015,
-      topRadius * 1.015,
-      topRadius * 1.015
-    );
-
-    const cremaY = surfaceY + 0.0035 + wobble;
-
-    for (let i = 0; i < flecks.length; i++) {
-      const d = flecks[i];
-      const o = d.object;
-
-      const drift = isPouring
-        ? Math.sin(t * 1.6 + d.phase) * 0.035
-        : Math.sin(t * 0.11 + d.phase) * 0.004;
-
-      const r = topRadius * clamp(
-        d.radial + drift,
-        0.04,
-        0.90
-      );
-
-      o.position.set(
-        Math.cos(d.angle) * r,
-        cremaY + i * 0.000015,
-        Math.sin(d.angle) * r
-      );
-
-      const movement = isPouring
-        ? 1 + Math.sin(t * 3 + d.phase) * 0.13
-        : 1;
-
-      o.scale.x = d.originalX * movement;
-      o.scale.z = d.originalZ * movement;
-      // Keep the entire foam patch, including its pouring wobble, inside the liquid.
-      const safeRadius = Math.max(0, topRadius - Math.max(o.scale.x, o.scale.z) - 0.006);
-      const radial = Math.min(r, safeRadius);
-      o.position.x = Math.cos(d.angle) * radial;
-      o.position.z = Math.sin(d.angle) * radial;
-    }
-
-    cremaArcs.forEach((o, i) => {
-      const r = topRadius * (0.34 + i * 0.22);
-
-      o.position.y = cremaY + 0.001 + i * 0.0002;
-
-      o.scale.set(r, r, 1);
-
-      o.rotation.z =
-        i * 1.91 + t * (isPouring ? 0.11 : 0.008);
-    });
+    // Only the continuous plane moves; foam remains a surface pigment field.
+    surface.userData.radius = topRadius;
 
     group.userData.fill = f;
     group.userData.surfaceY = surfaceY;
@@ -1974,15 +1906,15 @@ export function buildBrewRatio() {
   const annotations = [
     {
       text: '① 투입량 · 마른 분쇄 커피의 질량(g)',
-      point: [-1.48, 1.67, -0.08]
+      object: () => { const face=doseBasket.group.getObjectByName('visible tamped coffee face');return face.visible?face:null; }
     },
     {
       text: '② 추출량 · 잔에 나온 음료의 질량(g)',
-      point: [1.48, 1.67, -0.08]
+      object: () => { const surface=cup.group.getObjectByName('coffee surface');return surface.visible?surface:null; }
     },
     {
       text: '추출비는 음료 질량 ÷ 투입 커피 질량',
-      point: [0, 1.94, 0]
+      object: rightReadout.group.children[0]
     }
   ];
 
@@ -2000,11 +1932,10 @@ export function buildBrewRatio() {
     doseBasket.setDose(dose);
 
     // A graphic fill cue only. Beverage mass is not water volume.
-    const symbolicCupFill = clamp(
-      beverageYield / 80,
-      0,
-      0.88
-    );
+    // 55 is a graphic reference, not a conversion from grams to millilitres.
+    // Invert the cavity volume so 36/55 fills that share of the tapered cup,
+    // rather than treating the share as a fraction of its height.
+    const symbolicCupFill = cupHeightForVolumeFraction(clamp(beverageYield / 55,0,.88));
 
     cup.setFill(
       symbolicCupFill,
@@ -2012,8 +1943,9 @@ export function buildBrewRatio() {
       false
     );
 
+    // Both mass indicators share the same graphic scale.
     leftReadout.setProgress(
-      clamp(dose / 40)
+      clamp(dose / 80)
     );
 
     rightReadout.setProgress(
@@ -2064,7 +1996,7 @@ export function buildBrewRatio() {
 
   return {
     group,
-    eye: [2.5, 5, 8],
+    eye: [2.5, 11, 6],
     defaults,
     update,
     reading,

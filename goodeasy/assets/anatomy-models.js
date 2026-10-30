@@ -1,15 +1,15 @@
 import {gramophoneVisualSignal,GRAMOPHONE_DURATION} from '../gramophone/audio.js?v=20261028-uxaudio2';
 import {T,M,TAU,clamp,colors,metal,assembly,part,box,cyl,ring,rod} from './anatomy-core.js?v=20261028-watchmechanism2';
-import {buildGuitar,buildViolin} from './quality-instruments.js?v=20261030-craft-release1';
-import {buildReel} from './quality-machines.js?v=20261030-craft-release1';
-import {buildMXStudy} from './quality-replacements.js?v=20261030-espresso2';
+import {buildGuitar,buildViolin} from './quality-instruments.js?v=20261030-reviewed11';
+import {buildReel} from './quality-machines.js?v=20261030-reviewed11';
+import {buildMXStudy} from './quality-replacements.js?v=20261030-reviewed11';
 import {buildGramophone} from '../gramophone/gramophone-model.js?v=20261029-release67';
 import {buildSewingMachine} from '../sewing-machine/sewing-model.js?v=20261030-craft-release1';
 import {cycleAt} from '../sewing-machine/motion.js?v=20261029-release67';
-import {projectorAssembly} from './anatomy-optics.js?v=20261028-craft7';
-import {cameraAssembly} from './camera-optics-detail.js?v=20261028-craft7';
+import {projectorAssembly} from './anatomy-optics.js?v=20261030-reviewed11';
+import {cameraAssembly} from './camera-optics-detail.js?v=20261030-reviewed11';
 import {watchAssembly} from './anatomy-watch.js?v=20261028-watchguide4';
-import {espressoAssembly} from './anatomy-espresso.js?v=20261030-espresso2';
+import {espressoAssembly} from './anatomy-espresso.js?v=20261030-reviewed11';
 function entry(id,title,description,object,offset=[0,0,0],color=colors.frame){return {id,title,description,object,offset:new T.Vector3(...offset),color};}
 function bundle(root,name,objects){const g=part(root,name);root.updateMatrixWorld(true);for(const o of objects.filter(Boolean))g.attach(o);return g;}
 function instrument(kind){

@@ -1,4 +1,4 @@
-import {createCoffeeCup} from './coffee-detail.js?v=20261030-espresso2';
+import {createCoffeeCup} from './coffee-detail.js?v=20261030-reviewed11';
 import {buildMXSwitch} from './models/mx-switch.js?v=20261030-craft-release1';
 import {buildEspresso} from './models/espresso.js?v=20261028-craft7';
 export function buildMXStudy(T,M){const m=buildMXSwitch(T,M),contact=new T.Group();m.group.add(contact);contact.add(m.parts.fixedContact,m.parts.movingLeaf);const upper=m.parts.upperHousing.children.find(o=>o.geometry?.type==='ExtrudeGeometry');upper.material=new T.MeshPhysicalMaterial({color:0xaeb8b2,roughness:.28,transparent:true,opacity:.68,metalness:.05,side:T.DoubleSide});m.group.traverse(o=>{if(o.isMesh){o.castShadow=true;o.receiveShadow=true;}});return {...m,eye:[5,3.5,7],parts:{...m.parts,cap:m.parts.keycap,contact,signal:m.parts.fixedContact},defaults:{travel:0,explode:0},reading:s=>'눌림 '+Number(s.travel||0).toFixed(1)+'mm · '+((s.explode||0)>.01?'분해 상태 · 접점 분리':s.travel>=2?'접점 닫힘':'접점 열림')+' · 분해 '+Math.round((s.explode||0)*100)+'%'};}

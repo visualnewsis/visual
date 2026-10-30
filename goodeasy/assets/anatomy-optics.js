@@ -1,5 +1,6 @@
 import {T,M,TAU,clamp,colors,metal,component,assembly,part,mesh,box,cyl,ring,rod,bolt,sleeve} from './anatomy-core.js?v=20261028-craft7';
 import {buildIris} from './camera-lessons.js?v=20261028-craft7';
+import {buildProjector} from './projector-hero.js?v=20261030-reviewed11';
 import {curtainWindow,filmCycle} from './mechanism-checks.js?v=20261026-release3';
 export function cameraAssembly(){
  const group=new T.Group(),C=[],add=(...a)=>{const c=component(group,...a);C.push(c);return c.object;},chrome=metal(colors.frame),blue=new T.MeshPhysicalMaterial({color:0x87b8c4,metalness:.15,roughness:.12,transparent:true,opacity:.52,side:T.DoubleSide,depthWrite:false});
@@ -18,18 +19,32 @@ export function cameraAssembly(){
 }
 function lens(p,r,z,glass,frame){const profile=[[0,-.065],[r*.4,-.06],[r*.82,-.03],[r,0],[r*.82,.03],[r*.4,.06],[0,.065]];const o=mesh(p,new T.LatheGeometry(profile.map(v=>new T.Vector2(...v)),64),glass,0,0,z);o.rotation.x=Math.PI/2;ring(p,r,.035,frame,0,0,z,'z');}
 export function projectorAssembly(){
- const group=new T.Group(),C=[],add=(...a)=>{const c=component(group,...a);C.push(c);return c.object;},steel=metal(colors.frame),filmMat=new T.MeshStandardMaterial({color:0x725333,side:T.DoubleSide,roughness:.55});
- const base=add('frame','지지 프레임','필름 이송부와 광학부의 위치를 고정합니다.');box(base,5,.12,2.1,M.black,0,-1.8,0);for(const x of [-1.7,1.8])rod(base,[x,-1.75,-.2],[x,2.0,-.2],.06,steel);
- const reels=add('reels','공급 릴과 권취 릴','필름을 풀고 감는 릴입니다. 게이트의 간헐 이송은 별도 기구가 맡습니다.',[-1.2,0,-.5],colors.drive),reelWheels=[];for(const y of [2.1,-1.0]){const root=part(reels,'reel');root.position.set(-1.65,y,0);for(const z of [-.09,.09]){const shape=new T.Shape();shape.absarc(0,0,.65,0,TAU,false);for(let i=0;i<5;i++){const a=i/5*TAU,h=new T.Path();h.absarc(Math.cos(a)*.38,Math.sin(a)*.38,.14,0,TAU,true);shape.holes.push(h);}const g=new T.ExtrudeGeometry(shape,{depth:.025,bevelEnabled:false,curveSegments:32});mesh(root,g,steel,0,0,z);}const axle=cyl(root,.07,.3,steel);axle.rotation.x=Math.PI/2;reelWheels.push(root);}
- const gate=add('gate','게이트와 압판','필름 한 프레임을 평평하게 붙잡습니다.',[0,0,1.2]);for(const x of [-.55,.55])box(gate,.14,.98,.12,steel,x,.4,.12,0);for(const y of [-.03,.83])box(gate,1.24,.14,.12,steel,0,y,.12,0);const pressure=box(gate,1.10,.86,.05,M.black,0,.4,-.007,0);pressure.material=pressure.material.clone();pressure.material.transparent=true;pressure.material.opacity=.12;
- const film=add('film','필름과 상하 루프','게이트에서 멈추고, 차광 중에 한 프레임씩 이동합니다. 이어진 필름의 루프가 연속 이송과 간헐 이송의 차이를 흡수합니다.',[0,0,0],colors.spring);
- const strip=part(film,'continuous perforated strip'),shape=new T.Shape();shape.moveTo(-.66,-2.5);shape.lineTo(.66,-2.5);shape.lineTo(.66,3);shape.lineTo(-.66,3);shape.closePath();for(let y=-2.4;y<2.9;y+=.1875)for(const x of [-.60,.54]){const h=new T.Path();h.moveTo(x,y);h.lineTo(x+.060,y);h.lineTo(x+.060,y+.09);h.lineTo(x,y+.09);h.closePath();shape.holes.push(h);}mesh(strip,new T.ExtrudeGeometry(shape,{depth:.018,bevelEnabled:false}),filmMat,0,0,.02);for(let i=-3;i<4;i++)box(strip,.96,.72,.013,i%2?metal(0x6e7a64):metal(0xb3b59a),0,.4+i*.75,.045,.002);
- const loops=[];for(const sign of [-1,1]){const geometry=new T.BufferGeometry();geometry.setAttribute('position',new T.BufferAttribute(new Float32Array(49*3),3));const line=new T.Line(geometry,new T.LineBasicMaterial({color:0xb49a62}));line.name=sign>0?'upper slack loop':'lower slack loop';film.add(line);loops.push({sign,line});}
- function updateLoops(progress){for(const {sign,line} of loops){const points=sign>0?[[-1.65,2.1,0],[-1.15,2.3,0],[-.45,1.90+progress*.18,0],[0,1.50-progress*.75,.02]]:[[0,-.65-progress*.75,.02],[-.4,-1.15-progress*.18,0],[-1.15,-1.35,0],[-1.65,-1,0]];const curve=new T.CatmullRomCurve3(points.map(p=>new T.Vector3(...p))),positions=line.geometry.attributes.position;for(let i=0;i<49;i++){const p=curve.getPoint(i/48);positions.setXYZ(i,p.x,p.y,p.z);}positions.needsUpdate=true;line.geometry.computeBoundingSphere();}}
- const shutter=add('shutter','회전 셔터','회전하는 날개가 광로를 가리는 동안 필름을 옮깁니다.',[1.1,0,.5],colors.drive);shutter.position.set(1.05,.4,.36);const sh=new T.Shape();sh.moveTo(0,0);sh.absarc(0,0,1.72,-Math.PI*.56,Math.PI*.56,false);sh.lineTo(0,0);mesh(shutter,new T.ExtrudeGeometry(sh,{depth:.035,bevelEnabled:false,curveSegments:72}),metal(0x727c6c));const ax=cyl(shutter,.07,.20,steel);ax.rotation.x=Math.PI/2;
- const intermittent=add('intermittent','간헐 이송 · 핀과 슬롯','구동 핀이 슬롯에 들어가는 구간에만 출력축이 돌아갑니다. 필름의 정지와 이송을 분리해 보여줍니다.',[1.7,0,0],colors.drive);intermittent.position.set(.92,-.7,-.4574648293);intermittent.rotation.y=Math.PI/2;const output=part(intermittent,'four slot Geneva wheel'),star=new T.Shape();for(let i=0;i<=320;i++){const a=i/320*TAU,d=Math.abs(((a+Math.PI/4)%(Math.PI/2))-Math.PI/4),r=d<.10?.26:.74;const x=Math.cos(a)*r,y=Math.sin(a)*r;i?star.lineTo(x,y):star.moveTo(x,y);}star.closePath();const hole=new T.Path();hole.absarc(0,0,.065,0,TAU,true);star.holes.push(hole);mesh(output,new T.ExtrudeGeometry(star,{depth:.06,bevelEnabled:true,bevelSize:.008,bevelThickness:.008,bevelSegments:2}),steel);const driver=part(intermittent,'continuous driver');driver.position.x=1;const disk=cyl(driver,.36,.07,metal(colors.drive));disk.rotation.x=Math.PI/2;rod(driver,[0,0,.07],[-Math.SQRT1_2,0,.07],.04,steel);const pin=cyl(driver,.023,.13,M.red,-Math.SQRT1_2,0,.11);pin.rotation.x=Math.PI/2;const sprocket=part(film,'intermittent sprocket');sprocket.position.set(0,-.7,-.4574648293);const pitchRadius=.75/(Math.PI/2);for(const x of [-.57,.57]){const wheel=cyl(sprocket,pitchRadius-.025,.065,metal(colors.drive),x,0,0);wheel.rotation.z=Math.PI/2;for(let i=0;i<16;i++){const a=i/16*TAU,tooth=box(sprocket,.045,.037,.045,steel,x,Math.sin(a)*pitchRadius,Math.cos(a)*pitchRadius,.003);tooth.rotation.x=-a;}}rod(film,[-.68,-.7,-.4574648293],[.92,-.7,-.4574648293],.035,steel);
-
- const lamp=add('lamp','램프와 콘덴서','필름 뒤쪽에 빛을 모읍니다.',[0,0,-1.4],colors.optics);box(lamp,1.1,1.3,.65,M.black,0,.4,-1);mesh(lamp,new T.SphereGeometry(.22,24,16),new T.MeshStandardMaterial({color:0xf1d692,emissive:0x9d7130,emissiveIntensity:.45}),0,.4,-.61);
- const optics=add('lens','투사 렌즈','게이트와 같은 광축 위에서 필름의 상을 확대합니다.',[0,0,2.4],colors.optics);for(const z of [.6,1.0])ring(optics,.35,.07,steel,0,.4,z,'z');mesh(optics,new T.CircleGeometry(.31,48),new T.MeshPhysicalMaterial({color:0x6293a3,transparent:true,opacity:.45,side:T.DoubleSide}),0,.4,1.01);
- return assembly(group,C,s=>{const p=clamp(s.phase||0),engaged=p>=.65,theta=engaged?-Math.PI/4+(p-.65)/.35*Math.PI/2:-Math.PI*7/4+p/.65*Math.PI*1.5,beta=engaged?Math.atan2(Math.SQRT1_2*Math.sin(theta),1-Math.SQRT1_2*Math.cos(theta)):-Math.PI/4,progress=(beta+Math.PI/4)/(Math.PI/2);driver.rotation.z=-theta;output.rotation.z=beta;sprocket.rotation.x=progress*Math.PI/2;strip.position.y=-.75*progress;updateLoops(progress);reelWheels.forEach(o=>o.rotation.z=-p*.12*TAU);shutter.rotation.z=TAU*(p-.84)+Math.PI;},{eye:[4,3.2,8],phaseLabel:'멈춤·차광·한 프레임 이송',note:'4슬롯 간헐 기구와 필름 게이트를 함께 보여주는 축약 모형입니다. 필름 정지 중 노출하고, 차광 중 다음 프레임으로 옮깁니다.'});
+ // One physical machine serves hero, disassembly and optical studies.
+ const hero=buildProjector(),{group,parts}=hero;
+ // The structure viewer measures all descendants, including invisible ones.
+ // A remote projection screen must not shrink this assembled hardware view.
+ parts.screen.removeFromParent();parts.beam.removeFromParent();
+ const descriptors=[
+ ['frame','지지 프레임','릴과 게이트, 광학계를 지지하는 본체입니다.',parts.body,[0,0,-1.5],colors.frame],
+ ['reels','공급 릴과 권취 릴','릴은 연속으로 돌고, 상하 루프는 게이트의 간헐 이송을 받아 줍니다.',parts.reels,[0,1.2,-.8],colors.drive],
+ ['gate','게이트와 압판','세워진 필름 한 프레임을 광축과 직각으로 붙잡습니다.',parts.gate,[-.8,0,0],colors.frame],
+ ['film','필름과 상하 루프','같은 폭의 필름이 릴에서 게이트를 지나 권취 릴로 이어집니다.',parts.filmGroup,[0,0,.9],colors.spring],
+ ['shutter','회전 셔터','필름이 움직이는 동안 광로를 가립니다.',parts.shutter,[1.1,0,0],colors.drive],
+ ['intermittent','간헐 이송 · 핀과 슬롯','구동 핀이 슬롯을 밀 때만 같은 축의 스프로킷이 90도 회전합니다.',parts.mechanismMount,[0,0,1.8],colors.drive],
+ ['lamp','램프와 콘덴서','게이트 뒤에서 필름에 빛을 모읍니다.',parts.lamp,[0,0,-1.2],colors.optics],
+ ['lens','투사 렌즈','필름과 직각인 같은 광축에서 상을 확대합니다.',parts.lens,[0,0,2.0],colors.optics]];
+ const components=descriptors.map(([id,title,description,object,offset,color])=>({id,title,description,object,offset:new T.Vector3(...offset),color}));
+ const model=assembly(group,components,s=>{
+ hero.update({frames:(Number(s.phase)||0)-.35},false);
+ parts.screen.visible=false;parts.beam.visible=false;parts.shutter.visible=true;
+ },{eye:[7,3.2,10],phaseLabel:'멈춤·차광·한 프레임 이송',note:'릴에서 풀린 필름이 게이트를 지나 다시 감깁니다. 필름이 움직이는 동안 셔터가 빛을 가리는 순서를 살펴보세요.'});
+ model.anatomyReading=()=>{
+  const clock=group.userData.transport;
+  if(clock.engaged)return '빛 차단 · 필름을 한 칸 옮깁니다.';
+  const stopped=clock.index>0?'다음 프레임 정지':'필름 정지';
+  if(clock.openFraction===1)return stopped+' · 셔터 열림 · 한 프레임을 비춥니다.';
+  if(clock.openFraction>0)return stopped+' · 셔터가 일부만 열려 있습니다.';
+  return stopped+' · 셔터가 빛을 가립니다.';
+ };
+ model.hardware=hero;model.optical=parts.optics;return model;
 }

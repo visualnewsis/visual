@@ -1,15 +1,15 @@
-import {violinFinish,finishViolinTop} from './violin-finish.js?v=20261030-craft-release1';
-import {plateGeometry,neckGeometry,guitarWood,woodUV,edgeDistance} from './guitar-craft.js?v=20261027-craft5';
+import {violinPlateGeometry as plateGeometry,violinFOpening as fHole} from './violin-surface.js?v=20261030-reviewed11';
+import {violinFinish,finishViolinTop} from './violin-finish.js?v=20261030-reviewed11';
+import {neckGeometry,guitarWood,woodUV,edgeDistance} from './guitar-craft.js?v=20261027-craft5';
 import {smoothOutline,shapeFromPoints,insetOutline,hollowRibs,archedPlate,violinTopY} from './surface-utils.js?v=20261024-editorial1';
 import {mat,mesh,curveTube,cylinderBetween,ellipsoid,horizontalExtrude,outlineShape,assemblyGroup,orientedBox,addWoodGrain} from './model-utils.js?v=20261024-editorial1';
 /** Violin: X scroll (-) to tail (+), Y soundboard normal (+), Z string spread.
  * The bow is a separately transformable group; animation is the caller's responsibility.
  * MIDI G3 D4 A4 E5 = [55,62,69,76]. Dimensions are visual assumptions, not CAD.
  */
-function fHole(T,side){const s=new T.Shape();s.moveTo(-.22,-.012);s.bezierCurveTo(-.24,-.055,-.17,-.045,-.175,-.014);s.bezierCurveTo(-.16,.015,-.09,.018,-.03,-.002);s.bezierCurveTo(.06,-.04,.19,-.035,.25,.015);s.bezierCurveTo(.29,.04,.35,.015,.325,-.018);s.bezierCurveTo(.30,-.045,.275,-.025,.283,-.005);s.bezierCurveTo(.19,-.055,.07,-.06,-.04,-.02);s.bezierCurveTo(-.1,.002,-.16,0,-.19,-.022);s.closePath();return s.getPoints(64).slice(0,-1).map(p=>new T.Vector2(.18+p.x*.8,side*(.210+p.y*.7)));}
 const violinGeometry=new Map(),plateFits=new Map();
 let archContour=[];
-export const violinDome=(x,z)=>{const d=archContour.length?Math.min(1,edgeDistance(x,z,archContour)/.065):1,fade=d*d*(3-2*d);return .078*Math.max(0,1-((x-.19)/1.12)**2-(z/.44)**2)*fade;};
+export const violinDome=(x,z)=>{const d=archContour.length?Math.min(1,edgeDistance(x,z,archContour)/.16):1,fade=d*d*(3-2*d);return .078*Math.max(0,1-((x-.19)/1.12)**2-(z/.44)**2)*fade;};
 export const violinTopInsideY=(x,z)=>.092+violinDome(x,z);
 export const violinBackInsideY=(x,z)=>-.105-violinDome(x,z)*.7;
 const boardWidth=x=>.218+(Math.max(-1.59,Math.min(-.535,x))+1.59)/1.055*.105;
@@ -28,6 +28,8 @@ export function buildViolin(THREE,materials={}){
  const ivory=mat(THREE,materials.ivory,'#e8d9b4'),steel=mat(THREE,materials.steel,'#c3c8ca',.32,.53);
  const brass=mat(THREE,materials.brass,'#b69b5b',.35,.55),black=mat(THREE,materials.black,'#14100d');
  const felt=mat(THREE,materials.felt,'#6b5641');const varnish=violinFinish(THREE,'spruce');const ebony=guitarWood(THREE,'ebony');const braceWood=guitarWood(THREE,'brace');
+ const cavityWood=new THREE.MeshStandardMaterial({color:'#45200f',roughness:.65,metalness:0,side:THREE.DoubleSide});
+ cavityWood.name='unvarnished cavity and f-opening cut wood';
  const parts={};
  // The violin outline has upper/lower bouts, concave C-bouts and projecting corners.
  // Violin-specific upper bouts, inward C-bouts, four corner tips and larger lower bouts.
@@ -48,11 +50,11 @@ export function buildViolin(THREE,materials={}){
  const ribs=hollowRibs(THREE,contour,inner,.106,-.105,dark,parts.body,'connected hollow violin ribs');
  parts.ribs=ribs;
  if(!violinGeometry.has('back'))violinGeometry.set('back',plateGeometry(THREE,contour,[],-.121,-.105,(x,z)=>-violinDome(x,z)*.7));
- const back=mesh(THREE,violinGeometry.get('back'),wood,'closed arched maple back',parts.body);
+ const back=mesh(THREE,violinGeometry.get('back'),[wood,cavityWood,cavityWood],'closed arched maple back',parts.body);
  parts.back=back;
  if(!violinGeometry.has('top'))violinGeometry.set('top',plateGeometry(THREE,contour,[-1,1].map(side=>fHole(THREE,side)),.106,.092,violinDome));
  finishViolinTop(THREE,violinGeometry.get('top'),contour,edgeDistance);
- const top=mesh(THREE,violinGeometry.get('top'),varnish,'closed arched spruce soundboard with real f openings',parts.body);
+ const top=mesh(THREE,violinGeometry.get('top'),[varnish,cavityWood,cavityWood],'closed arched spruce soundboard with real f openings',parts.body);
  parts.top=top;
  // Inlaid edge follows the actual curved plate and stays attached when opened.
  const edge=insetOutline(THREE,contour,.012).map(p=>[p.x,.107+violinDome(p.x,p.y),p.y]);
@@ -66,7 +68,7 @@ export function buildViolin(THREE,materials={}){
  const barProfile=new THREE.Shape();barProfile.moveTo(-.49,0);for(let i=1;i<=48;i++)barProfile.lineTo(-.49+1.31*i/48,0);barProfile.lineTo(.82,-.021);barProfile.quadraticCurveTo(.22,-.073,-.49,-.021);barProfile.closePath();
  const barGeo=new THREE.ExtrudeGeometry(barProfile,{depth:.040,bevelEnabled:false,curveSegments:24});const bp=barGeo.attributes.position;for(let i=0;i<bp.count;i++){const x=bp.getX(i),z=bp.getZ(i)-.165;bp.setXYZ(i,x,plateY(top,x,z,true)+bp.getY(i),z);}barGeo.computeVertexNormals();woodUV(barGeo);
  parts.bassbar=mesh(THREE,barGeo,braceWood,'bassbar fitted to inside spruce plate',parts.bracing);
- const postX=.25,postZ=.145,postBottom=plateY(back,postX,postZ,true),postTop=plateY(top,postX,postZ,true);parts.post=assemblyGroup(THREE,'fitted soundpost',group);cylinderBetween(THREE,[postX,postBottom,postZ],[postX,postTop,postZ],.019,braceWood,'soundpost touching both inner plates',parts.post);
+ const postX=.25,postZ=.130,postBottom=plateY(back,postX,postZ,true),postTop=plateY(top,postX,postZ,true);parts.post=assemblyGroup(THREE,'fitted soundpost',group);cylinderBetween(THREE,[postX,postBottom,postZ],[postX,postTop,postZ],.019,braceWood,'soundpost touching both inner plates',parts.post);
  const postMesh=parts.post.children[0],pp=postMesh.geometry.attributes.position;for(let i=0;i<pp.count;i++){const x=postX+pp.getX(i),z=postZ+pp.getZ(i),target=plateY(pp.getY(i)>0?top:back,x,z,true);pp.setY(i,target-postMesh.position.y);}pp.needsUpdate=true;postMesh.geometry.computeVertexNormals();
  parts.post.userData.ends=[[postX,postBottom,postZ],[postX,postTop,postZ]];
  const chinrest=assemblyGroup(THREE,'chinrest',group);parts.chinrest=chinrest;ellipsoid(THREE,[.94,.17,-.23],[.23,.033,.15],black,'chin rest',chinrest,40);for(const z of [-.15,-.29])cylinderBetween(THREE,[1.12,.12,z],[1.12,-.10,z],.009,steel,'chinrest clamp',chinrest);
