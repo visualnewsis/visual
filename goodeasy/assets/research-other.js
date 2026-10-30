@@ -3,12 +3,12 @@ import {buildReelRetrieve as reelRetrieve,buildReelOscillation,buildReelDrag} fr
 import {buildKeyboardSpringStudy,buildKeyboardDebounceStudy} from './keyboard-lessons.js?v=20261030-craft-release1';
 import {buildProjectorGateStudy,buildProjectorFramesStudy} from './projector-lessons.js?v=20261028-craft7';
 import {buildLengthStudy,buildHarmonicStudy,buildBodyStudy} from './guitar-lessons.js?v=20261027-premium6';
-import {espressoAssembly} from './anatomy-espresso.js?v=20261028-craft7';
-import {buildBrewRatio as detailedBrewRatio} from './coffee-detail.js?v=20261028-craft7';
+import {espressoAssembly} from './anatomy-espresso.js?v=20261030-espresso2';
+import {buildBrewRatio as detailedBrewRatio} from './coffee-detail.js?v=20261030-espresso2';
 import {buildIris as detailedIris,buildShutter as detailedShutter,buildExposure as detailedExposure} from './camera-lessons.js?v=20261028-craft7';
-import {buildCoffeeComparison,buildCoffeeWaterPath} from './espresso-lessons.js?v=20261030-craft-release1';
+import {buildCoffeeComparison,buildCoffeeWaterPath} from './espresso-lessons.js?v=20261030-espresso2';
 import {curtainWindow,filmCycle,debounceSample,crankX,bowedDisplacement} from './mechanism-checks.js?v=20261026-release3';
-import {buildMXStudy,buildEspressoStudy} from './quality-replacements.js?v=20261030-craft-release1';
+import {buildMXStudy,buildEspressoStudy} from './quality-replacements.js?v=20261030-espresso2';
 import {T,materials as M,mesh,box,cyl,ring,rod,tube,part} from './quality-kit.js?v=20261028-craft7';
 import {buildGuitar,buildViolin} from './quality-instruments.js?v=20261030-craft-release1';
 import {buildReel,buildEspresso} from './quality-machines.js?v=20261030-craft-release1';

@@ -3,7 +3,7 @@ import {playStudyTone,stopStudyTone,midiFrequency} from './study-audio.js?v=2026
 import {lessonAnnotations} from './lesson-annotations.js?v=20261027-detail1';
 import {T,materials as M} from './quality-kit.js?v=20261028-watchmechanism2';
 import {watchBuilders} from './research-watch.js?v=20261028-watchguide4';
-import {otherBuilders} from './research-other.js?v=20261030-craft-release1';
+import {otherBuilders} from './research-other.js?v=20261030-espresso2';
 import {clamp} from './research-math.js?v=20261026-release3';
 const refined=!!(document.body.dataset.experiment||document.body.dataset.music);
 const cards=[...document.querySelectorAll('[data-research]')],views=[],reduced=matchMedia('(prefers-reduced-motion: reduce)');

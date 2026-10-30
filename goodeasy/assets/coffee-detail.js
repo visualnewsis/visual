@@ -44,7 +44,7 @@ const mat = (color, roughness = 0.5, metalness = 0) =>
 
 const P = {
   porcelain: new T.MeshPhysicalMaterial({
-    color: 0xf0eadb,
+    color: 0xeee7db,
     roughness: 0.23,
     metalness: 0,
     clearcoat: 0.85,
@@ -107,7 +107,7 @@ const P = {
   }),
 
   coffeeSurface: new T.MeshPhysicalMaterial({
-    color: 0x6c3517,
+    color: 0x32170d,
     roughness: 0.22,
     clearcoat: 0.72,
     clearcoatRoughness: 0.17,
@@ -481,8 +481,8 @@ export function createCoffeeCup() {
     f.castShadow = false;
     f.receiveShadow = false;
 
-    const sx = lerp(0.014, 0.066, hash(i * 13 + 3));
-    const sz = lerp(0.006, 0.022, hash(i * 17 + 7));
+    const sx = lerp(0.035, 0.12, hash(i * 13 + 3));
+    const sz = lerp(0.014, 0.065, hash(i * 17 + 7));
 
     f.scale.set(sx, 0.0015, sz);
     f.rotation.y = hash(i * 23 + 5) * TAU;
@@ -613,6 +613,11 @@ export function createCoffeeCup() {
 
       o.scale.x = d.originalX * movement;
       o.scale.z = d.originalZ * movement;
+      // Keep the entire foam patch, including its pouring wobble, inside the liquid.
+      const safeRadius = Math.max(0, topRadius - Math.max(o.scale.x, o.scale.z) - 0.006);
+      const radial = Math.min(r, safeRadius);
+      o.position.x = Math.cos(d.angle) * radial;
+      o.position.z = Math.sin(d.angle) * radial;
     }
 
     cremaArcs.forEach((o, i) => {

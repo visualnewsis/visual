@@ -1,8 +1,8 @@
-import {espressoAssembly} from './anatomy-espresso.js?v=20261028-craft7';
+import {espressoAssembly} from './anatomy-espresso.js?v=20261030-espresso2';
 import {espressoSequence} from './espresso-sequence.js?v=20261028-release3';
-import {buildCoffeeComparison as detailedCoffeeComparison} from './coffee-detail.js?v=20261028-craft7';
+import {buildCoffeeComparison as detailedCoffeeComparison} from './coffee-detail.js?v=20261030-espresso2';
 import {T,materials as M,box,cyl,rod,tube,part} from './quality-kit.js?v=20261028-craft7';
-import {buildEspressoStudy} from './quality-replacements.js?v=20261030-craft-release1';
+import {buildEspressoStudy} from './quality-replacements.js?v=20261030-espresso2';
 import {coffeeFlow} from './model.js?v=20261026-release3';
 
 const water=new T.MeshStandardMaterial({color:0x70cbd5,emissive:0x164651,roughness:.25});
