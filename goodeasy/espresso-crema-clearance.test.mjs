@@ -22,7 +22,7 @@ test('every fill stays finite, below the cup rim, inside its cavity, and changes
   assert.equal(surface.visible,true);assert.equal(volume.visible,true);
   const expected=.19+.795*fill;assert.ok(Math.abs(surface.position.y-expected)<1e-10);
   if(previous){assert.ok(Math.abs(surface.position.y-previous.y)<.0041);assert.ok(Math.abs(surface.scale.x-previous.r)<.0011);}
-  assert.ok(Math.abs(surface.scale.x-(cavityAt(expected)-.026))<1e-10,'surface radius must follow actual porcelain profile with .026 clearance');
+  const gap=cavityAt(expected)-surface.scale.x;assert.ok(gap>=.004&&gap<=.008,'liquid must approach the real inner wall without crossing it');
   previous={y:surface.position.y,r:surface.scale.x};
   for(const pouring of [false,true])for(const time of [0,.3,1,7]){
    m.setFill(fill,time,pouring);m.group.updateMatrixWorld(true);
@@ -31,7 +31,7 @@ test('every fill stays finite, below the cup rim, inside its cavity, and changes
     const p=new T.Vector3().fromBufferAttribute(positions,i).applyMatrix4(surface.matrixWorld);
     assert.ok([p.x,p.y,p.z].every(Number.isFinite));assert.ok(p.y<1.1&&p.y>.168);
     const cavity=cavityAt(p.y);
-    assert.ok(Math.hypot(p.x,p.z)<cavity-.020,'surface crosses porcelain wall');
+    assert.ok(Math.hypot(p.x,p.z)<cavity-.003,'surface crosses porcelain wall');
    }
    assert.ok(Math.abs(surface.position.y-expected)<=.00121,'motion exceeds restrained liquid height');
    assert.ok(Math.abs(volume.position.y + .795 * volume.scale.y - surface.position.y)<1e-10,'volume must meet the sole surface');
@@ -42,9 +42,9 @@ test('empty or invalid fills hide actual liquid and cannot leave crema suspended
  const m=createCoffeeCup(),surface=m.group.getObjectByName('coffee surface'),volume=m.group.getObjectByName('coffee volume');
  for(const fill of [0,-1,NaN,Infinity]){m.setFill(.8);m.setFill(fill,Infinity,true);assert.equal(surface.visible,false);assert.equal(volume.visible,false);assert.equal(m.group.userData.fill,0);}
 });
-test('continuous crema is warm low-contrast microfoam with a matte liquid surface',()=>{
+test('dark liquid carries warm fine microfoam without becoming a matte foam disc',()=>{
  const {group}=createCoffeeCup(),material=group.getObjectByName('coffee surface').material,map=material.map;
- assert.ok(map?.isDataTexture);assert.equal(map.colorSpace,T.SRGBColorSpace);assert.ok(material.roughness>=.55&&material.roughness<=.75);assert.equal(material.metalness,0);
+ assert.ok(map?.isDataTexture);assert.equal(map.colorSpace,T.SRGBColorSpace);assert.ok(material.roughness>=.24&&material.roughness<=.38);assert.equal(material.metalness,0);
  const red=[];for(let i=0;i<map.image.data.length;i+=4){const d=map.image.data;assert.equal(d[i+3],255);assert.ok(d[i]>d[i+1]&&d[i+1]>d[i+2]);red.push(d[i]);}red.sort((a,b)=>a-b);
  assert.ok(red[Math.floor(red.length*.99)]-red[Math.floor(red.length*.01)]<55,'large dark patches would dominate the surface');
 });

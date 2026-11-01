@@ -72,9 +72,9 @@ test('actual violin contour preserves every outer and f-opening boundary and pro
  assert.ok(Math.abs(projectedArea(g)-expected)<2e-7);
 });
 
-test('outer varnish, cavity wood and cut walls use three disjoint material ranges',()=>{
- const n=geometry.userData.skinTriangleCount*3;assert.deepEqual(geometry.groups,[{start:0,count:n,materialIndex:0},{start:n,count:n,materialIndex:1},{start:n*2,count:geometry.index.count-n*2,materialIndex:2}]);
- assert.ok(geometry.groups[2].count>0);
+test('outer plate edge retains varnish while the inside and f holes expose cavity wood',()=>{
+ const n=geometry.userData.skinTriangleCount*3,O=geometry.userData.outerWallIndexCount,H=geometry.userData.holeWallIndexCount;
+ assert.deepEqual(geometry.groups,[{start:0,count:n,materialIndex:0},{start:n,count:n,materialIndex:1},{start:n*2,count:O,materialIndex:0},{start:n*2+O,count:H,materialIndex:2}]);assert.ok(O>0&&H>0);assert.equal(geometry.index.count,2*n+O+H);
 });
 
 test('approved f proportions retain tangent-continuous eyes and positive bank separation',()=>{

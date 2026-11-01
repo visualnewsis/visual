@@ -9,7 +9,7 @@ if(kind==='projector'){
  const host=document.querySelector('#play .stage'),figure=document.createElement('figure');figure.className='projector-result';
  const canvas=document.createElement('canvas');canvas.width=320;canvas.height=240;canvas.setAttribute('role','img');canvas.setAttribute('aria-label','지금 넘긴 필름의 그림 확대');
  const caption=document.createElement('figcaption');figure.append(canvas,caption);host?.append(figure);
- const draw=s=>{paintFilmFrame(canvas.getContext('2d'),s.frame||0,320,240);caption.textContent=`투사 화면 확대 · ${(s.frame||0)+1} / 24`;};draw(window.GoodeasyRenderState||{});window.addEventListener('goodeasy:state',e=>draw(e.detail));
+ const draw=s=>{paintFilmFrame(canvas.getContext('2d'),s.frame||0,320,240);caption.textContent=`같은 장면 · 투사 화면 확대 · ${(s.frame||0)+1} / 24`;};draw(window.GoodeasyRenderState||{});window.addEventListener('goodeasy:state',e=>draw(e.detail));
  const action=document.getElementById('action'),link=document.createElement('a');link.href='#research-film-gate';link.className='first-comparison';link.textContent='셔터를 빼면 어떻게 될까요? → 비교 실험';action?.parentElement.append(link);
 }
 

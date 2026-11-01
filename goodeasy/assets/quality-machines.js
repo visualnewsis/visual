@@ -1,4 +1,4 @@
-import {buildProjector} from './projector-hero.js?v=20261030-reviewed11';
+import {buildProjector} from './projector-hero.js?v=20261102-rescue2';
 export {buildProjector};
 import {buildKeyboardHero} from './models/keyboard-hero.js?v=20261030-craft-release1';
 import {buildWatch,buildReel} from './release-machine-models.js?v=20261029-seconds1';

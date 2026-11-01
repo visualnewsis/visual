@@ -1,5 +1,5 @@
 import {coffeeMaterialTexture} from './coffee-material-textures.js?v=20261102-final3';
-// coffee-detail.js?v=20261102-final3
+// coffee-detail.js?v=20261102-rescue2
 // VISUAL NEWSIS · 굳이구지 · Espresso Detail
 // Three.js ES module · Y-up
 // No DOM, canvas, external textures or additional packages.
@@ -275,7 +275,7 @@ function cupVolumeBelow(height) {
     const top = Math.min(height,yb);
     if (top <= ya) break;
     // Match the liquid's radial clearance from the porcelain wall.
-    const r0 = ra-.026, r1 = lerp(ra,rb,(top-ya)/(yb-ya))-.026;
+    const r0 = ra-.006, r1 = lerp(ra,rb,(top-ya)/(yb-ya))-.006;
     volume += Math.PI*(top-ya)*(r0*r0+r0*r1+r1*r1)/3;
     if (top < yb) break;
   }
@@ -305,15 +305,29 @@ function innerCupRadius(y) {
 // One continuous liquid surface: pigment and microscopic foam vary in color,
 // never as separate floating solids. Deterministic textures need no canvas/DOM.
 function createCoffeeSurfaceMaterial() {
- const color=coffeeMaterialTexture('crema').clone();color.repeat.set(2.3,2.3);color.needsUpdate=true;
- const material=new T.MeshPhysicalMaterial({color:0xffffff,map:color,roughness:.65,clearcoat:.06,clearcoatRoughness:.6,side:T.DoubleSide});
+ const microfoam=coffeeMaterialTexture('crema').clone();microfoam.repeat.set(2.3,2.3);microfoam.needsUpdate=true;
+ // Coffee remains opaque and dark. Crema is pigmentation on this same liquid skin,
+ // rather than a second yellow disc or a transparent water material.
+ const material=new T.MeshPhysicalMaterial({color:0x3a1b10,map:microfoam,roughness:.31,metalness:0,clearcoat:.28,clearcoatRoughness:.26,side:T.DoubleSide});
  material.onBeforeCompile=shader=>{shader.fragmentShader=shader.fragmentShader.replace('#include <map_fragment>',`#include <map_fragment>
 #ifdef USE_MAP
-// Compress the generated microfoam's large colour swings into a continuous liquid film.
-vec3 foamMean=vec3(0.48,0.265,0.112);
-diffuseColor.rgb=mix(foamMean,diffuseColor.rgb,0.48);
-#endif`);};material.customProgramCacheKey=()=> 'crema-microfoam-low-contrast-v2';
- material.name='continuous thin crema microfoam';return material;
+vec2 liquidUv=vMapUv/2.3;
+vec2 radial=(liquidUv-0.5)*2.0;
+float radius=length(radial);
+float pigment=smoothstep(0.65,0.95,radius);
+// The generated fine foam texture contributes only subtle microbubbles.
+vec3 fineFoam=texture2D(map,vMapUv).rgb;
+float fineGrain=clamp((fineFoam.r-fineFoam.g)*1.5,0.0,1.0);
+float coverage=clamp(pigment*(0.60+fineGrain*.15),0.0,0.78);
+vec3 darkCoffee=vec3(0.030,0.014,0.007);
+vec3 thinCrema=vec3(0.25,0.125,0.045)*(0.94+fineGrain*.12);
+diffuseColor.rgb=mix(darkCoffee,thinCrema,coverage);
+// A fine, continuous foam contact line at the wall; no separate floating ring.
+diffuseColor.rgb=mix(diffuseColor.rgb,thinCrema,0.18*smoothstep(0.980,1.0,radius));
+#endif`);};
+ material.customProgramCacheKey=()=> 'opaque-espresso-partial-microfoam-v3';
+ material.userData={liquid:'espresso',opaqueLiquid:true,crema:'partial surface pigmentation',meniscus:'continuous 1.75% radial band'};
+ material.name='continuous dark espresso with thin partial crema';return material;
 }
 
 export function createCoffeeCup() {
@@ -521,7 +535,7 @@ export function createCoffeeCup() {
     const availableRadius = innerCupRadius(surfaceY);
     const topRadius = Math.max(
       0.31,
-      availableRadius - 0.026
+      availableRadius - 0.006
     );
 
     liquid.position.y = CUP_BOTTOM;
@@ -1552,7 +1566,7 @@ function createBalanceReadout(parent, x, textWidth = 0.75) {
 
   root.position.x = x;
 
-  box(
+  const face = box(
     root,
     textWidth,
     0.057,
@@ -1593,6 +1607,7 @@ function createBalanceReadout(parent, x, textWidth = 0.75) {
 
   return {
     group: root,
+    face,
     setProgress
   };
 }
@@ -1717,7 +1732,7 @@ export function buildBrewRatio() {
     },
     {
       text: '추출비는 음료 질량 ÷ 투입 커피 질량',
-      object: rightReadout.group.children[0]
+      object: rightReadout.face
     }
   ];
 

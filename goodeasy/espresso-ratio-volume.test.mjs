@@ -12,7 +12,7 @@ function measuredVolume(cup,height) {
  const points=vessel.children.find(o=>o.geometry?.type==='LatheGeometry').geometry.parameters.points;
  const wall=points.slice(11,16).filter(p=>p.y>=.19&&p.y<=1.03).sort((a,b)=>a.y-b.y);
  assert.equal(wall.length,5);
- const radius=y=>{const i=wall.findIndex(p=>p.y>=y);if(i<=0)return wall[0].x-.026;const a=wall[i-1],b=wall[i];return a.x+(b.x-a.x)*(y-a.y)/(b.y-a.y)-.026;};
+ const radius=y=>{const i=wall.findIndex(p=>p.y>=y);if(i<=0)return wall[0].x-.006;const a=wall[i-1],b=wall[i];return a.x+(b.x-a.x)*(y-a.y)/(b.y-a.y)-.006;};
  let v=0;const count=20000,dy=(height-.19)/count;
  for(let i=0;i<count;i++){const r=radius(.19+(i+.5)*dy);v+=Math.PI*r*r*dy;}
  return v;

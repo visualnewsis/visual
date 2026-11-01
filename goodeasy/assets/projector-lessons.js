@@ -1,5 +1,5 @@
 import {T,M,box,cyl,rod,part} from './anatomy-core.js?v=20261028-craft7';
-import {projectorAssembly} from './anatomy-optics.js?v=20261030-reviewed11';
+import {projectorAssembly} from './anatomy-optics.js?v=20261102-rescue2';
 import {paintFilmFrame,frameNumber,FILM_FRAME_COUNT} from './projector-frames.js?v=20261028-release3';
 import {projectorHeroClock} from './projector-hero-clock.js?v=20261030-reviewed11';
 const TAU=Math.PI*2,pitch=.56,clamp=x=>Math.max(0,Math.min(1,x));

@@ -173,9 +173,10 @@ export function buildGramophone(T, M) {
   cyl(.096,.096,.13,steel,hinge,0,0,0,'hinge knuckle').rotation.x=Math.PI/2;
   for(const z of [-.085,.085]) cyl(.043,.043,.023,brass,hinge,0,0,z,'hinge nut',10).rotation.x=Math.PI/2;
   // Baseline stylus tip: x=1.70, y=1.23 when lowered; soundbox above it.
-  tube([V(0,0,0),V(.105,-.05,0),V(.13,.085,0),V(.155,.105,0)],.065,brass,hinge,'hollow terminal gooseneck',24);
-  const soundbox=new T.Group(); soundbox.name='Vertical diaphragm soundbox'; soundbox.position.set(.155,.105,0); hinge.add(soundbox);
-  // Diaphragm face is vertical, in YZ plane, with longitudinal (X) displacement.
+  tube([V(0,0,0),V(-.02,-.06,-.10),V(.10,.03,-.26),V(.24,.105,-.26),V(.24,.105,-.18)],.065,brass,hinge,'hollow terminal gooseneck to soundbox back',32);
+  const backNeck=cyl(.05,.05,.054,brass,hinge,.24,.105,-.153,'soundbox back neck');backNeck.rotation.x=Math.PI/2;
+  const soundbox=new T.Group(); soundbox.name='Vertical diaphragm soundbox'; soundbox.rotation.y=-Math.PI/2;soundbox.position.set(.24,.105,-.085); hinge.add(soundbox);
+  // Diaphragm is vertical in soundbox-local YZ; the terminal yaw maps its motion across the record groove.
   const orientX=o=>{o.rotation.z=Math.PI/2;return o;};
   orientX(cyl(.205,.205,.082,brass,soundbox,0,0,0,'soundbox rim'));
   const diaphragmMesh=orientX(cyl(.165,.165,.009,ivory,soundbox,.048,0,0,'vertical diaphragm'));
@@ -258,7 +259,7 @@ export function buildGramophone(T, M) {
     const theta=Math.atan2(target.z-P.z,target.x-P.x);
     armPivot.rotation.y=-theta;
     hinge.rotation.z=lift*.34;
-    soundbox.position.set(.155,.105,0);
+    soundbox.rotation.y=-Math.PI/2;soundbox.position.set(.24,.105,-.085);
     // Exaggerated vibration belongs to the lever/diaphragm, not tracking radius.
     lever.rotation.z=signal*.028;
     const shift=-.16*Math.sin(lever.rotation.z)+.03*(1-Math.cos(lever.rotation.z));

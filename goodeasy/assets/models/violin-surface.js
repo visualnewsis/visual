@@ -58,14 +58,18 @@ export function violinPlateGeometry(T,outline,holes,outerY,innerY,dome){
  for(const [a,b,c]of triangles)sign>0?indices.push(N+a,N+c,N+b):indices.push(N+a,N+b,N+c);
  const boundary=new Map();
  for(const tri of triangles)for(let i=0;i<3;i++){const a=tri[i],b=tri[(i+1)%3],key=a<b?`${a}:${b}`:`${b}:${a}`,edge=boundary.get(key);if(edge)edge.count++;else boundary.set(key,{a,b,count:1});}
+ const outerWalls=[],holeWalls=[];
  for(const {a,b,count}of boundary.values())if(count===1){
   const A=vertices[a],B=vertices[b],dx=B[0]-A[0],dz=B[1]-A[1],len=Math.hypot(dx,dz),base=positions.length/3;
   for(const [index,y]of [[a,outerY],[b,outerY],[a,innerY],[b,innerY]]){const p=vertices[index];positions.push(p[0],y+samples[index].height,p[1]);normals.push(-dz/len,0,dx/len);}
-  sign>0?indices.push(base,base+2,base+1,base+1,base+2,base+3):indices.push(base,base+1,base+2,base+1,base+3,base+2);
+  const midX=(A[0]+B[0])/2,midZ=(A[1]+B[1])/2;
+  const onOuter=contour.some((p,i)=>{const q=contour[(i+1)%contour.length],vx=q.x-p.x,vz=q.y-p.y,t=Math.max(0,Math.min(1,((midX-p.x)*vx+(midZ-p.y)*vz)/(vx*vx+vz*vz)));return Math.hypot(midX-p.x-t*vx,midZ-p.y-t*vz)<1e-7;});
+  const walls=onOuter?outerWalls:holeWalls;sign>0?walls.push(base,base+2,base+1,base+1,base+2,base+3):walls.push(base,base+1,base+2,base+1,base+3,base+2);
  }
+ indices.push(...outerWalls,...holeWalls);
  const geometry=new T.BufferGeometry();geometry.setAttribute('position',new T.Float32BufferAttribute(positions,3));geometry.setAttribute('normal',new T.Float32BufferAttribute(normals,3));geometry.setIndex(indices);woodUV(geometry);
- // Three draw calls only: varnished outside, unvarnished cavity, cut wood walls.
- const skinIndices=triangles.length*3;geometry.addGroup(0,skinIndices,0);geometry.addGroup(skinIndices,skinIndices,1);geometry.addGroup(skinIndices*2,indices.length-skinIndices*2,2);
- geometry.userData.skinVertexCount=N;geometry.userData.skinTriangleCount=triangles.length;
+ // Outer edge shares the varnish; only f-hole cuts expose dark cavity wood.
+ const skinIndices=triangles.length*3;geometry.addGroup(0,skinIndices,0);geometry.addGroup(skinIndices,skinIndices,1);geometry.addGroup(skinIndices*2,outerWalls.length,0);if(holeWalls.length)geometry.addGroup(skinIndices*2+outerWalls.length,holeWalls.length,2);
+ geometry.userData.outerWallIndexCount=outerWalls.length;geometry.userData.holeWallIndexCount=holeWalls.length;geometry.userData.skinVertexCount=N;geometry.userData.skinTriangleCount=triangles.length;
  return geometry;
 }

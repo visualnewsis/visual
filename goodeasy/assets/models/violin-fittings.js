@@ -1,5 +1,5 @@
 // A carved chinrest with real cork seats and external clamps, in instrument-local coordinates.
-export function buildChinrest(T,{parent,topY,topShapeY=topY,backY,black,steel}){
+export function buildChinrest(T,{parent,topY,topShapeY=topY,backY,edgeX=()=>1.178,black,steel}){
  const group=new T.Group();group.name='chinrest';parent.add(group);
  const cx=.94,cz=-.26,rx=.23,rz=.11,rows=20,cols=72;
  let base=-Infinity;
@@ -31,9 +31,12 @@ export function buildChinrest(T,{parent,topY,topShapeY=topY,backY,black,steel}){
   for(let k=0;k<p.count;k++){const px=x+p.getX(k),pz=z+p.getZ(k);p.setXYZ(k,px,p.getY(k)>0?underside(px,pz):topY(px,pz),pz);}
   g.computeVertexNormals();const pad=new T.Mesh(g,cork);pad.name='fitted cork chinrest seat '+i;pad.castShadow=pad.receiveShadow=true;group.add(pad);
   // Outside U clamp: upper arm enters the bowl, lower shoe bears on the back.
-  const edge=1.19,footX=1.04,shoeTop=backY(footX,z),armY=underside(1.10,z)+.004;
-  const pts=[[1.10,armY,z],[edge-.015,armY-.007,z],[edge,armY-.025,z],[edge,-.13,z],[edge-.025,shoeTop-.012,z],[footX,shoeTop-.012,z]].map(p=>new T.Vector3(...p));
+  const edge=edgeX(z)+.016,footX=Math.min(1.04,edge-.025),shoeTop=backY(footX,z),armY=underside(1.10,z)+.004;
+  const lowerY=shoeTop-.012;
+  const pts=[[1.10,armY,z],[edge-.008,armY,z],[edge,armY-.008,z],[edge,lowerY+.008,z],[edge-.008,lowerY,z],[footX,lowerY,z]].map(p=>new T.Vector3(...p));
   const clamp=new T.Mesh(new T.TubeGeometry(new T.CatmullRomCurve3(pts),50,.0048,10,false),steel);clamp.name='continuous external chinrest clamp '+i;clamp.castShadow=true;group.add(clamp);
+  const barrel=new T.Mesh(new T.CylinderGeometry(.012,.012,.085,24),steel);barrel.name='chinrest threaded barrel '+i;barrel.position.set(edge,(armY+shoeTop)/2,z);group.add(barrel);
+  for(let k=0;k<6;k++){const collar=new T.Mesh(new T.TorusGeometry(.0122,.001,6,24),steel);collar.rotation.x=Math.PI/2;collar.position.set(edge,barrel.position.y-.030+k*.012,z);collar.name='chinrest adjustment grip '+i+':'+k;group.add(collar);}
   const lowerGeo=new T.BoxGeometry(.06,.012,.04),lp=lowerGeo.attributes.position;
   for(let k=0;k<lp.count;k++){const px=footX+lp.getX(k),pz=z+lp.getZ(k),top=backY(px,pz);lp.setXYZ(k,px,top+(lp.getY(k)>0?0:-.012),pz);}lowerGeo.computeVertexNormals();
   const shoe=new T.Mesh(lowerGeo,cork);shoe.name='fitted lower clamp cork '+i;group.add(shoe);
