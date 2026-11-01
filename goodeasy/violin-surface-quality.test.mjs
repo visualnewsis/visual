@@ -44,7 +44,7 @@ function verifyBoundary(g,loops){
   });
   assert.ok(e,'unexpected boundary: '+JSON.stringify([a,b]));e.count++;e.length+=a.distanceTo(b);
  }
- for(const e of originals){assert.equal(e.count,8,'each original boundary segment must survive exactly three subdivisions');assert.ok(Math.abs(e.length-e.a.distanceTo(e.b))<1e-6);}
+ for(const e of originals){assert.ok(e.count>=1,'every original boundary segment must survive refinement');assert.ok(Math.abs(e.length-e.a.distanceTo(e.b))<1e-6);}
 }
 function projectedArea(g){const p=g.attributes.position,idx=g.index;let area=0;for(let i=0;i<g.userData.skinTriangleCount*3;i+=3){const a=idx.getX(i),b=idx.getX(i+1),c=idx.getX(i+2);area+=Math.abs((p.getX(b)-p.getX(a))*(p.getZ(c)-p.getZ(a))-(p.getZ(b)-p.getZ(a))*(p.getX(c)-p.getX(a)))/2;}return area;}
 test('explicitly closed outer and hole loops cannot shift Earcut vertex offsets',()=>{
@@ -88,4 +88,10 @@ test('approved f proportions retain tangent-continuous eyes and positive bank se
   assert.ok(Math.abs(width(64)-.010)<1e-10);
   assert.ok(width(10)>.023&&width(10)<.0241);
  }
+});
+
+test('actual soundboard triangles cannot span a broad arch with a long flat fan',async()=>{
+ const {buildViolin}=await import('./assets/models/violin.js');const m=buildViolin(T),g=m.parts.top.geometry,p=g.attributes.position,idx=g.index;let longest=0;
+ for(let i=0;i<g.userData.skinTriangleCount*3;i+=3)for(let j=0;j<3;j++){const a=idx.getX(i+j),b=idx.getX(i+(j+1)%3);longest=Math.max(longest,Math.hypot(p.getX(a)-p.getX(b),p.getZ(a)-p.getZ(b)));}
+ assert.ok(longest<=.035001,'carved surface triangulation spacing '+longest);
 });

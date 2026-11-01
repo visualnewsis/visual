@@ -1,5 +1,5 @@
 import {T,materials as M} from './quality-kit.js?v=20261028-craft7';
-import {buildViolin} from './quality-instruments.js?v=20261030-reviewed11';
+import {buildViolin} from './quality-instruments.js?v=20261102-final3';
 const TAU=Math.PI*2;
 function base(){const m=buildViolin(T,M);m.bow.visible=false;return m;}
 function segment(s,x){const t=(x-s.from[0])/(s.to[0]-s.from[0]);return new T.Vector3(x,s.from[1]+t*(s.to[1]-s.from[1]),s.from[2]+t*(s.to[2]-s.from[2]));}
@@ -23,9 +23,9 @@ export function buildViolinBodyStudy(){
  const m=base(),top=m.parts.top,back=m.parts.back,bridge=m.parts.bridge,ty=top.position.y,by=back.position.y,neckX=m.parts.neck.position.x,scrollX=m.parts.scroll.position.x;
  return {...m,eye:[.2,3.5,5],allowZoom:true,defaults:{explode:0},annotations:[{object:m.parts.bracing,text:'배스바 · 상판 안쪽에 붙음'},{object:m.parts.post,text:'사운드포스트 · 두 판 사이'},{object:top,text:'f홀과 아치형 상판'}],update(s){
  const e=Math.max(0,Math.min(1,s.explode||0)),withdraw=Math.min(1,e/.35),lift=Math.max(0,(e-.35)/.65);
- m.parts.neck.position.x=neckX-withdraw*.8;m.parts.scroll.position.x=scrollX-withdraw*.8;
+ m.parts.neck.position.x=neckX-withdraw*.8;m.parts.scroll.position.x=scrollX-withdraw*.8;m.parts.chinrest.position.x=withdraw*.65;
  top.position.y=ty+lift*.45;back.position.y=by-lift*.45;bridge.position.y=lift*.45;
  for(const key of ['afterlength','tailpiece','chinrest'])m.parts[key].position.y=lift*.45;
  m.strings.forEach(x=>x.mesh.visible=e<.001);m.group.children.filter(o=>o.name.startsWith('pegbox wire')).forEach(o=>o.visible=e<.001);
- },reading:s=>`분해 ${Math.round((s.explode||0)*100)}% · ${(s.explode||0)<=.35?'먼저 넥과 지판을 빼냅니다.':'지판을 뺀 뒤 상판과 뒤판을 엽니다.'} 배스바는 상판과 함께 움직입니다. 분해 간격은 관찰용입니다.`};
+ },reading:s=>`분해 ${Math.round((s.explode||0)*100)}% · ${(s.explode||0)<=.35?'먼저 턱받침 고정을 풀고 넥과 지판을 빼냅니다.':'지판을 뺀 뒤 상판과 뒤판을 엽니다.'} 배스바는 상판과 함께 움직입니다. 분해 간격은 관찰용입니다.`};
 }

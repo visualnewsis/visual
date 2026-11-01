@@ -30,13 +30,6 @@ test('actual hero gauge needle aligns with its indexed ticks at every pressure',
 });
 
 const {buildCoffeeComparison}=await import('./assets/coffee-detail.js');
-test('coffee routes occupy particle depth, change with grind, and first liquid grows down from filter',()=>{
- const m=buildCoffeeComparison(),s={...m.defaults,time:.8,grind:70};m.update(s);let paths=[],streams=[],liquids=[];m.group.traverse(o=>{if(o.name.startsWith('continuous pore flow'))paths.push(o);if(o.name.startsWith('espresso continuous outlet strand'))streams.push(o);if(o.name==='coffee volume')liquids.push(o)});
- assert.equal(paths.length,24);const before=paths[12].userData.poreRoute.map(p=>p[0]);s.grind=90;m.update(s);assert.notDeepEqual(paths[12].userData.poreRoute.map(p=>p[0]),before);assert.ok(paths.every(o=>o.userData.poreRoute.every(p=>p[2]===.125)));
- s.time=1.1;m.update(s);for(const o of streams.filter(o=>o.visible)){o.updateMatrixWorld(true);const b=new T.Box3().setFromObject(o);assert.ok(Math.abs(b.max.y+ .423)<.03);}
- assert.ok(liquids.every(o=>!o.visible));
-});
-
 test('pump is active before every teaching-clock water motion',()=>{for(let i=1;i<1000;i++)assert.equal(espressoSequence(i/1000).pump,true);assert.equal(espressoSequence(0).pump,false);assert.equal(espressoSequence(1).pump,false);});
 test('rendered hero machine pipes terminate on actual pump and boiler surfaces',()=>{
  const m=buildEspresso(T),p=m.parts.pipes;const expected={

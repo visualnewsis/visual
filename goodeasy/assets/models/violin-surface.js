@@ -23,12 +23,24 @@ export function violinPlateGeometry(T,outline,holes,outerY,innerY,dome){
  // coordinate array only after it has normalized every loop, so hole offsets agree.
  let triangles=T.ShapeUtils.triangulateShape(contour,cutouts);
  let vertices=[...contour,...cutouts.flat()].map(p=>[p.x,p.y]);
- for(let pass=0;pass<3;pass++){
-  const edges=new Map(),next=[];
-  const mid=(a,b)=>{const key=a<b?`${a}:${b}`:`${b}:${a}`;if(edges.has(key))return edges.get(key);const p=vertices[a],q=vertices[b],i=vertices.length;vertices.push([(p[0]+q[0])/2,(p[1]+q[1])/2]);edges.set(key,i);return i;};
-  for(const [a,b,c]of triangles){const ab=mid(a,b),bc=mid(b,c),ca=mid(c,a);next.push([a,ab,ca],[ab,b,bc],[ca,bc,c],[ab,bc,ca]);}triangles=next;
+ // Split only long edges, but split every adjacent triangle sharing that edge.
+ // This bounds the actual carved surface spacing without enormous thin fan faces.
+ const edgeLimit=.035;
+ for(let pass=0;pass<10;pass++){
+  const split=new Map(),key=(a,b)=>a<b?`${a}:${b}`:`${b}:${a}`;
+  for(const tri of triangles)for(let j=0;j<3;j++){const a=tri[j],b=tri[(j+1)%3],p=vertices[a],q=vertices[b];if(Math.hypot(p[0]-q[0],p[1]-q[1])>edgeLimit){const k=key(a,b);if(!split.has(k)){split.set(k,vertices.length);vertices.push([(p[0]+q[0])/2,(p[1]+q[1])/2]);}}}
+  if(!split.size)break;const next=[];
+  for(const [a,b,c]of triangles){const ab=split.get(key(a,b)),bc=split.get(key(b,c)),ca=split.get(key(c,a)),mask=(ab!==undefined?1:0)|(bc!==undefined?2:0)|(ca!==undefined?4:0);
+   if(mask===0)next.push([a,b,c]);
+   else if(mask===1)next.push([a,ab,c],[ab,b,c]);
+   else if(mask===2)next.push([b,bc,a],[bc,c,a]);
+   else if(mask===4)next.push([c,ca,b],[ca,a,b]);
+   else if(mask===3)next.push([b,bc,ab],[a,ab,c],[ab,bc,c]);
+   else if(mask===5)next.push([a,ab,ca],[ab,b,c],[ab,c,ca]);
+   else if(mask===6)next.push([c,ca,bc],[a,b,ca],[b,bc,ca]);
+   else next.push([a,ab,ca],[ab,b,bc],[ca,bc,c],[ab,bc,ca]);
+  }triangles=next;
  }
- // Canonical upward winding, including hole boundary edges.
  triangles=triangles.map(([a,b,c])=>{const A=vertices[a],B=vertices[b],C=vertices[c];return (B[1]-A[1])*(C[0]-A[0])-(B[0]-A[0])*(C[1]-A[1])<0?[a,c,b]:[a,b,c];});
  const positions=[],normals=[],indices=[],N=vertices.length,sign=Math.sign(outerY-innerY),h=1e-5;
  // Evaluate the immutable arch and its derivative once per shared XZ vertex.

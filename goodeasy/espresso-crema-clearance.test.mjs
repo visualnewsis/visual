@@ -42,9 +42,9 @@ test('empty or invalid fills hide actual liquid and cannot leave crema suspended
  const m=createCoffeeCup(),surface=m.group.getObjectByName('coffee surface'),volume=m.group.getObjectByName('coffee volume');
  for(const fill of [0,-1,NaN,Infinity]){m.setFill(.8);m.setFill(fill,Infinity,true);assert.equal(surface.visible,false);assert.equal(volume.visible,false);assert.equal(m.group.userData.fill,0);}
 });
-test('continuous pigment field has subtle brown microfoam and physically restrained roughness',()=>{
- const {group}=createCoffeeCup(),material=group.getObjectByName('coffee surface').material,map=material.map,rough=material.roughnessMap;
- assert.ok(map?.isDataTexture);assert.ok(rough?.isDataTexture);assert.equal(map.image.width,512);assert.equal(map.colorSpace,T.SRGBColorSpace);
- const colors=new Set();for(let i=0;i<map.image.data.length;i+=4){const d=map.image.data;assert.equal(d[i+3],255);assert.ok(d[i]>d[i+1]&&d[i+1]>d[i+2]);colors.add(`${d[i]},${d[i+1]},${d[i+2]}`);const r=rough.image.data[i+1]/255;assert.ok(r>=.249&&r<=.381);}
- assert.ok(colors.size>1000,'pigment must be a continuous tonal field');
+test('continuous crema is warm low-contrast microfoam with a matte liquid surface',()=>{
+ const {group}=createCoffeeCup(),material=group.getObjectByName('coffee surface').material,map=material.map;
+ assert.ok(map?.isDataTexture);assert.equal(map.colorSpace,T.SRGBColorSpace);assert.ok(material.roughness>=.55&&material.roughness<=.75);assert.equal(material.metalness,0);
+ const red=[];for(let i=0;i<map.image.data.length;i+=4){const d=map.image.data;assert.equal(d[i+3],255);assert.ok(d[i]>d[i+1]&&d[i+1]>d[i+2]);red.push(d[i]);}red.sort((a,b)=>a-b);
+ assert.ok(red[Math.floor(red.length*.99)]-red[Math.floor(red.length*.01)]<55,'large dark patches would dominate the surface');
 });

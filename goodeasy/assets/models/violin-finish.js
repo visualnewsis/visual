@@ -12,7 +12,7 @@ export function violinFinish(T,kind='spruce'){
   }
   const map=new T.DataTexture(data,n,n,T.RGBAFormat);map.colorSpace=T.SRGBColorSpace;map.wrapS=map.wrapT=T.RepeatWrapping;map.generateMipmaps=true;map.minFilter=T.LinearMipmapLinearFilter;map.anisotropy=4;map.needsUpdate=true;textures.set(kind,map);
  }
- return new T.MeshPhysicalMaterial({color:kind==='spruce'?0xffffff:0x703315,map:textures.get(kind),bumpMap:textures.get(kind),bumpScale:.00035,roughness:kind==='spruce'?.32:.34,metalness:0,clearcoat:.65,clearcoatRoughness:.18,side:T.DoubleSide,vertexColors:kind==='spruce'});
+ return new T.MeshPhysicalMaterial({color:kind==='spruce'?0xffffff:0x703315,map:textures.get(kind),bumpMap:textures.get(kind),bumpScale:.00035,roughness:kind==='spruce'?.40:.46,metalness:0,clearcoat:.38,clearcoatRoughness:.30,side:T.DoubleSide,vertexColors:kind==='spruce'});
 }
 export function finishViolinTop(T,geometry,contour,edgeDistance){
  // The arched plate geometry is immutable and shared by every violin instance.

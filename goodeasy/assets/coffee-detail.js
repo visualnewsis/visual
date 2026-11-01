@@ -1,4 +1,5 @@
-// coffee-detail.js?v=20261030-reviewed11
+import {coffeeMaterialTexture} from './coffee-material-textures.js?v=20261102-final3';
+// coffee-detail.js?v=20261102-final3
 // VISUAL NEWSIS · 굳이구지 · Espresso Detail
 // Three.js ES module · Y-up
 // No DOM, canvas, external textures or additional packages.
@@ -303,39 +304,16 @@ function innerCupRadius(y) {
 
 // One continuous liquid surface: pigment and microscopic foam vary in color,
 // never as separate floating solids. Deterministic textures need no canvas/DOM.
-let coffeeSurfaceMaps;
 function createCoffeeSurfaceMaterial() {
-  if (!coffeeSurfaceMaps) {
-    const size = 512, color = new Uint8Array(size * size * 4), rough = new Uint8Array(size * size * 4);
-    const random = (x, y) => { const a = Math.sin(x * 127.1 + y * 311.7 + 19.3) * 43758.5453; return a - Math.floor(a); };
-    const noise = (x, y) => {
-      const ix = Math.floor(x), iy = Math.floor(y), fx = x - ix, fy = y - iy;
-      const u = fx * fx * (3 - 2 * fx), v = fy * fy * (3 - 2 * fy);
-      return lerp(lerp(random(ix, iy), random(ix + 1, iy), u), lerp(random(ix, iy + 1), random(ix + 1, iy + 1), u), v);
-    };
-    for (let y = 0; y < size; y++) for (let x = 0; x < size; x++) {
-      const u = x / (size - 1), v = y / (size - 1), r = Math.hypot(u - .5, v - .5) * 2;
-      const warp = noise(u * 4.1 + 12, v * 4.1 + 7);
-      const cloud = .65 * noise(u * 5.4 + warp * 1.5, v * 5.4 - warp) + .35 * noise(u * 13.3 + 8, v * 13.3 + 3);
-      const body = smooth(.20, .80, cloud);
-      // The crema accumulation is a soft thin perimeter, not a raised torus.
-      const edge = smooth(.87, .98, r) * .60;
-      const coverage = clamp(.35 + body * .55 + edge * .10);
-      const micro = random(x, y), fine = noise(u * 83, v * 83);
-      const tint = clamp(.22 + cloud * .5 + fine * .19);
-      const coffee = [50, 23, 13], amber = [lerp(166, 201, tint), lerp(106, 148, tint), lerp(50, 85, tint)];
-      const pore = micro > .982 ? -.11 : (micro < .027 ? .045 : 0);
-      const i = (y * size + x) * 4;
-      for (let c = 0; c < 3; c++) color[i + c] = Math.round(clamp(lerp(coffee[c], amber[c], coverage) * (1 + pore), 0, 255));
-      color[i + 3] = 255;
-      const roughness = Math.round(255 * lerp(.25, .38, clamp(coverage * .8 + fine * .2)));
-      rough[i] = rough[i + 1] = rough[i + 2] = roughness; rough[i + 3] = 255;
-    }
-    const texture = data => { const t = new T.DataTexture(data, size, size, T.RGBAFormat); t.magFilter = T.LinearFilter; t.minFilter = T.LinearMipmapLinearFilter; t.generateMipmaps = true; t.needsUpdate = true; return t; };
-    coffeeSurfaceMaps = { color: texture(color), rough: texture(rough) };
-    coffeeSurfaceMaps.color.colorSpace = T.SRGBColorSpace;
-  }
-  return new T.MeshPhysicalMaterial({ color: 0xffffff, map: coffeeSurfaceMaps.color, roughness: 1, roughnessMap: coffeeSurfaceMaps.rough, clearcoat: .12, clearcoatRoughness: .3, side: T.DoubleSide });
+ const color=coffeeMaterialTexture('crema').clone();color.repeat.set(2.3,2.3);color.needsUpdate=true;
+ const material=new T.MeshPhysicalMaterial({color:0xffffff,map:color,roughness:.65,clearcoat:.06,clearcoatRoughness:.6,side:T.DoubleSide});
+ material.onBeforeCompile=shader=>{shader.fragmentShader=shader.fragmentShader.replace('#include <map_fragment>',`#include <map_fragment>
+#ifdef USE_MAP
+// Compress the generated microfoam's large colour swings into a continuous liquid film.
+vec3 foamMean=vec3(0.48,0.265,0.112);
+diffuseColor.rgb=mix(foamMean,diffuseColor.rgb,0.48);
+#endif`);};material.customProgramCacheKey=()=> 'crema-microfoam-low-contrast-v2';
+ material.name='continuous thin crema microfoam';return material;
 }
 
 export function createCoffeeCup() {
@@ -532,6 +510,7 @@ export function createCoffeeCup() {
     if (!visible) {
       liquid.scale.y = 0.0001;
       group.userData.fill = 0;
+      surface.position.y=CUP_BOTTOM;group.userData.surfaceY=CUP_BOTTOM;group.userData.pouring=false;
       return;
     }
 
@@ -564,7 +543,7 @@ export function createCoffeeCup() {
     surface.userData.radius = topRadius;
 
     group.userData.fill = f;
-    group.userData.surfaceY = surfaceY;
+    group.userData.surfaceY = surfaceY + wobble;
     group.userData.pouring = isPouring;
   }
 
@@ -946,209 +925,129 @@ function createBasketHousing(parent) {
   return housing;
 }
 
+// Schematic saturation front + single outlet stream. NOT a CFD / porous-media simulation.
+// Replaces the 12 zigzag pore trails and upper wetting ribbons entirely.
+// Uses existing helpers: part, clamp, lerp, finite. Optional: coffeeMaterialTexture('grounds').
+const FLOW_OUTLET_TOP = -0.423;
+const FLOW_OUTLET_Z = -0.045;
+const BED_W = 1.84, BED_H = 0.72, BED_CY = 0.235, BED_Z = 0.19;
+
 function createFlowSystem(parent, seed, grains) {
-  const flow = part(parent, 'continuous inter-grain flow');
+  const flow = part(parent, 'saturation front and outlet stream');
 
-  const paths = [];
-  const streamSegments = [];
-  let lastLayout="";
-  const trailCount = 12;
+  // ---- Continuous bed face: one quad, all variation in the shader. -------------
+  const groundMap = typeof coffeeMaterialTexture === 'function'
+    ? coffeeMaterialTexture('grounds').clone() : null;
+  if (groundMap) { groundMap.wrapS = groundMap.wrapT = T.RepeatWrapping; groundMap.needsUpdate = true; }
 
-  // Preallocated, thin continuous interstitial paths.
-  // All geometry is made once. Updates adjust visibility and transform.
-  for (let i = 0; i < trailCount; i++) {
-    const fraction = (i + 0.5) / trailCount;
-    const x0 = lerp(-0.90, 0.90, fraction);
+  const uniforms = {
+    uGrainScale:{value:1},
+    uFront:   { value: 0 },                  // 0 = dry, 1 = front reached bed bottom
+    uChannel: { value: 0 },                  // 1 = preferential channel lobe near x=.48
+    uSeed:    { value: (finite(seed, 0) % 97) * 0.731 },
+    uHasMap:  { value: groundMap ? 1 : 0 },
+    uMap:     { value: groundMap },
+    uDry:     { value: new T.Color(0x6e4a32) } // hex is sRGB; Color converts to working (linear)
+  };
 
-    const points = [];
-
-    for (let j = 0; j <= 15; j++) {
-      const v = j / 15;
-      const wiggle =
-        Math.sin(v * 12.0 + i * 1.9 + seed) * 0.023 +
-        Math.sin(v * 24.0 + i * 0.79) * 0.009;
-
-      points.push([
-        x0 + wiggle,
-        lerp(0.682, -0.138, v),
-        0.125 + Math.cos(v * 9 + i) * 0.012
-      ]);
-    }
-
-    const channel = tube(
-      flow,
-      points,
-      i % 4 === 0 ? 0.011 : 0.007,
-      i % 3 === 0
-        ? P.channelHighlight
-        : P.wetChannel
-    );
-
-    channel.material=new T.ShaderMaterial({uniforms:{uTime:{value:0},uPhase:{value:i*.79}},transparent:true,depthWrite:false,
-     vertexShader:`varying vec2 vUv;void main(){vUv=uv;gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.);}`,
-     fragmentShader:`uniform float uTime;uniform float uPhase;varying vec2 vUv;void main(){float sheen=.92+.08*sin(vUv.x*55.-uTime*5.+uPhase);vec3 water=vec3(.24,.35,.31);vec3 coffee=vec3(.24,.105,.037);gl_FragColor=vec4(mix(water,coffee,smoothstep(.2,.94,vUv.x))*sheen,.85);
-#include <tonemapping_fragment>
-#include <colorspace_fragment>
-}`});
-    channel.name = `continuous pore flow ${i}`;
-    channel.castShadow = false;
-    channel.renderOrder = 2;
-
-    // The flow remains a continuous narrow line rather than
-    // a line of independent falling water beads.
-    paths.push({
-      object: channel,
-      x0,
-      side: i,
-      phase: hash(i * 21 + seed)
-    });
-  }
-
-  // Thin liquid stream below the filter.
-  // Multiple strands converge toward the collector outlet.
-  for (let i = 0; i < 3; i++) {
-    const x = (i - 1) * 0.055;
-
-    const strand = cylinderBetween(
-      flow,
-      [x, -0.423, -0.045],
-      [x * 0.18, -1.225, -0.045],
-      i === 1 ? 0.021 : 0.011,
-      i === 1 ? P.crema : P.coffeeSurface,
-      10
-    );
-
-    strand.name = `espresso continuous outlet strand ${i}`;
-    strand.castShadow = false;
-
-    streamSegments.push(strand);
-  }
-
-  // A short, warm-brown ribbon at the top of the coffee bed.
-  const upperWetting = [];
-
-  for (let i = 0; i < 5; i++) {
-    const x = (i - 2) * 0.34;
-
-    const o = cylinderBetween(
-      flow,
-      [x, 0.875, 0.17],
-      [x + 0.012, 0.639, 0.17],
-      0.010,
-      P.wetChannel,
-      8
-    );
-
-    o.castShadow = false;
-    upperWetting.push(o);
-  }
-
-  function routeThroughPores(grind,channel){
-    const key=grind+':'+channel;if(key===lastLayout)return;lastLayout=key;
-    const rows=grains.particles.userData.poreRows||[];
-    for(const path of paths){
-      const points=[[path.x0,.682,.125]];let previous=path.x0;
-      for(const row of [...rows].reverse()){
-        const gaps=[];
-        for(let i=0;i<row.length-1;i++){
-          const a=row[i],b=row[i+1],left=a.x+a.rx,right=b.x-b.rx;
-          if(right-left>.004)gaps.push({x:(left+right)/2,y:(a.y+b.y)/2,width:right-left});
-        }
-        if(!gaps.length)continue;
-        const preferred=channel?lerp(path.x0,.48,.72):path.x0;
-        gaps.sort((a,b)=>(Math.abs(a.x-preferred)+Math.abs(a.x-previous)*.45)-(Math.abs(b.x-preferred)+Math.abs(b.x-previous)*.45));
-        const g=gaps[0];points.push([g.x,g.y,.125]);previous=g.x;
+  const bedMaterial = new T.ShaderMaterial({
+    uniforms,
+    vertexShader: `
+      varying vec2 vUv;
+      void main(){ vUv = uv; gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0); }`,
+    fragmentShader: `
+      uniform float uFront, uChannel, uSeed, uHasMap, uGrainScale;
+      uniform sampler2D uMap;
+      uniform vec3 uDry;
+      varying vec2 vUv;
+      float hash(vec2 p){ return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453); }
+      float noise(vec2 p){
+        vec2 i = floor(p), f = fract(p), u = f * f * (3.0 - 2.0 * f);
+        return mix(mix(hash(i), hash(i + vec2(1.0, 0.0)), u.x),
+                   mix(hash(i + vec2(0.0, 1.0)), hash(i + vec2(1.0, 1.0)), u.x), u.y);
       }
-      points.push([previous,-.138,.125]);
-      const curve=new T.CatmullRomCurve3(points.map(p=>new T.Vector3(...p)),false,'centripetal'),geo=path.object.geometry,n=geo.parameters.tubularSegments,k=geo.parameters.radialSegments,frames=curve.computeFrenetFrames(n,false),positions=geo.attributes.position,normals=geo.attributes.normal,r=lerp(.005,.0025,grind/100);
-      for(let i=0;i<=n;i++){
-        const c=curve.getPointAt(i/n),N=frames.normals[i],B=frames.binormals[i];
-        for(let j=0;j<=k;j++){
-          const a=j/k*TAU,nx=-Math.cos(a)*N.x+Math.sin(a)*B.x,ny=-Math.cos(a)*N.y+Math.sin(a)*B.y,nz=-Math.cos(a)*N.z+Math.sin(a)*B.z,index=i*(k+1)+j;
-          positions.setXYZ(index,c.x+r*nx,c.y+r*ny,c.z+r*nz);normals.setXYZ(index,nx,ny,nz);
-        }
-      }
-      positions.needsUpdate=true;normals.needsUpdate=true;geo.computeBoundingSphere();path.object.userData.poreRoute=points;
-    }
-  }
-  function update(grind, pressure, channel, time, ratio) {
-    const g = clamp(grind, 0, 100);
-    const p = Math.max(0, finite(pressure, 9));
-    const t = finite(time, 0);
-    const preferential = !!channel;
-    routeThroughPores(g,preferential);
+      void main(){
+        float d  = 1.0 - vUv.y;                     // depth from bed top (0) to bottom (1)
+        float xw = (vUv.x - 0.5) * ${BED_W.toFixed(3)};
+        // Soft, slightly irregular front: low-frequency +-0.04, faded in as wetting starts.
+        float n = (noise(vec2(vUv.x * 6.0 + uSeed, uSeed * 0.37)) - 0.5) * 0.06
+                + (noise(vec2(vUv.x * 17.0 + uSeed * 1.3, 4.1)) - 0.5) * 0.02;
+        float lobe = uChannel * 0.18 * exp(-pow((xw - 0.48) / 0.16, 2.0));
+        float f = uFront * 1.15 - 0.075 + n * smoothstep(0.0, 0.15, uFront) + lobe * uFront;
+        float wet = 1.0 - smoothstep(f - 0.03, f + 0.03, d);
 
-    const throughput = clamp(ratio / 1.7, 0, 1);
-    const delay = 0.75 + (g / 100) * 0.25;
-    const wetness = smooth(0, delay, t);
+        vec3 dry = uHasMap > 0.5
+          ? texture2D(uMap, vUv * vec2(3.84, 1.5)*uGrainScale).rgb
+          : uDry * (0.94 + 0.06 * hash(floor(vUv * vec2(460.0, 180.0))));
+        vec3 wetCol = dry * vec3(0.86, 0.82, 0.79);   // ~15-18% darker, slightly warmer
+        float band = exp(-pow((d - f) / 0.022, 2.0)) * (1.0 - step(0.999, uFront)) * 0.03;
+        vec3 col = mix(dry, wetCol, wet) * (1.0 - band * wet);
+        gl_FragColor = vec4(col, 1.0);
+        #include <tonemapping_fragment>
+        #include <colorspace_fragment>
+      }`
+  });
 
-    for (let i = 0; i < paths.length; i++) {
-      const path = paths[i];
+  const bed = new T.Mesh(new T.PlaneGeometry(BED_W, BED_H, 1, 1), bedMaterial);
+  bed.name = 'continuous coffee bed face (schematic wetting)';
+  bed.position.set(0, BED_CY, BED_Z);
+  bed.castShadow = false;
+  bed.receiveShadow = false;
+  flow.add(bed);
 
-      const x = path.x0;
+  // ---- Single outlet stream: unit cylinder hanging from y=0 to y=-1. ------------
+  const streamGeo = new T.CylinderGeometry(1, 1, 1, 14, 1, false);
+  streamGeo.translate(0, -0.5, 0);
+  const streamMat = new T.MeshStandardMaterial({ color: 0x5c3119, roughness: 0.28, metalness: 0 });
+  const stream = new T.Mesh(streamGeo, streamMat);
+  stream.name = 'single espresso outlet stream';
+  stream.position.set(0, FLOW_OUTLET_TOP, FLOW_OUTLET_Z);
+  stream.castShadow = false;
+  stream.visible = false;
+  flow.add(stream);
 
-      const nearChannel = Math.exp(
-        -Math.pow((x - 0.48) / 0.16, 2)
-      );
+  const tip = new T.Mesh(new T.SphereGeometry(1, 14, 10), streamMat);
+  tip.name = 'leading drop while stream grows';
+  tip.castShadow = false;
+  tip.visible = false;
+  flow.add(tip);
 
-      const isActive = preferential
-        ? nearChannel > 0.25 || i % 4 === 0
-        : true;
+  function update(grind, pressure, channel, time, ratio, surfaceY = -1.225) {
+    const g  = clamp(finite(grind, 50), 0, 100);
+    const p  = Math.max(0, finite(pressure, 9));
+    const t  = Math.max(0, finite(time, 0));
+    const r  = Math.max(0, finite(ratio, 0));
+    const sY = finite(surfaceY, -1.225);
 
-      path.object.visible =
-        isActive && p > 0 && wetness > 0.02;
+    const delay = 0.75 + (g / 100) * 0.25;          // first drop
+    uniforms.uFront.value   = p > 0 ? clamp(t / delay, 0, 1) : 0; // uniform, linear advance
+    uniforms.uChannel.value = channel ? 1 : 0;
+    uniforms.uGrainScale.value=lerp(.75,1.75,g/100);
 
-      path.object.material.uniforms.uTime.value=t*(.5+throughput);
-      path.object.scale.set(
-        1,
-        clamp(wetness * 1.2, 0.02, 1),
-        1
-      );
+    const length = FLOW_OUTLET_TOP - sY;            // outlet down to current cup surface
+    const ext = clamp((t - delay) / 0.5, 0, 1);     // grows over 0.5 s
+    const running = p > 0 && r > 0.005 && t > delay && t < 16 && length > 0.01;
 
-      path.object.position.y =
-        0.682 *
-        (1 - clamp(wetness * 1.2, 0, 1));
-    }
-
-    // Pressure and elapsed time control the brown outlet streams.
-    const running =
-      p > 0 && t > delay && t < 16 && ratio > 0.005;
-
-    for (let i = 0; i < streamSegments.length; i++) {
-      const o = streamSegments[i];
-
-      o.visible = running;
-
-      if (!running) continue;
-
-      const pulse =
-        0.88 +
-        Math.sin(t * 8 + i * 1.7) * 0.09;
-
-      const width =
-        lerp(0.55, 1.22, throughput) * pulse;
-
-      o.scale.x = width;
-      o.scale.z = width;
-      const extension=clamp((t-delay)/.5,0,1);
-      // Grow from the fixed filter outlet, never from the middle of the stream.
-      o.scale.y=extension;
-      o.position.y=-.423-(.802*extension)/2;
+    stream.visible = running;
+    tip.visible = running && ext < 1;
+    if (running) {
+      const radius = lerp(0.008, 0.013, clamp(r / 1.7, 0, 1));
+      const reach = Math.max(1e-4, length * ext);
+      stream.scale.set(radius, reach, radius);
+      tip.scale.setScalar(radius * 1.35);
+      tip.position.set(0, FLOW_OUTLET_TOP - reach, FLOW_OUTLET_Z);
     }
 
-    for (let i = 0; i < upperWetting.length; i++) {
-      const o = upperWetting[i];
-
-      o.visible = p > 0 && wetness > 0.01;
-      o.scale.y = clamp(wetness, 0.01, 1);
-    }
-
-    flow.userData.referenceFlowRatio = ratio;
+    flow.userData.firstDropDelay = delay;
+    flow.userData.cupFillStart = delay + 0.5;      // caller starts cup fill from here
+    flow.userData.wettingFront = uniforms.uFront.value;
+    flow.userData.referenceFlowRatio = r;
     flow.userData.visualModel = 'schematic';
   }
 
   return { group: flow, update };
 }
+
 
 function createSectionAssembly(parent, side, seed) {
   const root = part(
@@ -1372,14 +1271,6 @@ export function buildCoffeeComparison() {
         sideChannel
       );
 
-      bed.flow.update(
-        sideGrind,
-        pressure,
-        sideChannel,
-        time,
-        ratio
-      );
-
       // The cup is a time-dependent visual accumulator.
       // This does not purport to calculate real beverage mass.
       const extractionProgress =
@@ -1396,6 +1287,9 @@ export function buildCoffeeComparison() {
         time,
         pressure > 0 && time > (1.25 + sideGrind / 100 * .25) && time < 16
       );
+      bed.flow.update(sideGrind,pressure,sideChannel,time,ratio,
+        bed.cup.group.position.y + bed.cup.group.scale.y * bed.cup.group.userData.surfaceY);
+
     }
 
     s.comparison = comparison;
@@ -1621,63 +1515,8 @@ function createDoseBasket(parent) {
 
   topSurface.name = 'visible tamped coffee face';
 
-  // Irregular exposed granules on the upper face.
-  const n = 140;
-
-  const granules = new T.InstancedMesh(
-    new T.IcosahedronGeometry(1, 0),
-    P.groundLight,
-    n
-  );
-
-  granules.name = 'surface granules';
-  granules.castShadow = true;
-
-  root.add(granules);
-
-  const dummy = new T.Object3D();
-
-  const initial = [];
-
-  for (let i = 0; i < n; i++) {
-    const a = hash(i * 13 + 81) * TAU;
-    const r = Math.sqrt(hash(i * 19 + 93)) * 0.49;
-
-    const x = Math.cos(a) * r;
-    const z = Math.sin(a) * r;
-
-    initial.push({ x, z, a });
-
-    dummy.position.set(
-      x,
-      0.369 + hash(i * 31 + 7) * 0.013,
-      z
-    );
-
-    dummy.rotation.set(
-      hash(i * 7) * TAU,
-      hash(i * 11) * TAU,
-      hash(i * 17) * TAU
-    );
-
-    const size = lerp(
-      0.013,
-      0.028,
-      hash(i * 23 + 17)
-    );
-
-    dummy.scale.set(
-      size * 1.1,
-      size * 0.62,
-      size
-    );
-
-    dummy.updateMatrix();
-    granules.setMatrixAt(i, dummy.matrix);
-  }
-
-  granules.instanceMatrix.needsUpdate = true;
-
+  topSurface.material=new T.MeshStandardMaterial({color:0xffffff,map:coffeeMaterialTexture('grounds'),roughness:.96,metalness:0});
+  topSurface.material.name='fine tamped coffee powder';
   function setDose(dose) {
     const d = clamp(finite(dose, 18), 0, 100);
 
@@ -1692,44 +1531,8 @@ function createDoseBasket(parent) {
     const y = 0.110 + h + 0.009;
     topSurface.position.y = y;
 
-    const dummy = new T.Object3D();
-
-    for (let i = 0; i < n; i++) {
-      const m = initial[i];
-
-      dummy.position.set(
-        m.x,
-        y + 0.010 + hash(i * 31 + 7) * 0.008,
-        m.z
-      );
-
-      dummy.rotation.set(
-        hash(i * 7) * TAU,
-        hash(i * 11) * TAU,
-        hash(i * 17) * TAU
-      );
-
-      const size = lerp(
-        0.013,
-        0.028,
-        hash(i * 23 + 17)
-      );
-
-      dummy.scale.set(
-        size * 1.1,
-        size * 0.62,
-        size
-      );
-
-      dummy.updateMatrix();
-      granules.setMatrixAt(i, dummy.matrix);
-    }
-
-    granules.instanceMatrix.needsUpdate = true;
-
     puck.visible = d > 0;
     topSurface.visible = d > 0;
-    granules.visible = d > 0;
 
     root.userData.dose = d;
   }

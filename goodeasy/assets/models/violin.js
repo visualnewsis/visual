@@ -1,7 +1,9 @@
-import {violinPlateGeometry as plateGeometry,violinFOpening as fHole} from './violin-surface.js?v=20261030-reviewed11';
-import {violinFinish,finishViolinTop} from './violin-finish.js?v=20261030-reviewed11';
+import {buildViolinRibs,violinInnerOutline} from './violin-ribs.js?v=20261102-final3';
+import {buildChinrest} from './violin-fittings.js?v=20261102-final3';
+import {violinPlateGeometry as plateGeometry,violinFOpening as fHole} from './violin-surface.js?v=20261102-final3';
+import {violinFinish,finishViolinTop} from './violin-finish.js?v=20261102-final3';
 import {neckGeometry,guitarWood,woodUV,edgeDistance} from './guitar-craft.js?v=20261027-craft5';
-import {smoothOutline,shapeFromPoints,insetOutline,hollowRibs,archedPlate,violinTopY} from './surface-utils.js?v=20261024-editorial1';
+import {smoothOutline,shapeFromPoints,insetOutline,archedPlate,violinTopY} from './surface-utils.js?v=20261024-editorial1';
 import {mat,mesh,curveTube,cylinderBetween,ellipsoid,horizontalExtrude,outlineShape,assemblyGroup,orientedBox,addWoodGrain} from './model-utils.js?v=20261024-editorial1';
 /** Violin: X scroll (-) to tail (+), Y soundboard normal (+), Z string spread.
  * The bow is a separately transformable group; animation is the caller's responsibility.
@@ -9,14 +11,21 @@ import {mat,mesh,curveTube,cylinderBetween,ellipsoid,horizontalExtrude,outlineSh
  */
 const violinGeometry=new Map(),plateFits=new Map();
 let archContour=[];
-export const violinDome=(x,z)=>{const d=archContour.length?Math.min(1,edgeDistance(x,z,archContour)/.16):1,fade=d*d*(3-2*d);return .078*Math.max(0,1-((x-.19)/1.12)**2-(z/.44)**2)*fade;};
+const archWidths=new Map();
+function sectionWidth(x){
+ const key=x.toFixed(8);if(archWidths.has(key))return archWidths.get(key);let w=0;
+ for(let i=0;i<archContour.length;i++){const a=archContour[i],b=archContour[(i+1)%archContour.length];if((a.x<=x&&b.x>=x)||(b.x<=x&&a.x>=x)){const dx=b.x-a.x;if(Math.abs(dx)>1e-12)w=Math.max(w,Math.abs(a.y+(b.y-a.y)*(x-a.x)/dx));}}
+ archWidths.set(key,w);return w;
+}
+// A smooth transverse arch, not a nearest-edge distance field with medial ridges.
+export const violinDome=(x,z)=>{const w=sectionWidth(x);if(w<1e-8)return 0;const q=Math.max(0,1-(z/w)**2),u=Math.max(0,Math.min(1,(x+.78)/1.95));return .078*Math.sin(Math.PI*u)**1.1*q*q*(3-2*q);};
 export const violinTopInsideY=(x,z)=>.092+violinDome(x,z);
 export const violinBackInsideY=(x,z)=>-.105-violinDome(x,z)*.7;
 const boardWidth=x=>.218+(Math.max(-1.59,Math.min(-.535,x))+1.59)/1.055*.105;
 export const violinBoardY=(x,z)=>.226+(x+1.59)/1.055*.021-.010*(2*z/.218)**2;
 function fingerboardGeometry(T){
  const pos=[],idx=[],rows=32,cols=16,stride=cols+1;
- for(let layer=0;layer<2;layer++)for(let i=0;i<=rows;i++){const x=-1.59+i/rows*1.055,w=boardWidth(x);for(let j=0;j<=cols;j++){const z=(j/cols-.5)*w;pos.push(x,violinBoardY(x,z)-layer*.030,z);}}
+ for(let layer=0;layer<2;layer++)for(let i=0;i<=rows;i++){const x=-1.59+i/rows*1.055,w=boardWidth(x);for(let j=0;j<=cols;j++){const z=(j/cols-.5)*w;pos.push(x,layer?(.196+(x+1.59)/1.055*.021):violinBoardY(x,z),z);}}
  const N=(rows+1)*stride;for(let i=0;i<rows;i++)for(let j=0;j<cols;j++){const a=i*stride+j,b=a+1,c=a+stride,d=c+1;idx.push(a,c,b,b,c,d,N+a,N+b,N+c,N+b,N+d,N+c);}
  for(let i=0;i<rows;i++)for(const j of [0,cols]){const a=i*stride+j,b=a+stride;j===0?idx.push(a,N+a,b,b,N+a,N+b):idx.push(a,b,N+a,b,N+b,N+a);}
  for(const row of [0,rows])for(let j=0;j<cols;j++){const a=row*stride+j,b=a+1;row===0?idx.push(a,b,N+a,b,N+b,N+a):idx.push(a,N+a,b,b,N+a,N+b);}
@@ -35,19 +44,19 @@ export function buildViolin(THREE,materials={}){
  // Violin-specific upper bouts, inward C-bouts, four corner tips and larger lower bouts.
  // Smooth closed outline: arch triangulation uses its exact boundary, never grid-cell clipping.
  const contour=smoothOutline(THREE,[
-  [-.78,0],[-.74,.21],[-.59,.354],[-.40,.385],[-.235,.349],[-.15,.264],
-  [-.112,.313],[-.042,.242],[.062,.240],[.155,.245],[.262,.245],[.325,.316],
-  [.365,.263],[.50,.389],[.70,.444],[.91,.423],[1.08,.312],[1.16,.15],[1.17,0],
-  [1.16,-.15],[1.08,-.312],[.91,-.423],[.70,-.444],[.50,-.389],[.365,-.263],
-  [.325,-.316],[.262,-.245],[.155,-.245],[.062,-.240],[-.042,-.242],[-.112,-.313],
-  [-.15,-.264],[-.235,-.349],[-.40,-.385],[-.59,-.354],[-.74,-.21]
+  [-.78,0],[-.74,.21],[-.59,.354],[-.40,.385],[-.235,.349],[-.13,.340],
+  [-.085,.276],[-.042,.250],[.062,.240],[.155,.245],[.262,.268],[.325,.340],
+  [.40,.348],[.50,.389],[.70,.444],[.91,.423],[1.08,.312],[1.16,.15],[1.17,0],
+  [1.16,-.15],[1.08,-.312],[.91,-.423],[.70,-.444],[.50,-.389],[.40,-.348],
+  [.325,-.340],[.262,-.268],[.155,-.245],[.062,-.240],[-.042,-.250],[-.085,-.276],
+  [-.13,-.340],[-.235,-.349],[-.40,-.385],[-.59,-.354],[-.74,-.21]
  ],320);
  archContour=contour;
  const outline=shapeFromPoints(THREE,contour);
  parts.body=assemblyGroup(THREE,'violin body (smooth arched top / hollow ribs / back)',group);
  // Continuous wall from top edge to back. The old y=-.10 downward extrusion left a gap.
- const inner=insetOutline(THREE,contour,.025);
- const ribs=hollowRibs(THREE,contour,inner,.106,-.105,dark,parts.body,'connected hollow violin ribs');
+ const inner=violinInnerOutline(THREE,contour,.008);
+ const ribs=buildViolinRibs(THREE,contour,inner,.106,-.105,dark,parts.body,'connected hollow violin ribs');
  parts.ribs=ribs;
  if(!violinGeometry.has('back'))violinGeometry.set('back',plateGeometry(THREE,contour,[],-.121,-.105,(x,z)=>-violinDome(x,z)*.7));
  const back=mesh(THREE,violinGeometry.get('back'),[wood,cavityWood,cavityWood],'closed arched maple back',parts.body);
@@ -71,10 +80,10 @@ export function buildViolin(THREE,materials={}){
  const postX=.25,postZ=.130,postBottom=plateY(back,postX,postZ,true),postTop=plateY(top,postX,postZ,true);parts.post=assemblyGroup(THREE,'fitted soundpost',group);cylinderBetween(THREE,[postX,postBottom,postZ],[postX,postTop,postZ],.019,braceWood,'soundpost touching both inner plates',parts.post);
  const postMesh=parts.post.children[0],pp=postMesh.geometry.attributes.position;for(let i=0;i<pp.count;i++){const x=postX+pp.getX(i),z=postZ+pp.getZ(i),target=plateY(pp.getY(i)>0?top:back,x,z,true);pp.setY(i,target-postMesh.position.y);}pp.needsUpdate=true;postMesh.geometry.computeVertexNormals();
  parts.post.userData.ends=[[postX,postBottom,postZ],[postX,postTop,postZ]];
- const chinrest=assemblyGroup(THREE,'chinrest',group);parts.chinrest=chinrest;ellipsoid(THREE,[.94,.17,-.23],[.23,.033,.15],black,'chin rest',chinrest,40);for(const z of [-.15,-.29])cylinderBetween(THREE,[1.12,.12,z],[1.12,-.10,z],.009,steel,'chinrest clamp',chinrest);
+ parts.chinrest=buildChinrest(THREE,{parent:group,topY:(x,z)=>plateY(top,x,z),topShapeY:(x,z)=>.106+violinDome(x,z),backY:(x,z)=>plateY(back,x,z),black,steel});
  // Neck, ebony fingerboard, nut, scroll and four side-mounted pegs.
  parts.neck=assemblyGroup(THREE,'neck and fingerboard',group);
- if(!violinGeometry.has('neck')){const g=neckGeometry(THREE,-1.66,-.65,x=>boardWidth(x)+.014,.188,t=>.085+t*.028),a=g.attributes.position;for(let i=0;i<a.count;i++){const x=a.getX(i);a.setY(i,a.getY(i)+Math.max(0,(x+1.59)/1.055)*.021);}g.computeVertexNormals();violinGeometry.set('neck',g);}
+ if(!violinGeometry.has('neck')){const g=neckGeometry(THREE,-1.66,-.65,x=>boardWidth(x)+.014,.196,t=>.085+t*.028),a=g.attributes.position;for(let i=0;i<a.count;i++){const x=a.getX(i);a.setY(i,a.getY(i)+Math.max(0,(x+1.59)/1.055)*.021);}g.computeVertexNormals();violinGeometry.set('neck',g);}
  mesh(THREE,violinGeometry.get('neck'),wood,'fitted D profile maple neck',parts.neck);
  if(!violinGeometry.has('board'))violinGeometry.set('board',fingerboardGeometry(THREE));
  const finger=mesh(THREE,violinGeometry.get('board'),ebony,'arched tapered fretless fingerboard',parts.neck);parts.fingerboard=finger;
