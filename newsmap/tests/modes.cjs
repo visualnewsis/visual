@@ -13,3 +13,7 @@ assert.equal(R.filter(R.selectMode(duplicated),{period:'all',now:Date.parse('202
 const html=fs.readFileSync(require.resolve('../index.html'),'utf8');
 assert.deepEqual([...html.matchAll(/data-category="([^\"]*)"/g)].map(m=>m[1]),['','all']);
 console.log('PASS: only two modes, policy version gate, international mixed-feed exclusion, local/all separation, legacy fail-closed, ID deduplication');
+
+assert.doesNotMatch(html,/id="category-(?:panel|toggle)"/);
+assert.match(html,/<div id="news-modes"[^>]*role="group"[^>]*>/);
+assert.doesNotMatch(html,/<div id="news-modes"[^>]*hidden/);

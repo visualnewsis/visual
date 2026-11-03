@@ -17,11 +17,12 @@ class Element{
 function boot({missing=false,search='',withMap=false}={}){
   const ids=Object.fromEntries([...read('index.html').matchAll(/id="([^"]+)"/g)].map(m=>[m[1],new Element()]));
   const periods=['24','168','720','all'].map(period=>Object.assign(new Element(),{dataset:{period}}));
+  const modeButtons=['','all'].map(category=>Object.assign(new Element(),{dataset:{category}}));
   const events={},location={pathname:'/newsmap/',search,hash:''},calls=[];
   let pending,expanded=false,markerBuilds=0;
   const ctx={URL,URLSearchParams,Intl,Date,Option:class{},matchMedia:()=>({matches:false,addEventListener(){}}),location,
     localStorage:{getItem:()=>null,setItem(){}},history:{},
-    document:{getElementById:id=>ids[id],querySelector:()=>new Element(),querySelectorAll:()=>periods,
+    document:{getElementById:id=>ids[id],querySelector:()=>new Element(),querySelectorAll:selector=>selector==='[data-category]'?modeButtons:periods,
       addEventListener(){},body:{classList:{toggle(){}}},createElement:()=>new Element(),head:{append:script=>pending=script}},
     window:{setTimeout:()=>1,clearTimeout(){},setInterval:(fn)=>events.poll=fn,addEventListener:(name,fn)=>events[name]=fn,NewsmapSheet:()=>({update(){},collapse(){},expand(){expanded=true;}})}};
   for(const mode of ['pushState','replaceState'])ctx.history[mode]=(_,__,url)=>{
@@ -43,7 +44,7 @@ function boot({missing=false,search='',withMap=false}={}){
   for(const file of ['core.js','data/geography.js','data/articles.js'])vm.runInContext(read(file),ctx);
   if(missing)delete ctx.window.NEWSMAP_ARTICLES;
   vm.runInContext(read('app.js'),ctx);
-  return {ctx,ids,periods,events,calls,mapEvents,fakeMap,get pending(){return pending;},get expanded(){return expanded;},get markerBuilds(){return markerBuilds;}};
+  return {ctx,ids,periods,modeButtons,events,calls,mapEvents,fakeMap,get pending(){return pending;},get expanded(){return expanded;},get markerBuilds(){return markerBuilds;}};
 }
 const app=boot(),api=app.ctx.window.NewsmapApp;
 assert.equal(api.state.motion,true,'Waves must default to on.');
@@ -107,10 +108,12 @@ assert.equal(camera.markerBuilds,beforeMarkers,'An unchanged view must preserve 
 console.log('PASS: URL filters, history restoration, refresh loading/success/error, malformed data retention, empty data and initial load failure.');
 
 cameraApi.selectPlace('서울특별시/성동구',{fit:false});
-camera.ids['category-panel'].events.click({target:{closest:()=>({dataset:{category:'all'}})}});
+camera.ids['news-modes'].events.click({target:{closest:()=>({dataset:{category:'all'}})}});
 assert.equal(cameraApi.state.category,'all');
+assert.equal(camera.modeButtons[0].attrs['aria-pressed'],'false');
+assert.equal(camera.modeButtons[1].attrs['aria-pressed'],'true');
 assert.equal(cameraApi.state.region,'서울특별시/성동구','Switching news modes must preserve the selected region');
-camera.ids['category-panel'].events.click({target:{closest:()=>({dataset:{category:'국제'}})}});
+camera.ids['news-modes'].events.click({target:{closest:()=>({dataset:{category:'국제'}})}});
 assert.equal(cameraApi.state.category,'all','Removed category controls cannot activate an international mode');
 const legacyRow={id:'legacy-foreign',title:'미국 중간선거',newsCategory:'국제',url:'https://www.newsis.com/view/NISX20261023_0000000001',publishedAt:new Date().toISOString(),places:['서울특별시/성동구']};
 cameraApi.state.period='all';

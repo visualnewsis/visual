@@ -102,7 +102,6 @@
     $('viewport-toggle').setAttribute('aria-pressed',String(state.viewport));
     $('motion-toggle').setAttribute('aria-pressed',String(state.motion));
     $('motion-toggle').textContent=state.motion?'파동 켜짐':'파동 꺼짐';
-    $('category-toggle').textContent=state.category==='all'?'전체뉴스':'동네뉴스';
     document.querySelectorAll('[data-category]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.category===state.category)));
     document.body.classList.toggle('motion-off',!state.motion);
   }
@@ -308,11 +307,7 @@
   $('all-tab').addEventListener('click',()=>{state.onlyNew=false;render();});
   $('new-tab').addEventListener('click',()=>{state.onlyNew=true;render();});
   $('viewport-toggle').addEventListener('click',()=>{state.viewport=!state.viewport;render();});
-  function closeCategories(){$('category-panel').hidden=true;$('category-toggle').setAttribute('aria-expanded','false');}
-  $('category-toggle').addEventListener('click',()=>{const open=$('category-panel').hidden;$('category-panel').hidden=!open;$('category-toggle').setAttribute('aria-expanded',String(open));});
-  $('category-panel').addEventListener('click',event=>{const button=event.target.closest('[data-category]');if(!button)return;if(!categories.includes(button.dataset.category))return;state.category=button.dataset.category;closeCategories();render();});
-  $('category-panel').addEventListener('keydown',event=>{if(event.key==='Escape'){closeCategories();$('category-toggle').focus();}});
-  document.addEventListener('click',event=>{if(!event.target.closest('#category-panel,#category-toggle'))closeCategories();});
+  $('news-modes').addEventListener('click',event=>{const button=event.target.closest('[data-category]');if(!button||!categories.includes(button.dataset.category)||button.dataset.category===state.category)return;state.category=button.dataset.category;render();});
   $('motion-toggle').addEventListener('click',()=>{state.motion=!state.motion;store.set('newsmap:motion',state.motion?'on':'off');if(state.motion)seenSignals.clear();syncControls();renderMarkers();});
   function markArticleRead(event){
     if(event.type==='auxclick'&&event.button!==1)return;
