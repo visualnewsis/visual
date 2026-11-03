@@ -19,7 +19,7 @@
     {slug:"smartwatch",num:"015",meta:"신변보호 스마트워치 · 지급 이후의 점검",title:"방전된 안전",image:"/smartwatch/images/og-songpa-court-1200x630.jpg",alt:"송파 장모 살해·아내 납치 사건 피의자의 법원 출석 모습"},
     {slug:"spai",num:"016",meta:"AI 직원 감시 · 근무 기록의 빈틈",title:"“쟤 지금 딴짓해요” 회사가 고용한 SPAI",image:"/spai/images/og-spai-1200x630.jpg",alt:"밤늦은 사무실에서 모니터 앞에 앉은 직원의 뒷모습과 천장의 감시 카메라"},
     {slug:"quit",num:"017",meta:"퇴사 후 생활비 · 통장 잔고 · 인터랙티브",title:"퇴사할게여 · 내 통장 몇 달 버틸 수 있을까",image:"/quit/images/og-quit-1200x630.jpg",alt:"개인 물품 상자를 들고 회사를 나서는 직장인, 생성형 AI 이미지"},
-    {slug:"braille-100",num:"018",meta:"훈맹정음 100년 · 한글 점자 · 인터랙티브",title:"점점, 문장이 손에 잡혔다",image:"/braille-100/images/site-thumbnail-photo-360x240.jpg",alt:"점자책 위에 놓인 손끝과 ‘점점, 문장이 손에 잡혔다’ 제목. 사진 김종택 기자"}
+    {slug:"braille-100",num:"018",meta:"훈맹정음 100년 · 한글 점자 · 인터랙티브",title:"점점⠿ 문장이 손에 잡혔다",image:"/braille-100/images/contact-720.jpg",alt:"점자책 위에 놓인 손끝. 사진 김종택 기자"}
 
   ];
   const start=()=>{
