@@ -12,7 +12,7 @@ spec.loader.exec_module(C)
 now=datetime(2026,10,23,12,tzinfo=timezone.utc)
 def article(identifier,days=0,title='서울 성동구 지원',text='서울 성동구는 지원을 확대한다고 밝혔다.'):
     return {'id':identifier,'title':title,'text':text,'url':'https://www.newsis.com/view/'+identifier,
-        'publishedAt':(now-timedelta(days=days)).isoformat(),'image':''}
+        'publishedAt':(now-timedelta(days=days)).isoformat(),'image':'','feeds':['society']}
 old=article('NISX20261022_0000000001',1)
 fresh=article('NISX20261023_0000000002')
 corrected={**old,'title':'수정 제목'}
@@ -52,13 +52,35 @@ except RuntimeError:pass
 else:raise AssertionError('All-source failure must stop publication')
 items=''.join('<item><title>서울 성동구 지원 '+str(i)+'</title><link>https://www.newsis.com/view/NISX20261023_'+str(i).zfill(10)+'</link><pubDate>Fri, 23 Oct 2026 18:00:00 +0900</pubDate><description>서울 성동구는 지원을 확대했다.</description></item>' for i in range(20))
 good=('<rss><channel>'+items+'</channel></rss>').encode()
-payload,changed,report=C.collect(snapshot,now,fetch=lambda url:good,enrich_limit=0)
+payload,changed,report=C.collect(snapshot,now,fetch=lambda url:b'<rss><channel></channel></rss>' if any('/'+f+'.xml' in url for f in ['international','culture','entertain']) else good,enrich_limit=0)
 assert changed and len(payload['articles'])==21
-again,changed,_=C.collect(payload,now+timedelta(minutes=10),fetch=lambda url:good,enrich_limit=0)
+again,changed,_=C.collect(payload,now+timedelta(minutes=10),fetch=lambda url:b'<rss><channel></channel></rss>' if any('/'+f+'.xml' in url for f in ['international','culture','entertain']) else good,enrich_limit=0)
 assert not changed,'No content change must not cause another deployment'
 assert len(again['articles'])==21,'Articles absent from a rotated feed must survive'
 legacy={**payload,'articles':[{**a,'locationMethod':'conservative-place-name-v2','places':['강원특별자치도/홍천군/내면']} for a in payload['articles']]}
-rechecked,changed,_=C.collect(legacy,now,fetch=lambda url:good,enrich_limit=0)
+rechecked,changed,_=C.collect(legacy,now,fetch=lambda url:b'<rss><channel></channel></rss>' if any('/'+f+'.xml' in url for f in ['international','culture','entertain']) else good,enrich_limit=0)
 assert changed
 assert all('강원특별자치도/홍천군/내면' not in a['places'] for a in rechecked['articles']), 'Matching fingerprints must not preserve a classification from an older algorithm.'
+contaminated={**payload,'articles':payload['articles']+[{**old,'id':'foreign-old','title':'미국 선거 분석','newsCategory':'국제','feeds':['international'],'locationMethod':'old-version','places':['서울특별시/종로구']},{**old,'id':'book-old','title':'작가 신간 출간','feeds':['culture'],'locationMethod':'old-version','places':['서울특별시/종로구']}] }
+cleaned,_,_=C.collect(contaminated,now,fetch=lambda url:b'<rss><channel></channel></rss>' if any('/'+f+'.xml' in url for f in ['international','culture','entertain']) else good,enrich_limit=0)
+assert 'foreign-old' in cleaned['excludedInternational']
+assert not {'foreign-old','book-old'}.intersection(a['id'] for a in cleaned['articles'])
+assert not next(a for a in cleaned['articles'] if a['id']==old['id'])['localEligible'], 'Legacy summary is not a trustworthy local lead.'
+blocked_again,_,_=C.collect({**payload,'excludedInternational':{'NISX20261023_0000000000':now.isoformat(),'expired':(now-timedelta(days=31)).isoformat()}},now,fetch=lambda url:b'<rss><channel></channel></rss>' if any('/'+f+'.xml' in url for f in ['international','culture','entertain']) else good,enrich_limit=0)
+assert 'NISX20261023_0000000000' not in {a['id'] for a in blocked_again['articles']}
+assert 'expired' not in blocked_again['excludedInternational']
+def no_international(url):
+    if '/international.xml' in url:raise OSError('international unavailable')
+    return good
+try:C.collect(payload,now,fetch=no_international,enrich_limit=0)
+except RuntimeError as error:assert 'International exclusion' in str(error)
+else:raise AssertionError('Without international-ID veto feed, publication must stop.')
 print('PASS: rotation retention, ID deduplication, corrections, expiry, invalid feeds/items, article-only lead, biography/ambiguous-place exclusion, atomic writes, all-feed failure and unchanged-content detection.')
+
+# The existing scheduled collection job runs this entry point.
+expired_ledger={**payload,'excludedInternational':{'NISX20260901_9999999999':(now-timedelta(days=31)).isoformat()}}
+ledger_only,ledger_changed,_=C.collect(expired_ledger,now,fetch=lambda url:b'<rss><channel></channel></rss>' if any('/'+f+'.xml' in url for f in ['international','culture','entertain']) else good,enrich_limit=0)
+assert ledger_only['articles']==payload['articles']
+assert ledger_changed and ledger_only['excludedInternational']=={}, 'History-only expiry must publish the new exclusion ledger'
+import runpy
+runpy.run_path(str(Path(__file__).with_name('domestic-policy.py')))

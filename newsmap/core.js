@@ -1,6 +1,12 @@
 /* Shared pure rules for the page and the verification script. */
 (function(root){
   'use strict';
+  const POLICY_VERSION='domestic-local-v1';
+  // Unreviewed legacy snapshots fail closed, including on a failed refresh.
+  function selectMode(articles,mode=''){
+    return articles.filter(a=>a.policyVersion===POLICY_VERSION&&a.domesticPolicy==='accepted'&&a.newsCategory!=='국제'&&!(a.feeds||[]).includes('international')&&(mode==='all'||a.localEligible===true&&a.places.length>0))
+      .map(a=>mode==='all'?{...a,places:a.relatedPlaces||a.places}:a);
+  }
   const belongs=(place,region)=>!region||place===region||place.startsWith(region+'/');
   const matches=(article,region)=>article.places.some(place=>belongs(place,region));
   const inBox=(center,b)=>center[0]>=b[0]&&center[0]<=b[2]&&center[1]>=b[1]&&center[1]<=b[3];
@@ -57,7 +63,7 @@
     const id=local&&(zoom<11?local.path[0]:zoom<13?local.parent:local.id);
     return {national:false,node:regions.find(n=>n.id===id)||null};
   }
-  const api={belongs,matches,filter,group,inBox,containsPoint,findRegion,requestPosition,cameraContext};
+  const api={POLICY_VERSION,selectMode,belongs,matches,filter,group,inBox,containsPoint,findRegion,requestPosition,cameraContext};
   if(typeof module!=='undefined'&&module.exports) module.exports=api;
   else root.NewsmapRules=api;
 })(typeof window!=='undefined'?window:globalThis);

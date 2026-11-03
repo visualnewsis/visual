@@ -1,0 +1,15 @@
+const assert=require('node:assert/strict');
+const fs=require('node:fs');
+const R=require('../core.js');
+const base={policyVersion:R.POLICY_VERSION,domesticPolicy:'accepted',id:'domestic',newsCategory:'사회',places:['서울특별시/성동구'],relatedPlaces:['서울특별시/성동구'],localEligible:true,feeds:['society'],publishedAt:'2026-11-03T00:00:00Z'};
+const rows=[base,{...base,id:'court',localEligible:false,places:[],relatedPlaces:['서울특별시/서초구']},{...base,id:'legacy',policyVersion:undefined},{...base,id:'international',newsCategory:'국제'},{...base,id:'mixed',feeds:['politics','international']},{...base,id:'no-place',places:[],relatedPlaces:[],localEligible:false}];
+assert.deepEqual(R.selectMode(rows).map(a=>a.id),['domestic']);
+assert.deepEqual(R.selectMode(rows,'all').map(a=>a.id),['domestic','court','no-place']);
+assert.equal(R.selectMode(rows,'all')[1].places[0],'서울특별시/서초구');
+assert.equal(rows[1].places.length,0,'Projecting all news must not mutate local locations');
+assert.equal(R.selectMode([rows[2]],'all').length,0,'A cached legacy snapshot must fail closed in both modes');
+const duplicated=[base,{...base}];
+assert.equal(R.filter(R.selectMode(duplicated),{period:'all',now:Date.parse('2026-11-03T01:00:00Z')}).length,1);
+const html=fs.readFileSync(require.resolve('../index.html'),'utf8');
+assert.deepEqual([...html.matchAll(/data-category="([^\"]*)"/g)].map(m=>m[1]),['','all']);
+console.log('PASS: only two modes, policy version gate, international mixed-feed exclusion, local/all separation, legacy fail-closed, ID deduplication');

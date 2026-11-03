@@ -48,3 +48,6 @@ for(const block of html.matchAll(/<script type="application\/ld\+json">([\s\S]*?
 assert.equal((html.match(/gtag\('config','G-6BKMWE02W5'\)/g)||[]).length,1);
 assert.equal((html.match(/googletagmanager\.com\/gtag\/js/g)||[]).length,1);
 console.log(`PASS: hierarchy, no downward inference, period, revisit, deduplication, zoom scope, bounds; ${geo.nodes.length} regions, ${snapshot.articles.length} articles; JSON-LD, URLs and analytics.`);
+
+// Run mode policy regressions from the existing scheduled workflow entry point.
+require('./modes.cjs');

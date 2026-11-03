@@ -8,8 +8,8 @@
   if(!geo||!Array.isArray(payload?.articles)||!rules){$('article-list').textContent='데이터를 불러오지 못했습니다. 페이지를 새로고침해 주세요.';$('snapshot-time').textContent='데이터 로드 실패 · 페이지 새로고침이 필요합니다.';$('refresh').onclick=()=>location.reload();sheet?.expand();return;}
   const nodes=Object.fromEntries(geo.nodes.map(n=>[n.id,n]));
   const provinces=geo.nodes.filter(n=>n.level==='province'),descendantLists=new Map();
-  let projectedPayload,relatedArticles;
-  const categories=['','all','정치','경제','산업','사회','IT·바이오','문화','스포츠','연예','국제'];
+  let projectedPayload,relatedArticles,localArticles;
+  const categories=['','all'];
   function readUrl(){
     const params=new URLSearchParams(location.search);
     const camera=['lat','lng','zoom'].map(key=>params.has(key)?Number(params.get(key)):NaN);
@@ -102,15 +102,15 @@
     $('viewport-toggle').setAttribute('aria-pressed',String(state.viewport));
     $('motion-toggle').setAttribute('aria-pressed',String(state.motion));
     $('motion-toggle').textContent=state.motion?'파동 켜짐':'파동 꺼짐';
-    $('category-toggle').textContent=state.category?(state.category==='all'?'전체 분야':state.category):'카테고리';
+    $('category-toggle').textContent=state.category==='all'?'전체뉴스':'동네뉴스';
     document.querySelectorAll('[data-category]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.category===state.category)));
     document.body.classList.toggle('motion-off',!state.motion);
   }
   function mapBox(){if(!map)return null;const b=map.getBounds();return [b.getSouth(),b.getWest(),b.getNorth(),b.getEast()];}
   function selectedArticles(onlyNew=state.onlyNew){
-    if(projectedPayload!==payload){projectedPayload=payload;relatedArticles=payload.articles.map(a=>({...a,places:a.relatedPlaces||a.places}));}
-    const articles=state.category?relatedArticles:payload.articles;
-    return rules.filter(articles,{region:state.region,period:state.period,onlyNew,cutoff,now:now(),category:state.category==='all'?'':state.category,includeUnlocated:!!state.category,bounds:state.viewport?mapBox():null,nodes});
+    if(projectedPayload!==payload){projectedPayload=payload;relatedArticles=rules.selectMode(payload.articles,'all');localArticles=rules.selectMode(payload.articles);}
+    const articles=state.category?relatedArticles:localArticles;
+    return rules.filter(articles,{region:state.region,period:state.period,onlyNew,cutoff,now:now(),includeUnlocated:!!state.category,bounds:state.viewport?mapBox():null,nodes});
   }
   function visiblePlaces(article,box=state.viewport?mapBox():null){return article.places.filter(p=>rules.belongs(p,state.region)&&(!box||rules.inBox(nodes[p].center,box)));}
   function articleCard(a){
@@ -139,12 +139,12 @@
     $('map-heading').textContent=camera?(camera.node?cameraName+' 주변에서 전해온 이야기':'현재 지도에서 전해온 이야기'):n?region+'에서 전해온 이야기':'전국에서 전해온 이야기';
     const meters=camera?map.distance(center,map.getBounds().getNorthEast()):0;
     const range=meters<1000?Math.max(100,Math.round(meters/100)*100)+'m':(meters<10000?(meters/1000).toFixed(1):Math.round(meters/1000))+'km';
-    $('map-subheading').textContent=camera?'지도 중심에서 약 '+range+' 범위 · 현재 지도 안의 기사':n?.level==='dong'?'이 동네가 확인된 기사만 모았습니다.':'빛나는 원을 눌러 그곳의 뉴스를 만나보세요.';
+    $('map-subheading').textContent=camera?'지도 중심에서 약 '+range+' 범위 · 현재 지도 안의 기사':state.category==='all'?'국내 뉴스를 기사와 관련된 장소에서 봅니다.':'지역의 생활·현장 소식을 모았습니다.';
     const listHtml=shown.length?shown.slice(0,visibleLimit).map(articleCard).join('')+(shown.length>visibleLimit?'<button class="load-more" id="load-more">기사 더 보기 ('+Math.min(PAGE_SIZE,shown.length-visibleLimit)+'건)</button>':''):`<div class="empty"><span class="empty-mark" aria-hidden="true">⌖</span><h3>아직 모인 기사가 없어요.</h3><p>${state.onlyNew?'현재 기간·지역에 새 기사 기준을 충족하는 기사가 없습니다.':state.viewport?'현재 지도 안에 수집된 기사가 없습니다. 지도를 이동하거나 지도 안만을 해제해 보세요.':n?.level==='dong'?'이 동네까지 위치가 확인된 기사가 없습니다. 구·시 단위 기사를 이 동네로 추정해 넣지 않습니다.':'선택한 기간·지역에 수집된 기사가 없습니다.'}<br>기간을 넓히거나 상위 지역의 소식을 살펴보세요.</p><button id="empty-reset">${state.onlyNew?'전체 기사 보기':state.period!=='all'?'전체 기간으로 보기':n?'상위 지역 보기':'전국 기사 다시 보기'}</button></div>`;
     if(listHtml!==lastListHtml){$('article-list').innerHTML=listHtml;lastListHtml=listHtml;}
     $('new-basis').textContent=(saved>0&&saved<=sessionStarted?'이 브라우저의 지난 방문 이후':'첫 방문 · 최근 24시간')+' 발행 기사 기준';
     const unlocated=shown.filter(a=>!a.places.length).length;
-    $('view-status').textContent=(state.category?(state.category==='all'?'전체 분야':state.category)+' · ':'')+(state.viewport?'현재 지도 안 · ':'선택 지역 전체 · ')+shown.length+'건'+(unlocated?' · 위치 미지정 '+unlocated+'건':'');
+    $('view-status').textContent=(state.category==='all'?'전체뉴스 · ':'동네뉴스 · ')+(state.viewport?'현재 지도 안 · ':'선택 지역 전체 · ')+shown.length+'건'+(unlocated?' · 위치 미지정 '+unlocated+'건':'');
     $('snapshot-time').textContent=stamp(payload.collectedAt)+' 수집 · 일부 기사 · '+(payload.mode==='scheduled-snapshot'?'10분 주기 수집':'자동 갱신 미연결')+(refreshStatus?' · '+refreshStatus:'');
     syncControls();
   }
@@ -310,7 +310,7 @@
   $('viewport-toggle').addEventListener('click',()=>{state.viewport=!state.viewport;render();});
   function closeCategories(){$('category-panel').hidden=true;$('category-toggle').setAttribute('aria-expanded','false');}
   $('category-toggle').addEventListener('click',()=>{const open=$('category-panel').hidden;$('category-panel').hidden=!open;$('category-toggle').setAttribute('aria-expanded',String(open));});
-  $('category-panel').addEventListener('click',event=>{const button=event.target.closest('[data-category]');if(!button)return;state.category=button.dataset.category;closeCategories();selectPlace('');});
+  $('category-panel').addEventListener('click',event=>{const button=event.target.closest('[data-category]');if(!button)return;if(!categories.includes(button.dataset.category))return;state.category=button.dataset.category;closeCategories();render();});
   $('category-panel').addEventListener('keydown',event=>{if(event.key==='Escape'){closeCategories();$('category-toggle').focus();}});
   document.addEventListener('click',event=>{if(!event.target.closest('#category-panel,#category-toggle'))closeCategories();});
   $('motion-toggle').addEventListener('click',()=>{state.motion=!state.motion;store.set('newsmap:motion',state.motion?'on':'off');if(state.motion)seenSignals.clear();syncControls();renderMarkers();});
