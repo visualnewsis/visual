@@ -1,0 +1,20 @@
+const assert=require('node:assert/strict');
+const R=require('../core.js');
+const now=Date.parse('2026-11-03T03:00:00Z'),nodes={'서울특별시/성동구':{}};
+const article={id:'NISX20261103_0000000001',title:'성동구 주민 지원',url:'https://www.newsis.com/view/NISX20261103_0000000001',publishedAt:new Date(now-60000).toISOString(),policyVersion:R.POLICY_VERSION,domesticPolicy:'accepted',newsCategory:'사회',feeds:['society'],evidence:['성동구 주민 지원'],places:['서울특별시/성동구'],localPlaces:['서울특별시/성동구'],relatedPlaces:['서울특별시/성동구'],localEligible:true};
+const snapshot={schemaVersion:1,policyVersion:R.POLICY_VERSION,mode:'scheduled-snapshot',retentionDays:30,collectedAt:new Date(now).toISOString(),excludedInternational:{},articles:[article]};
+const options={nodes,now,previousTime:now-60000},valid=s=>R.validSnapshot(s,options);
+assert(valid(snapshot));assert(valid({...snapshot,articles:[]}),'Only a fully versioned valid empty snapshot may be accepted');
+assert(!valid({...snapshot,policyVersion:'domestic-local-v1'}));
+assert(!valid({...snapshot,schemaVersion:2}));assert(!valid({...snapshot,retentionDays:7}));assert(!valid({...snapshot,excludedInternational:[]}));
+assert(!valid({...snapshot,collectedAt:new Date(now-120000).toISOString()}));
+assert(!valid({...snapshot,collectedAt:new Date(now+120000).toISOString()}));
+assert(!valid({...snapshot,excludedInternational:{[article.id]:article.publishedAt}}));
+assert(!valid({...snapshot,excludedInternational:{NISX20261001_0000000001:new Date(now-31*86400000).toISOString()}}));
+assert(!valid({...snapshot,articles:[article,article]}));
+for(const patch of [{policyVersion:undefined},{domesticPolicy:undefined},{newsCategory:'국제'},{feeds:['politics','international']},{places:['unknown'],localPlaces:['unknown']},{localPlaces:[]},{relatedPlaces:[]},{localEligible:false},{url:'https://www.newsis.com/other'},{publishedAt:new Date(now+120000).toISOString()},{publishedAt:new Date(now-31*86400000).toISOString()}])assert(!valid({...snapshot,articles:[{...article,...patch}]}),JSON.stringify(patch));
+console.log('PASS: browser snapshot policy/schema, chronology, exclusion ledger, article contract, known geography, URL and duplicate validation');
+
+for(const patch of [{sourceSection:'국제'},{sourceSection2:'해외토픽'},{sourceSection:42},{sourceSection2:{}}])assert(!valid({...snapshot,articles:[{...article,...patch}]}),'Source section veto '+JSON.stringify(patch));
+assert(valid({...snapshot,articles:[{...article,sourceSection:'사회',sourceSection2:'지역'}]}));
+console.log('PASS: international/overseas source sections veto an otherwise approved domestic article');

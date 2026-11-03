@@ -5,7 +5,7 @@ import sys
 from datetime import datetime, timezone, timedelta
 from pathlib import Path
 sys.dont_write_bytecode=True
-from collect_news import decode_snapshot, load_nodes, parse_time, MAX_ARTICLES, POLICY_VERSION
+from collect_news import decode_snapshot, load_nodes, parse_time, MAX_ARTICLES, POLICY_VERSION, LOCATION_METHOD
 
 def validate(path):
     payload=decode_snapshot(Path(path).read_bytes())
@@ -25,6 +25,11 @@ def validate(path):
     seen=set()
     for article in articles:
         assert article.get('policyVersion')==POLICY_VERSION,'Unreviewed article policy'
+        assert article.get('locationMethod')==LOCATION_METHOD,'Stale classification rules'
+        assert isinstance(article.get('leadBoundariesVerified'),bool),'Missing lead trust state'
+        assert isinstance(article.get('sourceSection'),str) and isinstance(article.get('sourceSection2'),str),'Missing official section metadata'
+        assert article['sourceSection']!='국제' and not article['sourceSection2'].startswith('해외'),'International source metadata'
+
         assert article.get('domesticPolicy')=='accepted','Unaccepted domestic article'
         assert article.get('newsCategory')!='국제' and 'international' not in article.get('feeds',[]),'International article'
         assert isinstance(article.get('localEligible'),bool),'Missing local eligibility'

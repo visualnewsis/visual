@@ -5,8 +5,10 @@
   const geo=window.NEWSMAP_GEOGRAPHY;
   let payload=window.NEWSMAP_ARTICLES;
   const sheet=window.NewsmapSheet?.();
-  if(!geo||!Array.isArray(payload?.articles)||!rules){$('article-list').textContent='데이터를 불러오지 못했습니다. 페이지를 새로고침해 주세요.';$('snapshot-time').textContent='데이터 로드 실패 · 페이지 새로고침이 필요합니다.';$('refresh').onclick=()=>location.reload();sheet?.expand();return;}
+  if(!geo||!rules){$('article-list').textContent='데이터를 불러오지 못했습니다. 페이지를 새로고침해 주세요.';$('snapshot-time').textContent='데이터 로드 실패 · 페이지 새로고침이 필요합니다.';$('refresh').onclick=()=>location.reload();sheet?.expand();return;}
   const nodes=Object.fromEntries(geo.nodes.map(n=>[n.id,n]));
+  let hasValidSnapshot=rules.validSnapshot(payload,{nodes,now:Date.now()});
+  if(!hasValidSnapshot){payload={schemaVersion:1,policyVersion:rules.POLICY_VERSION,mode:'scheduled-snapshot',retentionDays:30,excludedInternational:{},collectedAt:new Date(0).toISOString(),articles:[]};sheet?.expand();}
   const provinces=geo.nodes.filter(n=>n.level==='province'),descendantLists=new Map();
   let projectedPayload,relatedArticles,localArticles;
   const categories=['','all'];
@@ -22,7 +24,8 @@
   const cutoff=saved>0&&saved<=now()?saved:now()-86400000;
   const sessionStarted=now();
   // Record the visit only after the data has loaded successfully.
-  store.set('newsmap:lastVisit:v1',sessionStarted);
+  function recordObservedVisit(){if(hasValidSnapshot)store.set('newsmap:lastVisit:v1',Math.min(now(),Date.parse(payload.collectedAt)));}
+  recordObservedVisit();
   const state={...readUrl(),motion:store.get('newsmap:motion')!=='off'};
   let restoring=false,refreshStatus='',userMapInteraction=false;
   const seenSignals=new Set();
@@ -31,6 +34,7 @@
   const readArticles=new Set(Array.isArray(savedReads)?savedReads:[]);
   let pulseBatch=savedJSON('newsmap:pulse-batch:v1',{}),pulseExpiry;
   function syncPulseBatch(){
+    if(!hasValidSnapshot)return;
     const collected=Date.parse(payload.collectedAt);
     if(pulseBatch.collectedAt!==payload.collectedAt){
       const known=new Set(Array.isArray(pulseBatch.known)?pulseBatch.known:[]);
@@ -120,6 +124,14 @@
     const level=state.category?(a.placeReasons?.[n.id]||'기사 관련 지역'):n.level==='dong'?'동네 확인':n.level==='district'?'시·군·구 단위':'시·도 단위';
     return `<article class="article-card" data-article="${esc(a.id)}"><div class="card-top">${isNew(a)?'<span class="new">NEW</span>':''}<span>${esc(state.category?(a.newsCategory||a.category):a.category)}</span><span>·</span><time datetime="${esc(a.publishedAt)}">${esc(stamp(a.publishedAt))}</time></div><div class="card-body"><h3><a href="${esc(url)}" target="_blank" rel="noopener noreferrer">${esc(a.title)}</a></h3>${image?`<img src="${esc(image)}" alt="" loading="lazy" referrerpolicy="no-referrer" onerror="this.hidden=true">`:''}</div><div class="card-bottom"><button class="place-link" data-place="${esc(n.id)}" title="${esc(a.evidence?.join(' / ')||n.path.join(' '))}">⌖ ${esc(n.path.map((name,i)=>i===0?shortName(nodes[name]):name).join(' '))} <span class="precision">${level}</span></button><a class="source-link" href="${esc(url)}" target="_blank" rel="noopener noreferrer">뉴시스 ↗</a></div></article>`;
   }
+  function updateDataStatus(){
+    const delayed=hasValidSnapshot&&now()-Date.parse(payload.collectedAt)>30*60000;
+    const unlocated=shown.filter(a=>!a.places.length).length;
+    const scopeStatus=!hasValidSnapshot?(refreshStatus.includes('실패')?'기사 데이터 로드 실패':'기사 데이터 확인 중'):(state.category==='all'?'전체뉴스 · ':'동네뉴스 · ')+(state.viewport?'현재 지도 안 · ':'선택 지역 전체 · ')+shown.length+'건'+(unlocated?' · 위치 미지정 '+unlocated+'건':'')+(delayed?' · 수집 지연':'');
+    const snapshotStatus=!hasValidSnapshot?(refreshStatus||'검증된 기사 데이터를 불러오는 중입니다.'):stamp(payload.collectedAt)+' 수집 · 일부 기사 · '+(payload.mode==='scheduled-snapshot'?'10분 주기 수집':'자동 갱신 미연결')+(delayed?' · 수집 지연 · 마지막 확인 자료':'')+(refreshStatus?' · '+refreshStatus:'');
+    if($('view-status').textContent!==scopeStatus)$('view-status').textContent=scopeStatus;
+    if($('snapshot-time').textContent!==snapshotStatus)$('snapshot-time').textContent=snapshotStatus;
+  }
   function renderList(){
     closeMapPreview();
     syncPulseBatch();
@@ -134,17 +146,16 @@
     $('region-title').textContent=region+'의 소식';
     $('article-count').textContent=shown.length;
     sheet?.update(shown.length,region);
+    if(!hasValidSnapshot)$('sheet-summary').textContent=refreshStatus.includes('실패')?'기사 데이터 로드 실패':'기사 데이터 확인 중';
     $('new-count').textContent=allShown.filter(isNew).length;
     $('map-heading').textContent=camera?(camera.node?cameraName+' 주변에서 전해온 이야기':'현재 지도에서 전해온 이야기'):n?region+'에서 전해온 이야기':'전국에서 전해온 이야기';
     const meters=camera?map.distance(center,map.getBounds().getNorthEast()):0;
     const range=meters<1000?Math.max(100,Math.round(meters/100)*100)+'m':(meters<10000?(meters/1000).toFixed(1):Math.round(meters/1000))+'km';
     $('map-subheading').textContent=camera?'지도 중심에서 약 '+range+' 범위 · 현재 지도 안의 기사':state.category==='all'?'국내 뉴스를 기사와 관련된 장소에서 봅니다.':'지역의 생활·현장 소식을 모았습니다.';
-    const listHtml=shown.length?shown.slice(0,visibleLimit).map(articleCard).join('')+(shown.length>visibleLimit?'<button class="load-more" id="load-more">기사 더 보기 ('+Math.min(PAGE_SIZE,shown.length-visibleLimit)+'건)</button>':''):`<div class="empty"><span class="empty-mark" aria-hidden="true">⌖</span><h3>아직 모인 기사가 없어요.</h3><p>${state.onlyNew?'현재 기간·지역에 새 기사 기준을 충족하는 기사가 없습니다.':state.viewport?'현재 지도 안에 수집된 기사가 없습니다. 지도를 이동하거나 지도 안만을 해제해 보세요.':n?.level==='dong'?'이 동네까지 위치가 확인된 기사가 없습니다. 구·시 단위 기사를 이 동네로 추정해 넣지 않습니다.':'선택한 기간·지역에 수집된 기사가 없습니다.'}<br>기간을 넓히거나 상위 지역의 소식을 살펴보세요.</p><button id="empty-reset">${state.onlyNew?'전체 기사 보기':state.period!=='all'?'전체 기간으로 보기':n?'상위 지역 보기':'전국 기사 다시 보기'}</button></div>`;
+    const listHtml=!hasValidSnapshot?'<div class="empty"><span class="empty-mark" aria-hidden="true">⌖</span><h3>'+(refreshStatus.includes('실패')?'검증된 데이터를 불러오지 못했습니다.':'검증된 기사 데이터를 불러오는 중입니다.')+'</h3><p>확인이 끝난 기사만 지도와 목록에 표시합니다.</p><button id="retry-data">다시 확인</button></div>':shown.length?shown.slice(0,visibleLimit).map(articleCard).join('')+(shown.length>visibleLimit?'<button class="load-more" id="load-more">기사 더 보기 ('+Math.min(PAGE_SIZE,shown.length-visibleLimit)+'건)</button>':''):`<div class="empty"><span class="empty-mark" aria-hidden="true">⌖</span><h3>아직 모인 기사가 없어요.</h3><p>${state.onlyNew?'현재 기간·지역에 새 기사 기준을 충족하는 기사가 없습니다.':state.viewport?'현재 지도 안에 수집된 기사가 없습니다. 지도를 이동하거나 지도 안만을 해제해 보세요.':n?.level==='dong'?'이 동네까지 위치가 확인된 기사가 없습니다. 구·시 단위 기사를 이 동네로 추정해 넣지 않습니다.':'선택한 기간·지역에 수집된 기사가 없습니다.'}<br>기간을 넓히거나 상위 지역의 소식을 살펴보세요.</p><button id="empty-reset">${state.onlyNew?'전체 기사 보기':state.period!=='all'?'전체 기간으로 보기':n?'상위 지역 보기':'전국 기사 다시 보기'}</button></div>`;
     if(listHtml!==lastListHtml){$('article-list').innerHTML=listHtml;lastListHtml=listHtml;}
     $('new-basis').textContent=(saved>0&&saved<=sessionStarted?'이 브라우저의 지난 방문 이후':'첫 방문 · 최근 24시간')+' 발행 기사 기준';
-    const unlocated=shown.filter(a=>!a.places.length).length;
-    $('view-status').textContent=(state.category==='all'?'전체뉴스 · ':'동네뉴스 · ')+(state.viewport?'현재 지도 안 · ':'선택 지역 전체 · ')+shown.length+'건'+(unlocated?' · 위치 미지정 '+unlocated+'건':'');
-    $('snapshot-time').textContent=stamp(payload.collectedAt)+' 수집 · 일부 기사 · '+(payload.mode==='scheduled-snapshot'?'10분 주기 수집':'자동 갱신 미연결')+(refreshStatus?' · '+refreshStatus:'');
+    updateDataStatus();
     syncControls();
   }
   function renderMarkers(){
@@ -193,14 +204,14 @@
         if(state.region===g.node.id){
           $('results').focus({preventScroll:true});
           if(matchMedia('(max-width:700px)').matches)sheet?.expand();
-        }else selectPlace(g.node.id);
+        }else{selectPlace(g.node.id);if(matchMedia('(max-width:700px)').matches)sheet?.expand();}
       });
       marker.addTo(markers);
       markerLayers.set(g.node.id,{marker,signature});
     });
     const showEmpty=shown.length===0;
     $('map-message').hidden=!showEmpty;
-    if(showEmpty)$('map-message').textContent=state.viewport?'현재 지도 안에 모인 기사가 없습니다. 지도를 더 멀리 보거나 기간을 넓혀보세요.':'이 조건에 수집된 기사가 없습니다. 기간을 넓히거나 상위 지역을 선택해보세요.';
+    if(showEmpty)$('map-message').textContent=!hasValidSnapshot?(refreshStatus.includes('실패')?'검증된 기사 데이터를 불러오지 못했습니다. 다시 확인해 주세요.':'검증된 기사 데이터를 불러오는 중입니다.'):state.viewport?'현재 지도 안에 모인 기사가 없습니다. 지도를 더 멀리 보거나 기간을 넓혀보세요.':'이 조건에 수집된 기사가 없습니다. 기간을 넓히거나 상위 지역을 선택해보세요.';
   }
   function render(mode='push'){if(mode==='push')visibleLimit=PAGE_SIZE;renderList();renderMarkers();updateUrl(mode);}
   function openMapPreview(group,clustered){
@@ -234,7 +245,7 @@
   function fitNational(){
     const mobile=matchMedia('(max-width:700px)').matches;
     const bounds=mobile?[[33.05,125.7],[38.65,129.65]]:[[33.05,124.9],[38.65,130.0]];
-    map.fitBounds(bounds,{paddingTopLeft:[mobile?10:35,mobile?62:90],paddingBottomRight:[mobile?10:35,mobile?132:45],animate:false});
+    map.fitBounds(bounds,{paddingTopLeft:[mobile?10:35,mobile?62:90],paddingBottomRight:[mobile?10:35,mobile?132:105],animate:false});
   }
   function drawBoundary(){
     if(!map)return;
@@ -319,7 +330,7 @@
   }
   $('article-list').addEventListener('click',markArticleRead);
   $('article-list').addEventListener('auxclick',markArticleRead);
-  $('article-list').addEventListener('click',event=>{if(event.target.id==='load-more'){visibleLimit+=PAGE_SIZE;renderList();return;}if(event.target.id!=='empty-reset')return;if(state.onlyNew){state.onlyNew=false;render();}else if(state.period!=='all'){state.period='all';render();}else selectPlace(nodes[state.region]?.parent||'');});
+  $('article-list').addEventListener('click',event=>{if(event.target.id==='retry-data'){if(!$('refresh').disabled)refreshData();return;}if(event.target.id==='load-more'){visibleLimit+=PAGE_SIZE;renderList();return;}if(event.target.id!=='empty-reset')return;if(state.onlyNew){state.onlyNew=false;render();}else if(state.period!=='all'){state.period='all';render();}else selectPlace(nodes[state.region]?.parent||'');});
   $('reset-map').addEventListener('click',()=>selectPlace(''));
   $('zoom-in').addEventListener('click',()=>{userMapInteraction=true;map?.zoomIn();});
   $('zoom-out').addEventListener('click',()=>{userMapInteraction=true;map?.zoomOut();});
@@ -361,16 +372,17 @@
     const timeout=window.setTimeout(()=>finish(false),15000);
     const finish=ok=>{
       if(finished)return;finished=true;window.clearTimeout(timeout);
-      refreshStatus=ok?'배포된 데이터 확인 완료':'재확인 실패 · 기존 기사 유지';
+      refreshStatus=ok?'배포된 데이터 확인 완료':hasValidSnapshot?'재확인 실패 · 기존 기사 유지':'데이터 로드 실패 · 다시 확인해 주세요.';
       button.disabled=false;button.removeAttribute('aria-busy');script.remove();
       if(!ok)window.NEWSMAP_ARTICLES=payload;
-      if(!silent||changed)render('replace');
+      if(!silent||changed||!hasValidSnapshot)render('replace');else updateDataStatus();
     };
     script.onload=()=>{
+      if(finished){window.NEWSMAP_ARTICLES=payload;return;}
       const next=window.NEWSMAP_ARTICLES;
-      const valid=Array.isArray(next?.articles)&&Number.isFinite(Date.parse(next?.collectedAt))&&next.articles.every(a=>a&&typeof a.id==='string'&&typeof a.title==='string'&&Number.isFinite(Date.parse(a.publishedAt))&&Array.isArray(a.places)&&(a.places.length||a.newsCategory)&&a.places.every(p=>nodes[p])&&(!a.relatedPlaces||(Array.isArray(a.relatedPlaces)&&a.relatedPlaces.every(p=>nodes[p])))&&safeUrl(a.url));
-      changed=valid&&next.collectedAt!==payload.collectedAt;
-      if(valid)payload=next;
+      const valid=rules.validSnapshot(next,{nodes,previousTime:Date.parse(payload.collectedAt),now:now()});
+      changed=valid&&(next.collectedAt!==payload.collectedAt||JSON.stringify(next.articles)!==JSON.stringify(payload.articles));
+      if(valid){payload=next;hasValidSnapshot=true;recordObservedVisit();}
       finish(valid);
     };
     script.onerror=()=>finish(false);

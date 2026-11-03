@@ -17,3 +17,5 @@ console.log('PASS: only two modes, policy version gate, international mixed-feed
 assert.doesNotMatch(html,/id="category-(?:panel|toggle)"/);
 assert.match(html,/<div id="news-modes"[^>]*role="group"[^>]*>/);
 assert.doesNotMatch(html,/<div id="news-modes"[^>]*hidden/);
+
+require('./snapshot.cjs');

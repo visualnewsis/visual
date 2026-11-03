@@ -9,7 +9,7 @@ const make=(id,minutes)=>({id,publishedAt:new Date(time-minutes*60000).toISOStri
 const first={collectedAt:new Date(time).toISOString(),articles:[make('recent',2),make('older',30)]};
 function boot(payload){
   const timers=[];
-  const ctx={Date,Set,JSON,payload,now:()=>time,store:{get:k=>storage.get(k),set:(k,v)=>storage.set(k,v)},window:{clearTimeout(){},setTimeout:(fn,delay)=>{timers.push({fn,delay});return timers.length;}},renderMarkers(){}};
+  const ctx={Date,Set,JSON,payload,hasValidSnapshot:true,now:()=>time,store:{get:k=>storage.get(k),set:(k,v)=>storage.set(k,v)},window:{clearTimeout(){},setTimeout:(fn,delay)=>{timers.push({fn,delay});return timers.length;}},renderMarkers(){}};
   vm.createContext(ctx);vm.runInContext(helpers+'\nthis.api={syncPulseBatch,hasUnreadPulse,readArticles};',ctx);
   ctx.api.syncPulseBatch();return {ctx,timers,api:ctx.api};
 }
