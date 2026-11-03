@@ -1,4 +1,4 @@
-import './braille-experience.mjs';
+import './braille-experience.js';
 const toggle = document.getElementById('dot-one');
 const fallback = document.getElementById('dot-one-fallback');
 const flip = document.getElementById('flip-paper');

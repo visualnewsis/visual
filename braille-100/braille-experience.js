@@ -129,7 +129,7 @@ if (form) {
     form.setAttribute('aria-busy', 'true');
     status.textContent = '당신이 쓴 말을 점자로 옮기고 있습니다.';
     try {
-      const {loadBrailleEngine} = await import('./braille-engine.mjs');
+      const {loadBrailleEngine} = await import('./braille-engine.js');
       const translate = await loadBrailleEngine();
       if (revision !== currentRevision) { status.textContent = '말을 고쳤습니다. 다시 점자로 옮겨보세요.'; return; }
       const translated = translate(text);
