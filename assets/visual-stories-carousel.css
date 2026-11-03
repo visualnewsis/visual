@@ -13,3 +13,6 @@
 .vns-carousel-copy{position:absolute;inset:auto 28px 30px}.vns-carousel-copy small{display:block;color:#7de4ed;font-size:10px;font-weight:800;letter-spacing:.06em}.vns-carousel-copy strong{display:block;margin-top:16px;font-size:clamp(31px,3vw,49px);line-height:1.05;letter-spacing:-.055em}.vns-carousel-copy i{display:block;margin-top:26px;font-size:11px;font-style:normal;font-weight:800;letter-spacing:.08em}
 @media(max-width:720px){.vns-carousel{padding-inline:20px}.vns-carousel-head{display:block}.vns-carousel-tools{margin-top:22px}.vns-carousel-all{font-size:11px}.vns-carousel-button{display:none}.vns-carousel-track{grid-auto-columns:82vw;gap:12px}.vns-carousel-card{min-height:310px}.vns-carousel-copy{inset:auto 24px 25px}.vns-carousel-copy strong{font-size:37px}.vns-carousel-copy i{margin-top:20px}}
 @media(prefers-reduced-motion:reduce){.vns-carousel-track{scroll-behavior:auto}.vns-carousel-card img{transition:none}}
+
+.vns-carousel-card[href="/braille-100/"] strong{font-size:clamp(18px,2.5vw,39px);line-height:1.18}.vns-braille-title-line{white-space:nowrap}
+@media(max-width:720px){.vns-carousel-card[href="/braille-100/"] strong{font-size:clamp(24px,7.6vw,37px)}}

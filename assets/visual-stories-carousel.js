@@ -28,7 +28,7 @@
     {slug:"spai",num:"024",meta:"AI 직원 감시 · 근무 기록 · 인터랙티브",title:"“쟤 지금 딴짓해요”<br>회사가 고용한 SPAI",image:"/spai/images/og-spai-1200x630.jpg",alt:"밤늦은 사무실에서 모니터 앞에 앉은 직원의 뒷모습과 천장의 감시 카메라"},
     {slug:"quit",num:"025",meta:"퇴사 후 생활비 · 통장 잔고 · 인터랙티브",title:"퇴사할게여 · 내 통장 몇 달 버틸 수 있을까",image:"/quit/images/site-thumbnail-360x240.jpg",alt:"사직서를 내미는 직장인과 퇴사 후 통장 잔고를 묻는 문구, 생성형 AI 이미지"},
     {slug:"running",num:"026",meta:"러닝 안전 · 응급대응 · 인터랙티브",title:"끝까지 달릴 준비, 도중에 멈출 대비",image:"/assets/landing/story-running.webp",alt:"강변 코스를 따라 달리는 뉴시스 바다마라톤 참가자들"},
-    {slug:"braille-100",num:"027",meta:"훈맹정음 100년 · 한글 점자 · 인터랙티브",title:"점점⠿ 문장이 손에 잡혔다",image:"/braille-100/images/contact-720.jpg",alt:"점자책 위에 놓인 손끝. 사진 김종택 기자"}
+    {slug:"braille-100",num:"027",meta:"훈맹정음 100년 · 한글 점자 · 인터랙티브",title:"점점⠿<br><span class='vns-braille-title-line'>문장이 손에 잡혔다</span>",image:"/braille-100/images/contact-720.jpg",alt:"점자책 위에 놓인 손끝. 사진 김종택 기자"}
 
   ];
   const mount=host=>{
