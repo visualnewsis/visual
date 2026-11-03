@@ -148,3 +148,16 @@
 @media(max-width:599px){.card-actions{gap:10px}.card-actions>*{flex:1;padding-inline:12px}}
 
 .card-copy-link+.card-copy-link{margin-left:20px}
+
+/* Keep the optional lesson after the ending, with a clear destination and one action. */
+.article-page .learn-invitation{display:block;border:0;padding-block:0;margin-bottom:60px}
+.article-page .learn-invitation>a.learn-invitation-card{display:flex;align-items:center;justify-content:space-between;gap:32px;white-space:normal;padding:30px 34px;border:1px solid #aebfae;border-left:4px solid #276b5e;background:#e9ede3;text-decoration:none;color:#20241f;transition:background .15s ease}
+.learn-invitation-card:hover{background:#e1e8db!important}
+.learn-invitation-card:focus-visible{outline:3px solid #276b5e;outline-offset:5px}
+.article-page .learn-invitation .section-label{font-size:11px;margin-bottom:13px;color:#276b5e}
+.learn-invitation .new-tab-label{margin-left:14px;padding-left:14px;border-left:1px solid #aebfae;font-weight:400;color:#53634d;white-space:nowrap}
+.article-page .learn-invitation h2{font:500 28px/1.5 var(--serif);letter-spacing:-.04em;margin:0 0 10px;color:#20241f}
+.article-page .learn-invitation p{font-size:15px;line-height:1.8;color:#53634d;margin:0}
+.learn-invitation-action{flex:none;font-size:14px;font-weight:600;color:#276b5e;text-decoration:underline;text-underline-offset:5px}
+@media(max-width:699px){.article-page .learn-invitation{margin-bottom:40px}.article-page .learn-invitation>a.learn-invitation-card{display:block;margin-top:0;padding:24px}.article-page .learn-invitation h2{font-size:25px}.article-page .learn-invitation p{font-size:14px}.learn-invitation-action{display:inline-block;margin-top:22px}}
+@media(prefers-reduced-motion:reduce){.learn-invitation-card{transition:none!important}}
