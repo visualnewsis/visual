@@ -64,7 +64,7 @@ async function makeCard(text) {
   ctx.fillRect(0, 0, canvas.width, canvas.height);
   ctx.fillStyle = '#193f37';
   ctx.font = '400 32px "Noto Sans KR", sans-serif';
-  ctx.fillText('당신에게 전하는 말', 90, 112);
+  ctx.fillText('점자로 적은 말', 90, 112);
   const top = 205 + Math.max(0, (canvas.height - 400 - rows.length * 100) / 2);
   rows.forEach((row, line) => row.forEach((char, col) => {
     if (/\s/.test(char)) return;
@@ -82,7 +82,7 @@ async function makeCard(text) {
   ctx.fillRect(90, canvas.height - 170, 900, 1);
   ctx.fillStyle = '#193f37';
   ctx.font = '500 25px "Noto Sans KR", sans-serif';
-  ctx.fillText('나도 만들어보기 · visual.newsis.com/braille-100/', 90, canvas.height - 117);
+  ctx.fillText('내 말도 점자로 · visual.newsis.com/braille-100/', 90, canvas.height - 117);
   ctx.fillStyle = '#59675d';
   ctx.font = '400 22px "Noto Sans KR", sans-serif';
   ctx.fillText('훈맹정음 100년 · VISUAL NEWSIS', 90, canvas.height - 72);
@@ -104,7 +104,7 @@ if (card) {
     }
     shareButton.disabled = true;
     try {
-      await navigator.share({files, title: '점자로 전하는 한마디', text: `${cardBraille}\n\n나도 만들어보기\n${makeYourOwnUrl}`});
+      await navigator.share({files, title: '점자로 적은 말', text: `${cardBraille}\n\n내 말도 점자로\n${makeYourOwnUrl}`});
       if (revision === currentRevision) shareStatus.textContent = '공유창을 닫았습니다. 앱에 따라 안내 글이 빠졌다면 아래에서 기사 링크를 복사해주세요.';
     } catch (error) {
       if (revision === currentRevision) shareStatus.textContent = error.name === 'AbortError' ? '공유를 취소했습니다.' : '공유창을 열지 못했습니다. 이미지를 저장하거나 기사 링크를 복사해주세요.';
@@ -124,10 +124,10 @@ if (card) {
   });
   document.getElementById('message-copy-link').addEventListener('click', async () => {
     try {
-      await navigator.clipboard.writeText(`나도 만들어보기\n${makeYourOwnUrl}`);
-      shareStatus.textContent = '‘나도 만들어보기’ 기사 링크를 복사했습니다.';
+      await navigator.clipboard.writeText(makeYourOwnUrl);
+      shareStatus.textContent = '점자 체험 링크를 복사했습니다.';
     } catch {
-      shareStatus.textContent = `아래 주소를 복사해 전해주세요: ${makeYourOwnUrl}`;
+      shareStatus.textContent = `이 주소를 복사해 주세요: ${makeYourOwnUrl}`;
     }
   });
 }
