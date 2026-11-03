@@ -132,3 +132,19 @@
 
 /* Counted blank cells in the greeting example; hero and free-input spacing stays unchanged. */
 .greeting-result{--greeting-cell-width:32px;--greeting-cell-height:46px}.greeting-result .greeting-blank{width:var(--greeting-cell-width);height:var(--greeting-cell-height);border:1px dashed #89947e;flex:none}@media(max-width:699px){.greeting-result{--greeting-cell-width:27px;--greeting-cell-height:39px}}
+
+/* A locally generated card, shown only after a message has been translated. */
+.article-page .message-card{margin-top:32px;padding-top:28px;border-top:1px solid #65877c}
+.article-page .message-card .card-caption{font-size:13px;letter-spacing:.03em;margin-bottom:16px}
+.message-card img{display:block;width:100%;max-width:540px;height:auto;background:#f5f2eb}
+.card-actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:20px}
+.card-actions button,.card-actions a{display:inline-flex;align-items:center;justify-content:center;min-height:48px;padding:13px 22px;border:1px solid #f5f2eb;background:#f5f2eb;color:#193f37;font:500 14px/1.5 var(--sans);text-decoration:none;cursor:pointer}
+.card-actions a{background:transparent;color:#f5f2eb}
+.card-actions button:disabled{opacity:.6;cursor:wait}
+.card-actions a:not([href]){pointer-events:none;opacity:.6}
+.article-page .card-copy-link{display:inline-block;margin-top:22px;padding:6px 0;border:0;background:none;color:#e2e9db;font:400 14px/1.8 var(--sans);text-decoration:underline;text-underline-offset:4px;cursor:pointer}
+.article-page .message-card .card-help,.article-page .message-card .card-status{font-size:13px;line-height:1.85;color:#e2e9db;margin-top:14px;overflow-wrap:anywhere}
+.card-actions :focus-visible,.card-copy-link:focus-visible{outline:3px solid #e9cba2;outline-offset:4px}
+@media(max-width:599px){.card-actions{gap:10px}.card-actions>*{flex:1;padding-inline:12px}}
+
+.card-copy-link+.card-copy-link{margin-left:20px}
