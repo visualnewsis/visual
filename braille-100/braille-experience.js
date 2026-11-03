@@ -268,11 +268,18 @@ if (form) {
       try {
         await document.fonts?.ready;
         const file = await makeCard(translated);
+        // Production img-src permits data: previews, but intentionally excludes blob:.
+        const previewSource = await new Promise((resolve, reject) => {
+          const reader = new FileReader();
+          reader.onload = () => resolve(reader.result);
+          reader.onerror = () => reject(new Error('Card preview unavailable'));
+          reader.readAsDataURL(file);
+        });
         if (revision !== currentRevision) return;
         cardFile = file;
         cardBraille = translated;
         cardUrl = URL.createObjectURL(file);
-        cardPreview.src = cardUrl;
+        cardPreview.src = previewSource;
         saveLink.href = cardUrl;
         shareButton.disabled = false;
         card.hidden = false;
