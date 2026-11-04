@@ -143,7 +143,7 @@
 .card-actions button:disabled{opacity:.6;cursor:wait}
 .card-actions a:not([href]){pointer-events:none;opacity:.6}
 .article-page .card-copy-link{display:inline-block;margin-top:22px;padding:6px 0;border:0;background:none;color:#e2e9db;font:400 14px/1.8 var(--sans);text-decoration:underline;text-underline-offset:4px;cursor:pointer}
-.article-page .message-card .card-help,.article-page .message-card .card-status{font-size:13px;line-height:1.85;color:#e2e9db;margin-top:14px;overflow-wrap:anywhere}
+.article-page .message-card .card-help,.article-page .message-result>.card-status{font-size:13px;line-height:1.85;color:#e2e9db;margin-top:14px;overflow-wrap:anywhere}
 .card-actions :focus-visible,.card-copy-link:focus-visible{outline:3px solid #e9cba2;outline-offset:4px}
 @media(max-width:599px){.card-actions{gap:10px}.card-actions>*{flex:1;padding-inline:12px}}
 
@@ -164,3 +164,7 @@
 
 .article-page #message-braille{font-family:"Segoe UI Symbol","Apple Symbols","Noto Sans Symbols 2",sans-serif;font-size:clamp(30px,5vw,44px);line-height:1.8;letter-spacing:.12em;color:#f5f2eb;white-space:pre-wrap;overflow-wrap:anywhere;-webkit-user-select:text;user-select:text;-webkit-touch-callout:default;cursor:text}
 .article-page #message-braille::selection{background:#e9cba2;color:#193f37}
+
+.article-page .message-use-hint{font-size:13px;line-height:1.85;color:#e2e9db;margin-top:12px}.message-actions{margin-top:20px}.card-actions .image-options-toggle{background:transparent;color:#f5f2eb;gap:12px}.image-options-toggle .disclosure-arrow{width:7px;height:7px;flex:none;border-right:1.5px solid currentColor;border-bottom:1.5px solid currentColor;transform:rotate(45deg);transition:transform .15s}.image-options-toggle[aria-expanded="true"] .disclosure-arrow{transform:rotate(225deg)}.message-card .card-actions{margin-top:0}.message-card img{max-width:360px;margin-top:18px}.message-card .card-help{margin-bottom:0}
+
+.message-actions>button{white-space:nowrap}@media(max-width:599px){.message-actions #message-copy-braille{flex:0 0 auto;min-width:100px}.message-actions .image-options-toggle{flex:1}}

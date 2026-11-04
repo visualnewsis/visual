@@ -12,6 +12,9 @@ const cardPreview = document.getElementById('message-card-preview');
 const shareButton = document.getElementById('message-share');
 const saveLink = document.getElementById('message-save');
 const shareStatus = document.getElementById('message-share-status');
+const copyBrailleButton = document.getElementById('message-copy-braille');
+const imageToggle = document.getElementById('message-image-toggle');
+const imageLabel = document.getElementById('message-image-label');
 const makeYourOwnUrl = 'https://visual.newsis.com/braille-100/#your-message';
 let cardFile;
 let cardBraille;
@@ -23,6 +26,9 @@ function clearCard() {
   if (cardUrl) URL.revokeObjectURL(cardUrl);
   cardUrl = undefined;
   if (card) card.hidden = true;
+  if (copyBrailleButton) copyBrailleButton.disabled = true;
+  if (imageToggle) { imageToggle.disabled = true; imageToggle.setAttribute('aria-expanded', 'false'); imageToggle.removeAttribute('aria-busy'); }
+  if (imageLabel) imageLabel.textContent = '이미지 공유·저장';
   cardPreview?.removeAttribute('src');
   saveLink?.removeAttribute('href');
   if (shareButton) shareButton.disabled = true;
@@ -92,6 +98,11 @@ async function makeCard(text) {
 }
 
 if (card) {
+  imageToggle.addEventListener('click', () => {
+    if (!cardFile) return;
+    card.hidden = !card.hidden;
+    imageToggle.setAttribute('aria-expanded', String(!card.hidden));
+  });
   shareButton.addEventListener('click', async () => {
     if (!cardFile) return;
     const files = [cardFile];
@@ -111,7 +122,7 @@ if (card) {
       if (revision === currentRevision && cardFile) shareButton.disabled = false;
     }
   });
-  document.getElementById('message-copy-braille').addEventListener('click', async () => {
+  copyBrailleButton.addEventListener('click', async () => {
     if (!cardBraille) return;
     const currentRevision = revision;
     try {
@@ -261,6 +272,10 @@ if (form) {
       if (!translated || /[^\u2800-\u28ff\s]/u.test(translated)) throw new Error('지원하지 않는 표현');
       original.textContent = text;
       braille.textContent = translated;
+      cardBraille = translated;
+      copyBrailleButton.disabled = false;
+      imageLabel.textContent = '이미지 준비 중';
+      imageToggle.setAttribute('aria-busy', 'true');
       result.hidden = false;
       status.textContent = '점자로 옮겼습니다. 아래에서 확인해보세요.';
       try {
@@ -280,9 +295,15 @@ if (form) {
         cardPreview.src = previewSource;
         saveLink.href = cardUrl;
         shareButton.disabled = false;
-        card.hidden = false;
+        imageToggle.disabled = false;
+        imageToggle.removeAttribute('aria-busy');
+        imageLabel.textContent = '이미지 공유·저장';
       } catch {
-        if (revision === currentRevision) status.textContent = '점자로 옮겼습니다. 공유 이미지는 준비하지 못했습니다. 다시 시도해주세요.';
+        if (revision === currentRevision) {
+          imageToggle.removeAttribute('aria-busy');
+          imageLabel.textContent = '이미지 준비 실패';
+          status.textContent = '점자는 복사할 수 있습니다. 이미지는 준비하지 못했습니다. 다시 점자로 옮기면 재시도합니다.';
+        }
       }
     } catch {
       result.hidden = true;
