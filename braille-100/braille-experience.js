@@ -6,7 +6,6 @@ const result = document.getElementById('message-result');
 const submit = document.getElementById('message-submit');
 const original = document.getElementById('message-original');
 const braille = document.getElementById('message-braille');
-const dots = document.getElementById('message-dots');
 let revision = 0;
 const card = document.getElementById('message-card');
 const cardPreview = document.getElementById('message-card-preview');
@@ -133,7 +132,7 @@ if (card) {
 }
 
 
-function renderDots(text, target = dots) {
+function renderDots(text, target) {
   const fragment = document.createDocumentFragment();
   let word;
   let position = 0;
@@ -262,7 +261,6 @@ if (form) {
       if (!translated || /[^\u2800-\u28ff\s]/u.test(translated)) throw new Error('지원하지 않는 표현');
       original.textContent = text;
       braille.textContent = translated;
-      renderDots(translated);
       result.hidden = false;
       status.textContent = '점자로 옮겼습니다. 아래에서 확인해보세요.';
       try {

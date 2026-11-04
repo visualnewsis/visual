@@ -161,3 +161,6 @@
 .learn-invitation-action{flex:none;font-size:14px;font-weight:600;color:#276b5e;text-decoration:underline;text-underline-offset:5px}
 @media(max-width:699px){.article-page .learn-invitation{margin-bottom:40px}.article-page .learn-invitation>a.learn-invitation-card{display:block;margin-top:0;padding:24px}.article-page .learn-invitation h2{font-size:25px}.article-page .learn-invitation p{font-size:14px}.learn-invitation-action{display:inline-block;margin-top:22px}}
 @media(prefers-reduced-motion:reduce){.learn-invitation-card{transition:none!important}}
+
+.article-page #message-braille{font-family:"Segoe UI Symbol","Apple Symbols","Noto Sans Symbols 2",sans-serif;font-size:clamp(30px,5vw,44px);line-height:1.8;letter-spacing:.12em;color:#f5f2eb;white-space:pre-wrap;overflow-wrap:anywhere;-webkit-user-select:text;user-select:text;-webkit-touch-callout:default;cursor:text}
+.article-page #message-braille::selection{background:#e9cba2;color:#193f37}
