@@ -1,5 +1,5 @@
 :root{
-  --ink:#1d2226;--ink-2:#454c53;--gray:#848b93;--line:#d5d9dd;--fill:#e6e8ea;
+  --ink:#1d2226;--ink-2:#454c53;--gray:#626b73;--line:#d5d9dd;--fill:#e6e8ea;
   --paper:#f2f3f1;--white:#fff;
   --night:#0c1115;--night-2:#141b21;--night-line:#26313a;--night-text:#c9d2d6;
   --flag:#ff5a36;--flag-soft:#ffe3da;
@@ -67,7 +67,7 @@ section{position:relative;scroll-margin-top:56px}
 .hero-sub em{font-style:normal;color:var(--mint)}
 .spai-word{letter-spacing:.01em}
 .hero-lead{margin:30px 0 0;font-size:clamp(16px,1.5vw,20px);line-height:1.7;color:var(--night-text)}
-.hero-byline{margin:16px 0 0;font-size:12.5px;color:#6f8089}
+.hero-byline{margin:16px 0 0;font-size:12.5px;color:#a3b3bc}
 .hero-scroll{position:absolute;left:50%;bottom:26px;transform:translateX(-50%);font-size:13px;font-weight:700;color:#9fb0b7;text-decoration:none;white-space:nowrap}
 
 /* S1 실제 사례 */
@@ -114,7 +114,7 @@ section{position:relative;scroll-margin-top:56px}
 .sim-brand small::before{content:"";display:inline-block;width:7px;height:7px;margin-right:6px;border-radius:50%;background:var(--flag);vertical-align:1px;animation:blink 1.4s infinite}
 @keyframes blink{50%{opacity:.2}}
 .sim-progress{display:flex;gap:6px;list-style:none;margin:0;padding:0}
-.sim-progress li{font-family:var(--mono);font-size:12px;padding:4px 8px;border:1px solid var(--night-line);border-radius:3px;color:#6f8089}
+.sim-progress li{font-family:var(--mono);font-size:12px;padding:4px 8px;border:1px solid var(--night-line);border-radius:3px;color:#a3b3bc}
 .sim-progress li.is-done{color:var(--night-text);border-color:#3c4a55}
 .sim-progress li.is-current{color:var(--night);background:var(--mint);border-color:var(--mint)}
 .sim-stage{padding:34px 0 10px;outline:none}
@@ -122,7 +122,7 @@ section{position:relative;scroll-margin-top:56px}
 .scene-name{margin:12px 0 0;font-size:14px;font-weight:700;letter-spacing:.08em;color:#8fa0a8}
 .scene-prompt{margin:16px 0 26px;font-size:clamp(20px,2.4vw,28px);font-weight:800;line-height:1.45;letter-spacing:-.03em}
 .choices{display:grid;gap:10px;list-style:none;margin:0;padding:0}
-.choice{display:block;width:100%;text-align:left;padding:18px 20px;border:1px solid var(--night-line);border-radius:8px;background:var(--night-2);color:#fff;cursor:pointer;transition:border-color .2s,background .2s}
+.choice{display:block;width:100%;text-align:left;padding:18px 20px;border:1px solid var(--night-line);border-radius:8px;background:var(--night-2);color:#fff;cursor:pointer;transition:border-color .2s,background .2s;scroll-margin-top:calc(80px + env(safe-area-inset-top,0px));scroll-margin-bottom:110px}
 .choice:hover{border-color:#4b5b66}
 .choice[aria-checked=true]{border-color:var(--mint);background:#0f2a30}
 .choice strong{display:block;font-size:17px;font-weight:800}
@@ -132,7 +132,7 @@ section{position:relative;scroll-margin-top:56px}
 .trace-head{display:block;margin-bottom:4px;color:var(--flag);font-size:11.5px;letter-spacing:.08em}
 .trace-line{display:block;opacity:0;transform:translateY(4px);transition:opacity .3s,transform .3s}
 .trace-line.is-in{opacity:1;transform:none}
-.trace-empty{color:#4b5b66}
+.trace-empty{color:#a3b3bc}
 .sim-nav{display:flex;justify-content:space-between;gap:12px;padding-top:22px}
 .sim .btn-ghost{border-color:var(--night-line);color:var(--night-text)}
 .sim .btn-primary{background:var(--mint);color:var(--night)}
@@ -194,13 +194,19 @@ section{position:relative;scroll-margin-top:56px}
 .bk-verdict--over{background:#f8e0cf;color:#a3461a}
 .bk-verdict--match{background:#e4e9d9;color:#4d5b3c}
 .bk-caveat{margin:8px 0 0;font-size:12.5px;line-height:1.65;color:#8a7a66}
+.bk-detail{margin-top:12px}
+.bk-detail summary{width:fit-content;min-height:44px;display:list-item;padding:10px 0;cursor:pointer;font-size:13px;font-weight:700;color:#655746}
+.bk-detail summary:focus-visible{outline:3px solid var(--mint-dark);outline-offset:3px}
+.bk-detail .bk-caveat{margin:0;color:#655746}
 .bk-foot{padding:18px 28px 24px;border-top:2px solid var(--warm-ink);font-size:13.5px;line-height:1.7;font-weight:700}
 
-.flip-actions{display:flex;flex-direction:column;align-items:center;gap:10px;margin-top:34px}
-.btn-flip{display:inline-flex;align-items:center;gap:10px;border:0;border-radius:999px;padding:18px 30px;background:var(--mint);color:var(--night);font-size:17px;font-weight:900;cursor:pointer;box-shadow:0 0 0 0 rgba(0,180,201,.5);animation:pulse 2.2s infinite}
+.flip-actions{position:sticky;top:calc(64px + env(safe-area-inset-top,0px));z-index:4;display:flex;flex-direction:column;align-items:center;gap:8px;margin:0 auto 24px;padding:12px;background:var(--night);border-bottom:1px solid var(--night-line)}
+.face :is(summary,[tabindex]){scroll-margin-top:calc(184px + env(safe-area-inset-top,0px))}
+@media(max-height:650px){.flip-actions{padding:8px}.flip-actions .btn-flip{padding:10px 20px;min-height:44px;font-size:15px}.flip-actions .flip-hint{display:none}}
+.btn-flip{display:inline-flex;align-items:center;gap:10px;border:0;border-radius:999px;padding:18px 30px;background:var(--mint);color:var(--night);font-size:17px;font-weight:900;cursor:pointer;animation:none}
 .btn-flip[aria-pressed=true]{animation:none;background:#2a353d;color:#fff}
 .flip-icon{font-size:22px;line-height:1}
-.flip-hint{margin:0;font-size:12.5px;color:#6f8089}
+.flip-hint{margin:0;font-size:12.5px;color:#a3b3bc}
 @keyframes pulse{70%{box-shadow:0 0 0 18px rgba(0,180,201,0)}100%{box-shadow:0 0 0 0 rgba(0,180,201,0)}}
 
 /* S6 결론 */
@@ -246,6 +252,7 @@ section{position:relative;scroll-margin-top:56px}
   .spec-row>[role=cell]:nth-child(2)::before{content:"ActivTrak"}
   .spec-row>[role=cell]:nth-child(3)::before{content:"Insightful";margin-top:6px}
   .sim{align-items:flex-start}
+  .sim-nav{position:sticky;bottom:0;z-index:3;padding:14px 0 max(14px,env(safe-area-inset-bottom));background:var(--night);border-top:1px solid var(--night-line)}
   .sim-top{flex-direction:column;align-items:flex-start}
   .rp-head{flex-direction:column;padding:18px}
   .rp-meta{text-align:left}

@@ -64,7 +64,7 @@
     if(picked)stage.querySelectorAll(".trace-line").forEach(l=>l.classList.add("is-in"));
     prevBtn.disabled=index===0;
     nextBtn.disabled=!picked;
-    nextBtn.innerHTML=index===scenes.length-1?"보고서 받기 →":"다음 →";
+    nextBtn.innerHTML=index===scenes.length-1?"보고서 보기 →":"다음 장면 →";
     renderProgress();
     if(focus)$("scenePrompt").focus({preventScroll:true});
   }
@@ -159,7 +159,7 @@
     back.innerHTML=`
       <header class="bk-head">
         <p class="bk-kicker">보고서 뒷면</p>
-        <h3 class="bk-title" id="back-title" tabindex="-1">기록에 없는 하루</h3>
+        <h3 class="bk-title" id="back-title" tabindex="-1">실제로 한 일</h3>
       </header>
       <ol class="bk-rows">
         ${data.rows.map(r=>`<li class="bk-row" data-verdict="${r.back.verdict}">
@@ -170,13 +170,13 @@
             <p class="bk-real">${r.back.realContext}</p>
             <p class="bk-reveal">${r.back.flipReveal}</p>
             <span class="bk-verdict bk-verdict--${r.back.verdict}">${r.back.verdictLabel}</span>
-            <p class="bk-caveat">${r.back.caveat}</p>
+            <details class="bk-detail"><summary>분류 기준과 한계</summary><p class="bk-caveat">${r.back.caveat}</p></details>
           </div>
         </li>`).join("")}
       </ol>
       <footer class="bk-foot">
         <div class="grade-stamp grade-stamp--faded" aria-hidden="true"><span>고과</span><strong>${data.grade}</strong></div>
-        <p>고과 ${data.grade}는 의심 항목 ${data.flags}건만 반영했다. 뒷면의 업무 맥락은 평가에 들어가지 않았다. 이 규칙에서는 어떤 선택을 해도 A가 나오지 않는다. 14시 30분의 동영상 사이트 25분이 업무 영상이든 아니든 언제나 비업무 의심으로 잡히기 때문이다.</p>
+        <p>고과 ${data.grade}는 '맥락 확인 필요'·'비업무 의심' ${data.flags}건만으로 매겼다. 실제로 한 일은 반영하지 않았다. 14시 30분의 동영상 사이트 이용은 업무 영상이어도 비업무 의심으로 분류돼, 이 체험에서는 A가 나오지 않는다.</p>
       </footer>`;
     // 기록이 맞은 행은 앞면 해석에 취소선을 긋지 않는다.
     back.querySelectorAll('.bk-row[data-verdict="match"] .bk-was').forEach(el=>el.style.textDecoration="none");
@@ -196,10 +196,10 @@
     const t=data.tally;
     $("verdictTally").innerHTML=`선택한 ${data.rows.length}개 구간 · 기록이 놓친 일 <b>${t.under}</b> · 업무로만 잡힌 기록 <b>${t.over}</b> · 기록과 일치 <b>${t.match}</b>`;
     $("verdict-title").innerHTML=`의심 기록 ${data.flags}개 구간,<br><span>실제로 일을 쉰 구간은 ${data.offTask}개</span>`;
-    const lines=[`선택한 네 구간 가운데 SPAI가 '맥락 확인 필요'나 '비업무 의심'으로 표시한 구간은 ${data.flags}개다. 이 중 실제로 일을 하지 않은 구간은 ${data.offTask?"개인 영상을 본 25분 하나다":"없다"}.`];
+    const lines=[];
     if(missed.length){const w=missed.join(", ");lines.push(`기록에 제대로 잡히지 않은 일은 ${w}${josa(w,"이었다","였다")}.`)}
     if(inflated.length){const w=inflated.join(", ");lines.push(`${w}${josa(w,"은","는")} 업무 앱 사용으로 분류됐지만, 무엇을 남겼고 무슨 이야기를 했는지는 기록되지 않았다.`)}
-    lines.push(`고과 ${data.grade}는 PC 기록만으로 매겨졌다. 실제 업무 내용은 평가에 들어가지 않았다.`);
+
     $("verdictBody").innerHTML=lines.map(l=>`<p>${l}</p>`).join("");
   }
 
@@ -207,12 +207,16 @@
     flipped=on;
     card.classList.toggle("is-flipped",on);
     flipBtn.setAttribute("aria-pressed",on);
-    flipLabel.textContent=on?"앞면 다시 보기":"보고서 뒤집어 보기";
+    flipLabel.textContent=on?"PC 기록 다시 보기":"실제로 한 일 보기";
     front.inert=on;back.inert=!on;
     fitCard();
     front.setAttribute("aria-hidden",on);back.setAttribute("aria-hidden",!on);
     if(on&&verdict.hidden){verdict.hidden=false;$("flipHint").textContent="앞뒤를 다시 비교해 보세요."}
-    if(moveFocus)setTimeout(()=>(on?$("back-title"):$("front-title")).focus({preventScroll:true}),reduceMotion?0:600);
+    if(moveFocus)setTimeout(()=>{
+      const title=on?$("back-title"):$("front-title");
+      title.focus({preventScroll:true});
+      title.scrollIntoView({behavior:reduceMotion?"auto":"smooth",block:"start"});
+    },reduceMotion?0:600);
   }
 
   // 도장은 보고서 하단이 화면에 들어올 때 찍힌다.
@@ -238,6 +242,8 @@
     if(report.hidden)return;
     card.style.height=(flipped?back:front).offsetHeight+"px";
   }
+  card.addEventListener("toggle",fitCard,true);
+  if(window.ResizeObserver){const cardSize=new ResizeObserver(fitCard);cardSize.observe(front);cardSize.observe(back);}
   addEventListener("resize",fitCard,{passive:true});
   if(document.fonts)document.fonts.ready.then(fitCard);
 

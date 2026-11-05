@@ -214,6 +214,15 @@
   var copyOpinion = document.getElementById('opinion-copy');
   var opinionStatus = document.getElementById('opinion-status');
   if (opinionText && copyOpinion && opinionStatus) {
+    function updateOpinionCount() {
+      document.getElementById('opinion-count').textContent = opinionText.value.length + ' / 3000자';
+    }
+    updateOpinionCount();
+    window.addEventListener('pageshow', updateOpinionCount);
+    opinionText.addEventListener('input', function () {
+      updateOpinionCount();
+      opinionStatus.textContent = '';
+    });
     copyOpinion.addEventListener('click', async function () {
       var text = opinionText.value.trim();
       if (!text) {
@@ -224,7 +233,7 @@
       try {
         if (!navigator.clipboard || !window.isSecureContext) throw new Error('Clipboard unavailable');
         await navigator.clipboard.writeText(text);
-        opinionStatus.textContent = '의견을 복사했습니다. 국민신문고에서 직접 붙여넣고 제출해주세요.';
+        opinionStatus.textContent = '복사했습니다. 제출하려면 국민신문고에서 붙여넣어주세요.';
       } catch (error) {
         opinionText.focus();
         opinionText.select();
