@@ -1,0 +1,595 @@
+// surface-detail.js — VISUAL NEWSIS DMZ: 지면 텍스처 정규화 + 하천 자갈 둑 + 묻힌 암반
+// 순수 ES module. 초기화 1회 계산, 매 프레임 생성 없음. 추가 draw calls: 2 (최대 3 중)
+import * as THREE from "./three.js?v=20261001-12";
+import { W, riverZ } from "./terrain.js?v=20261005-3";
+
+const RIVER_HALF = 7.5;
+const UP = new THREE.Vector3(0, 1, 0);
+const TAU = Math.PI * 2;
+
+const clamp = (v, a, b) => (v < a ? a : v > b ? b : v);
+const lerp = (a, b, t) => a + (b - a) * t;
+const sstep = (a, b, x) => { const t = clamp((x - a) / (b - a), 0, 1); return t * t * (3 - 2 * t); };
+
+const S2L = new Float32Array(256);
+for (let i = 0; i < 256; i++) { const c = i / 255; S2L[i] = c <= 0.04045 ? c / 12.92 : Math.pow((c + 0.055) / 1.055, 2.4); }
+const s2l = (c) => (c <= 0.04045 ? c / 12.92 : Math.pow((c + 0.055) / 1.055, 2.4));
+
+function mulberry32(seed) {
+  let a = seed >>> 0;
+  return () => {
+    a = (a + 0x6D2B79F5) >>> 0;
+    let t = a;
+    t = Math.imul(t ^ (t >>> 15), t | 1);
+    t ^= t + Math.imul(t ^ (t >>> 7), t | 61);
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+  };
+}
+
+function hash2(ix, iz, seed) {
+  let n = Math.imul(ix | 0, 374761393) ^ Math.imul(iz | 0, 668265263) ^ Math.imul(seed | 0, 1442695041);
+  n = Math.imul(n ^ (n >>> 13), 1274126177);
+  return ((n ^ (n >>> 16)) >>> 0) / 4294967296;
+}
+
+function valueNoise(x, z, seed, period = 0) {
+  let ix = Math.floor(x), iz = Math.floor(z);
+  const fx = x - ix, fz = z - iz;
+  const ux = fx * fx * (3 - 2 * fx), uz = fz * fz * (3 - 2 * fz);
+  let ix1 = ix + 1, iz1 = iz + 1;
+  if (period > 0) {
+    ix = ((ix % period) + period) % period; iz = ((iz % period) + period) % period;
+    ix1 = (ix + 1) % period; iz1 = (iz + 1) % period;
+  }
+  const a = hash2(ix, iz, seed), b = hash2(ix1, iz, seed), c = hash2(ix, iz1, seed), d = hash2(ix1, iz1, seed);
+  return a + (b - a) * ux + (c - a) * uz + (a - b - c + d) * ux * uz;
+}
+
+function fbm(x, z, seed, oct = 3) {
+  let s = 0, amp = 0.5, f = 1, norm = 0;
+  for (let i = 0; i < oct; i++) { s += amp * valueNoise(x * f + i * 17.3, z * f - i * 9.1, seed + i * 101); norm += amp; amp *= 0.5; f *= 2.03; }
+  return s / norm;
+}
+
+function fbmTile(x, z, seed, period, oct) {
+  let s = 0, amp = 0.5, f = 1, norm = 0;
+  for (let i = 0; i < oct; i++) { s += amp * valueNoise(x * f, z * f, seed + i * 101, period * f); norm += amp; amp *= 0.5; f *= 2; }
+  return s / norm;
+}
+
+function makeCanvas(w, h) {
+  if (typeof document !== "undefined" && document.createElement) {
+    const c = document.createElement("canvas"); c.width = w; c.height = h; return c;
+  }
+  if (typeof OffscreenCanvas !== "undefined") return new OffscreenCanvas(w, h);
+  return null;
+}
+
+function canvasMeanLinear(ctx, size) {
+  const d = ctx.getImageData(0, 0, size, size).data;
+  let r = 0, g = 0, b = 0;
+  for (let p = 0; p < d.length; p += 4) { r += S2L[d[p]]; g += S2L[d[p + 1]]; b += S2L[d[p + 2]]; }
+  const n = size * size;
+  return [Math.max(0.05, r / n), Math.max(0.05, g / n), Math.max(0.05, b / n)];
+}
+
+function setupRepeatTex(t, low, colorSpace) {
+  t.colorSpace = colorSpace;
+  t.wrapS = t.wrapT = THREE.RepeatWrapping;
+  t.anisotropy = low ? 4 : 8; // 렌더러가 하드웨어 최대값으로 자동 제한
+  t.needsUpdate = true;
+  return t;
+}
+
+// ── 지면: diffuse 밝기 정규화(평균≈234) + bump(원본 톤 그레이스케일) ──
+function buildGroundMaps(img, low, rep) {
+  const iw = img.naturalWidth || img.videoWidth || img.width || 0;
+  const ih = img.naturalHeight || img.videoHeight || img.height || 0;
+  if (!iw || !ih) return null; // 미로드 → 기존 fallback 유지
+  let size = low ? 512 : 1024;
+  while (size > 128 && size > Math.max(iw, ih)) size >>= 1;
+  const cv = makeCanvas(size, size), bcv = makeCanvas(size, size);
+  if (!cv || !bcv) return null;
+  const ctx = cv.getContext("2d", { willReadFrequently: true });
+  const bctx = bcv.getContext("2d");
+  if (!ctx || !bctx) return null;
+  let src;
+  try { ctx.drawImage(img, 0, 0, size, size); src = ctx.getImageData(0, 0, size, size); }
+  catch (e) { return null; } // tainted canvas 등
+  const d = src.data, n = size * size;
+  const L = new Float32Array(n);
+  let sum = 0, sum2 = 0;
+  for (let i = 0, p = 0; i < n; i++, p += 4) {
+    const l = 0.2126 * d[p] + 0.7152 * d[p + 1] + 0.0722 * d[p + 2];
+    L[i] = l; sum += l; sum2 += l * l;
+  }
+  const mean = sum / n, std = Math.sqrt(Math.max(0, sum2 / n - mean * mean));
+
+  // bump: 원래 톤 유지 (r160 bump는 R 채널 사용 → 그레이스케일)
+  const bimg = bctx.createImageData(size, size), bd = bimg.data;
+  for (let i = 0, p = 0; i < n; i++, p += 4) { const v = L[i]; bd[p] = v; bd[p + 1] = v; bd[p + 2] = v; bd[p + 3] = 255; }
+  bctx.putImageData(bimg, 0, 0);
+
+  // diffuse: 평균 TARGET, 편차 AMP로 압축, 채도 일부만 유지, 하이라이트 soft shoulder
+  const TARGET = 234, AMP = low ? 12 : 15;
+  const k = std > 0.5 ? Math.min(1, AMP / std) : 1;
+  const chroma = clamp(k * 1.6, 0.18, 0.6);
+  const shoulder = (v) => (v <= 0 ? 0 : v <= 238 ? v : 238 + 17 * (1 - Math.exp(-(v - 238) / 17)));
+  const out = new Float32Array(n * 3);
+  let m2 = 0;
+  for (let i = 0, p = 0; i < n; i++, p += 4) {
+    const l = L[i], lp = TARGET + (l - mean) * k;
+    const r = shoulder(lp + (d[p] - l) * chroma);
+    const g = shoulder(lp + (d[p + 1] - l) * chroma);
+    const b = shoulder(lp + (d[p + 2] - l) * chroma);
+    out[i * 3] = r; out[i * 3 + 1] = g; out[i * 3 + 2] = b;
+    m2 += 0.2126 * r + 0.7152 * g + 0.0722 * b;
+  }
+  m2 /= n;
+  const shift = TARGET - m2;
+  for (let i = 0, p = 0; i < n; i++, p += 4) {
+    d[p] = out[i * 3] + shift; d[p + 1] = out[i * 3 + 1] + shift; d[p + 2] = out[i * 3 + 2] + shift; d[p + 3] = 255;
+  }
+  ctx.putImageData(src, 0, 0);
+
+  const map = setupRepeatTex(new THREE.CanvasTexture(cv), low, THREE.SRGBColorSpace);
+  const bump = setupRepeatTex(new THREE.CanvasTexture(bcv), low, THREE.NoColorSpace);
+  map.repeat.set(rep[0], rep[1]);
+  bump.repeat.set(rep[0], rep[1]);
+  return { map, bump, stats: { size, meanBefore: +mean.toFixed(1), stdBefore: +std.toFixed(1), meanAfter: +(m2 + shift).toFixed(1) } };
+}
+
+function drawWrapped(size, x, y, m, fn) {
+  const xs = [0], ys = [0];
+  if (x - m < 0) xs.push(size); if (x + m > size) xs.push(-size);
+  if (y - m < 0) ys.push(size); if (y + m > size) ys.push(-size);
+  for (const ox of xs) for (const oy of ys) fn(x + ox, y + oy);
+}
+
+// ── 자갈 텍스처 (타일러블, 밝기 위주 / 색조는 정점색) ──
+function makeGravelTexture(size, seed, low) {
+  const cv = makeCanvas(size, size); if (!cv) return null;
+  const ctx = cv.getContext("2d", { willReadFrequently: true }); if (!ctx) return null;
+  const r = mulberry32(seed), sc = size / 512;
+  ctx.fillStyle = "rgb(116,111,102)"; ctx.fillRect(0, 0, size, size);
+  const count = Math.round(6500 * sc * sc);
+  for (let i = 0; i < count; i++) {
+    const big = r() < 0.07;
+    const rad = (big ? 6 + r() * 7 : 1.8 + r() * 4.6) * sc;
+    const ex = rad * (0.85 + r() * 0.45), ey = rad * (0.55 + r() * 0.35), rot = r() * Math.PI;
+    const x = r() * size, y = r() * size;
+    const lum = 150 + r() * 100, tint = (r() - 0.5) * 20;
+    const col = `rgb(${clamp(lum + tint * 0.6, 0, 255) | 0},${lum | 0},${clamp(lum - tint * 0.5 - 6, 0, 255) | 0})`;
+    drawWrapped(size, x, y, ex + 2 * sc, (px, py) => {
+      ctx.fillStyle = "rgba(38,34,30,0.32)";
+      ctx.beginPath(); ctx.ellipse(px + rad * 0.2, py + rad * 0.24, ex, ey, rot, 0, TAU); ctx.fill();
+      ctx.fillStyle = col;
+      ctx.beginPath(); ctx.ellipse(px, py, ex, ey, rot, 0, TAU); ctx.fill();
+      ctx.fillStyle = "rgba(255,255,255,0.14)";
+      ctx.beginPath(); ctx.ellipse(px - ex * 0.22, py - ey * 0.28, ex * 0.45, ey * 0.4, rot, 0, TAU); ctx.fill();
+    });
+  }
+  const grit = Math.round(5000 * sc * sc);
+  for (let i = 0; i < grit; i++) {
+    const l = (90 + r() * 150) | 0, s = (0.6 + r() * 1.1) * sc;
+    ctx.fillStyle = `rgba(${l},${l},${Math.max(0, l - 4)},0.55)`;
+    ctx.fillRect(r() * size, r() * size, s, s);
+  }
+  const mean = canvasMeanLinear(ctx, size);
+  const tex = setupRepeatTex(new THREE.CanvasTexture(cv), low, THREE.SRGBColorSpace);
+  return { tex, mean };
+}
+
+// ── 암석 결 텍스처 (타일러블 노이즈 + 미세 균열) ──
+function makeRockTexture(size, seed, low) {
+  const cv = makeCanvas(size, size); if (!cv) return null;
+  const ctx = cv.getContext("2d", { willReadFrequently: true }); if (!ctx) return null;
+  const img = ctx.createImageData(size, size), d = img.data, P = 8;
+  for (let y = 0; y < size; y++) for (let x = 0; x < size; x++) {
+    const u = (x / size) * P, v = (y / size) * P;
+    const n1 = fbmTile(u, v, seed, P, 4);
+    const n2 = fbmTile(u * 4, v * 4, seed + 7, P * 4, 2);
+    const cr = Math.abs(fbmTile(u * 1.5, v * 1.5, seed + 31, 12, 2) * 2 - 1);
+    const crack = 1 - 0.32 * (1 - sstep(0, 0.05, cr));
+    const l = clamp((0.74 + 0.26 * n1 + 0.12 * (n2 - 0.5)) * crack, 0, 1) * 255;
+    const p = (y * size + x) * 4;
+    d[p] = l * 1.01; d[p + 1] = l; d[p + 2] = l * 0.965; d[p + 3] = 255;
+  }
+  ctx.putImageData(img, 0, 0);
+  const mean = canvasMeanLinear(ctx, size);
+  const tex = setupRepeatTex(new THREE.CanvasTexture(cv), low, THREE.SRGBColorSpace);
+  return { tex, mean };
+}
+
+export function createSurfaceDetail(terrain, options = {}) {
+  const {
+    low = false,
+    groundImage = null,
+    cutPlanes = null,
+    exclude = null,          // (x,z)=>true 이면 자갈/돌 배치 제외 (도로·철책·초소·교량 영역 권장)
+    seed = 20261027,
+    meshStep = 3,            // 지형 메시 정점 간격(unit). 보간 오차 보정에 사용
+    groundRepeat = null,     // [rx,rz]. 지형 UV가 0..1이 아니면 직접 지정
+    groundTileWorld = 24,    // 지면 타일 1장이 덮는 world unit
+    maxTriangles = null,
+    rockSlope = 0.26,        // 암반이 나타나기 시작하는 경사(tan)
+  } = options || {};
+
+  const now = () => (typeof performance !== "undefined" ? performance.now() : Date.now());
+  const t0 = now();
+  const rand = mulberry32(seed);
+  const disposables = [];
+
+  const H = (x, z) => {
+    const h = terrain && typeof terrain.heightAt === "function" ? terrain.heightAt(x, z) : 0;
+    return Number.isFinite(h) ? h : 0;
+  };
+  const excluded = typeof exclude === "function" ? (x, z) => !!exclude(x, z) : () => false;
+  const planes = !cutPlanes ? null : Array.isArray(cutPlanes) ? (cutPlanes.length ? cutPlanes : null) : [cutPlanes];
+  const triCap = low ? Math.min(8000, maxTriangles ?? 8000) : (maxTriangles ?? 24000);
+
+  const GE = 1.5;
+  const gradAt = (x, z) => [(H(x + GE, z) - H(x - GE, z)) / (2 * GE), (H(x, z + GE) - H(x, z - GE)) / (2 * GE)];
+  const halfStep = Math.max(0.5, meshStep * 0.5);
+  // 메시 선형보간이 heightAt보다 위로 오는 오목부(계곡)에서 데칼이 묻히지 않게 들어올림
+  const drapeY = (x, z, base) => {
+    const a = halfStep, h0 = H(x, z);
+    const e1 = (H(x + a, z) + H(x - a, z)) * 0.5 - h0;
+    const e2 = (H(x, z + a) + H(x, z - a)) * 0.5 - h0;
+    const e3 = (H(x + a, z + a) + H(x - a, z - a)) * 0.5 - h0;
+    const e4 = (H(x + a, z - a) + H(x - a, z + a)) * 0.5 - h0;
+    return h0 + base + Math.max(0, e1, e2, e3, e4) * 1.25;
+  };
+
+  const rd1 = (x) => (riverZ(x + 1) - riverZ(x - 1)) * 0.5;
+  const rd2 = (x) => (riverZ(x + 2) - 2 * riverZ(x) + riverZ(x - 2)) * 0.25;
+  const bankWidth = (x, sd) => {
+    const nb = fbm(x / 38 + sd * 13.7, sd * 5.1 + 3.3, seed + 11, 3);
+    const hf = fbm(x / 9, sd * 7.7, seed + 23, 2) - 0.5;
+    const d1 = rd1(x), kap = rd2(x) / Math.pow(1 + d1 * d1, 1.5);
+    const boost = clamp(sd * kap * 600, 0, 5); // 곡류 안쪽 point bar
+    return clamp(1.4 + 5.6 * sstep(0.38, 0.78, nb) + boost + hf * 1.6, 1.0, 12);
+  };
+  const riverPoint = (x, sd, off) => {
+    const d1 = rd1(x), L = Math.hypot(1, d1);
+    return [x + (-d1 / L) * sd * off, riverZ(x) + (1 / L) * sd * off];
+  };
+
+  // ── 1) 지면 maps ──
+  const ground = {};
+  let groundStats = null;
+  if (groundImage) {
+    const rep = Array.isArray(groundRepeat) && groundRepeat.length === 2
+      ? groundRepeat
+      : [(W.xMax - W.xMin) / groundTileWorld, (W.zMax - W.zMin) / groundTileWorld];
+    const gm = buildGroundMaps(groundImage, low, rep);
+    if (gm) {
+      ground.map = gm.map;
+      ground.bumpMap = gm.bump;
+      ground.bumpScale = low ? 0.55 : 0.85;
+      ground.shininess = 7;
+      ground.specular = new THREE.Color(0x141414);
+      disposables.push(gm.map, gm.bump);
+      groundStats = gm.stats;
+    }
+  }
+
+  const meshes = [];
+
+  // ── 2) 하천 자갈 둑 (draw call 1) ──
+  const gravel = makeGravelTexture(low ? 256 : 512, seed + 3, low);
+  const gMean = gravel ? gravel.mean : [0.5, 0.5, 0.5];
+  const WET = [0.40, 0.38, 0.35], DRY = [0.68, 0.65, 0.59];
+
+  const step = low ? 4 : 2.5;
+  const S = low ? [0, 0.42, 0.74, 1] : [0, 0.3, 0.56, 0.8, 1];
+  const bx0 = W.xMin + 1, bx1 = W.xMax - 1;
+  const nxs = Math.floor((bx1 - bx0) / step) + 1;
+  const nc = S.length;
+  const bankVerts = 2 * nxs * nc;
+  const bPos = new Float32Array(bankVerts * 3), bNor = new Float32Array(bankVerts * 3);
+  const bUv = new Float32Array(bankVerts * 2), bCol = new Float32Array(bankVerts * 4);
+  const bIdx = [];
+
+  for (let side = 0; side < 2; side++) {
+    const sd = side === 0 ? 1 : -1;
+    const base = side * nxs * nc;
+    for (let i = 0; i < nxs; i++) {
+      const x = Math.min(bx1, bx0 + i * step);
+      const w = bankWidth(x, sd);
+      const edgeN = 0.55 + 0.45 * fbm(x / 6.5, sd * 3.1 + 1.7, seed + 41, 2);
+      for (let c = 0; c < nc; c++) {
+        const s = S[c];
+        const off = RIVER_HALF - 1.4 + (w + 1.4) * s;
+        let [px, pz] = riverPoint(x, sd, off);
+        const outZ = pz < W.zMin + 0.5 || pz > W.zMax - 0.5;
+        pz = clamp(pz, W.zMin + 0.5, W.zMax - 0.5);
+        px = clamp(px, W.xMin, W.xMax);
+        const y = drapeY(px, pz, 0.07);
+        const [gx, gz] = gradAt(px, pz);
+        const il = 1 / Math.hypot(gx, 1, gz);
+        const v = base + i * nc + c;
+        bPos[v * 3] = px; bPos[v * 3 + 1] = y; bPos[v * 3 + 2] = pz;
+        bNor[v * 3] = -gx * il; bNor[v * 3 + 1] = il; bNor[v * 3 + 2] = -gz * il;
+        bUv[v * 2] = px / 8; bUv[v * 2 + 1] = pz / 8;
+
+        let a = c === nc - 1 ? 0 : (s < 0.45 ? 1 : edgeN * (1 - 0.55 * sstep(0.45, 1, s)));
+        a *= 1 - 0.85 * sstep(0.5, 1.0, Math.hypot(gx, gz)); // 급경사 둑은 오르지 않음
+        if (outZ || excluded(px, pz)) a = 0;
+        const wet = 1 - sstep(-0.5, 2.2, off - RIVER_HALF);
+        const vv = 0.86 + 0.28 * fbm(px / 13, pz / 13, seed + 53, 2);
+        for (let k = 0; k < 3; k++) {
+          const app = clamp(lerp(DRY[k], WET[k], wet) * vv, 0, 1);
+          bCol[v * 4 + k] = clamp(s2l(app) / gMean[k], 0, 1.6);
+        }
+        bCol[v * 4 + 3] = a;
+      }
+    }
+    const flip = sd < 0;
+    for (let i = 0; i < nxs - 1; i++) for (let c = 0; c < nc - 1; c++) {
+      const a = base + i * nc + c, b = a + 1, cc = a + nc, d = cc + 1;
+      const t = ((i + c) & 1)
+        ? [a, b, d, a, d, cc]
+        : [a, b, cc, b, d, cc];
+      if (flip) { [t[1], t[2]] = [t[2], t[1]]; [t[4], t[5]] = [t[5], t[4]]; }
+      bIdx.push(...t);
+    }
+  }
+  const bankTris = bIdx.length / 3;
+  const bankGeo = new THREE.BufferGeometry();
+  bankGeo.setAttribute("position", new THREE.BufferAttribute(bPos, 3));
+  bankGeo.setAttribute("normal", new THREE.BufferAttribute(bNor, 3));
+  bankGeo.setAttribute("uv", new THREE.BufferAttribute(bUv, 2));
+  bankGeo.setAttribute("color", new THREE.BufferAttribute(bCol, 4)); // itemSize 4 → vertexAlphas
+  bankGeo.setIndex(bIdx);
+  const bankMat = new THREE.MeshLambertMaterial({
+    map: gravel ? gravel.tex : null,
+    vertexColors: true,
+    transparent: true,
+    depthWrite: false,
+    polygonOffset: true,
+    polygonOffsetFactor: -2,
+    polygonOffsetUnits: -4,
+    clippingPlanes: planes,
+    fog: true,
+  });
+  const bankMesh = new THREE.Mesh(bankGeo, bankMat);
+  finalizeMesh(bankMesh, "surfaceDetail.gravelBanks", -1); // 투명 수면보다 먼저
+  meshes.push(bankMesh);
+  disposables.push(bankGeo, bankMat);
+  if (gravel) disposables.push(gravel.tex);
+
+  // ── 3) 묻힌 암반 + 물가 바위 (draw call 1, 돌마다 고유 형상) ──
+  const rock = makeRockTexture(low ? 128 : 256, seed + 5, low);
+  const rMean = rock ? rock.mean : [0.5, 0.5, 0.5];
+  const SEG = low ? 8 : 11, RINGS = 3;
+  const vPerStone = 1 + RINGS * SEG;
+  const tPerStone = SEG + (RINGS - 1) * SEG * 2;
+  const maxStones = Math.max(0, Math.floor((triCap - bankTris) / tPerStone));
+  const rPos = new Float32Array(maxStones * vPerStone * 3);
+  const rCol = new Float32Array(maxStones * vPerStone * 3);
+  const rUv = new Float32Array(maxStones * vPerStone * 2);
+  const rIdx = new Uint32Array(maxStones * tPerStone * 3);
+  let rv = 0, ri = 0, stones = 0;
+  const N = new THREE.Vector3(), T = new THREE.Vector3(), B = new THREE.Vector3(), P = new THREE.Vector3();
+  const LICHEN = [0.56, 0.58, 0.42];
+
+  function addStone(cx, cz, o) {
+    if (stones >= maxStones) return false;
+    const [gx, gz] = gradAt(cx, cz);
+    N.set(-gx, 1, -gz).normalize().lerp(UP, o.upMix).normalize();
+    T.set(o.dx, 0, o.dz); T.addScaledVector(N, -T.dot(N));
+    if (T.lengthSq() < 1e-6) T.set(1, 0, 0);
+    T.normalize();
+    B.crossVectors(N, T); // (T,B,N) 오른손 → 위에서 반시계 = 앞면
+    const gy = H(cx, cz);
+    const p1 = rand() * TAU, p2 = rand() * TAU, p3 = rand() * TAU;
+    const tilt = (rand() - 0.5) * 0.5, tiltDir = rand() * TAU;
+    const base = rv;
+    const sinkH = o.sink * o.height;
+
+    const writeV = (hFrac) => {
+      const k = rv * 3;
+      rPos[k] = P.x; rPos[k + 1] = P.y; rPos[k + 2] = P.z;
+      const shade = 0.6 + 0.4 * clamp(hFrac, 0, 1);
+      const li = sstep(0.55, 0.8, fbm(P.x / 3, P.z / 3, seed + 71, 2)) * clamp(hFrac, 0, 1) * o.lichen * 0.5;
+      const app = [o.lum * (1 + o.warm), o.lum, o.lum * (1 - o.warm)];
+      for (let c = 0; c < 3; c++) {
+        const a = clamp(lerp(app[c] * shade, LICHEN[c] * o.lum * 1.2, li), 0, 1);
+        rCol[k + c] = clamp(s2l(a) / rMean[c], 0, 1.6);
+      }
+      rUv[rv * 2] = (P.x + P.y * 0.6) / 3.2;
+      rUv[rv * 2 + 1] = (P.z - P.y * 0.6) / 3.2;
+      rv++;
+    };
+
+    // 중심 정점
+    P.set(cx, gy, cz).addScaledVector(N, o.height - sinkH);
+    writeV(1);
+    for (let k = 1; k <= RINGS; k++) {
+      const skirt = k === RINGS;
+      const u = skirt ? 1.06 : k / RINGS;
+      for (let j = 0; j < SEG; j++) {
+        const th = (j / SEG) * TAU;
+        const rr = 1 + o.amp * 0.22 * (0.55 * Math.sin(2 * th + p1) + 0.3 * Math.sin(3 * th + p2) + 0.15 * Math.sin(5 * th + p3));
+        const la = o.rx * u * rr * Math.cos(th), lb = o.rz * u * rr * Math.sin(th);
+        let hh = 0, hFrac = 0;
+        if (!skirt) {
+          const prof = Math.pow(Math.max(0, 1 - u * u * 0.94), 0.7);
+          hh = o.height * (Math.min(prof, 0.97) / 0.97 + tilt * u * Math.cos(th - tiltDir));
+          hh *= 1 + 0.12 * o.amp * Math.sin(4 * th + p2);
+          hFrac = hh / o.height;
+        }
+        P.set(cx, gy, cz).addScaledVector(T, la).addScaledVector(B, lb).addScaledVector(N, hh - sinkH);
+        if (skirt) P.y = H(P.x, P.z) - (0.28 * o.height + 0.12); // 반드시 지면 아래 → 떠 보이지 않음
+        writeV(hFrac);
+      }
+    }
+    // 인덱스: 중심 fan + 링 사이 quad
+    const ring = (k, j) => base + 1 + (k - 1) * SEG + (j % SEG);
+    for (let j = 0; j < SEG; j++) { rIdx[ri++] = base; rIdx[ri++] = ring(1, j); rIdx[ri++] = ring(1, j + 1); }
+    for (let k = 1; k < RINGS; k++) for (let j = 0; j < SEG; j++) {
+      const a = ring(k, j), b = ring(k, j + 1), c = ring(k + 1, j), d = ring(k + 1, j + 1);
+      rIdx[ri++] = a; rIdx[ri++] = c; rIdx[ri++] = d;
+      rIdx[ri++] = a; rIdx[ri++] = d; rIdx[ri++] = b;
+    }
+    stones++;
+    return true;
+  }
+
+  const boulderTarget = Math.min(low ? 24 : 60, Math.floor(maxStones * 0.18));
+  const outcropTarget = maxStones - boulderTarget;
+
+  // 경사면 암반 후보
+  const cell = low ? 7 : 6;
+  const gatherCands = (sMin) => {
+    const out = [];
+    for (let z = W.zMin + 8; z < W.zMax - 8; z += cell) for (let x = W.xMin + 8; x < W.xMax - 8; x += cell) {
+      const jx = x + (rand() - 0.5) * cell * 0.9, jz = z + (rand() - 0.5) * cell * 0.9;
+      if (Math.abs(jz - riverZ(jx)) < RIVER_HALF + 12) continue;
+      const [gx, gz] = gradAt(jx, jz), s = Math.hypot(gx, gz);
+      const pS = sstep(sMin, sMin + 0.54, s);
+      if (pS <= 0.02) continue;
+      const clump = sstep(0.48, 0.74, fbm(jx / 46, jz / 46, seed + 61, 3));
+      const elev = 0.55 + 0.45 * sstep(8, 50, H(jx, jz));
+      const p = pS * (0.25 + 0.75 * clump) * elev;
+      if (p < 0.06 || excluded(jx, jz)) continue;
+      out.push({ x: jx, z: jz, gx, gz, score: p * (0.55 + 0.45 * rand()) });
+    }
+    return out;
+  };
+  let cands = gatherCands(rockSlope);
+  if (cands.length < outcropTarget * 0.4) cands = cands.concat(gatherCands(rockSlope * 0.6));
+  cands.sort((a, b) => b.score - a.score);
+
+  const minSpace = low ? 16 : 12;
+  const hash = new Map();
+  const hkey = (x, z) => `${Math.floor(x / minSpace)},${Math.floor(z / minSpace)}`;
+  const tooClose = (x, z) => {
+    const ix = Math.floor(x / minSpace), iz = Math.floor(z / minSpace);
+    for (let a = -1; a <= 1; a++) for (let b = -1; b <= 1; b++) {
+      const l = hash.get(`${ix + a},${iz + b}`);
+      if (l) for (const q of l) if ((q[0] - x) ** 2 + (q[1] - z) ** 2 < minSpace * minSpace) return true;
+    }
+    return false;
+  };
+
+  let outcrops = 0;
+  for (const c of cands) {
+    if (stones >= outcropTarget) break;
+    if (tooClose(c.x, c.z)) continue;
+    const k = hkey(c.x, c.z);
+    if (!hash.has(k)) hash.set(k, []);
+    hash.get(k).push([c.x, c.z]);
+    outcrops++;
+    const gl = Math.hypot(c.gx, c.gz) || 1;
+    const cdx = -c.gz / gl, cdz = c.gx / gl;   // 등고선 방향
+    const ddx = -c.gx / gl, ddz = -c.gz / gl;  // 내리막
+    const n = Math.min(outcropTarget - stones, 1 + Math.floor(rand() * (low ? 2.6 : 3.4)));
+    const baseSize = lerp(2.0, 5.2, Math.pow(rand(), 1.6)) * (low ? 1.12 : 1);
+    for (let i = 0; i < n; i++) {
+      const along = (i - (n - 1) / 2) * baseSize * (1.05 + rand() * 0.35);
+      const across = (rand() - 0.5) * baseSize * 0.7 + (i % 2) * baseSize * 0.25;
+      const px = c.x + cdx * along + ddx * across, pz = c.z + cdz * along + ddz * across;
+      if (px < W.xMin + 4 || px > W.xMax - 4 || pz < W.zMin + 4 || pz > W.zMax - 4) continue;
+      if (Math.abs(pz - riverZ(px)) < RIVER_HALF + 10 || excluded(px, pz)) continue;
+      const sf = 0.65 + 0.45 * rand();
+      const rot = (rand() - 0.5) * 0.6, cr = Math.cos(rot), sr = Math.sin(rot);
+      const rx = baseSize * sf * 1.35;
+      addStone(px, pz, {
+        rx, rz: baseSize * sf * (0.6 + 0.3 * rand()),
+        height: rx * (0.26 + 0.2 * rand()),
+        sink: 0.38 + 0.18 * rand(),
+        upMix: 0.3, amp: 1,
+        dx: cdx * cr - cdz * sr, dz: cdx * sr + cdz * cr,
+        lum: 0.47 + rand() * 0.13, warm: (rand() - 0.4) * 0.06, lichen: 0.6,
+      });
+    }
+  }
+
+  // 물가 바위 (작은 군집)
+  let boulders = 0;
+  for (let g = 0; g < boulderTarget * 3 && boulders < boulderTarget && stones < maxStones; g++) {
+    const x = lerp(W.xMin + 6, W.xMax - 6, rand());
+    const sd = rand() < 0.5 ? 1 : -1;
+    const w = bankWidth(x, sd);
+    const groupN = rand() < 0.5 ? 1 : 2 + Math.floor(rand() * 2);
+    for (let m = 0; m < groupN && boulders < boulderTarget; m++) {
+      const off = RIVER_HALF + 0.2 + rand() * Math.max(0.6, w * 0.75);
+      const [px, pz] = riverPoint(x + (rand() - 0.5) * 3, sd, off);
+      if (pz < W.zMin + 2 || pz > W.zMax - 2 || excluded(px, pz)) continue;
+      const [gx, gz] = gradAt(px, pz);
+      if (Math.hypot(gx, gz) > 0.7) continue;
+      const size = (0.55 + Math.pow(rand(), 2) * 1.3) * (low ? 1.2 : 1);
+      const ang = rand() * TAU;
+      if (addStone(px, pz, {
+        rx: size * (1 + rand() * 0.35), rz: size * (0.75 + rand() * 0.3),
+        height: size * (0.5 + rand() * 0.2), sink: 0.42, upMix: 0.6, amp: 0.55,
+        dx: Math.cos(ang), dz: Math.sin(ang),
+        lum: 0.58 + rand() * 0.12, warm: 0.03, lichen: 0.15,
+      })) boulders++;
+    }
+  }
+
+  let rockMesh = null;
+  if (stones > 0) {
+    const rockGeo = new THREE.BufferGeometry();
+    rockGeo.setAttribute("position", new THREE.BufferAttribute(rPos.slice(0, rv * 3), 3));
+    rockGeo.setAttribute("color", new THREE.BufferAttribute(rCol.slice(0, rv * 3), 3));
+    rockGeo.setAttribute("uv", new THREE.BufferAttribute(rUv.slice(0, rv * 2), 2));
+    const idx = rv > 65535 ? rIdx.slice(0, ri) : Uint16Array.from(rIdx.subarray(0, ri));
+    rockGeo.setIndex(new THREE.BufferAttribute(idx, 1));
+    rockGeo.computeVertexNormals();
+    const rockMat = new THREE.MeshLambertMaterial({
+      map: rock ? rock.tex : null,
+      vertexColors: true,
+      clippingPlanes: planes,
+      fog: true,
+    });
+    rockMesh = new THREE.Mesh(rockGeo, rockMat);
+    finalizeMesh(rockMesh, "surfaceDetail.rocks", 0);
+    meshes.push(rockMesh);
+    disposables.push(rockGeo, rockMat);
+  }
+  if (rock) disposables.push(rock.tex);
+
+  const rockTris = stones * tPerStone;
+  const stats = {
+    drawCalls: meshes.length,
+    triangles: bankTris + rockTris,
+    bankTriangles: bankTris,
+    rockTriangles: rockTris,
+    stones, outcrops, boulders,
+    triangleCap: triCap,
+    ground: groundStats, // null이면 map 미반환(기존 fallback 유지)
+    buildMs: +(now() - t0).toFixed(1),
+  };
+
+  let disposed = false;
+  function dispose() {
+    if (disposed) return;
+    disposed = true;
+    for (const m of meshes) if (m.parent) m.parent.remove(m);
+    for (const d of disposables) if (d && typeof d.dispose === "function") d.dispose();
+    meshes.length = 0;
+  }
+
+  return { ground, meshes, stats, dispose };
+}
+
+function finalizeMesh(mesh, name, order) {
+  mesh.name = name;
+  mesh.renderOrder = order;
+  mesh.matrixAutoUpdate = false;
+  mesh.updateMatrix();
+  mesh.castShadow = false;
+  mesh.receiveShadow = false;
+  mesh.userData.surfaceDetail = true;
+  mesh.geometry.computeBoundingBox();
+  mesh.geometry.computeBoundingSphere();
+}
+
+const sd = createSurfaceDetail(terrain, { low, groundImage, cutPlanes, exclude: isFacilityOrRoad });
+if (sd.ground.map) { Object.assign(groundMat, sd.ground); groundMat.needsUpdate = true; }
+sd.meshes.forEach((m) => scene.add(m));
+renderer.compile(scene, camera); // 진입 전 1회

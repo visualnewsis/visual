@@ -1,0 +1,112 @@
+{
+  "date": "2026-10-27",
+  "baseline": "0b3c377",
+  "scope": "DMZ visuals only; article text, source photos, order, SEO and shared UI preserved",
+  "collaboration": {
+    "gpt": "implementation, visual review, geometry and transition checks",
+    "claude": {
+      "url": "https://claude.ai/chat/7d414b54-d481-436e-ae4e-34f40ad4d5c8",
+      "role": "independent surface/performance review; proposal audited rather than copied wholesale",
+      "adopted": [
+        "terrain-normal canopy hillshade",
+        "normalized ground diffuse and separate grayscale bump",
+        "shader and texture prewarming"
+      ]
+    }
+  },
+  "imageGeneration": {
+    "mode": "built-in image_gen",
+    "promptIntents": [
+      {
+        "asset": "dmz/images/web/forest-canopy-atlas-v2.webp",
+        "prompt": "Four isolated aerial Korean temperate forest crown clusters in a 2 by 2 atlas, 5 to 8 natural olive green tree crowns per cluster, photographic detail and baked internal shading, transparent background, no text or objects.",
+        "source": "exec-bf4baab0-9fbe-4167-bb8b-95967688b312.png",
+        "processing": "1254px source cells cropped, inset into 512px cells with alpha gutter; 1024px WebP atlas"
+      },
+      {
+        "asset": "dmz/images/web/ground-hillside-v2.webp",
+        "prompt": "Seamless realistic Korean hillside ground albedo with short dry grass, fine gravel and earth, restrained muted olive palette, top-down even light, no buildings, roads, labels or strong directional shadows.",
+        "source": "exec-102b6a48-28d6-49cd-bbd2-9fffb8b6dba8.png",
+        "processing": "1254px source resized to 1024px WebP; runtime diffuse contrast normalization and separate grayscale bump"
+      }
+    ],
+    "note": "Prompt intents recorded as a concise reconstruction, not a verbatim tool transcript."
+  },
+  "validation": {
+    "automated": [
+      "5 camera/transition viewports",
+      "surface triangle budgets and finite coordinates",
+      "4-plane X-ray clipping settings",
+      "module syntax and local paths",
+      "unchanged body text/photos/links/SEO/JSON-LD",
+      "single analytics loader"
+    ],
+    "desktop": {
+      "viewport": [
+        1440,
+        900
+      ],
+      "dpr": 1,
+      "baseline": {
+        "p50": 33.3,
+        "p95": 50.2,
+        "over50ms": 22,
+        "samples": 223,
+        "triangles": 1258887
+      },
+      "final": {
+        "p50": 33.3,
+        "p95": 50.2,
+        "over50ms": 18,
+        "samples": 207,
+        "triangles": 1187855
+      }
+    },
+    "mobile": {
+      "viewport": [
+        390,
+        844
+      ],
+      "dpr": 1,
+      "baseline": {
+        "p50": 16.7,
+        "p95": 16.8,
+        "over50ms": 0,
+        "samples": 438,
+        "triangles": 487129,
+        "drawCalls": 80
+      },
+      "final": {
+        "samples": 424,
+        "p50": 16.7,
+        "p95": 16.8,
+        "over50ms": 1,
+        "drawCalls": 78,
+        "triangles": 430311,
+        "meanRenderMs": 1.61,
+        "p95RenderMs": 2.9,
+        "scrollLagPx": 232.84
+      }
+    },
+    "actualDevices": "Not tested on physical iPhone Safari or Android Chrome",
+    "benchmark": "8-second forward/back sweep from live 3D aerial to forest; not opaque hero. Browser viewport tests on this PC; timings vary by device.",
+    "notes": [
+      "Both mobile and desktop frame interval p95 matched baseline in the tested browser. Counts and outliers fluctuate; this is not a guarantee for physical devices.",
+      "Structure highlight now follows the actual terrain triangulation, removing old angular intersections.",
+      "Images use a 2x capped portrait pullback, with shared MAP/live optical alignment and reversible scroll mapping."
+    ]
+  },
+  "deployment": {
+    "commit": "3946059176e1e4ce0583539f115222d890e31a07",
+    "run": 40457414826,
+    "conclusion": "success",
+    "url": "https://visual.newsis.com/dmz/",
+    "liveVerification": "output/dmz-world-live-20261027.json",
+    "browser": {
+      "glReady": true,
+      "consoleErrors": 0,
+      "fallbackMessage": "",
+      "screenshot": "output/dmz-world-production-mobile-20261027.jpg"
+    }
+  }
+}

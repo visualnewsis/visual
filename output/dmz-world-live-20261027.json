@@ -1,0 +1,74 @@
+{
+  "checkedAt": "2026-10-27T06:38:54.636Z",
+  "url": "https://visual.newsis.com/dmz/",
+  "cacheVersion": "20261027-world2",
+  "jsonLdBlocks": 1,
+  "files": [
+    {
+      "file": "css/dmz.css",
+      "status": 200,
+      "bytes": 32267,
+      "sha256": "80a13f29e00f1b7f6823b995fe3005d98ae31a447c368f72cb28ae858fd5bee7"
+    },
+    {
+      "file": "js/main.js",
+      "status": 200,
+      "bytes": 27952,
+      "sha256": "4e75e82f0ba2c81c4dfca79cab81af9ff3cf64827bf2147b706c26b84181a648"
+    },
+    {
+      "file": "js/scene3d.js",
+      "status": 200,
+      "bytes": 32892,
+      "sha256": "86798567ae7a6e9fcda75faa01d46ef29211048aba0590218e768367122ae684"
+    },
+    {
+      "file": "js/hero.js",
+      "status": 200,
+      "bytes": 10398,
+      "sha256": "c141e95d4935cd6443a2e702cba600cc4635018ff329b5879faf81826b33d203"
+    },
+    {
+      "file": "js/terrain.js",
+      "status": 200,
+      "bytes": 11368,
+      "sha256": "991b3a43fb45092d580320cf3e14589410ef7e2e5c761d4ddcecef9e059986f1"
+    },
+    {
+      "file": "js/vegetation.js",
+      "status": 200,
+      "bytes": 17600,
+      "sha256": "5d8d93996fbab5dc3f8897e1ac1f5988d22a1688293c7f9f58fc696e217332bb"
+    },
+    {
+      "file": "js/canopy.js",
+      "status": 200,
+      "bytes": 4438,
+      "sha256": "9c0b4a06660a0ec04a9b4fce6d7fc0b14945df2be6c514abe86d9c8f883470e2"
+    },
+    {
+      "file": "js/surface-detail.js",
+      "status": 200,
+      "bytes": 5352,
+      "sha256": "b453f0ac570da96b13d136a219b119ae07d3f40a6ccec039abfae1f19b1804b0"
+    },
+    {
+      "file": "js/tree-detail.js",
+      "status": 200,
+      "bytes": 4593,
+      "sha256": "39b2d41659a1d322681abd89fa40525d7824cd35c0fe10e66ad0aab7e6bb9a80"
+    },
+    {
+      "file": "images/web/forest-canopy-atlas-v2.webp",
+      "status": 200,
+      "bytes": 442518,
+      "sha256": "b45671131dc985f93d096d5918870734be029e5be28f3adf8317885788e3f24f"
+    },
+    {
+      "file": "images/web/ground-hillside-v2.webp",
+      "status": 200,
+      "bytes": 528488,
+      "sha256": "514b26f73d5e3ee4a1558f8ae19c37c02ac92002080fd5e6abe7f646795805b8"
+    }
+  ]
+}

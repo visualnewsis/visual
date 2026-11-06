@@ -1,0 +1,374 @@
+<!doctype html>
+<!--
+  편집# / 충무로딩 / 계산대로
+  기획·취재·디자인·개발 = 안재현 (Visual Journalist & Creative Director = JAEHYEON AN)
+
+  [작업 메모 — 배포 전 확인 필요]
+  1) 1차 완성본(2026-10-01, Claude). 3D는 Three.js r160(로컬 번들 js/lib/three.module.min.js)으로 직접 구현. 외부 모델·텍스처 없이 지형·수목·구조물을 코드로 생성.
+  2) 3D 공간은 공개 자료의 일반적 요소를 결합한 가상 합성 지형이다. 실제 DMZ 구간·GP·철책·지뢰 위치를 재현하지 않는다.
+  3) [팩트 기준 2026-10-06 갱신] 9.21 사고: 우리 군 3명 부상·2명 중상. 9.30 유엔사 발표: 합동 현장조사에서 MDL 남측 활성 북한제 대인지뢰 추가 확인, 정전협정 위반 발생 판단.
+     10.5 합참 최종 조사결과: 유엔사 공동조사·국과수 감정 근거로 북한이 '국경선 요새화' 작업 중 MDL 이남(10여m)에 매설한 수지반보병지뢰가 폭발 원인이라고 최종 판단. 같은 날 MDL 이남 북한군 지뢰지대 제거. 북한: 책임 부인.
+  4) 2026-10-06 정식 공개: 편집# 014 / VISUAL NEWSIS STORY 020. 메인·편집# 랜딩·더보기 데이터·sitemap 등록.
+  5) 공유 이미지 og-dmz-photo-1200x630.jpg, 랜딩·더보기 dmz-cover-1200x800.jpg, 사이트 썸네일 dmz-thumbnail-360x240.jpg: NISI20260929_0021464460(ⓒ뉴시스 홍효식 기자) 크롭. 이전 3D 캡처 og-dmz-1200x630.jpg는 보존.
+  6) HERO 첫 사진 원본: NISI20190428_0015137002(강원 고성 금강산전망대, 2019, 국방일보 제공). 이후 전환 그림은 이 사진을 참조한 재해석 그림.
+-->
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1">
+  <link rel="canonical" href="https://visual.newsis.com/dmz/">
+  <meta property="og:type" content="article">
+  <meta property="og:locale" content="ko_KR">
+  <meta property="og:site_name" content="비주얼 뉴시스">
+  <meta property="og:title" content="남방 2km 북방 2km…이곳은 悲무장지대입니다 | 안재현 기자·편집# 014">
+  <meta property="og:description" content="2026년 9월 21일 서부전선 DMZ에서 정찰 임무 중 폭발 사고로 우리 군 3명이 다쳤습니다(2명 중상). 군사분계선 남북 2km, 폭 4km의 비무장지대를 3D로 통과합니다.">
+  <meta property="og:url" content="https://visual.newsis.com/dmz/">
+  <meta property="og:image" content="https://visual.newsis.com/dmz/images/og-dmz-photo-1200x630.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="article:published_time" content="2026-10-06T09:00:00+09:00">
+  <meta property="article:modified_time" content="2026-10-06T15:00:00+09:00">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="남방 2km 북방 2km…이곳은 悲무장지대입니다 | 편집# 014">
+  <meta name="twitter:description" content="군사분계선에서 남쪽으로 2km, 북쪽으로 2km. 2026년 9월 21일 DMZ 지뢰 폭발 사고와 비무장지대 4km를 3D로 따라갑니다.">
+  <meta name="twitter:image" content="https://visual.newsis.com/dmz/images/og-dmz-photo-1200x630.jpg">
+  <meta name="theme-color" content="#dfe3dd">
+  <meta name="description" content="2026년 9월 21일 서부전선 비무장지대(DMZ)에서 정찰 임무 중 폭발 사고로 우리 군 3명이 다쳤습니다. 유엔군사령부는 9월 30일 한국군과의 합동 현장조사에서 군사분계선 남측의 활성 북한제 대인지뢰를 추가로 확인했고, 정전협정 위반이 발생했다고 판단했습니다. 합동참모본부는 10월 5일 북한이 군사분계선 이남에 매설한 지뢰가 폭발 원인이라고 최종 판단했습니다. 남방한계선에서 군사분계선을 지나 북방한계선까지, DMZ 4km를 3D로 통과하는 뉴시스 안재현 기자의 비주얼 뉴시스 편집# 인터랙티브 기사.">
+  <meta name="keywords" content="DMZ,비무장지대,DMZ 지뢰,지뢰 폭발,대인지뢰,군사분계선,MDL,남방한계선,북방한계선,정전협정,유엔사,유엔군사령부,북한 요새화,9·19 군사합의,GP 철수,편집#,편집샵,비주얼 뉴시스,안재현 기자">
+  <meta name="author" content="뉴시스 안재현 기자">
+  <link rel="shortcut icon" href="https://image.newsis.com/n_www/images/ci/2024/favicon.png" />
+  <link rel="icon" type="image/png" href="https://image.newsis.com/n_www/images/ci/2024/favicon.png" />
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-6BKMWE02W5"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-6BKMWE02W5');console.log('%c비주얼 저널리즘 · VISUAL NEWSIS','color:#00b4c9;font-weight:900;font-size:14px;');console.log('%c기획·취재·디자인·개발 = 안재현 (Visual Journalist / Creative Director = JAEHYEON AN)','color:#111;font-size:12px;');
+  </script>
+  <title>남방 2km 북방 2km…이곳은 悲무장지대입니다 | DMZ 지뢰 폭발 | 안재현 기자·편집# 014 | 비주얼 뉴시스</title>
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"NewsArticle","mainEntityOfPage":{"@type":"WebPage","@id":"https://visual.newsis.com/dmz/"},"headline":"남방 2km 북방 2km 이곳은 悲무장지대입니다","alternativeHeadline":"DMZ 지뢰 폭발 사고와 비무장지대 4km","description":"2026년 9월 21일 서부전선 DMZ 지뢰 폭발 사고를 계기로 군사분계선 남북 2km, 폭 4km 비무장지대의 공간 구조와 군사적 현실을 3D로 따라가는 인터랙티브 기사","articleSection":"편집#","keywords":["DMZ","비무장지대","DMZ 지뢰","군사분계선","정전협정","유엔사"],"image":["https://visual.newsis.com/dmz/images/og-dmz-photo-1200x630.jpg"],"datePublished":"2026-10-06T09:00:00+09:00","dateModified":"2026-10-06T15:00:00+09:00","inLanguage":"ko-KR","isAccessibleForFree":true,"author":{"@type":"Person","name":"안재현","alternateName":["안재현 기자","JAEHYEON AN","Visual Journalist Jaehyeon An"],"jobTitle":["뉴시스 기자","크리에이티브 디렉터"],"description":"뉴시스 기자이자 비주얼 저널리스트. 비주얼 뉴시스의 편집#, 충무로딩, 계산대로의 기획·취재·디자인·개발을 모두 맡고 있습니다.","worksFor":{"@type":"NewsMediaOrganization","name":"뉴시스","url":"https://www.newsis.com/"}},"isPartOf":{"@type":"CollectionPage","name":"편집#","alternateName":"편집샵","url":"https://visual.newsis.com/editshop/"},"publisher":{"@type":"NewsMediaOrganization","name":"뉴시스","alternateName":"NEWSIS","url":"https://www.newsis.com/","logo":{"@type":"ImageObject","url":"https://visual.newsis.com/assets/logo2024.png"}}}
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/dmz.css?v=20261027-1">
+  <link rel="stylesheet" href="../assets/visual-header.css?v=20261026-goodeasy-lab1">
+  <link rel="stylesheet" href="../assets/20261019-paged/editshop-carousel.css">
+  <script defer src="../assets/visual-header.js?v=20261026-menuorder1" data-section="편집#" data-section-href="https://visual.newsis.com/editshop/" data-current="editshop"></script>
+  <script defer src="../assets/20261019-paged/editshop-carousel.js" data-current="dmz"></script>
+  <!-- Banner styles are embedded so a failed external stylesheet cannot break the ending. Source: assets/editshop-brand-banner.css -->
+  <style data-editshop-brand-banner>
+/* Shared static ending banner for the fifteen editshop stories. */
+.ves-brand{position:relative;isolation:isolate;display:block!important;width:100%;max-width:none!important;min-height:740px!important;margin:0!important;padding:62px clamp(22px,6vw,100px) 30px!important;overflow:hidden;background:#090e12 url('../assets/images/editshop-editor-navy-v3.webp') center/cover no-repeat!important;color:#f8f7f2!important;font-family:'Noto Sans KR',Arial,sans-serif!important;text-align:left!important;word-break:keep-all;letter-spacing:normal;box-sizing:border-box}
+.ves-brand *{box-sizing:border-box}.ves-brand::before{content:'';position:absolute;inset:0;z-index:-1;background:linear-gradient(90deg,rgba(3,7,11,.94),rgba(3,7,11,.80) 30%,rgba(3,7,11,.38) 53%,rgba(3,7,11,.22))!important}.ves-brand::after{display:none!important}.ves-brand-inner{position:relative;max-width:1500px;margin:0 auto}.ves-brand a{color:inherit;text-decoration:none}.ves-brand-top{display:flex;justify-content:space-between;gap:18px;padding-bottom:20px;border-bottom:1px solid #ffffff30;font-size:11px;font-weight:400;line-height:1.6;letter-spacing:.08em}.ves-brand-top span:last-child{color:#c0cbc9}.ves-brand-body{display:flex;flex-direction:column;align-items:flex-start;gap:0;padding:30px 0 25px;max-width:470px}.ves-brand-logo{display:block;font-size:48px!important;line-height:1.1!important;letter-spacing:-.11em!important;font-weight:900!important;white-space:nowrap;color:#fff!important;margin:0 0 24px!important}.ves-brand-logo svg{display:inline-block;width:.76em;height:.9em;vertical-align:-.06em;color:#00b4c9;margin-left:.07em}.ves-brand h2{display:block!important;margin:0 0 26px!important;padding:0!important;color:#fff!important;font-size:clamp(48px,5.5vw,78px)!important;font-weight:800!important;line-height:1.13!important;letter-spacing:-.065em!important;text-shadow:0 2px 15px #0008;max-width:none!important}.ves-brand h2 em{font:inherit!important;color:#00b4c9!important;font-style:normal!important}.ves-brand-description{display:block!important;margin:0 0 28px!important;padding:0!important;max-width:none!important;font-size:15px!important;font-weight:400!important;line-height:1.95!important;letter-spacing:normal!important;color:#ced6d4!important}.ves-brand-description strong{font-weight:800!important;color:#f8f7f2!important}.ves-brand-cta{display:flex!important;align-items:center;justify-content:space-between;gap:24px;width:300px;max-width:100%;padding:12px 18px!important;border:1px solid #ffffff73;background:#03070b59;color:#fff!important;font-size:12px!important;font-weight:400!important;line-height:1.6!important;letter-spacing:normal!important}.ves-brand-cta span{font-size:22px;color:#00b4c9}.ves-brand-cta:hover{background:#00b4c9;color:#051015!important}.ves-brand-cta:hover span{color:#051015}.ves-brand-signature-row{display:flex;justify-content:flex-end;padding:0 0 22px;margin-top:0}.ves-brand-signature{display:inline-block;font-size:clamp(18px,2.1vw,30px);font-weight:700;line-height:1.2;letter-spacing:.09em;color:#d7e1e2!important}.ves-brand-signature b{color:#00b4c9;font-weight:900}.ves-brand-bottom{display:flex;align-items:center;justify-content:space-between;gap:20px;padding-top:22px;border-top:1px solid #ffffff30;font-size:10px;font-weight:400;line-height:1.6;color:#b0bfbd;letter-spacing:normal}.ves-brand-credit{color:#c5cfcd;display:flex;align-items:center;gap:20px;flex-wrap:wrap}.ves-brand-restart{font:inherit;border:1px solid #ffffff60;padding:7px 12px;color:#fff;background:transparent;cursor:pointer}.ves-brand a:focus-visible,.ves-brand button:focus-visible{outline:3px solid #00b4c9;outline-offset:5px}
+@media(max-width:650px){.ves-brand{min-height:990px!important;padding:28px 22px 24px!important;background-size:auto 510px!important;background-position:100% bottom!important;background-repeat:no-repeat!important;background-color:#090e12!important}.ves-brand::before{background:linear-gradient(#090e12 0%,#090e12 48%,rgba(3,7,11,.38) 73%,rgba(3,7,11,.35))!important}.ves-brand-top{font-size:9px;gap:10px}.ves-brand-top span:last-child{font-size:8px}.ves-brand-body{padding-top:26px;padding-bottom:280px;max-width:none}.ves-brand-logo{font-size:42px!important;margin-bottom:28px!important}.ves-brand h2{font-size:54px!important;margin-bottom:24px!important}.ves-brand-description{font-size:14px!important;margin-bottom:24px!important}.ves-brand-signature-row{padding-bottom:20px}.ves-brand-signature{font-size:18px;letter-spacing:.06em;text-shadow:0 1px 10px #000}.ves-brand-bottom{font-size:9px;align-items:flex-start;gap:14px}.ves-brand-credit{color:white}.ves-brand-bottom>span{text-align:right}.ves-brand-cta{background:#03070b88}}
+@media(prefers-reduced-motion:reduce){.ves-brand *{transition:none!important;animation:none!important}}
+
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <a href="https://visual.newsis.com/">VISUAL NEWSIS</a>
+    <a href="https://www.newsis.com/" aria-label="NEWSIS home"><img src="../assets/logo2024.png" alt="NEWSIS"></a>
+    <a href="https://visual.newsis.com/editshop/">편집#</a>
+  </header>
+
+  <div id="stage" aria-hidden="true"><canvas id="gl"></canvas></div>
+  <div id="hero-intro" aria-hidden="true">
+    <picture><img class="intro-photo" src="images/web/hero-photo-v1.webp" alt="" width="1599" height="612" fetchpriority="high"></picture>
+    <picture><img class="intro-between" src="images/web/hero-between-detail-v1.webp" alt="" width="1599" height="616"></picture>
+    <picture><img class="intro-graphic" src="images/web/hero-interpretation-v1.webp" alt="" width="1599" height="612" fetchpriority="high"></picture>
+    <picture><source media="(max-width:819px)" srcset="images/web/hero-between-approach-v1-800.webp"><img class="intro-between" src="images/web/hero-between-approach-v1.webp" alt="" width="1440" height="901"></picture>
+    <picture><source media="(max-width:819px)" srcset="images/web/hero-lift-1-v1-800.webp"><img class="intro-lift1" src="images/web/hero-lift-1-v1.webp" alt="" width="1440" height="900"></picture>
+    <picture><source media="(max-width:819px)" srcset="images/web/hero-between-relief-v1-800.webp"><img class="intro-between" src="images/web/hero-between-relief-v1.webp" alt="" width="1440" height="901"></picture>
+    <picture><source media="(max-width:819px)" srcset="images/web/hero-lift-2-mobile-v1.webp"><img class="intro-lift2" src="images/web/hero-lift-2-v1.webp" alt="" width="1440" height="900"></picture>
+    <canvas class="intro-map"></canvas>
+    <span class="intro-source">강원 고성 금강산전망대에서 본 접경 풍경(2019) · 사건 현장과 다릅니다 (사진=국방일보 제공)</span>
+  </div>
+  <div class="fallback" aria-hidden="true"><p id="gl-why" class="gl-why"></p>
+    <svg viewBox="0 0 900 260"><rect x="150" y="40" width="600" height="180" fill="#cdd3cb"/><line x1="150" y1="30" x2="150" y2="230" stroke="#fff" stroke-width="3"/><line x1="450" y1="30" x2="450" y2="230" stroke="#00b4c9" stroke-width="4"/><line x1="750" y1="30" x2="750" y2="230" stroke="#fff" stroke-width="3"/><text x="150" y="252" text-anchor="middle" font-size="16" font-weight="800" fill="#121516">남방 2km</text><text x="450" y="252" text-anchor="middle" font-size="16" font-weight="800" fill="#007f91">0 km</text><text x="750" y="252" text-anchor="middle" font-size="16" font-weight="800" fill="#121516">북방 2km</text></svg>
+  </div>
+  <div id="veil" aria-hidden="true"></div>
+  <div id="labels" aria-hidden="true"></div>
+  <div id="range-recap" aria-hidden="true"><span>남방 <b>2km</b></span><i>+</i><span>북방 <b>2km</b></span><i>=</i><strong>총 4km</strong></div>
+  <div id="track" aria-hidden="true">
+    <div class="tr-line"><span class="tr-tick s"></span><span class="tr-tick m"></span><span class="tr-tick n"></span><span class="tr-dot"><i class="tr-read">남 2.0km</i></span></div>
+    <div class="tr-labels"><span>남 2km</span><span>0</span><span>북 2km</span></div>
+  </div>
+
+  <main id="story">
+    <!-- SCENE 00 HERO -->
+    <section class="step hero" data-key="hero" style="--h:500">
+      <div class="kicker">편집# 014</div>
+      <div class="hero-head">
+      <h1><span class="t1">남방 2km 북방 2km</span><span class="t2"><span class="hero-lead">이곳은 </span><span class="hero-subject"><span class="bi" data-gloss="슬플 비">悲</span>무장지대입니다</span></span></h1>
+      <p class="byline">기획·디렉터 = 안재현 기자</p>
+      </div>
+      <div class="scroll-cue" aria-hidden="true">SCROLL<i></i></div>
+    </section>
+    <div class="gap" style="--h:30"></div>
+    <section class="step" data-key="descend" style="--h:170">
+      <div class="cap-wrap"><div class="cap note"><p>공개 자료를 토대로 재구성한 가상 공간입니다.<br>실제 군사시설·지뢰 위치와 일치하지 않습니다.</p></div></div>
+    </section>
+    <div class="gap" style="--h:40"></div>
+
+    <!-- SCENE 01 4km 구조 -->
+    <section class="step" data-key="structure" style="--h:170">
+      <div class="cap-wrap"><div class="cap lines">
+        <p>군사분계선(MDL)을 기준으로 남쪽 <span class="mint">2km</span>, 북쪽 <span class="mint">2km</span>. 폭 4km가 비무장지대(DMZ)입니다.</p>
+      </div></div>
+    </section>
+    <div class="gap" style="--h:85"></div>
+
+    <!-- SCENE 02 이동 시작 (문구 없음: 3D 라벨과 진행바가 위치를 알려준다) -->
+    <section class="step" data-key="start" style="--h:120"></section>
+    <div class="gap" style="--h:75"></div>
+
+    <!-- SCENE 03 일반 경관 -->
+    <section class="step" data-key="forest" style="--h:130">
+      <div class="cap-wrap"><div class="cap"><span class="date">1953년 7월 27일</span><p>정전협정에 따라 군사분계선에서 남북 각 2km가 비무장지대로 설정됐습니다.</p></div></div>
+    </section>
+    <div class="gap" style="--h:90"></div>
+
+    <!-- SCENE 04 2026. 9. 21 — 3D 정지 → 사실 → 실제 화면(증거) → 3D -->
+    <section class="step" data-key="incident" style="--h:380">
+      <div class="sticky">
+        <div class="cap-wrap phase" data-at="0.44" data-until="0.68"><div class="cap"><span class="date">2026. 9. 21</span>
+          <p>서부전선 DMZ<br><span class="em">정찰 임무 중 폭발 사고 발생</span></p>
+          <p>우리 군 3명 부상<br><span class="em">이 가운데 2명 중상</span></p>
+        </div></div>
+        <figure class="evi" data-at="0.68" data-until="0.94">
+          <div class="evi-in">
+            <span class="evi-tag">헬기 접근 · 응급구조사 투입</span>
+            <img src="images/web/NISI20260928_0021463992.jpg" width="1120" height="792" loading="lazy" alt="숲 위에 떠 있는 군 헬기에서 응급구조사가 내려가는 열영상 화면">
+            <figcaption>9월 21일 사고 직후 구조 장면. 합동참모본부가 9월 28일 공개한 영상. (사진=합동참모본부 제공)</figcaption>
+          </div>
+        </figure>
+      </div>
+    </section>
+
+    <!-- SCENE 05 조사 결과 -->
+    <section class="step" data-key="investigation" style="--h:300">
+      <div class="sticky"><div class="inv">
+        <div class="inv-ph" aria-live="off">
+          <figure class="ph" data-at="0.8">
+            <img src="images/web/NISI20260928_0021463758.jpg" width="1400" height="919" loading="lazy" alt="합동참모본부 작전부장이 사고 지점 도식을 가리키며 브리핑하는 모습">
+            <figcaption>양진혁 합동참모본부 작전부장이 2026년 9월 28일 국방부에서 DMZ 지뢰 폭발 사고 관련 브리핑을 하고 있다. ⓒ뉴시스 김명년 기자</figcaption>
+          </figure>
+        </div>
+        <div class="inv-card">
+          <h2>조사 결과</h2>
+          <ol class="flow">
+            <li class="b" data-at="0.02"><i></i>폭발 지점</li>
+            <li class="r" data-at="0.12"><i></i>인근 조사 구간</li>
+            <li class="f" data-at="0.3"><i></i>추가 발견 지뢰</li>
+          </ol>
+          <dl class="facts" data-at="0.8">
+            <dt>합참</dt><dd>MDL 남측에 매설된 북한군 지뢰가 폭발 원인 (10. 5 최종 판단)</dd>
+            <dt>유엔사</dt><dd>정전협정 위반으로 판단</dd>
+            <dt>북한</dt><dd>책임 부인, 사과 요구 거부</dd>
+          </dl>
+          <p class="inv-note">※ 그래픽 속 지점은 실제 위치가 아닙니다.</p>
+        </div>
+        <figure class="evi" data-at="0.36" data-until="0.78">
+          <div class="evi-in small">
+            <span class="evi-tag">합동 현장조사 · 발견 지뢰</span>
+            <img src="images/web/NISI20260929_0021465564.jpg" width="479" height="363" loading="lazy" alt="수풀 속 흙 위에 놓인 갈색 사각형 지뢰">
+            <figcaption>합동 현장조사 때 발견된 북한 수지반보병지뢰. 2026년 9월 29일 공개 (사진=합동참모본부 제공)</figcaption>
+          </div>
+        </figure>
+      </div></div>
+    </section>
+
+    <!-- SCENE 05-1 정전협정의 원래 DMZ → 현재 → SCENE 06–07 非 → 悲 (같은 어두운 화면에서 이어짐) -->
+    <section class="step" data-key="hanja" style="--h:350">
+      <div class="sticky"><div class="hanja" id="hanja">
+        <div class="pact" id="pact">
+          <div class="pact-col phase" data-at="0.02" data-until="0.48"><b>1953. 7. 27</b><small>정전협정 · DMZ의 원래 규정</small><ul><li>남북 각 2km 비무장지대 설정</li><li>군대·장비 철수</li><li>알려진 지뢰밭 등 위험 요소 신고·제거</li></ul></div>
+          <div class="pact-col phase" data-at="0.12" data-until="0.48"><b>2024년부터</b><small>북측 경계 작업</small><ul><li>지뢰 매설</li><li>방벽 설치</li><li>전술도로 보강</li></ul></div>
+          <div class="pact-col phase now" data-at="0.22" data-until="0.48"><b>2026. 9. 21</b><small>폭발 · 합동 현장조사</small><ul><li>합참, MDL 남측 북한군 지뢰 폭발 최종 판단</li><li>유엔사, 정전협정 위반 판단</li><li>북한, 책임 부인·사과 요구 거부</li></ul></div>
+        </div>
+        <div class="h-block" role="img" aria-label="비무장지대. 非武裝地帶가 悲武裝地帶로 바뀐다">
+          <p class="h-ko" aria-hidden="true"><span>비</span><span>무</span><span>장</span><span>지</span><span>대</span></p>
+          <p class="h-line" aria-hidden="true"><span class="morph" id="morphA"></span><span class="hc">武</span><span class="hc">裝</span><span class="hc">地</span><span class="hc">帶</span></p>
+          <p class="h-gloss" aria-hidden="true"><span class="cell"><i class="g-hi">아닐 비</i><i class="g-bi">슬플 비</i></span><span class="cell"></span><span class="cell"></span><span class="cell"></span><span class="cell"></span></p>
+        </div>
+      </div></div>
+    </section>
+
+    <!-- SCENE 08 지표 아래 -->
+    <section class="step" data-key="xray" style="--h:360">
+      <div class="sticky"><div class="xr"><p class="xr-hint phase" data-at="0.38" data-until="1.01">지표 아래를 좌우로 움직여<br>살펴보세요<span>마우스로 누르거나 터치해 시작</span></p><div class="xr-card" data-at="0.36">
+        <h2>지표 아래</h2>
+        <ul class="legend"><li class="lm"><i></i>지뢰</li><li class="lu"><i></i>미확인 폭발물</li><li class="lr"><i></i>전사자 유해</li></ul>
+        <p class="xr-fact">2018년 DMZ에서는 전사자 유해발굴을 위한 지뢰 제거 작업이 진행됐습니다.</p>
+        <p class="xr-warn">※ 위치와 수량을 나타낸 그림이 아닙니다.</p>
+      </div></div></div>
+    </section>
+
+    <!-- SCENE 09 이동 재개 -->
+    <section class="step" data-key="resume" style="--h:100"></section>
+    <div class="gap" style="--h:95"></div>
+
+    <!-- SCENE 10 0km -->
+    <section class="step" data-key="mdl" style="--h:170">
+      <div class="cap-wrap"><div class="cap"><span class="date">0 km</span><p class="em">군사분계선(MDL)</p><p>1953년 정전협정으로 설정</p></div></div>
+    </section>
+    <div class="gap" style="--h:60"></div>
+
+    <!-- SCENE 11 북측 2km — 3D 북측 경계 작업 → 실제 화면(증거) → 3D. 작업 자체를 정전협정 위반으로 설명하지 않는다(UNC 팩트시트 2026.6). -->
+    <section class="step" data-key="north" style="--h:300">
+      <div class="sticky">
+        <div class="cap-wrap phase" data-at="0" data-until="0.56"><div class="cap right"><span class="eyebrow">북측 경계 작업</span><span class="date">2024년부터</span><p>지뢰 매설·방벽 설치·전술도로 보강</p></div></div>
+        <figure class="evi" data-at="0.56" data-until="0.9">
+          <div class="evi-in">
+            <span class="evi-tag">2026. 9. 29 · 경기 파주 접경지역</span>
+            <img src="images/web/NISI20260929_0021464460.jpg" width="1400" height="888" loading="lazy" alt="숲이 덮인 능선 위 북한군 초소와 아래쪽 우리 군 초소">
+            <figcaption>우리 군 초소(아래)와 북한군 초소(위)가 마주보고 있다. ⓒ뉴시스 홍효식 기자</figcaption>
+          </div>
+        </figure>
+      </div>
+    </section>
+    <div class="gap" style="--h:80"></div>
+
+    <!-- SCENE 12 시간 변화 — 같은 3D 공간의 상태가 시기별로 바뀌고, 실제 사진이 증거로 끼어든다 -->
+    <section class="step" data-key="timeline" style="--h:460">
+      <div class="sticky"><div class="tl" id="timeline">
+        <ol class="tl-rail"><li class="tl-year on">1953</li><li class="tl-year">2018</li><li class="tl-year">2024</li><li class="tl-year">2026</li></ol>
+        <div class="tl-cap">
+          <div class="tl-state on"><b>1953</b><p>비무장지대 설정<small>정전협정</small></p></div>
+          <div class="tl-state"><b>2018</b><p>GP 철수·지뢰 제거<small>9·19 남북 군사합의</small></p></div>
+          <div class="tl-state"><b>2024</b><p>북측 경계 작업 강화</p></div>
+          <div class="tl-state"><b>2026. 9. 21</b><p>폭발 지점</p></div>
+        </div>
+        <figure class="evi" data-at="0.36" data-until="0.48">
+          <div class="evi-in">
+            <span class="evi-tag">2018. 10. 2 · 강원 철원 DMZ</span>
+            <img src="images/web/NISI20181003_0014518641.jpg" width="1400" height="872" loading="lazy" alt="보호복을 입은 장병들이 표시 테이프를 따라 지뢰 탐지기로 수풀을 탐색하는 모습">
+            <figcaption>육군이 비무장지대 수색로 일대에서 6·25 전사자 유해발굴을 위한 지뢰 제거 작업을 시작했다. ⓒ뉴시스 사진공동취재단</figcaption>
+          </div>
+        </figure>
+        <figure class="evi" data-at="0.63" data-until="0.73">
+          <div class="evi-in">
+            <span class="evi-tag">2024. 6. 18 · 중부전선 DMZ</span>
+            <img src="images/web/NISI20240618_0020382631.jpg" width="1042" height="653" loading="lazy" alt="흙이 드러난 작업 구간과 콘크리트 구조물 앞에 모여 있는 북한군">
+            <figcaption>DMZ 안에서 작업하는 북한군. 합동참모본부는 이날 작업 중이던 북한군 수십 명이 군사분계선을 침범했다가 경고방송·경고사격 뒤 북상했다고 밝혔다.</figcaption>
+          </div>
+        </figure>
+      </div></div>
+    </section>
+    <div class="gap" style="--h:60"></div>
+
+    <!-- SCENE 13 4km -->
+    <section class="step" data-key="end4km" style="--h:150">
+      <div class="sticky"><div class="km4"><b>4km</b></div></div>
+    </section>
+    <div class="gap" style="--h:130"></div>
+
+    <!-- SCENE 14 카메라 상승 -->
+    <section class="step" data-key="rise" style="--h:60"></section>
+
+    <!-- SCENE 15 같은 현실 사진으로 귀환 → 정지 → 한글 비 -->
+    <section class="step" data-key="finale" style="--h:560">
+      <div class="sticky"><div class="finale" id="finale">
+        <h2><span class="t1">이곳은</span><span class="t2">비무장지대입니다.</span></h2>
+        <div class="revisit phase" data-at="0.24" hidden>
+          <label for="revisit-distance">움직여서 다시 둘러보기</label>
+          <output id="revisit-read" for="revisit-distance">0 km</output>
+          <input id="revisit-distance" type="range" min="-2000" max="2000" step="100" value="0" aria-describedby="revisit-help">
+          <div class="revisit-labels" aria-hidden="true"><span>남 2km</span><span>0</span><span>북 2km</span></div>
+          <p id="revisit-help">원하는 거리에서 놓으면 본문으로 돌아갑니다</p>
+        </div>
+      </div></div>
+    </section>
+  </main>
+
+  <div class="after">
+    <section class="related" aria-labelledby="related-title">
+      <div class="wrap">
+        <h2 class="eyebrow" id="related-title">뉴시스 관련기사</h2>
+        <ol>
+          <li><a href="https://www.newsis.com/view/NISX20260921_0003799151" target="_blank" rel="noopener"><time>2026. 9. 21</time><span>DMZ 수색작전 軍간부 3명, 지뢰 폭발 추정 부상…생명 지장 없어(종합3보)</span></a></li>
+          <li><a href="https://www.newsis.com/view/NISX20260926_0003803892" target="_blank" rel="noopener"><time>2026. 9. 26</time><span>군·유엔사, 지뢰추정 폭발 닷새 만에 DMZ 진입…합동조사 준비(종합)</span></a></li>
+          <li><a href="https://www.newsis.com/view/NISX20260928_0003806097" target="_blank" rel="noopener"><time>2026. 9. 28</time><span>합참 "DMZ 폭발원인, 북한군 지뢰 가능성 매우 높아…北 매설 판정시 상응 조치"(종합)</span></a></li>
+          <li><a href="https://www.newsis.com/view/NISX20260929_0003807882" target="_blank" rel="noopener"><time>2026. 9. 29</time><span>DMZ 현장조사서 北지뢰 1발 추가 발견…강신철 "국경선 요새화 중 매설 추정"(종합2보)</span></a></li>
+          <li><a href="https://www.newsis.com/view/NISX20260930_0003808302" target="_blank" rel="noopener"><time>2026. 9. 30</time><span>유엔사 "MDL 이남서 北지뢰 1발 발견…지뢰폭발 사고 정전협정 위반"</span></a></li>
+          <li><a href="https://www.newsis.com/view/NISX20260930_0003808582" target="_blank" rel="noopener"><time>2026. 9. 30</time><span>합참 "지뢰폭발 북측 사과 강력 촉구…北, 국경선 요새화 즉시 중단해야"(종합)</span></a></li>
+          <li><a href="https://www.newsis.com/view/NISX20261002_0003813041" target="_blank" rel="noopener"><time>2026. 10. 2</time><span>北, 30일 합참 입장 발표 후에도 지속 월선…군은 경고사격 대응</span></a></li>
+          <li><a href="https://www.newsis.com/view/NISX20261002_0003813202" target="_blank" rel="noopener"><time>2026. 10. 2</time><span>김여정, 李대통령 '군사적 긴장완화' 의지 표명에 "광대극 절정"(종합)</span></a></li>
+          <li><a href="https://www.newsis.com/view/NISX20261003_0003813427" target="_blank" rel="noopener"><time>2026. 10. 3</time><span>北, '지뢰사과' 대신 탄도미사일 도발…김여정 '대화 거부' 다음날 무력시위(종합3보)</span></a></li>
+          <li><a href="https://www.newsis.com/view/NISX20261004_0003813899" target="_blank" rel="noopener"><time>2026. 10. 4</time><span>北 김정은, 극초음속미사일 발사 참관…"핵억제력 고도화"(종합)</span></a></li>
+          <li><a href="https://www.newsis.com/view/NISX20261005_0003814618" target="_blank" rel="noopener"><time>2026. 10. 5</time><span>합참 "北지뢰로 우리 장병 부상 최종 판단…MDL 이남 北지뢰 모두 제거할 것"(종합2보)</span></a></li>
+          <li><a href="https://www.newsis.com/view/NISX20261005_0003814592" target="_blank" rel="noopener"><time>2026. 10. 5</time><span>군 "韓·유엔사, 'MDL 일치화' 협의 추진…北과 군사회담 반드시 필요"</span></a></li>
+          <li><a href="https://www.newsis.com/view/NISX20261005_0003814628" target="_blank" rel="noopener"><time>2026. 10. 5</time><span>北지뢰에 '대북 사이버 독자제재' 내부 검토…외교부·통일부 이견</span></a></li>
+          <li><a href="https://www.newsis.com/view/NISX20261006_0003815007" target="_blank" rel="noopener"><time>2026. 10. 6</time><span>강신철 "모든 책임 북한에 있어…안보 위해행위 단호하게 대응"</span></a></li>
+          <li><a href="https://www.newsis.com/view/NISX20261006_0003815126" target="_blank" rel="noopener"><time>2026. 10. 6</time><span>민주당, DMZ 北 지뢰 폭발에 "중대한 도발…책임 인정하고 사과하라"(종합)</span></a></li>
+        </ol>
+      </div>
+    </section>
+    <section class="sources">
+      <div class="wrap">
+        <div class="eyebrow">자료</div>
+        <ul>
+          <li><b>정전협정 (1953. 7. 27)</b><span>군사분계선 설정, 군사분계선 남북 각 2km 비무장지대 설정.</span></li>
+          <li><b>합동참모본부·유엔군사령부 군사정전위원회 합동조사 (2026. 9. 26~)</b><span>2026년 9월 21일 서부전선 DMZ 폭발 사고 현장조사.</span></li>
+          <li><b>유엔군사령부 발표 (2026. 9. 30)</b><span>합동 현장조사에서 군사분계선 남측 활성 북한제 대인지뢰 추가 확인, 정전협정 위반 발생 판단. 북한은 조사 결과와 책임을 부인했다.</span></li>
+          <li><b>합동참모본부 최종 조사결과 발표 (2026. 10. 5)</b><span>유엔사 공동 현장조사와 국립과학수사연구원 감정 결과를 토대로, 북한이 이른바 국경선 요새화 작업 중 MDL 이남 10여m에 매설한 수지반보병지뢰가 폭발 원인이라고 최종 판단. 같은 날 MDL 이남 북한군 지뢰지대 제거.</span></li>
+          <li><b>김여정 노동당 총무부장 담화 (2026. 10. 2)</b><span>지뢰 폭발 책임을 재차 부인하고 우리 군의 사과 요구를 일축.</span></li>
+          <li><b>합동참모본부 브리핑 (2026. 9. 28)·현장조사 자료 공개 (2026. 9. 29)</b><span>사고 경위, 사고 직후 구조 영상, 합동 현장조사 때 발견된 북한 수지반보병지뢰 사진.</span></li>
+          <li><b>유엔군사령부 팩트시트 (2026. 6)</b><span>MDL 북측의 방어 목적 지뢰 매설과 MDL 북측에 머무는 울타리·도로 작업은 그 자체로 정전협정 위반으로 보지 않음. MDL 남측에서 지뢰가 확인되면 정전협정 위반.</span></li>
+          <li><b>Reuters (2024. 6. 25)</b><span>북한군의 DMZ 일대 지뢰 매설, 대전차 방벽 구축, 도로 보강 작업. 정전협정의 DMZ 규정(군대·장비 철수, 지뢰밭 등 위험물 제거).</span></li>
+          <li><b>Reuters (2026. 9. 29)</b><span>사고 부상자 3명(2명 중상), 유엔사 합동조사의 활성 북한제 지뢰 추가 발견과 정전협정 위반 판단, 북한의 부인.</span></li>
+          <li><b>합동참모본부 발표 (2024. 6. 18)</b><span>중부전선 DMZ 안에서 작업하던 북한군의 군사분계선 침범과 북상.</span></li>
+          <li><b>9·19 남북 군사합의 (2018)</b><span>비무장지대 내 GP 시범 철수 등 군사적 긴장완화 조치.</span></li>
+        </ul>
+        <p class="disclaimer">3D 그래픽은 공개 자료를 토대로 재구성한 가상 공간으로, 실제 군사시설·지뢰 위치와 일치하지 않습니다. 지표 아래 그림은 매설물의 위치와 수량을 나타내지 않습니다.</p>
+      </div>
+    </section>
+
+
+    <footer class="site-footer"><span>VISUAL NEWSIS · 편집# 014 · INTERACTIVE SERIES</span><span>기획·디렉터 = 안재현 기자</span><span>© NEWSIS. ALL RIGHTS RESERVED.</span></footer>
+    <section class="editshop-next" aria-labelledby="editshop-next-title">
+      <div class="editshop-next-head">
+        <div><div class="editshop-next-kicker">편집# · MORE STORIES</div><h2 id="editshop-next-title">다른 편집#</h2></div>
+        <a class="editshop-series-link" href="../editshop/">편집# 전체 시리즈 보기 ↗</a>
+      </div>
+      <div class="editshop-next-grid"></div>
+    </section>
+  </div>
+
+  <aside class="ves-brand" aria-labelledby="ves-brand-title">
+  <div class="ves-brand-inner">
+    <div class="ves-brand-top"><span>VISUAL NEWSIS · 편집#</span><span>뉴스를 새롭게 읽는 방법</span></div>
+    <div class="ves-brand-body">
+      <a class="ves-brand-logo" href="../editshop/" aria-label="편집샵 랜딩으로 이동">편집<svg viewBox="0 0 120 140" width="36" height="43" style="max-width:40px;max-height:48px" role="img" aria-label="# 처마 로고"><path fill="currentColor" d="M31 8h22l-5 27h31l5-27h22l-5 27h16l-4 21H97l-5 25h19l-4 21H88l-6 30H60l6-30H35l-6 30H7l6-30H0l4-21h13l5-25H7l4-21h15zm13 48-5 25h31l5-25z"/><path class="shop-awning" fill="#e9a35c" d="M0 99h108l-2 10q-17 11-35 0-17 11-35 0-17 11-36 0z"/></svg></a>
+      <h2 id="ves-brand-title">뉴스에,<br><em>한 걸음 더</em></h2>
+      <p class="ves-brand-description">매일 쏟아지는 기사 속에서<br>놓치고 있는 가치를 찾고<br>더 깊이, 더 쉽게, 더 오래<br><strong>편집#이 끌어올립니다.</strong></p>
+      <a class="ves-brand-cta" href="../editshop/">다음 이야기 만나보기 <span aria-hidden="true">↗</span></a>
+    </div>
+    <div class="ves-brand-signature-row"><a class="ves-brand-signature" href="../editshop/"><b>VISUAL</b> JOURNALISM</a></div>
+    <div class="ves-brand-bottom"><div class="ves-brand-credit">기획·디렉터 = 안재현 기자</div><span>© NEWSIS. ALL RIGHTS RESERVED.</span></div>
+  </div>
+</aside>
+<script>
+    (function(){
+      // 3D를 띄우지 못하면 대체 도식과 함께 원인을 화면에 표시한다 (늦게라도 로드되면 자동 복구)
+      var why=function(t){document.body.classList.add('no-webgl');var n=document.getElementById('gl-why');if(n&&!n.textContent)n.textContent=t;};
+      window.__dmzFail=why;
+      if(location.protocol==='file:'){why('파일을 직접 열면 3D가 실행되지 않습니다. 로컬 서버 주소(http://localhost:8920/dmz/index.html)로 열어 주세요.');return;}
+      var c=document.createElement('canvas'),ok=false;
+      try{ok=!!(window.WebGLRenderingContext&&(c.getContext('webgl2')||c.getContext('webgl')));}catch(e){}
+      if(!ok){why('이 브라우저에서 WebGL(3D 그래픽)을 사용할 수 없습니다.');return;}
+      window.addEventListener('error',function(e){if(!window.__dmzReady)why('3D 로딩 오류: '+(e.message||(e.target&&e.target.src)||'알 수 없음'));},true);
+      var s=document.createElement('script');s.type='module';s.src='js/main.js?v=20261027-2';
+      s.onerror=function(){why('3D 스크립트를 불러오지 못했습니다.');};
+      document.body.appendChild(s);
+      setTimeout(function(){if(!window.__dmzReady)why('3D 로딩이 20초 안에 끝나지 않았습니다.');},20000);
+    })();
+  </script>
+
+</body>
+</html>

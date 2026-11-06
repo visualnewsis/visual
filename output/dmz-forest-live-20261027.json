@@ -1,0 +1,92 @@
+{
+  "checkedAt": "2026-10-27T07:42:50.069Z",
+  "url": "https://visual.newsis.com/dmz/",
+  "cacheVersion": "20261027-forest3",
+  "jsonLdBlocks": 1,
+  "files": [
+    {
+      "file": "css/dmz.css",
+      "status": 200,
+      "bytes": 32267,
+      "sha256": "80a13f29e00f1b7f6823b995fe3005d98ae31a447c368f72cb28ae858fd5bee7"
+    },
+    {
+      "file": "js/main.js",
+      "status": 200,
+      "bytes": 27885,
+      "sha256": "754cb3f70e211df349b2f5d2d93f68a49597c2ce64f060ca2c8e724537f1c4a4"
+    },
+    {
+      "file": "js/scene3d.js",
+      "status": 200,
+      "bytes": 32606,
+      "sha256": "44148f48b25118032e1b8ff2f281d8bba3d8bd8f0f7cf4c058feda2a40527659"
+    },
+    {
+      "file": "js/hero.js",
+      "status": 200,
+      "bytes": 10400,
+      "sha256": "df9feb41ccc7af4b5b6dd4121593037aafa157e5e08ff57159cccc611e0d962b"
+    },
+    {
+      "file": "js/terrain.js",
+      "status": 200,
+      "bytes": 11368,
+      "sha256": "d9f63c712c687653b6df9d9b47e8f2ae357322b2e6b378672bf21fbe24adbe5c"
+    },
+    {
+      "file": "js/vegetation.js",
+      "status": 200,
+      "bytes": 18802,
+      "sha256": "8016efc22e788873c0c4277fa75070390274e392321c16f6603f6ee68ac58c2e"
+    },
+    {
+      "file": "js/surface-detail.js",
+      "status": 200,
+      "bytes": 5353,
+      "sha256": "018dd81cc987288e9665f994e494b3ba802c4b800faf427e68334b8de6ca363f"
+    },
+    {
+      "file": "js/tree-detail.js",
+      "status": 200,
+      "bytes": 4593,
+      "sha256": "39b2d41659a1d322681abd89fa40525d7824cd35c0fe10e66ad0aab7e6bb9a80"
+    },
+    {
+      "file": "js/camera.js",
+      "status": 200,
+      "bytes": 5917,
+      "sha256": "72a86577b1106938ac30b4e969a67a06ffdfb3c7b07162d739976ba3304d7769"
+    },
+    {
+      "file": "js/fence.js",
+      "status": 200,
+      "bytes": 18557,
+      "sha256": "598d1c27a5749b87b8f9a51558d7bd06f1fb19b8a1d24130d64dc009dcbcc4bf"
+    },
+    {
+      "file": "js/ui.js",
+      "status": 200,
+      "bytes": 3433,
+      "sha256": "7905080ec2eeeeee696f3185f9df099add5eb8b50e1750f3ea5b7005be96e8cc"
+    },
+    {
+      "file": "js/xray.js",
+      "status": 200,
+      "bytes": 13353,
+      "sha256": "22f1d9caea4738f39150594b02588c5c2453c0164b603270a9d11b703a0f0d5b"
+    },
+    {
+      "file": "images/web/foliage-cluster-v1.webp",
+      "status": 200,
+      "bytes": 114258,
+      "sha256": "4cb2013e7167b34d0138c2b9b8edafcd4e569de392737dc0241cbdd72692d46d"
+    },
+    {
+      "file": "images/web/ground-hillside-v2.webp",
+      "status": 200,
+      "bytes": 528488,
+      "sha256": "514b26f73d5e3ee4a1558f8ae19c37c02ac92002080fd5e6abe7f646795805b8"
+    }
+  ]
+}
