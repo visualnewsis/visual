@@ -1,0 +1,163 @@
+{
+  "commit": "2ea55f0f09c8658df4a3c220a039894384386bce",
+  "results": [
+    {
+      "file": "braille-100/images/book-1280.jpg",
+      "status": 200,
+      "type": "image/jpeg",
+      "match": true
+    },
+    {
+      "file": "braille-100/images/book-1920.jpg",
+      "status": 200,
+      "type": "image/jpeg",
+      "match": true
+    },
+    {
+      "file": "braille-100/braille-engine.js",
+      "status": 200,
+      "type": "application/javascript",
+      "match": true
+    },
+    {
+      "file": "braille-100/braille-experience.js",
+      "status": 200,
+      "type": "application/javascript",
+      "match": true
+    },
+    {
+      "file": "braille-100/images/book-720.jpg",
+      "status": 200,
+      "type": "image/jpeg",
+      "match": true
+    },
+    {
+      "file": "braille-100/images/contact-1280.jpg",
+      "status": 200,
+      "type": "image/jpeg",
+      "match": true
+    },
+    {
+      "file": "braille-100/images/contact-720.jpg",
+      "status": 200,
+      "type": "image/jpeg",
+      "match": true
+    },
+    {
+      "file": "braille-100/images/contact-1920.jpg",
+      "status": 200,
+      "type": "image/jpeg",
+      "match": true
+    },
+    {
+      "file": "braille-100/images/document-720.jpg",
+      "status": 200,
+      "type": "image/jpeg",
+      "match": true
+    },
+    {
+      "file": "braille-100/images/document-1280.jpg",
+      "status": 200,
+      "type": "image/jpeg",
+      "match": true
+    },
+    {
+      "file": "braille-100/images/document-1920.jpg",
+      "status": 200,
+      "type": "image/jpeg",
+      "match": true
+    },
+    {
+      "file": "braille-100/images/history-1280.jpg",
+      "status": 200,
+      "type": "image/jpeg",
+      "match": true
+    },
+    {
+      "file": "braille-100/images/history-720.jpg",
+      "status": 200,
+      "type": "image/jpeg",
+      "match": true
+    },
+    {
+      "file": "braille-100/learn.css",
+      "status": 200,
+      "type": "text/css",
+      "match": true
+    },
+    {
+      "file": "braille-100/index.html",
+      "status": 200,
+      "type": "text/html",
+      "match": true
+    },
+    {
+      "file": "braille-100/images/history-1920.jpg",
+      "status": 200,
+      "type": "image/jpeg",
+      "match": true
+    },
+    {
+      "file": "braille-100/story.js",
+      "status": 200,
+      "type": "application/javascript",
+      "match": true
+    },
+    {
+      "file": "braille-100/learn.js",
+      "status": 200,
+      "type": "application/javascript",
+      "match": true
+    },
+    {
+      "file": "braille-100/learn.html",
+      "status": 200,
+      "type": "text/html",
+      "match": true
+    },
+    {
+      "file": "braille-100/story.css",
+      "status": 200,
+      "type": "text/css",
+      "match": true
+    },
+    {
+      "file": "braille-100/vendor/braillify/index_bg.js",
+      "status": 200,
+      "type": "application/javascript",
+      "match": true
+    },
+    {
+      "file": "braille-100/vendor/braillify/NOTICE.txt",
+      "status": 200,
+      "type": "text/plain",
+      "match": true
+    },
+    {
+      "file": "braille-100/vendor/braillify/LICENSE.txt",
+      "status": 200,
+      "type": "text/plain",
+      "match": true
+    },
+    {
+      "file": "braille-100/vendor/braillify/index_bg.wasm",
+      "status": 200,
+      "type": "application/octet-stream",
+      "match": true
+    }
+  ],
+  "deploymentRun": "https://github.com/visualnewsis/visual/actions/runs/41586513743",
+  "deploymentConclusion": "success",
+  "browser": {
+    "desktopWidth": 1440,
+    "mobileWidth": 390,
+    "mainInput": "고마워요. -> ⠈⠥⠑⠣⠏⠬⠲",
+    "consoleErrors": 0,
+    "analyticsScriptCount": 1,
+    "mobileSnackChoices": 9,
+    "mobileSnackOverflow": false
+  },
+  "landingChanged": false,
+  "searchIndexing": "noindex,nofollow retained for direct production review",
+  "editorialAndPortalFiles": "Untracked local materials; not included in deployment"
+}

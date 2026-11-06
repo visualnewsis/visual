@@ -1,0 +1,15 @@
+{
+  "commit": "5a88c71",
+  "checks": [
+    {
+      "file": "braille-100/index.html",
+      "status": 200,
+      "match": true
+    },
+    {
+      "file": "braille-100/braille-experience.js",
+      "status": 200,
+      "match": true
+    }
+  ]
+}

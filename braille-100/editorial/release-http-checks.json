@@ -1,0 +1,91 @@
+{
+  "checks": [
+    {
+      "page": "index.html",
+      "url": "story.css",
+      "status": 200
+    },
+    {
+      "page": "index.html",
+      "url": "story.js",
+      "status": 200
+    },
+    {
+      "page": "index.html",
+      "url": "braille-experience.mjs",
+      "status": 200
+    },
+    {
+      "page": "index.html",
+      "url": "images/contact-1920.jpg",
+      "status": 200
+    },
+    {
+      "page": "index.html",
+      "url": "images/history-1280.jpg",
+      "status": 200
+    },
+    {
+      "page": "index.html",
+      "url": "images/document-1280.jpg",
+      "status": 200
+    },
+    {
+      "page": "index.html",
+      "url": "images/book-1920.jpg",
+      "status": 200
+    },
+    {
+      "page": "index.html",
+      "url": "learn.html",
+      "status": 200
+    },
+    {
+      "page": "index.html",
+      "url": "vendor/braillify/LICENSE.txt",
+      "status": 200
+    },
+    {
+      "page": "index.html",
+      "url": "vendor/braillify/NOTICE.txt",
+      "status": 200
+    },
+    {
+      "page": "index.html",
+      "checks": "JSON-LD, inline JS, unique IDs",
+      "pass": true
+    },
+    {
+      "page": "learn.html",
+      "url": "story.css",
+      "status": 200
+    },
+    {
+      "page": "learn.html",
+      "url": "learn.css",
+      "status": 200
+    },
+    {
+      "page": "learn.html",
+      "url": "learn.mjs",
+      "status": 200
+    },
+    {
+      "page": "learn.html",
+      "checks": "JSON-LD, inline JS, unique IDs",
+      "pass": true
+    },
+    {
+      "privatePath": ".git/config",
+      "status": 404
+    },
+    {
+      "privatePath": "editorial/research.json",
+      "status": 404
+    },
+    {
+      "privatePath": "tools/verify.mjs",
+      "status": 404
+    }
+  ]
+}

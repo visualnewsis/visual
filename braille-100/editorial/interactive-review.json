@@ -1,0 +1,113 @@
+{
+  "date": "2026-11-02",
+  "scope": "Research and actual GPT/Claude text-only planning review, three rounds; no new interaction implementation",
+  "preserve": [
+    "article structure",
+    "working title",
+    "photos",
+    "ending-only optional hero interpretation",
+    "mandatory free input experience"
+  ],
+  "rationale": "독자가 한 점의 유무를 바꿔 첫소리의 차이를 직접 만들고, 그 구조를 자기 문장의 점역 결과에서 다시 살펴본다.",
+  "references": [
+    {
+      "name": "MESO / Dialogmuseum A Touch of Type",
+      "url": "https://meso.design/en/projects/dialogmuseum-interactive-experiences-for-braille-lettering-exhibition",
+      "evidence": "Read maker case study; physical exhibition in April-July 2023, speech transformed into braille lines",
+      "adopt": "Reader-supplied language becomes the material",
+      "exclude": "Particle choreography, microphone and AI speech as unnecessary article features"
+    },
+    {
+      "name": "BrailleDoodle",
+      "url": "https://www.brailledoodle.org/",
+      "evidence": "Read official webpage including digital six-dot demo; live browser navigation timed out, interaction not personally tested",
+      "adopt": "Dot-state manipulation with explicit screen-versus-tactile distinction",
+      "exclude": "Copying English mappings into Korean"
+    },
+    {
+      "name": "Bret Victor / Tangle",
+      "url": "https://worrydream.com/Tangle/",
+      "evidence": "Read creator description and reactive-document examples",
+      "adopt": "Control changes diagram and explanation together; no dependency adoption needed"
+    },
+    {
+      "name": "APH / Braille Brain",
+      "url": "https://www.aph.org/product/braille-brain/",
+      "evidence": "Read official product page; six-key entry and immediate feedback in UEB and Nemeth",
+      "adopt": "Explain state immediately",
+      "exclude": "Graded practice and imported English rules"
+    },
+    {
+      "name": "Nicky Case / Explorable Explanations",
+      "url": "https://blog.ncase.me/explorable-explanations/",
+      "adopt": "Use interaction for mechanisms and let readers apply what they explored"
+    },
+    {
+      "name": "국립국어원 / 점자 소개",
+      "url": "https://www.korean.go.kr/front/page/pageView.do?mn_id=205&page_id=P000302",
+      "evidence": "Direct official page read, initial consonant table: ㄱ dot4, ㄴ dots1,4",
+      "limitation": "Initial consonant example only; not whole syllable or final consonant generalization"
+    }
+  ],
+  "reviews": {
+    "gpt": "https://chatgpt.com/c/6ae7e98e-ed44-83e8-9fe8-c413dc2408d8",
+    "claude": "https://claude.ai/chat/8e172e0f-992d-49c2-bb23-e66a4a0ded76",
+    "rounds": [
+      {
+        "round": 1,
+        "gpt": "Inspect greeting cells and own-message mappings; reject decorative particle show and quiz",
+        "claude": "Challenge writing/communication overclaims, engine accuracy, hidden hero interpretation",
+        "codex": "Retain user requirements, reject arbitrary source-to-output alignment without engine support"
+      },
+      {
+        "round": 2,
+        "gpt": "Keep greeting structure exploration and personal input, use common six-dot diagram",
+        "claude": "Withdraw automatic-translation-is-fabrication claim and initial hero reveal demand after supplied implementation facts; retain suggestion to pair invitation with copy/share functionality",
+        "codex": "Greeting 8/10-cell switching alone still not stronger than a static comparison; require an actual causal action"
+      },
+      {
+        "round": 3,
+        "gpt": "Conditional planning approval of verified ㄱ/ㄴ dot1 toggle; preserve static history/photos",
+        "claude": "Planning rationale sufficient; keep dot4 fixed, allow only dot1 toggle, label initial consonant throughout; no broad alphabet inference",
+        "codex": "Accept bounded dot1 toggle and common cell inspector; preserve free input and ending; professional review still outstanding"
+      }
+    ],
+    "notClaimed": [
+      "actual implementation cross-review",
+      "professional braille sign-off",
+      "measured learning effectiveness"
+    ]
+  },
+  "proposedInteractions": [
+    {
+      "location": "existing six-dot diagram",
+      "action": "Toggle dot1; dot4 remains fixed",
+      "result": "Initial consonant ㄱ ↔ ㄴ with synchronized dot numbers and explanation"
+    },
+    {
+      "location": "existing greeting lesson",
+      "action": "Select greeting and a braille cell",
+      "result": "Inspect exact cell geometry and raised-dot numbers; whole-word cell counts are supplementary"
+    },
+    {
+      "location": "existing personal message",
+      "action": "Enter own message, inspect output cells and optionally copy original plus Unicode braille",
+      "result": "Personalized whole-text conversion without invented syllable alignment"
+    }
+  ],
+  "excluded": [
+    "new chapters",
+    "forced completion",
+    "quiz/scoring",
+    "blindness simulation",
+    "arbitrary pattern decoding",
+    "unverified syllable-to-cell mapping",
+    "decorative particle show",
+    "required image cards"
+  ],
+  "pending": [
+    "independent braille review",
+    "implementation of proposed upgrades",
+    "desktop/mobile and accessibility verification after implementation"
+  ]
+}

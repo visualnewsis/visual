@@ -1,0 +1,202 @@
+[
+  {
+    "path": "aijob/index.html",
+    "status": 200,
+    "match": true
+  },
+  {
+    "path": "arcade/data/editshop-articles.json",
+    "status": 200,
+    "match": true
+  },
+  {
+    "path": "assets/20261019-paged/editshop-carousel.js",
+    "status": 200,
+    "match": true
+  },
+  {
+    "path": "assets/editshop-carousel.js",
+    "status": 200,
+    "match": true
+  },
+  {
+    "path": "assets/visual-stories-carousel.js",
+    "status": 200,
+    "match": true
+  },
+  {
+    "path": "atleti-2gang/index.html",
+    "status": 200,
+    "match": true
+  },
+  {
+    "path": "battery/index.html",
+    "status": 200,
+    "match": true
+  },
+  {
+    "path": "braille-100/index.html",
+    "status": 200,
+    "match": true
+  },
+  {
+    "path": "braille-100/learn.html",
+    "status": 200,
+    "match": true
+  },
+  {
+    "path": "bukang/index.html",
+    "status": 200,
+    "match": true
+  },
+  {
+    "path": "buy-live/index.html",
+    "status": 200,
+    "match": true
+  },
+  {
+    "path": "children/index.html",
+    "status": 200,
+    "match": true
+  },
+  {
+    "path": "dmz/index.html",
+    "status": 200,
+    "match": true
+  },
+  {
+    "path": "editshop/index.html",
+    "status": 200,
+    "match": true
+  },
+  {
+    "path": "goodeasy/camera/index.html",
+    "status": 200,
+    "match": true
+  },
+  {
+    "path": "goodeasy/espresso-machine/index.html",
+    "status": 200,
+    "match": true
+  },
+  {
+    "path": "goodeasy/fishing-reel/index.html",
+    "status": 200,
+    "match": true
+  },
+  {
+    "path": "goodeasy/gramophone/index.html",
+    "status": 200,
+    "match": true
+  },
+  {
+    "path": "goodeasy/guitar/index.html",
+    "status": 200,
+    "match": true
+  },
+  {
+    "path": "goodeasy/keyboard/index.html",
+    "status": 200,
+    "match": true
+  },
+  {
+    "path": "goodeasy/piano/index.html",
+    "status": 200,
+    "match": true
+  },
+  {
+    "path": "goodeasy/projector/index.html",
+    "status": 200,
+    "match": true
+  },
+  {
+    "path": "goodeasy/sewing-machine/index.html",
+    "status": 200,
+    "match": true
+  },
+  {
+    "path": "goodeasy/violin/index.html",
+    "status": 200,
+    "match": true
+  },
+  {
+    "path": "goodeasy/watch/index.html",
+    "status": 200,
+    "match": true
+  },
+  {
+    "path": "homecoming/index.html",
+    "status": 200,
+    "match": true
+  },
+  {
+    "path": "index.html",
+    "status": 200,
+    "match": true
+  },
+  {
+    "path": "kangin/index.html",
+    "status": 200,
+    "match": true
+  },
+  {
+    "path": "nuri5/index.html",
+    "status": 200,
+    "match": true
+  },
+  {
+    "path": "oil/index.html",
+    "status": 200,
+    "match": true
+  },
+  {
+    "path": "pension/index.html",
+    "status": 200,
+    "match": true
+  },
+  {
+    "path": "quit/index.html",
+    "status": 200,
+    "match": true
+  },
+  {
+    "path": "senior/index.html",
+    "status": 200,
+    "match": true
+  },
+  {
+    "path": "shelter/index.html",
+    "status": 200,
+    "match": true
+  },
+  {
+    "path": "sitemap-news.xml",
+    "status": 200,
+    "match": true
+  },
+  {
+    "path": "smartwatch/index.html",
+    "status": 200,
+    "match": true
+  },
+  {
+    "path": "spai/index.html",
+    "status": 200,
+    "match": true
+  },
+  {
+    "path": "temperature/index.html",
+    "status": 200,
+    "match": true
+  },
+  {
+    "path": "thief/index.html",
+    "status": 200,
+    "match": true
+  },
+  {
+    "path": "witness/index.html",
+    "status": 200,
+    "match": true
+  }
+]

@@ -1,0 +1,27 @@
+{
+  "date": "2026-11-02",
+  "main": "No middle greeting lesson; optional target=_blank rel=noopener link immediately after ending; main own-message retained",
+  "files": [
+    "index.html",
+    "story.css",
+    "learn.html",
+    "learn.css",
+    "learn.mjs",
+    "tools/preview-server.mjs",
+    "README.md"
+  ],
+  "checks": [
+    "Initial consonant dot1 click: ㄱ→ㄴ",
+    "Keyboard Space: ㄴ→ㄱ",
+    "Greeting selection 8/10 cells",
+    "Third cell selection updates inspector and aria-pressed",
+    "320px and 390px no horizontal overflow",
+    "Desktop interaction and 44x52px cell targets",
+    "Main static checks: 80 pass",
+    "Snack JSON-LD, unique IDs, relative assets and scripts pass"
+  ],
+  "realDevices": false,
+  "professionalBrailleReview": false,
+  "externalImplementationReview": false,
+  "base": "origin/main 2caecb3"
+}

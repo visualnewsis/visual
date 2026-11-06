@@ -1,0 +1,34 @@
+{
+  "commit": "5a88c71",
+  "request": "URL-only clipboard; remove awkward generic card wording",
+  "labels": {
+    "card": "점자로 적은 말",
+    "invitation": "내 말도 점자로",
+    "copyButton": "점자 체험 링크 복사"
+  },
+  "clipboard": {
+    "expected": "https://visual.newsis.com/braille-100/#your-message",
+    "actual": "https://visual.newsis.com/braille-100/#your-message",
+    "match": true
+  },
+  "review": {
+    "gpt": "Actual screenshot reviewed. No P1/P2. Keep concise wording.",
+    "claude": "Text/code review only. No P1/P2. P3 suggested 옮긴 말 and clearer fallback wording.",
+    "codex": "Kept 적은 말 to avoid duplicating existing result heading 점자로 옮긴 말; writing does not assert manual embossing. Accepted fallback wording correction."
+  },
+  "checks": [
+    "JS syntax",
+    "81 local checks",
+    "20 shared service page checks",
+    "clipboard exact URL comparison"
+  ],
+  "deploymentRun": 41609592091,
+  "unmodified": [
+    "article title/body",
+    "lesson",
+    "shared landing",
+    "analytics",
+    "CSP"
+  ],
+  "realDeviceTest": false
+}

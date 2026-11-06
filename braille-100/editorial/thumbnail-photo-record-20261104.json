@@ -1,0 +1,17 @@
+{
+  "method": "Original NEWSIS photograph + native HTML/CSS headline composition; no generated scene or rewritten braille",
+  "photoNumber": 15,
+  "original": "NISI20251103_0021042526.jpg",
+  "originalSha256": "644e2d333fafb25e1ab26d5083f718cdcb0597edb6ca6e735d8dccb35f2436ea",
+  "photographer": "김종택",
+  "sourceUrl": "https://www.newsis.com/view/NISI20251103_0021042526",
+  "files": [
+    "../images/site-thumbnail-photo-360x240.jpg",
+    "../images/site-thumbnail-photo-1200x800.jpg"
+  ],
+  "layout": "thumbnail-photo-layout-20261104.html",
+  "cropProof": "thumbnail-photo-crops-20261104.jpg",
+  "title": "점점, 문장이 손에 잡혔다 [훈맹정음 100년]",
+  "articleContentAndPublicationDate": "preserved",
+  "originalCreatorField": "JTK"
+}

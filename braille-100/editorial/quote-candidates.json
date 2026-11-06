@@ -1,0 +1,59 @@
+{
+  "checkedAt": "2026-11-03",
+  "insertedIntoArticle": false,
+  "candidates": [
+    {
+      "person": "박두성",
+      "quote": "점자책…. 쌓지 말고 꽂아….",
+      "source": "https://www.incheon.go.kr/goodmorning/GM010100/view?curPage=1&nttNo=2042464&srchPblicteIssnoCode=202511",
+      "sourcePublication": "2025-11-04, 굿모닝인천, 임성훈",
+      "evidence": "City publication reports these as final words; not a contemporaneous recording or manuscript verified by this audit.",
+      "context": "Avoid compressing raised braille dots by stacking books.",
+      "editorial": "Strongest candidate as an attributed historical anecdote; source transmission must be clear; not yet inserted."
+    },
+    {
+      "person": "Helen Keller",
+      "quote": "the raised letters under our fingers are precious pods from which has sprouted our intellectual wealth.",
+      "source": "https://www.afb.org/afb100/our-history",
+      "attributedDate": "1952-06-21, Paris",
+      "koreanDraft": "손가락 아래 솟은 글자들은 우리의 지적 풍요가 싹튼 소중한 씨방입니다.",
+      "translation": "Our draft translation, not an official Korean translation.",
+      "editorial": "Literary but 씨방/지적 풍요 may be heavy; keep as research candidate.",
+      "translationReview": "Earlier 씨방 translation is discarded: pods is closer to 꼬투리. Translation and context remain under review; do not publish draft as official wording."
+    },
+    {
+      "person": "Helen Keller",
+      "quote": "His magic wand was a group of six dots",
+      "source": "https://afb.org/about-afb/history/helen-keller/books-essays-speeches/education/braille-magic-wand-blind",
+      "work": "Braille, the Magic Wand of the Blind",
+      "date": "Undated; page identifies original document source as not identified; archive transcription available.",
+      "koreanDraft": "그의 마법 지팡이는 여섯 개의 점이었다.",
+      "translation": "Our translation of a clause, not the whole sentence.",
+      "editorial": "Short and memorable but magic metaphor may mystify braille; keep as research candidate."
+    }
+  ],
+  "notRecommended": [
+    {
+      "attribution": "Louis Braille",
+      "claim": "Access to communication is access to knowledge",
+      "reason": "Circulates on quotation sites; original letter/speech not verified here. Do not present as a verified direct quote."
+    },
+    {
+      "attribution": "박두성",
+      "claim": "어둠/마음/목수·상한 나무 비유",
+      "reason": "Some wording is historically reported but this project should avoid moralizing or reducing disabled people to damaged objects; no automatic insertion."
+    }
+  ],
+  "placement": {
+    "article": "Keep main ending and bottom snack invitation unchanged for now.",
+    "snack": "Inserted after lesson01 on2026-11-03 with user approval. Reported last words, article attribution/explanation and separate editorial reflection.",
+    "portal": "Keep quote-plus-physical-context opening as a candidate, not yet inserted.",
+    "userIdea": "점자는 덮이지 않고 눌리지 않고 올곧게 계승되고 있다",
+    "editorialCandidate": "점이 눌리지 않아야, 다음 사람도 읽을 수 있다.",
+    "distinction": "Snack reflection explicitly identifies 우리는 as the interpreting voice; it is outside the historical blockquote.",
+    "reason": "Avoid unverified overall success claims; low survey ability percentage alone neither proves nor disproves cultural continuity.",
+    "sourceContext": "굿모닝인천 paragraph immediately after the reported last words explicitly explains compression of the raised dots.",
+    "snackReflection": "다음 사람도 읽을 수 있게 남겨두라는 뜻으로, 우리는 이 당부를 읽습니다."
+  },
+  "insertedIntoSnack": true
+}

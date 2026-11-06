@@ -1,0 +1,82 @@
+{
+  "date": "2026-11-02",
+  "workflow": "samdan-check",
+  "base": "2caecb3b28d0942e78a5bbcf4cd9b864c88e9d5b",
+  "gpt": "https://chatgpt.com/c/6ae7e98e-ed44-83e8-9fe8-c413dc2408d8",
+  "claude": "https://claude.ai/chat/8e172e0f-992d-49c2-bb23-e66a4a0ded76",
+  "rounds": [
+    {
+      "number": 5,
+      "evidence": "Prior actual screenshots; latest design/addition and release-gap discussion",
+      "result": "GPT design approved within viewed scope; Claude objected to round timeline marker and identified copy, link-accessibility and author gaps."
+    },
+    {
+      "number": 6,
+      "evidence": "Claude actual complete seven source files and PC1440 timeline image; GPT actual revised timeline image",
+      "result": "Short line adopted instead of round marker; GPT timeline design approved; Claude requested clearer snack review notice and group role."
+    },
+    {
+      "number": 7,
+      "evidence": "Exact diff text follow-up; Codex actual live snack checks",
+      "result": "Claude prior two findings resolved; no blocker within reviewed scope."
+    },
+    {
+      "number": 8,
+      "evidence": "Both reviewers actual rendered original survey tables, PDF pages82/176; Codex methodology and item text",
+      "result": "Found overall500 versus item499/492 bases and necessity versus urgency error; both reviewers accepted core correction with label/count refinements."
+    },
+    {
+      "number": 9,
+      "evidence": "Exact final copy and Codex measured checks; reviewers did not independently rerun browser tests",
+      "result": "Both closed statistical findings; entire release remains conditional."
+    }
+  ],
+  "changes": [
+    "Short annual-theme rules; no photo decoration or fake braille",
+    "Correct photo provenance wording",
+    "New-tab screen-reader labels and decorative-arrow hiding; source arrows kept inline",
+    "Author in both JSON-LD blocks",
+    "Snack explicitly states professional and user review not yet done; dot positions group named",
+    "Statistics now read/write braille14.4%(item499), policy choice74%(364/492,multiple response), report linked"
+  ],
+  "checks": {
+    "static": "release-static-checks.json:80 passes",
+    "http": "release-http-checks.json:18 passes",
+    "live": [
+      "1440px PC and390px mobile,320px mobile verified without overflow",
+      "Four photos loaded at original proportions",
+      "Snack dot1 toggles to initial ㄴ, welcome10 cells/buttons",
+      "Actual 고마워요. conversion succeeded after first engine load",
+      "100 repeated 가 input produced100 cells without overflow",
+      "Unsupported emoji and blank-input errors explicit",
+      "No-JavaScript main retains9 h2 headings, braille Unicode and fallback notice",
+      "No error/warning console entries in checked main and snack tabs"
+    ],
+    "limitations": [
+      "Viewport tests are not actual Safari/Android or assistive device tests",
+      "No induced network-failure browser test; catch/retry code independently read",
+      "Only cited survey sections and tables closely read, not all410 pages"
+    ]
+  },
+  "preserved": [
+    "Article order and all original photos",
+    "Quoted headings and required byline",
+    "Final reveal and optional bottom snack",
+    "Shared files and other workers changes"
+  ],
+  "publicReleaseReady": false,
+  "pending": [
+    "Approved production URL, canonical, absolute share images/image JSON-LD, final title/date/indexing",
+    "Independent professional braille and braille-user review",
+    "Real-device Safari/Android and assistive technology checks",
+    "Existing shared header menu9 items versus AGENTS4: owner-managed conflict"
+  ],
+  "hashes": {
+    "index.html": "f6f586096531faf34d52c8c72f99f679172d22b510f4178dfcca13d09b3c441f",
+    "learn.html": "3598b603cbb5a487fd7bf6875de2ca9de08102dc883cfd4a8aa61e30d5c31a83",
+    "story.css": "0efb6bb4979017c65bad9a7e8eec853af47a5fba3ce8e610d2894bcaceefc682",
+    "braille-experience.mjs": "3adf06a531a5f91234a717279590b6ae7a88ac0e88f487df53317c77cff3444f",
+    "braille-engine.mjs": "7558467576d2d6149223dba98c123d5aa77bbdf7d3f1ae040e41f69a9a793db3",
+    "learn.mjs": "91646db1f2ee4df9fbb24dfbfcd6bf7f8457686d489c2e803723908f00364c01"
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "source": "국민의 점자 인식 및 점자 사용 환경 조사 결과보고서",
+  "pages": 410,
+  "bytes": 22132719,
+  "sha256": "b0dc2579b4b1cad80a77a814e19b97a51690a20b7192dc7c1f3d4167b4f9b6aa",
+  "inspected": [
+    {
+      "pdfPage": 82,
+      "printedPage": 44,
+      "table": "I-15",
+      "itemBase": 499,
+      "yes": 72,
+      "percent": 14.4
+    },
+    {
+      "pdfPage": 176,
+      "printedPage": 138,
+      "table": "I-81",
+      "itemBase": 492,
+      "selected": 364,
+      "percent": 74,
+      "multipleResponse": true
+    }
+  ],
+  "limitation": "Methodology and relevant items read; full text extracted, not410 pages closely read."
+}

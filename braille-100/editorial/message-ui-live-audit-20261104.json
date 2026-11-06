@@ -1,0 +1,17 @@
+[
+  {
+    "path": "braille-100/index.html",
+    "status": 200,
+    "match": true
+  },
+  {
+    "path": "braille-100/story.css",
+    "status": 200,
+    "match": true
+  },
+  {
+    "path": "braille-100/braille-experience.js",
+    "status": 200,
+    "match": true
+  }
+]

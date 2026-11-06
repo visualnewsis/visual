@@ -1,0 +1,112 @@
+[
+  {
+    "path": "adult-missing/index.html",
+    "status": 200,
+    "match": true
+  },
+  {
+    "path": "assets/visual-stories-carousel.css",
+    "status": 200,
+    "match": true
+  },
+  {
+    "path": "assets/visual-stories-carousel.js",
+    "status": 200,
+    "match": true
+  },
+  {
+    "path": "battery/index.html",
+    "status": 200,
+    "match": true
+  },
+  {
+    "path": "bukang/index.html",
+    "status": 200,
+    "match": true
+  },
+  {
+    "path": "goodeasy/camera/index.html",
+    "status": 200,
+    "match": true
+  },
+  {
+    "path": "goodeasy/espresso-machine/index.html",
+    "status": 200,
+    "match": true
+  },
+  {
+    "path": "goodeasy/fishing-reel/index.html",
+    "status": 200,
+    "match": true
+  },
+  {
+    "path": "goodeasy/gramophone/index.html",
+    "status": 200,
+    "match": true
+  },
+  {
+    "path": "goodeasy/guitar/index.html",
+    "status": 200,
+    "match": true
+  },
+  {
+    "path": "goodeasy/keyboard/index.html",
+    "status": 200,
+    "match": true
+  },
+  {
+    "path": "goodeasy/piano/index.html",
+    "status": 200,
+    "match": true
+  },
+  {
+    "path": "goodeasy/projector/index.html",
+    "status": 200,
+    "match": true
+  },
+  {
+    "path": "goodeasy/sewing-machine/index.html",
+    "status": 200,
+    "match": true
+  },
+  {
+    "path": "goodeasy/violin/index.html",
+    "status": 200,
+    "match": true
+  },
+  {
+    "path": "goodeasy/watch/index.html",
+    "status": 200,
+    "match": true
+  },
+  {
+    "path": "heat-rain/index.html",
+    "status": 200,
+    "match": true
+  },
+  {
+    "path": "moreno/index.html",
+    "status": 200,
+    "match": true
+  },
+  {
+    "path": "nepal-flood/index.html",
+    "status": 200,
+    "match": true
+  },
+  {
+    "path": "nuri5/index.html",
+    "status": 200,
+    "match": true
+  },
+  {
+    "path": "running/index.html",
+    "status": 200,
+    "match": true
+  },
+  {
+    "path": "son7/index.html",
+    "status": 200,
+    "match": true
+  }
+]

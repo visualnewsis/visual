@@ -1,0 +1,50 @@
+{
+  "status": "Text draft only; not uploaded to portal or production",
+  "titleStatus": "Current working headline, previous candidates preserved",
+  "firstImageRule": "Landscape original photograph. No added title/text/AI image generation.",
+  "photoSequence": [
+    {
+      "order": 1,
+      "number": 15,
+      "filename": "NISI20251103_0021042526.jpg",
+      "captionSource": "[수원=뉴시스] 김종택 기자 = '한글 점자의 날'을 하루 앞둔 3일 경기 수원시 영통구 장애인종합복지관 사랑샘도서관에서 관계자가 점자책을 읽고 있다. 2025.11.03. jtk@newsis.com"
+    },
+    {
+      "order": 2,
+      "number": 4,
+      "filename": "NISI20261006_0021477826.jpg",
+      "captionSource": "[인천=뉴시스] 전진환 기자 = 6일 인천 연수구 국립세계문자박물관에서 2026년 하반기 특별전 '점에서 세상으로: 훈맹정음 100주년' 전시에 한글 점자 설명서 등이 전시돼 있다. 국립세계문자박물관은 국립한글박물관, 송암점자도서관과 공동으로 7일부터 내년 2월 14일까지 박물관 기획전시실에서 특별전 '점에서 세상으로: 훈맹정음 100주년'을 개최한다. 2026.10.06. amin2@newsis.com"
+    },
+    {
+      "order": 3,
+      "number": 11,
+      "filename": "NISI20250519_0020815195.jpg",
+      "captionSource": "[과천=뉴시스] 조수정 기자 = 21대 대통령선거일을 15일 앞둔 19일 과천 중앙선거관리위원회 선거종합상황실에서 직원이 시각장애 선거인을 위한 투표안내문의 점자를 확인하고 있다. 2025.05.19. chocrystal@newsis.com"
+    },
+    {
+      "order": 4,
+      "number": 12,
+      "filename": "NISI20251103_0021042483.jpg",
+      "captionSource": "[인천=뉴시스] 전진환 기자 = 점자의 날을 하루 앞둔 3일 오후 인천 미추홀구 송암점자도서관에서 한 시각장애인이 점자책을 읽고 있다. 점자의 날은 시각장애인의 세종대왕이라 불리는 송암 박두성 선생이 시각장애인을 위해 한글 점자를 만들어 반포한 1926년 11월 4일을 기념하는 날이다. 2025.11.03. amin2@newsis.com"
+    }
+  ],
+  "notes": [
+    "Use absolute dates for 2025 photographs; do not present them as 2026 scenes.",
+    "Do not infer sight status of photo15 library employee or braille text in photographs.",
+    "Photo4 is a 2026 exhibition record, not a photograph from 1926.",
+    "Do not reveal the hero phrase 그런 점이 좋았다 in portal copy or image captions.",
+    "Park statement is reported last words in 2025 city magazine, not independently verified contemporaneous recording.",
+    "Portal publication and image production are not performed by this draft request.",
+    "Production URL remains subject to live deployment verification.",
+    "14.4% denominator 499, target20–69 with500 total. Not national literacy prevalence.",
+    "Fixed phrase output matches Braillify2.2.0; independent braille professional review remains pending."
+  ],
+  "sources": [
+    "https://korean.go.kr/front/page/pageView.do?mn_id=205&page_id=P000302",
+    "https://www.incheon.go.kr/goodmorning/GM010100/view?curPage=1&nttNo=2042464&srchPblicteIssnoCode=202511",
+    "https://www.hasang.org/page/s0104.php",
+    "https://www.braillekorea.org/menu/110/contents/207/contents.do",
+    "https://musicbraille.org/business/fabrication.php"
+  ],
+  "surveyEvidence": "braille-100/editorial/survey-table-check.json"
+}

@@ -1,0 +1,179 @@
+{
+  "checkedAt": "2026-11-02",
+  "scope": "Domestic education, production, use environments, international research and reporting, translation technology; no institution has been contacted.",
+  "sources": [
+    {
+      "organization": "국립국어원",
+      "title": "점자 소개",
+      "url": "https://korean.go.kr/front/page/pageView.do?mn_id=205&page_id=P000302",
+      "status": "read; used",
+      "use": "평양 점자 선행, 훈맹정음 연구·발표와 여섯 점의 위치"
+    },
+    {
+      "organization": "국립국어원",
+      "title": "2025 국민의 점자 인식 조사 공개 안내",
+      "url": "https://korean.go.kr/braille/common/greeting.do",
+      "status": "official summary read; used",
+      "use": "14.4% read/write braille, item n=499; 74% selected teacher training and education activation, multiple-response item n=492.",
+      "limits": "Official summary checked against original report. Overall target 500; item bases differ (499 and 492)."
+    },
+    {
+      "organization": "국립국어원",
+      "title": "국민의 점자 인식 및 점자 사용 환경 조사 결과보고서",
+      "url": "https://www.korean.go.kr/common/download.do?c_file_name=9d48cc56-9ed5-49f5-b591-19e32bcb7712.pdf&file_path=reportData&o_file_name=국민의+점자+인식+및+점자+사용+환경+조사+결과보고서.pdf",
+      "status": "Full PDF obtained (410 pages); text extracted; relevant methodology and items read; table pages rendered and inspected",
+      "use": "Printed p44 Table I-15 n499/72 yes/14.4%; printed p138 Table I-81 n492/364 selected/74%, multiple response",
+      "limits": "Not a claim that all 410 pages were closely read. Original report narrative and tables contain internal discrepancies; article uses displayed item tables and avoids unsupported inference."
+    },
+    {
+      "organization": "국립국어원",
+      "title": "온라인 점자 학습",
+      "url": "https://www.korean.go.kr/braille/course/active/master/list.do",
+      "status": "read; used",
+      "use": "2024 개정 한글·수학·과학 및 통일영어점자 강좌"
+    },
+    {
+      "organization": "하상장애인복지관",
+      "title": "시각장애인학습지원센터 사업",
+      "url": "https://www.hasang.org/page/s0104.php",
+      "status": "read; used",
+      "use": "중도 시각장애인·통합교육 학생의 읽기 교육, 시험·학습 자료 지원",
+      "reportingLead": "읽기를 배우는 성인과 강사, 통합학교 자료 제작자 인터뷰. 문의는 사업 페이지의 공개 업무 연락처로 확인할 수 있으나 연락하지 않음."
+    },
+    {
+      "organization": "하상장애인복지관 점자세상",
+      "title": "강의 목록",
+      "url": "https://www.braillekorea.org/menu/118/program/301/lectureList.do",
+      "status": "read; used",
+      "use": "개정 한글 점자, 중도 실명자 읽기 과정, 점역 실무 교육"
+    },
+    {
+      "organization": "하상 점자세상",
+      "title": "점역·교정사 안내",
+      "url": "https://www.braillekorea.org/menu/110/contents/207/contents.do",
+      "status": "read; used",
+      "use": "점역과 교정 실기 구분",
+      "limits": "일부 표의 배점 문구는 해석하지 않고 검정 방식만 인용"
+    },
+    {
+      "organization": "실로암시각장애인음악재활센터",
+      "title": "점자악보 제작",
+      "url": "https://musicbraille.org/business/fabrication.php",
+      "status": "read; used",
+      "use": "음악 점역사의 해석·점역과 시각장애인 음악 교정사의 교정",
+      "reportingLead": "악보 한 곡의 제작 과정과 읽는 연주자 취재. 사진·발언·곡 사용 권한은 확보하지 않음."
+    },
+    {
+      "organization": "RNIB",
+      "title": "Braille 200 report",
+      "date": "2024-11-21",
+      "url": "https://www.rnib.org.uk/professionals/research-and-data/reports-and-insight/braille-200-report/",
+      "status": "official summary read; used",
+      "use": "종이 점자·음성·점자 기기 병용, 약 포장과 책·문서의 쓰임",
+      "limits": "점자를 아는 성인 조사. 모든 시각장애인의 사용률로 일반화하지 않음."
+    },
+    {
+      "organization": "Library of Congress NLS",
+      "title": "Equipment for NLS Materials",
+      "url": "https://www.loc.gov/nls/services-and-resources/equipment-for-nls-materials/",
+      "status": "read; used",
+      "use": "자격 있는 회원 대상 무료 전자 점자 단말기 대여, 오르내리는 핀, 스마트폰·컴퓨터 연결"
+    },
+    {
+      "organization": "AP",
+      "title": "200 years after the creation of braille, blind people in Mali say it has allowed them to fit in",
+      "date": "2025-03-20",
+      "url": "https://apnews.com/article/0e0266c692ed0097eb7d8b3b8365d115",
+      "status": "search-returned article text read; direct open unavailable; not used in page",
+      "use": "말리의 교육 자료 부족과 기술·점자의 병용을 다룬 현장 보도",
+      "limits": "우리 사진의 인물과 연결하지 않음. 한국 현황을 증명하는 자료가 아님."
+    },
+    {
+      "organization": "국립국어원 / 국립특수교육원 자료실",
+      "title": "제2차 점자발전기본계획",
+      "url": "https://www.nise.go.kr/onmam/openapi/fileDown.do?fileSn=aT0DtoTmsfXrKAWRAcZhEg",
+      "status": "indexed plan passages read; background",
+      "use": "점자 교육기관·온라인 과정·2026년 기념 사업의 정책 맥락",
+      "limits": "연차별 목표 기관 수를 현재 운영 실적으로 쓰지 않음"
+    },
+    {
+      "organization": "실로암이러닝센터",
+      "title": "브레일 아카데미 안내",
+      "url": "https://www.siledu.org/board/view.php?ctg_idx=10079&idx=11046&page=1",
+      "status": "indexed notice read; reporting lead",
+      "use": "규정 학습·기출 풀이 온라인 교육",
+      "limits": "홈페이지 직접 열람 시간 초과. 오래된 공고의 접수 상태·현재 모집으로 인용하지 않음."
+    },
+    {
+      "organization": "노원시각장애인복지관",
+      "title": "온라인점자학교",
+      "url": "https://edu.nowonblind.or.kr/",
+      "status": "existence supported by official basic plan; direct open timed out",
+      "use": "교육기관 추가 취재 대상",
+      "limits": "현재 강좌·모집 여부 미확인"
+    },
+    {
+      "organization": "KAIST",
+      "title": "시각장애인 위한 점자 번역 엔진 K-Braille 개발",
+      "date": "2026-03-13",
+      "url": "https://www.kaist.ac.kr/site/researchnews/html/news/?GotoPage=1&mng_no=59290&mode=V&skey=keyword&sval=B",
+      "status": "primary press release read; background",
+      "use": "국립국어원 병렬 말뭉치 17,943문장 평가 등 자동 점역 연구",
+      "limits": "연구팀 발표의 평가 집합 내 성능을 임의 문장 전체 100% 정확도로 바꾸지 않음. 현재 체험은 K-Braille을 사용하지 않음."
+    },
+    {
+      "organization": "Braillify / Devfive",
+      "title": "공식 저장소·배포",
+      "url": "https://github.com/dev-five-git/braillify",
+      "status": "README and fixed npm package inspected; used",
+      "use": "2024 개정 규정 기반을 표방하는 브라우저 로컬 점역 엔진",
+      "limits": "프로젝트 자체 예제 752건 일치. 독립 점역 전문가·당사자 감수는 아님."
+    },
+    {
+      "organization": "실로암 마이픽",
+      "title": "훈맹정음 관련 안내",
+      "url": "https://www.mypickebook.org/notice/event_view.html?idx=6576&page=6&sch_type=&sch_word=",
+      "status": "indexed notice; lead only",
+      "use": "전자도서 제작 봉사와 원자료 준비의 과정 취재",
+      "limits": "전자도서 제작과 완성 점자 도서 제작을 동일 작업으로 단정하지 않음"
+    },
+    {
+      "organization": "식품의약품안전처 / 정책브리핑",
+      "title": "점자와 QR코드로 식·의약품 정보 확인해요",
+      "url": "https://www.korea.kr/news/reporterView.do?newsId=148927439",
+      "status": "policy reporter article read; background, not used",
+      "use": "식품 포장과 정보 표시 현장 사례",
+      "limits": "정책기자 글은 규정 원문이 아님. 2024 식품 가이드라인을 전 제품의 의무 규정으로 바꾸지 않음."
+    },
+    {
+      "organization": "국립한글박물관",
+      "title": "훈맹정음 반포 100주년 기념 학술대회 안내",
+      "url": "https://www.hangeul.go.kr/",
+      "status": "official announcement indexed; event lead",
+      "use": "2026-11-04 행사 취재 대상",
+      "limits": "확인일 2026-11-02에는 미래 일정. 개최 완료로 쓰지 않음."
+    },
+    {
+      "organization": "인천교육기관 안내",
+      "title": "점에서 세상으로 특별전 안내",
+      "url": "https://mch.icehs.kr/boardCnts/updateCnt.do?action=view&boardID=231432&boardSeq=34173550&lev=0&m=0401&viewBoardID=231432",
+      "status": "institutional reannouncement read; background",
+      "use": "2026-10-07~2027-02-14 전시 및 주최 기관 안내",
+      "limits": "전시품의 제작 연대·1926년 원본 여부를 증명하지 않음"
+    },
+    {
+      "organization": "청와대",
+      "title": "2026.10.7 김혜경 여사 훈맹정음 특별전 서면 브리핑",
+      "url": "https://www.president.go.kr/briefings/75j0FMZH",
+      "status": "Full indexed official briefing read; used as indirect narrative, not direct speech",
+      "limits": "브리핑의 간접 전달을 실제 발언 따옴표로 바꾸지 않음"
+    }
+  ],
+  "editorialDirection": "점의 역사 → 배우고 자료를 만드는 사람 → 책·악보·디지털에서 읽는 일 → 사용할 수 있는 환경 → 독자가 전하고 싶은 문장을 점자로 옮기기.",
+  "openReporting": [
+    "당사자·교육자 직접 인터뷰",
+    "2025 조사 원보고서 문항·가중치·전체 표 대조",
+    "점역 전문가의 히어로 문장과 체험 범위 감수",
+    "학교·점자도서관·악보 제작 현장 추가 사진"
+  ]
+}

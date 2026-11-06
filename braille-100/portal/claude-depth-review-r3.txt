@@ -1,0 +1,597 @@
+- heading "Claude" [level=1]
+- complementary "사이드바":
+  - button "사이드바 숨기기":
+    - generic: 
+  - link "Claude":
+    - /url: /new
+    - generic: Claude
+  - radiogroup "모드":
+    - radio "채팅 및 Cowork" [checked]:
+      - generic: 
+    - radio [checked]
+    - radio "Code":
+      - generic: 
+    - radio
+  - heading "탐색" [level=2]
+  - link "새로 만들기":
+    - /url: /new
+    - generic: 
+    - generic: 새로 만들기
+    - generic: Ctrl
+    - generic: +
+    - generic: Shift
+    - generic: +
+    - generic: O
+  - button "빠른 작업":
+    - generic: 
+  - button "검색":
+    - generic: 
+    - generic: 검색
+    - generic: Ctrl
+    - generic: +
+    - generic: Shift
+    - generic: +
+    - generic: K
+  - link "프로젝트":
+    - /url: /cowork/projects
+    - generic: 
+    - generic: 프로젝트
+  - link "아티팩트":
+    - /url: /artifacts
+    - generic: 
+    - generic: 아티팩트
+  - button "템플릿으로 새로 만들기":
+    - generic: 
+  - link "예약됨":
+    - /url: /scheduled-task
+    - generic: 
+    - generic: 예약됨
+  - button "새 작업":
+    - generic: 
+  - link "사용자 지정":
+    - /url: /customize
+    - generic: 
+    - generic: 사용자 지정
+  - heading "고정됨" [level=3]:
+    - button "고정됨" [expanded]:
+      - generic: 고정됨
+      - generic: 
+  - link "VISUAL NEWSIS · editshop":
+    - /url: /project/01a0422f-e72b-72c4-a756-51c1638916a9
+    - button "VISUAL NEWSIS · editshop 프로젝트의 채팅 토글" [expanded]:
+      - generic: 
+    - generic: VISUAL NEWSIS · editshop
+  - button "VISUAL NEWSIS · editshop에 대한 더 많은 옵션":
+    - generic: 
+  - list:
+    - link "유휴 제안서 독립 관계 검수 요청":
+      - /url: /chat/b0b2bc73-3465-4803-8abf-297f126d4f3f
+      - img "유휴"
+      - generic: 제안서 독립 관계 검수 요청
+    - button "제안서 독립 관계 검수 요청에 대한 더 많은 옵션":
+      - generic: 
+    - link "유휴 Claude 데스크톱 앱 설치 확인":
+      - /url: /chat/d3bf1ef7-0b4e-4f02-9041-551b2fdb4507
+      - img "유휴"
+      - generic: Claude 데스크톱 앱 설치 확인
+    - button "Claude 데스크톱 앱 설치 확인에 대한 더 많은 옵션":
+      - generic: 
+    - link "유휴 에딧샵 GitHub 접근 권한 확인":
+      - /url: /chat/815f410b-e2ff-4597-85e4-a359d1ed0342
+      - img "유휴"
+      - generic: 에딧샵 GitHub 접근 권한 확인
+    - button "에딧샵 GitHub 접근 권한 확인에 대한 더 많은 옵션":
+      - generic: 
+  - heading "채팅 및 작업" [level=3]:
+    - button "채팅 및 작업" [expanded]:
+      - generic: 채팅 및 작업
+      - generic: 
+  - button "최근 항목 필터링 및 그룹화":
+    - generic: 
+  - link "유휴 훈맹정음 100년 기획 검토":
+    - /url: /chat/8e172e0f-992d-49c2-bb23-e66a4a0ded76
+    - img "유휴"
+    - generic: 훈맹정음 100년 기획 검토
+  - button "훈맹정음 100년 기획 검토에 대한 더 많은 옵션":
+    - generic: 
+  - link "유휴 여기뉴스 정책 v2 코드 검토 반례":
+    - /url: /chat/81c25f3b-8b5f-4dfe-bb84-8ad17b3234c0
+    - img "유휴"
+    - generic: 여기뉴스 정책 v2 코드 검토 반례
+  - button "여기뉴스 정책 v2 코드 검토 반례에 대한 더 많은 옵션":
+    - generic: 
+  - link "유휴 여기뉴스 삼단검수 코드 검토":
+    - /url: /chat/c8053007-d5aa-4804-b0a0-8f01cd14949a
+    - img "유휴"
+    - generic: 여기뉴스 삼단검수 코드 검토
+  - button "여기뉴스 삼단검수 코드 검토에 대한 더 많은 옵션":
+    - generic: 
+  - link "유휴 정적 검토 결과 보고":
+    - /url: /chat/04071242-d268-4d86-84fe-c5e9548aef16
+    - img "유휴"
+    - generic: 정적 검토 결과 보고
+  - button "정적 검토 결과 보고에 대한 더 많은 옵션":
+    - generic: 
+  - link "유휴 제목 없음":
+    - /url: /chat/a29e2302-5d59-422b-b0ee-816afbb089bb
+    - img "유휴"
+    - generic: 제목 없음
+  - button "더 많은 옵션":
+    - generic: 
+  - link "유휴 삼단체크 독립 검수 의뢰":
+    - /url: /chat/a119f2f1-96e3-4652-ae09-80eed29af556
+    - img "유휴"
+    - generic: 삼단체크 독립 검수 의뢰
+  - button "삼단체크 독립 검수 의뢰에 대한 더 많은 옵션":
+    - generic: 
+  - link "유휴 굳이구지 10편 기계 모형 검수":
+    - /url: /chat/10ac709a-1d7c-4491-9998-dba7df002709
+    - img "유휴"
+    - generic: 굳이구지 10편 기계 모형 검수
+  - button "굳이구지 10편 기계 모형 검수에 대한 더 많은 옵션":
+    - generic: 
+  - link "유휴 비주얼뉴시스 제작 체계 연봉협상 검수":
+    - /url: /chat/214c00e9-c2cc-493b-aa0e-497ebbd2f80c
+    - img "유휴"
+    - generic: 비주얼뉴시스 제작 체계 연봉협상 검수
+  - button "비주얼뉴시스 제작 체계 연봉협상 검수에 대한 더 많은 옵션":
+    - generic: 
+  - link "유휴 Three.js 조감 지형 고도화 및 surface-detail 모듈 설계":
+    - /url: /chat/7d414b54-d481-436e-ae4e-34f40ad4d5c8
+    - img "유휴"
+    - generic: Three.js 조감 지형 고도화 및 surface-detail 모듈 설계
+  - button "Three.js 조감 지형 고도화 및 surface-detail 모듈 설계에 대한 더 많은 옵션":
+    - generic: 
+  - link "유휴 교열 검토 결과 및 수정 사항":
+    - /url: /chat/4307dd4c-8c6a-4c94-a7f7-1ac80cd490f1
+    - img "유휴"
+    - generic: 교열 검토 결과 및 수정 사항
+  - button "교열 검토 결과 및 수정 사항에 대한 더 많은 옵션":
+    - generic: 
+  - link "유휴 재봉틀 편의 독립 원리·UX 명세 검수":
+    - /url: /chat/bd2776d3-fd7d-45ac-ae64-f33bddba801b
+    - img "유휴"
+    - generic: 재봉틀 편의 독립 원리·UX 명세 검수
+  - button "재봉틀 편의 독립 원리·UX 명세 검수에 대한 더 많은 옵션":
+    - generic: 
+  - link "유휴 축음기 편 독립 설계 명세 검수":
+    - /url: /chat/de57d7c9-fe8a-44bb-b01a-29f9b9d94ab0
+    - img "유휴"
+    - generic: 축음기 편 독립 설계 명세 검수
+  - button "축음기 편 독립 설계 명세 검수에 대한 더 많은 옵션":
+    - generic: 
+  - link "읽지 않음으로 표시 ChatGPT 비즈니스 계정 해킹":
+    - /url: /cowork/cse_01T9Pzhs88yzwJ2Qi1sKY9At
+    - button "읽지 않음으로 표시":
+      - img "완료됨"
+    - generic: ChatGPT 비즈니스 계정 해킹
+  - button "ChatGPT 비즈니스 계정 해킹에 대한 더 많은 옵션":
+    - generic: 
+  - link "읽지 않음으로 표시 날래 앱 로고 디자인":
+    - /url: /cowork/cse_019DjLbgobsBkFBn3xTd2uaP
+    - button "읽지 않음으로 표시":
+      - img "완료됨"
+    - generic: 날래 앱 로고 디자인
+  - button "날래 앱 로고 디자인에 대한 더 많은 옵션":
+    - generic: 
+  - link "유휴 앱 개발 프로젝트 링크 찾기":
+    - /url: /chat/e6d5bd65-9388-4bd1-b32c-f46cabde97a3
+    - img "유휴"
+    - generic: 앱 개발 프로젝트 링크 찾기
+  - button "앱 개발 프로젝트 링크 찾기에 대한 더 많은 옵션":
+    - generic: 
+  - link "읽지 않음으로 표시 사주 분석":
+    - /url: /cowork/cse_0127TYsusikCBhow1WBtP7QJ
+    - button "읽지 않음으로 표시":
+      - img "완료됨"
+    - generic: 사주 분석
+  - button "사주 분석에 대한 더 많은 옵션":
+    - generic: 
+  - link "유휴 Axe 다크템테이션 vs 블랙 향수 비교":
+    - /url: /chat/2a83d7cf-b013-478b-9a11-6c734fafb4e0
+    - img "유휴"
+    - generic: Axe 다크템테이션 vs 블랙 향수 비교
+  - button "Axe 다크템테이션 vs 블랙 향수 비교에 대한 더 많은 옵션":
+    - generic: 
+  - link "읽지 않음으로 표시 승인된 도구 연결":
+    - /url: /cowork/cse_017TEQUoERFpYhot2auA1Uri
+    - button "읽지 않음으로 표시":
+      - img "완료됨"
+    - generic: 승인된 도구 연결
+  - button "승인된 도구 연결에 대한 더 많은 옵션":
+    - generic: 
+  - link "유휴 Claude를 활용한 영상 기획 및 제작 효율화":
+    - /url: /chat/4c0d7f09-1231-4c30-b974-c8565e2d43ae
+    - img "유휴"
+    - generic: Claude를 활용한 영상 기획 및 제작 효율화
+  - button "Claude를 활용한 영상 기획 및 제작 효율화에 대한 더 많은 옵션":
+    - generic: 
+  - link "읽지 않음으로 표시 작업지시문 전달":
+    - /url: /cowork/cse_01FSDM9XPLEodJUkhEnGERks
+    - button "읽지 않음으로 표시":
+      - img "완료됨"
+    - generic: 작업지시문 전달
+  - button "작업지시문 전달에 대한 더 많은 옵션":
+    - generic: 
+  - button "모두 보기"
+  - status
+  - button "재현 뉴시스 편집부 워크스페이스":
+    - img: 재
+    - generic: 재현
+    - generic: ·
+    - generic: 뉴시스 편집부 워크스페이스
+    - generic: 
+  - link "앱 및 확장 프로그램 다운로드":
+    - /url: /downloads
+    - generic: 
+  - separator "사이드바 크기 조정"
+- main:
+  - toolbar "페이지 도구":
+    - heading "훈맹정음 100년 기획 검토" [level=2]:
+      - button "훈맹정음 100년 기획 검토, 채팅 이름 바꾸기":
+        - generic: 훈맹정음 100년 기획 검토
+    - button "훈맹정음 100년 기획 검토에 대한 더 많은 옵션":
+      - generic: 
+    - button "파일":
+      - generic: 
+    - button "공유" [disabled]:
+      - generic: 
+      - text: 공유
+  - status
+  - feed "채팅 메시지":
+    - paragraph: 위아래 화살표 키를 사용하여 메시지 간에 이동하세요.
+    - button "이전 메시지 불러오기"
+    - article "94개 메시지 중 90번째":
+      - 'heading "Claude 응답: #018 포털 원고 재교열 (Claude)" [level=3]'
+      - generic "기사 부제와 본문 문단을 다듬는 중.":
+        - generic: 기사 부제와 본문 문단을 다듬는 중
+        - button "기사 부제와 본문 문단을 다듬는 중":
+          - generic: 
+      - status: 기사 부제와 본문 문단을 다듬는 중
+      - heading "#018 포털 원고 재교열 (Claude)" [level=2]
+      - paragraph: 먼저 인정할 것이 있습니다. 부제에 ‘자동 점역’을 넣자고 한 것은 제 앞선 제안이었습니다. 기능을 오해하지 않게 하려는 의도였지만, 그 정확성은 말미 안내가 맡을 일이었고 부제에 들어갈 말이 아니었습니다. 기사의 중심을 기능 설명으로 옮겨 놓은 편집 실패였으므로 철회합니다.
+      - heading "원고의 문제" [level=3]
+      - list:
+        - strong: "제목:"
+        - text: 원고에 아직 예전 안이 남아 있습니다. 고정된 제목 “점점, 문장이 손에 잡혔다 [훈맹정음 100년]”으로 바꿔야 합니다.
+        - strong: "부제 2행:"
+        - text: 앱 소개처럼 읽히고, 1행의 ‘오늘의 배움’은 막연한 수사입니다.
+        - strong: "호칭:"
+        - text: 예우 지시와 달리 ‘박두성’으로만 세 번 나옵니다.
+        - strong: "설명서 같은 문장:"
+        - list:
+          - listitem: 점자 구조를 풀어 쓴 문단
+          - listitem: ‘점역’과 ‘교정’을 사전처럼 정의한 문장
+          - listitem: 칸 수 문단
+          - listitem: 기능을 소개하고 면책하는 세 문장
+        - strong: "격언투 문장:"
+        - text: “점의 배열을 아는 것과 …다르다”는 교훈처럼 들립니다.
+      - heading "부제 2안" [level=3]
+      - paragraph:
+        - strong: A안
+      - blockquote:
+        - paragraph:
+          - text: 송암 박두성 선생, 1926년 훈맹정음 발표…11월 4일 한글 점자의 날
+          - text: 교과서·투표안내문·악보까지, 손끝으로 읽는 우리말
+      - paragraph:
+        - strong: B안
+      - blockquote:
+        - paragraph:
+          - text: 점자책은 쌓지 말고 꽂으라던 송암 박두성 선생의 당부
+          - text: 점역·교정부터 읽기 교육까지…훈맹정음 발표 100년
+      - paragraph: B안의 1행은 따옴표를 쓰지 않은 요지 표현입니다. 원래 인용문은 본문에 그대로 둡니다.
+      - heading "본문 퇴고" [level=3]
+      - paragraph:
+        - strong: 리드
+      - blockquote:
+        - paragraph: …2026년 11월 4일은 송암 박두성 선생이 한글 점자 ‘훈맹정음’을 발표한 지 100년이 되는 날이다. 이날은 ‘한글 점자의 날’이기도 하다.
+      - paragraph:
+        - strong: 점자 구조 문단
+      - blockquote:
+        - paragraph: 점자는 볼록하게 솟은 여섯 점의 자리를 조합해 손끝으로 읽는 문자다.
+      - paragraph: 이 한 문장만 남깁니다. 칸 수 문단을 빼면 약자에 대한 설명도 필요 없어집니다.
+      - paragraph:
+        - strong: 역사 문단
+      - blockquote:
+        - paragraph: 제생원에서 학생들을 가르치던 박두성 선생은…
+      - paragraph: 나머지 문장은 그대로 둡니다.
+      - paragraph:
+        - strong: 당부 문단
+      - blockquote:
+        - paragraph: …박두성 선생이 임종 무렵 남긴 말로…
+      - paragraph: 인용문은 손대지 않습니다.
+      - paragraph:
+        - strong: 점역·교정 문단
+      - blockquote:
+        - paragraph: 실로암시각장애인음악재활센터에서는 음악 점역사가 악보를 해석해 점자로 옮기고, 시각장애인 음악 교정사가 규정에 맞게 바로잡는다.
+      - paragraph:
+        - strong: 교육 문단
+      - blockquote:
+        - paragraph: 하상장애인복지관은 중도 시각장애인과 통합교육 시각장애 학생을 위한 한글 점자 읽기 교육을 운영하고, 시험 문제와 학습 자료 제작을 지원한다.
+      - paragraph: 첫 문장(격언투)은 삭제합니다.
+      - paragraph:
+        - strong: "칸 수 문단과 기능 소개 문단:"
+        - text: 본문에서 모두 뺍니다.
+      - list:
+        - listitem: 기사 말미에는 HTML 고정 링크의 ◆ 문장만 둡니다.
+        - listitem: ‘저장·전송하지 않음’, ‘전문 점역을 대신하지 않음’ 같은 고지는 편집 메모로 옮깁니다. 같은 고지가 본편에 이미 있습니다.
+        - listitem: 사용자가 지정한 핵심 문구 ‘당신의 진심을 보다 많은 이에게 전해보세요’를 포털 원고에도 살릴지는 사용자에게 확인합니다. 살린다면 ◆ 문장의 첫머리에 둡니다.
+      - heading "그대로 둘 것" [level=3]
+      - paragraph: 사진 4장과 그 위치, 완성 캡션, 통계 문단, 크레디트는 유지합니다. 다만 사진 4번(송암점자도서관)은 바로 뒤 칸 수 문단이 빠지면 통계 문단 바로 뒤에 놓이고, 그 다음에 ◆ 링크가 이어지게 됩니다. 이 배치는 확인이 필요합니다.
+      - paragraph: 이번 판정은 원고 텍스트에 한정됩니다.
+      - 'button "Claude 응답: #018 포털 원고 재교열 (Claude)에 대한 메시지 작업 표시"'
+    - article "94개 메시지 중 91번째":
+      - button "붙여넣은 텍스트, pasted, 48줄":
+        - paragraph: "Codex가 양측 반론을 반영한 실제 수정원고다. 제목은사용자안복원. 부제는한글점자의날·송암박두성선생의당부·실제쓰임두줄. 첫등장송암박두성선생/이후박두성선생. 칸수·앱기능·장황한고지·사전식정의·격언투삭제,8개사실문단756자. 편집메모에는비저장/비전송/전문감수미완료기록보존,본편안내고지유지. 코너이름은본편에서유지하며포털반복만삭제—사용자의이번설명서배제지시에따른편집으로별도승인질문안함. Codex반론: Claude제안 “솟은여섯점”은항상6점이솟은것처럼읽힐수있어 “볼록하게솟은점을손끝으로읽는문자”만유지. 새취재·인터뷰한것처럼쓰지않고확인된자료·기관"
+        - paragraph: pasted
+      - button "메시지 작업 표시"
+      - status
+    - article "94개 메시지 중 92번째":
+      - 'heading "Claude 응답: #018 포털 수정 원고 검토 (Claude)" [level=3]'
+      - generic "부제 문구와 본문의 출처 표기를 검토하는 중.":
+        - generic: 부제 문구와 본문의 출처 표기를 검토하는 중
+        - button "부제 문구와 본문의 출처 표기를 검토하는 중":
+          - generic: 
+      - status: 부제 문구와 본문의 출처 표기를 검토하는 중
+      - heading "#018 포털 수정 원고 검토 (Claude)" [level=2]
+      - paragraph: Codex의 반론을 수용합니다. 제가 제안한 “솟은 여섯 점”은 여섯 점이 늘 모두 솟아 있는 것처럼 읽힙니다. 제 제안을 철회하고, 원고의 “볼록하게 솟은 점을 손끝으로 읽는 문자” 표현을 유지합니다.
+      - heading "P1·P2" [level=3]
+      - paragraph: 없습니다. 다음 사항을 확인했습니다.
+      - list:
+        - strong: "제목·부제:"
+        - text: 제목은 사용자안으로 복원됐고, 부제에서 기능 설명이 빠졌습니다.
+        - strong: "예우:"
+        - text: 첫 등장은 ‘송암 박두성 선생’, 이후는 ‘박두성 선생’으로 일관됩니다.
+        - strong: "문체:"
+        - text: 했다체로 통일됐습니다.
+        - strong: "귀속:"
+        - text: 박두성 선생의 당부는 굿모닝인천이 전한 말로, 그 이유는 기사의 설명으로 각각 귀속되어 있습니다.
+        - strong: "통계:"
+        - text: 문항별 응답자 수와 복수응답이라는 범위가 유지됩니다.
+        - strong: "실로암 문장:"
+        - text: “확인하고 오류를 바로잡는다”는 출처의 ‘교정’을 풀어 쓴 것으로, 범위를 넘지 않습니다.
+      - heading "P3" [level=3]
+      - paragraph:
+        - strong: "둘째 문단의 부제 반복:"
+        - text: 둘째 문단의 “책과 투표안내문, 악보에도 점자가 쓰인다.”는 부제 2행과 거의 같은 말입니다. 문단을 “점자는 볼록하게 솟은 점을 손끝으로 읽는 문자다.” 한 문장으로 두기를 권합니다.
+      - paragraph:
+        - strong: "맥락이 사라졌는지에 대한 판단:"
+        - text: 당부 문단 다음에 실로암 문단이 다리 문장 없이 이어집니다. 하지만 뉴스 기사에서 사실 하나를 한 문단에 담는 방식으로는 허용되는 범위입니다. 다리 문장을 억지로 넣으면 오히려 앞서 걷어낸 일반화 문장이 되살아나므로, 지금 상태가 낫다고 봅니다.
+      - heading "판정" [level=3]
+      - paragraph: 위 P3를 반영하든 그대로 두든, 원고 텍스트로는 수용 가능합니다. 이 판정에는 사진 검수, 전문 점역 감수, 발행 승인이 포함되지 않습니다.
+      - toolbar "메시지 작업":
+        - button "복사":
+          - generic: 
+        - status
+        - button "소리 내어 읽기":
+          - generic: 
+        - button "좋은 응답":
+          - generic: 
+        - button "나쁜 응답":
+          - generic: 
+        - button "재시도":
+          - generic: 
+        - time: 44분 전
+    - article "94개 메시지 중 93번째":
+      - button "붙여넣은 텍스트, pasted, 39줄":
+        - paragraph: 이번에는 문장 교열보다 내용의 충분함을 먼저 검토해 주세요. 사용자는 기존 756자 원고가 육하원칙과 내용이 부실하다고 지적했습니다. 아래는 보강 원고입니다. 실제 취재 인터뷰 없이 공개 자료·사진 기록에 근거했습니다. 박두성 선생 예우, 했다/한다체, AI식 추상어 제거, 설명서투 금지. 자동 점역 홍보 부제는 복원하지 마세요. 사진 속 인물 상태·감정 추정 금지. 1) 육하원칙 및 기사 중심 2) 사실·인용과 해석의 구분 3) 배경 충분성/중복 4) 교열 우선순위 P1/P2/P3를 검토하고 구체적인 대체 문장을 주세요. 출고 불
+        - paragraph: pasted
+      - toolbar "메시지 작업":
+        - time: 지금
+        - button "재시도":
+          - generic: 
+        - button "편집":
+          - generic: 
+        - button "복사" [disabled]:
+          - generic: 
+        - status
+      - status
+    - article "94개 메시지 중 94번째":
+      - 'heading "Claude 응답: #018 포털 보강 원고: 내용 충분성 검토 (Claude)" [level=3]'
+      - generic: 2페이지 읽음,
+      - generic: 1개 실패
+      - button "2페이지 읽음, 1개 실패":
+        - generic: 
+      - status: 2페이지 읽음, 1개 실패
+      - 'heading "#018 포털 보강 원고: 내용 충분성 검토 (Claude)" [level=2]'
+      - paragraph:
+        - strong: "확인 범위:"
+        - text: 국립국어원 ‘점자 소개’ 페이지는 이번에 직접 다시 열어 대조했습니다. 국립세계문자박물관 페이지는 자동 접근이 차단돼 열지 못했으므로, 전시 기간(2026년 10월 7일~2027년 2월 14일)은 아직 확인되지 않았습니다. 실로암·하상 자료와 조사 수치는 Codex의 앞선 대조에 의존합니다.
+      - heading "1. 육하원칙과 기사 중심" [level=3]
+      - paragraph: ‘언제(11월 4일), 누가(박두성 선생), 무엇을(훈맹정음 발표 100년)’은 충분합니다. 하지만 ‘지금 무엇이 달라지고 있는가’에 해당하는 올해의 뉴스는 전시 한 줄뿐입니다. 그 결과 후반부가 기관 사례를 나열한 목록처럼 읽힙니다.
+      - paragraph: 본편에서 이미 검증한 사실 하나를 더하면 시의성이 생깁니다.
+      - blockquote:
+        - paragraph: 국무회의는 지난 10월 20일 시각장애 학생용 교과서를 학기 시작 전에 제작·보급할 수 있도록 디지털 파일의 형식과 제출 절차를 명확히 한 ‘교과용 도서에 관한 규정’ 개정안을 의결했다.
+      - paragraph: 이 문장은 하상장애인복지관 문단 바로 뒤에 둡니다.
+      - heading "2. 사실·인용과 해석의 구분" [level=3]
+      - heading "P2" [level=4]
+      - paragraph:
+        - strong: ① 평양 점자를 ‘시도’로 낮춰 썼습니다.
+        - text: 국립국어원은 평양 점자를 “우리나라 최초의 한글 점자”이며 약 28년 동안 쓰였다고 설명합니다. ‘만들려는 시도’라는 표현은 출처보다 평가를 낮춥니다.
+      - paragraph: "→ 대체 문장:"
+      - blockquote:
+        - paragraph: 훈맹정음 이전에도 한글 점자가 있었다. 미국 선교사 로제타 셔우드 홀이 뉴욕 포인트 점자를 변형해 만든 ‘평양 점자’다. 국립국어원은 평양 점자를 최초의 한글 점자로 소개하면서, 자음의 초성과 종성이 구별되지 않는 등 4점 점자의 한계로 널리 쓰이지는 못했다고 설명한다.
+      - paragraph:
+        - strong: ② “일본어 점자”는 출처와 다릅니다.
+        - text: 국립국어원의 표현은 ‘일본 점자’입니다.
+      - paragraph:
+        - strong: ③ 근거 없는 일반화 문장이 있습니다.
+        - text: “점자책에서는 …점의 높이도 읽기에 영향을 준다”는 출처가 없는 일반화입니다. 당부 문단에 붙어 있어 박두성 선생의 말을 우리가 해설하는 것처럼 보입니다.
+      - paragraph: → 삭제합니다.
+      - paragraph:
+        - strong: ④ 점의 위치가 바꾸는 것은 ‘뜻’이 아닙니다.
+        - text: “점을 어느 위치에 놓느냐에 따라 뜻이 달라진다”에서 점의 위치가 구별하는 것은 뜻이 아니라 글자와 기호입니다.
+      - paragraph: "→ 대체 문장:"
+      - blockquote:
+        - paragraph: 점의 개수와 위치에 따라 서로 다른 글자와 기호가 된다.
+      - paragraph:
+        - strong: ⑤ 74% 문장의 해석이 응답 내용을 넘어섭니다.
+        - text: “…늘려야 한다는 요구가 조사에 담겼다”는 응답 하나를 요구로 확대한 해석입니다. 원표 I-81을 보면 74%는 보기 가운데 가장 많이 선택된 응답이었습니다.
+      - paragraph: "→ 대체 문장:"
+      - blockquote:
+        - paragraph: 보기 가운데 가장 많은 응답이었다.
+      - paragraph:
+        - strong: ⑥ 선관위 문단이 캡션을 그대로 반복합니다.
+        - text: 선관위 문단의 둘째 문장은 바로 아래 캡션과 같은 내용입니다.
+      - paragraph: → “선거 정보도 점자로 제공된다.” 한 문장만 남기고 사진이 나머지를 맡게 합니다. 제도적 근거 문장을 더하고 싶다면 별도 출처를 확인한 뒤에 넣습니다.
+      - heading "P3" [level=4]
+      - list:
+        - strong: "“점자를 읽을 자료를 만드는 일에는 별도의 전문성이 필요하다”:"
+        - text: 바로 뒤의 사례가 그 내용을 보여 주므로 군더더기입니다. 삭제를 권합니다.
+        - strong: "자기 응답이라는 점을 밝힌 주의 문장:"
+        - text: “직접 시험한 결과가 아니라…”는 다시 주의문 말투가 됐습니다. 본문 문장을 “14.4%가 스스로 점자를 읽고 쓸 수 있다고 답했다”로 바꾸면 따로 설명할 필요가 없습니다.
+        - strong: "리드의 “오늘도 교실의 시험지와…”:"
+        - text: 각 항목이 본문 사례로 뒷받침되므로 수용 가능합니다.
+      - heading "3. 배경의 충분성과 순서 (P2)" [level=3]
+      - paragraph: 점자 정의 문단이 역사 문단과 박두성 선생의 당부 사이에 끼어 있습니다. 그래서 박두성 선생의 이야기가 중간에 끊깁니다. 2024년 개정 문장도 정의 문단 안에 섞여 있어 연대기에서 떨어져 있습니다.
+      - paragraph:
+        - strong: "순서 제안:"
+      - blockquote:
+        - paragraph: 리드 → 정의 → 전시 → 역사 → 당부 → 정비(1947년 이후) → 점역·교정 → 선거 → 교육 → 교과서 규정 → 조사
+      - paragraph:
+        - strong: "정비 문단 대체 문장 (국립국어원 대조):"
+      - blockquote:
+        - paragraph: 한글 점자는 이후에도 정비를 거듭했다. 1947년 서울맹학교 교사 이종덕·전태환이 이중모음과 약자·약어를 제정했고, 2024년 1월에는 디지털 기기로 바뀐 문자 사용 환경과 점자 사용자의 의견을 반영한 개정 한국 점자 규정이 고시됐다.
+      - heading "판정" [level=3]
+      - paragraph:
+        - strong: "출고 불가 사유:"
+        - text: 전시 기간이 아직 확인되지 않았습니다. 확인하지 못하면 기간 문장을 삭제합니다.
+      - paragraph: 위 P2 여섯 건과 순서 조정을 반영하면 원고로 수용 가능합니다. 이 판정에는 사진 검수와 발행 승인이 포함되지 않습니다.
+      - toolbar "메시지 작업":
+        - button "복사":
+          - generic: 
+        - status
+        - button "소리 내어 읽기":
+          - generic: 
+        - button "좋은 응답":
+          - generic: 
+        - button "나쁜 응답":
+          - generic: 
+        - button "재시도":
+          - generic: 
+        - time: 지금
+  - status
+  - button "맨 아래로 스크롤":
+    - generic: 
+  - status
+  - status
+  - status
+  - status
+  - generic: 메시지를 입력하세요…
+  - textbox "Claude에게 프롬프트를 입력하세요." [active]:
+    - paragraph
+  - status
+  - button "파일, 커넥터 등 추가":
+    - generic: 
+  - group "받아쓰기":
+    - button "받아쓰기":
+      - generic: 
+    - button "마이크":
+      - generic: 
+  - button "음성 모드 시작":
+  - note:
+    - link "Claude는 AI이므로 실수를 할 수 있습니다. 응답을 다시 한번 확인해 주세요.":
+      - /url: https://support.anthropic.com/en/articles/8525154-claude-is-providing-incorrect-or-misleading-responses-what-s-going-on
+      - text: Claude는 AI이므로 실수를 할 수 있습니다.
+      - generic: 응답을 다시 한번 확인해 주세요.
+  - 'button "모델: Opus 5.5 중간"':
+    - generic: Opus 5.5
+    - generic: 중간
+  - heading [level=3]: 콘텐츠
+  - button:
+    - heading [level=3]: violin.js
+    - paragraph: js
+  - button:
+  - button:
+  - button:
+  - button:
+  - button:
+  - button:
+  - button:
+  - button:
+  - button:
+  - button:
+  - button:
+  - button:
+  - button:
+  - button:
+  - button:
+  - button:
+  - button:
+  - button:
+  - button:
+    - heading [level=3]: index.html
+    - paragraph: html
+  - button:
+    - heading [level=3]: story.css
+    - paragraph: css
+  - button:
+    - heading [level=3]: braille-experience.mjs
+    - paragraph: mjs
+  - button:
+    - heading [level=3]: release-review-packet.txt
+    - paragraph: txt
+  - button:
+  - button:
+  - button:
+  - button:
+    - heading [level=3]: slate-review-packet.txt
+    - paragraph: txt
+  - button:
+  - button:
+  - button:
+  - button:
+  - button:
+    - heading [level=3]: release-final-review-packet.txt
+    - paragraph: txt
+  - button:
+  - button:
+  - button:
+  - button:
+  - button:
+    - heading [level=3]: release-final-revised-packet.txt
+    - paragraph: txt
+  - button:
+    - heading [level=3]: guitar-craft.js
+    - paragraph: 32줄
+    - paragraph: js
+  - button:
+    - heading [level=3]: surface-utils.js
+    - paragraph: 45줄
+    - paragraph: js
+  - button:
+    - heading [level=3]: gpt-design.txt
+    - paragraph: 456줄
+    - paragraph: txt
+  - button:
+    - paragraph: "라운드3: GPT는 실제 사진 열람 후 정보접근권 우선안 철회, 문학적 은유 허용에 동의했습니다. 12번은15와 역할이 달라 넓은 책구조를 보여주므로13보다 우선하는 데도 동의했습니다. 사용자 최신 후보가 다시 갱신됐습니다. 가장 최근 원문은 “점점 더 또렷하게…손끝으로 찾아낸 소중한 문장 [훈맹정음 100년]”입니다. 사용자는 점자의 ‘점’을 겹치는 ‘점점’을 쓰고 싶다고 명시했습니다. 앞선 ‘점차—점자’ 의무는 철회, ‘점점’을 중심으로 합니다. 이전 후보 전부 보존, 사용자 최신안이 현재 유력 검토안이지 최종확정은 아닙니다."
+    - paragraph: pasted
+  - button:
+    - paragraph: "기획 심화 2차: 두 독립검토의 실질반론을 공유하고 Codex가 아래처럼 수정합니다. 반대할 항목만 구체적으로 지적하고 실제 문안을 퇴고해 주세요. 새제목창작/코드작성은 하지않습니다. GPT1: 접점은 물리접촉과 사회연결 사이 '정보를 쓰고읽음'이 중간고리여야 함. 원리설명교과서화/엔딩제목반복 우려. 제목→리드→15,PC넓은사진/모바일원비율,엔딩은제목반복없이읽기의일상으로복귀. 쓰기실제장면없다는한계. Claude1: '약속'개념으로문자규칙을쓰고읽는사람공유,사진→제목아래,390x844한화면계산,엔딩제목그대로회수,한칸대개자음모음문구,15"
+    - paragraph: pasted
+  - button:
+    - paragraph: 기획 심화 3차 최종 대조. 새로운 큰구조/제목토론 없이 아래 문안과 명세의 실질 결함을 마지막으로 검토합니다. GPT2는 접점을 엔딩에서반복하지말자, Claude2는 단어접점한번필요(안그러면제목이뜬다)로갈렸습니다. Codex는 단어를반복해야만뜻이회수된다는주장은불수용. 대신Claude의 '쓰는사람과읽는사람이문장에서만남'이미지를쓰고접점자체는반복안하는절충안입니다. 어느 쪽도 만장일치로기록안함. '도'를제외한엔딩은포함시혜느낌없고감정추정없음. '문자가만들어진역사'가평양점자를반드시지운다는해석은과도하지만모호함줄여'훈맹정음의역사'로수정. '규칙
+    - paragraph: pasted
+  - button:
+    - paragraph: "편집#018 제목회의 재개. 사용자가 방금 지금까지 던진 모든 제목을 실제 GPT·Claude·Codex 삼단논의해달라고 요청했습니다. 최종확정/페이지교체는 아직 하지 않습니다. 이번은 텍스트 제목검토, 새 화면을 봤다고 하지 마세요. 가장 중요한 최신편집지시: 편집상을 노리는 문학적 압축. 제목 하나가 구구절절 전부 설명할 필요 없음. 부제와 실제 점자사진이 함께 있음. 아래 모든 후보에 [훈맹정음 100년] 또는 [점자 100년]을 붙인 완성형으로 판단. 짧음/중의성/여운/발견/낭독감/사진과의상호작용이 중요. 사용자 개별투척은"
+    - paragraph: pasted
+  - button:
+    - paragraph: "편집#018 출고 전 독립 교열1차 요청. 사용자가 AI틱한 말투제거/삼단검수/실제GPT디자인의뢰 요청. 아래는 지금 구현된 기사 전체의 실제 텍스트입니다. 이미지를 아직 보지 않은 이번단계는 텍스트검수라고 명시하세요. 역사→6점→짧은안녕하세요/감사합니다(8칸둘다)→교육→투표안내→책/음악/전자점자→행사표어·김혜경발언·조사→내문장→엔딩→하단새탭스낵,순서와사용자제목고정. 중간체험제거금지. 메인문학성/사진구성보존. 검토핵심: '함께놓인다/자리/사이/따라간다/하나가다른하나를밀어내는선택지만은아니다'같은추상어와기계적균형문 반복을찾아 삭제또는실"
+    - paragraph: pasted
+  - button:
+    - paragraph: "사용자 새 납품 양식 적용 최종검수: 웹제목자동복사금지→포털제목별도제안,확정시리즈[훈맹정음100년]유지. [서울=뉴시스] 안재현 기자=사용자지정바이라인. 사진4장실제JPG삽입위치/완성캡션(사진=뉴시스)/개별원본페이지URL전부원고중간표시. Codex가원본4페이지HTTP200/og:url/사진ID/캡션메타실제확인,원본JPG해시대조. 첫장원본15가로무합성. 마지막고정HTML a안에◆문장+실제URL둘다포함. 실서버본편실행확인. 내부개발/검수/발행메모본문분리. 실제CMS예약없음. 아래는제목·부제·본문·캡션·HTML링크전체. 포털독립제목적절성"
+    - paragraph: pasted
+  - button:
+    - paragraph: "사용자 강한 재교열 지시: “삼단 검수 다시 거쳐 건방지면 안돼 예우 잘 지켜. AI틱한것도 걷어내고 설명서 같은것도 걷어내. 본편에선 내 말도 자동 점역 이게 부제로 맞냐?” 이전 삼단이 기능 오해 방지에 집착해 기사 부제에 기술용어를 강제한 편집 실패를 재검토할 것. 이번 제목은 사용자 선택 “점점, 문장이 손에 잡혔다 [훈맹정음 100년]”으로 고정. 포털은 했다·한다 기사체. 호칭은 첫 등장 “송암 박두성 선생”, 이후 “박두성 선생”으로 예우(사실과 인용은손대지않음,막연한찬양·성인화금지). 부제는 사람·역사·교육·점자의 쓰"
+    - paragraph: pasted
+  - button:
+    - paragraph: "Codex가 양측 반론을 반영한 실제 수정원고다. 제목은사용자안복원. 부제는한글점자의날·송암박두성선생의당부·실제쓰임두줄. 첫등장송암박두성선생/이후박두성선생. 칸수·앱기능·장황한고지·사전식정의·격언투삭제,8개사실문단756자. 편집메모에는비저장/비전송/전문감수미완료기록보존,본편안내고지유지. 코너이름은본편에서유지하며포털반복만삭제—사용자의이번설명서배제지시에따른편집으로별도승인질문안함. Codex반론: Claude제안 “솟은여섯점”은항상6점이솟은것처럼읽힐수있어 “볼록하게솟은점을손끝으로읽는문자”만유지. 새취재·인터뷰한것처럼쓰지않고확인된자료·기관"
+    - paragraph: pasted
+  - button:
+    - paragraph: 이번에는 문장 교열보다 내용의 충분함을 먼저 검토해 주세요. 사용자는 기존 756자 원고가 육하원칙과 내용이 부실하다고 지적했습니다. 아래는 보강 원고입니다. 실제 취재 인터뷰 없이 공개 자료·사진 기록에 근거했습니다. 박두성 선생 예우, 했다/한다체, AI식 추상어 제거, 설명서투 금지. 자동 점역 홍보 부제는 복원하지 마세요. 사진 속 인물 상태·감정 추정 금지. 1) 육하원칙 및 기사 중심 2) 사실·인용과 해석의 구분 3) 배경 충분성/중복 4) 교열 우선순위 P1/P2/P3를 검토하고 구체적인 대체 문장을 주세요. 출고 불
+    - paragraph: pasted
+  - status: Claude가 응답을 완료했습니다
+  - status
+- status
+- status
+- region "Notifications"

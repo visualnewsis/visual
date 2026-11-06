@@ -1,0 +1,25 @@
+{
+  "sourceReferences": "All numbered references match list positions",
+  "checks": [
+    {
+      "name": "",
+      "status": 200
+    },
+    {
+      "name": "learn.html",
+      "status": 200
+    },
+    {
+      "name": "learn.mjs",
+      "status": 200
+    },
+    {
+      "name": "learn.css",
+      "status": 200
+    },
+    {
+      "name": "story.css",
+      "status": 200
+    }
+  ]
+}

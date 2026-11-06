@@ -1,0 +1,29 @@
+{
+  "engine": "Braillify 2.2.0",
+  "checked": 752,
+  "failed": 0,
+  "failures": [],
+  "examples": [
+    {
+      "text": "그런 점이 좋았다",
+      "braille": "⠈⠪⠐⠾⠀⠨⠎⠢⠕⠀⠨⠥⠴⠣⠌⠊"
+    },
+    {
+      "text": "그 점이 좋았다",
+      "braille": "⠈⠪⠀⠨⠎⠢⠕⠀⠨⠥⠴⠣⠌⠊"
+    },
+    {
+      "text": "고마워요.",
+      "braille": "⠈⠥⠑⠣⠏⠬⠲"
+    },
+    {
+      "text": "안녕하세요.",
+      "braille": "⠣⠒⠉⠻⠚⠠⠝⠬⠲"
+    },
+    {
+      "text": "당신의 진심을 보다 많은 이에게 전해보세요",
+      "braille": "⠊⠶⠠⠟⠺⠀⠨⠟⠠⠕⠢⠮⠀⠘⠥⠊⠀⠑⠒⠴⠵⠀⠕⠝⠈⠝⠀⠨⠾⠚⠗⠘⠥⠠⠝⠬"
+    }
+  ],
+  "scope": "Upstream rule examples; not an independent professional review of arbitrary reader input."
+}

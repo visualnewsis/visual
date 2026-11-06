@@ -1,0 +1,36 @@
+{
+  "method": "built-in image_gen",
+  "useCase": "stylized-concept / thumbnail style transfer",
+  "reference": "goodeasy/gramophone/site-thumbnail.jpg",
+  "prompt": "Use case: stylized-concept / thumbnail style transfer. Create a new VISUAL NEWSIS Korean article website thumbnail using the supplied gramophone thumbnail ONLY as the visual style and composition reference. Replace the gramophone completely with a beautifully rendered OPEN BRAILLE BOOK on the RIGHT. Replace all reference text completely with the exact Korean copy below. This is a conceptual 3D editorial illustration, not a news photograph, no person and no real historic artifact. Preserve reference's premium dark black background, subtle amber-gold spotlight from upper right, warm tabletop reflection, large serif Korean lettering at left, vivid cyan accent and ivory white text. Landscape 3:2 aspect ratio. Output should be sharp and readable after reduction to 360x240 pixels. COMPOSITION at 360x240 scale: left text starts x22, right book entirely within x188..344 and y42..184. The open book should be compact and three-dimensional, tilted toward camera with two pale ivory paper pages, warm gold edge light, elegant black cover and small raised embossed dots arranged in discernible two-column three-row braille cells. Dots are only a visual representation, not a legible quotation; no invented alphabet labels. Leave a deep black quiet area behind all lettering. Exact small top label at x22 y34: '편집# 018 · 훈맹정음 100년'. Exact main title in three lines, aligned left, beginning around y60, heavy elegant Korean serif type like reference: first line '점점,' in vivid cyan #00c6d5, second line '문장이 손에' in ivory white, third line '잡혔다' in ivory white. Main type visually around 25px at final 360px width, not tiny; entire text block ends by y156. Do not add subtitles, logos, English, captions or watermarks. STRICT CROP SAFE AREA: all title letters, small label, whole book silhouette and page contours MUST fit x12..348 and y24..186. Bottom 48 pixels (y192..239, bottom 20 percent) must be only naturally continuing black/amber tabletop background and reflection, no book or text there. Also leave generous top margin for a centered 16:9 crop. Beautiful spacious balance like the reference, no decorative floating dots, no sparkles, no magical beams, no hands, no blindness simulation, no extra objects. Korean title must read exactly '점점, 문장이 손에 잡혔다'.",
+  "source": "thumbnail-goodeasy-source-20261103.png",
+  "files": [
+    "../images/site-thumbnail-360x240.jpg",
+    "../images/site-thumbnail-1200x800.jpg"
+  ],
+  "proof": "thumbnail-goodeasy-crop-proof-20261103.jpg",
+  "checks": {
+    "nativeSize": [
+      360,
+      240
+    ],
+    "topCrop": [
+      360,
+      203
+    ],
+    "centerCrop": [
+      360,
+      203
+    ],
+    "desktopViewport": [
+      1440,
+      900
+    ],
+    "mobileViewport": [
+      390,
+      844
+    ],
+    "actualDevices": false
+  },
+  "meaning": "Conceptual AI-generated book; dots do not encode the article title or a quoted message."
+}

@@ -1,0 +1,53 @@
+{
+  "date": "2026-11-02",
+  "workflow": "samdan-check",
+  "gpt": "https://chatgpt.com/c/6ae7e98e-ed44-83e8-9fe8-c413dc2408d8",
+  "claude": "https://claude.ai/chat/8e172e0f-992d-49c2-bb23-e66a4a0ded76",
+  "rounds": [
+    {
+      "number": 1,
+      "gpt": "Actual before desktop/mobile screenshot design commission: repair title hierarchy, editorial photo widths, single deep-green writing block",
+      "claude": "Actual article text proofread: repetitive abstraction, quotation precision, statistical denominator and caption duplication",
+      "codex": "Keep useful concrete reporting and poetic ending, reject credit format changes and mobile body downsizing"
+    },
+    {
+      "number": 2,
+      "gpt": "Accept 18px body, preserve material; foreshadow final participation after greeting instead of moving form",
+      "claude": "Withdraw deletion of bridge sentence; use optional invitation rather than homework; indirect official briefing must be narrative",
+      "codex": "Accept greeting preview using 인사 rather than 안부; protect user quoted headings and no new features"
+    },
+    {
+      "number": 3,
+      "gpt": "Four actual revised screenshots: no visual P1 within inspected views, conditional design readiness",
+      "claude": "Actual HTML/CSS/UI JS + two mobile screenshots: missing sentence space P1; static engine dependency, paragraph aria-label, external arrow, overbroad annual summary P2",
+      "codex": "Fixed sentence whitespace, engine import deferred inside submit try, language attribute, removed submit external arrow, tightened summary"
+    },
+    {
+      "number": 4,
+      "claude": "Reviewed exact supplied change statements, not newly attached files; prior findings resolved; no remaining blocking defects identified within reviewed scope",
+      "codex": "Actual conversion, stale result hiding, unsupported emoji, greeting keyboard and viewport checks; no console errors"
+    }
+  ],
+  "preserved": [
+    "user title and hero ending reveal",
+    "quote-marked learning/access headings",
+    "required byline",
+    "15 source originals and four selected photos",
+    "concrete education/production/music/digital access material",
+    "main greeting and own message",
+    "bottom optional snack link",
+    "all shared files"
+  ],
+  "correction": {
+    "source": "https://www.president.go.kr/briefings/75j0FMZH",
+    "issue": "Indirect briefing narrative had been shown as a direct quotation",
+    "resolution": "Narrative attribution and primary source link; no direct quotation block"
+  },
+  "validation": "polish-validation.json",
+  "publicReleaseReady": false,
+  "pending": [
+    "approved publication URL and canonical/absolute share metadata/date/indexing",
+    "independent braille professional and user sign-off",
+    "real-device and assistive-technology verification"
+  ]
+}

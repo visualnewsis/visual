@@ -1,0 +1,36 @@
+{
+  "commit": "efe9d62",
+  "deploymentRun": 41603919260,
+  "checks": [
+    {
+      "file": "braille-100/index.html",
+      "status": 200,
+      "type": "text/html",
+      "match": true
+    },
+    {
+      "file": "braille-100/learn.html",
+      "status": 200,
+      "type": "text/html",
+      "match": true
+    },
+    {
+      "file": "braille-100/story.css",
+      "status": 200,
+      "type": "text/css",
+      "match": true
+    },
+    {
+      "file": "braille-100/braille-experience.js",
+      "status": 200,
+      "type": "application/javascript",
+      "match": true
+    },
+    {
+      "file": "braille-100/images/thumbnail-360x240.jpg",
+      "status": 200,
+      "type": "image/jpeg",
+      "match": true
+    }
+  ]
+}

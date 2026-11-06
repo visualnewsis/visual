@@ -1,0 +1,22 @@
+[
+  {
+    "file": "braille-100/index.html",
+    "sha256": "1ef2d7f1f9c05333807cbb3c738e548823908457f9ad6ca46a88d16688f9fcb4"
+  },
+  {
+    "file": "braille-100/learn.html",
+    "sha256": "bd14ea81821bbcaebe6fca69d0d005c3d77e756593a364297c82b669c2f20ae8"
+  },
+  {
+    "file": "braille-100/story.css",
+    "sha256": "ebd839723844725425c83bc93de2f66da21c2032389e5dfc0e35523864f2bd7a"
+  },
+  {
+    "file": "braille-100/braille-experience.js",
+    "sha256": "aa4d571d141a53c8cae9c9e5df3f383c2e626c74c3ab1a4c4d3dbd2023ce7c4a"
+  },
+  {
+    "file": "braille-100/images/thumbnail-360x240.jpg",
+    "sha256": "e505cc0e371a5cd7adead7af208544f04a1e63856012030523b81d9adb49649c"
+  }
+]

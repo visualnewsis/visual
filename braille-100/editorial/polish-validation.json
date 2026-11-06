@@ -1,0 +1,62 @@
+{
+  "date": "2026-11-02",
+  "http": [
+    {
+      "path": "/braille-100/",
+      "status": 200
+    },
+    {
+      "path": "/braille-100/learn.html",
+      "status": 200
+    },
+    {
+      "path": "/braille-100/learn.mjs",
+      "status": 200
+    },
+    {
+      "path": "/braille-100/braille-engine.mjs",
+      "status": 200
+    },
+    {
+      "path": "/braille-100/editorial/research.json",
+      "status": 404
+    },
+    {
+      "path": "/.git/config",
+      "status": 404
+    }
+  ],
+  "analyticsOccurrences": 1,
+  "darkContrasts": [
+    {
+      "color": "f5f2eb",
+      "ratio": 10.39166429914443
+    },
+    {
+      "color": "d5dfcf",
+      "ratio": 8.456574531769547
+    },
+    {
+      "color": "d6e9cb",
+      "ratio": 9.060643291172475
+    },
+    {
+      "color": "c8ddc3",
+      "ratio": 8.069954533944445
+    }
+  ],
+  "coreStaticChecks": 80,
+  "desktop": [
+    1280,
+    1440,
+    1920
+  ],
+  "mobile": [
+    320,
+    390,
+    430
+  ],
+  "overflow": false,
+  "realDevices": false,
+  "professionalBrailleReview": false
+}

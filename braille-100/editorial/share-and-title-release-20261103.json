@@ -1,0 +1,46 @@
+{
+  "serviceCommit": "12e8efd",
+  "mainTitle": "점점, 문장이 손에 잡혔다 [훈맹정음 100년]",
+  "portalTitle": "점점, 문장이 손에 닿았다 [훈맹정음 100년]",
+  "companionTitle": "잠깐, 점자 배워보기",
+  "changes": [
+    "local JPG card sharing",
+    "Unicode braille copy",
+    "make-your-own article deep link",
+    "360x240 original-photo site thumbnail",
+    "optional lesson invitation card after ending"
+  ],
+  "checks": [
+    "81 local checks passed",
+    "20 existing service pages passed",
+    "JSON-LD parsed both pages",
+    "JS syntax passed",
+    "standard 1–8 dot positions and word wrapping checked",
+    "JPG download and clipboard content checked",
+    "input edit clears prior image",
+    "long 99-character input rendered",
+    "desktop 1440 and mobile 390 no horizontal overflow",
+    "thumbnail 360x240, top/center 360x203 crops, key text x18–154 y25–189"
+  ],
+  "reviews": {
+    "gpt": "actual GPT design advice and JPG/thumbnail inspection; lesson design brief accepted",
+    "claude": "actual images/code reviewed; word-wrap and text accessibility P2 resolved; lesson desktop/mobile inspected, no P1/P2"
+  },
+  "limits": [
+    "real iPhone Safari/Android Chrome messenger transfer not tested",
+    "professional braille user/transcriber review pending",
+    "portal body shortening discussed, not implemented",
+    "no CMS registration",
+    "shared landing and automation unchanged"
+  ],
+  "thumbnail": {
+    "file": "images/thumbnail-360x240.jpg",
+    "format": "JPEG",
+    "width": 360,
+    "height": 240,
+    "sourcePhoto": 15,
+    "photographer": "김종택 기자",
+    "source": "https://www.newsis.com/view/NISI20251103_0021042526"
+  },
+  "deploymentRun": 41602577340
+}

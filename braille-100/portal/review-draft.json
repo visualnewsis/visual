@@ -1,0 +1,53 @@
+{
+  "date": "2026-11-03",
+  "revision": "Respectful naming and news editing after user rejection of technical subtitle",
+  "title": "점점, 문장이 손에 잡혔다 [훈맹정음 100년]",
+  "subtitle": "11월 4일 한글 점자의 날…송암 박두성 선생의 당부\n책과 투표안내문, 악보에 쓰이는 한글 점자",
+  "status": "Actual GPT and Claude independently reviewed revised text; no remaining P1/P2 in reviewed text. Portal not published.",
+  "sessions": {
+    "gpt": "https://chatgpt.com/c/6ae7e98e-ed44-83e8-9fe8-c413dc2408d8",
+    "claude": "https://claude.ai/chat/8e172e0f-992d-49c2-bb23-e66a4a0ded76"
+  },
+  "changes": [
+    "Restore user-selected portal headline",
+    "First mention 송암 박두성 선생; subsequent 박두성 선생",
+    "Remove subtitle automatic translation wording and vague 오늘의 배움",
+    "Remove detailed dot-layout/abbreviation/cell-count comparison",
+    "Remove dictionary-style transcription/proofreading definitions; keep concrete music production work",
+    "Remove moralizing knowing-versus-reading contrast",
+    "Remove long app feature and caveat paragraphs from submission copy; preserve technical limitations in separate notes and existing main page",
+    "Keep fixed final HTML invitation, four photographs and captions, sources, author credits",
+    "Explicit1926year replaces relative3year reference per GPT copy-edit recommendation"
+  ],
+  "debate": [
+    {
+      "issue": "Previous triple review forced 자동 점역 into subtitle for supposed precision",
+      "resolution": "Both actual reviewers retracted that editorial recommendation. Codex agrees: technical limitations do not belong at center of subtitle."
+    },
+    {
+      "issue": "솟은 여섯 점 phrase proposed by Claude",
+      "resolution": "Codex objected that it suggests all six dots always raised. Both reviewers accepted objection; short general definition retained."
+    },
+    {
+      "issue": "Subtitle repeats basic uses in body",
+      "resolution": "Claude P3 optional deletion not adopted. Keep basic uses in body to support standalone news reading; no unsupported new facts added."
+    }
+  ],
+  "checks": {
+    "selectedHeadline": true,
+    "respectfulNaming": true,
+    "register": "했다·한다",
+    "factualArticleContext": "history, reported Park anecdote, concrete music production, education, survey",
+    "surveyScope": "499 item respondents for14.4%;492 multiple-response item for74%",
+    "quoteAttribution": "Reported by Incheon2025magazine; physical reason attributed to article explanation",
+    "photoFiles": "Four original JPGs unchanged; prior source-page and SHA256verification retained",
+    "footer": "Anchor includes ◆invitation and literal verified mainURL"
+  },
+  "limits": [
+    "Text review; no new raster image review claimed",
+    "Independent professional braille and braille-user review remain pending",
+    "No portal CMS upload/scheduling/publishing",
+    "Main deployed site unchanged during this portal-copy revision"
+  ],
+  "previousReviewPreserved": "output/preview-tools/portal-before-courtesy-review-20261103/review-draft.json"
+}

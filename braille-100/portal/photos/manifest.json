@@ -1,0 +1,26 @@
+[
+  {
+    "file": "01-photo-15-original.jpg",
+    "originalNumber": 15,
+    "sha256": "644e2d333fafb25e1ab26d5083f718cdcb0597edb6ca6e735d8dccb35f2436ea",
+    "bytes": 2126333
+  },
+  {
+    "file": "02-photo-04-original.jpg",
+    "originalNumber": 4,
+    "sha256": "0a0765a55f6b04a2b614286a927ab799ea596ff2c9b24aeff9904d5334216dd9",
+    "bytes": 3657652
+  },
+  {
+    "file": "03-photo-11-original.jpg",
+    "originalNumber": 11,
+    "sha256": "4df9d2db0859d151a52d73fed98b5ee023fe4728b2e2d541f455712cf407138a",
+    "bytes": 474898
+  },
+  {
+    "file": "04-photo-12-original.jpg",
+    "originalNumber": 12,
+    "sha256": "20e13b258cc11fd9a5c7f3ca7ae354206277cfbf602bf54e32762b13a5c7bd02",
+    "bytes": 869939
+  }
+]

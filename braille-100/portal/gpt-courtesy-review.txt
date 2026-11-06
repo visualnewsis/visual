@@ -1,0 +1,35 @@
+heading "ChatGPT 답변:" [level=4]
+    - paragraph:
+      - generic: "독립 판정: P1 없음. P2 없음. 편집 원고 수용 가능."
+    - paragraph: 제목은 중의성과 기사 주제가 살아 있고, 부제는 기능 설명에서 벗어나 역사·인물·실제 쓰임을 담았다. ‘송암 박두성 선생’의 첫 호칭과 이후 예우도 일관된다.
+    - paragraph:
+      - text: Codex의
+      - generic: ‘솟은 여섯 점’ 반론은 타당
+      - text: 하다. 현재 표현을 유지하는 편이 정확하다. 다만 첫머리의 점자 정의는 짧아졌어도 다소 교과서적이지만, 독립기사에 필요한 최소 설명으로 볼 수 있다.
+    - paragraph: 박두성 선생의 당부는 출처에 귀속했고, 통계의 분모와 복수응답도 보존했다. 사진 네 장의 배치와 캡션 역시 서술에 부합한다.
+    - paragraph:
+      - generic: "선택 교열 1건:"
+      - text: “3년 뒤 훈맹정음이 발표됐다” → “1926년 훈맹정음이 발표됐다.” 도입과 연도가 중복되지만 역사 기사에서는 명시가 더 자연스럽다.
+    - paragraph: 문맥이 사라질 만큼 축약되지 않았고, AI식 수사나 사용설명서투도 상당 부분 해소됐다. 이번 판정은 제공된 원고의 편집 검토이며 사진 자체의 신규 검수나 전문 점역 감수는 포함하지 않는다.
+    - button "복사":
+    - button "응답 평가":
+    - button "소리 내어 읽기":
+    - button "공유":
+    - button "응답 다시 생성":
+    - button "추가 액션":
+    - generic: ChatGPT는 실수할 수 있습니다. 워크스페이스 데이터는 모델 학습에 사용되지 않습니다.
+    - button "맨 아래로 스크롤":
+    - heading "최신 응답" [level=4]
+    - status
+    - button "파일 등 추가":
+    - textbox "ChatGPT에게 물어보세요" [active]:
+      - paragraph: ChatGPT에게 물어보세요
+    - button "ChatGPT 모델 선택":
+      - generic: 추론 수준
+      - generic: Instant
+    - button "음성 입력":
+    - button "음성 대화 시작":
+- status
+- status: 응답이 완료되었습니다
+- status
+- status

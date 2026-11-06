@@ -1,0 +1,212 @@
+{
+  "date": "2026-11-03",
+  "status": "Reviewed scope has no remaining P1/P2; production release conditional",
+  "sessions": {
+    "gpt": "https://chatgpt.com/c/6ae7e98e-ed44-83e8-9fe8-c413dc2408d8",
+    "claude": "https://claude.ai/chat/8e172e0f-992d-49c2-bb23-e66a4a0ded76"
+  },
+  "reviewScope": {
+    "gpt": "Actual PC/mobile screenshots, full current source packet, whole article flow and follow-up revised packet/image. No independent browser execution.",
+    "claude": "Initial snack code and three screenshots; subsequent full index.html and story.js review; final revised source comparison and actual 390px screenshot. External RNIB source not independently reopened by Claude.",
+    "codex": "Implementation, source comparison, actual browser choices, layout, local WASM conversion and static checks"
+  },
+  "changes": [
+    "Main greeting examples: hello/welcome/again (three)",
+    "Snack phrases: three groups of three; only selected result shown",
+    "Hangul count excludes spaces; total braille count explicitly includes blank",
+    "Blank cell same width as other greeting cells; static role img with numbered name",
+    "Inspector positions include blank; next visible cell correctly numbered five",
+    "Snack title and main invitation use 말 한마디; duplicated prompt removed",
+    "Book/music duplicate introduction and mismatched survey lead question removed",
+    "RNIB participant generalization narrowed to many following official summary"
+  ],
+  "debate": [
+    {
+      "issue": "Mobile single-line output",
+      "resolution": "Do not shrink 44px interactive cells. Keep word-based wrap. GPT agreed."
+    },
+    {
+      "issue": "Blank counts nine but only eight visible cells",
+      "resolution": "Claude P2 accepted; explicit empty cell added. GPT and Claude final follow-up both closed."
+    },
+    {
+      "issue": "Core 당신의 진심 invitation",
+      "resolution": "Preserve user-directed language. GPT withdrew P2 after Codex pointed to nearby no-save/no-transmission notice and translate button. Claude agreed."
+    },
+    {
+      "issue": "insertedIntoArticle=false",
+      "resolution": "Claude withdrew finding: main article false and separate snack true are accurate."
+    },
+    {
+      "issue": "Repeated document pause phrase",
+      "resolution": "Retain as editorial photo pause; P3 preference, not correctness issue."
+    }
+  ],
+  "checks": {
+    "static81": true,
+    "additional": [
+      {
+        "name": "index.html unique IDs",
+        "pass": true
+      },
+      {
+        "name": "index.html JSON-LD",
+        "pass": true
+      },
+      {
+        "name": "learn.html unique IDs",
+        "pass": true
+      },
+      {
+        "name": "learn.html JSON-LD",
+        "pass": true
+      },
+      {
+        "name": "Nine actual phrase choices, single active state, no overflow",
+        "pass": true
+      }
+    ],
+    "phraseChoices": [
+      {
+        "cells": 8,
+        "count": "안녕하세요 · 한글 5글자, 점자 8칸",
+        "firstSelected": 1,
+        "overflow": false,
+        "selected": 1,
+        "text": "안녕하세요",
+        "unicode": "⠣⠒⠉⠻⠚⠠⠝⠬"
+      },
+      {
+        "cells": 10,
+        "count": "반갑습니다 · 한글 5글자, 점자 10칸",
+        "firstSelected": 1,
+        "overflow": false,
+        "selected": 1,
+        "text": "반갑습니다",
+        "unicode": "⠘⠒⠫⠃⠠⠪⠃⠉⠕⠊"
+      },
+      {
+        "cells": 8,
+        "count": "또 만나요 · 한글 4글자, 점자 9칸 (빈 칸 1칸 포함)",
+        "firstSelected": 1,
+        "overflow": false,
+        "selected": 1,
+        "text": "또 만나요",
+        "unicode": "⠠⠊⠥⠀⠑⠒⠉⠣⠬"
+      },
+      {
+        "cells": 8,
+        "count": "감사합니다 · 한글 5글자, 점자 8칸",
+        "firstSelected": 1,
+        "overflow": false,
+        "selected": 1,
+        "text": "감사합니다",
+        "unicode": "⠫⠢⠇⠚⠃⠉⠕⠊"
+      },
+      {
+        "cells": 9,
+        "count": "미안합니다 · 한글 5글자, 점자 9칸",
+        "firstSelected": 1,
+        "overflow": false,
+        "selected": 1,
+        "text": "미안합니다",
+        "unicode": "⠑⠕⠣⠒⠚⠃⠉⠕⠊"
+      },
+      {
+        "cells": 10,
+        "count": "괜찮아요 · 한글 4글자, 점자 10칸",
+        "firstSelected": 1,
+        "overflow": false,
+        "selected": 1,
+        "text": "괜찮아요",
+        "unicode": "⠈⠧⠗⠒⠰⠣⠒⠴⠣⠬"
+      },
+      {
+        "cells": 8,
+        "count": "함께해요 · 한글 4글자, 점자 8칸",
+        "firstSelected": 1,
+        "overflow": false,
+        "selected": 1,
+        "text": "함께해요",
+        "unicode": "⠚⠢⠠⠈⠝⠚⠗⠬"
+      },
+      {
+        "cells": 8,
+        "count": "도와주세요 · 한글 5글자, 점자 8칸",
+        "firstSelected": 1,
+        "overflow": false,
+        "selected": 1,
+        "text": "도와주세요",
+        "unicode": "⠊⠥⠧⠨⠍⠠⠝⠬"
+      },
+      {
+        "cells": 7,
+        "count": "잠시만요 · 한글 4글자, 점자 7칸",
+        "firstSelected": 1,
+        "overflow": false,
+        "selected": 1,
+        "text": "잠시만요",
+        "unicode": "⠨⠢⠠⠕⠑⠒⠬"
+      }
+    ],
+    "viewports": [
+      "Main 1440px and 390px: no horizontal overflow, blank width equals cell (32/27px).",
+      "Snack 1440px and 390px: nine choices, single selection, inspector.",
+      "Snack 320px: no overflow, blank44x52, phrase buttons minimum48px."
+    ],
+    "freeInput": "Actual browser 고마워요. -> ⠈⠥⠑⠣⠏⠬⠲ success. Engine unchanged by this revision.",
+    "ending": "Hero and return DOM identical; details initially closed then manually opened.",
+    "http": "Main/snack HTML/CSS/module/WASM HTTP200; editorial/research.json HTTP404."
+  },
+  "pending": [
+    "Independent professional braille and braille-user review",
+    "Actual iPhone Safari, Android Chrome and assistive device validation",
+    "Production URL, canonical/absolute social image metadata, publication date/indexing configuration",
+    "Shared header currently nine entries versus AGENTS four: owner-managed shared policy resolution"
+  ],
+  "preserved": [
+    "All original photographs and provenance records",
+    "Hero, approved headline, section order and final input placement",
+    "Park reported words, article explanation, explicit editorial interpretation separation",
+    "Shared assets, landings, deploy workflows and AGENTS untouched"
+  ],
+  "deploy": false,
+  "commit": false,
+  "modifiedFiles": [
+    {
+      "file": "index.html",
+      "sha256": "b7babf2b8164c1b6947c2414334114fdadd440493e871f51829fdb68d46e5876"
+    },
+    {
+      "file": "story.css",
+      "sha256": "40f1681388c0eb478c659714aba50890d7dc71225296d7669011dd89e436fb70"
+    },
+    {
+      "file": "learn.html",
+      "sha256": "682a4a3a80f86d12e8492211d5bef89e65a9794b164394c480ada8c42fc544e1"
+    },
+    {
+      "file": "learn.css",
+      "sha256": "06964de3411cbeee1d9d02e90353fe7773c0e3591c4a77decf02add0bfc8360b"
+    },
+    {
+      "file": "learn.mjs",
+      "sha256": "577e921a05a6c78ef05da4e42c766a78e46ab93d4fb43712e334c85fb792b86b"
+    },
+    {
+      "file": "braille-experience.mjs",
+      "sha256": "25b0c9df39b6be36805a57f09ef6fce047672b01d6780b1002f29c8354f70748"
+    }
+  ],
+  "sourceRecheck": {
+    "url": "https://www.rnib.org.uk/professionals/research-and-data/reports-and-insight/braille-200-report/",
+    "date": "2026-11-03",
+    "fact": "2024-11-21 summary: many adopting audio and braille technology alongside paper braille; not all participants."
+  },
+  "evidenceFiles": [
+    "release-final-gpt-review.txt",
+    "release-final-claude-review.txt",
+    "release-main-greetings-pc.png",
+    "release-blank-result-mobile.png"
+  ]
+}

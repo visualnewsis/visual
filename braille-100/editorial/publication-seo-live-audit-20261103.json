@@ -1,0 +1,259 @@
+{
+  "commit": "9c4afc7",
+  "publicationDate": "2026-11-04T05:00:00+09:00",
+  "immediateLandingPublication": true,
+  "reservation": false,
+  "sourceGuides": [
+    "https://developers.google.com/search/docs/appearance/structured-data/article",
+    "https://developers.google.com/search/docs/appearance/snippet",
+    "https://searchadvisor.naver.com/guide/seo-basic-intro"
+  ],
+  "results": [
+    {
+      "file": "aijob/index.html",
+      "status": 200,
+      "match": true,
+      "xRobotsTag": null
+    },
+    {
+      "file": "assets/20261019-paged/editshop-carousel.js",
+      "status": 200,
+      "match": true,
+      "xRobotsTag": null
+    },
+    {
+      "file": "assets/editshop-carousel.js",
+      "status": 200,
+      "match": true,
+      "xRobotsTag": null
+    },
+    {
+      "file": "assets/visual-stories-carousel.js",
+      "status": 200,
+      "match": true,
+      "xRobotsTag": null
+    },
+    {
+      "file": "atleti-2gang/index.html",
+      "status": 200,
+      "match": true,
+      "xRobotsTag": null
+    },
+    {
+      "file": "battery/index.html",
+      "status": 200,
+      "match": true,
+      "xRobotsTag": null
+    },
+    {
+      "file": "braille-100/index.html",
+      "status": 200,
+      "match": true,
+      "xRobotsTag": null
+    },
+    {
+      "file": "braille-100/learn.html",
+      "status": 200,
+      "match": true,
+      "xRobotsTag": null
+    },
+    {
+      "file": "bukang/index.html",
+      "status": 200,
+      "match": true,
+      "xRobotsTag": null
+    },
+    {
+      "file": "buy-live/index.html",
+      "status": 200,
+      "match": true,
+      "xRobotsTag": null
+    },
+    {
+      "file": "children/index.html",
+      "status": 200,
+      "match": true,
+      "xRobotsTag": null
+    },
+    {
+      "file": "dmz/index.html",
+      "status": 200,
+      "match": true,
+      "xRobotsTag": null
+    },
+    {
+      "file": "editshop/index.html",
+      "status": 200,
+      "match": true,
+      "xRobotsTag": null
+    },
+    {
+      "file": "goodeasy/camera/index.html",
+      "status": 200,
+      "match": true,
+      "xRobotsTag": null
+    },
+    {
+      "file": "goodeasy/espresso-machine/index.html",
+      "status": 200,
+      "match": true,
+      "xRobotsTag": null
+    },
+    {
+      "file": "goodeasy/fishing-reel/index.html",
+      "status": 200,
+      "match": true,
+      "xRobotsTag": null
+    },
+    {
+      "file": "goodeasy/gramophone/index.html",
+      "status": 200,
+      "match": true,
+      "xRobotsTag": null
+    },
+    {
+      "file": "goodeasy/guitar/index.html",
+      "status": 200,
+      "match": true,
+      "xRobotsTag": null
+    },
+    {
+      "file": "goodeasy/keyboard/index.html",
+      "status": 200,
+      "match": true,
+      "xRobotsTag": null
+    },
+    {
+      "file": "goodeasy/piano/index.html",
+      "status": 200,
+      "match": true,
+      "xRobotsTag": null
+    },
+    {
+      "file": "goodeasy/projector/index.html",
+      "status": 200,
+      "match": true,
+      "xRobotsTag": null
+    },
+    {
+      "file": "goodeasy/sewing-machine/index.html",
+      "status": 200,
+      "match": true,
+      "xRobotsTag": null
+    },
+    {
+      "file": "goodeasy/violin/index.html",
+      "status": 200,
+      "match": true,
+      "xRobotsTag": null
+    },
+    {
+      "file": "goodeasy/watch/index.html",
+      "status": 200,
+      "match": true,
+      "xRobotsTag": null
+    },
+    {
+      "file": "homecoming/index.html",
+      "status": 200,
+      "match": true,
+      "xRobotsTag": null
+    },
+    {
+      "file": "index.html",
+      "status": 200,
+      "match": true,
+      "xRobotsTag": null
+    },
+    {
+      "file": "kangin/index.html",
+      "status": 200,
+      "match": true,
+      "xRobotsTag": null
+    },
+    {
+      "file": "nuri5/index.html",
+      "status": 200,
+      "match": true,
+      "xRobotsTag": null
+    },
+    {
+      "file": "oil/index.html",
+      "status": 200,
+      "match": true,
+      "xRobotsTag": null
+    },
+    {
+      "file": "pension/index.html",
+      "status": 200,
+      "match": true,
+      "xRobotsTag": null
+    },
+    {
+      "file": "quit/index.html",
+      "status": 200,
+      "match": true,
+      "xRobotsTag": null
+    },
+    {
+      "file": "senior/index.html",
+      "status": 200,
+      "match": true,
+      "xRobotsTag": null
+    },
+    {
+      "file": "shelter/index.html",
+      "status": 200,
+      "match": true,
+      "xRobotsTag": null
+    },
+    {
+      "file": "sitemap-news.xml",
+      "status": 200,
+      "match": true,
+      "xRobotsTag": null
+    },
+    {
+      "file": "sitemap-sections.xml",
+      "status": 200,
+      "match": true,
+      "xRobotsTag": null
+    },
+    {
+      "file": "sitemap.xml",
+      "status": 200,
+      "match": true,
+      "xRobotsTag": null
+    },
+    {
+      "file": "smartwatch/index.html",
+      "status": 200,
+      "match": true,
+      "xRobotsTag": null
+    },
+    {
+      "file": "spai/index.html",
+      "status": 200,
+      "match": true,
+      "xRobotsTag": null
+    },
+    {
+      "file": "temperature/index.html",
+      "status": 200,
+      "match": true,
+      "xRobotsTag": null
+    },
+    {
+      "file": "thief/index.html",
+      "status": 200,
+      "match": true,
+      "xRobotsTag": null
+    },
+    {
+      "file": "witness/index.html",
+      "status": 200,
+      "match": true,
+      "xRobotsTag": null
+    }
+  ]
+}

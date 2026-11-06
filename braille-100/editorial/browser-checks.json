@@ -1,0 +1,93 @@
+[
+  {
+    "body": "18px",
+    "docWidth": 375,
+    "h1": "34px",
+    "headerCenter": 195,
+    "name": "390-opening",
+    "overflow": false,
+    "viewport": 390,
+    "viewportCenter": 195
+  },
+  {
+    "docWidth": 305,
+    "name": "320-opening",
+    "overflow": false,
+    "titleWidth": 265,
+    "viewport": 320
+  },
+  {
+    "docWidth": 415,
+    "name": "430-opening",
+    "overflow": false,
+    "viewport": 430
+  },
+  {
+    "duplicateIds": [],
+    "images": [
+      {
+        "loaded": true,
+        "src": "images/contact-1920.jpg"
+      },
+      {
+        "loaded": true,
+        "src": "images/history-1280.jpg"
+      },
+      {
+        "loaded": true,
+        "src": "images/document-1280.jpg"
+      },
+      {
+        "loaded": true,
+        "src": "images/book-1920.jpg"
+      }
+    ],
+    "jsonld": [
+      "Article"
+    ],
+    "name": "430-book",
+    "overflow": false
+  },
+  {
+    "expanded": "true",
+    "focus": "",
+    "name": "menu-open"
+  },
+  {
+    "expanded": "false",
+    "focusIsToggle": true,
+    "name": "menu-escape"
+  },
+  {
+    "cardCount": 17,
+    "hasCurrent": false,
+    "left": 2365,
+    "name": "carousel-after-move",
+    "orderCorrect": true
+  },
+  {
+    "name": "copy-link",
+    "result": "success message observed"
+  },
+  {
+    "closed": true,
+    "firstLink": "본문 바로가기",
+    "focusRestored": true,
+    "localTrackingLoaded": false,
+    "mainInert": false,
+    "name": "skip-and-menu-final"
+  },
+  {
+    "name": "nojs-csp",
+    "bodyReadable": true,
+    "staticDiagram": true,
+    "fallbackHeader": true,
+    "copyButtonHidden": true
+  },
+  {
+    "name": "carousel-movement",
+    "before": 2703,
+    "after": 2365,
+    "moved": true
+  }
+]

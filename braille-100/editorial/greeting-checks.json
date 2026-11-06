@@ -1,0 +1,31 @@
+{
+  "date": "2026-11-02",
+  "cases": [
+    {
+      "text": "안녕하세요",
+      "cells": 8
+    },
+    {
+      "text": "반갑습니다",
+      "cells": 10
+    }
+  ],
+  "browserViewports": [
+    {
+      "width": 1280,
+      "overflow": false
+    },
+    {
+      "width": 390,
+      "overflow": false
+    },
+    {
+      "width": 320,
+      "overflow": false
+    }
+  ],
+  "selection": "Both buttons update text, cells and aria-pressed",
+  "minimumObservedButtonHeight": 52,
+  "realDevices": false,
+  "professionalBrailleReview": false
+}

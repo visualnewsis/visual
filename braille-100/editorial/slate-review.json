@@ -1,0 +1,81 @@
+{
+  "date": "2026-11-03",
+  "workflow": "samdan-check",
+  "gpt": "https://chatgpt.com/c/6ae7e98e-ed44-83e8-9fe8-c413dc2408d8",
+  "claude": "https://claude.ai/chat/8e172e0f-992d-49c2-bb23-e66a4a0ded76",
+  "scope": [
+    "Short main slate/stylus explanation and source11",
+    "Combine existing snack dot-one exploration with paper-face comparison",
+    "GPT snack design commission and main design recheck",
+    "Quotation research and placement discussion; no quote inserted"
+  ],
+  "review": [
+    {
+      "stage": 1,
+      "gpt": "Actual before snack PC, main hero PC and mobile ending viewed. Proposed a single paper card, restrained two-column PC / one-column mobile layout; no further hero/ending decoration.",
+      "claude": "Text-only physical/semantic review: distinguish indented marks from raised dots; fixed reading-side dot numbers; clarify first-character-first progression."
+    },
+    {
+      "stage": 2,
+      "gpt": "Actual five revised screenshots viewed: design approved within those views; mobile state distinction P2 but labels/positions/direction already distinguish it.",
+      "claude": "Actual six-file bundle and four revised screenshots inspected. No physical mechanism error found; P2 fixed-number DOM reading order/accessibility and awkward other-tool sentence."
+    },
+    {
+      "stage": 3,
+      "codex": "Fixed numeric spans hidden from accessibility tree; operative dot-one button retained; group and live labels explicitly name face, coordinate order and active points. Sentence simplified.",
+      "claude": "Exact-diff text follow-up: both P2 items resolved, no remaining blockers within inspected scope. No fresh-file re-upload claimed."
+    }
+  ],
+  "implementation": {
+    "faces": {
+      "write": "left4/5/6,right1/2/3; indentation",
+      "read": "left1/2/3,right4/5/6; raised dots"
+    },
+    "dotNumbers": "Reading-side identities preserved, only spatial columns change",
+    "patterns": "Initial ㄱ dot4; adding dot1 makes initial ㄴ dots1,4; not a final-consonant lesson",
+    "readingFace": "Read-only, dot button replaced by static span; flip control keeps focus",
+    "motion": "No rotation animation",
+    "preserved": [
+      "Own-message main experience",
+      "Two main greetings",
+      "Separate optional bottom snack link",
+      "Hero and ending-reveal behavior",
+      "All shared assets",
+      "Original photos"
+    ]
+  },
+  "checks": {
+    "static": "slate-static-checks.json:81 passes",
+    "http": "slate-http-checks.json:5 HTTP200 endpoints; numbered source references checked",
+    "browser": [
+      "PC1440: mirrored six-point coordinates and preserved ㄴ",
+      "Mobile390: no overflow, write/read views, main greeting and note verified",
+      "Mobile320: Space/Enter keyboard cycle, no overflow, equal paper height370.39px across faces",
+      "Toggle ㄱ→ㄴ→ㄱ persists through face flips",
+      "Welcome greeting10 cells/buttons unaffected",
+      "NoJS: controls hidden, static writing side, fallback and explanatory text present",
+      "No warning/error logs in checked snack tab",
+      "Main common carousel retains Noto Sans KR; repeated hero dots unchanged"
+    ],
+    "notVerified": [
+      "Real iPhone Safari/Android Chrome",
+      "Actual assistive-technology reading",
+      "Independent professional and braille-user review"
+    ]
+  },
+  "releaseReady": false,
+  "pending": [
+    "Professional/user braille review",
+    "Real-device and assistive technology validation",
+    "Approved production URL, absolute share metadata/date/indexing",
+    "Inherited shared-header menu/policy mismatch"
+  ],
+  "quotes": "quote-candidates.json",
+  "hashes": {
+    "index.html": "11b75dfd203397a7437762d7e74ba594e73ce11382d16df4cc24e517e6196000",
+    "story.css": "710665efe78f31506986691cb985880ad2ba138ab476a2f73266738c343fc04f",
+    "learn.html": "9255db8475c4c6ce22ef80022229ed7325ec8358ca1049fa6809cef8bc4d5cc5",
+    "learn.css": "3df8896171ddd1a34b6c095b95b2523035a33737aceef5517fc39aff069976eb",
+    "learn.mjs": "2134cfa47c6084d6ed57c6c5cfa82f9efe39363dd441b8a655ffe88237b50401"
+  }
+}

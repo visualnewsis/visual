@@ -1,0 +1,96 @@
+{
+  "bugs": {
+    "url": "https://github.com/dev-five-git/braillify/issues",
+    "email": "contact@devfive.kr"
+  },
+  "dist": {
+    "shasum": "fcb1abac74a0710411bc940f2ec13e464138a21a",
+    "tarball": "https://registry.npmjs.org/braillify/-/braillify-2.2.0.tgz",
+    "fileCount": 7,
+    "integrity": "sha512-96bExcB/V66cWL11VyK9aIO0cGstWY53TJwmSnqYUOlNgtn0PCXMmm4d/zju033MRVZY3LQDn3lmYXDhTUXU8g==",
+    "signatures": [
+      {
+        "sig": "MEQCICQpMQHVWUNocUmLgGRXCTNbEDzWmt8QobtY82G17G1tAiBIx9qsqQ3HqrdU6NjykSWyrADfSsDigfuJJV/2pa5fbA==",
+        "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+      },
+      {
+        "sig": "MEYCIQDqvWCoP/oziItNEXEEG+D5YesNER8FQmsDOaPOcfFxmQIhAPwfbmZFBIZWKUBWxESeSd0LaJUFkn4a2lmJrY3kXfoc",
+        "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+      }
+    ],
+    "attestations": {
+      "url": "https://registry.npmjs.org/-/npm/v1/attestations/braillify@2.2.0",
+      "provenance": {
+        "predicateType": "https://slsa.dev/provenance/v1"
+      }
+    },
+    "unpackedSize": 6033295
+  },
+  "main": "./pkg/index.js",
+  "name": "braillify",
+  "type": "module",
+  "types": "./pkg/index.d.ts",
+  "author": {
+    "name": "devfive"
+  },
+  "module": "./pkg/index.js",
+  "exports": {
+    ".": {
+      "types": "./pkg/index.d.ts",
+      "import": "./pkg/index.js",
+      "require": "./pkg/index.js"
+    }
+  },
+  "gitHead": "c50562e27d111232f7a6f75e1d656d686e075c6a",
+  "license": "Apache-2.0",
+  "scripts": {
+    "test": "wasm-pack test --node",
+    "build": "wasm-pack build --target bundler --out-dir ./pkg --out-name index --release && bun run optimize",
+    "optimize": "wasm-opt -Oz --enable-bulk-memory --enable-nontrapping-float-to-int --enable-sign-ext -o pkg/index_bg_opt.wasm pkg/index_bg.wasm && mv pkg/index_bg_opt.wasm pkg/index_bg.wasm"
+  },
+  "_npmUser": {
+    "name": "GitHub Actions",
+    "email": "npm-oidc-no-reply@github.com",
+    "trustedPublisher": {
+      "id": "github",
+      "oidcConfigId": "oidc:783ccda6-2ec5-4ceb-b26f-82865e713784"
+    }
+  },
+  "homepage": "https://braillify.com",
+  "keywords": [
+    "braillify",
+    "braille",
+    "braille-converter",
+    "braille-to-text",
+    "text-to-braille",
+    "wasm"
+  ],
+  "repository": {
+    "url": "git+https://github.com/dev-five-git/braillify.git",
+    "type": "git"
+  },
+  "_npmVersion": "11.19.1",
+  "description": "Braillify is a library for converting text to braille.",
+  "directories": {},
+  "maintainers": [
+    {
+      "name": "owjs3901",
+      "email": "owjs3901@gmail.com"
+    }
+  ],
+  "sideEffects": false,
+  "_nodeVersion": "24.20.0",
+  "publishConfig": {
+    "access": "public"
+  },
+  "_hasShrinkwrap": false,
+  "devDependencies": {
+    "binaryen": "^132.0.0"
+  },
+  "_npmOperationalInternal": {
+    "tmp": "tmp/braillify_2.2.0_1789868025522_0.22612887743118604",
+    "host": "s3://npm-registry-packages-npm-production"
+  },
+  "_id": "braillify@2.2.0",
+  "version": "2.2.0"
+}

@@ -1,0 +1,245 @@
+{
+  "commit": "4373273",
+  "results": [
+    {
+      "file": "aijob/index.html",
+      "status": 200,
+      "match": true,
+      "type": "text/html"
+    },
+    {
+      "file": "assets/20261019-paged/editshop-carousel.js",
+      "status": 200,
+      "match": true,
+      "type": "application/javascript"
+    },
+    {
+      "file": "assets/editshop-carousel.js",
+      "status": 200,
+      "match": true,
+      "type": "application/javascript"
+    },
+    {
+      "file": "assets/visual-stories-carousel.js",
+      "status": 200,
+      "match": true,
+      "type": "application/javascript"
+    },
+    {
+      "file": "atleti-2gang/index.html",
+      "status": 200,
+      "match": true,
+      "type": "text/html"
+    },
+    {
+      "file": "battery/index.html",
+      "status": 200,
+      "match": true,
+      "type": "text/html"
+    },
+    {
+      "file": "braille-100/images/site-thumbnail-photo-1200x800.jpg",
+      "status": 200,
+      "match": true,
+      "type": "image/jpeg"
+    },
+    {
+      "file": "braille-100/images/site-thumbnail-photo-360x240.jpg",
+      "status": 200,
+      "match": true,
+      "type": "image/jpeg"
+    },
+    {
+      "file": "braille-100/index.html",
+      "status": 200,
+      "match": true,
+      "type": "text/html"
+    },
+    {
+      "file": "braille-100/learn.html",
+      "status": 200,
+      "match": true,
+      "type": "text/html"
+    },
+    {
+      "file": "bukang/index.html",
+      "status": 200,
+      "match": true,
+      "type": "text/html"
+    },
+    {
+      "file": "buy-live/index.html",
+      "status": 200,
+      "match": true,
+      "type": "text/html"
+    },
+    {
+      "file": "children/index.html",
+      "status": 200,
+      "match": true,
+      "type": "text/html"
+    },
+    {
+      "file": "dmz/index.html",
+      "status": 200,
+      "match": true,
+      "type": "text/html"
+    },
+    {
+      "file": "editshop/index.html",
+      "status": 200,
+      "match": true,
+      "type": "text/html"
+    },
+    {
+      "file": "goodeasy/camera/index.html",
+      "status": 200,
+      "match": true,
+      "type": "text/html"
+    },
+    {
+      "file": "goodeasy/espresso-machine/index.html",
+      "status": 200,
+      "match": true,
+      "type": "text/html"
+    },
+    {
+      "file": "goodeasy/fishing-reel/index.html",
+      "status": 200,
+      "match": true,
+      "type": "text/html"
+    },
+    {
+      "file": "goodeasy/gramophone/index.html",
+      "status": 200,
+      "match": true,
+      "type": "text/html"
+    },
+    {
+      "file": "goodeasy/guitar/index.html",
+      "status": 200,
+      "match": true,
+      "type": "text/html"
+    },
+    {
+      "file": "goodeasy/keyboard/index.html",
+      "status": 200,
+      "match": true,
+      "type": "text/html"
+    },
+    {
+      "file": "goodeasy/piano/index.html",
+      "status": 200,
+      "match": true,
+      "type": "text/html"
+    },
+    {
+      "file": "goodeasy/projector/index.html",
+      "status": 200,
+      "match": true,
+      "type": "text/html"
+    },
+    {
+      "file": "goodeasy/sewing-machine/index.html",
+      "status": 200,
+      "match": true,
+      "type": "text/html"
+    },
+    {
+      "file": "goodeasy/violin/index.html",
+      "status": 200,
+      "match": true,
+      "type": "text/html"
+    },
+    {
+      "file": "goodeasy/watch/index.html",
+      "status": 200,
+      "match": true,
+      "type": "text/html"
+    },
+    {
+      "file": "homecoming/index.html",
+      "status": 200,
+      "match": true,
+      "type": "text/html"
+    },
+    {
+      "file": "index.html",
+      "status": 200,
+      "match": true,
+      "type": "text/html"
+    },
+    {
+      "file": "kangin/index.html",
+      "status": 200,
+      "match": true,
+      "type": "text/html"
+    },
+    {
+      "file": "nuri5/index.html",
+      "status": 200,
+      "match": true,
+      "type": "text/html"
+    },
+    {
+      "file": "oil/index.html",
+      "status": 200,
+      "match": true,
+      "type": "text/html"
+    },
+    {
+      "file": "pension/index.html",
+      "status": 200,
+      "match": true,
+      "type": "text/html"
+    },
+    {
+      "file": "quit/index.html",
+      "status": 200,
+      "match": true,
+      "type": "text/html"
+    },
+    {
+      "file": "senior/index.html",
+      "status": 200,
+      "match": true,
+      "type": "text/html"
+    },
+    {
+      "file": "shelter/index.html",
+      "status": 200,
+      "match": true,
+      "type": "text/html"
+    },
+    {
+      "file": "smartwatch/index.html",
+      "status": 200,
+      "match": true,
+      "type": "text/html"
+    },
+    {
+      "file": "spai/index.html",
+      "status": 200,
+      "match": true,
+      "type": "text/html"
+    },
+    {
+      "file": "temperature/index.html",
+      "status": 200,
+      "match": true,
+      "type": "text/html"
+    },
+    {
+      "file": "thief/index.html",
+      "status": 200,
+      "match": true,
+      "type": "text/html"
+    },
+    {
+      "file": "witness/index.html",
+      "status": 200,
+      "match": true,
+      "type": "text/html"
+    }
+  ]
+}
