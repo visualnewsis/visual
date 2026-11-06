@@ -1,0 +1,177 @@
+[삼단 재논의 보고서용 2026-11-05] 사용자는 \"Google을 내부에서만 쓰고 결과를 우리쪽에서 찾은것처럼\"원하며 다시활용회의보고서요청. 현재정적VISUAL NEWSIS,340px단일질문창,규칙검색어추출+로컬기사메타3건,Google외부링크이며API연동없음. 4메뉴부활/대형상단금지,기사를밀면안됨. MAI공개랜딩은 지식검색·추천질문·해설·요약·브리핑·교육·게임. 지금 새생성엔진만드는것보단 질문→기사발견효용이중요. Codex공식자료: 1) developers.google.com/custom-search/docs/element 는 JS정적임베드+results-only+execute지원. 2) support.google.com/programmable-search/answer/12423918 Google branding on/off공식설정존재. 3) developers.google.com/custom-search/v1/overview 는JSON API신규고객종료,기존도2027-01-01전환요구. 개요비교표Everyone과충돌하나상품별신규안내를우선. 4) support.google.com/programmable-search/answer/1714300 1.4는결과순서변경/혼합/캐시/브랜드임의제거및pop-up등금지문구. UI도움말은overlay레이아웃지원. 따라서숨김완전자유/팝오버허용 단정안하고공식설정/지원레이아웃확인 gate필요. 현재공식뉴시스search_val외부GET/POST차단확인,실서비스visual허용여부는미검증. report는검색엔진새로구현아닌 활용기획·선택지·우선순위·실행조건·반대근거. 후보A편집자질문인덱스+자체기사발견 BGoogle공식SearchElement를사이트결과영역에표시 C뉴시스내부검색연동 D대화형계산조건가이드. 가장실현가능한조합과사용자시나리오3개,MAI서가져올것/보류,Google내장시결과영역과브랜드정체성,출시성공기준,솔직한반대 1200자내. 이번은텍스트근거기획검토이며새스크린샷미첨부. 추가요청:창배경흰색90%알파/blur3,글자input통이opacity1,크레딧 \"크리에이티브 디렉터 = 안재현\" 유지. 사용자는불투명도80~90중가독성우선90허용. 이를UX가이드에반영하되공식검색연동은보고서만,아직구현했다고하지말것."
+    - generic: …
+    - button "더 보기":
+      - generic: 더 보기
+    - button "메시지 복사":
+    - button "프롬프트 공유":
+    - button "메시지 편집":
+    - heading "ChatGPT 답변:" [level=4]
+    - heading "VISUAL NEWSIS 통이 활용 재기획 보고서" [level=2]
+    - paragraph: 2026.11.05 | 삼단회의 검토안
+    - heading "1. 최종 권고" [level=3]
+    - paragraph:
+      - generic: A 편집자 질문 인덱스 + 자체 기사 발견을 우선 채택하고, B Google 공식 Search Element를 조건부 2단계로 검증.
+    - paragraph:
+      - text: 통이의 핵심 가치는 AI처럼 대답하는 것이 아니라
+      - generic: 독자의 자연어 질문을 실제 뉴시스 기사 발견으로 연결하는 것
+      - text: 이야.
+    - heading "2. 후보별 판단" [level=3]
+    - table:
+      - rowgroup:
+        - row "후보 판단 근거":
+          - columnheader "후보":
+            - paragraph: 후보
+          - columnheader "판단":
+            - paragraph: 판단
+          - columnheader "근거":
+            - paragraph: 근거
+        - row "A 편집자 질문 인덱스 1순위 정적 구현 가능. 기사·질문 매칭 품질을 편집자가 통제":
+          - cell "A 편집자 질문 인덱스":
+            - paragraph: A 편집자 질문 인덱스
+          - cell "1순위":
+            - paragraph:
+              - generic: 1순위
+          - cell "정적 구현 가능. 기사·질문 매칭 품질을 편집자가 통제":
+            - paragraph: 정적 구현 가능. 기사·질문 매칭 품질을 편집자가 통제
+        - row "B Google Search Element 조건부 추진 정적 JS 임베드 가능. 공식 브랜딩·레이아웃 확인 필요":
+          - cell "B Google Search Element":
+            - paragraph: B Google Search Element
+          - cell "조건부 추진":
+            - paragraph: 조건부 추진
+          - cell "정적 JS 임베드 가능. 공식 브랜딩·레이아웃 확인 필요":
+            - paragraph: 정적 JS 임베드 가능. 공식 브랜딩·레이아웃 확인 필요
+        - row "C 뉴시스 내부 검색 보류 외부 GET/POST 차단. 공식 연동 협의 필요":
+          - cell "C 뉴시스 내부 검색":
+            - paragraph: C 뉴시스 내부 검색
+          - cell "보류":
+            - paragraph: 보류
+          - cell "외부 GET/POST 차단. 공식 연동 협의 필요":
+            - paragraph: 외부 GET/POST 차단. 공식 연동 협의 필요
+        - row "D 계산조건 가이드 후순위 구현 가능하지만 뉴스 발견이라는 통이의 핵심 목적과 분산":
+          - cell "D 계산조건 가이드":
+            - paragraph: D 계산조건 가이드
+          - cell "후순위":
+            - paragraph: 후순위
+          - cell "구현 가능하지만 뉴스 발견이라는 통이의 핵심 목적과 분산":
+            - paragraph: 구현 가능하지만 뉴스 발견이라는 통이의 핵심 목적과 분산
+    - heading "3. 독자 시나리오" [level=3]
+    - list:
+      - paragraph: “국민연금 개혁 어떻게 됐어?” → 질문 인덱스 매칭 → 관련 기사 3건 → 추가 검색.
+      - paragraph: “우리 동네 전세사기 소식은?” → 지역·주제어 추출 → 확인된 관련 기사 우선 표시 → 검색 범위 확장.
+      - paragraph: “손흥민 이적했어?” → 단정적 답변 없이 실제 기사 제목·날짜 제시 → 독자가 원문 확인.
+    - heading "4. Google 내장 검색 조건" [level=3]
+    - paragraph:
+      - text: 공식 Search Element의
+      - code: results-only
+      - text: ·
+      - code: execute
+      - text: 를 검증하되,
+      - generic: Google 결과를 자체 검색 결과인 것처럼 위장하는 방향에는 반대
+      - text: 해.
+    - paragraph: 340px 팝오버 안에서는 자체 기사 최대 3건을 우선 노출. Google 결과는 별도 구분 영역에 표시하고, 제공자 표기는 공식 설정과 약관을 준수해야 해.
+    - paragraph: 브랜딩 제거 가능 여부, 결과 영역의 크기·스크롤·레이아웃 지원, 실제 VISUAL NEWSIS 도메인 작동을 검증하기 전에는 채택 확정 불가. JSON API 신규 도입은 권하지 않아.
+    - heading "5. MAI 참고 범위" [level=3]
+    - paragraph:
+      - generic: "채택:"
+      - text: 자연어 질문, 추천 질문, 관련 기사 연결, 후속 탐색.
+    - paragraph:
+      - generic: "보류:"
+      - text: 생성형 해설·요약·개인화 브리핑·교육·퀴즈. 현재 데이터·모델·서버가 없어 구현하면 기능 과장이 될 수 있어.
+    - heading "6. UI 및 출시 기준" [level=3]
+    - list:
+      - paragraph: 340px 단일 질문창, 메뉴·대형 패널·자동 팝업 금지.
+      - paragraph:
+        - text: 배경
+        - code: rgba(255,255,255,.90)
+        - text: ","
+        - code: backdrop-filter:blur(3px)
+        - text: .
+      - paragraph:
+        - text: 글자·입력창·통이
+        - code: opacity:1
+        - text: 유지.
+      - paragraph:
+        - text: 원본 기사 위치 변화
+        - generic: 0px
+        - text: .
+      - paragraph:
+        - text: 하단 크레딧
+        - generic: 크리에이티브 디렉터 = 안재현
+        - text: 유지.
+      - paragraph: 실기사 링크 정확성, 빈 결과, 키보드·모바일 접근성 확인.
+    - paragraph:
+      - generic: "성공 기준:"
+      - text: 질문 후 관련 기사 발견까지 2회 이내 조작, 허위 기사 0건, 검색 제공자 오인 0건. 실사용 테스트에서 유용성 평가.
+    - heading "7. 최종 반대 의견" [level=3]
+    - paragraph:
+      - text: Google을 내부에서 작동시키는 것은 검토할 수 있지만
+      - generic: Google 검색을 뉴시스 자체 검색으로 오인시키는 것은 반대
+      - text: 야. 제공자 표기를 공식적으로 허용되는 범위에서 조정하는 것과 출처를 숨기는 것은 달라.
+    - paragraph: 현 단계에서는 A를 실질 효용으로 완성하고, B는 기술·약관·실도메인 검증을 통과할 때만 도입하자. C는 공식 협의 전 구현 대상으로 잡지 않는 게 맞아.
+    - paragraph:
+      - generic: 본 문서는 기획 판단이며 Google 내장 검색이나 뉴시스 공식 검색 연동이 구현됐다는 의미는 아니야.
+    - button "복사":
+    - button "응답 평가":
+    - button "소리 내어 읽기":
+    - button "공유":
+    - button "응답 다시 생성":
+    - button "추가 액션":
+    - heading "내가 한 말:" [level=4]
+    - generic: "Codex 이견·추가증거: A만최종안이면사용자가요구한뉴시스전체기사검색을비주얼수십건으로축소하므로반대. A는보완기능,최종전체기사목표는C공식내부검색연동,단기BSearchElement검증으로분리하는게맞습니다. 그리고공식설정의branding off는허용범위의자사UI이지그자체를위장으로보면안됩니다. 검색제공자사칭/가짜AI답변과공식브랜드비노출옵션은구분. 추가확인 developers.google.com/custom-search/docs/paid_element 는유료무광고SearchElement도신규고객종료라고명시(2026-01-30). 개요표Everyone/$5요금만보고현재무광고신규가능이라쓰면오류. 무료광고형만신규후보로남고실제광고양상/수집지연/도메인설정/표시조건은계정별미검증. pop-up금지약관과공식overlay지원문서충돌은승인판단보류,통이작은창은질문용,Google결과는같은사이트전용결과영역/페이지를검증권고. 이이견반박또는수용해400자내수정권고."
+    - button "메시지 복사":
+    - button "프롬프트 공유":
+    - button "메시지 편집":
+    - heading "ChatGPT 답변:" [level=4]
+    - paragraph:
+      - generic: Codex 이견을 수용해. 기존 A 단독 우선안은 전체 기사 탐색이라는 사용자 목표를 충분히 충족하지 못했어.
+    - paragraph:
+      - text: 수정 권고는
+      - generic: 단기 B 검증 + A 보완, 장기 C 공식 연동
+      - text: 이야.
+    - list:
+      - paragraph:
+        - generic: "A:"
+        - text: 편집자 질문 인덱스·비주얼 기사 추천.
+      - paragraph:
+        - generic: "B:"
+        - text: 무료 광고형 Search Element의 실도메인·광고·색인·표시조건 검증.
+      - paragraph:
+        - generic: "C:"
+        - text: 뉴시스 전체 기사 검색을 위한 공식 연동 협의.
+    - paragraph:
+      - text: 공식
+      - code: branding off
+      - text: 와 검색 제공자 사칭은 구분해야 해. 허용된 자사 UI를 위장으로 단정한 기존 표현은 철회해.
+    - paragraph:
+      - text: 공식 문서에서도 유료 무광고형 신규 가입 종료를 확인했어.
+      - button "Google for Developers":
+        - generic: Google for Developers
+      - text: 결과 전용 영역은 지원돼.
+      - button "Google for Developers":
+        - generic: Google for Developers
+    - paragraph:
+      - generic: "최종 조건:"
+      - text: 통이 340px 창은 질문 전용, 검색 결과는 별도 사이트 영역에서 검증. 광고·브랜딩·약관·모바일 표시 조건 통과 전 출고 보류. Google 색인을 뉴시스 전체 기사망과 동일시해서도 안 돼.
+    - button "복사":
+    - button "응답 평가":
+    - button "소리 내어 읽기":
+    - button "공유":
+    - button "응답 다시 생성":
+    - button "추가 액션":
+    - generic: ChatGPT는 실수할 수 있습니다. 워크스페이스 데이터는 모델 학습에 사용되지 않습니다.
+    - button "맨 아래로 스크롤":
+    - heading "최신 응답" [level=4]
+    - status
+    - button "파일 등 추가":
+    - textbox "ChatGPT에게 물어보세요":
+      - paragraph: ChatGPT에게 물어보세요
+    - button "ChatGPT 모델 선택":
+      - generic: 추론 수준
+      - generic: Instant
+    - button "음성 입력":
+    - button "음성 대화 시작":
+    - status
+- status
+- status: 응답이 완료되었습니다
+- status
+- status

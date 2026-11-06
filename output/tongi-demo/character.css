@@ -1,0 +1,26 @@
+/* Four image-generated poses, keeping the approved sketch's face and proportions. */
+.tongi-character{position:relative;width:260px;aspect-ratio:500/512;overflow:visible;margin-top:4px;margin-bottom:12px}
+.tongi-portrait{position:absolute;inset:0;transform-origin:50% 88%;animation:portrait-breathe 4s ease-in-out infinite;transition:transform .35s ease}
+.tongi-pose{position:absolute;inset:0;overflow:hidden;opacity:0;transform:scaleX(-1);transition:opacity .06s ease;pointer-events:none}
+.tongi-pose img{position:absolute;display:block;width:307.2%;max-width:none;height:auto;left:-40%;top:0;user-select:none;-webkit-user-drag:none}
+.tongi-pose-search img,.tongi-pose-sulk img{left:-176%}
+.tongi-pose-happy img,.tongi-pose-sulk img{top:-100%}
+.tongi-pose-normal{opacity:1}
+.tongi-panel[data-state=searching] .tongi-pose-normal,.tongi-panel[data-state=sulking] .tongi-pose-normal,.tongi-panel[data-state=petting] .tongi-pose-normal{opacity:0}
+.tongi-panel[data-state=searching] .tongi-pose-search,.tongi-panel[data-state=sulking] .tongi-pose-sulk,.tongi-panel[data-state=petting] .tongi-pose-happy{opacity:1}
+.tongi-panel[data-state=listening] .tongi-portrait{animation:none;transform:translateX(-5px) rotate(-8deg)}
+.tongi-panel[data-state=typing] .tongi-portrait{animation:none;transform:translateX(calc(-5px + var(--tg-look,0px))) rotate(-8deg)}
+.tongi-panel[data-state=scrolling] .tongi-portrait{animation:none;transform:rotate(var(--tg-scroll,4deg))}
+.tongi-panel[data-state=petting] .tongi-portrait{animation:portrait-happy .7s ease-in-out infinite}
+.tongi-panel[data-state=sulking] .tongi-portrait{animation:none;transform:rotate(4deg) translateY(3px)}
+.tongi-panel[data-state=found] .tongi-portrait,.tongi-panel[data-state=greeting] .tongi-portrait{animation:portrait-greeting .8s ease-in-out 2}
+.tongi-scan-glint{position:absolute;right:44%;top:24%;width:31%;height:2px;background:#c4e8ed;box-shadow:0 0 5px #50b2c7;opacity:0;pointer-events:none;border-radius:50%}
+.tongi-panel[data-state=searching] .tongi-scan-glint{opacity:.8;animation:portrait-scan 1.2s ease-in-out infinite alternate}
+@keyframes portrait-breathe{50%{transform:translateY(-3px)}}
+@keyframes portrait-happy{0%,100%{transform:rotate(var(--tg-pet-tilt,-3deg)) translateY(1px)}50%{transform:rotate(calc(0deg - var(--tg-pet-tilt,-3deg))) translateY(-2px)}}
+@keyframes portrait-greeting{0%,100%{transform:rotate(0)}50%{transform:rotate(-5deg) translateY(-4px)}}
+@keyframes portrait-scan{to{transform:translateY(14px);opacity:.25}}
+@media(max-width:760px){.tongi-character{width:204px;margin-bottom:10px}.tongi-character-area{grid-row:2;justify-self:end;width:216px;padding-top:40px}.tongi-copy{padding-bottom:7px}.tongi-panel[data-state=listening] .tongi-portrait{transform:translateX(-4px) rotate(4deg)}.tongi-panel[data-state=typing] .tongi-portrait{transform:translateX(calc(-4px + var(--tg-look,0px))) rotate(4deg)}}
+@media(prefers-reduced-motion:reduce){.tongi-portrait,.tongi-scan-glint{animation:none!important;transition:none!important}}
+.tongi-pose-back{transform:none}.tongi-pose-back img{left:-20%;top:0;width:140%;height:100%;object-fit:fill}
+.tongi-panel[data-state=turned] .tongi-pose-normal{opacity:0}.tongi-panel[data-state=turned] .tongi-pose-back{opacity:1}.tongi-panel[data-state=turned] .tongi-portrait{animation:none;transform:rotate(3deg)}

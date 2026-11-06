@@ -1,0 +1,16 @@
+const {execFileSync}=require('node:child_process');
+const fs=require('node:fs');
+const path=require('node:path');
+const root=path.resolve(__dirname,'../..');
+const git=process.platform==='win32'?'C:/Program Files/Git/cmd/git.exe':'git';
+let html=execFileSync(git,['show','origin/main:index.html'],{cwd:root,encoding:'utf8'});
+html=html.replace(/(src|href)="\.\//g,'$1="https://visual.newsis.com/');
+html=html.replace(/<title>[^<]*<\/title>/,'<title>통이 인터랙션 샘플 | VISUAL NEWSIS</title>');
+html=html.replace(/<meta name="robots"[^>]*>/,'<meta name="robots" content="noindex,nofollow">');
+html=html.replace("gtag('config', 'G-6BKMWE02W5');","if(location.hostname==='visual.newsis.com') gtag('config', 'G-6BKMWE02W5');");
+html=html.replace('</head>','<link rel="stylesheet" href="./character.css">\n<link rel="stylesheet" href="./compact.css">\n<link rel="stylesheet" href="./roam.css">\n<script defer src="./search-core.js"></script>\n<script defer src="./recommend-core.js"></script>\n<script defer src="./compact.js"></script>\n<script defer src="./roam.js"></script>\n</head>');
+const marker='<main class="vn-body" id="main">';
+if(!html.includes(marker))throw Error('Landing insertion point missing');
+html=html.replace('</body>',fs.readFileSync(path.join(__dirname,'compact.html'),'utf8')+'\n'+fs.readFileSync(path.join(__dirname,'roam.html'),'utf8')+'\n</body>');
+fs.writeFileSync(path.join(__dirname,'index.html'),html);
+console.log('Built local preview from origin/main; production files unchanged.');

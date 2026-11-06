@@ -1,0 +1,108 @@
+
+SOURCE origin/main:goodeasy/assets/landing-keyboard.js
+import {T,materials,makeStage} from './quality-kit.js?v=20261028-craft7';
+import {buildKeyboardHero} from './models/keyboard-hero.js?v=20261030-craft-release1';
+import {pressKeyboard,releaseKeyboard,stopKeyboard,setKeyboardAudioEnabled} from './keyboard-audio.js?v=20261028-uxaudio2';
+const canvas=document.getElementById('landing-keyboard-canvas'),input=document.getElementById('landing-typing'),status=document.getElementById('landing-keyboard-status');
+const owner='collection-keyboard',held=new Map();let stage,model,last='',timer=0,muted=false,lost=false,composing=false;
+function draw(){if(!model||lost)return;const key=[...held.values()].at(-1)||last;model.update({key,travel:held.size?4:0});stage.draw();canvas.dataset.ready='true';document.body.classList.add('keyboard-ready');canvas.dataset.pressedKey=held.size?key:'';}
+function down(id,key){if(held.has(id))return;held.set(id,key);last=key;draw();pressKeyboard(owner,id).then(result=>{canvas.dataset.audioState=result.state;if(result.state==='unavailable')status.textContent='소리를 켜지 못했습니다. 브라우저의 소리 설정을 확인해 주세요.';});}
+function up(id){if(!held.has(id))return;held.delete(id);releaseKeyboard(owner,id);draw();}
+function stop(){clearTimeout(timer);held.clear();stopKeyboard(owner);draw();}
+function tap(key){clearTimeout(timer);up('tap');down('tap',key);timer=setTimeout(()=>up('tap'),100);}
+const physical=e=>e.code.startsWith('Key')?e.code.slice(3):e.code.startsWith('Digit')?e.code.slice(5):e.key;
+input.addEventListener('keydown',e=>{if(e.repeat||e.ctrlKey||e.metaKey||e.altKey)return;if(e.key.length===1||['Backspace','Enter','Process'].includes(e.key)||e.isComposing||e.keyCode===229)down('physical:'+e.code,physical(e));});
+input.addEventListener('keyup',e=>up('physical:'+e.code));
+input.addEventListener('compositionstart',()=>{composing=true;});input.addEventListener('compositionend',()=>{composing=false;if(!held.size)tap(Array.from(input.value).at(-1)||' ');});
+input.addEventListener('input',e=>{if(!composing&&!held.size&&e.inputType!=='insertFromPaste')tap(Array.from(e.data||input.value).at(-1)||'Backspace');});
+input.addEventListener('blur',stop);
+document.getElementById('landing-clear').addEventListener('click',()=>{stop();input.value='';input.focus();});
+document.getElementById('landing-sound').addEventListener('click',e=>{muted=!muted;setKeyboardAudioEnabled(!muted);e.currentTarget.setAttribute('aria-pressed',String(!muted));e.currentTarget.textContent=muted?'스위치 소리 꺼짐':'스위치 소리 켜짐';status.textContent=muted?'소리를 껐습니다.':'소리가 납니다. 스피커를 켜거나 이어폰을 사용해 주세요.';});
+try{stage=makeStage(canvas);model=buildKeyboardHero(T,materials);stage.setModel(model,model.eye);draw();new ResizeObserver(draw).observe(canvas.parentElement);
+ const ray=new T.Raycaster(),point=new T.Vector2();
+ canvas.addEventListener('click',e=>{if(lost)return;const r=canvas.getBoundingClientRect();point.set((e.clientX-r.left)/r.width*2-1,-(e.clientY-r.top)/r.height*2+1);ray.setFromCamera(point,stage.camera);const hit=ray.intersectObject(model.group,true).find(h=>h.object.userData.action?.startsWith('key:'));if(!hit)return;const key=hit.object.userData.action.slice(4);input.value=(input.value+key).slice(-300);input.dispatchEvent(new Event('change',{bubbles:true}));tap(key);if(matchMedia('(pointer:fine)').matches)input.focus({preventScroll:true});});
+ canvas.addEventListener('webglcontextlost',e=>{e.preventDefault();lost=true;stop();status.textContent='3D 화면이 중단됐습니다. 입력칸에서는 계속 타이핑할 수 있습니다.';});
+ canvas.addEventListener('webglcontextrestored',()=>{lost=false;draw();});
+}catch(error){canvas.hidden=true;status.textContent='입력칸에서 타이핑하거나 아래 링크로 키보드 본편을 열어보세요.';console.error(error);}
+window.addEventListener('blur',stop);window.addEventListener('pagehide',stop);document.addEventListener('visibilitychange',()=>{if(document.hidden)stop();});
+
+SOURCE origin/main:goodeasy/assets/watch-experience.js
+const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
+// Seconds and charge are deliberately shortened for observation, not a calibrated watch.
+export function createWatchExperience({getState,setState,render=()=>{},announce=()=>{},wake=()=>{}}){
+ let paused=false;
+ const commit=state=>{setState(state);render();};
+ return {
+  wind(turns=1){const s=getState(),requested=clamp(Number(turns)||0,0,12.5);if(!requested)return;
+   const reserve=clamp(Number(s.reserve)||0,0,100),n=Math.min(requested,(100-reserve)/8);
+   if(!n){announce('태엽이 가득 감겼습니다. 더 감을 수 없습니다.');wake();return;}
+   paused=false;commit({...s,turns:(s.turns||0)+n,reserve:clamp(reserve+n*8,0,100),
+    visualTurns:s.visualTurns??s.turns??0,visualReserve:s.visualReserve??s.reserve??0,winding:true,freeAge:s.freeAge||0,regulated:s.regulated!==false});
+   announce('용두가 감기축을 돌리고, 태엽이 안쪽으로 감깁니다.');wake();
+  },
+  tick(seconds){if(paused)return false;const dt=clamp(Number(seconds)||0,0,.1),s=getState(),free=s.regulated===false;
+   const reserve=Math.max(0,(s.reserve||0)-dt*(free?22:.5)),speed=free?3+(s.reserve||0)*.32:1;
+   const step=Math.min(dt,(s.reserve||0)/(free?22:.5)),target=s.turns||0;
+   const visualTurns=(s.visualTurns??target)+Math.min(Math.max(0,target-(s.visualTurns??target)),dt*5);
+   const displayed=s.visualReserve??s.reserve??0,visualReserve=displayed+(reserve-displayed)*(1-Math.exp(-dt*9));
+   const winding=Math.abs(target-visualTurns)>.0001;
+   commit({...s,reserve,elapsed:(s.elapsed||0)+step*speed,visualTurns,visualReserve,winding,freeAge:free?(s.freeAge||0)+dt:0});
+   return reserve>0||winding||Math.abs(visualReserve-reserve)>.02;
+  },
+  regulate(mode){const s=getState(),regulated=mode!==false&&mode!=='free';paused=false;
+   commit({...s,regulated,freeAge:0});announce(regulated?'탈진기가 힘을 조금씩 풀어줍니다.':'팔렛을 빼면 빠르게 돌다가 태엽이 먼저 풀립니다.');wake();
+  },
+  reset(){paused=false;const s=getState();commit({...s,turns:0,reserve:0,elapsed:0,visualTurns:0,visualReserve:0,winding:false,regulated:true,freeAge:0});announce('태엽이 풀린 처음 상태입니다.');},
+  pause(){paused=true;},
+  resume(){paused=false;wake();}
+ };
+}
+
+SOURCE origin/main:goodeasy/assets/watch-observation-tour.js
+// A guided view of the same assembled movement, not a second mechanism.
+export const WATCH_STUDIES=[
+ {id:'power',label:'1 태엽통',title:'감긴 태엽이 바깥 통을 돌립니다.',copy:'태엽의 안쪽 끝은 감기축에, 바깥 끝은 태엽통에 걸려 있습니다. 통 둘레의 톱니가 옆의 작은 피니언을 밀어 돌립니다.',ids:['wheel-0','wheel-1'],eye:[1,9,3],beats:96000,pace:'태엽통 한 바퀴를 빠르게 보기 · 위쪽 덮개와 감기 바퀴 생략'},
+ {id:'train',label:'2 윤열',title:'큰 바퀴는 옆 축의 작은 피니언을 돌립니다.',copy:'각 축의 큰 바퀴와 작은 피니언은 함께 돕니다. 이 연결을 거칠수록 회전이 빨라집니다. 맞닿은 톱니를 따라가 보세요.',ids:['wheel-1','wheel-2','wheel-3'],eye:[1,10,2],beats:480,pace:'회전비를 빠르게 보기'},
+ {id:'escape',label:'3 탈진기',title:'계속 돌려는 바퀴를 두 보석이 번갈아 붙잡습니다.',copy:'밸런스의 롤러 핀이 포크를 움직여 잠금을 풉니다. 풀린 바퀴는 보석을 밀어 밸런스에 힘을 돌려줍니다.',ids:['wheel-4','pallet','balance','hairspring'],eye:[.2,10,1],beats:8,pace:'잠금 → 해제 → 힘 전달 · 느리게 보기'},
+ {id:'balance',label:'4 밸런스',title:'밸런스가 왕복하는 동안 헤어스프링이 감겼다 풀립니다.',copy:'스프링의 바깥 끝은 고정돼 있고 안쪽 끝은 밸런스 축을 따라 움직입니다. 밸런스가 돌아오며 다음 잠금을 풀어줍니다.',ids:['balance','hairspring','balance-bridge','pallet'],eye:[1,10,2],beats:8,pace:'밸런스 네 번 왕복 · 느리게 보기'}
+];
+export function watchStudySelection(model,study){const first=model.components.find(c=>c.id===study.ids[0]);return {...first,id:'study-'+study.id,title:study.title,description:study.copy,related:study.ids.slice(1),focusWith:study.ids.slice(1),eye:study.eye};}
+export function mountWatchStudies(panel,model,onChoose){
+ const box=document.createElement('div');box.className='watch-studies';box.setAttribute('aria-label','태엽에서 밸런스까지 따라보기');
+ const nav=document.createElement('div');nav.className='watch-study-tabs';nav.setAttribute('role','group');nav.setAttribute('aria-label','동력 전달 순서');
+ const text=document.createElement('div');text.className='watch-study-copy';text.setAttribute('aria-live','polite');text.innerHTML='<strong></strong><p></p><small></small>';
+ const buttons=WATCH_STUDIES.map(study=>{const b=document.createElement('button');b.type='button';b.textContent=study.label;b.setAttribute('aria-pressed','false');b.onclick=()=>choose(study);nav.append(b);return b;});box.append(nav,text);panel.querySelector('.anatomy-heading').after(box);
+ const cut=[model.windingRig.parts.ratchet,model.windingRig.parts.clickRing,model.windingRig.parts.keyedShoulder,model.windingRig.parts.arborScrew,model.components.find(c=>c.id==='barrel-lid').object].map(o=>({o,visible:o.visible}));
+ const svg=document.createElementNS('http://www.w3.org/2000/svg','svg');svg.classList.add('watch-study-callouts');svg.setAttribute('aria-hidden','true');panel.querySelector('.anatomy-viewport').append(svg);
+ const instruction=document.createElement('p');instruction.className='watch-contact-instruction';instruction.hidden=true;panel.querySelector('.anatomy-phase-label').before(instruction);
+ let active=null;function choose(study){active=study;panel.dataset.watchStudy=study.id;buttons.forEach((b,i)=>b.setAttribute('aria-pressed',String(WATCH_STUDIES[i]===study)));text.querySelector('strong').textContent=study.title;text.querySelector('p').textContent=study.copy;text.querySelector('small').textContent=study.pace;onChoose(study,watchStudySelection(model,study));}
+ return {choose,index:WATCH_STUDIES,get active(){return active;},clear(){active=null;instruction.hidden=true;panel.querySelector('.anatomy-phase-label').firstChild.textContent=model.phaseLabel+' ';delete panel.dataset.watchStudy;buttons.forEach(b=>b.setAttribute('aria-pressed','false'));text.querySelector('strong').textContent='전체 부품을 자유롭게 살펴보세요.';text.querySelector('p').textContent='다시 동력의 흐름을 보려면 위의 순서를 고르세요.';text.querySelector('small').textContent='';},renderLabels(T,camera,pose={}){svg.replaceChildren();svg.hidden=!active;if(!active)return;const canvas=panel.querySelector('canvas'),w=canvas.clientWidth,h=canvas.clientHeight;svg.setAttribute('viewBox',`0 0 ${w} ${h}`);const entries=active.id==='power'?[['wheel-0','태엽통',.24,-32,-35],['wheel-1','센터휠',.40,25,28]]:active.id==='train'?[['wheel-1','센터휠',.40,-25,25],['wheel-2','3번 휠',.47,0,-30],['wheel-3','4번 휠',.54,25,30]]:active.id==='escape'?[['balance','밸런스',.19,-30,-45],['pallet','팔렛 포크',0,10,35],['wheel-4','탈진바퀴',.61,10,-35]]:[['balance','밸런스',.19,-35,-40],['hairspring','헤어스프링',0,40,30]];const rig=model.escapementRig,state=rig.state;let contact=state.contactPoint;if(active.id==='escape'&&state.stage==='해제'){const g=rig.geometry,F=g.centers.pallet,P=g.pinPosition(state.balanceAngle),ca=Math.cos(state.forkAngle),sa=Math.sin(state.forkAngle);let best=Infinity;contact=null;for(const horn of g.horns)for(let i=0;i<horn.length;i++){const map=p=>[F[0]+ca*p[0]-sa*p[1],F[1]+sa*p[0]+ca*p[1]],a=map(horn[i]),b=map(horn[(i+1)%horn.length]),dx=b[0]-a[0],dy=b[1]-a[1],t=Math.max(0,Math.min(1,((P[0]-a[0])*dx+(P[1]-a[1])*dy)/(dx*dx+dy*dy))),q=[a[0]+dx*t,a[1]+dy*t],d=Math.hypot(P[0]-q[0],P[1]-q[1]);if(d<best){best=d;contact=q;}}}if(active.id==='escape'&&(pose.explode||0)<.025&&contact&&!['유격 이동','드롭'].includes(state.stage)){const point=model.escapementFrame.localToWorld(new T.Vector3(contact[0],.075,contact[1])).project(camera),x=(point.x+1)*w/2,y=(1-point.y)*h/2;for(const [radius,fill,stroke] of [[11,'none','#00b3be'],[4,'#00b3be','#d8ffff']]){const n=document.createElementNS(svg.namespaceURI,'circle');for(const [k,v]of Object.entries({cx:x,cy:y,r:radius,fill,stroke,'stroke-width':1.5}))n.setAttribute(k,v);svg.append(n);}}for(const [id,label,y,dx,dy] of entries){const object=model.components.find(c=>c.id===id).object,p=object.localToWorld(new T.Vector3(0,y,0)).project(camera),x=(p.x+1)*w/2,Y=(1-p.y)*h/2;if(Math.abs(p.x)>1||Math.abs(p.y)>1)continue;const tw=label.length*10+14,lx=Math.max(tw/2+8,Math.min(w-tw/2-8,x+dx)),ly=Math.max(72,Math.min(h-80,Y+dy));const make=(tag,attrs)=>{const n=document.createElementNS(svg.namespaceURI,tag);for(const [k,v]of Object.entries(attrs))n.setAttribute(k,v);svg.append(n);return n;};make('line',{x1:x,y1:Y,x2:lx,y2:ly,stroke:'#d9c292','stroke-width':1});make('circle',{cx:x,cy:Y,r:2,fill:'#d9c292'});make('rect',{x:lx-tw/2,y:ly-10,width:tw,height:21,rx:3,fill:'#142720',stroke:'#829988','stroke-width':.5});make('text',{x:lx,y:ly+4,fill:'#f0e9d9','font-size':10,'font-family':'sans-serif','text-anchor':'middle'}).textContent=label;}},restoreCuts(){for(const p of cut)p.o.visible=p.visible;},apply(){if(active?.id==='power')for(const p of cut)p.o.visible=false;},reading(state,explode=0){instruction.hidden=active?.id!=='escape';if(active?.id==='escape'){const explanations={'잠김':'루비가 탈진바퀴를 붙잡고 있습니다.','해제':'롤러 핀이 포크를 밀어 잠금을 풉니다.','유격 이동':'잠금이 풀렸습니다. 바퀴가 다음 접촉점으로 이동합니다.','충격 전달':'탈진바퀴가 팔렛을 밀어 밸런스에 힘을 돌려줍니다.','드롭':'치끝이 보석을 떠나 다음 잠금으로 넘어갑니다.','재잠김':'반대쪽 보석이 다음 이를 붙잡습니다.'},message=explode>.025?'부품을 펼친 상태입니다. 조립하면 실제 접촉을 볼 수 있습니다.':explanations[state.stage]||state.stage;if(instruction.textContent!==message)instruction.textContent=message;const el=text.querySelector('small'),value=active.pace+' · 현재: '+state.stage;if(el.textContent!==value)el.textContent=value;}}};
+}
+
+SOURCE origin/main:goodeasy/assets/inspect-controls.js
+import * as T from '../piano/vendor/three.module.min.js';
+import {wheelZoom,pinchZoom,zoomDistance,zoomPercent} from './anatomy-controls.js?v=20261027-detail1';
+// Camera controls change only the observation; mechanism/input state stays untouched.
+export function attachInspectControls(stage,canvas,{label='3D 모형',resetButton=null,onChange=null}={}){
+ if(canvas.dataset.inspectControls)return stage.inspectControls;
+ canvas.dataset.inspectControls='true';
+ if(!document.getElementById('goodeasy-inspect-css')){const link=document.createElement('link');link.id='goodeasy-inspect-css';link.rel='stylesheet';link.href=new URL('./inspect-controls.css?v=20261028-uxaudio2',import.meta.url).href;document.head.append(link);}
+ const tools=document.createElement('div');tools.className='inspect-controls';
+ tools.innerHTML='<label><input type="checkbox" checked>돌려서 보기</label><button type="button" class="inspect-zoom" aria-label="모형 축소"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 12h14"/></svg></button><output aria-label="확대 비율">100%</output><button type="button" class="inspect-zoom" aria-label="모형 확대"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 12h14M12 5v14"/></svg></button><button type="button">전체 보기</button>';
+ canvas.after(tools);const enabled=tools.querySelector('input'),buttons=tools.querySelectorAll('button'),output=tools.querySelector('output');
+ const nativeFit=stage.fit.bind(stage),pointers=new Map();let width=-1,height=-1,base=null,pivot=null,yaw=0,pitch=0,zoom=1,pinch=0,dragged=false,shieldUntil=0;
+ const up=new T.Vector3(0,1,0),right=new T.Vector3();
+ stage.fit=()=>{if(!nativeFit())return false;const r=canvas.getBoundingClientRect();if(!base||r.width!==width||r.height!==height){width=r.width;height=r.height;pivot=stage.target.clone();base=stage.camera.position.clone().sub(pivot);}
+ const offset=base.clone().applyAxisAngle(up,yaw);right.crossVectors(up,offset).normalize();offset.applyAxisAngle(right,pitch).multiplyScalar(zoom);stage.camera.position.copy(pivot).add(offset);stage.camera.lookAt(pivot);stage.camera.updateMatrixWorld();return true;};
+ function draw(){output.textContent=zoomPercent(zoom)+'%';canvas.dataset.inspectZoom=String(zoom);canvas.dataset.inspectYaw=String(yaw);canvas.dataset.inspectPitch=String(pitch);stage.draw();onChange?.();canvas.dispatchEvent(new Event('inspectchange'));}
+ function reset(){pivot=stage.target.clone();yaw=pitch=0;zoom=1;draw();}
+ function mode(){pointers.clear();pinch=0;canvas.style.touchAction=enabled.checked?'none':'pan-y';canvas.setAttribute('aria-label',label+(enabled.checked?' · 드래그 회전, 휠 또는 두 손가락 확대·축소':' · 회전 꺼짐'));canvas.dataset.inspectEnabled=String(enabled.checked);}
+ enabled.addEventListener('change',mode);buttons[0].onclick=()=>{zoom=zoomDistance(zoom,1.25);draw();};buttons[1].onclick=()=>{zoom=zoomDistance(zoom,.8);draw();};buttons[2].onclick=reset;resetButton?.addEventListener('click',reset);
+ const gap=()=>{const a=[...pointers.values()];return a.length>1?Math.hypot(a[0].x-a[1].x,a[0].y-a[1].y):0;};
+ canvas.addEventListener('wheel',e=>{if(!enabled.checked)return;e.preventDefault();zoom=wheelZoom(zoom,e.deltaY*(e.deltaMode===1?16:e.deltaMode===2?canvas.clientHeight:1));draw();},{passive:false});
+ canvas.addEventListener('pointerdown',e=>{if(!enabled.checked||e.button>0)return;if(!pointers.size)dragged=false;pointers.set(e.pointerId,{x:e.clientX,y:e.clientY,startX:e.clientX,startY:e.clientY});canvas.setPointerCapture(e.pointerId);pinch=gap();});
+ canvas.addEventListener('pointermove',e=>{const previous=pointers.get(e.pointerId);if(!previous)return;const dx=e.clientX-previous.x,dy=e.clientY-previous.y;pointers.set(e.pointerId,{...previous,x:e.clientX,y:e.clientY});if(Math.hypot(e.clientX-previous.startX,e.clientY-previous.startY)>6)dragged=true;if(pointers.size>1){dragged=true;const next=gap();zoom=pinchZoom(zoom,pinch,next);pinch=next;}else{yaw-=dx*.008;pitch=Math.max(-1.3,Math.min(1.3,pitch-dy*.008));}draw();});
+ const release=e=>{if(!pointers.has(e.pointerId))return;pointers.delete(e.pointerId);pinch=gap();if(dragged)shieldUntil=performance.now()+250;};for(const event of ['pointerup','pointercancel','lostpointercapture'])canvas.addEventListener(event,release);
+ window.addEventListener('blur',()=>{pointers.clear();pinch=0;});mode();draw();
+ return stage.inspectControls={reset,focus(point,factor=.55,angles={}){if(!base)stage.fit();pivot=point.clone();yaw=angles.yaw||0;pitch=angles.pitch||0;zoom=zoomDistance(1,factor);draw();},consumeClick:()=>performance.now()<shieldUntil,get enabled(){return enabled.checked;},get zoom(){return zoom;}};
+}

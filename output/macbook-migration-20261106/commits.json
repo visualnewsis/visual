@@ -1,0 +1,86 @@
+[
+  {
+    "branch": "codex/macbook-backup-20261106-windows",
+    "commit": "8ac440c1411d8ae6ba0db5e0ec0b3883cbb66bb1",
+    "files_saved": 1848,
+    "source_branch": "refs/heads/codex/deploy-main"
+  },
+  {
+    "branch": "codex/macbook-backup-20261106-calculator-upgrade-20261029",
+    "commit": "a72bb8b68b2224b389e016aa935ae2b93105e51a",
+    "files_saved": 0,
+    "source_branch": "refs/heads/codex/calculator-upgrade-20261029"
+  },
+  {
+    "branch": "codex/macbook-backup-20261106-dmz-detached",
+    "commit": "40e7fbac8abf58667a94ee2a0e580777c0617132",
+    "files_saved": 177,
+    "source_branch": "DETACHED"
+  },
+  {
+    "branch": "codex/macbook-backup-20261106-editshop-share-image",
+    "commit": "1d034c83bd19ddd148a3f14afdc4d242392dcce1",
+    "files_saved": 0,
+    "source_branch": "refs/heads/codex/editshop-share-image"
+  },
+  {
+    "branch": "codex/macbook-backup-20261106-newsmap-credit-footer",
+    "commit": "fbe3f5bb8db61155fd956f722214cb298d0c3cde",
+    "files_saved": 0,
+    "source_branch": "refs/heads/codex/newsmap-credit-footer"
+  },
+  {
+    "branch": "codex/macbook-backup-20261106-here-news-final",
+    "commit": "6dc29a7bdfd452f61b317507cc205140dd469fbc",
+    "files_saved": 3,
+    "source_branch": "refs/heads/codex/here-news-final"
+  },
+  {
+    "branch": "codex/macbook-backup-20261106-piano-finish",
+    "commit": "6ef9e396a9ba2dc8d44207cdb40c21e89fb741ff",
+    "files_saved": 4,
+    "source_branch": "refs/heads/codex/piano-finish"
+  },
+  {
+    "branch": "codex/macbook-backup-20261106-arcade-quality-20261025",
+    "commit": "d3944f38d44367fe2b247387900df0fb9317a15c",
+    "files_saved": 0,
+    "source_branch": "refs/heads/codex/arcade-quality-20261025"
+  },
+  {
+    "branch": "codex/macbook-backup-20261106-braille-100-018",
+    "commit": "ae43f1acdfdbcd0a26aca06c9ad48091a0701296",
+    "files_saved": 145,
+    "source_branch": "refs/heads/codex/braille-100-018"
+  },
+  {
+    "branch": "codex/macbook-backup-20261106-earth-dive-20261102",
+    "commit": "c3b37dfb67d7576a79b07d088258882e16405cbe",
+    "files_saved": 7,
+    "source_branch": "refs/heads/codex/earth-dive-20261102"
+  },
+  {
+    "branch": "codex/macbook-backup-20261106-editshop-copy-20261024",
+    "commit": "1136b767422d333e31012629dea1778c7634c875",
+    "files_saved": 0,
+    "source_branch": "refs/heads/codex/editshop-copy-20261024"
+  },
+  {
+    "branch": "codex/macbook-backup-20261106-landing-goodeasy-20261026",
+    "commit": "0315680e5ff54df1fb93990b37bb1b90654fb848",
+    "files_saved": 0,
+    "source_branch": "refs/heads/codex/landing-goodeasy-20261026"
+  },
+  {
+    "branch": "codex/macbook-backup-20261106-restore-editshop-dmz-20261104",
+    "commit": "05e9279daed222be4cdda9d6f2afa7c4cb7824b5",
+    "files_saved": 0,
+    "source_branch": "refs/heads/codex/restore-editshop-dmz-20261104"
+  },
+  {
+    "branch": "codex/macbook-backup-20261106-spai-battery-copy-20261105",
+    "commit": "8b78f23bdb1905d26c4f1780cb9c5da6008fdeae",
+    "files_saved": 0,
+    "source_branch": "refs/heads/codex/spai-battery-copy-20261105"
+  }
+]
