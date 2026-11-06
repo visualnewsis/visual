@@ -1,0 +1,14 @@
+{
+  "status": "PASS",
+  "url": "https://visual.newsis.com/newsmap/",
+  "verifiedAt": "2026-11-03T05:18:07Z",
+  "policy": "domestic-local-v2",
+  "method": "conservative-v4-domestic-local-v2-8629ae2d21a9",
+  "articles": 347,
+  "local": 39,
+  "metadataInternational": 0,
+  "excludedIds": 244,
+  "collectedAt": "2026-11-03T04:51:06+00:00",
+  "dataSha256": "263d601d931fae906ca825dcdcad1695ac293b01df11e1e5250dc44b6d44b416",
+  "sourceAssetsMatch": true
+}

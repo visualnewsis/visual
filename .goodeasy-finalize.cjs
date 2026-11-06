@@ -1,0 +1,10 @@
+const fs=require('fs'),path=require('path');const root=process.argv[2],base=path.join(root,'goodeasy');
+let js=fs.readFileSync('.goodeasy-lab.js','utf8');js=js.replace("state.distance===0?'목표 지점까지 감았습니다.':'줄을 감고 있습니다.'","state.distance===0?'목표 지점까지 감았습니다.':state.turns?'줄을 감고 있습니다.':'손잡이를 돌려보세요.'");
+fs.writeFileSync(path.join(base,'assets/lab.js'),js,'utf8');
+fs.appendFileSync(path.join(base,'assets/lab.css'),'\n.primary:hover,.primary:active{background:var(--accent);color:#10201e;filter:brightness(1.08)}\n','utf8');
+const p=path.join(base,'review/index.html');let html=fs.readFileSync(p,'utf8');
+html=html.replace('<h2>ChatGPT 1차 디자인 원본</h2>','<section><h2>재의뢰해 받은 시각 목표</h2><p>첫 시안의 단순 도형을 반려하고 다시 받은 이미지입니다. 기계 구조와 글자·버튼은 검증되지 않았습니다. 첫 체험에 재생 버튼을 두는 구성은 채택하지 않습니다.</p><a href="../design/visual-target-v2.png"><img style="width:100%;height:auto;margin:24px 0" src="../design/visual-target-v2.png" alt="여섯 편 PC·모바일 시각 목표 보드 · 생성 이미지이며 작동 UI 아님"></a></section><h2>ChatGPT 1차 디자인 원본</h2>');fs.writeFileSync(p,html,'utf8');
+fs.copyFileSync('.goodeasy-model.test.mjs',path.join(root,'goodeasy-model.test.mjs'));
+fs.copyFileSync('.goodeasy-check.py',path.join(base,'check.py'));
+fs.writeFileSync(path.join(base,'design/PROVENANCE.md'),'# 디자인 의뢰·회수 기록\n\n크리에이티브 디렉터 = 안재현.\n\n- ChatGPT 원본 대화: https://chatgpt.com/c/6adac6a0-350c-83ee-a7b4-0b56b50e9be4\n- 의뢰: 여섯 편 각각 PC·모바일 화면, 부품·조작계 시트, 상태·반응형·기구 명세.\n- v1: GOODEASY_02-07_design_package_v1.zip 다운로드 후 원본을 design/v1에 보관. SVG 18개·PNG 18개. 실행 코드는 참고용 원본이며 서비스에서 로드하지 않는다.\n- 검토: 단순 원형·패널 위주의 낚시 릴 시안을 반려. 모든 아이템을 같은 UI에 끼우지 말고 실제 재질의 고품질 화면을 요청.\n- v2: ChatGPT에서 생성된 여섯 편 PC·모바일 보드 원본을 다운로드, visual-target-v2.png로 보관. 그림 속 글자·부품·재생 버튼은 기계적/UX 검증 전이므로 그대로 구현하지 않는다.\n- 입력 개발본은 Codex가 별도로 작성한 벡터/JavaScript 개념 검증이며 이 생성 이미지를 배경으로 사용하지 않았다.\n- 공용 파일과 기존 shutter 원본은 수정하지 않았다. 영어판은 아직 없음.\n','utf8');
+console.log('Finalized prototype copy, contrast, design provenance and checks');

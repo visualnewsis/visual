@@ -1,0 +1,475 @@
+{
+  "cutWorldY": 0.309001,
+  "sectionSegmentCounts": {
+    "escape": 1548,
+    "rubies": [
+      46,
+      46
+    ],
+    "pin": 128,
+    "horns": [
+      18,
+      18
+    ]
+  },
+  "summary": {
+    "잠김 / 0": [
+      {
+        "samples": 91,
+        "penetrationCount": 91,
+        "contactCount": 91,
+        "minGap": 0,
+        "maxGap": 0,
+        "maxDepth": 0.037854387160770615,
+        "nearest": 0,
+        "deepest": 0.285
+      },
+      {
+        "samples": 91,
+        "penetrationCount": 91,
+        "contactCount": 91,
+        "minGap": 0,
+        "maxGap": 0,
+        "maxDepth": 0.005424057310002595,
+        "nearest": 0,
+        "deepest": 0.445
+      }
+    ],
+    "해제 / 0": [
+      {
+        "samples": 26,
+        "penetrationCount": 26,
+        "contactCount": 26,
+        "minGap": 0,
+        "maxGap": 0,
+        "maxDepth": 0.029146164249226822,
+        "nearest": 0.45,
+        "deepest": 0.45
+      },
+      {
+        "samples": 26,
+        "penetrationCount": 26,
+        "contactCount": 26,
+        "minGap": 0,
+        "maxGap": 0,
+        "maxDepth": 0.011091363255959615,
+        "nearest": 0.45,
+        "deepest": 0.575
+      }
+    ],
+    "충격 전달 / 0": [
+      {
+        "samples": 40,
+        "penetrationCount": 37,
+        "contactCount": 37,
+        "minGap": 0,
+        "maxGap": 0.001117536639033306,
+        "maxDepth": 0.03156355734817039,
+        "nearest": 0.58,
+        "deepest": 0.62
+      },
+      {
+        "samples": 40,
+        "penetrationCount": 40,
+        "contactCount": 40,
+        "minGap": 0,
+        "maxGap": 0,
+        "maxDepth": 0.042413434056143964,
+        "nearest": 0.58,
+        "deepest": 0.765
+      }
+    ],
+    "다시 잠김 / 0": [
+      {
+        "samples": 44,
+        "penetrationCount": 0,
+        "contactCount": 0,
+        "minGap": 0.0012556724299925416,
+        "maxGap": 0.0016952270364975056,
+        "maxDepth": 0,
+        "nearest": 0.78,
+        "deepest": null
+      },
+      {
+        "samples": 44,
+        "penetrationCount": 44,
+        "contactCount": 44,
+        "minGap": 0,
+        "maxGap": 0,
+        "maxDepth": 0.04270614955598688,
+        "nearest": 0.78,
+        "deepest": 0.845
+      }
+    ],
+    "잠김 / 1": [
+      {
+        "samples": 91,
+        "penetrationCount": 28,
+        "contactCount": 28,
+        "minGap": 0,
+        "maxGap": 0.0016953531063356177,
+        "maxDepth": 0.008611906536559374,
+        "nearest": 1.315,
+        "deepest": 1.45
+      },
+      {
+        "samples": 91,
+        "penetrationCount": 91,
+        "contactCount": 91,
+        "minGap": 0,
+        "maxGap": 0,
+        "maxDepth": 0.04270614955598688,
+        "nearest": 1,
+        "deepest": 1.155
+      }
+    ],
+    "해제 / 1": [
+      {
+        "samples": 25,
+        "penetrationCount": 25,
+        "contactCount": 25,
+        "minGap": 0,
+        "maxGap": 0,
+        "maxDepth": 0.012926495578560994,
+        "nearest": 1.455,
+        "deepest": 1.575
+      },
+      {
+        "samples": 25,
+        "penetrationCount": 25,
+        "contactCount": 25,
+        "minGap": 0,
+        "maxGap": 0,
+        "maxDepth": 0.03254806519699811,
+        "nearest": 1.455,
+        "deepest": 1.575
+      }
+    ],
+    "충격 전달 / 1": [
+      {
+        "samples": 40,
+        "penetrationCount": 40,
+        "contactCount": 40,
+        "minGap": 0,
+        "maxGap": 0,
+        "maxDepth": 0.037521109914113,
+        "nearest": 1.58,
+        "deepest": 1.775
+      },
+      {
+        "samples": 40,
+        "penetrationCount": 40,
+        "contactCount": 40,
+        "minGap": 0,
+        "maxGap": 0,
+        "maxDepth": 0.034000852153265246,
+        "nearest": 1.58,
+        "deepest": 1.64
+      }
+    ],
+    "다시 잠김 / 1": [
+      {
+        "samples": 44,
+        "penetrationCount": 44,
+        "contactCount": 44,
+        "minGap": 0,
+        "maxGap": 0,
+        "maxDepth": 0.03760643304419613,
+        "nearest": 1.78,
+        "deepest": 1.78
+      },
+      {
+        "samples": 44,
+        "penetrationCount": 44,
+        "contactCount": 44,
+        "minGap": 0,
+        "maxGap": 0,
+        "maxDepth": 0.0023598151478498725,
+        "nearest": 1.78,
+        "deepest": 1.78
+      }
+    ]
+  },
+  "pinSummary": {
+    "minGap": 0.005285411297958648,
+    "maxGap": 0.04632975947912015,
+    "maxDepth": 0,
+    "contactCount": 0,
+    "penetrationCount": 0,
+    "nearest": 1
+  },
+  "rows": [
+    {
+      "phase": 0,
+      "stage": "잠김",
+      "side": 0,
+      "ruby": 0,
+      "depth": 0.03744387461829455,
+      "gap": 0
+    },
+    {
+      "phase": 0,
+      "stage": "잠김",
+      "side": 0,
+      "ruby": 1,
+      "depth": 0.0022236469116959103,
+      "gap": 0
+    },
+    {
+      "phase": 0.25,
+      "stage": "잠김",
+      "side": 0,
+      "ruby": 0,
+      "depth": 0.037694120812993795,
+      "gap": 0
+    },
+    {
+      "phase": 0.25,
+      "stage": "잠김",
+      "side": 0,
+      "ruby": 1,
+      "depth": 0.0024340629497835195,
+      "gap": 0
+    },
+    {
+      "phase": 0.45,
+      "stage": "해제",
+      "side": 0,
+      "ruby": 0,
+      "depth": 0.029146164249226822,
+      "gap": 0
+    },
+    {
+      "phase": 0.45,
+      "stage": "해제",
+      "side": 0,
+      "ruby": 1,
+      "depth": 0.005624359279759375,
+      "gap": 0
+    },
+    {
+      "phase": 0.5,
+      "stage": "해제",
+      "side": 0,
+      "ruby": 0,
+      "depth": 0.01918147339250163,
+      "gap": 0
+    },
+    {
+      "phase": 0.5,
+      "stage": "해제",
+      "side": 0,
+      "ruby": 1,
+      "depth": 0.0030778243037879634,
+      "gap": 0
+    },
+    {
+      "phase": 0.58,
+      "stage": "충격 전달",
+      "side": 0,
+      "ruby": 0,
+      "depth": 0.02733663660353407,
+      "gap": 0
+    },
+    {
+      "phase": 0.58,
+      "stage": "충격 전달",
+      "side": 0,
+      "ruby": 1,
+      "depth": 0.011595400294330118,
+      "gap": 0
+    },
+    {
+      "phase": 0.65,
+      "stage": "충격 전달",
+      "side": 0,
+      "ruby": 0,
+      "depth": 0.03086513327321948,
+      "gap": 0
+    },
+    {
+      "phase": 0.65,
+      "stage": "충격 전달",
+      "side": 0,
+      "ruby": 1,
+      "depth": 0.030261570216791905,
+      "gap": 0
+    },
+    {
+      "phase": 0.78,
+      "stage": "다시 잠김",
+      "side": 0,
+      "ruby": 0,
+      "depth": 0,
+      "gap": 0.0012556724299925416
+    },
+    {
+      "phase": 0.78,
+      "stage": "다시 잠김",
+      "side": 0,
+      "ruby": 1,
+      "depth": 0.042409121250316685,
+      "gap": 0
+    },
+    {
+      "phase": 0.9,
+      "stage": "다시 잠김",
+      "side": 0,
+      "ruby": 0,
+      "depth": 0,
+      "gap": 0.0016386524977790862
+    },
+    {
+      "phase": 0.9,
+      "stage": "다시 잠김",
+      "side": 0,
+      "ruby": 1,
+      "depth": 0.042646449359198195,
+      "gap": 0
+    },
+    {
+      "phase": 1,
+      "stage": "잠김",
+      "side": 1,
+      "ruby": 0,
+      "depth": 0,
+      "gap": 0.0016953531063356177
+    },
+    {
+      "phase": 1,
+      "stage": "잠김",
+      "side": 1,
+      "ruby": 1,
+      "depth": 0.04261405918905948,
+      "gap": 0
+    },
+    {
+      "phase": 1.25,
+      "stage": "잠김",
+      "side": 1,
+      "ruby": 0,
+      "depth": 0,
+      "gap": 0.0010170759946054773
+    },
+    {
+      "phase": 1.25,
+      "stage": "잠김",
+      "side": 1,
+      "ruby": 1,
+      "depth": 0.04214438550313738,
+      "gap": 0
+    },
+    {
+      "phase": 1.45,
+      "stage": "잠김",
+      "side": 1,
+      "ruby": 0,
+      "depth": 0.008611906536559374,
+      "gap": 0
+    },
+    {
+      "phase": 1.45,
+      "stage": "잠김",
+      "side": 1,
+      "ruby": 1,
+      "depth": 0.032751838178170754,
+      "gap": 0
+    },
+    {
+      "phase": 1.5,
+      "stage": "해제",
+      "side": 1,
+      "ruby": 0,
+      "depth": 0.01123133490630587,
+      "gap": 0
+    },
+    {
+      "phase": 1.5,
+      "stage": "해제",
+      "side": 1,
+      "ruby": 1,
+      "depth": 0.029836077646136307,
+      "gap": 0
+    },
+    {
+      "phase": 1.58,
+      "stage": "충격 전달",
+      "side": 1,
+      "ruby": 0,
+      "depth": 0.013371536338868553,
+      "gap": 0
+    },
+    {
+      "phase": 1.58,
+      "stage": "충격 전달",
+      "side": 1,
+      "ruby": 1,
+      "depth": 0.032724926284913025,
+      "gap": 0
+    },
+    {
+      "phase": 1.65,
+      "stage": "충격 전달",
+      "side": 1,
+      "ruby": 0,
+      "depth": 0.018417809646203355,
+      "gap": 0
+    },
+    {
+      "phase": 1.65,
+      "stage": "충격 전달",
+      "side": 1,
+      "ruby": 1,
+      "depth": 0.033390594916559935,
+      "gap": 0
+    },
+    {
+      "phase": 1.78,
+      "stage": "다시 잠김",
+      "side": 1,
+      "ruby": 0,
+      "depth": 0.03760643304419613,
+      "gap": 0
+    },
+    {
+      "phase": 1.78,
+      "stage": "다시 잠김",
+      "side": 1,
+      "ruby": 1,
+      "depth": 0.0023598151478498725,
+      "gap": 0
+    },
+    {
+      "phase": 1.9,
+      "stage": "다시 잠김",
+      "side": 1,
+      "ruby": 0,
+      "depth": 0.03746491386740383,
+      "gap": 0
+    },
+    {
+      "phase": 1.9,
+      "stage": "다시 잠김",
+      "side": 1,
+      "ruby": 1,
+      "depth": 0.002241164314670085,
+      "gap": 0
+    },
+    {
+      "phase": 2,
+      "stage": "잠김",
+      "side": 0,
+      "ruby": 0,
+      "depth": 0.037443882497244056,
+      "gap": 0
+    },
+    {
+      "phase": 2,
+      "stage": "잠김",
+      "side": 0,
+      "ruby": 1,
+      "depth": 0.0022236545222780475,
+      "gap": 0
+    }
+  ]
+}

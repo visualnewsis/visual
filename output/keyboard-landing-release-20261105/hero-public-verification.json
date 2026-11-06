@@ -1,0 +1,20 @@
+{
+  "index.html": {
+    "status": 200,
+    "contentType": "text/html",
+    "matchesCommit": true,
+    "sha256": "78f3439cc25fe30ee83cd7af5fc39599f0670a1817a6a6cdd9f5a83c1dacdefb"
+  },
+  "assets/landing-keyboard.js": {
+    "status": 200,
+    "contentType": "application/javascript",
+    "matchesCommit": true,
+    "sha256": "77424b406d72ae76546e4fcf6a15d48c2845888c84f87310beb0ac2af31361d2"
+  },
+  "assets/landing-keyboard.css": {
+    "status": 200,
+    "contentType": "text/css",
+    "matchesCommit": true,
+    "sha256": "21a6e77ffe73089fd1ef66a9211aded9846820130bd0837d6bd694582f03c4cd"
+  }
+}

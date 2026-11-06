@@ -1,0 +1,8 @@
+랜딩 상단 대표 체험 수정: 144e73e299cf6c31c7a9995328a76b4464579cc7
+이전 4120a15e 배포는 키보드 카드만 추가했고 상단 축음기 체험을 교체하지 못했다. 이 수정은 실제 상단 체험도 키보드로 교체한다.
+변경 파일: goodeasy/index.html, assets/landing-keyboard.js, assets/landing-keyboard.css.
+본편의 buildKeyboardHero 모델·makeStage 렌더러·keyboard-audio를 재사용. 타이핑, 화면 키캡 클릭, 음소거, 지우기, blur시 해제. 파헤쳐보기는 keyboard/#opening-quote로 연결.
+GPT 실제 첨부 화면 검수: 즉시 출고를 막는 시각결함 발견하지 못함. 최상단에서 제목 잘림 확인 요구 → Codex scrollY=0, 제목 top219로 정상확인.
+Claude 실제 JS 정적검수: Windows IME 첫 Process 입력의 소리/키 반응 누락 지적 → Process/keyCode229 조건 반영. 코드 방향 재검수에서 이견 없음 답변. 실기기 검증을 수행한 것은 아님.
+Codex: 로컬13개경로체크PASS, JS구문PASS, 타이핑 test→입력 및 audioState=running, canvas ready=true, 키캡실제클릭→X 입력+running, console오류0. 초기390px 모바일 화면 확인. 최신 실물 iPhone/Android기기 미검증.
+실제 검수 원문은 hero-gpt-review.txt, hero-claude-review.txt.

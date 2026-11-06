@@ -1,0 +1,66 @@
+굳이구지 03 기타 — 편집·검증 메모 / 2026-10-26
+이 파일의 출처 링크와 메모는 포털 송고 본문에 넣지 않는다.
+
+1. 제목과 편수
+기타 줄을 튕기면 소리는 어떻게 날까 [굳이구지]
+최신 편성: 01 피아노 / 02 카메라 / 03 기타. 기타는 아직 개발본이며 이번 작업은 원고 선작성이다.
+
+2. 첫 사진 — 실사
+파일: 02_대표사진_실사_무문구.jpg
+출처: SHVETS production / Pexels
+실제 확인한 사진 페이지:
+https://www.pexels.com/photo/person-playing-brown-acoustic-guitar-8929545/
+사진 페이지에 표시된 촬영일 2021-06-13, 게시일 2021-07-26.
+다운로드한 공식 배포 JPG 주소:
+https://images.pexels.com/photos/8929545/pexels-photo-8929545.jpeg?auto=compress&dpr=1&h=750&w=1260
+다운로드본 1125×750px를 5:3 가로형 1125×675px로 크롭했다. 문구 합성·AI 가공 없음. 원래 비율 배포본은 실사_다운로드원본.jpg로 별도 보관. 공식 페이지의 최대 원본 6000×4000을 받았다고 표시하지 않는다.
+Pexels 공식 라이선스:
+https://www.pexels.com/license/
+상업적 이용 공식 안내:
+https://help.pexels.com/hc/en-us/articles/360042295214-Can-I-use-the-photos-and-videos-for-a-commercial-project
+일반 자료사진으로 사용한다. 사진 속 인물이 세고비아이거나 뉴시스를 추천·후원하는 것처럼 표현하지 않는다. 스톡 상품으로 재배포하지 않는다.
+캡션:
+기타의 줄을 짚는 모습. 같은 줄도 짚는 위치에 따라 진동하는 길이가 달라진다. (사진=SHVETS production/Pexels)
+
+3. 두 번째 사진 — AI 그래픽
+파일: 04_본문사진_AI_무문구.jpg
+이번 포털 원고를 위해 GPT에 의뢰한 독립 무문구 그래픽이다. 기존 본편 히어로의 실제 캡처나 이전부터 존재한 원본이라고 설명하지 않는다. 실제 제조사 제품 사진·실측 도면도 아니다.
+캡션:
+기타의 현과 몸통을 표현한 이미지로, 실제 악기의 구조와는 차이가 있다. 해당 이미지는 기사의 이해를 돕기 위해 AI 생성 후 가공 및 편집함. [그래픽=뉴시스]
+
+4. 도입 인용
+“기타는 작은 오케스트라다.” — 안드레스 세고비아
+확인한 1차 취재 기사:
+The Washington Post / Joseph McLellan / Andres Segovia
+https://www.washingtonpost.com/archive/lifestyle/1980/03/02/andres-segovia/df4b8cef-6e39-42c8-9dc2-ab1a5f48ac6e/
+기사에 세고비아가 기타를 “a small orchestra”에 비유했다고 직접 인용되어 있다. 한국어는 이 표현에 주어를 보완한 부분 번역이다. 영문 완전 문장이 “The guitar is a small orchestra”라고 실렸다고 주장하지 않는다. 국내 표준 번역문이나 직접 취재한 발언으로 표시하지 않는다.
+기사 페이지 표시는 March 1, 1980, URL 경로는 1980/03/02로 날짜가 달라 원고 본문에는 날짜를 넣지 않았다.
+보조 확인(후대의 인용):
+https://clevelandclassical.com/guitar-society-with-andrea-caballero-spanish-music-mental-strategies/
+세고비아의 클래식 기타 발언을 도입에 쓰되, 그가 본편 속 스틸 스트링 기타 모형을 설명하거나 추천한 것으로 연결하지 않는다.
+
+5. 작동 원리 확인
+현→브리지→상판, 몸통과 공기:
+https://www.yamaha.com/en/musical_instrument_guide/acoustic_guitar/mechanism/
+현 길이·장력·프렛과 음높이:
+https://www.yamaha.com/en/musical_instrument_guide/acoustic_guitar/mechanism/mechanism003.html
+현의 정상파·배음:
+https://openstax.org/books/university-physics-volume-1/pages/16-6-standing-waves-and-resonance
+단순 현의 기본 진동수는 f = 1/(2L) × √(T/μ). L을 절반으로 줄이고 T와 μ를 고정하면 진동수는 두 배다. 실제 기타에서 누를 때 생기는 장력 변화·강성 등은 비교 모형에서 생략한다.
+
+6. 본편 기능 대조
+goodeasy/guitar/index.html: 여섯 줄, 키보드 숫자 1~6, 음 기록, 현·브리지·몸통 관찰, 길이·장력·배음·몸통 열기 실험.
+goodeasy/assets/music.js: MIDI 기반 합성음, lastRecord에 연주 음 저장.
+goodeasy/assets/guitar-vibration.js: 현 양 끝 고정, 개별 감쇠 진동. 관찰용 확대·감속.
+본편의 현 진동 회귀 검사 통과는 앞선 수정 작업에서 확인했다. 이번 원고 작성만으로 실제 휴대전화 검증을 새로 완료했다고 쓰지 않는다.
+
+7. 하단 링크
+각 편 주소를 쓰고 ◆ 안내 문장과 실제 URL을 하나의 a 태그로 감싼 고정 양식을 적용한다.
+https://visual.newsis.com/goodeasy/guitar/
+원고 준비 시 HTTP 200과 개발본 noindex 상태를 확인했다. 랜딩 공개·검색 허용·예약 발행은 이번 작업에서 변경하지 않았다. 정식 출고 직전 최신 기능과 공개 상태를 다시 확인한다.
+
+8. 납품 검사
+두 납품 이미지 모두 JPG. 실사 1125×675px(5:3), AI 1536×1024px(3:2). 무문구·무로고 여부를 시각 확인했다. 새 AI 이미지는 조립된 기타로 제작했고 정밀 설계도라고 설명하지 않는다. 원고에는 출처 URL·내부 검수 메모를 섞지 않았다.
+정식 출고 준비 시 기타 본편 첫 체험 다음의 도입 인용도 이번 원고와 맞춰야 한다. 이번 선작성 요청에서는 사이트 파일·랜딩 공개 상태를 수정하지 않았다.
+
+추가 검수: 기타 현 진동은 첫 RAF 시각이 입력 시각보다 앞설 때 종료되던 오류를 수정했다. 고정점·독립 진동·첫 프레임 경합·1초 이후 왕복·정확한 복귀 검사와 PC/390px viewport 확인을 통과했다. 진동 시간 3.6초, 움직임 확대·감속 표기를 유지한다.

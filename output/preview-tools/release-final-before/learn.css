@@ -1,0 +1,58 @@
+.learn-wrap{max-width:800px}.learn-opening{padding:50px 0 65px}.back-to-story{display:inline-block;font-size:13px;margin-bottom:38px}.learn-opening .section-label{display:block}.learn-opening h1{font-size:clamp(34px,5vw,56px);padding:0 0 25px}.learn-opening .hero-byline{font-size:12.5px;color:var(--muted);margin-bottom:30px}.learn-intro{font-size:16px;line-height:2}.dot-lesson{border-top:1px solid var(--line);padding-top:40px}.dot-lesson h2{font-size:30px;margin-bottom:20px}.dot-lesson>p{font-size:16px;line-height:1.9}.dot-exploration{display:grid;grid-template-columns:180px 1fr;gap:38px;align-items:center;margin:35px 0}.learn-six{display:grid;grid-template-columns:repeat(2,58px);gap:15px;justify-content:center}.learn-six>span,.learn-six>button{display:grid;place-items:center;width:58px;height:58px;border:1px solid #89947e;border-radius:50%;background:transparent;font-size:15px}.learn-six>button{cursor:pointer;border:2px solid var(--green)}.learn-six>.fixed-raised,.learn-six>button[aria-pressed="true"]{background:var(--green);color:white}.dot-reading .section-label{display:block}.dot-reading>#dot-letter{font:500 58px/1.6 var(--serif)}#dot-letter>span{font-family:'Segoe UI Symbol',sans-serif;font-size:45px;margin-left:12px}#dot-description{font-size:14px;line-height:1.9}.learn-note{font-size:13px!important;line-height:1.95!important;color:var(--muted)}.learn-source{display:inline-block;font-size:12px;margin-top:18px}.learn-wrap .greeting-lesson{margin-top:55px;padding-top:40px}.cell-inspector{padding:28px;margin-top:18px;border:1px solid var(--line)}.cell-inspector h3{font:500 23px/1.7 var(--serif);margin-bottom:14px}.cell-inspector .braille-cell{grid-template-columns:repeat(2,13px);grid-auto-rows:13px;gap:10px;padding:10px}.cell-inspector .braille-dots{margin-block:22px}#inspect-description{font-size:14px;line-height:1.9;margin-bottom:15px}.greeting-result .braille-cell{border:1px solid transparent;min-width:44px;min-height:52px;background:transparent;cursor:pointer;justify-content:center;align-content:center}.greeting-result .braille-cell[aria-pressed="true"]{border-color:var(--green);background:#e4eadf}.learn-outro{margin:45px 0 65px;border-top:1px solid var(--line);padding-top:35px}.learn-outro>p:first-child{font:400 23px/1.8 var(--serif)}.learn-outro>a{display:inline-block;font-size:14px;margin-block:25px}.learn-outro .learn-note{max-width:620px}@media(max-width:599px){.learn-opening{padding:30px 0 45px}.learn-intro{font-size:15px}.learn-intro br{display:none}.dot-exploration{grid-template-columns:1fr;gap:25px}.dot-reading{text-align:center}.learn-wrap .greeting-lesson{margin-top:40px}.cell-inspector{padding:22px}.learn-six{gap:14px}.learn-outro>p:first-child{font-size:22px}}
+
+/* GPT design: one sheet, two faces. No simulated tactile or 3D animation. */
+.learn-wrap{max-width:840px}
+.learn-opening{padding-block:45px 55px}
+.learn-opening h1{font-size:clamp(36px,4.4vw,56px);line-height:1.45}
+.learn-intro{max-width:640px;font-size:17px;line-height:1.9}
+.dot-lesson>p{max-width:700px}
+.slate-layout{display:grid;grid-template-columns:minmax(0,1.65fr) minmax(0,1fr);gap:36px;align-items:center;margin:34px 0}
+.slate-demonstration{min-width:0}
+.slate-paper{padding:26px 28px;background:#fffdf8;border:1px solid #c7cbbf;box-shadow:0 5px 16px #20241f08;min-height:382px}
+.paper-heading{display:flex;align-items:center;justify-content:space-between;gap:15px;font-size:15px;line-height:1.8}
+.paper-heading>strong{font-weight:600;color:#276b5e}
+.paper-heading>span{font-size:12px;color:#65685f}
+.slate-direction{font-size:13px;line-height:1.8;color:#4d594a;margin-top:12px}
+.slate-paper .learn-six{margin:26px 0 22px;grid-template-columns:repeat(2,58px);grid-template-rows:repeat(3,58px);gap:16px}
+.slate-paper .learn-six>[hidden]{display:none!important}
+.slate-paper .learn-six>button,.slate-paper .learn-six>span{width:58px;height:58px;font-size:14px}
+.slate-paper .learn-six>button{background:#fffdf8;border:2px solid #276b5e}
+.slate-paper[data-face="write"] .learn-six>.fixed-raised,.slate-paper[data-face="write"] .learn-six>button[aria-pressed="true"]{background:#dce5d8;color:#20241f;box-shadow:inset 2px 3px 5px #40573f55,inset -2px -2px 4px #ffffff}
+.slate-paper[data-face="read"] .learn-six>.fixed-raised{background:#276b5e;color:#fff;box-shadow:2px 3px 4px #20241f35,inset 0 1px 0 #77a696}
+.slate-surface{font-size:13px;line-height:1.8;color:#4d594a;min-height:47px}
+.flip-paper{display:flex;align-items:center;justify-content:space-between;gap:15px;width:100%;min-height:48px;padding:12px 17px;background:#276b5e;border:1px solid #276b5e;color:white;font-size:14px;cursor:pointer;margin-top:16px}
+.flip-paper[hidden]{display:none!important}
+.flip-paper>span{font-size:21px;line-height:1}
+.dot-reading{min-width:0}
+.dot-reading .section-label{margin-bottom:15px;font-size:11px}
+.dot-reading>#dot-letter{font-size:58px;line-height:1.5}
+#dot-description{margin-top:10px;font-size:15px}
+.slate-instruction{margin-top:24px;font-size:15px;line-height:1.9}
+.slate-number-note{margin-top:20px;font-size:13px;line-height:1.9;color:#65685f}
+.dot-lesson>.learn-note+.learn-note{margin-top:13px}
+.learn-sources{display:flex;gap:12px 25px;flex-wrap:wrap}
+.learn-wrap .greeting-lesson{max-width:none;margin-top:48px;border-color:var(--line)}
+.learn-wrap .greeting-lesson h3{font-size:30px}
+.learn-wrap .greeting-result{background:transparent;border:0;border-block:1px solid var(--line);padding:26px 0}
+.learn-wrap .cell-inspector{background:#eeefe6;border:0;padding:27px 30px}
+@media(max-width:699px){.learn-opening{padding-block:30px 42px}.learn-opening h1{font-size:34px;line-height:1.5}.learn-intro{font-size:16px}.slate-layout{display:block;margin-block:27px}.slate-demonstration{max-width:560px;margin-inline:auto}.slate-paper{padding:22px 24px;min-height:347px}.slate-paper .learn-six{grid-template-columns:repeat(2,48px);grid-template-rows:repeat(3,48px);gap:12px;margin-block:25px 22px}.slate-paper .learn-six>button,.slate-paper .learn-six>span{width:48px;height:48px}.dot-reading{text-align:left;margin-top:30px}.dot-reading>#dot-letter{font-size:46px}.slate-number-note{font-size:14px}.slate-instruction{margin-top:15px}.learn-wrap .greeting-lesson h3{font-size:27px}.learn-wrap .cell-inspector{padding:24px}.learn-outro{margin-bottom:45px}}
+.slate-paper [data-dot="1"]{grid-row:1;grid-column:2}
+.slate-paper[data-face="read"] [data-dot="1"]{grid-column:1}
+.slate-paper [data-dot="2"]{grid-row:2;grid-column:2}
+.slate-paper[data-face="read"] [data-dot="2"]{grid-column:1}
+.slate-paper [data-dot="3"]{grid-row:3;grid-column:2}
+.slate-paper[data-face="read"] [data-dot="3"]{grid-column:1}
+.slate-paper [data-dot="4"]{grid-row:1;grid-column:1}
+.slate-paper[data-face="read"] [data-dot="4"]{grid-column:2}
+.slate-paper [data-dot="5"]{grid-row:2;grid-column:1}
+.slate-paper[data-face="read"] [data-dot="5"]{grid-column:2}
+.slate-paper [data-dot="6"]{grid-row:3;grid-column:1}
+.slate-paper[data-face="read"] [data-dot="6"]{grid-column:2}
+
+.park-anecdote{display:grid;grid-template-columns:1fr 1.5fr;gap:18px 32px;margin-top:38px;padding:26px 28px;background:#eeefe6;border-left:2px solid #819a87}
+.park-anecdote>h3{grid-column:1/-1;font-size:12px;font-weight:600;line-height:1.8;color:#276b5e}
+.park-anecdote blockquote{margin:0;font:400 23px/1.85 var(--serif);letter-spacing:-.04em}
+.anecdote-context>p{font-size:14px;line-height:1.95}
+.anecdote-context>a{display:inline-block;font-size:11px;line-height:1.8;margin-top:12px;color:#4d594a}
+.anecdote-context .anecdote-reflection{margin-top:20px;font-size:16px;line-height:1.9}
+@media(max-width:699px){.park-anecdote{display:block;padding:23px 24px;margin-top:30px}.park-anecdote>h3{margin-bottom:15px}.park-anecdote blockquote{font-size:22px;margin-bottom:20px}.anecdote-context>p{font-size:14px}}

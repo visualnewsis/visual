@@ -1,0 +1,294 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>VISUAL NEWSIS 작업자 인계서</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: one reading column, left section rail on wide screens; code blocks scroll on their own */
+:root{
+  --bg:#f6f8f8; --paper:#ffffff; --ink:#151a1c; --muted:#5b676b; --line:#dde4e5;
+  --mint:#00a9ba; --mint-ink:#007f8c; --code-bg:#eef3f3; --warn:#b4471f;
+  --sans:"Noto Sans KR",system-ui,-apple-system,"Apple SD Gothic Neo","Malgun Gothic",sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,"Cascadia Mono",Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0f1415; --paper:#161d1f; --ink:#e7eeef; --muted:#9aa8ab; --line:#2a3538;
+  --mint:#2fc8d8; --mint-ink:#5fd6e3; --code-bg:#1d2729; --warn:#f08a62; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0f1415; --paper:#161d1f; --ink:#e7eeef; --muted:#9aa8ab; --line:#2a3538;
+  --mint:#2fc8d8; --mint-ink:#5fd6e3; --code-bg:#1d2729; --warn:#f08a62; color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:16px;line-height:1.75;padding-inline:16px;padding-block:0 80px}
+.page{max-width:1040px;margin:0 auto;display:grid;grid-template-columns:200px minmax(0,1fr);gap:48px}
+header.top{max-width:1040px;margin:0 auto;padding-block:56px 36px;border-bottom:3px solid var(--ink)}
+.eyebrow{font-size:12px;font-weight:700;letter-spacing:.18em;color:var(--mint-ink);text-transform:uppercase}
+h1{font-size:clamp(28px,4.4vw,44px);font-weight:900;letter-spacing:-.03em;line-height:1.2;margin:10px 0 14px;text-wrap:balance}
+.lede{max-width:62ch;color:var(--muted);margin:0}
+nav.rail{position:sticky;top:24px;align-self:start;padding-top:36px;font-size:13.5px}
+nav.rail ol{list-style:none;margin:0;padding:0;display:grid;gap:6px;counter-reset:s}
+nav.rail a{color:var(--muted);text-decoration:none;display:flex;gap:8px}
+nav.rail a::before{counter-increment:s;content:counter(s,decimal-leading-zero);font-family:var(--mono);color:var(--mint-ink);font-size:12px;padding-top:2px}
+nav.rail a:hover,nav.rail a:focus-visible{color:var(--ink)}
+main{min-width:0;padding-top:20px}
+section{padding-block:28px;border-bottom:1px solid var(--line)}
+section:last-child{border-bottom:0}
+h2{font-size:22px;font-weight:900;letter-spacing:-.02em;margin:0 0 12px;display:flex;gap:12px;align-items:baseline;text-wrap:balance}
+h2 .n{font-family:var(--mono);font-size:13px;font-weight:500;color:var(--mint-ink)}
+h3{font-size:16px;font-weight:700;margin:22px 0 6px}
+p,li{max-width:66ch}
+ul,ol.steps{padding-left:1.2em;margin:8px 0}
+li{margin:4px 0}
+li::marker{color:var(--mint-ink)}
+code{font-family:var(--mono);font-size:.88em;background:var(--code-bg);padding:1px 6px;border-radius:4px;overflow-wrap:anywhere}
+pre{font-family:var(--mono);font-size:13px;line-height:1.6;background:var(--code-bg);border:1px solid var(--line);border-radius:6px;padding:14px 16px;overflow-x:auto;margin:10px 0 4px}
+pre code{background:none;padding:0;font-size:inherit;overflow-wrap:normal}
+.note{border-left:3px solid var(--mint);padding:8px 14px;margin:14px 0;background:var(--paper)}
+.stop{border-left:3px solid var(--warn);padding:8px 14px;margin:14px 0;background:var(--paper)}
+.stop strong{color:var(--warn)}
+.table-wrap{overflow-x:auto;margin:10px 0;border:1px solid var(--line);border-radius:6px;background:var(--paper)}
+table{border-collapse:collapse;width:100%;font-size:14px;min-width:560px}
+th,td{text-align:left;padding:9px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-size:12px;letter-spacing:.06em;color:var(--muted);font-weight:700}
+tr:last-child td{border-bottom:0}
+.check{list-style:none;padding:0}
+.check li{position:relative;padding-left:28px}
+.check li::before{content:"";position:absolute;left:0;top:.45em;width:14px;height:14px;border:2px solid var(--mint);border-radius:3px}
+a{color:var(--mint-ink)}
+@media (max-width:820px){
+  .page{grid-template-columns:minmax(0,1fr);gap:0}
+  nav.rail{position:static;padding-top:20px}
+  nav.rail ol{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media (prefers-reduced-motion:no-preference){html{scroll-behavior:smooth}}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="eyebrow">VISUAL NEWSIS · 신규 작업자 인계</div>
+  <h1>비주얼 뉴시스 작업 공통 규칙</h1>
+  <p class="lede">visual.newsis.com에 콘텐츠를 올리는 모든 작업자(사람·AI 모두)가 지켜야 하는 공통 규칙입니다. 세부 정책의 원본은 저장소 루트의 <code>AGENTS.md</code>이며, 이 문서와 다르면 <code>AGENTS.md</code>가 우선입니다.</p>
+</header>
+
+<div class="page">
+  <nav class="rail" aria-label="목차">
+    <ol>
+      <li><a href="#start">작업 시작 전</a></li>
+      <li><a href="#scope">권한과 작업 범위</a></li>
+      <li><a href="#tech">기술 구조</a></li>
+      <li><a href="#head">페이지 공통 세팅</a></li>
+      <li><a href="#header">글로벌 헤더</a></li>
+      <li><a href="#more">하단 더보기</a></li>
+      <li><a href="#number">작품 번호</a></li>
+      <li><a href="#image">이미지와 출처</a></li>
+      <li><a href="#git">Git과 배포</a></li>
+      <li><a href="#check">배포 전 점검</a></li>
+      <li><a href="#report">완료 보고</a></li>
+    </ol>
+  </nav>
+
+  <main>
+    <section id="start">
+      <h2><span class="n">01</span>작업 시작 전</h2>
+      <ol class="steps">
+        <li>저장소를 최신 <code>origin/main</code> 기준으로 맞춥니다. 내 로컬에 커밋하지 않은 변경이 있으면 먼저 보존합니다.</li>
+        <li>루트의 <code>AGENTS.md</code>를 처음부터 끝까지 읽습니다. AI 도구(Codex, Claude 등)를 쓴다면 작업 시작 때 이 파일을 읽게 하세요. Claude는 <code>CLAUDE.md</code>가 자동으로 <code>AGENTS.md</code>를 불러옵니다.</li>
+        <li>내가 맡은 폴더와 파일이 무엇인지 메인 관리자(안재현 기자)에게 확인합니다.</li>
+      </ol>
+      <div class="note">우선순위: 메인 관리자의 현재 지시 → 최신 <code>AGENTS.md</code> → 최신 main의 실제 구현 → 개별 파일 → 작업자 판단.</div>
+      <p><code>AGENTS.md</code>는 메인 관리자 승인 없이 수정하지 않습니다. 더 나은 방식이 있으면 제안만 합니다.</p>
+    </section>
+
+    <section id="scope">
+      <h2><span class="n">02</span>권한과 작업 범위</h2>
+      <p>정보구조, 작품 편성과 번호, 공용 랜딩, 디자인 체계, 배포 방향은 메인 관리자가 결정합니다. 다른 작업자는 지정·승인받은 콘텐츠 폴더만 작업합니다.</p>
+      <div class="stop"><strong>승인 없이 수정 금지</strong>
+        <ul>
+          <li>루트 <code>index.html</code>(VISUAL NEWSIS 메인), <code>editshop/index.html</code>(편집# 랜딩), <code>arcade/index.html</code>(충무로딩 랜딩) 등 공용 랜딩</li>
+          <li><code>assets/</code>의 공용 헤더·더보기·로고 파일, 공용 SEO·분석 태그</li>
+          <li><code>.github/</code>의 GitHub Actions와 배포 자동화, <code>sitemap.xml</code></li>
+          <li>여러 콘텐츠가 함께 쓰는 데이터 파일(더보기 목록 등)</li>
+        </ul>
+      </div>
+      <p>새 콘텐츠 폴더를 만드는 일과, 그 콘텐츠를 메인·랜딩·더보기에 노출하는 일은 별개입니다. 노출(등록)은 메인 관리자가 직접 하거나 명시적으로 승인한 경우에만 합니다.</p>
+    </section>
+
+    <section id="tech">
+      <h2><span class="n">03</span>기술 구조</h2>
+      <ul>
+        <li>결과물은 HTML, CSS, 순수 JavaScript와 이미지·영상·음원 같은 정적 파일입니다.</li>
+        <li>각 콘텐츠는 저장소 루트의 자기 폴더에 둡니다. 예: <code>dmz/index.html</code> → <code>https://visual.newsis.com/dmz/</code></li>
+        <li>폴더의 <code>index.html</code>을 열면 별도 서버 없이 바로 작동해야 합니다.</li>
+        <li>Next.js, React·Vue·Node.js 서버, API 라우터, 별도 배포 프로젝트를 만들지 않습니다. 빌드 과정이 꼭 필요하면 구현 전에 승인을 받습니다.</li>
+        <li>자산 경로는 상대경로(<code>images/…</code>, <code>../assets/…</code>)로 씁니다. 존재하지 않는 URL을 추측해 넣지 않습니다.</li>
+        <li>폴더명은 영문 소문자와 하이픈으로 짓고, 정하기 전에 관리자와 맞춥니다.</li>
+        <li><code>backup</code>, <code>old</code>, <code>test</code> 같은 이름만 보고 실서비스 여부를 판단하지 말고 실제 서비스 경로를 확인합니다.</li>
+      </ul>
+    </section>
+
+    <section id="head">
+      <h2><span class="n">04</span>페이지 공통 세팅</h2>
+      <p>모든 페이지의 <code>&lt;head&gt;</code>에 아래 항목을 넣습니다. 기존 페이지에서 복사했다면 제목·설명·URL·이미지를 반드시 이 페이지 것으로 바꿉니다.</p>
+
+      <h3>기본</h3>
+      <pre><code>&lt;meta charset="utf-8"&gt;
+&lt;meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"&gt;
+&lt;title&gt;작품 제목 | 비주얼 뉴시스&lt;/title&gt;</code></pre>
+
+      <h3>파비콘</h3>
+      <pre><code>&lt;link rel="shortcut icon" href="https://image.newsis.com/n_www/images/ci/2024/favicon.png" /&gt;
+&lt;link rel="icon" type="image/png" href="https://image.newsis.com/n_www/images/ci/2024/favicon.png" /&gt;</code></pre>
+
+      <h3>Google 애널리틱스</h3>
+      <p>사이트 공통 GA4 태그입니다. 페이지마다 <strong>정확히 한 번</strong> 넣습니다. 추적 ID를 새로 만들거나 다른 태그를 추가하지 않습니다.</p>
+      <pre><code>&lt;!-- Google tag (gtag.js) --&gt;
+&lt;script async src="https://www.googletagmanager.com/gtag/js?id=G-6BKMWE02W5"&gt;&lt;/script&gt;
+&lt;script&gt;
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-6BKMWE02W5');
+&lt;/script&gt;</code></pre>
+
+      <h3>검색·공유 메타데이터</h3>
+      <div class="table-wrap"><table>
+        <thead><tr><th>항목</th><th>내용</th></tr></thead>
+        <tbody>
+          <tr><td><code>description</code></td><td>기사 내용을 한두 문장으로 요약</td></tr>
+          <tr><td><code>canonical</code></td><td>이 페이지의 실제 주소. 예: <code>https://visual.newsis.com/폴더명/</code></td></tr>
+          <tr><td>Open Graph</td><td><code>og:type</code> article, <code>og:site_name</code> 비주얼 뉴시스, <code>og:title</code>, <code>og:description</code>, <code>og:url</code>, <code>og:image</code>(절대주소, 1200×630)</td></tr>
+          <tr><td>Twitter Card</td><td><code>twitter:card</code> summary_large_image, 제목·설명·이미지</td></tr>
+          <tr><td><code>robots</code></td><td>공개 페이지는 색인 허용. 공개 전 테스트 페이지는 <code>noindex</code>로 두고 공개할 때 해제</td></tr>
+          <tr><td>구조화 데이터</td><td><code>application/ld+json</code>으로 <code>NewsArticle</code>(제목, 설명, 이미지, 발행일, 작성자, 발행처 뉴시스)</td></tr>
+        </tbody>
+      </table></div>
+      <div class="stop"><strong>JSON-LD는 배포 전 실제로 파싱해 봅니다.</strong> 중괄호·대괄호·쉼표·따옴표 하나만 빠져도 검색엔진이 통째로 무시합니다.</div>
+    </section>
+
+    <section id="header">
+      <h2><span class="n">05</span>글로벌 헤더</h2>
+      <p>충무로딩을 뺀 모든 콘텐츠는 공통 헤더를 씁니다. 헤더를 직접 만들지 말고 공용 파일 두 개를 불러오면, 스크립트가 <code>VISUAL NEWSIS / NEWSIS 로고 / 섹션명 + ☰</code> 구조의 헤더를 그려 줍니다.</p>
+      <pre><code>&lt;link rel="stylesheet" href="../assets/visual-header.css?v=…"&gt;
+&lt;script defer src="../assets/visual-header.js?v=…"
+  data-section="편집#"
+  data-section-href="https://visual.newsis.com/editshop/"
+  data-current="editshop"
+  data-header-theme="dark"&gt;&lt;/script&gt;</code></pre>
+      <div class="table-wrap"><table>
+        <thead><tr><th>속성</th><th>의미</th></tr></thead>
+        <tbody>
+          <tr><td><code>data-section</code></td><td>오른쪽에 표시할 섹션명(편집#, 뉴시스템, 한눈에 알아볼지도, 계산대로 등)</td></tr>
+          <tr><td><code>data-section-href</code></td><td>섹션 랜딩이 실제로 있을 때만 넣습니다. 없으면 생략해 텍스트로만 표시</td></tr>
+          <tr><td><code>data-current</code></td><td>햄버거 메뉴에서 현재 섹션 표시용 키(<code>editshop</code>, <code>newsystem</code>, <code>calculator</code> 등)</td></tr>
+          <tr><td><code>data-header-theme</code></td><td><code>dark</code> 또는 <code>light</code></td></tr>
+        </tbody>
+      </table></div>
+      <ul>
+        <li><code>?v=</code> 값은 최근 발행된 다른 페이지가 쓰는 값을 그대로 씁니다.</li>
+        <li>작품 번호는 헤더에 넣지 않습니다. 헤더 아래에 메뉴용 두 번째 고정 바를 만들지 않습니다.</li>
+        <li>햄버거 메뉴 항목은 공용 스크립트가 관리합니다. 페이지에서 따로 메뉴를 만들지 않습니다.</li>
+        <li><strong>예외:</strong> 충무로딩(<code>arcade/</code>)은 자체 상단바를 유지하며 공통 헤더를 넣지 않습니다.</li>
+      </ul>
+    </section>
+
+    <section id="more">
+      <h2><span class="n">06</span>하단 더보기</h2>
+      <p>기사 하단의 다른 기사 목록은 페이지마다 카드를 새로 만들지 않고 공통 더보기 파일을 씁니다. 현재 작품은 자동으로 빠지고, PC는 좌우 버튼, 모바일은 가로 스와이프로 넘깁니다.</p>
+      <div class="table-wrap"><table>
+        <thead><tr><th>소속</th><th>불러올 파일</th><th>위치</th></tr></thead>
+        <tbody>
+          <tr><td>편집#</td><td><code>editshop-carousel.css</code> + <code>editshop-carousel.js</code></td><td>최하단 편집# 브랜드 배너 바로 위(스크립트가 자동 배치)</td></tr>
+          <tr><td>뉴시스템</td><td><code>visual-stories-carousel.css</code> + <code>newsystem-carousel.js</code></td><td>본문과 엔딩이 끝난 뒤</td></tr>
+          <tr><td>그 밖의 비편집 기사</td><td><code>visual-stories-carousel.css</code> + <code>visual-stories-carousel.js</code></td><td>본문·관련기사·엔딩이 모두 끝난 뒤 최하단</td></tr>
+        </tbody>
+      </table></div>
+      <pre><code>&lt;script defer src="../assets/editshop-carousel.js?v=…" data-current="내폴더명"&gt;&lt;/script&gt;</code></pre>
+      <p>더보기 목록에 새 작품을 추가하는 것은 공용 데이터 수정이므로 관리자 승인 후에 합니다. 공용 더보기 파일을 바꾸면 그 파일을 쓰는 모든 페이지의 <code>?v=</code>를 함께 올립니다.</p>
+    </section>
+
+    <section id="number">
+      <h2><span class="n">07</span>작품 번호</h2>
+      <ul>
+        <li>VISUAL NEWSIS 메인은 전체 발행 순서대로 <code>STORY 001</code>부터 매깁니다.</li>
+        <li>편집#은 편집# 작품끼리 <code>#001</code>부터 따로 매깁니다.</li>
+        <li>예: 전체 20번째이면서 편집# 14번째 작품은 메인 <code>STORY 020</code>, 편집# <code>#014</code>입니다.</li>
+        <li>번호는 추정하거나 빈 번호를 채우지 말고, 현재 발행 목록과 관리자 지시로 확정합니다.</li>
+      </ul>
+    </section>
+
+    <section id="image">
+      <h2><span class="n">08</span>이미지와 출처</h2>
+      <h3>사진 출처</h3>
+      <p>사용하는 모든 사진에 출처를 표기합니다. 예: <code>ⓒ뉴시스 OOO 기자</code>, <code>(사진=OO 제공)</code>. 참고용 사진처럼 기사 현장과 다른 사진은 그 사실도 함께 밝힙니다.</p>
+      <h3>포털 송고용 이미지 첫 장</h3>
+      <ul>
+        <li>포털 미리보기·대표 썸네일로 쓰이므로 가로형(4:3 또는 5:3)으로 만듭니다. 세로형·정사각형은 첫 장으로 쓰지 않습니다.</li>
+        <li>원본 사진 중심으로 구성하고, 제목이나 문구를 합성한 표지로 만들지 않습니다. 글자가 들어간 그래픽은 두 번째 장부터 씁니다.</li>
+        <li>작게 줄거나 일부가 잘려도 핵심 인물·주제가 보이도록 여백을 둡니다.</li>
+      </ul>
+      <h3>사이트 썸네일</h3>
+      <ul>
+        <li>기본 크기는 <code>360 × 240px</code>입니다.</li>
+        <li>모바일에서 아래쪽이 잘리므로 하단 48px(<code>y=192~239</code>)에는 배경만 둡니다.</li>
+        <li>글자·얼굴·로고 등 주요 요소는 <code>x=12~348</code>, <code>y=12~192</code> 안에 넣습니다.</li>
+      </ul>
+      <h3>공유 이미지</h3>
+      <p><code>og:image</code>는 <code>1200 × 630px</code>로 만들고 콘텐츠 폴더 안에 둡니다.</p>
+    </section>
+
+    <section id="git">
+      <h2><span class="n">09</span>Git과 배포</h2>
+      <p><code>main</code>에 push하면 GitHub Actions가 자동으로 실서버에 배포합니다. 자동화도 <code>main</code>에 커밋하므로 아래 순서를 지킵니다.</p>
+      <ol class="steps">
+        <li>작업 전 <code>git fetch</code>로 최신 <code>origin/main</code>을 반영합니다.</li>
+        <li>내 담당 파일만 <code>git add</code> 합니다. 무관한 변경, 원본 사진, 임시 파일은 스테이징하지 않습니다.</li>
+        <li>push 직전에 원격 변경을 다시 확인합니다.</li>
+        <li>배포가 끝나면 실제 URL에서 반영 여부를 확인합니다.</li>
+      </ol>
+      <div class="stop"><strong>하지 않는 것</strong>
+        <ul>
+          <li><code>git reset --hard</code>, 강제 checkout, force push, 다른 사람의 미커밋 변경 삭제</li>
+          <li>충돌 시 한쪽 버전만 골라 덮어쓰기. 양쪽을 비교하고, 판단이 필요하면 관리자에게 보고</li>
+          <li>같은 공용 파일을 다른 작업자와 동시에 수정</li>
+          <li>API 키·토큰·비밀번호를 저장소에 평문으로 넣기</li>
+          <li>배포 workflow 수정·삭제(승인 필요)</li>
+        </ul>
+      </div>
+      <p>저장소는 공용 계정을 쓰므로 커밋 작성자만으로 실제 작업자를 구분할 수 없습니다. 커밋 메시지에 무엇을 바꿨는지 분명히 적어 주세요.</p>
+      <p>CSS·JS 파일을 고치면 그 파일을 불러오는 <code>?v=</code> 값을 올려 브라우저 캐시를 갱신합니다.</p>
+    </section>
+
+    <section id="check">
+      <h2><span class="n">10</span>배포 전 점검</h2>
+      <ul class="check">
+        <li>HTML과 JavaScript에 문법 오류가 없다</li>
+        <li>모든 JSON-LD 블록이 파싱된다</li>
+        <li>제목·설명·canonical·OG·Twitter가 이 페이지 기준으로 바뀌었다</li>
+        <li>GA 태그가 정확히 한 번 들어 있다</li>
+        <li>파비콘과 글로벌 헤더가 나온다(충무로딩 제외)</li>
+        <li>이미지·영상·음원·내부 링크가 실제 서비스 경로에서 열린다</li>
+        <li>데스크톱과 모바일(iPhone Safari, Android Chrome)에서 화면을 확인했다</li>
+        <li>사진 출처가 모두 표기돼 있다</li>
+        <li>내 담당 범위 밖의 파일이 변경되지 않았다</li>
+      </ul>
+    </section>
+
+    <section id="report">
+      <h2><span class="n">11</span>완료 보고</h2>
+      <p>작업을 마치면 메인 관리자에게 다음을 알립니다.</p>
+      <ul>
+        <li>수정한 내용과 파일 목록</li>
+        <li>건드리지 않고 유지한 영역</li>
+        <li>수행한 검증. 실제 기기에서 확인했는지, 화면 크기만 바꿔 확인했는지 구분</li>
+        <li>남은 문제나 확인이 필요한 점</li>
+      </ul>
+      <p>작업 범위가 불분명하거나 공용 파일 수정이 필요해 보이면, 진행하기 전에 먼저 물어봐 주세요.</p>
+    </section>
+  </main>
+</div>
+</body>
+</html>

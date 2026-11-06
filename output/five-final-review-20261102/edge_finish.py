@@ -1,0 +1,10 @@
+from pathlib import Path
+r=Path(r'C:\Users\user\.codex\worktrees\piano-finish\editshop');p=r/'output/five-final-review-20261102/responsive.html';s=p.read_text(encoding='utf-8').replace("p.width=b.dataset.size;", "p.width=b.dataset.size;p.height=Number(b.dataset.size)>1000?'640':'844';p.style.height=p.height+'px';");p.write_text(s,encoding='utf-8')
+# Separate the varnished plate overhang from the dark f-opening cut walls.
+p=r/'goodeasy/assets/models/violin-surface.js';s=p.read_text(encoding='utf-8').replace('for(const {a,b,count}of boundary.values())if(count===1){','const outerWalls=[],holeWalls=[];\n for(const {a,b,count}of boundary.values())if(count===1){')
+old='sign>0?indices.push(base,base+2,base+1,base+1,base+2,base+3):indices.push(base,base+1,base+2,base+1,base+3,base+2);'
+new='''const midX=(A[0]+B[0])/2,midZ=(A[1]+B[1])/2;
+  const onOuter=contour.some((p,i)=>{const q=contour[(i+1)%contour.length],vx=q.x-p.x,vz=q.y-p.y,t=Math.max(0,Math.min(1,((midX-p.x)*vx+(midZ-p.y)*vz)/(vx*vx+vz*vz)));return Math.hypot(midX-p.x-t*vx,midZ-p.y-t*vz)<1e-7;});
+  const walls=onOuter?outerWalls:holeWalls;sign>0?walls.push(base,base+2,base+1,base+1,base+2,base+3):walls.push(base,base+1,base+2,base+1,base+3,base+2);'''
+assert old in s;s=s.replace(old,new).replace(' const geometry=new T.BufferGeometry();',' indices.push(...outerWalls,...holeWalls);\n const geometry=new T.BufferGeometry();').replace('// Three draw calls only: varnished outside, unvarnished cavity, cut wood walls.','// Outer edge shares the varnish; only f-hole cuts expose dark cavity wood.').replace('geometry.addGroup(skinIndices*2,indices.length-skinIndices*2,2);','geometry.addGroup(skinIndices*2,outerWalls.length,0);if(holeWalls.length)geometry.addGroup(skinIndices*2+outerWalls.length,holeWalls.length,2);')
+s=s.replace('geometry.userData.skinVertexCount=N;', 'geometry.userData.outerWallIndexCount=outerWalls.length;geometry.userData.holeWallIndexCount=holeWalls.length;geometry.userData.skinVertexCount=N;');p.write_text(s,encoding='utf-8')

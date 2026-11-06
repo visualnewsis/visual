@@ -1,0 +1,33 @@
+/* Editorial additions, scoped to this story. */
+[hidden]{display:none!important}
+.reader-opening{padding:110px 24px 72px;max-width:1080px;margin:auto;text-align:center}
+.reader-opening h1{font:700 clamp(32px,5vw,58px)/1.4 'Noto Serif KR',serif;letter-spacing:-.055em;margin:20px 0}
+.reader-opening p{line-height:1.85;max-width:740px;margin:20px auto}
+.choice-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin:32px 0 20px}
+.choice-card{font:inherit;color:var(--ink);padding:0 0 18px;background:transparent;border:1px solid var(--line);border-radius:16px;overflow:hidden;cursor:pointer}
+.choice-card img{display:block;width:100%;height:auto;margin-bottom:16px}
+.choice-card[aria-pressed=true]{outline:3px solid var(--accent);outline-offset:3px}
+.choice-response{min-height:100px;color:var(--ink-soft);font-size:15px}
+.reader-note{font-size:13px!important;color:var(--ink-soft)}
+.context-card{border:1px solid var(--night-line);border-radius:20px;padding:clamp(22px,4vw,42px);margin:32px 0}
+.context-sentence{font:600 clamp(28px,4vw,44px)/1.8 'Noto Serif KR',serif!important}
+.context-sentence strong{color:#efb77b}
+.context-note{min-height:100px}
+.story-editor{padding:88px 24px;background:var(--paper);color:var(--ink)}
+.story-inner{max-width:820px;margin:auto}
+.story-editor h2{font:700 clamp(29px,4vw,44px)/1.45 'Noto Serif KR',serif}
+.story-editor p{line-height:1.9}
+.story-strip{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:28px 0}
+.story-strip img{width:100%;height:auto;border-radius:10px}
+.story-line{display:block;font:500 clamp(19px,3vw,27px)/2.6 'Noto Serif KR',serif}
+.story-line select{max-width:100%;font:inherit;color:var(--accent);background:transparent;border:0;border-bottom:2px solid var(--accent);padding:4px 22px 4px 4px;border-radius:0}
+.story-result{padding:28px;border:1px solid var(--line);border-radius:16px;margin:32px 0 16px;font:500 22px/2 'Noto Serif KR',serif}
+.story-editor .pill-btn{color:var(--ink);border-color:var(--line)}
+.series-next{display:block;color:var(--accent);margin-top:34px;line-height:1.8}
+.source{color:var(--ink-soft)}
+.source a{color:var(--accent)}
+.source summary{color:var(--ink)}
+.hero h2{font:700 clamp(38px,7vw,78px)/1.2 'Noto Serif KR',serif;letter-spacing:-.03em;margin:0 0 26px}
+button:focus-visible,select:focus-visible,a:focus-visible{outline:3px solid #b5652f;outline-offset:5px}
+@media(max-width:540px){.reader-opening{padding:96px 18px 40px}.choice-grid{gap:12px}.choice-card{font-size:14px}.story-result{padding:22px;font-size:19px}.context-note{min-height:160px}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;animation:none!important;transition:none!important}}

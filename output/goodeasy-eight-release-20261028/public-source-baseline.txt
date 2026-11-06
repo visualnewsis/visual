@@ -1,0 +1,1435 @@
+2026-10-28 baseline 8e54396. All files verified from unauthenticated public service; no credentials or private source. READ ONLY REVIEW MATERIAL.
+
+
+===== PUBLIC SOURCE https://visual.newsis.com/goodeasy/assets/quality-machines.js?audit=20261028-eight (HTTP 200; local HEAD identical) =====
+import {curtainWindow} from './mechanism-checks.js?v=20261026-release3';
+import {T,materials as M,mesh,box,cyl,ring,rod,tube,sphere,label,bolt,gear,part,tag,lathe} from './quality-kit.js?v=20261026-release3';
+const TAU=Math.PI*2;
+export function buildWatch(){const group=new T.Group(),body=part(group,'case');cyl(body,2.15,.46,M.steel,0,.7,0);cyl(body,2.02,.15,M.black,0,.98,0);ring(body,2.08,.075,M.steel,0,1.04,0);ring(body,1.99,.025,M.brass,0,1.08,0);
+ const band=part(body,'Strap and lugs');band.rotation.y=Math.PI/2;
+ for(const sign of [-1,1]){box(band,2.5,.12,1.3,M.leather,sign*3.25,.6,0,.15);for(const z of [-.78,.78]){box(band,.55,.26,.22,M.steel,sign*2.15,.66,z);for(let x=2.5;x<4.4;x+=.15)rod(band,[sign*x,.68,z*.69],[sign*x+.06,.68,z*.69],.008,M.ivory);}}
+ const dialShape=new T.Shape();dialShape.absarc(0,0,1.95,0,TAU,false);const opening=new T.Path();opening.absarc(.64,0,.99,0,TAU,true);dialShape.holes.push(opening);const dg=new T.ExtrudeGeometry(dialShape,{depth:.035,bevelEnabled:false,curveSegments:64});dg.rotateX(-Math.PI/2);const dial=mesh(body,dg,M.ivory,0,1.06,0);
+ for(let i=0;i<60;i++){const a=i/60*TAU,r=i%5?1.83:1.76,o=box(body,i%5?.018:.05,.02,i%5?.065:.18,M.black,Math.sin(a)*r,1.12,Math.cos(a)*r,.006);o.rotation.y=a;}
+ const works=part(group,'gears');const gears=[gear(works,.54,.10,1.0,.12,36),gear(works,.27,.91,1.0,.12,18),gear(works,.27,1.45,1.0,.12,18)];for(const [x,z] of [[.1,.7],[1.4,.3],[.5,-.8]]){cyl(works,.075,.05,M.red,x,1.05,z);bolt(works,x,1.09,z);}const balance=part(works,'balance');balance.position.set(.25,1.2,-.55);ring(balance,.4,.028,M.brass);for(let i=0;i<3;i++){const a=i/3*TAU;rod(balance,[0,0,0],[Math.cos(a)*.39,0,Math.sin(a)*.39],.02,M.brass);}cyl(balance,.05,.05,M.steel);
+ const barrel=part(works,'barrel');barrel.position.set(-.95,1.04,.55);ring(barrel,.54,.045,M.steel);tube(barrel,Array.from({length:241},(_,i)=>{const t=i/240,a=t*TAU*7,r=.04+t*.43;return [Math.cos(a)*r,.015,Math.sin(a)*r];}),.009,M.brass);
+ const escapement=part(works,'escapement');escapement.position.set(-.25,0,-.25);const escapeWheel=gear(escapement,.23,-.3,1.04,-.6,15);rod(escapement,[-.3,1.09,-.55],[-.15,1.09,-.35],.025,M.steel);rod(escapement,[-.15,1.09,-.35],[.01,1.09,-.5],.025,M.steel);tube(balance,Array.from({length:161},(_,i)=>{const t=i/160,a=t*TAU*5,r=.04+t*.28;return [Math.cos(a)*r,.025,Math.sin(a)*r];}),.005,M.steel);
+ const hands=part(group,'hands'),hour=new T.Group(),minute=new T.Group(),second=new T.Group();hands.add(hour,minute,second);box(hour,.06,.025,.8,M.black,0,1.22,-.3,.01);box(minute,.045,.025,1.32,M.black,0,1.25,-.55,.008);box(second,.015,.025,1.85,M.brass,0,1.29,-.5,.003);cyl(hands,.08,.09,M.brass,0,1.28,0);const logo=label(body,'GOODEASY',.9,-.58,1.13,-.75,'#48483c');logo.rotation.x=-Math.PI/2;
+ const crown=part(group,'crown');crown.position.set(2.35,.74,0);crown.rotation.y=Math.PI/2;const crownSpin=part(crown,'Crown spindle');const c=cyl(crownSpin,.23,.43,M.steel);c.rotation.x=Math.PI/2;for(let i=0;i<32;i++){const a=i/32*TAU;rod(crownSpin,[Math.cos(a)*.23,Math.sin(a)*.23,-.19],[Math.cos(a)*.23,Math.sin(a)*.23,.19],.012,M.steel);}tag(crown,'crown','action');tag(works,'gears');tag(hands,'hands');tag(body,'case');
+ return {group,eye:[4,8,5],parts:{case:body,crown,gears:works,barrel,escapement,balance,hands},update(s,detail=false){dial.visible=!detail;crownSpin.rotation.z=(s.turns||0)*TAU;hour.rotation.y=-(s.elapsed||0)/43200*TAU;minute.rotation.y=-(s.elapsed||0)/3600*TAU;second.rotation.y=-(s.elapsed||0)/60*TAU;gears.forEach((g,i)=>g.rotation.y=-(s.elapsed||0)*TAU/3600*[1,-2,2][i]+(i===1?Math.PI/18:0));balance.rotation.y=Math.sin((s.elapsed||0)*TAU*1.875)*.7;escapement.visible=detail;escapeWheel.rotation.y=-Math.floor((s.elapsed||0)*3.75)*TAU/15;}};
+}
+export function buildReel(){const group=new T.Group(),body=part(group,'body');sphere(body,1,M.black,-.4,1.45,0,[.95,1.05,.55]);sphere(body,.8,M.steel,-.3,1.4,.42,[1,.85,.13]);sphere(body,.75,M.black,-.3,1.4,.53,[1,.85,.1]);for(const [x,y] of [[-.75,1.1],[.15,1.8],[-.65,1.94]]){const o=cyl(body,.06,.04,M.steel,x,y,.61);o.rotation.x=Math.PI/2;}tube(body,[[-.7,1.9,0],[-.55,2.6,0],[-.1,3.2,0],[.45,3.3,0]],.13,M.black);box(body,1.45,.13,.3,M.steel,.1,3.32,0,.07);
+ const shaft=rod(group,[-.1,1.8,0],[2.1,1.8,0],.11,M.steel);shaft.name="Fixed spool shaft";const spool=part(group,'spool');spool.position.set(1.75,1.8,0);const shell=cyl(spool,.77,.65,M.steel);shell.rotation.z=Math.PI/2;for(const x of [-.35,.35])ring(spool,.83,.05,M.steel,x,0,0,'x');for(let i=0;i<48;i++)ring(spool,.79,.009,i%3?M.ivory:M.brass,-.3+i*.013,0,0,'x');const cap=cyl(spool,.31,.13,M.black,.42,0,0);cap.rotation.z=Math.PI/2;ring(spool,.29,.015,M.brass,.5,0,0,'x');tag(cap,'spool','drag');
+ const rotor=part(group,'rotor');rotor.position.set(.6,1.8,0);for(const sign of [-1,1])tube(rotor,[[0,0,sign*.52],[.2,-.1,sign*.9],[.85,0,sign*.99],[1.05,.1,sign*.85]],.075,M.black);tube(rotor,[[1.05,.1,-.85],[1.4,.62,-.65],[1.5,.95,0],[1.4,.62,.65],[1.05,.1,.85]],.035,M.steel);sphere(rotor,.105,M.brass,1.05,.1,-.85);ring(rotor,.09,.02,M.black,1.05,.1,-.85,'z');
+ const handle=part(group,'handle');handle.position.set(-.4,1.45,.7);rod(handle,[0,0,-.2],[0,0,.25],.1,M.steel);tube(handle,[[0,0,.25],[-.38,-.4,.34],[-.85,-.65,.35]],.085,M.steel);rod(handle,[-.85,-.65,.35],[-.85,-.65,.8],.09,M.steel);sphere(handle,.24,M.black,-.85,-.65,.88,[1.55,.9,.9]);const lineGeo=new T.BufferGeometry().setFromPoints([new T.Vector3(),new T.Vector3()]);const fishingLine=new T.Line(lineGeo,new T.LineBasicMaterial({color:0xdad6bf}));fishingLine.name='Line connected to roller';fishingLine.userData.noFit=true;group.add(fishingLine);const rollerLocal=new T.Vector3(1.05,.1,-.85);tag(handle,'handle','action');tag(rotor,'rotor');tag(spool,'spool');tag(body,'body');
+ const gears=part(group,'gears'),drive=gear(gears,.62,-.4,1.45,0,52),pinionMount=part(gears,'Pinion bearing'),pinion=gear(pinionMount,.17,0,0,0,10);pinionMount.position.set(.28,1.8,0);pinionMount.rotation.z=Math.PI/2;drive.rotation.x=Math.PI/2;drive.name='Main drive gear';pinion.name='Rotor pinion';gears.visible=false;
+ return {group,eye:[5,3,8],parts:{body,handle,rotor,spool,gears},update(s,detail=false){rotor.rotation.x=(s.rotor||0)*TAU;handle.rotation.z=-(s.turns||0)*TAU;spool.position.x=1.75+Math.sin((s.turns||0)*2)*.18;spool.rotation.x=-(s.payout||0)*TAU;drive.rotation.y=-(s.turns||0)*TAU;pinion.rotation.y=(s.rotor||0)*TAU;gears.visible=detail;body.visible=!detail;const v=rollerLocal.clone().applyAxisAngle(new T.Vector3(1,0,0),rotor.rotation.x).add(rotor.position);const a=fishingLine.geometry.attributes.position;a.setXYZ(0,v.x,v.y,v.z);a.setXYZ(1,3.2,1.8,0);a.needsUpdate=true;fishingLine.geometry.computeBoundingSphere();}};
+}
+export function buildCamera(){const group=new T.Group(),body=part(group,'body');box(body,4.7,2.5,1.45,M.black,0,1.5,0,.22);box(body,1.0,2.6,1.8,M.leather,1.75,1.48,.15,.25);box(body,4.7,.26,1.6,M.steel,0,2.73,0,.09);box(body,1.2,.45,1.1,M.black,0,3,0,.12);box(body,.8,.2,.65,M.steel,0,3.22,0);for(const x of [-1.6,1.55]){cyl(body,.38,.23,M.black,x,2.98,0);for(let i=0;i<36;i++){const a=i/36*TAU;box(body,.025,.15,.04,M.steel,x+Math.sin(a)*.37,3.0,Math.cos(a)*.37,.008);}}const shutter=cyl(body,.17,.12,M.red,1.75,2.92,.43);tag(shutter,'shutter','action');const brand=label(body,'GOODEASY',1.1,-1.2,2.3,.76,'#b1b8ad');
+ const lens=part(group,'lens');lens.position.set(-.35,1.45,.76);const barrel=lathe(lens,[[.95,0],[1.02,.08],[1.02,.25],[.96,.31],[.98,1.5],[1.08,1.6],[1.08,1.85],[.93,1.92]],M.black);barrel.rotation.x=Math.PI/2;for(const z of [.15,.38,1.1,1.65,1.83])ring(lens,1.02,.035,z===.15?M.steel:M.black,0,0,z,'z');for(let i=0;i<64;i++){const a=i/64*TAU;rod(lens,[Math.sin(a)*1.025,Math.cos(a)*1.025,.5],[Math.sin(a)*1.025,Math.cos(a)*1.025,.95],.018,M.black);}const front=mesh(lens,new T.CircleGeometry(.92,64),M.glass.clone(),0,0,1.89);ring(lens,.88,.025,M.brass,0,0,1.9,'z');for(const r of [.61,.7,.81])ring(lens,r,.008,M.steel,0,0,1.91,'z');
+ const iris=part(lens,'aperture');let previousAperture=0;for(let i=0;i<8;i++){const g=new T.Shape();g.moveTo(.2,0);g.lineTo(.73,.12);g.quadraticCurveTo(.8,.5,.5,.7);g.lineTo(.08,.24);g.closePath();const b=mesh(iris,new T.ShapeGeometry(g),M.black,0,0,1.88);b.rotation.z=i/8*TAU;}tag(iris,'aperture');tag(lens,'lens');tag(body,'body');tag(shutter,'shutter','action');
+ const sensor=part(group,'sensor');box(sensor,1.7,1.1,.05,M.glass,-.35,1.5,-.1);const curtains=part(group,'shutter'),firstCurtain=part(curtains,'First opening curtain'),secondCurtain=part(curtains,'Second closing curtain'),chassis=part(group,'Shutter and lens support frame');for(const [j,g] of [firstCurtain,secondCurtain].entries())for(let i=0;i<5;i++)box(g,1.85,.235,.025,M.black,-.35,1.5+(i-2)*.23295,.10+j*.04,.005);for(const x of [-1.35,.65])box(chassis,.10,1.42,.10,M.steel,x,1.5,-.02,.012);for(const y of [.79,2.21])box(chassis,2.1,.10,.10,M.steel,-.35,y,-.02,.012);for(const x of [-1.3,.6])rod(chassis,[x,.85,0],[x,.85,1.76],.025,M.steel);sensor.visible=false;curtains.visible=false;chassis.visible=false;
+ return {group,eye:[5,3,8],parts:{lens,aperture:iris,shutter:curtains,sensor,body},update(s,detail=false){const aperture=s.aperture||2.8;if(aperture!==previousAperture){previousAperture=aperture;while(iris.children.length){const o=iris.children[0];o.geometry.dispose();iris.remove(o);}const inner=.35*2.8/aperture;for(let i=0;i<8;i++){const a=i/8*TAU,b=a+TAU/8+.008,shape=new T.Shape();shape.absarc(0,0,.83,a,b,false);shape.lineTo(Math.cos(b)*inner,Math.sin(b)*inner);shape.absarc(0,0,inner,b,a,true);shape.closePath();mesh(iris,new T.ShapeGeometry(shape),M.black,0,0,1.88+i*.0005);}}sensor.visible=detail;curtains.visible=detail;chassis.visible=detail;lens.position.z=detail?1.76:.76;const cw=curtainWindow(Math.max(0,Math.min(1,s.shutterPhase||0)),(s.shutter||250)>=1000);firstCurtain.position.y=cw.first*1.1/1.7;secondCurtain.position.y=cw.second*1.1/1.7;body.visible=!detail;front.material.opacity=detail?.35:.86;}};
+}
+export function buildProjector(){const group=new T.Group(),body=part(group,'body');box(body,3.1,2.4,1.4,M.black,0,1.45,0,.2);box(body,3.5,.35,2,M.black,0,.17,0,.12);for(const x of [-1.2,1.2])box(body,.5,.18,1.5,M.black,x,0,0);for(let i=0;i<13;i++)box(body,.9,.04,.04,M.steel,-.4,.7+i*.07,.73,.012);const logo=label(body,'GOODEASY',1.2,0,2.2,.73,'#b6b4a5');
+ const reels=[];for(const [x,y] of [[-1.5,3.8],[1.7,4.1]]){rod(body,[x*.6,2.5,0],[x,y,0],.12,M.steel);const g=part(group,'reel');g.position.set(x,y,.3);const shape=new T.Shape();shape.absarc(0,0,1.27,0,TAU,false);for(let i=0;i<5;i++){const a=i/5*TAU,hole=new T.Path();hole.absarc(Math.sin(a)*.77,Math.cos(a)*.77,.31,0,TAU,true);shape.holes.push(hole);}const cg=new T.ExtrudeGeometry(shape,{depth:.09,bevelEnabled:true,bevelSize:.015,bevelThickness:.015,bevelSegments:2,curveSegments:40});mesh(g,cg,M.steel);ring(g,1.25,.025,M.steel,0,0,.09,'z');const pin=cyl(g,.12,.25,M.brass,0,0,.12);pin.rotation.x=Math.PI/2;reels.push(g);}
+ tube(body,[[-1.4,2.8,.15],[.6,2.4,.15],[1.2,2.0,.15],[1.2,1.7,.15],[1.2,1.4,.15],[1.7,2.9,.15]],.025,M.darkWood);for(let i=0;i<16;i++)box(body,.16,.25,.013,M.darkWood,-.55+i*.08,2.43+Math.sin(i/16*Math.PI)*.08,.26,.003);
+ const lens=part(group,'lens');lens.position.set(1.2,1.7,.8);const barrel=cyl(lens,.47,1.1,M.black);barrel.rotation.x=Math.PI/2;for(const z of [-.5,0,.5])ring(lens,.47,.05,M.steel,0,0,z,'z');mesh(lens,new T.CircleGeometry(.4,48),new T.MeshBasicMaterial({color:0xffdda4}),0,0,.56);const handle=part(group,'handle');handle.position.set(-1,.95,.85);rod(handle,[0,0,0],[.55,.3,.05],.055,M.steel);sphere(handle,.15,M.black,.55,.3,.17,[1,1,1.5]);tag(handle,'handle','action');tag(reels[0],'reel','action');tag(body,'body');tag(lens,'lens');
+ lens.lookAt(4,2.4,-.5);const screen=part(group,'screen');screen.position.set(4,2.4,-.5);screen.lookAt(1.2,1.7,.8);box(screen,3.4,2.5,.12,M.black,0,0,0,.03);const canvas=document.createElement('canvas');canvas.width=512;canvas.height=384;const ctx=canvas.getContext('2d'),texture=new T.CanvasTexture(canvas);texture.colorSpace=T.SRGBColorSpace;mesh(screen,new T.PlaneGeometry(3.15,2.3),new T.MeshBasicMaterial({map:texture}),0,0,.08);let old=-1;
+ return {group,eye:[5,3,12],parts:{body,handle,reel:reels[0],lens,screen},update(s){reels.forEach((r,i)=>r.rotation.z=(s.frames||0)/24*TAU*1);handle.rotation.z=(s.frames||0)/24*TAU;const f=s.frame||0;if(f!==old){old=f;ctx.fillStyle='#c9c3a9';ctx.fillRect(0,0,512,384);ctx.strokeStyle='#7d8476';ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(20,310);ctx.lineTo(492,310);ctx.stroke();ctx.fillStyle='#263b3b';ctx.beginPath();ctx.arc(256+Math.sin(f/24*TAU)*165,280-Math.abs(Math.cos(f/24*TAU))*180,29,0,TAU);ctx.fill();ctx.font='18px monospace';ctx.fillText(String(f+1).padStart(2,'0')+' / 24',25,355);texture.needsUpdate=true;}}};
+}
+export function buildKeyboard(){const group=new T.Group(),body=part(group,'body');box(body,11.8,.5,4.8,M.steel,0,.3,0,.2);box(body,11.45,.2,4.5,M.black,0,.61,0,.12);const pcb=box(body,10.8,.06,4.1,new T.MeshStandardMaterial({color:0x234139,roughness:.8}),0,.73,0,.03);const keys=new Map();
+ for(const [row,index] of ['QWERTYUIOP','ASDFGHJKL','ZXCVBNM'].map((r,i)=>[r,i]))for(let i=0;i<row.length;i++){const k=row[i],g=part(group,'key');g.position.set((i-(row.length-1)/2)*1.03,.87,(index-1)*1.12);box(g,.92,.35,.92,k==='Q'?M.felt:M.ivory,0,.17,0,.10);const switchCase=box(body,.6,.15,.6,M.black,g.position.x,.72,g.position.z,.03);switchCase.name='Fixed switch housing';const glyph=label(g,k,.6,0,.39,0,k==='Q'?'#d9d9c9':'#35423c');glyph.rotation.x=-Math.PI/2;g.userData.key=k;tag(g,'key',`key:${k}`);keys.set(k,g);}
+ const space=part(group,'key');space.position.set(0,.87,2.03);box(space,5.5,.35,.86,M.ivory,0,.17,0,.1);tag(space,'key','key: ');keys.set(' ',space);for(const x of [-5.4,5.4])for(const z of [-2,2])bolt(body,x,.64,z);tag(body,'body');
+ const spring=part(group,'spring');spring.position.set(4.8,1.2,1.6);tube(spring,Array.from({length:150},(_,i)=>{const a=i/149*TAU*7;return [Math.cos(a)*.22,i/149*1.0,Math.sin(a)*.22];}),.025,M.steel);spring.visible=false;
+ return {group,eye:[3,8,8],parts:{body,key:keys.get('A'),cap:keys.get('A'),spring},update(s,detail=false){for(const [k,g] of keys)g.position.y=.87-(k===(s.key||'').toUpperCase()?(s.travel||0)*.025:0);spring.visible=detail;}};
+}
+export function buildEspresso(){const group=new T.Group(),body=part(group,'body');box(body,4.7,3.9,2.2,M.steel,0,2.1,-.5,.24);box(body,4.5,3.4,.12,M.black,0,2.15,.66,.08);box(body,4.95,.25,2.8,M.steel,0,4.13,-.35,.1);for(let i=0;i<29;i++)rod(body,[-2.1+i*.15,4.29,-1.3],[-2.1+i*.15,4.29,.7],.025,M.steel);box(body,5,.22,3,M.steel,0,.25,.25,.1);for(let i=0;i<25;i++)rod(body,[-2+i*.16,.4,-.1],[-2+i*.16,.4,1.55],.02,M.steel);for(const x of [-1.9,1.9])cyl(body,.18,.3,M.black,x,.08,.2);
+ const head=part(group,'head');cyl(head,.65,.55,M.steel,0,2.6,.95);ring(head,.66,.08,M.black,0,2.4,.95);ring(head,.61,.05,M.steel,0,2.32,.95);tube(body,[[-1.55,2.65,.9],[-1.8,2.35,1.2],[-1.7,1.4,1.2]],.065,M.steel);sphere(body,.19,M.black,-1.55,2.9,.87);const switchButton=box(body,.58,.58,.13,M.black,1.45,3.14,.79,.08);box(body,.30,.25,.03,M.ivory,1.45,3.14,.88,.03);tag(switchButton,'switch','action');
+ const gauge=part(group,'gauge');gauge.position.set(-1.43,3.17,.77);const disk=cyl(gauge,.36,.08,M.ivory);disk.rotation.x=Math.PI/2;ring(gauge,.37,.035,M.steel,0,0,.05,'z');for(let i=0;i<=12;i++){const a=-2.1+i/12*4.2;rod(gauge,[Math.sin(a)*.27,-Math.cos(a)*.27,.05],[Math.sin(a)*.31,-Math.cos(a)*.31,.05],.008,M.black);}const needle=rod(gauge,[0,0,.07],[0,.25,.07],.012,M.black);const portafilter=part(group,'portafilter');portafilter.position.set(0,2.27,.95);cyl(portafilter,.56,.25,M.steel);rod(portafilter,[.4,0,0],[1.55,0,0],.13,M.black);sphere(portafilter,.15,M.black,1.58,0,0,[1.25,.95,.95]);rod(portafilter,[-.18,-.15,0],[-.18,-.43,.06],.04,M.steel);rod(portafilter,[.18,-.15,0],[.18,-.43,.06],.04,M.steel);tag(portafilter,'portafilter','lock');
+ const cup=part(group,'cup');cup.position.set(0,.43,1.03);lathe(cup,[[.31,0],[.36,.06],[.42,.65],[.43,.70],[.37,.71],[.32,.08],[.31,0]],M.ivory);const handle=ring(cup,.23,.06,M.ivory,.52,.4,0,'z');handle.scale.x=.8;const coffee=cyl(cup,.345,.012,M.coffee,0,.1,0);const streams=part(group,'water');for(const x of [-.18,.18])rod(streams,[x,1.85,1],[x,1.1,1],.018,M.coffee);
+ const pump=part(group,'pump');const motor=cyl(pump,.3,.9,M.steel,-1.1,1.1,-.2);motor.rotation.z=Math.PI/2;tube(pump,[[-1.3,1.1,-.2],[-1.3,2,-.2],[-.5,2.2,-.2]],.05,M.brass);pump.visible=false;
+ const boiler=part(group,'boiler');cyl(boiler,.7,1.85,M.brass,0,2.4,-.1);tube(boiler,[[-1,1.3,0],[-1,2.6,0],[0,2.8,0],[0,2.8,1]],.065,M.brass);boiler.visible=false;tag(body,'body');tag(head,'head');tag(gauge,'gauge');tag(cup,'cup');tag(boiler,'boiler');tag(switchButton,'switch','action');
+ return {group,eye:[5,4,9],parts:{body,head,portafilter,filter:portafilter,pump,boiler,water:streams,cup,gauge},update(s,detail=false){portafilter.rotation.y=s.locked?-.05:-1.2;portafilter.position.y=s.locked?2.27:.7;portafilter.position.x=s.locked?0:1.9;streams.visible=!!s.brewing;coffee.position.y=.1+Math.min(40,s.volume||0)/40*.5;needle.rotation.z=2.1-(s.brewing?(s.pressure||9):0)/12*4.2;body.visible=!detail;boiler.visible=detail;pump.visible=detail;}};
+}
+export const machineBuilders={'watch':buildWatch,'fishing-reel':buildReel,'camera':buildCamera,'projector':buildProjector,'keyboard':buildKeyboard,'espresso-machine':buildEspresso};
+
+
+
+===== PUBLIC SOURCE https://visual.newsis.com/goodeasy/assets/research-watch.js?audit=20261028-eight (HTTP 200; local HEAD identical) =====
+import {T,materials as M,mesh,box,cyl,ring,rod,tube,gear,part,bolt} from './quality-kit.js?v=20261026-release3';
+import {TAU,clamp,layerOffset,gearAngle,escapeState,handAngles,period} from './research-math.js?v=20261026-release3';
+const silver=M.steel, gold=M.brass, ruby=new T.MeshPhysicalMaterial({color:0x862d4b,roughness:.2,metalness:.2,clearcoat:1});
+const palette={silver,gold,ruby};
+function plate(parent,r,y,holes=[],material=silver){const s=new T.Shape();s.absarc(0,0,r,0,TAU,false);for(const [x,z,R] of holes){const h=new T.Path();h.absarc(x,-z,R,0,TAU,true);s.holes.push(h);}const g=new T.ExtrudeGeometry(s,{depth:.085,bevelEnabled:true,bevelSize:.012,bevelThickness:.012,bevelSegments:2,curveSegments:64});g.rotateX(-Math.PI/2);return mesh(parent,g,material,0,y,0);}
+export function toothWheel(parent,teeth,module,x,y,z,material=gold,spokes=true){const r=teeth*module/2,s=new T.Shape(),root=r-module*1.15,tip=r+module*.9;for(let i=0;i<teeth*4;i++){const a=i/(teeth*4)*TAU,R=i%4===0||i%4===3?root:tip;i?s.lineTo(Math.cos(a)*R,Math.sin(a)*R):s.moveTo(Math.cos(a)*R,Math.sin(a)*R);}s.closePath();if(spokes&&r>.2)for(let i=0;i<5;i++){const h=new T.Path(),a=i/5*TAU;h.absarc(Math.cos(a)*r*.57,Math.sin(a)*r*.57,r*.22,0,TAU,true);s.holes.push(h);}const h=new T.Path();h.absarc(0,0,module*1.4,0,TAU,true);s.holes.push(h);const g=new T.ExtrudeGeometry(s,{depth:.045,bevelEnabled:true,bevelSize:module*.08,bevelThickness:.004,bevelSegments:2,curveSegments:20});g.rotateX(-Math.PI/2);const wheel=mesh(parent,g,material,x,y,z);cyl(wheel,module*1.1,.14,silver,0,.03,0);wheel.userData={teeth,pitchRadius:r};return wheel;}
+function springRibbon(parent,radius=.72){const count=640,positions=new Float32Array((count+1)*6),indices=[];for(let i=0;i<count;i++){let a=i*2;indices.push(a,a+2,a+1,a+1,a+2,a+3);}const g=new T.BufferGeometry();g.setAttribute('position',new T.BufferAttribute(positions,3));g.setIndex(indices);const material=new T.MeshStandardMaterial({color:0xb4a47e,metalness:.8,roughness:.3,side:T.DoubleSide}),o=mesh(parent,g,material);let previous=-1;
+ return {mesh:o,update(w){if(Math.abs(w-previous)<.0001)return;previous=w;const turns=3.5+4*w;for(let i=0;i<=count;i++){const t=i/count,a=t*turns*TAU,rr=.08+(radius-.08)*t**(1.8-w*.75);positions[i*6]=Math.cos(a)*rr;positions[i*6+1]=.01;positions[i*6+2]=Math.sin(a)*rr;positions[i*6+3]=Math.cos(a)*rr;positions[i*6+4]=.13;positions[i*6+5]=Math.sin(a)*rr;}g.attributes.position.needsUpdate=true;g.computeVertexNormals();g.computeBoundingSphere();}};
+}
+function balance(parent,x,y,z,r=.65){const root=part(parent,'balance');root.position.set(x,y,z);ring(root,r,.035,gold);for(let i=0;i<3;i++){const a=i/3*TAU;rod(root,[0,0,0],[Math.cos(a)*r,0,Math.sin(a)*r],.025,gold);}cyl(root,.06,.18,silver);for(let i=0;i<12;i++){const a=i/12*TAU;const o=cyl(root,.027,.045,silver,Math.cos(a)*r,.02,Math.sin(a)*r);}const hair=tube(root,Array.from({length:181},(_,i)=>{const t=i/180,a=t*TAU*5,R=.05+.37*t;return [Math.cos(a)*R,.09,Math.sin(a)*R];}),.006,silver);root.remove(hair);parent.add(hair);hair.position.copy(root.position);const rest=hair.geometry.attributes.position.array.slice();return {root,hair,update(angle){root.rotation.y=angle;const a=hair.geometry.attributes.position;for(let i=0;i<a.count;i++){const xx=rest[i*3],yy=rest[i*3+1],zz=rest[i*3+2],R=Math.hypot(xx,zz),v=angle*(1-clamp((R-.05)/.37));a.setXYZ(i,xx*Math.cos(v)-zz*Math.sin(v),yy,xx*Math.sin(v)+zz*Math.cos(v));}a.needsUpdate=true;hair.geometry.computeBoundingSphere();hair.geometry.computeBoundingBox();}};}
+function dial(parent,r=1.8,y=0){plate(parent,r,y,[[0,0,.09]],M.ivory);for(let i=0;i<60;i++){const a=i/60*TAU,o=box(parent,i%5?.012:.035,.015,i%5?.055:.15,M.black,Math.sin(a)*(r-.12),y+.1,Math.cos(a)*(r-.12),.003);o.rotation.y=a;}}
+function hands(parent,y=0,r=1.6){const h={};for(const [name,len,w,mat,offset] of [['hour',r*.52,.06,M.black,.0],['minute',r*.82,.038,M.black,.04],['second',r*.96,.014,M.red,.08]]){const g=part(parent,name);box(g,w,.025,len,mat,0,y+offset,-len/2+.06,.007);cyl(g,.06,.025,silver,0,y+offset,0);h[name]=g;}return h;}
+function train(parent){const centers=[[-1.1,.3],[-.264,.3],[.484,.3],[.880,-.3858921198],[1.254,.2618948822]],m=.022;const wheels=[];const specs=[[64,0,.15],[60,1,.28],[64,2,.41],[60,3,.54],[15,4,.69]];for(let i=0;i<specs.length;i++){const [N,index,y]=specs[i],[x,z]=centers[index],root=part(parent,'train-'+i);root.position.set(x,0,z);const wheel=toothWheel(root,N,i===4?.046:m,0,y,0,i===4?silver:gold);if(i>0){const pinN=[0,12,8,8,8][i];toothWheel(root,pinN,m,0,y-.13,0,silver,false);}rod(root,[0,.0,0],[0,.89,0],.025,silver);wheels.push(root);}const b=balance(parent,.65,.75,-1.05,.62),fork=part(parent,'pallet');fork.position.set(1.02,.73,-.28);rod(fork,[0,0,0],[.277,0,.175],.022,silver);rod(fork,[0,0,0],[-.063,0,.321],.022,silver);box(fork,.08,.055,.06,ruby,.277,0,.175,.01);box(fork,.08,.055,.06,ruby,-.063,0,.321,.01);rod(fork,[0,0,0],[-.35,0,-.25],.022,silver);return {wheels,b,fork};}
+export function buildAssembly(){const group=new T.Group(),layers=[];const make=(id,y,shift)=>{const g=part(group,id);g.position.y=y;g.userData={id,restY:y,shift};layers.push(g);return g;};
+ const back=make('후면 덮개',-1.13,-3.5);plate(back,1.9,0,[[0,0,.12]]);ring(back,1.8,.018,gold,0,.095,0);for(let i=0;i<6;i++){const a=i/6*TAU;bolt(back,Math.cos(a)*1.63,.095,Math.sin(a)*1.63);}
+ const bridges=make('브리지',-.96,-2.5);for(const [x,z,w,d] of [[-.72,.3,1.6,.45],[.5,.3,.8,.4],[.95,-.36,.5,1.0]]){const b=box(bridges,w,.095,d,silver,x,0,z,.12);for(const dx of [-w*.34,w*.34]){bolt(bridges,x+dx,.08,z);cyl(bridges,.045,.02,ruby,x+dx,.07,z);}}
+ const drive=make('윤열',-.85,-1.45),tr=train(drive);const barrelSpring=springRibbon(drive,.58);barrelSpring.mesh.position.set(-1.1,.2,.3);ring(drive,.70,.025,silver,-1.1,.2,.3);
+ const mainplate=make('메인플레이트',0,0);plate(mainplate,1.9,0,[[-1.1,.3,.14],[-.264,.3,.08],[.484,.3,.08],[.880,-.3858921198,.08],[1.254,.2618948822,.08],[.65,-1.05,.32]]);for(const [x,z] of [[-1.1,.3],[-.264,.3],[.484,.3],[.880,-.3858921198],[1.254,.2618948822]]){ring(mainplate,.08,.015,ruby,x,.1,z);}
+ const motion=make('모션워크',.15,.85);const cannon=toothWheel(motion,12,.025,0,0,0,gold),intermediate=toothWheel(motion,48,.025,.75,0,0,silver);cyl(motion,.07,.28,silver);const intermediatePinion=toothWheel(motion,15,.025,.75,.1,0,silver,false);const hourWheel=toothWheel(motion,45,.025,0,.1,0,gold);
+ const face=make('다이얼',.34,1.9);dial(face);const needles=make('바늘',.48,2.85),h=hands(needles,0);const glass=make('유리·베젤',.66,3.75);ring(glass,1.89,.035,silver);const cg=new T.MeshPhysicalMaterial({color:0xffffff,roughness:.08,metalness:0,transparent:true,opacity:.10,depthWrite:false});cyl(glass,1.86,.04,cg);
+ const guide=rod(group,[0,-1.15,0],[0,4.5,0],.006,new T.MeshBasicMaterial({color:0x6c817b,transparent:true,opacity:.35}));guide.visible=false;guide.userData.noFit=true;
+ return {group,layers,eye:[5,3.2,7],update(s){const e=clamp(s.explode||0);layers.forEach((g,i)=>g.position.y=g.userData.restY+layerOffset(e,i,g.userData.shift*.35));guide.visible=false;const t=s.time||0,esc=escapeState(t*3.75),fourthAngle=esc.angle*8/60,a=handAngles(fourthAngle*60/TAU);for(const k in h)h[k].rotation.y=-a[k];tr.wheels[4].rotation.y=esc.angle;tr.wheels[3].rotation.y=-fourthAngle;tr.wheels[2].rotation.y=fourthAngle*8/64;tr.wheels[1].rotation.y=-fourthAngle*8/64*8/60;tr.wheels[0].rotation.y=fourthAngle*8/64*8/60*12/64;tr.b.update(esc.balance);tr.fork.rotation.y=esc.fork;barrelSpring.update((s.charge??50)/100);barrelSpring.mesh.rotation.y=tr.wheels[0].rotation.y;cannon.rotation.y=-a.minute;hourWheel.rotation.y=-a.hour;intermediate.rotation.y=a.minute/4;intermediatePinion.rotation.y=intermediate.rotation.y;}};
+}
+export function buildPower(){const group=new T.Group(),barrel=part(group,'barrel');const wheel=toothWheel(barrel,64,.028,0,0,0,gold);cyl(barrel,.08,.4,silver,0,.15,0);ring(barrel,.91,.035,silver,0,.15,0);const spring=springRibbon(barrel,.83);spring.mesh.position.y=.08;const lid=plate(group,.89,.32,[[0,0,.09]],silver);return {group,eye:[4,6,6],update(s){spring.update((s.charge||0)/100);barrel.rotation.y=-(s.time||0)*.35;lid.position.y=.32+(s.open??.8)*1.2;}};}
+export function buildGears(){const group=new T.Group();const A=toothWheel(group,48,.04,-.6,0,0,gold),B=toothWheel(group,12,.04,.6,0,0,silver,false);B.rotation.y=Math.PI/12;for(const x of [-.6,.6])rod(group,[x,-.18,0],[x,.25,0],.04,silver);const marker=M.red.clone();cyl(A,.035,.02,marker,.7,.065,0);cyl(B,.025,.02,marker,.16,.065,0);const contact=cyl(group,.035,.025,ruby,.36,.08,0);return {group,eye:[1,8,4],update(s){A.rotation.y=s.angle||0;B.rotation.y=Math.PI/12+gearAngle(s.angle||0,48,12);contact.visible=!!s.contact;}};}
+export function buildEscapement(){const group=new T.Group();const wheel=part(group,'escape wheel');for(let i=0;i<15;i++){const a=i/15*TAU,shape=new T.Shape();shape.moveTo(.57,0);shape.lineTo(.83,.09);shape.lineTo(.72,.14);shape.lineTo(.58,.13);shape.closePath();const geo=new T.ExtrudeGeometry(shape,{depth:.05,bevelEnabled:true,bevelThickness:.005,bevelSize:.005,bevelSegments:2});geo.rotateX(-Math.PI/2);const o=mesh(wheel,geo,silver);o.rotation.y=a;}ring(wheel,.48,.055,silver);for(let i=0;i<5;i++){const a=i/5*TAU;rod(wheel,[0,0,0],[Math.cos(a)*.5,0,Math.sin(a)*.5],.028,silver);}cyl(wheel,.07,.2,gold);
+ const fork=part(group,'pallet fork');fork.position.set(0,.07,1.18);rod(fork,[0,0,0],[-.50,0,-.5],.03,gold);rod(fork,[0,0,0],[.50,0,-.5],.03,gold);box(fork,.13,.08,.14,ruby,-.5,0,-.5,.015);box(fork,.13,.08,.14,ruby,.5,0,-.5,.015);rod(fork,[0,0,0],[0,0,.49],.035,gold);for(const x of [-.10,.10])rod(fork,[0,0,.42],[x,0,.65],.025,gold);const b=balance(group,0,.05,2.45,.62);return {group,eye:[4,8,5],update(s){const p=escapeState(s.phase||0);wheel.rotation.y=-p.angle;fork.rotation.y=p.fork;b.update(p.balance);s.caption=p.phase;}};}
+export function buildBalance(){const group=new T.Group(),b=balance(group,0,0,0,1.15);cyl(group,.08,.65,silver,0,-.2,0);const anchor=box(group,.2,.1,.2,silver,.43,.13,0);return {group,eye:[3,7,5],update(s){const I=(s.inertia||100)/100,k=(s.stiffness||100)/100,t=s.time||0,damping=s.driven?1:Math.exp(-.15*t);b.update(Math.cos(t*TAU/(period(I,k)/4))*.9*damping);s.caption=(period(I,k)/4).toFixed(2)+'초';}};}
+export function buildHands(){const group=new T.Group();dial(group,1.8,0);const h=hands(group,.15);return {group,eye:[0,9,2],update(s){const a=handAngles(s.seconds||0);for(const k in h)h[k].rotation.y=-a[k];}};}
+export const watchBuilders={assembly:buildAssembly,power:buildPower,gears:buildGears,escapement:buildEscapement,balance:buildBalance,hands:buildHands};
+
+
+
+===== PUBLIC SOURCE https://visual.newsis.com/goodeasy/assets/research-other.js?audit=20261028-eight (HTTP 200; local HEAD identical) =====
+import {buildLengthStudy,buildHarmonicStudy,buildBodyStudy} from './guitar-lessons.js?v=20261027-premium6';
+import {espressoAssembly} from './anatomy-espresso.js?v=20261027-depth4';
+import {buildBrewRatio as detailedBrewRatio} from './coffee-detail.js?v=20261027-detail1';
+import {buildIris as detailedIris,buildShutter as detailedShutter,buildExposure as detailedExposure} from './camera-lessons.js?v=20261027-detail1';
+import {buildCoffeeComparison,buildCoffeeWaterPath} from './espresso-lessons.js?v=20261027-detail1';
+import {curtainWindow,filmCycle,debounceSample,crankX,bowedDisplacement} from './mechanism-checks.js?v=20261026-release3';
+import {buildMXStudy,buildEspressoStudy} from './quality-replacements.js?v=20261027-detail1';
+import {T,materials as M,mesh,box,cyl,ring,rod,tube,part} from './quality-kit.js?v=20261026-release3';
+import {buildGuitar,buildViolin} from './quality-instruments.js?v=20261027-premium6';
+import {buildReel,buildEspresso} from './quality-machines.js?v=20261027-detail1';
+import {TAU,clamp,stringHz,lightRatio} from './research-math.js?v=20261026-release3';
+const ink=new T.MeshStandardMaterial({color:0x1f3e3c,roughness:.6}),blue=new T.MeshStandardMaterial({color:0x569da9,roughness:.25}),red=M.red,signal=new T.MeshStandardMaterial({color:0xe7c47a,emissive:0x6b471a,roughness:.3});
+const finish=(group,update,extra={})=>({group,eye:[4,5,7],update,...extra});
+function wave(parent,length=4){const geo=new T.BufferGeometry(),a=new Float32Array(129*3);geo.setAttribute('position',new T.BufferAttribute(a,3));const o=new T.Line(geo,new T.LineBasicMaterial({color:0xddc28e}));parent.add(o);return (L,t,amp,mode=1,bowed=false)=>{for(let i=0;i<=128;i++){const x=i/128;a[i*3]=-length/2+x*length*L;a[i*3+1]=.65+Math.sin(x*Math.PI*mode)*amp*(bowed?((t%1)*2-1):Math.sin(t*6*mode));a[i*3+2]=0;}geo.attributes.position.needsUpdate=true;geo.computeBoundingSphere();geo.computeBoundingBox();};}
+export function buildString(){return buildLengthStudy();}
+export function buildGuitarBody(){return buildBodyStudy();}
+export function buildHarmonics(){return buildHarmonicStudy();}
+export function buildBowContact(){const group=new T.Group(),geo=new T.BufferGeometry(),positions=new Float32Array(129*3);geo.setAttribute('position',new T.BufferAttribute(positions,3));const line=new T.Line(geo,new T.LineBasicMaterial({color:0xddc28e}));group.add(line);const bow=part(group,'bow');rod(bow,[0,.65,-1.3],[0,.65,1.3],.025,M.ivory);tube(bow,[[.1,.8,-1.5],[.15,1,0],[.1,.8,1.5]],.04,M.darkWood);for(const x of [-2,2])box(group,.1,.6,.4,M.black,x,.3,0);return finish(group,s=>{const phase=((s.cycle??0)%1+1)%1,d=bowedDisplacement(phase)*.44*Math.tanh(Math.cos((s.cycle||0)*Math.PI/6)*8);bow.position.z=.55*Math.sin((s.cycle||0)*Math.PI/6);for(let i=0;i<=128;i++){const x=i/128;positions[i*3]=-2+4*x;positions[i*3+1]=.65;positions[i*3+2]=Math.sin(x*Math.PI)*d;}geo.attributes.position.needsUpdate=true;geo.computeBoundingSphere();geo.computeBoundingBox();s.caption=phase<.8?'붙음 · 현의 접촉점이 활 방향으로 끌립니다.':'미끄러짐 · 현의 접촉점이 빠르게 되돌아갑니다.';},{defaults:{cycle:0},advance(s,dt){s.cycle+=dt*.3;},reading:s=>s.caption});}
+
+export function buildViolinBridge(){const original=buildViolin(T,M),group=new T.Group(),bridge=original.parts.bridge;group.add(bridge);const scale=3;bridge.scale.setScalar(scale);const plate=box(group,1.8,.12,1.3,M.wood,.18*scale,.32,0,.07);const post=cyl(group,.075,.7,M.wood,.18*scale,-.08,.145*scale);const bass=box(group,1.6,.13,.10,M.darkWood,.18*scale,.195,-.145*scale);const bottom=box(group,1.8,.08,1.3,M.wood,.18*scale,-.46,0,.05);bridge.updateMatrixWorld(true);const restY=new T.Box3().setFromObject(plate).max.y-new T.Box3().setFromObject(bridge).min.y;return finish(group,s=>{const a=Math.sin((s.time||0)*5)*(s.amount||50)/100*.045;bridge.rotation.x=a;bridge.position.y=restY+Math.sin(a)*.145*scale;plate.rotation.x=a*.45;plate.position.y=.32+Math.sin(a*.45)*.145*scale;},{defaults:{amount:50},advance(s,dt){s.time+=dt;},reading:()=>`브리지 두 발 → 상판 · 한쪽 아래 사운드포스트, 반대쪽 배스바 · 변위 확대`});}
+export function buildViolinBody(){const m=buildViolin(T,M),group=new T.Group();group.add(m.parts.body,m.parts.bridge,m.parts.tailpiece);const top=m.parts.top,back=m.parts.back,ty=top.position.y,by=back.position.y;const post=cyl(group,.025,.23,M.wood,.27,-.01,.145);const bassbar=box(group,.8,.035,.05,M.darkWood,-.05,.07,-.145);const bridgeY=m.parts.bridge.position.y;bassbar.userData.restY=bassbar.position.y;return finish(group,s=>{const e=s.explode||0;top.position.y=ty+e*.65;back.position.y=by-e*.4;post.scale.y=1;bassbar.position.y=bassbar.userData.restY+e*.65;m.parts.bridge.position.y=bridgeY+e*.65;},{defaults:{explode:0},reading:()=>`상판과 뒤판 사이의 사운드포스트 · 세로로 놓인 배스바 · 특정 악기 실측 아님`});}
+export function buildReelRetrieve(){const m=buildReel(),group=m.group;return {...m,defaults:{turns:0,ratio:5.2,radius:22},update(s){for(const o of m.parts.spool.children){if(o.geometry?.type==='TorusGeometry'&&o.geometry.parameters.tube<.02){const r=Math.max(.6,Math.min(1.04,(s.radius||22)/22));o.scale.set(r,r,r);}}m.update({turns:s.turns||0,rotor:(s.turns||0)*(s.ratio||5.2),slipping:false});},advance(s,dt){s.turns+=dt*.4;},action(a,s){if(a==='turn')s.turns++;},reading:s=>`반지름 ${s.radius}mm · ${s.ratio}:1 · 한 바퀴 약 ${(TAU*s.radius*s.ratio/10).toFixed(1)}cm (가정)`};}
+export function buildOscillation(){const group=new T.Group(),crank=part(group,'crank'),follower=part(group,'slotted follower');crank.position.set(0,.6,0);ring(crank,1.4,.03,M.steel,0,0,0,'z');rod(crank,[0,0,0],[0,1.4,0],.06,M.brass);const pin=cyl(crank,.11,.35,M.red,0,1.4,.17);pin.rotation.x=Math.PI/2;for(const x of [-.18,.18])box(follower,.10,3.2,.15,M.black,x,.6,.38);for(const y of [-1,2.2])box(follower,.46,.1,.15,M.black,0,y,.38);rod(group,[-2,-1.25,.38],[2,-1.25,.38],.07,M.steel);rod(follower,[0,-1.1,.38],[0,-1.1,1.5],.065,M.steel);const spool=cyl(follower,.5,.65,M.steel,0,-1.1,1.5);spool.rotation.z=Math.PI/2;return finish(group,s=>{crank.rotation.z=-(s.angle||0);follower.position.x=crankX(s.angle||0);},{defaults:{angle:0},eye:[3,3,8],advance(s,dt){s.angle+=dt;},reading:()=>`크랭크 핀 → 세로 슬롯 → 왕복 이동 · 회전 변환의 예시, 특정 릴의 내부 구조 아님`});}
+
+export function buildDrag(){const group=new T.Group(),stack=part(group,'washers');for(let i=0;i<5;i++){const o=cyl(stack,.75,.07,i%2?M.felt:M.steel,0,.1+i*.18,0);ring(stack,.76,.015,M.brass,0,.1+i*.18,0);}rod(group,[0,-.1,0],[0,1.4,0],.075,M.steel);const knob=cyl(group,.45,.2,M.black,0,1.2,0);const line=rod(group,[.75,.7,0],[2.2,.7,0],.015,M.ivory);const marks=[];for(let i=0;i<5;i++){const mark=box(group,.09,.028,.16,i%2?M.red:M.brass,.60,.15+i*.18,0,.01);marks.push(mark);}return finish(group,s=>{const slipping=s.load>s.setting;stack.children.forEach((o,i)=>o.rotation.y=slipping&&Math.floor(i/2)%2?(s.time||0):0);marks.forEach((o,i)=>{const a=slipping&&i%2?s.time||0:0;o.position.x=Math.cos(a)*.60;o.position.z=Math.sin(a)*.60;o.rotation.y=-a;});knob.position.y=.955+(100-s.setting)*.002;s.caption=slipping?'저항 기준을 넘어 줄이 풀립니다.':'설정한 저항이 줄을 붙잡습니다.';},{defaults:{load:30,setting:50},advance(s,dt){s.time+=dt;},reading:s=>`${s.caption} · 상대값 ${s.load} / ${s.setting}`});}
+export function buildIris(){const group=new T.Group();ring(group,1.35,.09,M.steel);let last=-1;const blades=part(group,'aperture blades');return finish(group,s=>{const f=s.fstop||2.8;if(f===last)return;last=f;while(blades.children.length){const c=blades.children[0];c.geometry.dispose();blades.remove(c);}const r=1.568/f;for(let i=0;i<8;i++){const a=i/8*TAU,b=a+TAU/8+.009,shape=new T.Shape();shape.absarc(0,0,1.24,a,b,false);shape.lineTo(Math.cos(b)*r,Math.sin(b)*r);shape.absarc(0,0,r,b,a,true);shape.closePath();const g=new T.ExtrudeGeometry(shape,{depth:.015,bevelEnabled:false,curveSegments:28});g.rotateX(-Math.PI/2);mesh(blades,g,M.black,0,i*.009,0);}},{defaults:{fstop:2.8},eye:[0,8,1],reading:s=>'f/'+s.fstop+' · f/2.8 대비 빛 '+((2.8/s.fstop)**2).toFixed(2)+'배 · ISO와 시간 고정'});}
+export function buildShutter(){const group=new T.Group(),sensor=box(group,2.5,.06,1.7,blue,0,0,0),first=box(group,2.55,.05,1.8,M.black,0,.08,0),second=box(group,2.55,.05,1.8,M.black,0,.15,-1.8),ray=box(group,2.3,.02,1,signal,0,.045,0);return finish(group,s=>{const w=curtainWindow(s.cycle||0,!!s.fast);first.position.z=w.first;second.position.z=w.second;ray.visible=w.width>0;ray.scale.z=w.width;ray.position.z=(w.low+w.high)/2;s.openWidth=w.width;},{defaults:{cycle:0,fast:0},eye:[3,7,4],advance(s,dt){s.cycle=(s.cycle+dt*.25)%1;},reading:s=>`${s.fast?'좁은 틈이 이동하는 고속 노출':'첫 막 개방 → 전체 노출 → 뒤 막 닫힘'} · 표시된 노출 폭 ${(s.openWidth/1.7*100).toFixed(0)}% · 시간 확대`});}
+
+export function buildExposure(){const group=new T.Group(),screen=box(group,3,.12,2,M.ivory);const brightness=M.ivory.clone();screen.material=brightness;const t=cyl(group,.35,.08,M.black,.7,.12,0);return finish(group,s=>{const R=lightRatio(s.fstop||2.8,s.shutter||250);brightness.color.setScalar(Math.max(.03,Math.min(1,R*.6)));s.light=R;},{defaults:{fstop:2.8,shutter:250},eye:[0,8,1],reading:s=>`기준 f/2.8 · 1/250초 대비 빛 ${s.light.toFixed(2)}배 · 다른 조건 고정`});}
+export function buildFilmGate(){const group=new T.Group(),film=part(group,'film'),shape=new T.Shape();shape.moveTo(-.85,-3.2);shape.lineTo(.85,-3.2);shape.lineTo(.85,3.2);shape.lineTo(-.85,3.2);shape.closePath();for(let y=-3;y<3;y+=.225)for(const x of [-.7,.6]){const h=new T.Path();h.moveTo(x,y);h.lineTo(x+.1,y);h.lineTo(x+.1,y+.12);h.lineTo(x,y+.12);h.closePath();shape.holes.push(h);}const g=new T.ExtrudeGeometry(shape,{depth:.025,bevelEnabled:false});g.rotateX(-Math.PI/2);mesh(film,g,M.darkWood);for(let i=-3;i<4;i++)box(film,1.02,.02,.77,i%2?ink:M.ivory,0,.035,i*.9,.015);const gate=part(group,'gate');for(const z of [-.57,.57])box(gate,2,.14,.25,M.steel,0,.15,z);for(const x of [-1,1])box(gate,.25,.14,1.4,M.steel,x,.15,0);const shutter=part(group,'shutter');shutter.position.set(1.9,.8,0);const disk=mesh(shutter,new T.CylinderGeometry(.7,.7,.07,64,1,false,0,Math.PI*1.3),M.black);shutter.visible=false;const cover=box(group,1.05,.04,.88,M.black,0,.25,0);const light=box(group,1.02,.02,.85,signal,0,.20,0);return finish(group,s=>{const cycle=filmCycle(s.cycle||0),t=cycle.phase;film.position.z=cycle.offset;film.children.slice(1).forEach((o,i)=>o.material=(i-3+cycle.index)%2?ink:M.ivory);cover.visible=!cycle.exposed;light.visible=cycle.exposed;const open=cycle.exposed;s.caption=open?'정지·노출: 필름을 멈추고 빛을 통과시킵니다.':t>.65?'차광·이송: 빛을 가린 사이 다음 프레임으로 이동합니다.':'차광·대기: 다음 이송 전에 빛을 가립니다.';},{defaults:{cycle:0},advance(s,dt){s.cycle+=dt*.3;},reading:s=>s.caption});}
+export function buildFrames(){const group=new T.Group(),cards=[];for(let i=0;i<12;i++){const panel=part(group,'frame');panel.position.set((i%4-1.5)*1.05,0,(Math.floor(i/4)-1)*.85);box(panel,.93,.05,.68,M.ivory);const ball=cyl(panel,.085,.04,ink,Math.sin(i/12*TAU)*.28,.06,Math.cos(i/12*TAU)*.18);cards.push(panel);}return finish(group,s=>{const f=Math.floor(s.frame||0)%12;cards.forEach((g,i)=>g.position.y=i===f?.25:0);},{defaults:{frame:0,fps:12},advance(s,dt){s.frame=(s.frame+dt*s.fps)%12;},reading:s=>`현재 ${Math.floor(s.frame)+1}/12 · 초당 ${s.fps}장 · 프레임 수와 표시 속도를 따로 비교`});}
+export function buildSpringForce(){const group=new T.Group(),spring=part(group,'spring');tube(spring,Array.from({length:241},(_,i)=>{const t=i/240,a=t*TAU*8;return [Math.cos(a)*.35,.2+t*1.7,Math.sin(a)*.35];}),.035,M.steel);box(group,1.2,.1,1.2,M.black,0,.115,0);const force=new T.ArrowHelper(new T.Vector3(0,1,0),new T.Vector3(1,.3,0),1,0xd4b582,.14,.08);force.name="Spring restoring force";group.add(force);const cap=box(group,1.2,.2,1.2,M.ivory,0,2,0,.06);return finish(group,s=>{const d=(s.travel||0)/4;spring.scale.y=1-d*.5;spring.position.y=.2*(1-spring.scale.y);cap.position.y=2-d*.85;const f=(s.stiffness||50)*(s.travel||0)/100;force.visible=f>0;force.setLength(Math.max(.08,f*.5),.14,.08);},{defaults:{travel:0,stiffness:50},reading:s=>`상대 스프링 강성 ${s.stiffness} · 추가 눌림 ${s.travel}mm · 이상 스프링 추가 힘 ${(s.stiffness*s.travel/100).toFixed(2)} (상대값)`});}
+export function buildDebounce(){const group=new T.Group(),raw=cyl(group,.3,.1,red,-.7,.1,0),filtered=cyl(group,.3,.1,red,.7,.1,0);box(group,2.4,.1,1.2,ink);const wire=rod(group,[-.7,.1,0],[.7,.1,0],.025,M.brass);return finish(group,s=>{const t=s.time||0,signalState=debounceSample(t,s.debounce);const rawOn=signalState.raw,stable=signalState.filtered;raw.material=rawOn?signal:red;filtered.material=stable?signal:red;s.caption=`원시 접점 ${rawOn?'ON':'OFF'} · 안정화 후 입력 ${stable?'ON':'OFF'}`;},{defaults:{debounce:5,time:0},advance(s,dt){s.time+=dt*.06;if(s.time>.1)s.running=false;},action(a,s){if(a==='press'){s.time=0;s.running=true;}},reading:s=>`${s.caption} · 가정한 안정화 ${s.debounce}ms, 시간은 느리게 표시`});}
+export function buildPuck(){const group=new T.Group(),basket=cyl(group,1.0,.17,M.steel,0,.0,0),puck=cyl(group,.92,.45,M.coffee,0,.3,0),streams=[];for(let i=0;i<13;i++){const a=i*2.4,r=Math.sqrt(i/13)*.8;streams.push(rod(group,[Math.cos(a)*r,.56,Math.sin(a)*r],[Math.cos(a)*r,1.55,Math.sin(a)*r],.012,blue));}return finish(group,s=>{const resistance=.5+(s.grind||50)/25,q=(s.pressure||9)/resistance;s.caption=q.toFixed(2);streams.forEach((o,i)=>{o.visible=!s.channel||i<3;o.scale.y=.45+q*.06;});},{defaults:{grind:50,pressure:9,channel:0},reading:s=>`비교 유량 ${s.caption} (상대값) · ${s.channel?'틈으로 흐름 집중':'균일한 커피층 가정'}`});}
+export function buildBrewRatio(){const group=new T.Group(),cup=part(group,'cup');const profile=[[.55,0],[.62,.12],[.72,1.2],[.73,1.28],[.64,1.28],[.54,.13],[.55,0]].map(p=>new T.Vector2(...p));mesh(cup,new T.LatheGeometry(profile,64),M.ivory);ring(cup,.35,.08,M.ivory,.83,.7,0,'z');const coffee=cyl(cup,.58,.05,M.coffee,0,.1,0);const puck=cyl(group,.55,.2,M.coffee,-1.6,.15,0);return finish(group,s=>{coffee.position.y=.1+Math.min(1,(s.yield||36)/80);},{defaults:{dose:18,yield:36},reading:s=>`${s.dose}g 넣고 ${s.yield}g 추출 · 질량비 1:${(s.yield/s.dose).toFixed(2)} · 잔 높이는 상징 표현`});}
+export function buildWaterPath(){const m=buildEspressoStudy(T,M),route=new T.CatmullRomCurve3([[1.02,1.2,-.54],[.8,.57,.24],[-.43,1.47,-.43],[-.62,2.3,1.72],[-.62,1.15,1.72],[-.62,.9,2.04]].map(v=>new T.Vector3(...v))),bead=new T.Mesh(new T.SphereGeometry(.075,20,12),blue);m.group.add(bead);for(const name of ['tank','pump','boiler','head','filter'])m.parts[name]?.traverse(o=>{if(o.isMesh&&o.material.emissive)o.material=o.material.clone();});return {...m,defaults:{phase:0},update(s){m.update({locked:true,brewing:s.phase>.8,volume:0,pressure:9},true);for(const name of ['tank','pump','boiler','pipes'])m.parts[name].position.set(0,0,0);bead.position.copy(route.getPoint(clamp(s.phase)));const active=['tank','pump','boiler','head','filter'][Math.min(4,Math.floor(s.phase*5))];for(const name of ['tank','pump','boiler','head','filter'])m.parts[name].traverse(o=>{if(o.isMesh&&o.material.emissive)o.material.emissive.setHex(name===active?0x264752:0);});},advance(s,dt){s.phase=(s.phase+dt*.15)%1;},reading:s=>['물탱크에서 펌프로','펌프가 압력을 만듭니다.','가열된 물이 그룹헤드로','그룹헤드에서 커피층으로','커피층을 지나 추출구로'][Math.min(4,Math.floor(s.phase*5))]};}
+export function buildHammer(){const group=new T.Group(),key=box(group,3.4,.17,.6,M.ivory,-.8,.1,0),pivot=cyl(group,.12,.7,M.brass,-.4,.0,0),hammer=part(group,'hammer');hammer.position.set(.3,.45,0);rod(hammer,[0,0,0],[1.2,0,0],.05,M.darkWood);const head=cyl(hammer,.22,.25,M.felt,1.2,0,0);head.rotation.x=Math.PI/2;rod(group,[.3+1.2*Math.cos(1.1),.45+1.2*Math.sin(1.1)+.22,-1],[.3+1.2*Math.cos(1.1),.45+1.2*Math.sin(1.1)+.22,1],.012,M.brass);return finish(group,s=>{const t=s.phase||0;key.rotation.z=-clamp(t/.45)*.08;hammer.rotation.z=t<.65?clamp(t/.65)*1.1:1.1-(t-.65)/.35*.4;s.caption=t<.52?'건반의 힘 전달':t<.65?'잭 이탈 · 해머 자유 비행':t<.7?'현 타격':'해머 반발 · 현은 자유 진동';},{defaults:{phase:0},advance(s,dt){s.phase=(s.phase+dt*.25)%1;},reading:s=>s.caption});}
+export function buildDamper(){const group=new T.Group();for(const z of [-.5,0,.5])rod(group,[-2,.1,z],[2,.1,z],.012,M.brass);const dampers=[];for(const x of [-.9,0,.9])dampers.push(box(group,.4,.15,1.2,M.felt,x,.2,0,.04));return finish(group,s=>{for(const d of dampers)d.position.y=.2+(s.pedal? .7:0);},{defaults:{pedal:0},reading:s=>s.pedal?'페달 ON · 댐퍼가 현에서 떨어집니다.':'페달 OFF · 댐퍼가 현의 진동을 멈춥니다.'});}
+export function buildConnectedWaterPath(){
+ const m=espressoAssembly(),update=m.update.bind(m),ids=['tank','pump','boiler','head','cup'];
+ const captions=['물탱크 바닥의 흡입구 → 펌프 입구','펌프 출구 → 보일러 입구','보일러의 히터 → 데워진 물의 출구','그룹헤드 → 샤워스크린 → 커피층','바스켓의 구멍 → 추출구 → 잔'];
+ return {...m,defaults:{phase:0,explode:0},annotations:ids.map((id,i)=>({object:m.components.find(c=>c.id===id).object,text:['물탱크','펌프','보일러','그룹헤드','잔'][i]})),update(s){s.activePart=Math.min(4,Math.floor(clamp(s.phase||0)*5));update(s);},advance(s,dt){s.phase=Math.min(1,(s.phase||0)+dt/12);if(s.phase>=1)s.running=false;},reading:s=>captions[s.activePart||0]+' · 관은 실제 접속점을 잇습니다. 펌프식 단일 보일러의 개념 구조입니다.'};
+}
+export const otherBuilders={'mx-structure':()=>buildMXStudy(T,M),string:buildString,'guitar-body':buildGuitarBody,harmonics:buildHarmonics,bow:buildBowContact,'violin-bridge':buildViolinBridge,'violin-body':buildViolinBody,retrieve:buildReelRetrieve,oscillation:buildOscillation,drag:buildDrag,iris:detailedIris,shutter:detailedShutter,exposure:detailedExposure,'film-gate':buildFilmGate,frames:buildFrames,'spring-force':buildSpringForce,debounce:buildDebounce,puck:buildCoffeeComparison,'brew-ratio':detailedBrewRatio,'water-path':buildConnectedWaterPath,hammer:buildHammer,damper:buildDamper};
+
+
+
+===== PUBLIC SOURCE https://visual.newsis.com/goodeasy/assets/espresso-lessons.js?audit=20261028-eight (HTTP 200; local HEAD identical) =====
+import {buildCoffeeComparison as detailedCoffeeComparison} from './coffee-detail.js?v=20261027-detail1';
+import {T,materials as M,box,cyl,rod,tube,part} from './quality-kit.js?v=20261026-release3';
+import {buildEspressoStudy} from './quality-replacements.js?v=20261027-detail1';
+import {coffeeFlow} from './model.js?v=20261026-release3';
+
+const water=new T.MeshStandardMaterial({color:0x70cbd5,emissive:0x164651,roughness:.25});
+const clamp=x=>Math.max(0,Math.min(1,x));
+function legacyCoffeeComparison(){
+ const group=new T.Group(),beds=[],labels=[];
+ for(let side=0;side<2;side++){
+  const g=part(group,side?'selected grind':'coarse reference');g.position.x=side?1.45:-1.45;
+  box(g,2,.08,1.4,M.steel,0,-.18,0);
+  // An open section: particles and the water between them remain visible.
+  const particles=[];
+  for(let row=0;row<10;row++)for(let col=0;col<16;col++){
+   const grain=cyl(g,.11,.12,M.coffee,-.78+col*.26,-.01+row*.17,(col%2? .09:-.09));grain.rotation.x=Math.PI/2;particles.push(grain);
+  }
+  const drops=[];for(let i=0;i<18;i++){
+   const o=new T.Mesh(new T.SphereGeometry(.032,12,8),water);g.add(o);drops.push(o);
+  }
+  const glass=new T.MeshStandardMaterial({color:0xacc9c9,transparent:true,opacity:.16,depthWrite:false,side:T.DoubleSide});
+  const cup=cyl(g,.52,.56,glass,0,-.78,0);const fill=cyl(g,.47,.02,M.coffee,0,-1,0);
+  beds.push({g,particles,drops,fill});labels.push({text:side?'② 분쇄도 변경':'① 굵게 고정',point:[g.position.x,1.18,0]});
+ }
+ return {group,eye:[0,2,9],defaults:{grind:70,pressure:9,channel:0,time:0},annotations:labels,
+  update(s){const reference=coffeeFlow(30,9),values=[30,s.grind??70];s.comparison=[];
+   beds.forEach((b,side)=>{const grind=values[side],q=coffeeFlow(grind,s.pressure??9)/reference;
+    s.comparison.push(Math.round(q*100));
+    const cols=Math.max(4,Math.min(16,Math.round(7+(grind-30)*.175))),rows=Math.max(3,Math.min(10,Math.round(4+(grind-30)*.1)));b.particles.forEach((o,i)=>{const col=i%16,row=Math.floor(i/16);o.visible=col<cols&&row<rows;o.scale.setScalar((.76/cols)/.11);o.position.set(-.82+col*1.64/(cols-1),.02+row*.65/(rows-1),.02);});
+    b.drops.forEach((o,i)=>{const channel=!!s.channel&&side===1;const phase=((s.time||0)*q*.45+i/18)%1;o.position.set(channel? .53+(i%3)*.025:-.79+(i%7)*.26,1.06-phase*2.0,.14);});
+    const fraction=clamp(q*.65);b.fill.position.y=-1+fraction*.45;
+   });
+  },advance(s,dt){s.time+=dt;},reading:s=>`두 쪽 모두 ${s.pressure}bar · 왼쪽 ${s.comparison[0]} / 오른쪽 ${s.comparison[1]} · 굵게·9bar의 흐름을 100으로 둔 비교값`,
+  compare:s=>({left:s.comparison[0],right:s.comparison[1],pressure:s.pressure,grind:s.grind,channel:!!s.channel})};
+}
+
+export function buildCoffeeWaterPath(){
+ const m=buildEspressoStudy(T,M),group=m.group;
+ const points=[[1.02,1.26,-.54],[.80,.57,.24],[-.43,1.47,-.43],[-.62,2.37,1.72],[-.62,1.15,1.99],[-.62,.65,1.99]];
+ for(let i=0;i<points.length-1;i++){const pipe=rod(group,points[i],points[i+1],i===4?.012:.027,i===4?M.coffee:water);pipe.userData.noFit=true;}
+ const bead=new T.Mesh(new T.SphereGeometry(.085,20,12),new T.MeshBasicMaterial({color:0xc2f5f5}));bead.userData.noFit=true;group.add(bead);
+ const names=['tank','pump','boiler','filter','cup'];
+ const texts=['① 물탱크','② 펌프','③ 보일러','④ 커피층','⑤ 잔'];
+ const annotations=names.map((key,i)=>({text:texts[i],part:key,point:points[[0,1,2,4,5][i]]}));
+ for(const name of [...names,'head'])m.parts[name]?.traverse(o=>{if(o.isMesh&&o.material.emissive)o.material=o.material.clone();});
+ return {...m,eye:[4,3.8,8],defaults:{phase:0},annotations,
+  update(s){m.update({locked:true,brewing:s.phase>=.8,volume:Math.max(0,(s.phase-.8)/.2)*20,pressure:9},true);
+   for(const name of ['tank','pump','boiler','pipes'])m.parts[name]?.position.set(0,0,0);
+   const active=Math.min(4,Math.floor(clamp(s.phase)*5));s.activePart=active;
+   // Equal slider intervals per named stage, with the dot passing through each part.
+   const section=Math.min(4,Math.floor(clamp(s.phase)*5)),local=clamp(s.phase)*5-section;
+   const a=new T.Vector3(...points[section===4?4:section]),b=new T.Vector3(...points[section===4?5:section+1]);
+   bead.position.copy(a.lerp(b,clamp(local)));
+   for(const [i,name] of names.entries())m.parts[name]?.traverse(o=>{if(o.isMesh&&o.material.emissive)o.material.emissive.setHex(i===active?0x265f69:0);});
+  },advance(s,dt){s.phase=Math.min(1,s.phase+dt*.15);if(s.phase===1)s.running=false;},
+  action(a,s){if(a==='path-start'){s.phase=0;s.running=true;}},
+  reading:s=>['① 물탱크 · 추출에 쓸 물을 담습니다.','② 펌프 · 커피층 쪽으로 물을 밀어 보냅니다.','③ 보일러 · 추출에 쓸 물을 데웁니다.','④ 커피층 · 뜨거운 물이 가루 사이를 통과합니다.','⑤ 잔 · 커피층을 지난 액체가 내려옵니다.'][s.activePart||0]};
+}
+
+export {detailedCoffeeComparison as buildCoffeeComparison};
+
+
+
+===== PUBLIC SOURCE https://visual.newsis.com/goodeasy/assets/anatomy-espresso.js?audit=20261028-eight (HTTP 200; local HEAD identical) =====
+import {T,M,TAU,clamp,colors,metal,component,assembly,part,mesh,box,cyl,ring,rod,bolt,sleeve,tube} from './anatomy-core.js?v=20261027-depth3';
+import {createCoffeeCup} from './coffee-detail.js?v=20261027-detail1';
+export function espressoAssembly(){
+ const group=new T.Group(),C=[],add=(...a)=>{const c=component(group,...a);C.push(c);return c.object;},steel=metal(0xa9b9b7),copper=metal(0xba875b),water=new T.MeshPhysicalMaterial({color:0x459dad,transparent:true,opacity:.55,roughness:.15}),connections=[];
+ const chassis=add('chassis','프레임과 드립 트레이','펌프·보일러·그룹헤드를 같은 프레임에 고정합니다.',[0,-.35,-.3]);box(chassis,5.2,.12,2.3,M.black,0,-.1,0);for(const x of [-2.3,2.3])rod(chassis,[x,0,-.6],[x,3,-.6],.065,steel);box(chassis,5.2,.12,1.4,metal(0x31544a),0,3,-.6);for(let i=0;i<17;i++)box(chassis,.045,.04,1.0,steel,.8+i*.08,.04,.55,.005);
+ const tank=add('tank','물탱크와 흡입구','바닥 쪽 흡입구에서 펌프로 물을 보냅니다.',[-.7,1.1,0],colors.water);tank.position.set(-1.9,1.25,-.05);const glass=new T.MeshPhysicalMaterial({color:0x91c4c8,transparent:true,opacity:.24,roughness:.18,side:T.DoubleSide,depthWrite:false});box(tank,.85,2.15,.9,glass,0,0,0,.07);box(tank,.77,1.65,.81,water,0,-.2,0,.04);box(tank,.88,.10,.94,M.black,0,1.10,0);cyl(tank,.06,.20,steel,0,-1.04,.15);cyl(tank,.11,.09,steel,0,-.91,.15);for(let i=0;i<12;i++){const a=i/12*TAU;rod(tank,[Math.cos(a)*.11,-.95,.15+Math.sin(a)*.11],[Math.cos(a)*.11,-.87,.15+Math.sin(a)*.11],.007,M.black);}
+ const pump=add('pump','펌프와 피스톤','진동하는 피스톤이 물을 밀어 압력을 만듭니다.',[-.8,0,1],colors.drive);pump.position.set(-.9,.7,0);const coil=cyl(pump,.32,.55,metal(0x3a4f4c));coil.rotation.z=Math.PI/2;for(let i=0;i<8;i++){const o=ring(pump,.27,.018,copper,-.22+i*.06,0,0,'x');}const piston=cyl(pump,.08,.65,steel);piston.rotation.z=Math.PI/2;for(const x of [-.38,.38]){const p=cyl(pump,.07,.20,steel,x,0,0);p.rotation.z=Math.PI/2;}
+ const opv=add('opv','과압 밸브','설정 압력을 넘는 경우 물을 탱크 쪽으로 돌려보내는 경로입니다.',[-.4,.6,.7],colors.spring);opv.position.set(-.6,1.2,0);cyl(opv,.12,.35,copper);ring(opv,.13,.025,steel,0,.18,0);
+ const boiler=add('boiler','보일러와 히터','히터가 물을 데웁니다. 출구는 그룹헤드로 이어집니다.',[0,1.1,-1],colors.spring);boiler.position.set(.1,1.6,-.15);mesh(boiler,new T.CylinderGeometry(.48,.48,1.55,64,1,true,Math.PI*.25,Math.PI*1.35),copper,0,.025,0);cyl(boiler,.47,.07,steel,0,-.75,0);ring(boiler,.48,.035,steel,0,.80,0);const lid=cyl(boiler,.47,.07,copper,0,.82,0);const heater=tube(boiler,Array.from({length:91},(_,i)=>{const t=i/90,a=t*TAU*4;return [Math.cos(a)*.29,-.58+t*.65,Math.sin(a)*.29];}),.025,metal(0xe29647));const boilerWater=cyl(boiler,.37,1.1,water,0,-.10,0);for(const x of [-.22,.22])cyl(boiler,.04,.25,steel,x,-.88,0);
+ const head=add('head','그룹헤드와 분산 블록','보일러에서 온 물을 샤워스크린 쪽으로 분산시킵니다.',[1,.55,0]);head.position.set(1.6,2.2,.3);cyl(head,.12,.54,steel,0,.47,0);box(head,.36,.10,.40,steel,0,.71,0,.025);mesh(head,new T.CylinderGeometry(.47,.47,.42,64,1,true,Math.PI*.35,Math.PI*1.25),steel);ring(head,.47,.025,steel,0,.21,0);ring(head,.48,.06,M.black,0,-.2,0);cyl(head,.32,.09,water,0,-.05,0);for(let i=0;i<8;i++){const a=i/8*TAU;rod(head,[0,-.04,0],[Math.cos(a)*.29,-.16,Math.sin(a)*.29],.011,water);}for(let i=0;i<6;i++){const a=i/6*TAU;cyl(head,.045,.08,M.brass,Math.cos(a)*.37,.25,Math.sin(a)*.37);}
+ const screen=add('screen','가스켓과 샤워스크린','고무 가스켓은 틈을 막고, 작은 구멍들은 물을 커피층 위로 나눕니다.',[1.15,-.1,.3],colors.water);screen.position.set(1.6,1.96,.3);ring(screen,.41,.035,M.black);perforated(screen,.37,0,steel);
+ const basket=add('basket','타공 바스켓과 커피층','바닥의 작은 구멍으로 액체가 빠져나옵니다. 커피층은 물의 흐름을 저항합니다.',[1.5,-.1,.5],colors.coffee);basket.position.set(1.6,1.90,.3);sleeve(basket,.42,.25,steel,0,-.15,0);perforated(basket,.35,-.15,steel);const grounds=cyl(basket,.33,.15,M.coffee,0,-.025,0);for(let i=0;i<90;i++){const a=i*2.39996,r=.31*Math.sqrt(i/90);const grain=mesh(basket,new T.IcosahedronGeometry(.027,0),M.darkWood,Math.cos(a)*r,.06,Math.sin(a)*r);}
+ const filter=add('filter','포터필터와 추출구','바스켓을 그룹헤드에 잠그고, 통과한 커피를 아래로 모읍니다.',[1.9,-.45,.8]);filter.position.set(1.6,1.70,.3);sleeve(filter,.45,.20,steel);cyl(filter,.43,.05,steel);rod(filter,[.4,.12,0],[1.20,.12,0],.09,M.black);rod(filter,[0,-.03,0],[0,-.25,0],.055,steel);
+ const cupPart=add('cup','잔과 받침','추출구 바로 아래에서 커피를 받습니다.',[1.9,0,1.1]);cupPart.position.set(1.6,.09,.3);const cup=createCoffeeCup();cup.group.scale.setScalar(.66);cupPart.add(cup.group);
+ function connect(id,A,a,B,b,via=[]){const p=part(group,'pipe-'+id),localPoints=[A.localToWorld(new T.Vector3(...a)),...via.map(v=>new T.Vector3(...v)),B.localToWorld(new T.Vector3(...b))];const pipe=tube(p,localPoints.map(v=>v.toArray()),.035,metal(0x287e8b));const flow=tube(p,localPoints.map(v=>v.toArray()),.018,water);connections.push({id,A,a:new T.Vector3(...a),B,b:new T.Vector3(...b),points:localPoints,curve:new T.CatmullRomCurve3(localPoints),pipe:p,flow});for(const [idx,obj,pos] of [[0,A,a],[1,B,b]]){const o=cyl(obj,.065,.09,copper,...pos),v=idx?localPoints.at(-1).clone().sub(localPoints.at(-2)):localPoints[1].clone().sub(localPoints[0]);v.applyQuaternion(obj.getWorldQuaternion(new T.Quaternion()).invert()).normalize();o.quaternion.setFromUnitVectors(new T.Vector3(0,1,0),v);}}
+ group.updateMatrixWorld(true);
+ connect('tank-pump',tank,[0,-1.13,.15],pump,[-.48,0,0],[[-1.9,.12,.1],[-1.38,.12,0]]);
+ connect('pump-boiler',pump,[.48,0,0],boiler,[-.22,-.88,0],[[-.35,.7,0],[-.12,.72,-.15]]);
+ connect('boiler-head',boiler,[0,.86,0],head,[-.47,.12,0],[[.1,2.68,-.15],[.95,2.68,.3],[.95,2.32,.3]]);
+ connect('pump-opv',pump,[.28,.12,0],opv,[0,-.19,0],[[-.6,.86,0]]);
+ connect('opv-tank',opv,[0,.19,0],tank,[.15,.95,0],[[-.6,2.65,-.1],[-1.75,2.65,-.05]]);
+ const stream=rod(group,[1.6,1.45,.3],[1.6,.35,.3],.018,M.coffee),droplet=mesh(group,new T.SphereGeometry(.045,16,12),water);
+ const ghostMaterial=new T.LineDashedMaterial({color:0x53939c,dashSize:.08,gapSize:.07,transparent:true,opacity:.65});for(const c of connections){c.guide=new T.Line(new T.BufferGeometry().setFromPoints([c.points[0],c.points.at(-1)]),ghostMaterial);group.add(c.guide);}
+ return assembly(group,C,s=>{const p=clamp(s.phase||0);piston.position.x=Math.sin(p*TAU*8)*.04;cup.setFill(clamp((p-.3)/.7)*.75,p*16,p>.25&&p<1);stream.visible=p>.25&&p<1;const surface=.09+.66*(cup.group.userData.surfaceY||.18);stream.scale.y=Math.max(.02,(1.45-surface)/1.10);stream.position.y=(1.45+surface)/2;},{eye:[5,4.1,8],duration:12,phaseLabel:'압력이 오르고 잔이 차는 과정',connections,note:'탱크 → 펌프 → 보일러 → 그룹헤드 → 커피층 → 잔. 펼치면 실선 관 대신 점선으로 원래 접속 관계를 표시합니다.',after(s){const e=clamp(s.explode||0);for(const c of connections){c.pipe.visible=e<.025;c.guide.visible=e>=.025;const A=c.A.localToWorld(c.a.clone()),B=c.B.localToWorld(c.b.clone());group.worldToLocal(A);group.worldToLocal(B);c.guide.geometry.setFromPoints([A,B]);c.guide.computeLineDistances();}const p=clamp(s.phase||0),index=Math.min(connections.length-1,Math.floor(p*3)),c=connections[index],A=c.A.localToWorld(c.a.clone()),B=c.B.localToWorld(c.b.clone());droplet.position.copy(c.curve.getPoint((p*3)%1));droplet.visible=e<.025&&p>.02&&p<.7;stream.visible=stream.visible&&e<.025;}});
+}
+function perforated(p,r,y,m){const shape=new T.Shape();shape.absarc(0,0,r,0,TAU,false);for(let j=-4;j<=4;j++)for(let i=-4;i<=4;i++){const x=i*.067,z=j*.067;if(Math.hypot(x,z)>r-.04)continue;const h=new T.Path();h.absarc(x,z,.015,0,TAU,true);shape.holes.push(h);}const g=new T.ExtrudeGeometry(shape,{depth:.025,bevelEnabled:false,curveSegments:8});g.rotateX(-Math.PI/2);mesh(p,g,m,0,y,0);}
+
+
+
+===== PUBLIC SOURCE https://visual.newsis.com/goodeasy/assets/anatomy-optics.js?audit=20261028-eight (HTTP 200; local HEAD identical) =====
+import {T,M,TAU,clamp,colors,metal,component,assembly,part,mesh,box,cyl,ring,rod,bolt,sleeve} from './anatomy-core.js?v=20261027-depth3';
+import {buildIris} from './camera-lessons.js?v=20261027-detail1';
+import {curtainWindow,filmCycle} from './mechanism-checks.js?v=20261026-release3';
+export function cameraAssembly(){
+ const group=new T.Group(),C=[],add=(...a)=>{const c=component(group,...a);C.push(c);return c.object;},chrome=metal(colors.frame),blue=new T.MeshPhysicalMaterial({color:0x87b8c4,metalness:.15,roughness:.12,transparent:true,opacity:.52,side:T.DoubleSide,depthWrite:false});
+ const frame=add('frame','마운트와 프레임','렌즈의 광축과 셔터·센서의 위치를 고정합니다.',[0,0,0]);
+ for(const x of [-1.65,1.65])box(frame,.12,2.35,.35,chrome,x,0,-.05,.025);for(const y of [-1.13,1.13])box(frame,3.4,.12,.35,chrome,0,y,-.05,.025);
+ for(const x of [-1.48,1.48])for(const y of [-.96,.96]){const b=cyl(frame,.055,.07,M.black,x,y,.16);b.rotation.x=Math.PI/2;}
+ const sensor=add('sensor','센서와 지지판','셔터막이 열려 있는 동안 들어온 빛을 기록합니다.',[0,0,-1.6],colors.optics);box(sensor,2.9,1.98,.12,chrome,0,0,-.34,.03);box(sensor,2.58,1.72,.035,metal(0x447b87),0,0,-.26,.01);for(let i=0;i<20;i++)box(sensor,.012,1.68,.008,metal(0x68a1a7),-1.24+i*.13,0,-.235,.001);
+ const rear=add('rear-curtain','후막과 레일','선막을 뒤따라 센서를 가리고 노출을 끝냅니다.',[0,0,-.8],colors.spring),front=add('front-curtain','선막과 레일','센서를 드러내며 노출을 시작합니다.',[0,0,.75],colors.drive),slats=[];
+ for(const [k,p] of [[0,front],[1,rear]]){for(const x of [-1.42,1.42])box(p,.07,2.2,.07,chrome,x,0,k*.08,.01);const a=[];for(let i=0;i<8;i++){const o=box(p,2.78,.232,.025,metal(k?0x4e6267:0x313f43),0,-.9+(i+.5)*.225,.04+k*.08+i*.003,.004);a.push(o);}slats.push(a);}
+ const mount=add('mount','렌즈 마운트','렌즈와 본체를 같은 축에 고정합니다.',[0,0,1.1]);ring(mount,1.03,.09,chrome,0,0,.35,'z');for(let i=0;i<4;i++){const a=i*TAU/4;box(mount,.16,.09,.05,M.brass,Math.cos(a)*.95,Math.sin(a)*.95,.36,.01);}
+ const rearGlass=add('rear-glass','뒤쪽 렌즈군','여러 렌즈를 조합해 빛이 센서에 상을 맺도록 합니다.',[0,0,1.65],colors.optics);lens(rearGlass,.82,.49,blue,chrome);
+ const irisModel=buildIris(),iris=add('iris','조리개 유닛','겹친 날개 사이 구멍이 바뀌면서 통과하는 빛의 양이 달라집니다.',[0,0,2.3],colors.spring);iris.add(irisModel.group);irisModel.group.rotation.x=Math.PI/2;irisModel.group.scale.setScalar(.68);iris.position.z=.9;
+ const focus=add('focus','초점 링과 경통','렌즈를 지지하는 경통입니다. 일부를 절개해 안쪽 배열을 드러냈습니다.',[0,0,2.8],colors.frame);for(const z of [1.1,1.8])ring(focus,1.03,.065,M.black,0,0,z,'z');for(let i=0;i<44;i++){const a=i/44*TAU;rod(focus,[Math.cos(a)*1.03,Math.sin(a)*1.03,1.3],[Math.cos(a)*1.03,Math.sin(a)*1.03,1.72],.013,M.black);}for(const a of [0,Math.PI])rod(focus,[Math.cos(a),Math.sin(a),.4],[Math.cos(a),Math.sin(a),1.85],.035,chrome);
+ const frontGlass=add('front-glass','앞쪽 렌즈군','광축을 따라 렌즈가 배열됩니다. 특정 제품의 광학 설계는 아닙니다.',[0,0,3.5],colors.optics);lens(frontGlass,.92,1.9,blue,chrome);
+ return assembly(group,C,s=>{irisModel.update({fstop:s.aperture||2.8});const w=curtainWindow(clamp(s.phase||0),s.fast!==false);for(let i=0;i<8;i++){const rest=-.9+(i+.5)*.225;slats[0][i].position.y=Math.min(rest+w.first,1.02+i*.012);slats[1][i].position.y=Math.max(rest+w.second,-1.02-i*.012);}}, {eye:[5,3.5,8],duration:5,phaseLabel:'셔터 한 번의 진행',note:'렌즈는 광축, 셔터와 센서는 깊이 방향으로 벌어집니다. 렌즈군은 배열을 설명하기 위한 대표형입니다.'});
+}
+function lens(p,r,z,glass,frame){const profile=[[0,-.065],[r*.4,-.06],[r*.82,-.03],[r,0],[r*.82,.03],[r*.4,.06],[0,.065]];const o=mesh(p,new T.LatheGeometry(profile.map(v=>new T.Vector2(...v)),64),glass,0,0,z);o.rotation.x=Math.PI/2;ring(p,r,.035,frame,0,0,z,'z');}
+export function projectorAssembly(){
+ const group=new T.Group(),C=[],add=(...a)=>{const c=component(group,...a);C.push(c);return c.object;},steel=metal(colors.frame),filmMat=new T.MeshStandardMaterial({color:0x725333,side:T.DoubleSide,roughness:.55});
+ const base=add('frame','지지 프레임','필름 이송부와 광학부의 위치를 고정합니다.');box(base,5,.12,2.1,M.black,0,-1.8,0);for(const x of [-1.7,1.8])rod(base,[x,-1.75,-.2],[x,2.0,-.2],.06,steel);
+ const reels=add('reels','공급 릴과 권취 릴','필름을 풀고 감는 릴입니다. 게이트의 간헐 이송은 별도 기구가 맡습니다.',[-1.2,0,-.5],colors.drive),reelWheels=[];for(const y of [2.1,-1.0]){const root=part(reels,'reel');root.position.set(-1.65,y,0);for(const z of [-.09,.09]){const shape=new T.Shape();shape.absarc(0,0,.65,0,TAU,false);for(let i=0;i<5;i++){const a=i/5*TAU,h=new T.Path();h.absarc(Math.cos(a)*.38,Math.sin(a)*.38,.14,0,TAU,true);shape.holes.push(h);}const g=new T.ExtrudeGeometry(shape,{depth:.025,bevelEnabled:false,curveSegments:32});mesh(root,g,steel,0,0,z);}const axle=cyl(root,.07,.3,steel);axle.rotation.x=Math.PI/2;reelWheels.push(root);}
+ const gate=add('gate','게이트와 압판','필름 한 프레임을 평평하게 붙잡습니다.',[0,0,1.2]);for(const x of [-.38,.38])box(gate,.14,1.07,.12,steel,x,.4,0);for(const y of [-.10,.90])box(gate,.9,.14,.12,steel,0,y,0);const pressure=box(gate,.80,1.0,.05,M.black,0,.4,-.12);pressure.material=pressure.material.clone();pressure.material.transparent=true;pressure.material.opacity=.12;
+ const film=add('film','필름과 상하 루프','게이트에서 멈추고, 차광 중에 한 프레임씩 이동합니다. 이어진 필름의 루프가 연속 이송과 간헐 이송의 차이를 흡수합니다.',[0,0,0],colors.spring);
+ const strip=part(film,'continuous perforated strip'),shape=new T.Shape();shape.moveTo(-.43,-2.5);shape.lineTo(.43,-2.5);shape.lineTo(.43,3);shape.lineTo(-.43,3);shape.closePath();for(let y=-2.4;y<2.9;y+=.1875)for(const x of [-.375,.315]){const h=new T.Path();h.moveTo(x,y);h.lineTo(x+.060,y);h.lineTo(x+.060,y+.09);h.lineTo(x,y+.09);h.closePath();shape.holes.push(h);}mesh(strip,new T.ExtrudeGeometry(shape,{depth:.018,bevelEnabled:false}),filmMat,0,0,.02);for(let i=-3;i<4;i++)box(strip,.53,.63,.013,i%2?metal(0x6e7a64):metal(0xb3b59a),0,.4+i*.75,.045,.002);
+ const loopLines=[];for(const sign of [-1,1]){const a=sign===1?[[ -1.65,2.1,0],[-1.0,2.15,0],[-.65,1.25,0],[0,1.5,.02]]:[[0,-.65,.02],[-.65,-.4,0],[-1.0,-1.0,0],[-1.65,-1,0]];const line=rod(film,a[0],a[1],.025,filmMat);loopLines.push(line);for(let i=1;i<a.length-1;i++)rod(film,a[i],a[i+1],.025,filmMat);}
+ const shutter=add('shutter','회전 셔터','회전하는 날개가 광로를 가리는 동안 필름을 옮깁니다.',[1.1,0,.5],colors.drive);shutter.position.set(.83,.4,.18);const sh=new T.Shape();sh.moveTo(0,0);sh.absarc(0,0,1.30,-Math.PI*.56,Math.PI*.56,false);sh.lineTo(0,0);mesh(shutter,new T.ExtrudeGeometry(sh,{depth:.035,bevelEnabled:false,curveSegments:72}),metal(0x727c6c));const ax=cyl(shutter,.07,.20,steel);ax.rotation.x=Math.PI/2;
+ const intermittent=add('intermittent','간헐 이송 · 핀과 슬롯','구동 핀이 슬롯에 들어가는 구간에만 출력축이 돌아갑니다. 필름의 정지와 이송을 분리해 보여줍니다.',[1.7,0,0],colors.drive);intermittent.position.set(.85,-1.1,-.15);const output=part(intermittent,'four slot Geneva wheel'),star=new T.Shape();for(let i=0;i<=320;i++){const a=i/320*TAU,d=Math.abs(((a+Math.PI/4)%(Math.PI/2))-Math.PI/4),r=d<.10?.26:.74;const x=Math.cos(a)*r,y=Math.sin(a)*r;i?star.lineTo(x,y):star.moveTo(x,y);}star.closePath();const hole=new T.Path();hole.absarc(0,0,.065,0,TAU,true);star.holes.push(hole);mesh(output,new T.ExtrudeGeometry(star,{depth:.06,bevelEnabled:true,bevelSize:.008,bevelThickness:.008,bevelSegments:2}),steel);const driver=part(intermittent,'continuous driver');driver.position.x=1;const disk=cyl(driver,.36,.07,metal(colors.drive));disk.rotation.x=Math.PI/2;rod(driver,[0,0,.07],[-Math.SQRT1_2,0,.07],.04,steel);const pin=cyl(driver,.023,.13,M.red,-Math.SQRT1_2,0,.11);pin.rotation.x=Math.PI/2;const sprocket=part(film,'intermittent sprocket');sprocket.position.set(.0,-.7,-.1);const sw=cyl(sprocket,.22,.15,metal(colors.drive));sw.rotation.x=Math.PI/2;for(let i=0;i<16;i++){const a=i/16*TAU;box(sprocket,.034,.045,.13,steel,Math.cos(a)*.25,Math.sin(a)*.25,0,.003);}
+ const lamp=add('lamp','램프와 콘덴서','필름 뒤쪽에 빛을 모읍니다.',[0,0,-1.4],colors.optics);box(lamp,1.1,1.3,.65,M.black,0,.4,-1);mesh(lamp,new T.SphereGeometry(.22,24,16),new T.MeshStandardMaterial({color:0xf1d692,emissive:0x9d7130,emissiveIntensity:.45}),0,.4,-.61);
+ const optics=add('lens','투사 렌즈','게이트와 같은 광축 위에서 필름의 상을 확대합니다.',[0,0,2.4],colors.optics);for(const z of [.6,1.0])ring(optics,.35,.07,steel,0,.4,z,'z');mesh(optics,new T.CircleGeometry(.31,48),new T.MeshPhysicalMaterial({color:0x6293a3,transparent:true,opacity:.45,side:T.DoubleSide}),0,.4,1.01);
+ return assembly(group,C,s=>{const p=clamp(s.phase||0),engaged=p>=.65,theta=engaged?-Math.PI/4+(p-.65)/.35*Math.PI/2:-Math.PI*7/4+p/.65*Math.PI*1.5,beta=engaged?Math.atan2(Math.SQRT1_2*Math.sin(theta),1-Math.SQRT1_2*Math.cos(theta)):-Math.PI/4,progress=(beta+Math.PI/4)/(Math.PI/2);driver.rotation.z=-theta;output.rotation.z=beta;sprocket.rotation.z=-progress*Math.PI/2;strip.position.y=-.75*progress;reelWheels.forEach(o=>o.rotation.z=-p*.12*TAU);shutter.rotation.z=TAU*(p-.84)+Math.PI;},{eye:[4,3.2,8],phaseLabel:'멈춤·차광·한 프레임 이송',note:'4슬롯 간헐 기구와 포컬 게이트를 함께 보여주는 축약 모형입니다. 필름 정지 중 노출하고, 차광 중 다음 프레임으로 옮깁니다.'});
+}
+
+
+
+===== PUBLIC SOURCE https://visual.newsis.com/goodeasy/assets/models/violin.js?audit=20261028-eight (HTTP 200; local HEAD identical) =====
+import {smoothOutline,shapeFromPoints,insetOutline,hollowRibs,archedPlate,violinTopY} from './surface-utils.js?v=20261024-editorial1';
+import {mat,mesh,curveTube,cylinderBetween,ellipsoid,horizontalExtrude,outlineShape,assemblyGroup,orientedBox,addWoodGrain} from './model-utils.js?v=20261024-editorial1';
+/** Violin: X scroll (-) to tail (+), Y soundboard normal (+), Z string spread.
+ * The bow is a separately transformable group; animation is the caller's responsibility.
+ * MIDI G3 D4 A4 E5 = [55,62,69,76]. Dimensions are visual assumptions, not CAD.
+ */
+function fHole(T,side){const s=new T.Shape();s.moveTo(-.22,-.012);s.bezierCurveTo(-.24,-.055,-.17,-.045,-.175,-.014);s.bezierCurveTo(-.16,.015,-.09,.018,-.03,-.002);s.bezierCurveTo(.06,-.04,.19,-.035,.25,.015);s.bezierCurveTo(.29,.04,.35,.015,.325,-.018);s.bezierCurveTo(.30,-.045,.275,-.025,.283,-.005);s.bezierCurveTo(.19,-.055,.07,-.06,-.04,-.02);s.bezierCurveTo(-.1,.002,-.16,0,-.19,-.022);s.closePath();return s.getPoints(64).slice(0,-1).map(p=>new T.Vector2(.46+p.x*.8,side*(.245+p.y*.7)));}
+export function buildViolin(THREE,materials={}){
+ const group=new THREE.Group();group.name='GOODEASY / 06 / violin';
+ const wood=mat(THREE,materials.wood,'#b45d29'),dark=mat(THREE,materials.darkWood,'#49251b');
+ const ivory=mat(THREE,materials.ivory,'#e8d9b4'),steel=mat(THREE,materials.steel,'#c3c8ca',.32,.53);
+ const brass=mat(THREE,materials.brass,'#b69b5b',.35,.55),black=mat(THREE,materials.black,'#14100d');
+ const felt=mat(THREE,materials.felt,'#6b5641');const varnish=materials.wood?wood:addWoodGrain(THREE,'#a65b30',225);
+ const parts={};
+ // The violin outline has upper/lower bouts, concave C-bouts and projecting corners.
+ // Violin-specific upper bouts, inward C-bouts, four corner tips and larger lower bouts.
+ // Smooth closed outline: arch triangulation uses its exact boundary, never grid-cell clipping.
+ const contour=smoothOutline(THREE,[
+  [-.78,0],[-.74,.21],[-.59,.354],[-.40,.385],[-.235,.349],[-.15,.264],
+  [-.112,.313],[-.042,.242],[.062,.169],[.155,.166],[.262,.245],[.325,.316],
+  [.365,.263],[.50,.389],[.70,.444],[.91,.423],[1.08,.312],[1.16,.15],[1.17,0],
+  [1.16,-.15],[1.08,-.312],[.91,-.423],[.70,-.444],[.50,-.389],[.365,-.263],
+  [.325,-.316],[.262,-.245],[.155,-.166],[.062,-.169],[-.042,-.242],[-.112,-.313],
+  [-.15,-.264],[-.235,-.349],[-.40,-.385],[-.59,-.354],[-.74,-.21]
+ ],320);
+ const outline=shapeFromPoints(THREE,contour);
+ parts.body=assemblyGroup(THREE,'violin body (smooth arched top / hollow ribs / back)',group);
+ // Continuous wall from top edge to back. The old y=-.10 downward extrusion left a gap.
+ const inner=insetOutline(THREE,contour,.025);
+ const ribs=hollowRibs(THREE,contour,inner,.106,-.105,dark,parts.body,'connected hollow violin ribs');
+ parts.ribs=ribs;
+ const back=horizontalExtrude(THREE,outline,.022,.003,wood,'back plate',parts.body);back.position.y=-.105;
+ parts.back=back;
+ const top=archedPlate(THREE,contour,.106,.032,varnish,parts.body,'continuous subdivided arched soundboard',.055,[-1,1].map(side=>fHole(THREE,side)));
+ parts.top=top;
+ // Purfling follows violin's actual C-bout contour, not a simple oval.
+ const edge=contour.map(p=>[p.x,.108,p.y]);curveTube(THREE,edge,.0045,black,'purfling edge',parts.body,260,6);
+ // IMPORTANT: f-holes below are BLACK SURFACE GRAPHICS, not cut-through openings.
+ // Separate mirrored f-hole shapes with upper/lower eyes and long S-curved narrow slits.
+ parts.fHoles=assemblyGroup(THREE,'paired f-holes',parts.body);
+ for(const side of [-1,1]){
+   const z=side*.238;
+   const fh=(x,zz)=>[x,violinTopY(contour,x,zz)+.003,zz];
+   const hole=curveTube(THREE,[fh(-.20,z-.018*side),fh(-.10,z+.014*side),fh(.02,z-.030*side),fh(.18,z+.020*side),fh(.32,z-.014*side)],.006,black,`f-hole ${side}`,parts.fHoles,72,9);
+   ellipsoid(THREE,fh(-.20,z-.018*side),[.020,.002,.020],black,'upper eye',parts.fHoles,16);
+   ellipsoid(THREE,fh(.32,z-.014*side),[.021,.002,.023],black,'lower eye',parts.fHoles,16);
+   // F-hole wing notches.
+   curveTube(THREE,[fh(.07,z-.028*side),fh(.09,z-.055*side)],.006,black,'f-hole notch',parts.fHoles,12,6);
+ }
+ const darkInside=mesh(THREE,new THREE.PlaneGeometry(1.2,.8),new THREE.MeshStandardMaterial({color:0x140c08,roughness:1,side:THREE.DoubleSide}),'interior shadow plane',parts.body);darkInside.rotation.x=-Math.PI/2;darkInside.position.set(.4,-.045,0);parts.fHoles.visible=false; // Replaced by actual openings in the soundboard.
+ const chinrest=assemblyGroup(THREE,'chinrest',group);parts.chinrest=chinrest;ellipsoid(THREE,[.94,.17,-.23],[.23,.033,.15],black,'chin rest',chinrest,40);for(const z of [-.15,-.29])cylinderBetween(THREE,[1.12,.12,z],[1.12,-.10,z],.009,steel,'chinrest clamp',chinrest);
+ // Neck, ebony fingerboard, nut, scroll and four side-mounted pegs.
+ parts.neck=assemblyGroup(THREE,'neck and fingerboard',group);
+ curveTube(THREE,[[-.67,.045,0],[-.98,.065,0],[-1.37,.085,0],[-1.66,.095,0]],.063,dark,'maple neck',parts.neck,90,16);
+ const finger=orientedBox(THREE,[1.05,.037,.165],[-1.06,.181,0],black,'fretless fingerboard',parts.neck,.025);
+ finger.scale.z=.88;
+ parts.nut=orientedBox(THREE,[.027,.030,.160],[-1.59,.208,0],ivory,'nut',parts.neck,.004);
+ parts.scroll=assemblyGroup(THREE,'pegbox and carved scroll',group);
+ const pegbox=orientedBox(THREE,[.42,.094,.137],[-1.80,.115,0],dark,'pegbox',parts.scroll,.018);
+ for(let side of [-1,1])for(let i=0;i<2;i++){
+   const x=-1.72-i*.20,z=side*.13;
+   cylinderBetween(THREE,[x,.13,0],[x,.13,z],.018,dark,`peg ${side}/${i}`,parts.scroll);
+   ellipsoid(THREE,[x,.13,side*.175],[.042,.020,.020],black,'peg grip',parts.scroll,16);
+ }
+ // Volute scroll: coiled wooden tube (explicit geometry), positioned at the instrument tip.
+ for(const side of [-1,1]){
+   const coil=[];for(let i=0;i<=150;i++){
+     const t=i/150,theta=t*Math.PI*3.65,r=.092*(1-t)+.014;
+     coil.push([-2.13+Math.cos(theta)*r,.155+Math.sin(theta)*r,side*.044]);
+   }curveTube(THREE,coil,.021,wood,`carved scroll volute ${side}`,parts.scroll,180,10);
+ }
+ // Upright bridge: profile is drawn in the YZ plane (shape x -> model Z,
+ // shape y -> model Y); extruded thickness is along model X.
+ // Soundboard near bridge x=.18: .106 + .032*(1-(.18-.19)^2/1.15^2) ~= .138.
+ parts.bridge=assemblyGroup(THREE,'upright violin bridge with feet and windows',group);
+ const bridgeX=.18, topAtBridge=violinTopY(contour,.18,.145), bridgeFootY=topAtBridge-.002;
+ const bridgeShape=new THREE.Shape();
+ // local u maps to -model Z; local v maps to model Y (absolute coordinates).
+ bridgeShape.moveTo(-.166,bridgeFootY);
+ bridgeShape.lineTo(-.166,.165);
+ bridgeShape.bezierCurveTo(-.155,.217,-.125,.252,-.1095,.256);
+ bridgeShape.bezierCurveTo(-.063,.271,-.027,.275,0,.276);
+ bridgeShape.bezierCurveTo(.027,.275,.063,.271,.1095,.256);
+ bridgeShape.bezierCurveTo(.125,.252,.155,.217,.166,.165);
+ bridgeShape.lineTo(.166,bridgeFootY);
+ // Two separate feet; open central arch leaves a visible gap above the top.
+ bridgeShape.lineTo(.115,bridgeFootY);
+ bridgeShape.quadraticCurveTo(.090,.180,.058,.184);
+ bridgeShape.quadraticCurveTo(0,.195,-.058,.184);
+ bridgeShape.quadraticCurveTo(-.090,.180,-.115,bridgeFootY);
+ bridgeShape.closePath();
+ const windowL=new THREE.Path();windowL.absellipse(-.085,.212,.018,.014,0,Math.PI*2,true);
+ const windowR=new THREE.Path();windowR.absellipse(.085,.212,.018,.014,0,Math.PI*2,true);
+ bridgeShape.holes.push(windowL,windowR);
+ const bridgeGeo=new THREE.ExtrudeGeometry(bridgeShape,{depth:.017,steps:1,curveSegments:64,bevelEnabled:true,bevelThickness:.002,bevelSize:.001,bevelSegments:3});
+ bridgeGeo.rotateY(Math.PI/2); // shape u -> -Z, v -> Y, extrusion -> X
+ bridgeGeo.translate(bridgeX-.0085,0,0);
+ const bridge=mesh(THREE,bridgeGeo,ivory,'vertical carved bridge YZ profile',parts.bridge);
+ parts.bridgePlate=bridge;
+ for(const side of [-1,1]){
+   ellipsoid(THREE,[bridgeX,topAtBridge,side*.145],[.034,.005,.028],ivory,`bridge foot ${side}`,parts.bridge,20);
+ }
+ // The crest contact heights are individually arched, rather than a single flat saddle.
+ const bridgeZ=[-.1095,-.0365,.0365,.1095];
+ const bridgeY=[.256,.273,.273,.256];
+ parts.bridgeCrest=curveTube(THREE,bridgeZ.map((z,i)=>[bridgeX,bridgeY[i],z]),.003,ivory,'arched string-bearing bridge crown',parts.bridge,60,8);
+ parts.tailpiece=assemblyGroup(THREE,'tailpiece and fine tuners',group);
+ const tailShape=outlineShape(THREE,[[.60,-.14],[.95,-.10],[1.02,-.04],[1.02,.04],[.95,.10],[.60,.14]]);
+ const tail=horizontalExtrude(THREE,tailShape,.028,.007,black,'tapered ebony tailpiece',parts.tailpiece);tail.position.y=.16;
+ curveTube(THREE,[[.96,.174,0],[1.10,.10,0],[1.16,.03,0]],.013,black,'tailgut',parts.tailpiece,35,10);
+ const strings=[],midi=[55,62,69,76],names=['G3','D4','A4','E5'];
+ parts.afterlength=assemblyGroup(THREE,'separate bridge-to-tailpiece string afterlength',group);
+ for(let i=0;i<4;i++){
+   const z=(i-1.5)*.073;
+   const nut=[-1.59,.232,z*.88];
+   const crest=[bridgeX,bridgeY[i],bridgeZ[i]];
+   const tail=[.77,.198,z*1.05];
+   const rad=[.0035,.0029,.0021,.00155][i];
+   const speaking=cylinderBetween(THREE,nut,crest,rad,steel,`speaking string ${names[i]} MIDI ${midi[i]}`,group,12);
+   const after=cylinderBetween(THREE,crest,tail,rad,steel,`afterlength ${names[i]}`,parts.afterlength,12);
+   strings.push({midi:midi[i],from:nut,to:crest,mesh:speaking,afterlengthMesh:after,tailEndpoint:tail});
+   ellipsoid(THREE,[.75,.204,z*1.05],[.019,.013,.017],brass,`fine tuner ${i+1}`,parts.tailpiece,14);
+   const side=i<2?-1:1,j=i%2;
+   curveTube(THREE,[nut,[-1.69,.216,z*.85],[-1.72-j*.20,.145,side*.13]],rad*.75,steel,`pegbox wire ${i+1}`,group,32,7);
+ }
+ // Bow: independently movable. Hair contacts selected open A4 string (index 2)
+ // at x=.03, z interpolated from the ACTUAL nut-to-crest segment.
+ // Moving the whole bow along Z creates transverse bow travel; caller must clamp travel
+ // and update contact/string selection as needed. This is a geometric interaction cue.
+ const selectedStringIndex=2, selected=strings[selectedStringIndex];
+ const contactX=.03, t=(contactX-selected.from[0])/(selected.to[0]-selected.from[0]);
+ const contactY=selected.from[1]+t*(selected.to[1]-selected.from[1]);
+ const contactZ=selected.from[2]+t*(selected.to[2]-selected.from[2]);
+ const bow=assemblyGroup(THREE,'movable bow (translate along Z)',group);parts.bow=bow;
+ // All hair coordinates are in bow-local coordinates. Bow starts aligned with the
+ // selected string, and its central hair strand crosses its string centerline.
+ const hairY=contactY+.0014;
+ parts.bowHair=assemblyGroup(THREE,'separate bow hair ribbon',bow);
+ for(let k=0;k<11;k++){
+   const x=contactX+(k-5)*.0025;
+   curveTube(THREE,[[x,hairY,-.67],[x,hairY,-.22],[x,hairY,.22],[x,hairY,.67]],.0014,ivory,`bow hair ${k+1}`,parts.bowHair,64,5);
+ }
+ curveTube(THREE,[[contactX+.035,hairY+.042,-.78],[contactX+.04,hairY+.068,-.4],[contactX+.046,hairY+.077,0],[contactX+.04,hairY+.064,.42],[contactX+.035,hairY+.044,.78]],.015,dark,'cambered bow stick',bow,100,12);
+ orientedBox(THREE,[.068,.062,.115],[contactX+.035,hairY+.037,-.67],black,'frog',bow,.012);
+ ellipsoid(THREE,[contactX+.035,hairY+.047,-.67],[.018,.012,.018],brass,'frog eye',bow,14);
+ cylinderBetween(THREE,[contactX+.035,hairY+.045,-.82],[contactX+.035,hairY+.045,-.74],.012,brass,'bow adjuster',bow);
+ bow.userData={selectedStringIndex,contactLocal:[contactX,contactY,contactZ],movementAxis:'Z',
+   // Moving in Z changes which portion of hair contacts the string. Audio gating is external.
+   hairCenterlineY:hairY,contactTolerance:.006};
+ group.userData={instrument:'violin',coordinateSystem:'X along scroll-to-tail, Y top normal, Z string spread',dimensions:'visualization assumptions; NOT CAD',bowMovementAxis:'Z',bowDefaultPosition:[0,0,0],fHoles:'cut-through top openings; silhouette approximation, NOT CAD',arch:'earcut outline triangulation + adaptive subdivision; not physical plate scan',bridgeOrientation:'upright YZ',speakingLength:'nut to bridge crown'};
+ return {group,strings,bow,parts};
+}
+
+
+
+===== PUBLIC SOURCE https://visual.newsis.com/goodeasy/assets/models/mx-switch.js?audit=20261028-eight (HTTP 200; local HEAD identical) =====
+// GOODEASY 08 — procedural MX-style cutaway, model units = 10 mm.
+// Travel input in mm (0..4). Visualization model, not Cherry CAD.
+export function buildMXSwitch(T,M={}) {
+ const material=(k,c,metal=false)=>M[k]||new T.MeshStandardMaterial({color:c,roughness:metal?.37:.68,metalness:metal?.7:0});
+ const ivory=material('ivory',0xe4dfd5),black=material('black',0x24252a),red=material('red',0xd52d26),steel=material('steel',0xa9adb2,true),brass=material('brass',0xbfa171,true);
+ const group=new T.Group(),parts={};
+ function part(n){const p=new T.Group();p.name=n;group.add(p);parts[n]=p;return p;}
+ function mesh(p,g,m,x=0,y=0,z=0){const o=new T.Mesh(g,m);o.position.set(x,y,z);p.add(o);return o;}
+ const box=(x,y,z)=>new T.BoxGeometry(x,y,z), cyl=(a,b,h,n=32)=>new T.CylinderGeometry(a,b,h,n);
+ const lower=part('lowerHousing'),upper=part('upperHousing'),stem=part('stem'),spring=part('spring'),fixed=part('fixedContact'),leaf=part('movingLeaf'),cap=part('keycap');
+ mesh(lower,box(1.46,.12,1.46),black,0,-.79,0);
+ for(const s of [-1,1]){mesh(lower,box(1.46,.52,.105),black,0,-.48,s*.68);mesh(lower,box(.105,.52,1.27),black,s*.68,-.48,0);}
+ mesh(lower,cyl(.24,.24,.08),black,0,-.675,0); // spring seat, top at -.635
+ for(const z of [-.26,.26])mesh(lower,cyl(.043,.043,.34,12),brass,.33,-.99,z);
+ // Upper housing is an actual through-aperture ring, with four clip tongues.
+ const aperture=new T.Shape();aperture.moveTo(-.75,-.75);aperture.lineTo(.75,-.75);aperture.lineTo(.75,.75);aperture.lineTo(-.75,.75);aperture.closePath();
+ const hole=new T.Path();hole.moveTo(-.39,-.39);hole.lineTo(-.39,.39);hole.lineTo(.39,.39);hole.lineTo(.39,-.39);hole.closePath();aperture.holes.push(hole);
+ const ring=new T.ExtrudeGeometry(aperture,{depth:.16,bevelEnabled:false});ring.rotateX(-Math.PI/2);mesh(upper,ring,black,0,-.09,0);
+ for(const x of [-.57,.57])for(const z of [-.57,.57])mesh(upper,box(.14,.26,.15),black,x,-.28,z);
+ // Rest stem geometry stays above lower floor even at 4mm; central slider bottom rest -.30, full -.70.
+ mesh(stem,box(.37,.35,.37),red,0,-.005,0);
+ mesh(stem,box(.14,.36,.47),red,0,.35,0);mesh(stem,box(.47,.36,.14),red,0,.35,0);
+ for(const sx of [-1,1])mesh(stem,box(.12,.16,.17),red,sx*.31,-.23,sx>0?.14:0);
+ // The cam acts beside the electrical contacts; both contact buttons remain in Z=0.
+ mesh(stem,new T.SphereGeometry(.065,16,12),red,.315,-.25,.14);
+ const fixedButton=mesh(fixed,new T.SphereGeometry(.052,16,12),steel,.48,-.359049,0);
+ mesh(fixed,box(.065,.36,.10),brass,.53,-.515,0);
+ // Leaf anchored at lower pivot, bends towards fixed button. Contact at exactly 2 mm.
+ const pivot=new T.Group();pivot.position.set(.28,-.68,0);leaf.add(pivot);
+ const leafStrip=mesh(pivot,box(.046,.335,.075),brass,0,.1675,0);
+ const movingButton=mesh(pivot,new T.SphereGeometry(.052,16,12),steel,0,.335,0);mesh(pivot,box(.046,.075,.16),brass,0,.245,.085);
+ // Moving button center at rest x=.28, fixed x=.48; at 2 mm: moving center x=.376.
+ // Button surfaces touch when center distance=.104. Geometry rotation around lower pivot.
+ const targetAngle=Math.asin(.096/.335);
+ // Spring helix: fixed lower endpoint at y=-.635. Scale about that endpoint (not center).
+ const springBase=-.635,restHeight=.45,turns=7,points=[];
+ for(let i=0;i<=320;i++){const t=i/320,a=t*Math.PI*2*turns;points.push(new T.Vector3(.20*Math.cos(a),t*restHeight,.20*Math.sin(a)));}
+ const coil=mesh(spring,new T.TubeGeometry(new T.CatmullRomCurve3(points),420,.024,8,false),steel);
+ spring.position.y=springBase;
+ // Keycap: one continuous rounded-square concave surface, joined to sloped trapezoid walls.
+ // Mesh top uses a square grid (no separate circular dish).
+ const N=28,vs=[],indices=[],bottomY=.47,topEdge=.84;
+ for(let j=0;j<=N;j++)for(let i=0;i<=N;i++){
+   const u=i/N*2-1,v=j/N*2-1;const x=.72*u,z=.72*v;
+   const edge=Math.pow(Math.max(Math.abs(u),Math.abs(v)),2.6);
+   const y=topEdge-.062*(1-edge);
+   vs.push(x,y,z);
+   if(i<N&&j<N){const q=j*(N+1)+i;indices.push(q,q+N+1,q+1,q+1,q+N+1,q+N+2);}
+ }
+ const topGeo=new T.BufferGeometry();topGeo.setAttribute('position',new T.Float32BufferAttribute(vs,3));topGeo.setIndex(indices);topGeo.computeVertexNormals();mesh(cap,topGeo,ivory);
+ // Continuous side wall between 1.58-wide bottom and 1.44-wide top.
+ const border=[];for(let i=0;i<=N;i++)border.push([i/N*2-1,-1]);for(let j=1;j<=N;j++)border.push([1,j/N*2-1]);for(let i=N-1;i>=0;i--)border.push([i/N*2-1,1]);for(let j=N-1;j>0;j--)border.push([-1,j/N*2-1]);
+ const wallV=[],wallI=[];for(let k=0;k<border.length;k++){const [u,v]=border[k];wallV.push(.79*u,bottomY,.79*v,.72*u,topEdge,.72*v);const a=k*2,b=((k+1)%border.length)*2;wallI.push(a,a+1,b,b,a+1,b+1);}
+ const wallG=new T.BufferGeometry();wallG.setAttribute('position',new T.Float32BufferAttribute(wallV,3));wallG.setIndex(wallI);wallG.computeVertexNormals();mesh(cap,wallG,ivory);
+ // True cross-shaped cavity cut into underside: the cap is an open shell, and these walls form
+ // the four inward-facing boundaries of the socket, with no solid plug across the opening.
+ const socket=part('socket');cap.add(socket);group.remove(socket);delete parts.socket;
+ const cross=new T.Shape();const outline=[[-.25,-.09],[-.09,-.09],[-.09,-.25],[.09,-.25],[.09,-.09],[.25,-.09],[.25,.09],[.09,.09],[.09,.25],[-.09,.25],[-.09,.09],[-.25,.09]];
+ outline.forEach(([x,z],i)=>i?cross.lineTo(x,z):cross.moveTo(x,z));cross.closePath();
+ const outer=new T.Shape();outer.moveTo(-.31,-.31);outer.lineTo(.31,-.31);outer.lineTo(.31,.31);outer.lineTo(-.31,.31);outer.closePath();const crossHole=new T.Path();outline.slice().reverse().forEach(([x,z],i)=>i?crossHole.lineTo(x,z):crossHole.moveTo(x,z));crossHole.closePath();outer.holes.push(crossHole);
+ const socketGeo=new T.ExtrudeGeometry(outer,{depth:.62,bevelEnabled:false});socketGeo.rotateX(-Math.PI/2);mesh(socket,socketGeo,ivory,0,.17,0);
+ const explodeOffset={lowerHousing:-.65,fixedContact:-.35,movingLeaf:-.35,spring:.65,stem:1.35,upperHousing:2.05,keycap:2.95};
+ function update({travel=0,explode=0}={}){
+  const mm=T.MathUtils.clamp(Number(travel)||0,0,4),e=T.MathUtils.clamp(Number(explode)||0,0,1),dy=.1*mm*(1-e);
+  for(const [n,p] of Object.entries(parts))p.position.y=(explodeOffset[n]||0)*e;
+  stem.position.y-=dy;cap.position.y-=dy;spring.position.y+=springBase;
+  spring.scale.y=Math.max(.11,1-dy/restHeight); // bottom fixed at -.635 in assembled state
+  // Rotate from lower anchor; at 2 mm the two button surfaces meet, and remain closed.
+  pivot.rotation.z=-(targetAngle*Math.min(mm/2,1))*(1-e);
+  leaf.userData.closed=mm>=2 && e<.5;
+  group.userData.travelMm=mm;group.userData.explode=e;
+ }
+ update();return {group,parts,update};
+}
+
+
+
+===== PUBLIC SOURCE https://visual.newsis.com/goodeasy/gramophone/playback.js?audit=20261028-eight (HTTP 200; local HEAD identical) =====
+// One source-position clock drives audio, disc angle and groove position.
+export const REFERENCE_RPM=78;
+export const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
+export class Playback {
+ constructor(duration=24){this.duration=duration;this.position=0;this.rpm=78;this.reserve=.65;this.playing=false;this.needleDown=false;this.started=0;this.origin=0;this.crank=0;this.snapshot=null;}
+ read(now){return clamp(this.position+(this.playing?Math.min(Math.max(0,now-this.started)*this.rpm/78,this.reserve*90):0),0,this.duration);}
+ commit(now){const next=this.read(now),advance=next-this.position;this.reserve=Math.max(0,this.reserve-advance/90);this.position=next;this.started=now;return next;}
+ start(now){if(this.reserve<=0||this.position>=this.duration)return false;this.started=now;this.playing=true;this.needleDown=true;return true;}
+ pause(now){this.commit(now);this.playing=false;}
+ speed(rpm,now){this.commit(now);this.rpm=clamp(Number(rpm),60,96);}
+ wind(){this.reserve=clamp(this.reserve+.18,0,1);this.crank+=1;}
+ lift(now){this.pause(now);this.needleDown=false;}
+ reset(now){this.lift(now);this.position=0;this.origin=0;}
+ capture(now){this.commit(now);this.snapshot=Object.freeze({position:this.position,rpm:this.rpm,reserve:this.reserve,progress:this.position/this.duration,ratio:this.rpm/78});return this.snapshot;}
+ view(now){const position=this.read(now);return {position,progress:position/this.duration,angle:position*78/60*Math.PI*2,needleLift:this.needleDown?0:1,crank:this.crank,signal:0,explode:0};}
+}
+export function speedFacts(rpm,duration=24){const ratio=rpm/78;return {ratio,semitones:12*Math.log2(ratio),duration:duration/ratio};}
+export function needlePoint(progress){const r=1.24-(1.24-.43)*clamp(progress,0,1),px=1.72,pz=-.62,d=Math.hypot(px,pz),a=(r*r-1.7**2+d*d)/(2*d),h=Math.sqrt(Math.max(0,r*r-a*a));return [a*px/d-h*pz/d,1.23,a*pz/d+h*px/d];}
+
+
+
+===== PUBLIC SOURCE https://visual.newsis.com/goodeasy/gramophone/gramophone-model.js?audit=20261028-eight (HTTP 200; local HEAD identical) =====
+// VISUAL NEWSIS · 굳이구지 / Gramophone mechanical model
+// Pure Three.js geometry factory. Animation/audio/rendering are owned by the caller.
+export function buildGramophone(T, M) {
+  const group = new T.Group(); group.name = 'Gramophone';
+  const V = (x, y, z) => new T.Vector3(x, y, z);
+  const P = V(1.72, 1.5, -0.62), C = V(0, 1.23, 0);
+  const outerRadius = 1.24, innerRadius = 0.43, armLength = 1.7;
+  const mat = (name, color, metalness = 0, roughness = .6) => {
+    const m = M?.[name]?.clone() || new T.MeshStandardMaterial({color, metalness, roughness});
+    return m;
+  };
+  const wood = mat('wood', 0x57351f), darkWood = mat('darkWood', 0x2c1a13);
+  const brass = mat('brass', 0xb38a49, .83, .3), steel = mat('steel', 0x888b8d, .77, .35);
+  const black = mat('black', 0x171716, .15, .65), felt = mat('felt', 0x232c26);
+  const ivory = mat('ivory', 0xe4d3a5), red = mat('red', 0x71332b);
+  wood.color.setHex(0x91613f); darkWood.color.setHex(0x3c2419);
+  wood.clearcoat=.08;wood.roughness=.65;darkWood.clearcoat=.05;darkWood.roughness=.7;
+  black.metalness=.04; black.roughness=.72; black.clearcoat=0;
+  const innerBrass = brass.clone(); innerBrass.color.multiplyScalar(.58); innerBrass.side=T.DoubleSide;
+  const grooveMat = new T.LineBasicMaterial({color:0x77736b, transparent:true, opacity:.33});
+  const make = (geometry, material, parent, name) => {
+    const mesh = new T.Mesh(geometry, material); mesh.name = name || ''; parent.add(mesh); return mesh;
+  };
+  const box = (w,h,d,material,parent,x,y,z,name) => {
+    const m = make(new T.BoxGeometry(w,h,d),material,parent,name); m.position.set(x,y,z); return m;
+  };
+  const cyl = (rt,rb,h,material,parent,x,y,z,name,n=32) => {
+    const m = make(new T.CylinderGeometry(rt,rb,h,n),material,parent,name);
+    m.position.set(x,y,z); return m;
+  };
+  const ball = (r,material,parent,x,y,z,name) => {
+    const o=make(new T.SphereGeometry(r,12,8),material,parent,name); o.position.set(x,y,z); return o;
+  };
+  const rod = (a,b,r,material,parent,name,segments=10) => {
+    const dir=b.clone().sub(a), o=make(new T.CylinderGeometry(r,r,dir.length(),segments),material,parent,name);
+    o.position.copy(a).add(b).multiplyScalar(.5); o.quaternion.setFromUnitVectors(V(0,1,0),dir.normalize()); return o;
+  };
+  const tube = (points,r,material,parent,name,segments=42) =>
+    make(new T.TubeGeometry(new T.CatmullRomCurve3(points),segments,r,10,false),material,parent,name);
+  const ring = (major,tubeRadius,material,parent,x,y,z,name) => {
+    const o=make(new T.TorusGeometry(major,tubeRadius,8,56),material,parent,name);
+    o.position.set(x,y,z); o.rotation.x=Math.PI/2; return o;
+  };
+  // Wood cabinet: top plate and the motor compartment remain physically adjacent.
+  const cabinet = new T.Group(); cabinet.name='Cabinet'; group.add(cabinet);
+  // Four real panels, not a solid box hiding the inspection motor.
+  box(3.8,.91,.12,wood,cabinet,0,.58,-1.64,'rear wood panel');
+  box(3.8,.91,.12,wood,cabinet,0,.58,1.64,'front wood panel');
+  for(const x of [-1.84,1.84]) box(.12,.91,3.16,wood,cabinet,x,.58,0,'side wood panel');
+  box(3.8,.11,3.4,darkWood,cabinet,0,.08,0,'bottom board');
+  const top = new T.Group(); top.name='Cabinet lid / inspection layer'; cabinet.add(top);
+  box(3.84,.17,3.44,darkWood,top,0,1.065,0,'top lid');
+  for(const y of [.22,.3,.99]) {
+    box(3.91,.035,.055,brass,cabinet,0,y,1.73);
+    box(3.91,.035,.055,brass,cabinet,0,y,-1.73);
+    for(const x of [-1.94,1.94]) box(.055,.035,3.44,brass,cabinet,x,y,0);
+  }
+  for(const x of [-1.64,1.64]) for(const z of [-1.42,1.42]) {
+    const leg=box(.23,.37,.23,darkWood,cabinet,x,-.07,z,'cabinet foot');
+    box(.28,.055,.28,brass,cabinet,x,-.23,z,'foot ferrule');
+    box(.13,.16,.13,wood,cabinet,x,-.31,z,'foot heel');
+  }
+  for(const x of [-1.71,1.71]) for(const z of [-1.49,1.49]) {
+    const screw=cyl(.037,.037,.013,brass,top,x,1.157,z,'lid screw',12);
+    box(.048,.006,.009,darkWood,screw,0,.008,0,'screw slot');
+  }
+  // Turntable assembly. The record's upper playable plane is y=1.23.
+  const platterLayer=new T.Group(); group.add(platterLayer);
+  const record=new T.Group(); record.name='Record and rotating platter'; platterLayer.add(record);
+  cyl(1.42,1.42,.055,steel,record,0,1.168,0,'platter');
+  cyl(1.39,1.39,.018,felt,record,0,1.204,0,'platter felt');
+  cyl(1.38,1.38,.033,black,record,0,1.2135,0,'shellac disc');
+  ring(1.365,.008,black,record,0,1.233,0,'record bevel');
+  cyl(.355,.355,.003,red,record,0,1.232,0,'original center label');
+  ring(.339,.006,ivory,record,0,1.235,0,'label pinstripe');
+  ring(.278,.002,ivory,record,0,1.235,0,'label inner border');
+  cyl(.045,.045,.07,steel,record,0,1.253,0,'spindle');
+  cyl(.015,.015,.075,brass,record,0,1.278,0,'spindle cap',12);
+  // One draw call for many groove segments; no DOM/Canvas dependency.
+  const gpts=[], turns=31.2, samples=2600;
+  for(let i=0;i<samples;i++) {
+    const t=i/(samples-1), radius=outerRadius-(outerRadius-innerRadius)*t;
+    const tip=needlePoint(t);
+    const a=Math.atan2(tip.z,tip.x)-turns*Math.PI*2*t;
+    gpts.push(radius*Math.cos(a),1.2315,radius*Math.sin(a));
+  }
+  const grooveGeo=new T.BufferGeometry(); grooveGeo.setAttribute('position',new T.Float32BufferAttribute(gpts,3));
+  record.add(new T.Line(grooveGeo,grooveMat));
+  // Cabinet-side crank; it winds a separate ratchet, not the platter directly.
+  const crank=new T.Group(); crank.name='Winding crank'; crank.position.set(1.96,.7,.82); group.add(crank);
+  cyl(.13,.13,.055,brass,crank,0,0,0,'crank socket').rotation.z=Math.PI/2;
+  const crankRotor=new T.Group(); crank.add(crankRotor); crankRotor.rotation.z=0;
+  rod(V(0,0,0),V(.24,.45,0),.038,steel,crankRotor,'offset crank');
+  rod(V(.24,.45,0),V(.24,.45,.19),.034,brass,crankRotor,'grip shaft');
+  rod(V(.24,.45,.09),V(.24,.45,.3),.075,darkWood,crankRotor,'wood grip');
+  ball(.055,brass,crankRotor,.24,.45,.3);
+  // Stationary horn: collar at rear pivot, climbing toward a left/front-facing bell.
+  const horn=new T.Group(); horn.name='Fixed external horn'; group.add(horn);
+  const throat=V(1.72,1.7,-.62), mouth=V(-.85,3.15,.65);
+  const path=new T.CatmullRomCurve3([
+    throat,V(1.7,1.91,-.75),V(1.43,2.39,-.92),V(.72,2.96,-.58),mouth
+  ]);
+  // Surface of revolution swept along a curved axis. Exterior/interior surfaces and lip.
+  const sides=64, steps=44, verts=[], uv=[], indices=[];
+  function frame(t) {
+    const center=path.getPoint(t), tangent=path.getTangent(t).normalize();
+    let u=V(0,1,0).cross(tangent).normalize();
+    if(u.lengthSq()<.01)u=V(1,0,0);
+    const v=tangent.clone().cross(u).normalize(); return {center,u,v};
+  }
+  const radial=(t,a)=>.065+(.88-.065)*Math.pow(t,1.72)*(1+.016*Math.cos(8*a)*Math.pow(t,5));
+  for(let skin=0;skin<2;skin++)for(let j=0;j<=steps;j++) {
+    const t=j/steps,{center,u,v}=frame(t);
+    for(let k=0;k<=sides;k++) {
+      const a=2*Math.PI*k/sides,r=Math.max(.012,radial(t,a)-(skin?.022:0));
+      const pos=center.clone().addScaledVector(u,Math.cos(a)*r).addScaledVector(v,Math.sin(a)*r);
+      verts.push(pos.x,pos.y,pos.z); uv.push(k/sides,t);
+    }
+  }
+  const offset=(steps+1)*(sides+1);
+  for(let skin=0;skin<2;skin++)for(let j=0;j<steps;j++)for(let k=0;k<sides;k++) {
+    const a=skin*offset+j*(sides+1)+k,b=a+sides+1;
+    if(skin===0)indices.push(a,b,a+1,b,b+1,a+1);
+    else indices.push(a,a+1,b,b,a+1,b+1);
+  }
+  for(let k=0;k<sides;k++) {
+    const a=steps*(sides+1)+k,b=offset+a;
+    indices.push(a,b,a+1,b,b+1,a+1);
+  }
+  const hornGeo=new T.BufferGeometry(); hornGeo.setAttribute('position',new T.Float32BufferAttribute(verts,3));
+  hornGeo.setAttribute('uv',new T.Float32BufferAttribute(uv,2)); hornGeo.setIndex(indices);
+  const skinIndices=steps*sides*6, lipIndices=sides*6;
+  hornGeo.addGroup(0,skinIndices,0); hornGeo.addGroup(skinIndices,skinIndices,1);
+  hornGeo.addGroup(2*skinIndices,lipIndices,0); hornGeo.computeVertexNormals();
+  make(hornGeo,[brass,innerBrass],horn,'hollow eight-lobed brass flare');
+  const f=frame(1), lipPoints=[];
+  for(let k=0;k<=128;k++) {const a=k*2*Math.PI/128,r=radial(1,a);
+    lipPoints.push(f.center.clone().addScaledVector(f.u,r*Math.cos(a)).addScaledVector(f.v,r*Math.sin(a)));
+  }
+  tube(lipPoints,.026,brass,horn,'rolled bell rim',128);
+  rod(throat.clone().add(V(0,-.1,0)),throat.clone().add(V(0,.07,0)),.09,brass,horn,'horn throat collar');
+  tube([V(1.8,1.15,-1.06),V(1.8,1.65,-1.06),V(1.62,2.15,-.82)],.034,steel,horn,'fixed horn support');
+  ball(.085,brass,horn,1.8,1.15,-1.06,'support mounting foot');
+  // Lower swivel: stationary horn -> rotating hollow tapered arm.
+  cyl(.145,.145,.17,brass,group,P.x,1.53,P.z,'acoustic pivot bearing');
+  ring(.14,.018,steel,group,P.x,1.65,P.z,'upper bearing ring');
+  const armPivot=new T.Group(); armPivot.name='Horizontal tonearm pivot'; armPivot.position.copy(P); group.add(armPivot);
+  // Geometry of the fixed-length arm in XZ. Select intersection with positive/front Z.
+  function needlePoint(progress=0) {
+    const q=T.MathUtils.clamp(Number.isFinite(progress)?progress:0,0,1);
+    const r=outerRadius+(innerRadius-outerRadius)*q;
+    const d=Math.hypot(P.x,P.z), a=(r*r-armLength*armLength+d*d)/(2*d);
+    const h=Math.sqrt(Math.max(0,r*r-a*a));
+    const ex=P.x/d,ez=P.z/d;
+    const c1=V(a*ex-h*ez,1.23,a*ez+h*ex);
+    const c2=V(a*ex+h*ez,1.23,a*ez-h*ex);
+    return c1.z>=c2.z?c1:c2;
+  }
+  const N0=needlePoint(0), armAngle=Math.atan2(N0.z-P.z,N0.x-P.x);
+  armPivot.rotation.y=-armAngle;
+  // Within the pivot, local +X is the forward direction toward the needle.
+  const armSwing=new T.Group(); armPivot.add(armSwing);
+  const armShaft=new T.Group(); armSwing.add(armShaft);
+  const tapered = (a,b,r0,r1,name) => {
+    const delta=b.clone().sub(a),o=make(new T.CylinderGeometry(r1,r0,delta.length(),28,1,true),brass,armShaft,name);
+    o.position.copy(a).add(b).multiplyScalar(.5);
+    o.quaternion.setFromUnitVectors(V(0,1,0),delta.normalize()); return o;
+  };
+  // Tube's hollow ends are visible; gooseneck hinge raises ONLY the terminal assembly.
+  tapered(V(0,-.015,0),V(1.46,-.06,0),.116,.075,'hollow tapered tonearm');
+  ring(.113,.012,steel,armShaft,.05,-.015,0,'tonearm swivel detail');
+  const hinge=new T.Group(); hinge.name='Gooseneck lift hinge'; hinge.position.set(1.46,-.06,0); armShaft.add(hinge);
+  cyl(.096,.096,.13,steel,hinge,0,0,0,'hinge knuckle').rotation.x=Math.PI/2;
+  for(const z of [-.085,.085]) cyl(.043,.043,.023,brass,hinge,0,0,z,'hinge nut',10).rotation.x=Math.PI/2;
+  // Baseline stylus tip: x=1.70, y=1.23 when lowered; soundbox above it.
+  tube([V(0,0,0),V(.105,-.05,0),V(.13,.085,0),V(.155,.105,0)],.065,brass,hinge,'hollow terminal gooseneck',24);
+  const soundbox=new T.Group(); soundbox.name='Vertical diaphragm soundbox'; soundbox.position.set(.155,.105,0); hinge.add(soundbox);
+  // Diaphragm face is vertical, in YZ plane, with longitudinal (X) displacement.
+  const orientX=o=>{o.rotation.z=Math.PI/2;return o;};
+  orientX(cyl(.205,.205,.082,brass,soundbox,0,0,0,'soundbox rim'));
+  orientX(cyl(.165,.165,.009,ivory,soundbox,.048,0,0,'vertical diaphragm'));
+  for(let i=0;i<8;i++) {
+    const a=i*Math.PI/4,y=.181*Math.sin(a),z=.181*Math.cos(a);
+    orientX(cyl(.015,.015,.02,steel,soundbox,.049,y,z,'rim screw',10));
+  }
+  orientX(cyl(.063,.063,.018,black,soundbox,.056,0,0,'diaphragm center pad'));
+  // Needle lever: lateral input along tangential groove motion converted to X motion.
+  const lever=new T.Group(); lever.name='Soundbox needle lever'; soundbox.add(lever);
+  rod(V(.055,0,0),V(.085,-.16,0),.018,steel,lever,'needle lever');
+  ball(.033,brass,lever,.085,-.16,0,'lever bearing');
+  rod(V(.085,-.16,0),V(.085,-.215,0),.018,steel,lever,'needle clamp');
+  cyl(.028,.03,.04,brass,lever,.085,-.215,0,'needle screw',12).rotation.z=Math.PI/2;
+  const stylus=rod(V(.085,-.215,0),V(.085,-.315,0),.008,steel,lever,'steel stylus');
+  const stylusTip=new T.Object3D(); stylusTip.name='Stylus contact anchor'; stylusTip.position.set(.085,-.315,0); lever.add(stylusTip);
+  // Positioning needs an exact local tip offset, enforced at runtime (not visual guesswork).
+  const swivelAnchor=new T.Object3D(); swivelAnchor.position.set(0,0,0); armPivot.add(swivelAnchor);
+  const motor=new T.Group(); motor.name='Cabinet motor inspection'; group.add(motor);
+  const bedMaterial=steel.clone();bedMaterial.color.setHex(0x293436);bedMaterial.metalness=.22;bedMaterial.roughness=.7;
+  box(2.66,.055,2.38,bedMaterial,motor,0,.44,0,'motor bedplate');
+  const barrel=new T.Group(); barrel.name='Mainspring barrel'; barrel.position.set(-.63,.63,.12); motor.add(barrel);
+  const barrelWall=make(new T.CylinderGeometry(.43,.43,.25,64,1,true),brass,barrel,'open spring barrel');barrelWall.position.y=0;
+  cyl(.43,.43,.018,brass,barrel,0,-.125,0,'barrel bottom');
+  const springPoints=[];for(let i=0;i<600;i++){const t=i/599,a=t*Math.PI*2*9,r=.085+.3*t;springPoints.push(r*Math.cos(a),.11,r*Math.sin(a));}
+  const springGeometry=new T.BufferGeometry();springGeometry.setAttribute('position',new T.Float32BufferAttribute(springPoints,3));barrel.add(new T.Line(springGeometry,new T.LineBasicMaterial({color:0xd3d5cb})));
+  ring(.38,.019,steel,barrel,0,.135,0,'barrel lid seam');
+  cyl(.075,.075,.36,steel,barrel,0,0,0,'spring arbor');
+  const gearA=new T.Group();gearA.name="Motor gear 20 teeth";gearA.position.set(.12,.65,.47);motor.add(gearA);
+  const gearB=new T.Group();gearB.name="Motor pinion 12 teeth";gearB.position.set(.65,.65,.47);motor.add(gearB);
+  function gear(parent,r,teeth) {
+    cyl(r,r,.054,brass,parent,0,0,0,'gear disc');
+    for(let i=0;i<teeth;i++) {
+      const a=i*2*Math.PI/teeth;
+      box(.075,.055,.066,brass,parent,(r+.024)*Math.cos(a),0,(r+.024)*Math.sin(a),'gear tooth').rotation.y=-a;
+    }
+    cyl(.065,.065,.12,steel,parent,0,0,0,'gear hub');
+  }
+  gear(gearA,.29,20);gear(gearB,.155,12);
+  rod(V(.12,.5,.47),V(.12,.89,.47),.034,steel,motor,'gear arbor 1');
+  rod(V(.65,.5,.47),V(.65,.91,.47),.031,steel,motor,'gear arbor 2');
+  const spindle=rod(V(0,.5,0),V(0,1.17,0),.044,steel,motor,'platter spindle');
+  const governor=new T.Group(); governor.name='Centrifugal flyweight governor'; governor.position.set(.79,.66,-.55);motor.add(governor);
+  const governorSpin=new T.Group();governor.add(governorSpin);const weights=[],leaves=[];
+  rod(V(0,-.28,0),V(0,.32,0),.025,steel,governorSpin,'governor spindle');
+  for(let i=0;i<3;i++) {
+    const a=i*2*Math.PI/3,u=Math.cos(a),v=Math.sin(a);
+    const leaf=rod(V(.055*u,-.2,.055*v),V(.18*u,.12,.18*v),.014,brass,governorSpin,'leaf spring');leaves.push({leaf,u,v});
+    const weight=ball(.09,steel,governorSpin,.18*u,.13,.18*v,'governor flyweight');weights.push({weight,u,v});
+  }
+  cyl(.2,.2,.028,steel,governorSpin,0,.31,0,'governor friction disc');
+  box(.28,.035,.12,steel,motor,1.02,.99,-.55,'friction felt shoe support');
+  box(.13,.028,.11,felt,motor,.91,.968,-.55,'friction pad');
+  // All moving parts use a single caller-provided state, no internal clock.
+  function update(state={}) {
+    const angle=Number.isFinite(state.angle)?state.angle:0;
+    const progress=T.MathUtils.clamp(Number.isFinite(state.progress)?state.progress:0,0,1);
+    const lift=T.MathUtils.clamp(Number.isFinite(state.needleLift)?state.needleLift:1,0,1);
+    const crankAngle=Number.isFinite(state.crank)?state.crank:0;
+    const signal=T.MathUtils.clamp(Number.isFinite(state.signal)?state.signal:0,-1,1);
+    const explode=T.MathUtils.clamp(Number.isFinite(state.explode)?state.explode:0,0,1);
+    record.rotation.y=-angle;
+    const target=needlePoint(progress);
+    // Invariant exact in world space: swing around P and gooseneck only for lift.
+    const theta=Math.atan2(target.z-P.z,target.x-P.x);
+    armPivot.rotation.y=-theta;
+    hinge.rotation.z=lift*.34;
+    soundbox.position.set(.155,.105,0);
+    // Exaggerated vibration belongs to the lever/diaphragm, not tracking radius.
+    lever.rotation.y=signal*.018;
+    // Down position (lift=0, signal=0) is EXACTLY the circle intersection.
+    crankRotor.rotation.x=crankAngle;
+    gearA.rotation.y=angle*.31;gearB.rotation.y=-gearA.rotation.y*20/12;
+    governorSpin.rotation.y=angle*2.9;
+    const spread=Number.isFinite(state.governorRpm)?T.MathUtils.clamp(state.governorRpm/120,0,1):.65;const wr=.08+.14*spread;
+    weights.forEach(({weight,u,v})=>weight.position.set(wr*u,.13,wr*v));
+    leaves.forEach(({leaf,u,v})=>{const A=V(.055*u,-.2,.055*v),B=V(wr*u,.13,wr*v),d=B.clone().sub(A);leaf.position.copy(A.add(B).multiplyScalar(.5));leaf.scale.y=d.length()/Math.hypot(.125,.32);leaf.quaternion.setFromUnitVectors(V(0,1,0),d.normalize());});
+    platterLayer.position.y=explode*.48;
+    top.position.y=explode*.18;
+    motor.position.y=-explode*1.3;
+  }
+  update();
+  const anchors={stylusTip,swivel:swivelAnchor,recordCenter:C.clone(),tonearmPivot:P.clone(),hornThroat:throat.clone()};
+  const spec={discCenter:[0,1.23,0],pivot:[P.x,P.y,P.z],outerRadius,innerRadius,armLength};
+  return {group,eye:[5,4,7],parts:{record,tonearm:armPivot,soundbox,horn,crank,cabinet,motor},
+    anchors,update,spec,needlePoint};
+}
+
+
+
+===== PUBLIC SOURCE https://visual.newsis.com/goodeasy/sewing-machine/thread-path.js?audit=20261028-eight (HTTP 200; local HEAD identical) =====
+// Expanded conceptual route, in machine-local coordinates. The release
+// corridor moves around the outside of the case, never through its centre.
+export function threadPath(state){
+ const p=state.phase||0,eyeY=state.eyeY??1.65,takeupY=state.takeupY??2.17;
+ const clamp=x=>Math.max(0,Math.min(1,x));const smooth=(a,b,x)=>{const q=clamp((x-a)/(b-a));return q*q*(3-2*q);};
+ const mix=(a,b,t)=>a+(b-a)*t,NX=-.85,HZ=-.42;
+ const path=[[.88,3.47,.22],[.88,3.74,.04],[.63,3.05,.45],[-1.08,2.97,.49],[-1.39,2.57,.59],[-1.39,2.55,.613],[-1.41,2.35,.64],[-1.31,takeupY,.57],[-.85,1.84,.30],[-.85,eyeY+.12,.10],[-.85,eyeY,.025],[NX,eyeY,0]];
+ const previous=state.stitches?.at(-1)||state.length||3;
+ const holeZ=p<.25&&state.stitches?.length ? -previous*.045 : -(state.length||3)*smooth(.84,.96,p)*.045;
+ const hole=[NX,1.11,holeZ];
+ if(p<.5||p>=.94){if(p>=.94||p<.25){path.push([NX-.025,1.11,holeZ],[NX-.025,1.072,holeZ],[NX,1.058,holeZ],[NX+.025,1.072,holeZ],[NX+.025,1.11,holeZ],[NX,1.12,holeZ-.03]);}else path.push(hole);return path;}
+ const grow=smooth(.50,.58,p),spread=smooth(.58,.64,p),recover=smooth(.83,.94,p),clear=smooth(.90,.94,p);
+ const endPhi=p<=.82?Math.max(0,4*Math.PI*(p-.58)):mix(4*Math.PI*.24,2*Math.PI,smooth(.82,.94,p));
+ const startPhi=2*Math.PI*smooth(.84,.94,p);
+ const radius=mix(.42,.38,grow)+.04*clear;
+ const upperY=mix(mix(eyeY+.09*grow,.865,spread),1.11,clear);
+ const lowerY=mix(mix(eyeY-.01*grow,.505,spread),1.11,clear);
+ const polar=(a,y)=>[NX+radius*Math.sin(a),y,HZ+radius*Math.cos(a)];
+ for(let i=0;i<=20;i++)path.push(polar(mix(startPhi,endPhi,i/20),upperY));
+ path.push(polar(endPhi,mix(.87,1.11,clear)));
+ const lowerEnd=mix(endPhi,2*Math.PI,smooth(.66,.82,p));
+ for(let i=0;i<=20;i++)path.push(polar(mix(endPhi,lowerEnd,i/20),lowerY));
+ path.push(polar(2*Math.PI,lowerY),polar(2*Math.PI,mix(lowerY,1.11,.5)),hole);
+ return path.filter((point,i,all)=>i===0||Math.hypot(...point.map((v,j)=>v-all[i-1][j]))>1e-5);
+}
+
+
+
+===== PUBLIC SOURCE https://visual.newsis.com/goodeasy/sewing-machine/sewing-model.js?audit=20261028-eight (HTTP 200; local HEAD identical) =====
+import {threadPath} from './thread-path.js';
+
+export function buildSewingMachine(T, M = {}) {
+  const group = new T.Group();
+  group.name = "VISUAL NEWSIS / Sewing Machine";
+  const MM = 0.045;
+  const PI2 = Math.PI * 2;
+  const N = new T.Vector3(-0.85, 0, 0);
+  const H = new T.Vector3(-0.85, 0.66, -0.42);
+  const mint = new T.MeshStandardMaterial({
+    color: 0x00b4c9, roughness: 0.52
+  });
+  const gold = new T.MeshStandardMaterial({
+    color: 0xd8af58, metalness: 0.28, roughness: 0.45
+  });
+  const ivory = M.ivory?.clone() || new T.MeshStandardMaterial({
+    color: 0xe9e3d6, metalness: 0.16, roughness: 0.36
+  });
+  const steel = M.steel?.clone() || new T.MeshStandardMaterial({
+    color: 0xb8c2c2, metalness: 0.86, roughness: 0.27
+  });
+  const brass = M.brass?.clone() || new T.MeshStandardMaterial({
+    color: 0xb79a60, metalness: 0.78, roughness: 0.32
+  });
+  const wood = M.wood?.clone() || new T.MeshStandardMaterial({
+    color: 0x403025, roughness: 0.74
+  });
+  const black = M.black?.clone() || new T.MeshStandardMaterial({
+    color: 0x202a2b, metalness: 0.3, roughness: 0.55
+  });
+  const felt = M.felt?.clone() || new T.MeshStandardMaterial({
+    color: 0x344f4d, roughness: 0.94, side: T.DoubleSide
+  });
+  const red = M.red?.clone() || new T.MeshStandardMaterial({
+    color: 0x88433b, roughness: 0.55
+  });
+  ivory.color.setHex(0xe5e0d2);ivory.roughness=.53;ivory.clearcoat=.12;
+  wood.color.setHex(0x533820);wood.clearcoat=.12;wood.roughness=.55;
+  black.metalness=.12;black.roughness=.6;
+  const glass = steel.clone();
+  glass.transparent = true;
+  glass.opacity = 0.25;
+
+  const parts = {};
+  const anchors = {};
+  const covers = new T.Group();
+  const mechanism = new T.Group();
+  const needle = new T.Group();
+  const presser = new T.Group();
+  const feed = new T.Group();
+  const hook = new T.Group();
+  const bobbinCase = new T.Group();
+  const bobbin = new T.Group();
+  const fabric = new T.Group();
+  const takeup = new T.Group();
+  const threads = new T.Group();
+
+  function mesh(parent, geometry, material, name, x=0, y=0, z=0) {
+    const o = new T.Mesh(geometry, material);
+    o.name = name;
+    o.position.set(x, y, z);
+    o.castShadow = true;
+    o.receiveShadow = true;
+    parent.add(o);
+    return o;
+  }
+  function cylinder(parent, rt, rb, h, material, name, x, y, z, n=24) {
+    return mesh(parent, new T.CylinderGeometry(rt, rb, h, n),
+      material, name, x, y, z);
+  }
+  function sphere(parent, r, material, name, x, y, z) {
+    return mesh(parent, new T.SphereGeometry(r, 12, 8),
+      material, name, x, y, z);
+  }
+  function rod(parent, a, b, r, material, name) {
+    const A = new T.Vector3(...a), B = new T.Vector3(...b);
+    const d = new T.Vector3().subVectors(B, A);
+    const o = cylinder(parent, r, r, d.length(), material, name,
+      (A.x+B.x)/2, (A.y+B.y)/2, (A.z+B.z)/2, 12);
+    o.quaternion.setFromUnitVectors(
+      new T.Vector3(0,1,0), d.normalize()
+    );
+    return o;
+  }
+  function tube(parent, points, radius, material, name, closed=false) {
+    const curve = new T.CatmullRomCurve3(
+      points.map(v => new T.Vector3(...v)), closed, "centripetal"
+    );
+    return mesh(parent, new T.TubeGeometry(
+      curve, Math.max(12, points.length*6), radius, 6, closed
+    ), material, name);
+  }
+  function rounded(parent, w, h, d, radius, material, name, x, y, z) {
+    const s = new T.Shape(), a=-w/2, b=-h/2;
+    const r=Math.min(radius,w/2,h/2);
+    s.moveTo(a+r,b);
+    s.lineTo(a+w-r,b); s.quadraticCurveTo(a+w,b,a+w,b+r);
+    s.lineTo(a+w,b+h-r); s.quadraticCurveTo(a+w,b+h,a+w-r,b+h);
+    s.lineTo(a+r,b+h); s.quadraticCurveTo(a,b+h,a,b+h-r);
+    s.lineTo(a,b+r); s.quadraticCurveTo(a,b,a+r,b);
+    const g = new T.ExtrudeGeometry(s, {
+      depth:d, bevelEnabled:true, bevelSegments:3,
+      steps:1, bevelSize:Math.min(.025,r*.5), bevelThickness:Math.min(.025,r*.5),
+      curveSegments:8
+    });
+    return mesh(parent,g,material,name,x,y,z-d/2);
+  }
+  function torus(parent, radius, thickness, material, name, x,y,z) {
+    const o=mesh(parent,new T.TorusGeometry(
+      radius,thickness,8,48
+    ),material,name,x,y,z);
+    o.rotation.x=Math.PI/2;
+    return o;
+  }
+  function screw(parent,x,y,z) {
+    const s=cylinder(parent,.038,.038,.012,steel,"Slotted screw",x,y,z,12);
+    const slot=mesh(parent,new T.BoxGeometry(.055,.006,.009),
+      black,"Screw slot",x,y+.009,z);
+    return {s,slot};
+  }
+  function smooth(a,b,x) {
+    const t=Math.max(0,Math.min(1,(x-a)/(b-a)));
+    return t*t*(3-2*t);
+  }
+  function pathLine(parent,material,name,radius=.009) {
+    const obj=mesh(parent,new T.BufferGeometry(),material,name);
+    obj.userData.radius=radius;
+    return obj;
+  }
+  function setPath(obj,points) {
+    if (points.length<2) return;
+    const vec=points.map(p=>new T.Vector3(...p));
+    const curve=new T.CatmullRomCurve3(vec,false,"centripetal");
+    const geometry=new T.TubeGeometry(
+      curve,Math.max(12,(vec.length-1)*6),
+      obj.userData.radius,5,false
+    );
+    obj.geometry.dispose();
+    obj.geometry=geometry;
+  }
+
+  // One continuous cast C-shaped arm/head/pillar shell.
+  const bodyShape=new T.Shape();
+  bodyShape.moveTo(-1.43,1.98);
+  bodyShape.bezierCurveTo(-1.53,2.02,-1.55,2.30,-1.51,2.59);
+  bodyShape.bezierCurveTo(-1.48,2.96,-1.21,3.17,-.88,3.20);
+  bodyShape.lineTo(1.78,3.20);
+  bodyShape.bezierCurveTo(2.07,3.19,2.23,3.02,2.23,2.72);
+  bodyShape.lineTo(2.23,1.16);
+  bodyShape.quadraticCurveTo(2.23,.98,2.04,.98);
+  bodyShape.lineTo(1.43,.98);
+  bodyShape.quadraticCurveTo(1.29,.98,1.29,1.15);
+  bodyShape.lineTo(1.29,2.17);
+  bodyShape.quadraticCurveTo(1.29,2.32,1.12,2.32);
+  bodyShape.lineTo(-.89,2.32);
+  bodyShape.quadraticCurveTo(-1.12,2.32,-1.16,2.10);
+  bodyShape.quadraticCurveTo(-1.19,1.96,-1.43,1.98);
+  const body=mesh(covers,new T.ExtrudeGeometry(bodyShape,{
+    depth:.82,bevelEnabled:true,bevelSize:.075,
+    bevelThickness:.07,bevelSegments:5,curveSegments:16
+  }),ivory,"Continuous C-shaped cast body",0,0,-.42);
+  rounded(covers,1.04,.43,.86,.15,ivory,
+    "Needle head cover",-1.13,2.19,.02);
+  rounded(covers,.83,1.35,.94,.16,ivory,
+    "Right column casing",1.80,1.79,0);
+  rounded(group,4.5,.31,2.6,.24,wood,
+    "Wood plinth",.1,.13,0);
+  const bedShape=new T.Shape();bedShape.moveTo(-2.06,-1.21);bedShape.lineTo(2.26,-1.21);bedShape.lineTo(2.26,1.21);bedShape.lineTo(-2.06,1.21);bedShape.closePath();const cavity=new T.Path();cavity.moveTo(-1.5,-.5);cavity.lineTo(-.25,-.5);cavity.lineTo(-.25,1);cavity.lineTo(-1.5,1);cavity.closePath();bedShape.holes.push(cavity);const bedGeometry=new T.ExtrudeGeometry(bedShape,{depth:.19,bevelEnabled:true,bevelSize:.015,bevelThickness:.012,bevelSegments:2});bedGeometry.rotateX(Math.PI/2);mesh(group,bedGeometry,ivory,"Recessed machine bed",0,1.025,0);
+
+  rounded(group,3.98,.045,2.18,.13,black,
+    "Bed inset",.1,.815,0);
+
+  // Plate: real openings cut from geometry, not painted markings.
+  const plateShape=new T.Shape();
+  plateShape.moveTo(-1.82,-.52);
+  plateShape.lineTo(-.15,-.52);
+  plateShape.quadraticCurveTo(-.10,-.52,-.10,-.47);
+  plateShape.lineTo(-.10,.47);
+  plateShape.quadraticCurveTo(-.10,.52,-.15,.52);
+  plateShape.lineTo(-1.82,.52);
+  plateShape.quadraticCurveTo(-1.88,.52,-1.88,.46);
+  plateShape.lineTo(-1.88,-.46);
+  plateShape.quadraticCurveTo(-1.88,-.52,-1.82,-.52);
+  function hole(x,z,w,d) {
+    const h=new T.Path();
+    h.moveTo(x-w/2,z-d/2);
+    h.lineTo(x+w/2,z-d/2);
+    h.lineTo(x+w/2,z+d/2);
+    h.lineTo(x-w/2,z+d/2);
+    h.closePath();
+    plateShape.holes.push(h);
+  }
+  hole(-.85,0,.095,.13);
+  for (const x of [-1.05,-.65]) {
+    hole(x,-.24,.075,.31);
+    hole(x,.24,.075,.31);
+  }
+  const plateGeometry=new T.ExtrudeGeometry(plateShape,{
+    depth:.028,bevelEnabled:false,curveSegments:12
+  });
+  plateGeometry.rotateX(Math.PI/2);
+  // After rotateX(+90), extrusion extends toward -Y.
+  mesh(group,plateGeometry,steel,"Perforated needle plate",
+    0,1.05,0);
+  for (const x of [-1.72,-.22]) {
+    for (const z of [-.42,.42]) screw(group,x,1.056,z);
+  }
+
+  // Needle: eye is local origin; all movement is applied to this group.
+  needle.position.set(N.x,1.65,N.z);
+  cylinder(needle,.026,.026,1.35,steel,
+    "Needle shank",0,.76,0,16);
+  cylinder(needle,.012,.012,.18,steel,
+    "Needle blade",0,.13,0,12);
+  const eyeRing=torus(needle,.025,.009,steel,
+    "Actual needle eye rim",0,0,0);
+  eyeRing.rotation.set(0,0,Math.PI/2);
+  rod(needle,[0,-.16,0],[0,-.038,0],
+    .011,steel,"Needle point");
+  // Scarf is behind the needle (-Z); thread enters from +Z.
+  const scarf=mesh(needle,new T.SphereGeometry(
+    .017,12,8,0,PI2,0,Math.PI
+  ),black,"Rear needle scarf",0,.073,-.012);
+  scarf.scale.set(.75,2.8,.4);
+  needle.userData.eyeLocal=new T.Vector3(0,0,0);
+  needle.userData.tipLocal=new T.Vector3(0,-.16,0);
+  group.add(needle);
+  rod(mechanism,[-.85,2.48,0],[-.85,1.93,0],
+    .082,steel,"Needle bar upper guide");
+
+  // Presser-foot shank, fork, sole and lifted toe.
+  rod(presser,[-.61,2.35,.12],[-.61,1.19,.12],
+    .054,steel,"Presser bar");
+  rod(presser,[-.61,1.25,.12],[-.77,1.16,.12],
+    .065,steel,"Presser bracket");
+  rod(presser,[-1.04,1.155,-.19],[-.66,1.155,-.19],.045,steel,"U-foot rear bridge");
+  for (const x of [-1.04,-.66]) {
+    rod(presser,[x,1.155,-.19],[x,1.155,.19],
+      .045,steel,"Split presser sole");
+  }
+  rod(presser,[-1.05,1.155,.19],[-1.04,1.24,.36],
+    .04,steel,"Presser foot raised toe");
+  sphere(presser,.074,brass,"Presser screw",-.61,1.28,.26);
+  group.add(presser);
+
+  // Four-motion feed dogs; slots remain stationary in the plate.
+  for (const x of [-1.05,-.65]) {
+    for (const z0 of [-.24,.24]) {
+      const dog=rounded(feed,.066,.27,.055,.012,
+        steel,"Feed dog tooth bar",x,0,z0);
+      dog.rotation.x=-Math.PI/2;
+      for(let k=0;k<5;k++) {
+        const z=z0-.115+k*.057;
+        rod(feed,[x-.03,.036,z],[x+.03,.036,z],
+          .011,steel,"Feed tooth ridge");
+      }
+    }
+  }
+  feed.position.set(0,.995,0);
+  group.add(feed);
+
+  // Horizontal-axis-y rotary hook: body below Y=.82.
+  hook.position.copy(H);
+  torus(hook,.267,.052,steel,"Rotary hook race",0,.075,0);
+  torus(hook,.337,.018,brass,"Rotary outer race",0,.064,0);
+  const crescent=[];
+  for(let i=0;i<=14;i++) {
+    const a=-.45+i/14*1.25;
+    crescent.push([.34*Math.sin(a),.073,.34*Math.cos(a)]);
+  }
+  tube(hook,crescent,.032,steel,"Rotary hook crescent");
+  tube(hook,[
+    [-.065,.09,.285],[-.038,.13,.325],
+    [-.01,.18,.367],[0,.21,.38]
+  ],.008,steel,"Hook beak",false);
+  sphere(hook,.008,steel,"Hook actual tip",0,.21,.38);
+  group.add(hook);
+
+  // Stationary bobbin case, centred at Y=.66.
+  bobbinCase.position.copy(H);
+  mesh(bobbinCase,new T.CylinderGeometry(.205,.205,.155,48,1,true),black,"Fixed bobbin case",0,0,0);
+  torus(bobbinCase,.181,.009,steel,"Bobbin case upper rim",0,.084,0);
+  torus(bobbinCase,.218,.013,steel,
+    "Case retaining race",0,.078,0);
+  // Stop finger and the deliberately open thread passage.
+  rod(bobbinCase,[.20,.10,-.10],[.29,.10,-.10],
+    .017,steel,"Case rotation stop finger");
+  rod(mechanism,[-.56,.76,-.52],[-.60,.76,-.52],
+    .025,steel,"Stationary stop bracket");
+  rod(bobbinCase,[.08,.11,.17],[.14,.13,.205],
+    .013,brass,"Case tension spring");
+  sphere(bobbinCase,.028,brass,
+    "Case tension screw",.13,.132,.19);
+  group.add(bobbinCase);
+
+  bobbin.position.copy(H);
+  cylinder(bobbin,.132,.132,.08,brass,
+    "Bobbin wound thread core",0,.017,0,32);
+  cylinder(bobbin,.165,.165,.012,steel,
+    "Upper bobbin flange",0,.062,0,40);
+  cylinder(bobbin,.165,.165,.012,steel,
+    "Lower bobbin flange",0,-.033,0,40);
+  for(let i=0;i<9;i++) {
+    torus(bobbin,.14+i*.002,.0028,gold,
+      "Gold thread winding",0,-.018+i*.009,0);
+  }
+  group.add(bobbin);
+
+  // Handwheel, shaft, flywheel rim, hub and handle.
+  // Keep the vertical wheel mount fixed; spin only around its local axle.
+  const flyMount=new T.Group();
+  flyMount.position.set(2.47,2.65,0);
+  flyMount.rotation.z=Math.PI/2;
+  const fly=new T.Group();
+  flyMount.add(fly);
+  torus(fly,.33,.047,black,"Handwheel rim",0,0,0);
+  cylinder(fly,.095,.095,.13,brass,
+    "Handwheel centre hub",0,0,0,32);
+  for(let i=0;i<6;i++) {
+    const a=i*PI2/6;
+    rod(fly,[0,0,0],[Math.cos(a)*.31,0,Math.sin(a)*.31],
+      .024,steel,"Handwheel spoke");
+  }
+  rod(fly,[.24,.025,0],[.24,.19,0],
+    .035,wood,"Handwheel grip");
+  mechanism.add(flyMount);
+  rod(mechanism,[2.15,2.65,0],[2.47,2.65,0],
+    .065,steel,"Handwheel shaft");
+
+  // Spool spindle and wound upper thread.
+  rod(mechanism,[.88,3.18,.04],[.88,3.67,.04],
+    .027,brass,"Spool spindle");
+  cylinder(mechanism,.17,.17,.35,black,
+    "Thread spool",.88,3.44,.04,32);
+  for(let i=0;i<18;i++) {
+    torus(mechanism,.174,.004,mint,
+      "Mint spool winding",.88,3.27+i*.019,.04);
+  }
+  cylinder(mechanism,.185,.185,.025,brass,
+    "Spool upper flange",.88,3.64,.04);
+  rod(mechanism,[.88,3.71,.04],[.88,3.73,.04],
+    .065,brass,"Spool retaining cap");
+
+  // Upper thread guides, twin tension discs and check spring.
+  const guidePositions=[
+    [.63,3.05,.45],[-1.08,2.97,.49],
+    [-1.39,2.57,.53],[-1.14,2.18,.51],
+    [-.85,1.84,.30]
+  ];
+  for(let i=0;i<guidePositions.length;i++) {
+    const [x,y,z]=guidePositions[i];
+    const g=torus(mechanism,.045,.012,steel,
+      "Upper thread guide "+i,x,y,z);
+    g.rotation.set(0,0,Math.PI/2);
+  }
+  for(const z of [.59,.635]) {
+    const disc=cylinder(mechanism,.115,.115,.018,steel,
+      "Tension disc",-1.39,2.55,z,36);
+    disc.rotation.x=Math.PI/2;
+  }
+  sphere(mechanism,.082,brass,"Tension knob",
+    -1.39,2.55,.71);
+  tube(mechanism,[
+    [-1.39,2.46,.61],[-1.49,2.38,.65],
+    [-1.41,2.32,.64],[-1.34,2.38,.62]
+  ],.011,steel,"Check spring");
+  screw(mechanism,-1.33,2.35,.62);
+
+  // Take-up lever: its eye moves at the externally provided Y.
+  rod(takeup,[-1.13,-.20,.53],[-1.31,0,.57],
+    .038,steel,"Take-up lever");
+  torus(takeup,.042,.012,steel,
+    "Moving take-up eye",-1.31,0,.57);
+  takeup.position.y=2.8;
+  mechanism.add(takeup);
+
+  // Stitching scrap: two distinct fabric layers.
+  fabric.position.set(-.85,1.08,.8);
+  const clothTop=felt.clone();
+  const clothBottom=felt.clone();
+  clothBottom.color.multiplyScalar(.73);
+  if(typeof document!=='undefined'){const canvas=document.createElement('canvas');canvas.width=canvas.height=128;const ctx=canvas.getContext('2d');ctx.fillStyle='#708a80';ctx.fillRect(0,0,128,128);for(let i=0;i<128;i+=3){ctx.strokeStyle=i%2?'#789389':'#577166';ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(i,0);ctx.lineTo(i,128);ctx.moveTo(0,i);ctx.lineTo(128,i);ctx.stroke();}const weave=new T.CanvasTexture(canvas);weave.wrapS=weave.wrapT=T.RepeatWrapping;weave.repeat.set(8,14);weave.colorSpace=T.SRGBColorSpace;clothTop.map=weave;clothTop.bumpMap=weave;clothTop.bumpScale=.006;clothBottom.map=weave;}
+  clothTop.color.setHex(0x799489);clothBottom.color.setHex(0x435e53);
+  clothTop.transparent=true;
+  clothBottom.transparent=true;
+  const topSheet=rounded(fabric,1.3,.020,4.4,.045,
+    clothTop,"Upper fabric layer",0,.015,0);
+  const bottomSheet=rounded(fabric,1.3,.020,4.4,.045,
+    clothBottom,"Lower fabric layer",0,-.015,0);
+
+  // Local needle entry is z=-.8; the moving cloth translates below it.
+  const seamTop=new T.Group(), seamBottom=new T.Group();
+  fabric.add(seamTop,seamBottom);
+  group.add(fabric);
+
+  const upper=pathLine(threads,mint,"Continuous upper thread",.008);
+  const upperLoopA=pathLine(threads,mint.clone(),"Upper loop upper race",.009);
+  const upperLoopB=pathLine(threads,mint.clone(),"Upper loop lower race",.009);
+  const lower=pathLine(threads,gold,"Continuous bobbin thread",.008);
+  group.add(threads,mechanism,covers);
+
+  const eyeAnchor=new T.Object3D(),tipAnchor=new T.Object3D(),hookAnchor=new T.Object3D();tipAnchor.position.set(0,-.16,0);hookAnchor.position.set(0,.21,.38);needle.add(eyeAnchor,tipAnchor);hook.add(hookAnchor);
+  const eyePos=new T.Vector3();
+  const tipPos=new T.Vector3();
+  const hookPos=new T.Vector3();
+  const localTip=new T.Vector3(0,.21,.38);
+  anchors.needleEye=eyeAnchor;
+  anchors.needleTip=tipAnchor;
+  anchors.hookTip=hookAnchor;
+
+  // Fixed maximum of twelve stitches, with reusable line buffers.
+  const seamSegments=[];
+  function seamGeometry(parent,material,name) {
+    const geometry=new T.BufferGeometry();
+    const arr=new Float32Array(6);
+    geometry.setAttribute("position",
+      new T.BufferAttribute(arr,3));
+    const line=new T.Line(geometry,new T.LineBasicMaterial({
+      color:material.color,linewidth:1
+    }));
+    line.name=name;
+    parent.add(line);
+    return line;
+  }
+  for(let i=0;i<12;i++) {
+    seamSegments.push({
+      top:seamGeometry(seamTop,mint,"Top lockstitch "+i),
+      bottom:seamGeometry(seamBottom,gold,"Bottom lockstitch "+i)
+    });
+  }
+  function segment(line,a,b,visible) {
+    line.visible=visible;
+    if(!visible)return;
+    const p=line.geometry.attributes.position;
+    p.setXYZ(0,...a); p.setXYZ(1,...b);
+    p.needsUpdate=true;
+    line.geometry.computeBoundingSphere();
+  }
+  function updateSeam(stitches) {
+    let distance=0;
+    for(let i=0;i<12;i++) {
+      const length=Number(stitches[i]);
+      const exists=Number.isFinite(length)&&length>0;
+      const s=seamSegments[i];
+      if(exists) {
+        const a=-.8+distance*MM;
+        distance+=length;
+        const b=-.8+distance*MM;
+        segment(s.top,[0,.041,a],[0,.041,b],true);
+        segment(s.bottom,[0,-.051,a],[0,-.051,b],true);
+      } else {
+        segment(s.top,[0,0,0],[0,0,0],false);
+        segment(s.bottom,[0,0,0],[0,0,0],false);
+      }
+    }
+  }
+
+  function update(state={}) {
+    const p=((Number(state.phase)||0)%1+1)%1;
+    const length=Math.max(2,Math.min(5,Number(state.length)||2.5));
+    const travel=Math.max(0,Number(state.travel)||0);
+    const progress=smooth(.84,.96,p);
+    const eyeY=Number.isFinite(state.eyeY)
+      ? state.eyeY : 1.20+.45*Math.cos(PI2*p);
+    const tipY=Number.isFinite(state.tipY)
+      ? state.tipY : eyeY-.16;
+
+    needle.position.set(N.x,eyeY,N.z);
+    eyePos.set(N.x,eyeY,N.z);tipPos.set(N.x,tipY,N.z);
+    // Contract requires tipY=eyeY-.16; anchor follows the physical mesh.
+    if(Math.abs(tipY-(eyeY-.16))>1e-5) {
+      needle.userData.tipYConflict=tipY;
+    } else {
+      delete needle.userData.tipYConflict;
+    }
+
+    const angle=Number.isFinite(state.hookAngle)
+      ? state.hookAngle : 4*Math.PI*(p-.58);
+    hook.rotation.y=angle;
+    hookPos.copy(localTip).applyAxisAngle(new T.Vector3(0,1,0),angle).add(H);
+
+    takeup.position.y=Number.isFinite(state.takeupY)
+      ? state.takeupY : 2.64+.28*Math.cos(PI2*(p-.88));
+    feed.position.y=Number.isFinite(state.feedY)
+      ? state.feedY : .995+(.065*smooth(.81,.85,p)
+        *(1-smooth(.96,1,p)));
+    feed.position.z=Number.isFinite(state.feedZ)
+      ? state.feedZ : progress*length*MM;
+
+    fabric.position.set(-.85,1.08,
+      .8-(travel+length*progress)*MM);
+    updateSeam(Array.isArray(state.stitches)?state.stitches:[]);
+
+    // Finished case stays fixed; wound bobbin turns only on recovery.
+    bobbin.rotation.y=-(travel+length*smooth(.83,.94,p))*.04;
+    // One turn per stitch; the top of the rim travels toward the operator (+Z).
+    fly.rotation.y=-PI2*p;
+
+    const cut=Math.max(0,Math.min(1,Number(state.cutaway)||0));
+    covers.visible=cut<.95;
+    covers.traverse(o=>{
+      if(o.isMesh) {
+        o.material.transparent=cut>0;
+        o.material.opacity=cut>0?1-cut:1;
+        o.material.depthWrite=cut<.5;
+      }
+    });
+    clothTop.opacity=1-cut*.90;
+    clothBottom.opacity=1-cut*.93;
+
+    // Spool -> guides -> tension discs -> check spring ->
+    // take-up eye -> needle guide -> eye. Every joint is continuous.
+    const takeupEye=[-1.31,takeup.position.y,.57];
+    const eye=[eyePos.x,eyePos.y,eyePos.z];
+    const fixedUpper=[
+      [.88,3.47,.22],[.88,3.74,.04],
+      [.63,3.05,.45],[-1.08,2.97,.49],
+      [-1.39,2.57,.59],[-1.39,2.55,.613],
+      [-1.41,2.35,.64],[-1.14,2.18,.51],
+      takeupEye,[-.85,1.84,.30],
+      [-.85,eyeY+.12,.10],[-.85,eyeY,.025],
+      eye
+    ];
+
+    const loopAmount=Math.max(0,Math.min(1,
+      Number.isFinite(state.loop)?state.loop:
+      smooth(.50,.58,p)*(1-smooth(.80,.94,p))
+    ));
+    const carry=Math.max(0,Math.min(1,
+      Number.isFinite(state.carry)?state.carry:
+      smooth(.58,.82,p)
+    ));
+    const recover=Math.max(0,Math.min(1,
+      Number.isFinite(state.recover)?state.recover:
+      smooth(.83,.94,p)
+    ));
+
+    // A single continuous upper thread: no separate floating branch ends.
+    setPath(upper,threadPath({...state,phase:p,eyeY,takeupY:takeup.position.y,length}));
+    upperLoopA.visible=false;upperLoopB.visible=false;
+    const previous=state.stitches?.at(-1)||length;const holeZ=p<.25&&state.stitches?.length?-previous*MM:-length*progress*MM;
+    setPath(lower,[[H.x,.72,H.z],[H.x+.14,.79,H.z+.18],[H.x+.18,.80,H.z+.25],[-.85,.94,-.11],[-.85,1.04,holeZ+.025],[-.85,1.078,holeZ+.025],[-.85,1.078,holeZ-.025],[-.85,1.04,holeZ-.04]]);
+
+    // A single model state drives all transforms and thread paths.
+    group.userData.phase=p;
+    group.userData.feedProgress=progress;
+    group.userData.travel=travel;
+    group.userData.stitchLength=length;
+    group.userData.loop=loopAmount;
+    group.userData.cutaway=cut;
+    return group;
+  }
+
+  parts.handwheel=fly;
+  parts.handwheelMount=flyMount;
+  parts.needle=needle;
+  parts.presser=presser;
+  parts.feed=feed;
+  parts.hook=hook;
+  parts.bobbinCase=bobbinCase;
+  parts.bobbin=bobbin;
+  parts.fabric=fabric;
+  parts.takeup=takeup;
+  parts.covers=covers;
+  parts.mechanism=mechanism;
+  parts.threads=threads;
+
+  update({
+    phase:0,eyeY:1.65,tipY:1.49,
+    hookAngle:4*Math.PI*(0-.58),
+    takeupY:2.8,feedZ:0,feedY:.995,
+    loop:0,carry:0,recover:0,
+    length:2.5,travel:0,stitches:[],cutaway:0
+  });
+
+  return {
+    group,
+    eye:[5,3.7,7],
+    parts,
+    anchors,
+    update
+  };
+}
+
+
+
+===== PUBLIC SOURCE https://visual.newsis.com/goodeasy/sewing-machine/motion.js?audit=20261028-eight (HTTP 200; local HEAD identical) =====
+// A deliberately slow, schematic single-needle rotary-hook lockstitch cycle.
+export const PLATE_Y=1.05,NEEDLE_X=-.85,NEEDLE_Z=0,CATCH_PHASE=.58,MM=.045,MAX_STITCHES=12;
+export const clamp=(x,a=0,b=1)=>Math.max(a,Math.min(b,x));
+export function smooth(a,b,x){const q=clamp((x-a)/(b-a));return q*q*(3-2*q);}
+export function cycleAt(phase,length=3){const p=((phase%1)+1)%1,eyeY=1.20+.45*Math.cos(2*Math.PI*p),tipY=eyeY-.16,feed=smooth(.84,.96,p),dogLift=smooth(.79,.83,p)*(1-smooth(.96,.99,p)),dogZ=p<.2?-.5+smooth(0,.2,p):.5-feed,loopGrow=smooth(.50,.58,p),carry=smooth(.58,.81,p),recover=smooth(.83,.94,p),takeupY=2.36+.56*(1-smooth(.03,.48,p)+smooth(.83,.98,p));
+ const stage=p<.5?0:p<.58?1:p<.83?2:p<.94?3:p<.96?4:5;
+ return {phase:p,eyeY,tipY,needleX:NEEDLE_X,needleZ:NEEDLE_Z,hookAngle:4*Math.PI*(p-CATCH_PHASE),takeupY,feed,feedZ:dogZ*length*MM,feedY:.995+.06*dogLift,loop:loopGrow*(1-recover),carry,recover,length,stage};}
+export const STAGES=[['바늘이 내려갑니다','바늘 눈에 꿴 윗실이 천 아래로 들어갑니다.'],['고리가 생깁니다','최저점을 지난 바늘이 조금 올라오며 스카프 쪽에 윗실 고리가 생깁니다.'],['훅이 고리를 운반합니다','회전 훅이 윗실 고리를 잡아 보빈 케이스의 위아래로 통과시킵니다.'],['실을 회수하며 천을 옮깁니다','실채기가 윗실을 회수하고, 바늘이 빠진 사이 이송톱니가 다음 땀으로 천을 보냅니다.'],['천이 옮겨집니다','바늘이 천에서 빠져나온 동안 이송톱니가 다음 땀 간격만큼 천을 옮깁니다.'],['다음 땀을 준비합니다','이송톱니가 내려가고 바늘은 위쪽으로 돌아옵니다.']];
+export class SewingState {
+ constructor(){this.phase=0;this.length=3;this.nextLength=3;this.stitches=[];this.travel=0;this.holding=false;this.single=false;this.speed=1;this.snapshot=null;this.pressStart=0;}
+ setLength(value){this.nextLength=clamp(Number(value),2,5);if(this.phase===0&&!this.running)this.length=this.nextLength;}
+ get running(){return this.holding||this.single;}
+ get full(){return this.stitches.length>=MAX_STITCHES;}
+ start(single=false){if(this.full)return false;if(single&&this.running)return true;if(!single&&!this.holding)this.pressStart=this.stitches.length;if(this.phase===0)this.length=this.nextLength;this.single=single;this.holding=!single;return true;}
+ release(){if(!this.holding)return;this.holding=false;this.single=!this.full&&(this.phase>0||this.stitches.length===this.pressStart);}
+ stop(){this.single=false;this.holding=false;}
+ reset(){this.stop();this.phase=0;this.stitches=[];this.travel=0;this.length=this.nextLength;}
+ advance(seconds){const events=[];if(!this.running)return events;let remaining=Math.max(0,seconds)*this.speed/1.6;
+ while(remaining>1e-9&&this.running){const available=1-this.phase,take=Math.min(remaining,available),before=this.phase;this.phase+=take;remaining-=take;if(before<.25&&this.phase>=.25)events.push('pierce');if(before<CATCH_PHASE&&this.phase>=CATCH_PHASE)events.push('catch');if(this.phase>=1-1e-9){this.stitches.push(this.length);this.travel+=this.length;this.phase=0;this.length=this.nextLength;events.push('stitch');if(this.single||this.full)this.stop();}}
+ return events;}
+ capture(){this.snapshot=Object.freeze({phase:this.phase,length:this.length,travel:this.travel,stitches:Object.freeze([...this.stitches])});return this.snapshot;}
+ view(){return {...cycleAt(this.phase,this.length),travel:this.travel,stitches:[...this.stitches]};}
+}

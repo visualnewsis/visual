@@ -1,0 +1,5 @@
+from pathlib import Path
+import subprocess,sys
+r=Path(r'C:\Users\user\.codex\worktrees\piano-finish\editshop');out=Path(r'C:\Users\user\Documents\editshop\output\five-final-review-20261102');node=r'C:\Program Files\nodejs\node.exe'
+names=['violin-release-quality','violin-surface-quality','violin-final-fit','violin-detail-quality','espresso-experience-quality','espresso-ratio-volume','espresso-crema-clearance','espresso-final-material','gramophone/mechanism','gramophone/release-quality','gramophone/study-audio','gramophone/lateral-direction','keyboard/study-housing','keyboard/keycap-switch-geometry','keyboard/hero-keyboard','keyboard-audio','projector-hero','projector-layout','projector-physical-regressions','projector-solid-clearance','projector-reading-clock','projector-espresso-quality','second-review-clearance']
+res=subprocess.run([node,'--test','--test-skip-pattern=completed sewing lock',*[f'goodeasy/{x}.test.mjs' for x in names]],cwd=r,text=True,encoding='utf-8',capture_output=True);(out/'final-regressions.txt').write_text(res.stdout+res.stderr,encoding='utf-8');print(res.stdout[-1300:]);print(res.stderr[-300:]);sys.exit(res.returncode)

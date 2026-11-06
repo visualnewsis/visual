@@ -1,0 +1,30 @@
+[
+  {
+    "slug": "spai",
+    "width": 1440,
+    "status": 200,
+    "pageErrors": [],
+    "passed": true
+  },
+  {
+    "slug": "spai",
+    "width": 390,
+    "status": 200,
+    "pageErrors": [],
+    "passed": true
+  },
+  {
+    "slug": "smartwatch",
+    "width": 1440,
+    "status": 200,
+    "pageErrors": [],
+    "passed": true
+  },
+  {
+    "slug": "smartwatch",
+    "width": 390,
+    "status": 200,
+    "pageErrors": [],
+    "passed": true
+  }
+]

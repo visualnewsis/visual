@@ -1,0 +1,30 @@
+﻿내부 편집 메모 — 송고 본문에 포함하지 않음
+
+예약 입력안: 2026-11-02(월) 10:00 KST
+CMS 송고 예약: 미등록 (사용자 예약 입력용 자료)
+카테고리 제안: 문화 · 생활 — CMS 실제 분류명은 확인 필요
+
+속담 원문·뜻
+https://dictionary.cambridge.org/dictionary/english/stitch-in-time-saves-nine?topic=immediately
+A stitch in time (saves nine). 본편과 같은 한국어 번역. 특정 인물의 발언으로 쓰지 않음.
+
+본봉의 두 실
+https://museum.global.brother/guide/zone/1/5?lang=en
+Brother Museum 공식 설명. 바늘실과 보빈실, 바늘·셔틀의 타이밍을 확인. 발명 최초 인물 논쟁은 원고에서 다루지 않음.
+
+본봉 작동 순서
+https://www.faa.gov/sites/faa.gov/files/regulations_policies/handbooks_manuals/aviation/prh_change1.pdf
+FAA Parachute Rigger Handbook 6장. 회전 훅·윗실 고리·밑실·실채기와 이송 순서 확인. 원고는 특정 모델이나 모든 스티치 방식으로 일반화하지 않음.
+
+첫 사진 원본
+https://unsplash.com/photos/a-close-up-of-a-sewing-machine-on-a-table-ebgaor66TSk
+Iryna Marienko. 무료 Unsplash 사진이며 Unsplash+가 아님. 다운로드한 원본비율 2400×1800을 1600×1200 JPG로 축소. 사진 속 실제 기기의 브랜드·모델은 원고에서 특정하지 않음.
+
+사진 이용조건
+https://unsplash.com/license
+2026-10-30 확인. 상업·비상업 무료 사용 허용. 사진 자체 판매나 경쟁 사진 서비스 구축에 사용하지 않음. 촬영자 출처를 자발적으로 명시.
+
+두 번째 사진: 2026-10-30 내장 GPT 이미지 생성 도구로 새 제작한 무문구 이미지. 실제 제품 사진·정확한 구조도로 제시하지 않음. 본편 스크린샷 또는 본편에 설치된 자산이라고 주장하지 않음.
+본문 사진은 모두 RGB JPG. 첫 사진 1600×1200(4:3).
+클로드는 사용량 소진으로 후속 검수를 요청하지 않았음. 삼단검수 완료 원고라고 표시하지 않음.
+본편 개선 작업과 별도로 준비한 송고 원고이며 실제 예약 전 링크 및 최종 개선본 반영 여부 확인 필요.

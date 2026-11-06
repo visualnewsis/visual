@@ -1,0 +1,42 @@
+{
+  "commit": "43895db040bf271c0c0d4e694ef3ab0f9e81b730",
+  "all_passed": true,
+  "resources": {
+    "goodeasy/index.html": {
+      "url": "https://visual.newsis.com/goodeasy/?v=43895db",
+      "status": 200,
+      "matches": true,
+      "bytes": 9795
+    },
+    "goodeasy/sewing-machine/index.html": {
+      "url": "https://visual.newsis.com/goodeasy/sewing-machine/?v=43895db",
+      "status": 200,
+      "matches": true,
+      "bytes": 17034
+    },
+    "goodeasy/assets/landing-sewing.js": {
+      "url": "https://visual.newsis.com/goodeasy/assets/landing-sewing.js?v=43895db",
+      "status": 200,
+      "matches": true,
+      "bytes": 3397
+    },
+    "goodeasy/assets/landing-sewing.css": {
+      "url": "https://visual.newsis.com/goodeasy/assets/landing-sewing.css?v=43895db",
+      "status": 200,
+      "matches": true,
+      "bytes": 1942
+    },
+    "goodeasy/sewing-machine/share.jpg": {
+      "url": "https://visual.newsis.com/goodeasy/sewing-machine/share.jpg?v=43895db",
+      "status": 200,
+      "matches": true,
+      "bytes": 377686
+    },
+    "sitemap-sections.xml": {
+      "url": "https://visual.newsis.com/sitemap-sections.xml?v=43895db",
+      "status": 200,
+      "matches": true,
+      "bytes": 1969
+    }
+  }
+}

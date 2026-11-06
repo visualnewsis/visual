@@ -1,0 +1,4 @@
+from pathlib import Path
+r=Path(r'C:\Users\user\.codex\worktrees\piano-finish\editshop')
+p=r/'goodeasy/espresso-crema-clearance.test.mjs';s=p.read_text(encoding='utf-8').replace('continuous crema is warm low-contrast microfoam with a matte liquid surface','dark liquid carries warm fine microfoam without becoming a matte foam disc').replace('material.roughness>=.55&&material.roughness<=.75','material.roughness>=.24&&material.roughness<=.38');p.write_text(s,encoding='utf-8')
+p=r/'goodeasy/gramophone/lateral-direction.test.mjs';s=p.read_text(encoding='utf-8').replace("for(const progress of[0,.25,.5,.75,1]){", "// A finite pivoted arm has tracking error; require radial motion to dominate, within 20 degrees.\n for(const progress of[0,.25,.5,.75,1]){").replace('>.96,','>Math.cos(20*Math.PI/180),');p.write_text(s,encoding='utf-8')

@@ -1,0 +1,73 @@
+{
+  "commit": "0e3bcecc1fa71daf635b129b65135880243866bd",
+  "scope": [
+    "violin",
+    "projector",
+    "espresso-machine",
+    "shared anatomy selection/layout; required cache references"
+  ],
+  "gpt_session": "https://chatgpt.com/c/6ae3e3c0-9838-83e8-8459-432afb019f09",
+  "claude_session": "https://claude.ai/chat/04071242-d268-4d86-84fe-c5e9548aef16",
+  "review_method": "Actual GPT design and screenshot review; Codex implementation and geometry/interaction checks; actual Claude source and screenshot review; repeated revision. No substitute-agent claim.",
+  "targeted_tests": {
+    "passed": 89,
+    "failed": 0,
+    "detail": "88 tests in selected suites plus projector optical axis test"
+  },
+  "html_checks": {
+    "goodeasy_routes": 13,
+    "visual_service_pages": 20,
+    "passed": true
+  },
+  "viewports": [
+    [
+      1440,
+      900
+    ],
+    [
+      390,
+      844
+    ]
+  ],
+  "real_device_tests": false,
+  "fixed": [
+    "Violin f-hole self-intersection, shell normals, cavity materials and fitted contacts",
+    "Projector shared assembled model, correct film orientation/width and reel proportions",
+    "Projector beam obstruction, buffer arc-length exchange and intermittent transport",
+    "Projector actual screen plane occlusion, shutter timing and solid clearances",
+    "Espresso continuous crema, true cavity boundaries, symbolic volume and common mass indicator scale",
+    "Labels anchored to actual meshes; internal-part material-array visibility; pre-lazy layout",
+    "Approved episode labels 09 violin, 10 projector, 11 espresso in inspected prototype pages"
+  ],
+  "not_certified": [
+    "Photographic CAD reconstruction",
+    "Actual iPhone Safari or Android Chrome hardware",
+    "Universal cause of every previously reported blank canvas"
+  ],
+  "remaining_model_limitations": [
+    "Projector Geneva locking arc is omitted; forced dwell is an educational mechanism simplification."
+  ],
+  "preserved": [
+    "Existing landing lineup",
+    "Global header and common carousel assets",
+    "Google tracking IDs and prototype indexing status",
+    "Existing publishing dates"
+  ],
+  "primary_reference": [
+    "https://www.kodak.com/en/motion/page/frequently-asked-questions/",
+    "https://pub.smpte.org/latest/st56/st0056-2005_stable2015.pdf"
+  ],
+  "deployment": {
+    "run": "https://github.com/visualnewsis/visual/actions/runs/41033062179",
+    "quality_run": "https://github.com/visualnewsis/visual/actions/runs/41033062373",
+    "quality": "success",
+    "status": "success"
+  },
+  "public_verification": {
+    "pages": 5,
+    "matching_assets": 11,
+    "all_passed": true,
+    "frame_action": "1 to 2 confirmed on public page",
+    "console_errors": 0
+  }
+}

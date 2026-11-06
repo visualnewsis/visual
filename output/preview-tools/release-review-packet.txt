@@ -1,0 +1,484 @@
+===== index.html =====
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>점점, 문장이 손에 잡혔다 [훈맹정음 100년] | 편집# 018</title>
+  <meta name="description" content="훈맹정음 발표 100년. 손끝과 점이 만나는 자리에서 한글 점자의 역사와 짜임, 안내문과 책에 담긴 말의 쓰임을 따라갑니다.">
+  <meta name="robots" content="noindex,nofollow">
+  <meta property="og:type" content="article">
+  <meta property="og:locale" content="ko_KR">
+  <meta property="og:site_name" content="VISUAL NEWSIS">
+  <meta property="og:title" content="점점, 문장이 손에 잡혔다 [훈맹정음 100년]">
+  <meta property="og:description" content="작은 점에서 문장으로, 다시 사람에게. 훈맹정음 발표 100년을 돌아봅니다.">
+  <meta property="og:image" content="images/contact-1920.jpg">
+  <meta property="og:image:alt" content="점자책의 돌기와 그림자, 책 위에 놓인 손끝">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="점점, 문장이 손에 잡혔다 [훈맹정음 100년]">
+  <meta name="twitter:description" content="작은 점에서 문장으로, 다시 사람에게. 훈맹정음 발표 100년.">
+  <meta name="twitter:image" content="images/contact-1920.jpg">
+  <meta name="twitter:image:alt" content="점자책의 돌기와 그림자, 책 위에 놓인 손끝">
+  <!-- Local editorial preview. Set approved canonical, absolute share URLs and publication date before release. -->
+  <link rel="icon" href="../assets/logo2024.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;600;700;800&family=Noto+Serif+KR:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/visual-header.css?v=20261026-goodeasy-lab1">
+  <link rel="stylesheet" href="../assets/editshop-carousel.css">
+  <link rel="stylesheet" href="../assets/editshop-brand-banner.css">
+  <link rel="stylesheet" href="story.css">
+  <script defer src="../assets/visual-header.js?v=20261026-menuorder1" data-section="편집#" data-section-href="https://visual.newsis.com/editshop/" data-current="editshop" data-header-theme="light"></script>
+  <script defer src="../assets/editshop-carousel.js" data-current="braille-100"></script>
+  <script defer src="story.js"></script>
+  <script type="module" src="braille-experience.mjs"></script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"점점, 문장이 손에 잡혔다 [훈맹정음 100년]","description":"훈맹정음 발표 100년, 한글 점자의 역사와 배움, 생활의 쓰임과 독자의 문장을 연결하는 사진 기획.","inLanguage":"ko-KR","isPartOf":{"@type":"CreativeWorkSeries","name":"편집#"},"publisher":{"@type":"NewsMediaOrganization","name":"뉴시스","url":"https://www.newsis.com/"},"author":{"@type":"Person","name":"안재현"}}</script>
+  <!-- Existing analytics ID; localhost/file previews do not send analytics. -->
+  <script>
+    if (location.hostname === 'visual.newsis.com') {
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-6BKMWE02W5');
+      const tag = document.createElement('script');
+      tag.async = true;
+      tag.src = 'https://www.googletagmanager.com/gtag/js?id=G-6BKMWE02W5';
+      document.head.append(tag);
+    }
+  </script>
+</head>
+<body class="article-page">
+  <a class="skip-link" href="#story">본문 바로가기</a>
+  <header class="masthead fallback-header">
+    <a href="../">VISUAL NEWSIS</a>
+    <a href="https://www.newsis.com/" aria-label="뉴시스 홈페이지"><img src="../assets/logo2024.png" width="88" alt="NEWSIS"></a>
+    <a href="../editshop/">편집#</a>
+  </header>
+  <main id="story" tabindex="-1">
+    <article>
+      <header class="opening wrap" id="opening">
+        <div class="issue-line"><a href="../editshop/">편집<span aria-hidden="true">#</span> <span class="issue-number">018</span></a><span>훈맹정음 발표 100년</span><span class="issue-date">1926 — 2026</span></div>
+        <div id="braille-hero"><div class="braille-hero-title"><p class="sr-only">점자로 쓴 첫 문장. 한글 풀이는 기사 끝에서 펼쳐볼 수 있습니다.</p><p class="sr-only" lang="ko-Brai">⠈⠪⠐⠾⠀⠨⠎⠢⠕⠀⠨⠥⠴⠣⠌⠊</p><div id="hero-dots" class="braille-dots hero-dots" aria-hidden="true"><span class="unicode-title">⠈⠪⠐⠾⠀⠨⠎⠢⠕⠀⠨⠥⠴⠣⠌⠊</span></div></div><h1 class="hero-korean">점점,<br>문장이 손에 잡혔다<span class="sr-only"> [훈맹정음 100년]</span></h1></div>
+        <p class="hero-byline">기획·디렉터 = 안재현 기자</p>
+        <div class="opening-bottom"><p class="standfirst">종이 위 작은 점들이 줄지어 솟아 있다.<br>손끝으로 읽는 문자, 점자다.<br>1926년 발표된 훈맹정음이 100년을 맞았다.<br>교과서와 투표안내문, 악보에도 우리말을 적는다.</p><a class="read-on" href="#history">점에서 문장으로 <span aria-hidden="true">↓</span></a></div>
+      </header>
+
+      <figure class="opening-photo wrap">
+        <img src="images/contact-1920.jpg" srcset="images/contact-720.jpg 720w, images/contact-1280.jpg 1280w, images/contact-1920.jpg 1920w" sizes="(min-width:1280px) 1200px, (min-width:700px) calc(100vw - 80px), 100vw" width="1920" height="1360" fetchpriority="high" alt="옆빛을 받은 종이 위 점자 돌기들이 그림자를 만들고, 오른쪽 손끝이 그 위에 놓여 있다.">
+        <figcaption><span>2025년 11월 3일, 수원 사랑샘도서관에서 관계자가 점자책을 읽고 있다.</span><span class="photo-credit">김종택 기자</span></figcaption>
+      </figure>
+
+      <div class="chapter-index wrap"><span>작은 점에서, 사람에게</span><nav aria-label="기사 목차"><a href="#history">역사</a><a href="#structure">여섯 점</a><a href="#learning">배움</a><a href="#document">문서</a><a href="#book">책</a><a href="#access">오늘</a><a href="#your-message">내 말, 점자로</a></nav></div>
+
+      <section class="chapter history wrap" id="history" aria-labelledby="history-title">
+        <div class="section-heading"><span class="section-label">01 · 우리말을 점으로 적다</span><h2 id="history-title">한글이 손끝에<br>닿기까지</h2></div>
+        <div class="history-content">
+          <div class="date-mark"><span>훈맹정음 발표</span><strong>1926<span>.</span>11<span>.</span>4</strong></div>
+          <div class="prose"><p>훈맹정음에 앞서 사용된 한글 점자가 있었다. 로제타 셔우드 홀이 뉴욕 포인트 점자를 바탕으로 만든 평양 점자다.</p><p>제생원에서 학생들을 가르치던 박두성은 1920년 한글 점자 연구를 시작했다. 1923년에는 제자들과 조선어점자연구위원회를 조직해 연구를 이어갔다. 그 결실인 한글 점자 <strong>‘훈맹정음’이 1926년 11월 4일 발표됐다.</strong><a class="source-mark" href="#source-history" aria-label="역사 서술 출처 1">[1]</a></p><p>2026년은 훈맹정음 발표 100년이다. 한글 점자는 이후에도 정비를 거듭했다. 현행 한국 점자 규정은 2024년 1월 개정 고시됐다.</p></div>
+        </div>
+        <figure class="history-photo"><img src="images/history-1280.jpg" srcset="images/history-720.jpg 720w, images/history-1280.jpg 1280w, images/history-1920.jpg 1920w" sizes="(min-width:1280px) 1000px, (min-width:700px) calc(100vw - 160px), 100vw" width="1280" height="957" loading="lazy" decoding="async" alt="진열장 안에 ‘한글점자’라고 적힌 설명서와 점자 관련 자료가 전시돼 있다."><figcaption><span>2026년 10월 6일, 국립세계문자박물관 특별전 ‘점에서 세상으로: 훈맹정음 100주년’에 전시된 한글 점자 설명서 등.</span><span class="photo-credit">전진환 기자</span></figcaption></figure>
+      </section>
+
+      <section class="structure-section" id="structure" aria-labelledby="structure-title">
+        <div class="wrap structure-layout">
+          <div class="structure-copy"><span class="section-label">02 · 여섯 자리의 짜임</span><h2 id="structure-title">점의 자리가<br>말의 자리가 된다</h2><div class="prose"><p>점자는 점의 개수와 위치를 구별해 읽는다. 한글과 마찬가지로 표기 규칙이 있다.</p><p>여섯 점식 점자 한 칸에는 <strong>세로 세 자리, 가로 두 자리</strong>의 점 위치가 있다. 점의 개수와 위치를 조합해 글자와 기호를 나타낸다.<a class="source-mark" href="#source-structure" aria-label="점자 구조 출처 2">[2]</a></p></div></div>
+          <figure class="cell-figure"><div class="cell-heading"><span>점자 한 칸의 자리 배치</span><span>읽는 면 기준</span></div><div class="cell-diagram" aria-hidden="true"><div class="cell-column"><span>1</span><span>2</span><span>3</span></div><div class="cell-column"><span>4</span><span>5</span><span>6</span></div></div><p class="cell-text">왼쪽은 위에서 아래로 <strong>1·2·3점</strong>,<br>오른쪽은 위에서 아래로 <strong>4·5·6점</strong>.</p><figcaption>번호는 점이 놓이는 자리를 가리킨다.<br>특정 글자를 나타낸 점형이 아니다.</figcaption></figure>
+          <p class="structure-note">한글 한 글자와 점자 한 칸이 언제나 일대일로 대응하는 것은 아니다. 한글 점자에는 줄여 쓰는 약자와 약어도 있다.</p>
+          <div class="greeting-lesson" aria-labelledby="greeting-title"><span class="section-label">잠깐, 점자로 건네는 인사</span><h3 id="greeting-title">인사 한마디를 골라보세요</h3><div class="greeting-choices"><button type="button" class="greeting-choice" data-greeting="hello" aria-pressed="true">안녕하세요</button><button type="button" class="greeting-choice" data-greeting="thanks" aria-pressed="false">감사합니다</button></div><div class="greeting-result"><p id="greeting-text">안녕하세요</p><div id="greeting-dots" class="braille-dots" aria-hidden="true"><span class="unicode-title">⠣⠒⠉⠻⠚⠠⠝⠬</span></div><p id="greeting-unicode" class="sr-only" lang="ko-Brai">⠣⠒⠉⠻⠚⠠⠝⠬</p><p id="greeting-count" class="greeting-count" role="status" aria-live="polite">안녕하세요 · 한글 5글자, 점자 8칸</p></div><p class="greeting-note">두 인사는 한글로 다섯 글자, 점자로는 각각 여덟 칸입니다. 버튼을 눌러 점의 배열을 살펴보세요.</p><p class="message-preview">인사 다음에 전하고 싶은 말이 있다면, 기사 끝에서 점자로 옮겨볼 수 있습니다.</p><noscript><p class="greeting-note">다른 인사를 고르는 기능은 JavaScript를 켜면 이용할 수 있습니다.</p></noscript></div>
+        </div>
+      </section>
+
+      <section class="chapter learning wrap" id="learning" aria-labelledby="learning-title">
+        <div class="section-heading"><span class="section-label">03 · 손끝으로 배우는 글</span><h2 id="learning-title">글자를 ‘안다’는 것과<br>‘읽는다’는 것 사이</h2></div>
+        <div class="prose learning-prose"><p>점의 배열을 외운 뒤에는 손끝으로 점을 구별하고 문장을 따라가는 연습이 필요하다. 중도 시각장애인에게는 익숙한 우리말을 손끝으로 읽는 법을 배우는 과정이기도 하다.</p><p>하상장애인복지관은 중도 시각장애인과 통합교육 시각장애 학생을 위한 한글 점자 읽기 교육을 운영한다. 학교에서 필요한 그래프와 도형, 시험 문제를 점자로 제작하고, 수능 모의고사는 점자형과 음성형으로 지원한다. <a class="source-mark" href="#source-learning" aria-label="점자 교육과 학습 지원 출처">[4]</a></p><p>수식과 외국어를 적는 점자도 배운다. 국립국어원의 온라인 강좌에는 수학·과학·통일영어점자가 있다. 하상복지관의 ‘점자세상’에는 중도 실명자를 위한 한글 점자 과정과 점역 실무 교육이 마련돼 있다. 외국어를 공부하고, 수식을 풀고, 시험을 준비하는 일에도 각 분야의 점자 규칙이 쓰인다.<a class="source-mark" href="#source-courses" aria-label="온라인 점자 학습 출처">[5]</a></p><p>읽을 책은 제때 도착해야 한다. 뉴시스는 2026년 10월 20일, 시각장애인용 교과서를 학기 시작 전에 제작·보급할 수 있도록 디지털 파일의 형식과 제출 절차를 명확히 하는 ‘교과용 도서에 관한 규정’ 개정안이 국무회의에서 의결됐다고 보도했다. <a href="https://mobile.newsis.com/view_amp.html?ar_id=NISX20261020_0003832732" target="_blank" rel="noopener">관련 보도 · 뉴시스 <span aria-hidden="true">↗</span><span class="sr-only"> (새 탭)</span></a></p></div>
+      </section>
+
+      <section class="chapter document wrap" id="document" aria-labelledby="document-title">
+        <div class="document-copy"><span class="section-label">04 · 생활의 문서</span><h2 id="document-title">말을 전하기 위해,<br>먼저 살피는 손</h2><div class="prose"><p>투표 절차를 설명하는 안내문에도 점자가 쓰인다. 잘못 옮긴 글이나 빠진 내용은 없는지 확인하는 일도 필요하다.</p><p>일반 문자로 적힌 글을 점자로 옮기는 일을 ‘점역’이라고 한다. 잘못된 표기를 찾아 바로잡는 ‘교정’도 거친다. 점역·교정사 자격 검정에는 일반 문자를 점자로 옮기는 실기와, 잘못 표기된 점자를 바로잡는 실기가 포함된다. <a class="source-mark" href="#source-transcription" aria-label="점역과 교정 출처">[6]</a></p><p class="document-pause">누군가 읽을 문장을,<br>먼저 살피는 손이 있다.</p></div></div>
+        <figure class="document-photo"><img src="images/document-1280.jpg" srcset="images/document-720.jpg 720w, images/document-1280.jpg 1280w, images/document-1920.jpg 1920w" sizes="(min-width:900px) 560px, (min-width:700px) 65vw, 100vw" width="1280" height="1371" loading="lazy" decoding="async" alt="‘시각장애선거인을 위한 투표안내문’ 표지의 점자 위를 손가락으로 짚고 있다."><figcaption><span>2025년 5월 19일, 과천 중앙선관위 선거종합상황실에서 직원이 투표안내문의 점자를 확인하고 있다.<a class="source-mark" href="#source-document" aria-label="투표안내문 사진 출처 3">[3]</a></span><span class="photo-credit">조수정 기자</span></figcaption></figure>
+      </section>
+
+      <section class="chapter book" id="book" aria-labelledby="book-title">
+        <div class="book-heading wrap"><span class="section-label">05 · 펼쳐진 책</span><h2 id="book-title">책을 읽고,<br>악보를 펼치고</h2><p>점자는 교과서와 투표안내문을 넘어<br>문학 작품과 악보, 전자 문서로도 쓰인다.</p></div>
+        <figure class="book-photo wrap"><img src="images/book-1920.jpg" srcset="images/book-720.jpg 720w, images/book-1280.jpg 1280w, images/book-1920.jpg 1920w" sizes="(min-width:1280px) 1200px, (min-width:700px) calc(100vw - 80px), 100vw" width="1920" height="1215" loading="lazy" decoding="async" alt="펼쳐진 점자책의 두 페이지와 그 위에 놓인 두 손."><figcaption><span>2025년 11월 3일, 인천 송암점자도서관에서 한 시각장애인이 점자책을 읽고 있다.</span><span class="photo-credit">전진환 기자</span></figcaption></figure>
+        <div class="prose book-prose"><p>점자는 소설이나 안내문을 옮기는 데에만 쓰이지 않는다. 악보도 점자로 적는다. 실로암시각장애인음악재활센터에서는 음악 점역사가 악보를 해석해 점역하고, 시각장애인 음악 교정사가 규정에 맞게 교정한다. <a class="source-mark" href="#source-music" aria-label="점자 악보 제작 출처">[7]</a></p><p>영국 왕립시각장애인협회(RNIB)가 2024년 공개한 조사에서, 점자를 아는 성인 참여자들은 종이 점자와 음성, 점자 디스플레이를 함께 활용했다. 약 포장의 표시를 확인하거나 책·문서를 읽을 때도 점자를 썼다.<a class="source-mark" href="#source-rnib" aria-label="영국 RNIB 점자 사용 조사 출처">[8]</a></p><p>전자 점자 단말기에서는 작은 핀이 오르내리며 글을 표시한다. 미국 의회도서관의 국립시각장애인·독서장애인도서관서비스(NLS)는 이용 자격을 갖춘 회원에게 전자 점자 단말기를 무료로 대여한다. 단말기를 스마트폰이나 컴퓨터에 연결하면 전자 문서도 점자로 읽을 수 있다.<a class="source-mark" href="#source-digital" aria-label="전자 점자 단말기 출처">[9]</a></p></div>
+      </section>
+
+      <section class="chapter access wrap" id="access" aria-labelledby="access-title">
+        <div class="section-heading"><span class="section-label">06 · 100년 뒤의 질문</span><h2 id="access-title">‘점자가 있다는 것’과<br>‘읽을 수 있다는 것’ 사이</h2></div>
+        <div class="annual-messages"><h3>기념일마다 이어온 말</h3><p class="annual-intro">최근 네 차례의 한글 점자의 날 기념식 주제에는 일상과 희망, 편리한 삶과 마음이 담겼다. 문화체육관광부와 한국시각장애인연합회가 함께 마련한 행사다.</p><ol>
+          <li><time>2022</time><div><h4>한글 점자, 일상 속 새로운 시작</h4><p>재활·자립, 교과서와 도서 제작 지침, 온라인 점자 교육에 기여한 이들이 포상을 받았다. <a href="https://mobile.newsis.com/view/NISX20221103_0002072019" target="_blank" rel="noopener">뉴시스 보도 <span aria-hidden="true">↗</span><span class="sr-only"> (새 탭)</span></a></p></div></li>
+          <li><time>2023</time><div><h4>점자로 여는 희망, 새로운 도전</h4><p>중도 시각장애인이 점자를 배워 꿈을 키우는 과정을 영상에 담았다. 책과 민원 안내 자료의 보급, 점자를 알리는 활동도 조명했다. <a href="https://www.mcst.go.kr/servlets/eduport/front/upload/UplDownloadFile?pFileName=%281103%29%EB%AC%B8%EC%B2%B4%EB%B6%80%EB%B3%B4%EB%8F%84%EC%9E%90%EB%A3%8C-%ED%95%9C%EA%B8%80_%EC%A0%90%EC%9E%90%EC%9D%98_%EB%82%A0_%EA%B8%B0%EB%85%90%EC%8B%9D_%EA%B0%9C%EC%B5%9C.pdf&amp;pPath=0302000000&amp;pRealName=20231103085043811994203850_PRESS20231103085043028387.pdf" target="_blank" rel="noopener">문체부 자료 <span aria-hidden="true">↗</span><span class="sr-only"> (새 탭)</span></a></p></div></li>
+          <li><time>2024</time><div><h4>점자로 더 편리한 삶,<br>함께 만들어가는 세상</h4><p>기념식 참석자들은 점자·촉각 전시를 관람했다. 문체부는 정보에 접근하는 데서 나아가 차별 없이 문화를 향유하고 참여할 수 있어야 한다고 밝혔다. <a href="https://gonggam.korea.kr/newsContentView.es?b_list=9&amp;code_cd=0110000000&amp;content=NC002&amp;mid=a10214000000&amp;nPage=334&amp;news_id=fabbadca-2bac-41ac-a302-c61d496390be&amp;section_id=" target="_blank" rel="noopener">정부 정책주간지 <span aria-hidden="true">↗</span><span class="sr-only"> (새 탭)</span></a></p></div></li>
+          <li><time>2025</time><div><h4>손끝으로 이어온 문자,<br>마음으로 만드는 세상</h4><p>생활용품에 점자를 표시한 기업, 중도 실명자를 위한 교육법을 개발한 이, 정확한 점자 자료를 보급한 이들이 포상 대상으로 선정됐다. <a href="https://mobile.newsis.com/view/NISX20251104_0003388790" target="_blank" rel="noopener">뉴시스 보도 <span aria-hidden="true">↗</span><span class="sr-only"> (새 탭)</span></a></p></div></li>
+        </ol><p class="annual-outlook">해마다 주제는 달랐지만, 포상 대상에는 점자 교육과 정확한 자료 제작에 힘쓴 이들이 거듭 이름을 올렸다.</p><aside class="reported-message"><span class="section-label">2026 · 훈맹정음 100주년 특별전</span><p>김혜경 여사는 10월 7일 특별전을 관람한 뒤, 장애 유무와 관계없이 누구나 배우고 소통하며 문화와 일상을 함께 누리는 사회로 나아가기를 바란다는 뜻을 전했다고 청와대가 서면 브리핑에서 밝혔다.</p><div class="report-source"><a href="https://www.president.go.kr/briefings/75j0FMZH" target="_blank" rel="noopener">청와대 서면 브리핑 <span aria-hidden="true">↗</span><span class="sr-only"> (새 탭)</span></a> · <a href="https://www.newsis.com/view/NISI20261007_0021480076" target="_blank" rel="noopener">방문 현장 · 뉴시스 <span aria-hidden="true">↗</span><span class="sr-only"> (새 탭)</span></a></div></aside></div>
+        <div class="prose access-prose"><p>점자를 배우고 쓸 여건은 충분할까. 국립국어원이 공개한 2025년 점자 인식 조사에서 <strong>20~69세 시각장애인 응답자 500명</strong> 가운데 점자를 사용할 수 있다고 답한 비율은 14.4%였다.</p><p>같은 조사에서 시각장애인 응답자 74%는 점자 발전을 위해 교원 양성과 교육 활성화가 시급하다고 답했다. <a class="source-mark" href="#source-survey" aria-label="2025년 점자 인식 조사 출처">[10]</a></p></div>
+        <div class="access-facts"><div><strong>14.4<span>%</span></strong><p>점자를 사용할 수 있다는 응답</p></div><div><strong>74<span>%</span></strong><p>교원 양성·교육 활성화가 시급하다는 응답</p></div><p class="fact-scope">국립국어원 2025 국민의 점자 인식 조사 공개 안내 · 시각장애인 응답자 500명(20~69세) 기준. 두 수치는 서로 다른 질문의 응답이다.</p></div>
+        <p class="access-close">누군가의 말이 전해지려면,<br>그 말을 읽을 자리가 필요하다.</p>
+      </section>
+
+      <section class="message-section" id="your-message" aria-labelledby="message-title">
+        <div class="wrap message-wrap"><span class="section-label">07 · 당신이 전하고 싶은 말</span><h2 id="message-title">당신의 진심을<br>보다 많은 이에게 전해보세요</h2><p class="message-lead">한 사람을 떠올리고, 전하고 싶은 말을 적어보세요. <br>적은 문장을 점자로 옮겨 나란히 보여드립니다.</p>
+          <form id="message-form" hidden><label for="message-input">전하고 싶은 말</label><textarea id="message-input" name="message" rows="3" maxlength="100" placeholder="전하고 싶은 말을 적어주세요" aria-describedby="message-help message-status" autocomplete="off" spellcheck="false"></textarea><div class="message-controls"><p id="message-help">100자 이내 · 입력한 문장은 저장하거나 전송하지 않습니다.</p><button type="submit" id="message-submit">점자로 옮기기</button></div></form>
+          <p id="message-nojs">문장을 점자로 옮기는 기능은 JavaScript를 켜면 이용할 수 있습니다. <a href="https://www.braillekorea.org/index.do" target="_blank" rel="noopener">점자세상에서 점자 알아보기 <span aria-hidden="true">↗</span><span class="sr-only"> (새 탭)</span></a></p>
+          <p id="message-status" class="message-status" role="status" aria-live="polite" aria-atomic="true"></p>
+          <div id="message-result" class="message-result" hidden><div class="original-message"><h3>당신이 쓴 말</h3><p id="message-original"></p></div><div class="translated-message"><h3>점자로 옮긴 말</h3><div id="message-dots" class="braille-dots" aria-hidden="true"></div><p id="message-braille" class="sr-only" lang="ko-Brai"></p></div><p class="message-note">화면에서는 점자의 모양을 살펴볼 수 있습니다. 손끝으로 읽으려면 돌기가 있는 출력물이나 점자 디스플레이가 필요합니다. 자동 점역 결과는 전문 점역·교정을 거친 배포용 자료와 다를 수 있습니다.</p></div>
+        </div>
+      </section>
+
+      <section class="ending wrap" aria-label="맺음말"><span class="section-label">훈맹정음 발표 100년</span><p class="ending-line">종이 위에 말을 적고,<br>손끝으로 문장을 읽는다.</p><p class="ending-last">쓰는 사람과 읽는 사람은<br>그렇게 <em>문장에서 만난다.</em></p><div class="ending-date"><span>1926</span><span class="ending-rule" aria-hidden="true"></span><span>2026</span></div><div class="first-message-return"><p>첫 화면의 점들에는<br>어떤 말이 놓여 있었을까요.</p><details><summary>첫 문장의 뜻 펼쳐보기</summary><p class="revealed-title">그런 점이 좋았다</p></details></div></section>
+
+      <aside class="learn-invitation wrap" aria-label="점자 배워보기"><div><span class="section-label">조금 더 궁금하다면</span><p>점 하나의 차이부터, 인사 한마디까지.</p></div><a href="learn.html" target="_blank" rel="noopener">잠깐, 점자 배워보기 <span aria-hidden="true">↗</span><span class="sr-only"> (새 탭)</span></a></aside>
+
+      <footer class="article-notes wrap" id="sources"><div class="notes-heading"><h2>자료와 제작</h2><div class="article-actions"><button type="button" id="copy-link" hidden>기사 주소 복사 <span aria-hidden="true">↗</span></button><a href="#opening">처음으로 ↑</a></div></div><div class="notes-grid"><div><h3>역사·교육·생활의 점자</h3><ol>
+        <li id="source-history"><a href="https://korean.go.kr/front/page/pageView.do?mn_id=205&amp;page_id=P000302" target="_blank" rel="noopener">국립국어원 · 점자 소개 <span aria-hidden="true">↗</span><span class="sr-only"> (새 탭)</span></a><span>평양 점자, 훈맹정음 연구·발표와 이후 정비 과정</span></li>
+        <li id="source-structure"><a href="https://korean.go.kr/front/page/pageView.do?mn_id=205&amp;page_id=P000302" target="_blank" rel="noopener">국립국어원 · 점자 표기의 기본 원칙 <span aria-hidden="true">↗</span><span class="sr-only"> (새 탭)</span></a><span>여섯 점의 위치와 번호, 점형의 조합</span></li>
+        <li id="source-document"><a href="https://v.daum.net/v/fgKAARSg5h" target="_blank" rel="noopener">뉴시스 · 투표안내문 확인하는 선관위 직원 <span aria-hidden="true">↗</span><span class="sr-only"> (새 탭)</span></a><span>2025년 5월 19일 사진 기사</span></li>
+        <li id="source-learning"><a href="https://www.hasang.org/page/s0104.php" target="_blank" rel="noopener">하상장애인복지관 · 학습지원센터 <span aria-hidden="true">↗</span><span class="sr-only"> (새 탭)</span></a><span>점자 읽기 교육, 교내 시험·수능 모의고사와 학습 자료 지원</span></li>
+        <li id="source-courses"><a href="https://www.korean.go.kr/braille/course/active/master/list.do" target="_blank" rel="noopener">국립국어원 · 온라인 점자 학습 <span aria-hidden="true">↗</span><span class="sr-only"> (새 탭)</span></a><span>한글·수학·과학·통일영어 과정 / <a href="https://www.braillekorea.org/menu/118/program/301/lectureList.do" target="_blank" rel="noopener">하상 점자세상 강의 목록 <span aria-hidden="true">↗</span><span class="sr-only"> (새 탭)</span></a></span></li>
+        <li id="source-transcription"><a href="https://www.braillekorea.org/menu/110/contents/207/contents.do" target="_blank" rel="noopener">점자세상 · 점역·교정사 안내 <span aria-hidden="true">↗</span><span class="sr-only"> (새 탭)</span></a><span>점역 실기와 교정 실기</span></li>
+        <li id="source-music"><a href="https://musicbraille.org/business/fabrication.php" target="_blank" rel="noopener">실로암 · 점자 악보 제작 <span aria-hidden="true">↗</span><span class="sr-only"> (새 탭)</span></a><span>음악 점역과 시각장애인 음악 교정사의 교정</span></li>
+        <li id="source-rnib"><a href="https://www.rnib.org.uk/professionals/research-and-data/reports-and-insight/braille-200-report/" target="_blank" rel="noopener">영국 RNIB · Braille 200 조사 <span aria-hidden="true">↗</span><span class="sr-only"> (새 탭)</span></a><span>2024년 공개. 점자를 아는 성인의 경험 조사이며 전체 시각장애인 대표 통계가 아님</span></li>
+        <li id="source-digital"><a href="https://www.loc.gov/nls/services-and-resources/equipment-for-nls-materials/" target="_blank" rel="noopener">미국 의회도서관 NLS · 전자 점자 장비 <span aria-hidden="true">↗</span><span class="sr-only"> (새 탭)</span></a><span>이용 자격이 있는 회원 대상 무료 대여</span></li>
+        <li id="source-survey"><a href="https://korean.go.kr/braille/common/greeting.do" target="_blank" rel="noopener">국립국어원 · 2025 점자 인식 조사 공개 안내 <span aria-hidden="true">↗</span><span class="sr-only"> (새 탭)</span></a><span>조사 대상·문항을 구분해 인용. 14.4%를 전국 점자 문해율로 일반화하지 않음</span></li>
+      </ol></div><div><h3>사진 기록</h3><p>사진 김종택·전진환·조수정 기자<br>기획·구성·디자인·개발 안재현 기자</p><p>사진은 각기 다른 현장에서 촬영했다. 캡션은 뉴시스 원본 사진 기록을 기준으로 작성했다.</p><a class="notes-link" href="https://mobile.newsis.com/view/NISX20251103_0003388141" target="_blank" rel="noopener">관련 사진 기록 · 뉴시스Pic <span aria-hidden="true">↗</span><span class="sr-only"> (새 탭)</span></a><h3 class="technology-credit">점자로 옮기는 체험</h3><p>2024 개정 한국 점자 규정을 기반으로 하는 <a href="https://github.com/dev-five-git/braillify" target="_blank" rel="noopener">Braillify 2.2.0 <span aria-hidden="true">↗</span><span class="sr-only"> (새 탭)</span></a>을 사용합니다. 입력 문장은 기기 안에서 처리합니다. 전문 점역가와 점자 사용자 감수는 아직 거치지 않았습니다.</p><a href="vendor/braillify/LICENSE.txt" class="notes-link">Apache 2.0 라이선스</a> · <a href="vendor/braillify/NOTICE.txt" class="notes-link">제작·데이터 고지</a></div></div><p id="action-status" class="action-status" role="status" aria-live="polite"></p><div class="notes-bottom"><span>VISUAL NEWSIS · 편집# 018</span><span>© NEWSIS. ALL RIGHTS RESERVED.</span></div></footer>
+    </article>
+    <section class="editshop-next" aria-label="다른 편집샵 작품"><a href="../editshop/">다른 편집# 만나보기 ↗</a></section>
+    <aside class="ves-brand" aria-labelledby="ves-brand-title"><div class="ves-brand-inner"><div class="ves-brand-top"><span>VISUAL NEWSIS · 편집#</span><span>뉴스를 새롭게 읽는 방법</span></div><div class="ves-brand-body"><a class="ves-brand-logo" href="../editshop/" aria-label="편집샵 랜딩으로 이동">편집<svg viewBox="0 0 120 140" width="36" height="43" role="img" aria-label="# 처마 로고"><path fill="currentColor" d="M31 8h22l-5 27h31l5-27h22l-5 27h16l-4 21H97l-5 25h19l-4 21H88l-6 30H60l6-30H35l-6 30H7l6-30H0l4-21h13l5-25H7l4-21h15zm13 48-5 25h31l5-25z"/><path fill="#e9a35c" d="M0 99h108l-2 10q-17 11-35 0-17 11-35 0-17 11-36 0z"/></svg></a><h2 id="ves-brand-title">뉴스에,<br><em>한 걸음 더</em></h2><p class="ves-brand-description">매일 쏟아지는 기사 속에서<br>놓치고 있는 가치를 찾고<br>더 깊이, 더 쉽게, 더 오래<br><strong>편집#이 끌어올립니다.</strong></p><a class="ves-brand-cta" href="../editshop/">다음 이야기 만나보기 <span aria-hidden="true">↗</span></a></div><div class="ves-brand-signature-row"><a class="ves-brand-signature" href="../editshop/"><b>VISUAL</b> JOURNALISM</a></div><div class="ves-brand-bottom"><div class="ves-brand-credit">기획·디렉터 = 안재현 기자</div><span>© NEWSIS. ALL RIGHTS RESERVED.</span></div></div></aside>
+  </main>
+</body>
+</html>
+
+
+===== story.css =====
+:root{--paper:#f5f2eb;--ink:#20241f;--muted:#65685f;--green:#276b5e;--line:#cccfc2;--sans:'Noto Sans KR',sans-serif;--serif:'Noto Serif KR',Batang,serif}
+*{box-sizing:border-box}html{scroll-behavior:smooth;scroll-padding-top:94px}body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--sans);-webkit-font-smoothing:antialiased}a{color:inherit;text-underline-offset:.22em}button{font:inherit;color:inherit}button,a{-webkit-tap-highlight-color:transparent}a:focus-visible,button:focus-visible{outline:3px solid var(--green);outline-offset:5px}::selection{background:#c4dcd1;color:#15241d}img{display:block;max-width:100%;height:auto}figure{margin:0}h1,h2,h3,p{margin:0}h1,h2,p{word-break:keep-all;overflow-wrap:anywhere}em{font-style:normal}.wrap{width:calc(100% - 80px);max-width:1200px;margin-inline:auto}.skip-link{position:fixed;z-index:10002;top:8px;left:12px;padding:12px;background:#fff;transform:translateY(-160%)}.skip-link:focus{transform:none}main:focus{outline:none}.fallback-header{height:64px;display:flex;justify-content:space-between;align-items:center;padding:0 20px;border-bottom:1px solid var(--line);background:white}.fallback-header>a{font-size:12px;font-weight:700;text-decoration:none}.fallback-header img{width:88px}
+.opening{padding-top:52px}.issue-line{display:flex;align-items:center;gap:26px;padding-bottom:24px;border-bottom:1px solid var(--line);font-size:11px;font-weight:600;letter-spacing:.04em}.issue-line>a{text-decoration:none;font-weight:800;font-size:16px;letter-spacing:-.06em}.issue-line>a>span:first-child{color:var(--green)}.issue-line .issue-number{margin-left:9px;font:500 12px var(--sans);letter-spacing:.04em}.issue-date{margin-left:auto;color:var(--muted);font-size:11px;letter-spacing:.12em}h1{font-family:var(--serif);font-size:clamp(38px,4.7vw,66px);font-weight:500;line-height:1.45;letter-spacing:-.065em;padding:35px 0 29px}.title-first,.title-last{display:block}.title-last em{color:var(--green)}.ellipsis{letter-spacing:0;margin-left:.06em}.opening-bottom{display:flex;align-items:flex-end;justify-content:space-between;gap:30px;padding-bottom:36px}.standfirst{font-size:15px;line-height:1.95;letter-spacing:-.025em;max-width:680px;color:#454c41}.read-on{display:flex;align-items:center;gap:25px;font-size:11px;text-decoration:none;padding:14px 0;white-space:nowrap;color:var(--green)}.read-on span{font-size:24px}.opening-photo img{width:100%;height:auto}.opening-photo figcaption{padding-top:13px}figcaption{display:flex;justify-content:space-between;align-items:flex-start;gap:25px;padding-top:12px;font-size:12px;line-height:1.8;color:var(--muted);word-break:keep-all;overflow-wrap:anywhere;letter-spacing:-.02em}.photo-credit{white-space:nowrap;flex:none;font-size:11px}.chapter-index{display:flex;justify-content:space-between;align-items:center;border-block:1px solid var(--line);padding-block:19px;margin-top:58px;font-size:11px;letter-spacing:.02em}.chapter-index>span{color:var(--muted)}.chapter-index nav{display:flex;gap:29px}.chapter-index a{text-decoration:none}.chapter-index a:hover{text-decoration:underline}
+.chapter{padding-top:120px;padding-bottom:120px}.section-label{display:block;color:var(--green);font-size:11px;font-weight:600;letter-spacing:.04em;margin-bottom:25px}h2{font-family:var(--serif);font-weight:500;font-size:clamp(31px,3.1vw,44px);line-height:1.55;letter-spacing:-.055em}.history{display:grid;grid-template-columns:1fr 1.45fr;gap:38px 90px}.history-content{padding-top:1px}.date-mark{padding-bottom:30px;border-bottom:1px solid var(--line);margin-bottom:32px}.date-mark>span{display:block;font-size:11px;color:var(--muted);margin-bottom:8px}.date-mark strong{font-family:var(--serif);font-weight:400;font-size:clamp(36px,4.7vw,63px);letter-spacing:-.07em;line-height:1.3}.date-mark strong span{color:var(--green);padding-inline:.04em}.prose{font-size:17px;font-weight:400;line-height:2.05;letter-spacing:-.035em}.prose p+p{margin-top:24px}.prose strong{font-weight:600}.source-mark{font-family:var(--sans);font-size:10px;vertical-align:super;margin-left:5px;color:var(--green);text-decoration:none}.history-photo{grid-column:1/-1;max-width:1000px;margin:22px auto 0;width:100%}.history-photo img{width:100%}
+.structure-section{padding:100px 0;background:#e9ede3;border-block:1px solid #d3d9cc}.structure-layout{display:grid;grid-template-columns:1fr 1fr;gap:38px 110px;align-items:center}.structure-copy .prose{max-width:500px;margin-top:30px}.cell-figure{border:1px solid #abb4a5;padding:25px 35px 28px;background:#f6f6ee;text-align:center}.cell-heading{display:flex;align-items:center;justify-content:space-between;gap:10px;padding-bottom:20px;border-bottom:1px solid #d4d9cb;font-size:10px;color:#4d594a}.cell-heading span:first-child{font-weight:600}.cell-diagram{display:flex;justify-content:center;gap:40px;padding:37px 0 30px}.cell-column{display:flex;flex-direction:column;gap:22px}.cell-column span{display:grid;place-items:center;width:60px;height:60px;border:1px solid #7a8973;border-radius:50%;font-family:var(--serif);font-size:22px;color:#334a34;background:transparent}.cell-text{font-size:13px;line-height:1.9}.cell-text strong{font-weight:600}.cell-figure figcaption{display:block;text-align:center;border-top:1px solid #d4d9cb;margin-top:20px;padding-top:16px;font-size:11px;line-height:1.8;color:#596253}.structure-note{grid-column:1/-1;max-width:680px;justify-self:end;font-size:12px;line-height:1.9;color:#56604f}
+.document{display:grid;grid-template-columns:1fr 1fr;gap:100px;align-items:center}.document-copy .prose{margin-top:32px;max-width:450px}.document-pause{font-family:var(--serif);font-size:21px;line-height:1.9!important;margin-top:37px!important;color:var(--green)}.document-photo{max-width:540px}.book{padding-top:20px;padding-bottom:0}.book-heading{display:grid;grid-template-columns:1fr 1fr;gap:0 75px;align-items:end;padding-bottom:40px}.book-heading>.section-label{grid-column:1/-1}.book-heading>p{font-size:15px;line-height:2;color:#4c5447;letter-spacing:-.03em}.book-photo img{width:100%}.ending{padding-block:130px 100px;max-width:820px;text-align:center}.ending>.section-label{margin-bottom:38px;font-size:10px}.ending-line{font-family:var(--serif);font-size:clamp(24px,2.8vw,35px);line-height:1.9;letter-spacing:-.06em;font-weight:400}.ending-last{font-family:var(--serif);font-size:clamp(24px,2.8vw,35px);line-height:1.9;letter-spacing:-.06em;margin-top:28px}.ending-last em{color:var(--green)}.ending-date{display:flex;align-items:center;gap:20px;justify-content:center;margin-top:55px;font-size:10px;letter-spacing:.1em;color:var(--muted)}.ending-rule{width:65px;height:1px;background:#9ca692}
+.article-notes{border-top:1px solid var(--line);padding-top:28px;padding-bottom:34px}.notes-heading{display:flex;justify-content:space-between;align-items:center;gap:20px;margin-bottom:38px}.notes-heading h2{font-family:var(--sans);font-size:13px;letter-spacing:-.02em;font-weight:600}.article-actions{display:flex;gap:25px;align-items:center;font-size:11px}.article-actions>a{text-decoration:none}.article-actions button{padding:6px 0;border:0;border-bottom:1px solid var(--line);background:none;cursor:pointer;font-size:11px}.article-actions button[hidden]{display:none}.notes-grid{display:grid;grid-template-columns:1fr 1fr;gap:90px;font-size:12px;line-height:1.9;color:#555e50}.notes-grid h3{font-size:11px;font-weight:700;color:var(--ink);margin-bottom:13px}.notes-grid ol{padding-left:17px;margin:0}.notes-grid li+li{margin-top:14px}.notes-grid li span{display:block;font-size:11px;color:var(--muted)}.notes-grid p+p{margin-top:15px}.notes-link{display:inline-block;font-size:11px;margin-top:15px}.notes-bottom{display:flex;justify-content:space-between;gap:15px;margin-top:38px;border-top:1px solid var(--line);padding-top:18px;color:var(--muted);font-size:9px;letter-spacing:.02em}.action-status{font-size:12px;line-height:1.6;color:var(--green);min-height:0}.action-status:not(:empty){padding-top:18px}.editshop-next{padding:40px;text-align:center;font-size:14px}.ves-carousel{background:var(--paper)}
+@media(max-width:1000px){.history{gap:35px 50px}.structure-layout{gap:35px 50px}.document{gap:50px}.book-heading{gap:0 45px}.notes-grid{gap:45px}}
+@media(max-width:699px){.wrap{width:calc(100% - 48px)}.opening{padding-top:32px}.issue-line{gap:16px;padding-bottom:19px;font-size:10px}.issue-line>a{font-size:14px}.issue-date{display:none}h1{font-size:34px;line-height:1.55;letter-spacing:-.07em;padding:29px 0 23px}.title-first{margin-bottom:3px}.title-last{max-width:100%}.opening-bottom{display:block;padding-bottom:28px}.standfirst{font-size:13px;line-height:2;letter-spacing:-.04em}.read-on{display:none}.opening-photo,.book-photo{width:100%;max-width:none}.opening-photo figcaption,.book-photo figcaption{padding-inline:24px}figcaption{font-size:11px;gap:12px;line-height:1.8}.photo-credit{font-size:10px}.chapter-index{margin-top:36px;padding-block:17px;font-size:10px}.chapter-index>span{max-width:90px;line-height:1.8}.chapter-index nav{gap:17px}.chapter{padding-top:76px;padding-bottom:76px}.section-label{font-size:10px;margin-bottom:18px}h2{font-size:31px;line-height:1.6}.history{display:block}.history-content{margin-top:35px}.date-mark{margin-bottom:26px;padding-bottom:22px}.date-mark strong{font-size:46px}.prose{font-size:16px;line-height:2.05;letter-spacing:-.04em}.prose p+p{margin-top:22px}.history-photo{margin-top:34px}.structure-section{padding:65px 0}.structure-layout{display:block}.structure-copy .prose{margin-top:25px}.cell-figure{margin-top:30px;padding:21px 23px}.cell-diagram{padding-block:30px 25px;gap:40px}.cell-column span{width:55px;height:55px}.cell-column{gap:20px}.structure-note{margin-top:22px;font-size:11px}.document{display:block}.document-copy .prose{margin-top:25px}.document-pause{font-size:20px;margin-top:28px!important}.document-photo{margin-top:32px;max-width:none}.book{padding-top:8px;padding-bottom:0}.book-heading{display:block;padding-bottom:30px}.book-heading>p{font-size:14px;line-height:2;margin-top:25px}.book-heading>p br{display:none}.ending{padding-block:80px 70px}.ending-line,.ending-last{font-size:25px;line-height:1.95}.ending-last{margin-top:20px}.ending-date{margin-top:38px}.notes-heading{align-items:flex-start;margin-bottom:30px}.article-actions{gap:16px;font-size:10px}.article-actions button{font-size:10px}.notes-grid{display:block;font-size:12px}.notes-grid>div+div{margin-top:30px}.notes-bottom{font-size:8px;gap:10px;line-height:1.8}.notes-bottom>span:last-child{text-align:right}.article-notes{padding-bottom:30px}.editshop-next{padding:30px 24px}}
+@media(max-width:360px){.wrap{width:calc(100% - 40px)}.opening-photo,.book-photo{width:100%}.opening-photo figcaption,.book-photo figcaption{padding-inline:20px}h1{font-size:30px}.standfirst{font-size:12px}.chapter-index nav{gap:13px}.chapter-index>span{max-width:75px}h2{font-size:28px}.date-mark strong{font-size:42px}.cell-figure{padding:20px}.ending-line,.ending-last{font-size:23px}.article-actions{gap:12px}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*::before,*::after{animation:none!important;transition:none!important}}
+.title-close{display:inline-block;max-width:100%}.prose{font-size:18px}figcaption{font-size:13px}.photo-credit{font-size:12px}
+[hidden]{display:none!important}.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+.learning,.access{display:grid;grid-template-columns:1fr 1.45fr;gap:38px 90px}.learning-prose,.access-prose{max-width:680px}.book-prose{max-width:680px;width:calc(100% - 80px);margin:55px auto 0}.access{border-top:1px solid var(--line);margin-top:100px}.access-facts{grid-column:2;display:grid;grid-template-columns:1fr 1fr;gap:24px;border-top:1px solid var(--line);padding-top:28px}.access-facts strong{font-family:var(--serif);font-size:56px;font-weight:400;letter-spacing:-.06em;color:var(--green)}.access-facts strong span{font-size:25px;margin-left:5px}.access-facts p{font-size:13px;line-height:1.9}.access-facts .fact-scope{grid-column:1/-1;font-size:12px;color:var(--muted)}.access-close{grid-column:2;font:400 24px/1.8 var(--serif);color:var(--green);margin-top:20px}
+.message-section{padding:90px 0;background:#e9ede3;border-block:1px solid #d3d9cc}.message-wrap{max-width:820px}.message-wrap h2{font-size:clamp(29px,3.2vw,43px)}.message-lead{font-size:16px;line-height:1.9;margin-top:24px}.message-wrap form{margin-top:38px}.message-wrap label{display:block;font-size:13px;font-weight:600;margin-bottom:12px}.message-wrap textarea{display:block;resize:vertical;width:100%;max-width:100%;min-height:130px;padding:20px;border:1px solid #94a08b;border-radius:0;background:#faf9f3;color:var(--ink);font:18px/1.9 var(--sans)}.message-wrap textarea:focus-visible{outline:3px solid var(--green);outline-offset:3px}.message-wrap textarea::placeholder{color:#646d5c}.message-controls{display:flex;gap:20px;justify-content:space-between;align-items:center;margin-top:18px}.message-controls p{font-size:12px;line-height:1.8;color:#525e4d;max-width:340px}.message-controls button{flex:none;background:var(--green);color:white;border:1px solid var(--green);font-size:14px;padding:15px 21px;min-height:48px;cursor:pointer}.message-controls button:disabled{opacity:.65;cursor:wait}.message-controls button span{margin-left:20px}.message-status{font-size:13px;line-height:1.8;color:var(--green);min-height:24px;margin-top:20px}.message-result{margin-top:28px;border-top:1px solid #aab5a0;padding-top:28px}.message-result h3{font-size:12px;font-weight:600;color:#53634d;margin-bottom:16px}.original-message p{font-family:var(--serif);font-size:25px;line-height:1.8;white-space:pre-wrap}.translated-message{margin-top:32px}.braille-dots{display:flex;flex-wrap:wrap;gap:15px 5px;align-items:center;max-width:100%;overflow-wrap:anywhere}.braille-cell{display:grid;grid-template-columns:repeat(2,8px);grid-auto-rows:8px;gap:7px 8px;padding:4px;flex:none}.braille-cell i{display:block;border-radius:50%;background:#d5d9cd}.braille-cell i.raised{background:#243e2b;box-shadow:0 1px 0 #f9f9ee}.braille-space{width:16px;flex:none}.braille-break{flex-basis:100%;height:0}.message-note{font-size:12px;line-height:1.85;color:#53634d;margin-top:25px;max-width:680px}.message-wrap #message-nojs{font-size:15px;line-height:1.8;margin-top:32px}.braille-hero-title{padding:42px 0 22px}.hero-dots{gap:18px 7px}.hero-dots .braille-cell{grid-template-columns:repeat(2,12px);grid-auto-rows:12px;gap:12px 12px;padding:5px}.hero-dots .braille-cell i{background:#d8d8cc}.hero-dots .braille-cell i.raised{background:var(--ink)}.hero-dots .braille-space{width:24px}.hero-korean{font-family:var(--serif);font-size:24px;line-height:1.7;letter-spacing:-.04em;margin-bottom:27px}
+.braille-word{display:flex;flex-wrap:wrap;gap:inherit;max-width:100%}.notes-grid .technology-credit{margin-top:28px}
+.hero-korean{font-size:clamp(34px,4.6vw,62px);font-weight:500;line-height:1.5;padding:0 0 28px;margin:0;letter-spacing:-.06em}.unicode-title{font-family:'Segoe UI Symbol','Apple Braille',sans-serif;font-size:42px;line-height:1.5;word-break:break-all}.annual-messages,.access-prose{grid-column:2}.annual-messages h3{font-size:15px;font-weight:600;margin-bottom:22px}.annual-intro,.annual-outlook{font-size:17px;line-height:2;letter-spacing:-.035em}.annual-messages ol{list-style:none;margin:30px 0;padding:0;border-top:1px solid var(--line)}.annual-messages li{display:grid;grid-template-columns:60px 1fr;gap:20px;border-bottom:1px solid var(--line);padding:25px 0}.annual-messages time{font:400 19px/1.8 var(--serif);color:var(--green)}.annual-messages h4{font:500 21px/1.7 var(--serif);letter-spacing:-.04em;margin:0 0 12px}.annual-messages li p{font-size:15px;line-height:1.95;letter-spacing:-.025em}.annual-messages li a{font-size:11px;white-space:nowrap}.reported-quote{margin:35px 0 0;padding:26px 0 26px 25px;border-left:2px solid #8b9f84}.reported-quote>p{font:400 22px/1.9 var(--serif);letter-spacing:-.04em}.reported-quote footer{font-size:12px;line-height:1.9;margin-top:20px;color:var(--muted)}.first-message-return{margin-top:65px;border-top:1px solid var(--line);padding-top:36px}.first-message-return>p{font-size:15px;line-height:1.9;color:var(--muted)}.first-message-return details{margin-top:24px}.first-message-return summary{font-size:13px;line-height:1.9;cursor:pointer;text-decoration:underline;text-underline-offset:5px;list-style-position:inside}.first-message-return summary:focus-visible{outline:3px solid var(--green);outline-offset:5px}.first-message-return .revealed-title{font:500 31px/1.7 var(--serif);color:var(--green);margin-top:28px}.access>.access-prose{margin-top:15px}
+.greeting-lesson{grid-column:1/-1;border-top:1px solid #b8c3b0;padding-top:45px;margin-top:15px;max-width:820px;width:100%;justify-self:center}.greeting-lesson h3{font:500 28px/1.6 var(--serif);letter-spacing:-.04em;word-break:keep-all}.greeting-choices{display:flex;gap:12px;flex-wrap:wrap;margin-top:25px}.greeting-choice{background:transparent;border:1px solid #8c9a82;border-radius:0;padding:13px 22px;min-height:48px;cursor:pointer;font-size:16px}.greeting-choice[aria-pressed="true"]{background:var(--green);border-color:var(--green);color:white}.greeting-result{margin-top:30px;padding:28px;background:#f6f6ee;border:1px solid #c3cbb9}.greeting-result>#greeting-text{font:400 25px/1.8 var(--serif);margin-bottom:25px}.greeting-count,.greeting-note{font-size:13px;line-height:1.9;color:#53634d}.greeting-count{margin-top:25px}.greeting-note{margin-top:20px}.greeting-result .braille-dots{min-height:50px}
+@media(max-width:699px){.greeting-lesson{margin-top:35px;padding-top:32px}.greeting-lesson h3{font-size:25px}.greeting-result{padding:22px}.greeting-choice{flex:1;padding:13px}.greeting-note{font-size:14px}}
+@media(max-width:699px){.hero-korean{font-size:33px;padding:0 0 24px}.unicode-title{font-size:26px}.annual-messages{margin-top:32px}.annual-messages li{grid-template-columns:47px 1fr;gap:12px}.annual-messages h4{font-size:20px}.annual-intro,.annual-outlook{font-size:17px}.annual-messages li p{font-size:16px}.reported-quote{padding-left:20px}.reported-quote>p{font-size:21px}.first-message-return{margin-top:48px}.first-message-return .revealed-title{font-size:28px}.access>.access-prose{margin-top:35px}}
+@media(max-width:1000px){.learning,.access{gap:35px 50px}.hero-dots .braille-cell{grid-template-columns:repeat(2,9px);grid-auto-rows:9px;gap:9px;padding:4px}.hero-dots{column-gap:4px}.hero-dots .braille-space{width:18px}}
+@media(max-width:699px){.chapter-index{display:block}.chapter-index>span{max-width:none}.chapter-index nav{gap:17px;flex-wrap:wrap;margin-top:12px}.learning,.access{display:block}.learning-prose,.access-prose{margin-top:30px}.book-prose{width:calc(100% - 48px);margin-top:34px}.access{margin-top:65px}.access-facts{margin-top:30px;gap:20px 15px}.access-facts strong{font-size:46px}.access-facts p{font-size:12px}.access-close{font-size:22px;margin-top:34px}.message-section{padding:65px 0}.message-lead{font-size:15px}.message-lead br{display:none}.message-wrap form{margin-top:28px}.message-controls{display:block}.message-controls p{max-width:none}.message-controls button{width:100%;margin-top:17px;display:flex;align-items:center;justify-content:space-between}.original-message p{font-size:23px}.braille-cell{grid-template-columns:repeat(2,7px);grid-auto-rows:7px;gap:6px 7px;padding:3px}.braille-dots{gap:15px 3px}.braille-space{width:12px}.braille-hero-title{padding:34px 0 20px}.hero-dots .braille-cell{grid-template-columns:repeat(2,6px);grid-auto-rows:6px;gap:6px;padding:2px}.hero-dots{gap:17px 2px}.hero-dots .braille-space{width:12px}.hero-korean{font-size:23px;margin-bottom:25px}.message-note{font-size:12px}}
+@media(max-width:360px){.book-prose{width:calc(100% - 40px)}.hero-dots .braille-cell{grid-template-columns:repeat(2,5px);grid-auto-rows:5px;gap:5px}.hero-dots{column-gap:2px}.hero-dots .braille-space{width:10px}.message-wrap h2{font-size:28px}}
+@media(max-width:699px){.prose{font-size:18px;line-height:1.95}figcaption{font-size:13px}.photo-credit{font-size:11px}.standfirst{font-size:14px}.cell-text{font-size:14px}.cell-figure figcaption{font-size:12px}}
+@media print{body{background:white;color:black}.vnh-header,.vnh-overlay,.chapter-index,.read-on,.article-actions,.ves-carousel,.ves-brand{display:none!important}body.vnh-ready{padding-top:0!important}.opening{padding-top:0}.wrap{width:100%}.chapter{padding-block:35px}.structure-section{padding-block:35px}.ending{padding-block:40px}.structure-section{break-inside:avoid}figure{break-inside:avoid}a{text-decoration:none}.source-mark{display:none}}
+
+.opening .hero-byline{margin:0 0 24px;font-size:12.5px;line-height:1.8;font-weight:400;letter-spacing:-.02em;color:var(--muted)}
+
+.learn-invitation{border-top:1px solid var(--line);padding-block:28px;margin-bottom:50px;display:flex;align-items:center;justify-content:space-between;gap:25px}.learn-invitation .section-label{display:block;margin-bottom:10px}.learn-invitation p{font-size:14px;line-height:1.9;color:var(--muted)}.learn-invitation>a{font-size:14px;line-height:1.9;color:var(--green);padding-block:12px;white-space:nowrap}@media(max-width:699px){.learn-invitation{display:block;margin-bottom:35px}.learn-invitation>a{display:inline-block;margin-top:12px}}
+
+/* 2026-11-02: article typography and photo pacing, GPT design review. */
+.article-page .opening{padding-top:38px}
+.article-page #braille-hero{display:grid;grid-template-columns:1fr 1.14fr;gap:50px;align-items:center;padding:42px 0 24px}
+.article-page .braille-hero-title{padding:0;min-width:0}
+.article-page .hero-dots{gap:20px 4px}
+.article-page .hero-dots .braille-cell{grid-template-columns:repeat(2,10px);grid-auto-rows:10px;gap:9px;padding:4px}
+.article-page .hero-dots .braille-space{width:18px}
+.article-page .hero-korean{font-size:clamp(44px,4.5vw,66px);line-height:1.4;letter-spacing:-.055em;margin:0;padding:0;max-width:760px}
+.article-page .opening .hero-byline{margin:0 0 25px;padding-left:calc(46.7% + 27px)}
+.article-page .opening-bottom{padding:0 0 40px;align-items:center}
+.article-page .standfirst{font-size:17px;line-height:1.85;max-width:780px}
+.article-page .chapter-index{margin-top:38px}
+.article-page .chapter-index nav{gap:24px;flex-wrap:wrap}
+.article-page .chapter-index nav a:last-child{color:var(--green);font-weight:600}
+.article-page .chapter{padding-block:94px}
+.article-page h2{font-size:clamp(31px,3vw,42px);line-height:1.55}
+.article-page .prose{font-size:18px;line-height:1.9;letter-spacing:-.025em}
+.article-page .prose p+p{margin-top:27px}
+.article-page .history{display:block;max-width:1040px}
+.article-page .history>.section-heading{max-width:720px;margin-inline:auto}
+.article-page .history-content{max-width:680px;margin:35px auto 0}
+.article-page .date-mark{display:flex;align-items:center;justify-content:space-between;gap:20px;padding-bottom:24px;margin-bottom:28px}
+.article-page .date-mark>span{margin:0}
+.article-page .date-mark strong{font-size:62px}
+.article-page .history-photo{max-width:920px;margin-top:45px}
+.article-page .structure-section{padding-block:78px;background:#eeefe6}
+.article-page .structure-layout{gap:30px 80px}
+.article-page .cell-figure{background:transparent;border:0;border-block:1px solid #aab59f;padding-inline:18px}
+.article-page .greeting-lesson{max-width:860px;margin-top:18px;padding-top:34px;display:grid;grid-template-columns:1fr 1.3fr;gap:18px 35px;align-items:start}
+.article-page .greeting-lesson>.section-label{grid-column:1/-1;margin:0}
+.article-page .greeting-lesson h3{grid-column:1;font-size:25px}
+.article-page .greeting-choices{grid-column:1;grid-row:3;display:flex;gap:8px;margin:0}
+.article-page .greeting-choice{font-size:14px;padding:12px 14px}
+.article-page .greeting-result{grid-column:2;grid-row:2/5;margin:0;padding:22px;border:0;border-left:1px solid #bdc6b5;background:transparent}
+.article-page .greeting-result>#greeting-text{font-size:27px;margin-bottom:20px}
+.article-page .greeting-count{margin-top:20px}
+.article-page .greeting-note{grid-column:1;grid-row:4;margin:0}
+.article-page .message-preview{grid-column:1/-1;font:400 15px/1.9 var(--sans);color:#40573f;margin-top:10px;max-width:630px}
+.article-page .learning{display:block;max-width:1040px}
+.article-page .learning>.section-heading{max-width:720px;margin:0 auto 32px}
+.article-page .learning-prose{margin:0 auto;max-width:680px}
+.article-page .document{grid-template-columns:.95fr 1.05fr;gap:65px;align-items:center}
+.article-page .document-photo{justify-self:end}
+.article-page .document-pause{padding-top:24px;border-top:1px solid var(--line)}
+.article-page .book{padding-top:12px;padding-bottom:0}
+.article-page .book-heading{padding-bottom:35px}
+.article-page .book-heading>p{font-size:16px;line-height:1.9}
+.article-page .book-prose{margin-top:48px}
+.article-page .access{display:block;max-width:1040px;margin-top:90px;padding-top:64px}
+.article-page .access>.section-heading{margin-bottom:40px}
+.article-page .annual-messages h3{font-size:14px;letter-spacing:.025em}
+.article-page .annual-intro{font-size:18px;line-height:1.85;max-width:680px}
+.article-page .annual-messages ol{display:grid;grid-template-columns:1fr 1fr;gap:0 42px;margin-block:28px}
+.article-page .annual-messages li{display:block;padding:28px 0}
+.article-page .annual-messages time{display:block;font-size:34px;line-height:1.3;margin-bottom:16px}
+.article-page .annual-messages h4{font-size:23px;line-height:1.65;margin-bottom:14px}
+.article-page .annual-messages li p{font-size:16px;line-height:1.9}
+.article-page .annual-outlook{max-width:720px;font-size:17px;line-height:1.9}
+.article-page .reported-message{margin:32px 0 42px;padding:26px 0 26px 28px;border-left:2px solid #7c9275;max-width:760px}
+.article-page .reported-message .section-label{font-size:11px;margin-bottom:14px}
+.article-page .reported-message>p{font-size:17px;line-height:1.95}
+.article-page .report-source{font-size:12px;line-height:1.8;color:var(--muted);margin-top:15px}
+.article-page .access-prose{max-width:720px;margin-top:45px;padding-top:30px;border-top:1px solid var(--line)}
+.article-page .access-facts{max-width:850px;margin-top:30px;border-top:0;padding-top:0;gap:20px 50px}
+.article-page .access-facts>div{border-top:1px solid var(--line);padding-top:20px}
+.article-page .access-facts strong{font-size:72px;line-height:1.4}
+.article-page .access-close{max-width:720px;font-size:25px;margin-top:36px}
+.article-page .message-section{background:#193f37;color:#f5f2eb;border:0;padding-block:85px}
+.article-page .message-wrap{max-width:860px}
+.article-page .message-wrap .section-label{color:#c8ddc3}
+.article-page .message-wrap h2{font-size:clamp(29px,3.5vw,45px);line-height:1.6}
+.article-page .message-lead{font-size:17px;line-height:1.9;color:#e2e9db;margin-top:22px}
+.article-page .message-wrap textarea{background:#faf9f3;border:0;padding:24px;min-height:150px;color:#20241f}
+.article-page .message-wrap textarea:focus-visible{outline-color:#d1e7c8}
+.article-page .message-controls p{color:#d5dfcf;font-size:13px}
+.article-page .message-controls button{background:#f5f2eb;color:#193f37;border-color:#f5f2eb;font-weight:600}
+.article-page .message-wrap button:focus-visible{outline-color:#f5f2eb}
+.article-page .message-status{color:#d6e9cb}
+.article-page .message-result{border-color:#779488}
+.article-page .message-result h3{color:#c8ddc3}
+.article-page .message-note{color:#d5dfcf;font-size:13px}
+.article-page .message-result .braille-cell i{background:#637e70}
+.article-page .message-result .braille-cell i.raised{background:#f5f2eb;box-shadow:none}
+.article-page .ending{padding-block:105px 70px}
+.article-page .first-message-return{margin-top:48px}
+@media(max-width:899px){.article-page #braille-hero{display:block;padding:32px 0 20px}.article-page .braille-hero-title{margin-bottom:25px}.article-page .opening .hero-byline{padding-left:0}.article-page .hero-dots .braille-cell{grid-template-columns:repeat(2,8px);grid-auto-rows:8px;gap:8px}.article-page .hero-korean{font-size:44px}.article-page .structure-layout{gap:30px}.article-page .document{gap:35px}}
+@media(max-width:699px){.article-page .opening{padding-top:28px}.article-page #braille-hero{padding:28px 0 15px}.article-page .braille-hero-title{margin-bottom:23px}.article-page .hero-dots .braille-cell{grid-template-columns:repeat(2,6px);grid-auto-rows:6px;gap:6px;padding:2px}.article-page .hero-dots{gap:15px 2px}.article-page .hero-dots .braille-space{width:12px}.article-page .hero-korean{font-size:clamp(31px,8.2vw,36px);line-height:1.45;letter-spacing:-.055em;margin:0;padding:0}.article-page .opening .hero-byline{margin-bottom:22px;font-size:12px}.article-page .standfirst{font-size:15px;line-height:1.85}.article-page .opening-bottom{padding-bottom:29px}.article-page .chapter-index{margin-top:28px}.article-page .chapter-index nav{gap:15px 19px}.article-page .chapter{padding-block:64px}.article-page h2{font-size:29px;line-height:1.65}.article-page .prose{font-size:18px;line-height:1.9}.article-page .history-content{margin-top:28px}.article-page .date-mark{display:block}.article-page .date-mark>span{margin-bottom:10px}.article-page .date-mark strong{font-size:49px}.article-page .history-photo{margin-top:30px}.article-page .structure-section{padding-block:56px}.article-page .cell-figure{margin-top:30px}.article-page .greeting-lesson{display:block;padding-top:28px;margin-top:30px}.article-page .greeting-lesson>.section-label{margin-bottom:15px}.article-page .greeting-lesson h3{font-size:25px}.article-page .greeting-choices{margin-top:20px}.article-page .greeting-choice{font-size:15px}.article-page .greeting-result{margin-top:22px;border:0;border-top:1px solid #bdc6b5;padding:23px 0 0}.article-page .greeting-result>#greeting-text{font-size:26px}.article-page .greeting-note{margin-top:22px;font-size:14px}.article-page .message-preview{margin-top:22px;padding-top:20px;border-top:1px solid #bdc6b5;font-size:15px}.article-page .learning>.section-heading{margin-bottom:28px}.article-page .document{display:block}.article-page .document-photo{margin-top:32px}.article-page .book{padding-top:8px;padding-bottom:0}.article-page .book-heading>p{font-size:16px}.article-page .book-prose{margin-top:34px}.article-page .access{padding-top:40px;margin-top:65px}.article-page .access>.section-heading{margin-bottom:30px}.article-page .annual-intro{font-size:18px}.article-page .annual-messages ol{display:block}.article-page .annual-messages li{padding-block:24px}.article-page .annual-messages time{font-size:30px;margin-bottom:12px}.article-page .annual-messages h4{font-size:23px}.article-page .annual-messages li p{font-size:17px}.article-page .annual-outlook{font-size:17px}.article-page .reported-message{padding-left:20px;margin-block:28px}.article-page .reported-message>p{font-size:17px}.article-page .access-prose{margin-top:30px;padding-top:26px}.article-page .access-facts{gap:20px}.article-page .access-facts strong{font-size:51px}.article-page .access-facts p{font-size:13px}.article-page .access-close{font-size:23px}.article-page .message-section{padding-block:60px}.article-page .message-wrap h2{font-size:29px;line-height:1.65}.article-page .message-lead{font-size:16px}.article-page .message-wrap textarea{padding:20px}.article-page .ending{padding-block:75px 58px}}
+@media(max-width:360px){.article-page .hero-dots .braille-cell{grid-template-columns:repeat(2,5px);grid-auto-rows:5px;gap:5px}.article-page .hero-korean{font-size:31px}.article-page h2{font-size:27px}.article-page .message-wrap h2{font-size:27px}.article-page .access-facts strong{font-size:47px}}
+@media print{.article-page .message-section{background:white;color:black}.article-page .message-section p,.article-page .message-section h2,.article-page .message-section h3,.article-page .message-section .section-label{color:black}.article-page #braille-hero{display:block}.article-page .opening .hero-byline{padding:0}}
+
+/* Annual themes: a short rule marks time without imitating braille. */
+.article-page .annual-messages time{display:flex;align-items:center;gap:14px}
+.article-page .annual-messages time::before{content:"";display:block;width:23px;height:1px;background:var(--green);flex:none}
+
+
+===== braille-experience.mjs =====
+
+const form = document.getElementById('message-form');
+const input = document.getElementById('message-input');
+const status = document.getElementById('message-status');
+const result = document.getElementById('message-result');
+const submit = document.getElementById('message-submit');
+const original = document.getElementById('message-original');
+const braille = document.getElementById('message-braille');
+const dots = document.getElementById('message-dots');
+let revision = 0;
+
+function renderDots(text, target = dots) {
+  const fragment = document.createDocumentFragment();
+  let word;
+  for (const char of text) {
+    if (/\s/.test(char) || char === '\u2800') {
+      const space = document.createElement('span');
+      space.className = char === '\n' ? 'braille-break' : 'braille-space';
+      fragment.append(space);
+      word = undefined;
+      continue;
+    }
+    if (!word) {
+      word = document.createElement('span');
+      word.className = 'braille-word';
+      fragment.append(word);
+    }
+    const mask = char.codePointAt(0) - 0x2800;
+    const cell = document.createElement('span');
+    cell.className = 'braille-cell';
+    for (const bit of [0,3,1,4,2,5,6,7]) {
+      const dot = document.createElement('i');
+      dot.className = mask & (1 << bit) ? 'raised' : '';
+      // Standard literary Korean output is six-dot; support any eight-dot output faithfully.
+      if (bit >= 6 && mask < 64) dot.hidden = true;
+      cell.append(dot);
+    }
+    word.append(cell);
+  }
+  target.replaceChildren(fragment);
+}
+
+if (document.getElementById('hero-dots')) {
+  renderDots('⠈⠪⠐⠾⠀⠨⠎⠢⠕⠀⠨⠥⠴⠣⠌⠊', document.getElementById('hero-dots'));
+}
+
+const greetings = {
+  thanks: {text:'감사합니다', braille:'⠫⠢⠇⠚⠃⠉⠕⠊'},
+  hello: {text:'안녕하세요', braille:'⠣⠒⠉⠻⠚⠠⠝⠬'},
+  welcome: {text:'반갑습니다', braille:'⠘⠒⠫⠃⠠⠪⠃⠉⠕⠊'}
+};
+function showGreeting(key) {
+  const selected = greetings[key];
+  if (!selected) return;
+  document.getElementById('greeting-text').textContent = selected.text;
+  document.getElementById('greeting-unicode').textContent = selected.braille;
+  renderDots(selected.braille, document.getElementById('greeting-dots'));
+  document.getElementById('greeting-count').textContent = `${selected.text} · 한글 ${Array.from(selected.text).length}글자, 점자 ${Array.from(selected.braille).length}칸`;
+  document.querySelectorAll('.greeting-choice').forEach(button => button.setAttribute('aria-pressed', String(button.dataset.greeting === key)));
+}
+if (document.getElementById('greeting-dots')) {
+  showGreeting('hello');
+  document.querySelectorAll('.greeting-choice').forEach(button => button.addEventListener('click', () => showGreeting(button.dataset.greeting)));
+}
+
+if (form) {
+  form.hidden = false;
+  document.getElementById('message-nojs').hidden = true;
+  input.addEventListener('input', () => {
+    revision++;
+    if (!result.hidden) { result.hidden = true; status.textContent = '말을 고쳤습니다. 다시 점자로 옮겨보세요.'; }
+  });
+  form.addEventListener('submit', async event => {
+    event.preventDefault();
+    const text = input.value.normalize('NFC').trim();
+    if (!text) { status.textContent = '전하고 싶은 말을 먼저 적어주세요.'; input.focus(); return; }
+    if (Array.from(text).length > 100) { status.textContent = '한 번에 100자까지 옮길 수 있습니다.'; return; }
+    // Limit unsupported input explicitly rather than silently dropping or inventing glyphs.
+    if (/[^가-힣a-zA-Z0-9\s.,!?·:;'"()\-]/u.test(text)) {
+      status.textContent = '완성된 한글, 영문, 숫자와 기본 문장부호로 적어주세요. 이모지·한자·단독 자모는 아직 지원하지 않습니다.';
+      return;
+    }
+    const currentRevision = revision;
+    submit.disabled = true;
+    form.setAttribute('aria-busy', 'true');
+    status.textContent = '당신이 쓴 말을 점자로 옮기고 있습니다.';
+    try {
+      const {loadBrailleEngine} = await import('./braille-engine.mjs');
+      const translate = await loadBrailleEngine();
+      if (revision !== currentRevision) { status.textContent = '말을 고쳤습니다. 다시 점자로 옮겨보세요.'; return; }
+      const translated = translate(text);
+      if (!translated || /[^\u2800-\u28ff\s]/u.test(translated)) throw new Error('지원하지 않는 표현');
+      original.textContent = text;
+      braille.textContent = translated;
+      renderDots(translated);
+      result.hidden = false;
+      status.textContent = '점자로 옮겼습니다. 아래에서 확인해보세요.';
+    } catch {
+      result.hidden = true;
+      status.textContent = '지금은 이 문장을 옮기지 못했습니다. 연결을 확인하거나 더 짧고 간단한 문장으로 다시 시도해주세요.';
+    } finally {
+      form.removeAttribute('aria-busy');
+      submit.disabled = false;
+    }
+  });
+}
+
+
+===== braille-engine.mjs =====
+import * as binding from './vendor/braillify/index_bg.js';
+
+let ready;
+export function loadBrailleEngine() {
+  if (!ready) ready = (async () => {
+    const response = await fetch(new URL('./vendor/braillify/index_bg.wasm', import.meta.url));
+    if (!response.ok) throw new Error('점역 자료를 불러오지 못했습니다.');
+    const {instance} = await WebAssembly.instantiate(await response.arrayBuffer(), {'./index_bg.js': binding});
+    binding.__wbg_set_wasm(instance.exports);
+    return binding.translateToUnicode;
+  })().catch(error => { ready = undefined; throw error; });
+  return ready;
+}
+
+
+===== learn.html =====
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>잠깐, 점자 배워보기 | 훈맹정음 100년 · 편집#</title>
+  <meta name="description" content="점 하나의 차이를 살펴보고 점자로 인사를 건네보세요. 훈맹정음 100년 기사의 짧은 부록.">
+  <meta name="robots" content="noindex,nofollow">
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="ko_KR">
+  <meta property="og:site_name" content="VISUAL NEWSIS">
+  <meta property="og:title" content="잠깐, 점자 배워보기">
+  <meta property="og:description" content="점 하나의 차이를 살펴보고 점자로 인사를 건네보세요. 훈맹정음 100년 기사의 짧은 부록.">
+  <meta property="og:image" content="images/contact-1920.jpg">
+  <meta property="og:image:alt" content="점자책의 돌기와 그림자, 책 위에 놓인 손끝">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="잠깐, 점자 배워보기">
+  <meta name="twitter:description" content="점 하나의 차이를 살펴보고 점자로 인사를 건네보세요. 훈맹정음 100년 기사의 짧은 부록.">
+  <meta name="twitter:image" content="images/contact-1920.jpg">
+  <meta name="twitter:image:alt" content="점자책의 돌기와 그림자, 책 위에 놓인 손끝">
+  <!-- Local editorial preview. Set approved canonical, absolute share URLs and publication date before release. -->
+  <link rel="icon" href="../assets/logo2024.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;600;700;800&family=Noto+Serif+KR:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/visual-header.css?v=20261026-goodeasy-lab1">
+  <link rel="stylesheet" href="../assets/editshop-carousel.css">
+  <link rel="stylesheet" href="../assets/editshop-brand-banner.css">
+  <link rel="stylesheet" href="story.css">
+  <link rel="stylesheet" href="learn.css">
+  <script defer src="../assets/visual-header.js?v=20261026-menuorder1" data-section="편집#" data-section-href="https://visual.newsis.com/editshop/" data-current="editshop" data-header-theme="light"></script>
+  <script defer src="../assets/editshop-carousel.js" data-current="braille-100"></script>
+
+  <script type="module" src="learn.mjs"></script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebPage","name":"잠깐, 점자 배워보기","description":"훈맹정음 100년 기사의 선택형 점자 부록","inLanguage":"ko-KR","publisher":{"@type":"NewsMediaOrganization","name":"뉴시스","url":"https://www.newsis.com/"},"author":{"@type":"Person","name":"안재현"}}</script>
+  <!-- Existing analytics ID; localhost/file previews do not send analytics. -->
+  <script>
+    if (location.hostname === 'visual.newsis.com') {
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-6BKMWE02W5');
+      const tag = document.createElement('script');
+      tag.async = true;
+      tag.src = 'https://www.googletagmanager.com/gtag/js?id=G-6BKMWE02W5';
+      document.head.append(tag);
+    }
+  </script>
+</head>
+<body>
+  <a class="skip-link" href="#story">본문 바로가기</a>
+  <header class="masthead fallback-header">
+    <a href="../">VISUAL NEWSIS</a>
+    <a href="https://www.newsis.com/" aria-label="뉴시스 홈페이지"><img src="../assets/logo2024.png" width="88" alt="NEWSIS"></a>
+    <a href="../editshop/">편집#</a>
+  </header>
+  <main id="story" tabindex="-1"><div class="learn-wrap wrap">
+    <header class="learn-opening"><a class="back-to-story" href="./#structure">← 본편으로</a><span class="section-label">훈맹정음 100년 · 잠깐의 배움</span><h1>점 하나에서,<br>인사 한마디까지.</h1><p class="hero-byline">기획·디렉터 = 안재현 기자</p><p class="learn-intro">점의 자리를 바꿔 보고, 짧은 인사를 살펴보세요.<br>화면에서는 점자의 배열을 알아봅니다. 실제 점자는 손끝의 촉각으로 읽습니다.</p></header>
+    <section class="dot-lesson" aria-labelledby="dot-title"><span class="section-label">01 · 점 하나의 차이</span><h2 id="dot-title">이 점을 더하면?</h2><p>아래의 <strong>1번 점</strong>을 켜고 꺼보세요.</p><div class="dot-exploration"><div class="learn-six" aria-label="읽는 면 기준 여섯 점의 자리"><button type="button" id="dot-one" aria-label="1번 점" aria-pressed="false" hidden>1</button><span id="dot-one-fallback">1</span><span class="fixed-raised">4</span><span>2</span><span>5</span><span>3</span><span>6</span></div><div class="dot-reading"><span class="section-label">첫소리 · 초성</span><p id="dot-letter">ㄱ <span lang="ko-Brai">⠈</span></p><p id="dot-description" role="status" aria-live="polite">4점으로 적은 첫소리 ㄱ입니다.</p></div></div><p class="learn-note">이 예시에서 1점을 더하면 첫소리 ㄴ(1·4점)이 됩니다. 점 하나의 유무가 다른 첫소리를 적습니다. 받침에는 다른 표기가 쓰이며, 점을 하나씩 더하면 다음 자음이 되는 규칙은 아닙니다.</p><a class="learn-source" href="https://www.korean.go.kr/front/page/pageView.do?mn_id=205&amp;page_id=P000302" target="_blank" rel="noopener">국립국어원 · 한글 자음과 모음의 점자 표기 <span aria-hidden="true">↗</span><span class="sr-only"> (새 탭)</span></a></section>
+          <div class="greeting-lesson" aria-labelledby="greeting-title"><span class="section-label">02 · 점자로 건네는 인사</span><h3 id="greeting-title">인사 한마디를 골라보세요</h3><div class="greeting-choices"><button type="button" class="greeting-choice" data-greeting="hello" aria-pressed="true">안녕하세요</button><button type="button" class="greeting-choice" data-greeting="welcome" aria-pressed="false">반갑습니다</button></div><div class="greeting-result"><p id="greeting-text">안녕하세요</p><div id="greeting-dots" class="braille-dots" aria-hidden="true"><span class="unicode-title">⠣⠒⠉⠻⠚⠠⠝⠬</span></div><p id="greeting-unicode" class="sr-only" lang="ko-Brai">⠣⠒⠉⠻⠚⠠⠝⠬</p><p id="greeting-count" class="greeting-count" role="status" aria-live="polite">안녕하세요 · 한글 5글자, 점자 8칸</p></div><p class="greeting-note">다섯 글자인 인사도 점자에서는 서로 다른 수의 칸으로 이어집니다. 각 칸의 점들이 규칙에 따라 말을 적습니다.</p><noscript><p class="greeting-note">다른 인사를 고르는 기능은 JavaScript를 켜면 이용할 수 있습니다.</p></noscript></div>
+    <section id="cell-inspector" class="cell-inspector" hidden aria-labelledby="inspect-title"><h3 id="inspect-title">인사 속 점자 한 칸</h3><p class="learn-note">위 인사의 점자 칸을 누르면 그 배열을 크게 볼 수 있습니다.</p><div id="inspect-dots" class="braille-dots" aria-hidden="true"></div><p id="inspect-description" role="status" aria-live="polite"></p><p class="learn-note">여기서는 솟은 점의 자리만 살펴봅니다. 점자 한 칸이 언제나 한글 한 글자를 뜻하는 것은 아닙니다.</p></section>
+    <footer class="learn-outro"><p>이제, 당신의 말도 점자로 놓아볼까요.</p><a href="./#your-message">본편에서 내 문장 적어보기 →</a><p class="learn-note">점형은 Braillify 2.2.0의 출력과 국립국어원 자료를 바탕으로 구성했습니다. 전문 점역·당사자 감수는 별도입니다.</p><noscript><p class="learn-note">점 바꾸기와 인사 선택은 JavaScript를 켜면 이용할 수 있습니다.</p></noscript></footer></div>
+    <section class="editshop-next" aria-label="다른 편집샵 작품"><a href="../editshop/">다른 편집# 만나보기 ↗</a></section>
+    <aside class="ves-brand" aria-labelledby="ves-brand-title"><div class="ves-brand-inner"><div class="ves-brand-top"><span>VISUAL NEWSIS · 편집#</span><span>뉴스를 새롭게 읽는 방법</span></div><div class="ves-brand-body"><a class="ves-brand-logo" href="../editshop/" aria-label="편집샵 랜딩으로 이동">편집<svg viewBox="0 0 120 140" width="36" height="43" role="img" aria-label="# 처마 로고"><path fill="currentColor" d="M31 8h22l-5 27h31l5-27h22l-5 27h16l-4 21H97l-5 25h19l-4 21H88l-6 30H60l6-30H35l-6 30H7l6-30H0l4-21h13l5-25H7l4-21h15zm13 48-5 25h31l5-25z"/><path fill="#e9a35c" d="M0 99h108l-2 10q-17 11-35 0-17 11-35 0-17 11-36 0z"/></svg></a><h2 id="ves-brand-title">뉴스에,<br><em>한 걸음 더</em></h2><p class="ves-brand-description">매일 쏟아지는 기사 속에서<br>놓치고 있는 가치를 찾고<br>더 깊이, 더 쉽게, 더 오래<br><strong>편집#이 끌어올립니다.</strong></p><a class="ves-brand-cta" href="../editshop/">다음 이야기 만나보기 <span aria-hidden="true">↗</span></a></div><div class="ves-brand-signature-row"><a class="ves-brand-signature" href="../editshop/"><b>VISUAL</b> JOURNALISM</a></div><div class="ves-brand-bottom"><div class="ves-brand-credit">기획·디렉터 = 안재현 기자</div><span>© NEWSIS. ALL RIGHTS RESERVED.</span></div></div></aside>
+  </main></body></html>
+
+
+===== learn.css =====
+.learn-wrap{max-width:800px}.learn-opening{padding:50px 0 65px}.back-to-story{display:inline-block;font-size:13px;margin-bottom:38px}.learn-opening .section-label{display:block}.learn-opening h1{font-size:clamp(34px,5vw,56px);padding:0 0 25px}.learn-opening .hero-byline{font-size:12.5px;color:var(--muted);margin-bottom:30px}.learn-intro{font-size:16px;line-height:2}.dot-lesson{border-top:1px solid var(--line);padding-top:40px}.dot-lesson h2{font-size:30px;margin-bottom:20px}.dot-lesson>p{font-size:16px;line-height:1.9}.dot-exploration{display:grid;grid-template-columns:180px 1fr;gap:38px;align-items:center;margin:35px 0}.learn-six{display:grid;grid-template-columns:repeat(2,58px);gap:15px;justify-content:center}.learn-six>span,.learn-six>button{display:grid;place-items:center;width:58px;height:58px;border:1px solid #89947e;border-radius:50%;background:transparent;font-size:15px}.learn-six>button{cursor:pointer;border:2px solid var(--green)}.learn-six>.fixed-raised,.learn-six>button[aria-pressed="true"]{background:var(--green);color:white}.dot-reading .section-label{display:block}.dot-reading>#dot-letter{font:500 58px/1.6 var(--serif)}#dot-letter>span{font-family:'Segoe UI Symbol',sans-serif;font-size:45px;margin-left:12px}#dot-description{font-size:14px;line-height:1.9}.learn-note{font-size:13px!important;line-height:1.95!important;color:var(--muted)}.learn-source{display:inline-block;font-size:12px;margin-top:18px}.learn-wrap .greeting-lesson{margin-top:55px;padding-top:40px}.cell-inspector{padding:28px;margin-top:18px;border:1px solid var(--line)}.cell-inspector h3{font:500 23px/1.7 var(--serif);margin-bottom:14px}.cell-inspector .braille-cell{grid-template-columns:repeat(2,13px);grid-auto-rows:13px;gap:10px;padding:10px}.cell-inspector .braille-dots{margin-block:22px}#inspect-description{font-size:14px;line-height:1.9;margin-bottom:15px}.greeting-result .braille-cell{border:1px solid transparent;min-width:44px;min-height:52px;background:transparent;cursor:pointer;justify-content:center;align-content:center}.greeting-result .braille-cell[aria-pressed="true"]{border-color:var(--green);background:#e4eadf}.learn-outro{margin:45px 0 65px;border-top:1px solid var(--line);padding-top:35px}.learn-outro>p:first-child{font:400 23px/1.8 var(--serif)}.learn-outro>a{display:inline-block;font-size:14px;margin-block:25px}.learn-outro .learn-note{max-width:620px}@media(max-width:599px){.learn-opening{padding:30px 0 45px}.learn-intro{font-size:15px}.learn-intro br{display:none}.dot-exploration{grid-template-columns:1fr;gap:25px}.dot-reading{text-align:center}.learn-wrap .greeting-lesson{margin-top:40px}.cell-inspector{padding:22px}.learn-six{gap:14px}.learn-outro>p:first-child{font-size:22px}}
+
+
+===== learn.mjs =====
+import './braille-experience.mjs';
+const toggle=document.getElementById('dot-one');
+toggle.hidden=false;document.getElementById('dot-one-fallback').hidden=true;
+toggle.addEventListener('click',()=>{const raised=toggle.getAttribute('aria-pressed')!=='true';toggle.setAttribute('aria-pressed',String(raised));const letter=document.getElementById('dot-letter');letter.firstChild.textContent=raised?'ㄴ ':'ㄱ ';letter.querySelector('span').textContent=raised?'⠉':'⠈';document.getElementById('dot-description').textContent=raised?'1·4점으로 적은 첫소리 ㄴ입니다.':'4점으로 적은 첫소리 ㄱ입니다.';});
+function inspect(cell,index){document.querySelectorAll('#greeting-dots .braille-cell').forEach(x=>x.setAttribute('aria-pressed',String(x===cell)));const copy=cell.cloneNode(true);const visual=document.createElement('span');visual.className='braille-cell';visual.append(...copy.childNodes);document.getElementById('inspect-dots').replaceChildren(visual);document.getElementById('inspect-description').textContent=document.getElementById('greeting-text').textContent+' · '+(index+1)+'번째 칸 · 솟은 점 '+cell.dataset.points;}
+document.getElementById('cell-inspector').hidden=false;
+function prepareCells(){const target=document.getElementById('greeting-dots');target.removeAttribute('aria-hidden');target.setAttribute('role','group');target.setAttribute('aria-label','인사말의 점자 칸 살펴보기');[...target.querySelectorAll('.braille-cell')].forEach((cell,index)=>{const button=document.createElement('button');button.type='button';button.className='braille-cell';const order=[1,4,2,5,3,6,7,8];const points=[...cell.children].flatMap((dot,i)=>dot.classList.contains('raised')?[order[i]]:[]).sort((a,b)=>a-b).join('·');button.dataset.points=points;button.setAttribute('aria-label',(index+1)+'번째 칸, 솟은 점 '+points);button.setAttribute('aria-pressed','false');button.append(...cell.childNodes);cell.replaceWith(button);button.addEventListener('click',()=>inspect(button,index));});const first=target.querySelector('button');if(first)inspect(first,0);}
+prepareCells();document.querySelectorAll('.greeting-choice').forEach(button=>button.addEventListener('click',prepareCells));

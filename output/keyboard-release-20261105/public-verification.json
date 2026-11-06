@@ -1,0 +1,33 @@
+[
+  {
+    "path": "goodeasy/index.html",
+    "status": 200,
+    "matches": true,
+    "keyboardAbsent": true,
+    "cards": 7
+  },
+  {
+    "path": "goodeasy/keyboard/index.html",
+    "status": 200,
+    "matches": true,
+    "indexed": true,
+    "date": true
+  },
+  {
+    "path": "goodeasy/projector/index.html",
+    "status": 200,
+    "matches": true,
+    "noindex": true
+  },
+  {
+    "path": "goodeasy/espresso-machine/index.html",
+    "status": 200,
+    "matches": true,
+    "noindex": true
+  },
+  {
+    "path": "sitemap-sections.xml",
+    "status": 200,
+    "matches": true
+  }
+]

@@ -1,0 +1,134 @@
+[
+  {
+    "file": "goodeasy/assets/anatomy-core.js",
+    "status": 200,
+    "match": true,
+    "bytes": 2761
+  },
+  {
+    "file": "goodeasy/assets/anatomy-models.js",
+    "status": 200,
+    "match": true,
+    "bytes": 14214
+  },
+  {
+    "file": "goodeasy/assets/anatomy-viewer.js",
+    "status": 200,
+    "match": true,
+    "bytes": 24637
+  },
+  {
+    "file": "goodeasy/assets/anatomy-watch.js",
+    "status": 200,
+    "match": true,
+    "bytes": 17420
+  },
+  {
+    "file": "goodeasy/assets/lab.js",
+    "status": 200,
+    "match": true,
+    "bytes": 24745
+  },
+  {
+    "file": "goodeasy/assets/quality-kit.js",
+    "status": 200,
+    "match": true,
+    "bytes": 10230
+  },
+  {
+    "file": "goodeasy/assets/quality-machines.js",
+    "status": 200,
+    "match": true,
+    "bytes": 17278
+  },
+  {
+    "file": "goodeasy/assets/quality-stage.js",
+    "status": 200,
+    "match": true,
+    "bytes": 10271
+  },
+  {
+    "file": "goodeasy/assets/release-machine-models.js",
+    "status": 200,
+    "match": true,
+    "bytes": 216
+  },
+  {
+    "file": "goodeasy/assets/research-watch.js",
+    "status": 200,
+    "match": true,
+    "bytes": 18140
+  },
+  {
+    "file": "goodeasy/assets/research.js",
+    "status": 200,
+    "match": true,
+    "bytes": 21832
+  },
+  {
+    "file": "goodeasy/assets/watch-art-direction.js",
+    "status": 200,
+    "match": true,
+    "bytes": 9027
+  },
+  {
+    "file": "goodeasy/assets/watch-case-study.css",
+    "status": 200,
+    "match": true,
+    "bytes": 1591
+  },
+  {
+    "file": "goodeasy/assets/watch-case-study.js",
+    "status": 200,
+    "match": true,
+    "bytes": 2729
+  },
+  {
+    "file": "goodeasy/assets/watch-case.js",
+    "status": 200,
+    "match": true,
+    "bytes": 21648
+  },
+  {
+    "file": "goodeasy/assets/watch-cutaway.js",
+    "status": 200,
+    "match": true,
+    "bytes": 2743
+  },
+  {
+    "file": "goodeasy/assets/watch-escapement.js",
+    "status": 200,
+    "match": true,
+    "bytes": 17678
+  },
+  {
+    "file": "goodeasy/assets/watch-experience.js",
+    "status": 200,
+    "match": true,
+    "bytes": 2254
+  },
+  {
+    "file": "goodeasy/assets/watch-hero.js",
+    "status": 200,
+    "match": true,
+    "bytes": 5178
+  },
+  {
+    "file": "goodeasy/assets/watch-wheel-geometry.js",
+    "status": 200,
+    "match": true,
+    "bytes": 5270
+  },
+  {
+    "file": "goodeasy/assets/watch-winding.js",
+    "status": 200,
+    "match": true,
+    "bytes": 14060
+  },
+  {
+    "file": "goodeasy/watch/index.html",
+    "status": 200,
+    "match": true,
+    "bytes": 26080
+  }
+]

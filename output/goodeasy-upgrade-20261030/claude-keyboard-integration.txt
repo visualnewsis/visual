@@ -1,0 +1,98 @@
+GOODEASY 08 기계식 키보드 — Codex 통합용 연결 예시 (Claude 작성, 2026-10-30)
+작업 위치: C:/Users/user/.codex/worktrees/piano-finish/editshop (branch codex/piano-finish)
+Claude는 아래 공용 연결 파일을 직접 수정하지 않았습니다. 모두 Codex가 판단해 적용할 예시입니다.
+
+────────────────────────────────────────
+0. 바뀐 파일 / 새 파일 (Claude 담당 범위)
+────────────────────────────────────────
+- goodeasy/assets/models/mx-switch.js        (수정) 단품 스위치·키캡 모델
+- goodeasy/assets/models/mx-keycap.js        (신규) 공용 키캡 셸·소켓·각인 형상
+- goodeasy/assets/models/keyboard-hero.js    (신규) hero 전용 60% 키보드 모델 (아직 페이지에 연결 안 됨)
+- goodeasy/keyboard/keycap-switch-geometry.test.mjs (신규 테스트)
+- goodeasy/keyboard/hero-keyboard.test.mjs           (신규 테스트)
+
+mx-switch.js의 export 이름·update 인자·parts 이름은 그대로라서, 이미 이 파일을 쓰는 곳
+(내부 관찰 detail, 연구 01 mx-structure, 연구 02·03 스프링/디바운스, 분해 뷰어)은
+캐시만 갱신되면 새 모형으로 바로 바뀝니다. hero만 아래 2번 연결이 필요합니다.
+
+────────────────────────────────────────
+1. 캐시 무효화 (필수) — 모듈 URL이 그대로면 배포 후 옛 모듈이 남을 수 있음
+────────────────────────────────────────
+mx-switch.js 내용이 바뀌었으므로 import 체인의 ?v= 를 잎에서 HTML 방향으로 올려 주세요.
+(예시 버전 문자열: 20261030-keycap1)
+
+  goodeasy/assets/quality-replacements.js:2   './models/mx-switch.js?v=20261028-release3'  → ?v=20261030-keycap1
+  goodeasy/assets/quality-switch.js:2         './models/mx-switch.js?v=20261028-release3'  → ?v=20261030-keycap1
+  goodeasy/assets/keyboard-lessons.js:2       './models/mx-switch.js?v=20261028-release3'  → ?v=20261030-keycap1
+  그 다음 단계:
+  goodeasy/assets/quality-stage.js:4,5        quality-replacements.js / quality-switch.js 의 ?v
+  goodeasy/assets/anatomy-models.js:5         quality-replacements.js 의 ?v
+  goodeasy/assets/research-other.js:3,11      keyboard-lessons.js / quality-replacements.js 의 ?v
+  goodeasy/assets/espresso-lessons.js:5       quality-replacements.js 의 ?v (같은 URL로 맞추면 모듈이 한 번만 로드됨)
+  goodeasy/assets/research.js:6               research-other.js 의 ?v
+  goodeasy/assets/anatomy-viewer.js:6         anatomy-models.js 의 ?v
+  goodeasy/keyboard/index.html                quality-stage.js / research.js / anatomy-viewer.js 의 ?v
+  (에스프레소 페이지 등 quality-replacements를 함께 쓰는 다른 HTML도 같은 체인이면 함께 갱신)
+
+mx-switch.js 내부는 './mx-keycap.js?v=20261030-keycap1' 를 import 합니다.
+keyboard-hero.js도 같은 URL을 쓰므로 키캡 모듈은 한 번만 로드됩니다.
+
+────────────────────────────────────────
+2. hero 키보드 교체 (quality-machines.js)
+────────────────────────────────────────
+기존 buildKeyboard와 같은 API입니다:
+  {group, eye, parts:{body,key,cap,spring}, update(state, detail)}
+  - state.key / state.travel (lab.js 그대로). 'Fixed switch housing' 이름 유지(기존 테스트 호환).
+  - 클릭 가능한 키(Q~M, space)만 userData.action='key:X' → 기존 action()이 [data-key] 버튼을 click.
+  - 숫자·기호·Enter·한글 입력도 해당 키가 4mm 눌립니다(추가 동작, 기존 입력 흐름은 그대로).
+    예: '각'→R, '가'→K, 'ㄲ'→R, '!'→1, 줄바꿈→Enter.
+
+권장 연결 (기존 export 이름 유지 → mechanics-detail.test.mjs의 buildKeyboard 테스트도 그대로 통과):
+
+  // goodeasy/assets/quality-machines.js 상단 import 구역
+  import {buildKeyboardHero} from './models/keyboard-hero.js?v=20261030-keycap1';
+
+  // 기존 39번째 줄 export function buildKeyboard(){...} 전체를 다음 한 줄로 교체
+  export function buildKeyboard(){return buildKeyboardHero(T,M);}
+
+  // machineBuilders의 'keyboard':buildKeyboard 는 그대로 둠
+  // 이후 quality-stage.js:8 의 quality-machines.js ?v 및 keyboard/index.html 의 quality-stage.js ?v 갱신
+
+또는 옛 함수를 남기려면:
+  export const machineBuilders={..., 'keyboard':()=>buildKeyboardHero(T,M), ...};
+
+카메라: model.eye = [2.2, 8, 7.6] (모델이 제공. quality-stage boot()의 stage.setModel(model, model.eye||...) 그대로 사용)
+stabilizeStage 사용(기존과 동일) → 키가 눌려도 화면 재맞춤 없음.
+DOM이 없으면(Node 테스트) 각인 텍스처 없이도 생성됩니다.
+
+────────────────────────────────────────
+3. (선택) 내부 관찰 상태 — GPT 명세 "외형과 내부 관찰 상태를 구분"
+────────────────────────────────────────
+mx-switch update에 opt-in 인자 2개를 추가했습니다. 기본값이면 기존 외형 그대로입니다.
+  cutaway: 1  → 관찰 카메라 쪽(+x, +z) 하부 하우징 벽, 앞쪽 가이드 채널·클립을 숨겨 접점·스프링을 보이게 함
+  capTilt: 라디안 → 키캡 밑면(십자 소켓) 기울기를 직접 지정.
+           미지정 시 explode 0.35부터 smoothstep으로 0→0.95rad (소켓이 십자에서 빠지고 판 위로 올라온 뒤에만 기울어짐).
+           주의: capTilt를 직접 주면 이 안전 구간을 건너뜁니다. 분해 뷰어(anatomy-models.js)는 키캡/상부 하우징
+           오프셋 간격(2.8 vs 2.0)이 좁아서 기울이면 판과 겹칩니다 → 분해 뷰어에는 capTilt를 쓰지 마세요.
+
+예시 A — 페이지 '안쪽 보기' detail에서만 절개 상태 사용 (quality-stage.js draw()의 detailModel.update 호출부):
+  detailModel.update?.(kind==='keyboard'?{...(record||state),cutaway:1}:(kind==='camera'?...:record||state),true,now);
+
+예시 B — 연구 01(mx-structure)에 절개 토글을 둘 경우, 해당 상태 객체에 cutaway를 넣어 update로 전달.
+         (연구 01의 '펼쳐보기'는 별도 연결 없이 explode 값만으로 키캡이 기울어 소켓을 보여줍니다.)
+
+참고: explode 중 접점 리프는 이제 스템(캠)과의 실제 상대 위치로 움직이며, leaf.userData.closed도 같은 기준입니다
+(explode 0에서는 이전과 완전히 동일). quality-switch.js의 LED처럼 closed를 읽는 곳은 그대로 동작합니다.
+
+────────────────────────────────────────
+4. 검증 명령 (goodeasy 폴더에서)
+────────────────────────────────────────
+  node --test keyboard/keycap-switch-geometry.test.mjs
+  node --test keyboard/hero-keyboard.test.mjs
+  node --test keyboard/study-housing.test.mjs
+  node --test mechanics-detail.test.mjs      (watch crown 1건은 작업 전부터 실패하던 시계 항목)
+  node mechanism-audit.test.mjs
+  node research.test.mjs
+  node --test anatomy.test.mjs
+통합 후 확인할 화면: 데스크톱 1440×900, 모바일 390×844, 최소 320px — hero 입력(키보드·화면 버튼·3D 키 클릭·소리·처음 상태로),
+내부 관찰 슬라이더 0/2/4mm, 연구 01 펼쳐보기/다시 조립, 분해 뷰어.

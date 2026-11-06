@@ -1,0 +1,57 @@
+✔ changing speed integrates each interval and preserves stop position (0.784ms)
+✔ snapshot stays unchanged while live controls move (0.1668ms)
+✔ twice the speed means octave up and half duration (0.1079ms)
+✔ exhausted spring cannot start and winding caps reserve (0.1286ms)
+✔ stylus physically meets selected groove and fixed length arc (63.2851ms)
+✔ original PCM melody is nonempty and finite before user input (50.5612ms)
+✔ brake keeps needle in groove while lifting removes contact (0.5129ms)
+✔ the drawn spiral stays under the stylus throughout clockwise rotation (35.7267ms)
+✔ repeated start and winding during playback never rewind the source clock (0.577ms)
+✔ exhausting reserve or reaching record end commits a stable stopped clock (0.3441ms)
+✔ four tuning pegs occupy four distinct stations and each passes through both pegbox cheeks (1896.9331ms)
+✔ modern bow camber approaches its hair at centre while both hair ends meet real anchors (229.8754ms)
+✔ ebony gluing face meets the actual maple neck across every tested neck station (6.8281ms)
+✖ rib wall vertices have horizontal normals, vertical edges and no exterior inner rim (13.2385ms)
+✔ two cork seats physically connect the chinrest bowl to the actual arched plate (36.6918ms)
+✔ chinrest edge uses dedicated outward wall normals and clears the ebony tailpiece (434.9453ms)
+✔ arched plate boundaries close against the rib heights, with real bilateral f openings (17.1338ms)
+✔ four open strings clear the actual tapered fingerboard and sit on the curved nut (0.4537ms)
+✔ soundpost end caps and both carved bridge feet fit actual triangulated plates (318.6734ms)
+✔ bassbar upper edge fits the actual underside along its entire length (503.4942ms)
+✔ bow hair contact tracks every selected string through transverse travel (1256.2862ms)
+✔ stick slip study is continuous at full-cycle boundaries and keeps fixed string endpoints (171.9428ms)
+✔ speaking strings rest above, rather than through, the arched bridge crown (4.1373ms)
+✔ active vibration keeps the contact ring on the moving tilted bow surface (191.0077ms)
+✔ bridge study keeps the soundpost rigid while the bass foot moves about its support side (226.8627ms)
+✔ body disassembly withdraws neck before lifting top, with no fingerboard intersection (180.0164ms)
+ℹ tests 26
+ℹ suites 0
+ℹ pass 25
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 5009.7433
+
+✖ failing tests:
+
+test at goodeasy\violin-final-fit.test.mjs:10:1
+✖ rib wall vertices have horizontal normals, vertical edges and no exterior inner rim (13.2385ms)
+  AssertionError [ERR_ASSERTION]: The expression evaluated to a falsy value:
+  
+    assert.ok(Math.min(Math.abs(p.getY(i)-.106),Math.abs(p.getY(i)+.105))<1e-7)
+  
+      at TestContext.<anonymous> (file:///C:/Users/user/.codex/worktrees/piano-finish/editshop/goodeasy/violin-final-fit.test.mjs:15:106)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1397:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:969:18)
+      at Test.postRun (node:internal/test_runner/test:1537:19)
+      at Test.run (node:internal/test_runner/test:1462:12)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: '==',
+    diff: 'simple'
+  }

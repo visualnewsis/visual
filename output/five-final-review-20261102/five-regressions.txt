@@ -1,0 +1,185 @@
+✔ crema is one connected liquid surface, with no floating pieces or torus arcs (31.4188ms)
+✔ every fill stays finite, below the cup rim, inside its cavity, and changes continuously (93.2479ms)
+✔ empty or invalid fills hide actual liquid and cannot leave crema suspended (7.0516ms)
+✔ dark liquid carries warm fine microfoam without becoming a matte foam disc (29.2713ms)
+✔ first click brews prepared machine, then wetting precedes first drop and cup fill (4.0039ms)
+✔ pause has no queued fill and resumes elapsed observation (0.9106ms)
+✔ same controlled-pressure interval produces three clearly different relative amounts (0.3294ms)
+✔ active cutaway opens shell while maintaining connected component positions and shader paths (365.6788ms)
+✔ assembly first opens cover without disconnecting pipes, then separates puck and filter (220.8315ms)
+✔ wetting front advances from the top before first discharge; no zigzag strands remain (109.5107ms)
+✔ falling espresso starts at the real outlet and reaches the actual changing liquid plane (48.3878ms)
+✔ powder and beverage are continuous textured surfaces with no separate nut-sized chunks (118.9246ms)
+✔ beverage surface is dark opaque espresso and cannot inherit the all-foam appearance (13.4685ms)
+✔ ratio default is visibly filled by symbolic cavity volume, not height or millilitres (230.5018ms)
+✔ yield cue rises monotonically, zero empties the cup and excessive yield clamps below the rim (26.9685ms)
+✖ ratio annotation endpoints stay on the actual changing coffee faces and front readout (168.1993ms)
+✔ dose and yield bars use one mass scale so the default yield is twice the dose (35.2547ms)
+✔ lateral-cut stylus vibration crosses the groove rather than running along it (100.5065ms)
+✔ changing speed integrates each interval and preserves stop position (1.8603ms)
+✔ snapshot stays unchanged while live controls move (0.7617ms)
+✔ twice the speed means octave up and half duration (0.5525ms)
+✔ exhausted spring cannot start and winding caps reserve (0.4152ms)
+✔ stylus physically meets selected groove and fixed length arc (222.7502ms)
+✔ original PCM melody is nonempty and finite before user input (101.3145ms)
+✔ brake keeps needle in groove while lifting removes contact (0.5443ms)
+✔ the drawn spiral stays under the stylus throughout clockwise rotation (50.7798ms)
+✔ repeated start and winding during playback never rewind the source clock (1.633ms)
+✔ exhausting reserve or reaching record end commits a stable stopped clock (0.7482ms)
+✔ gramophone pitch circles mesh from barrel through output and governor (197.1938ms)
+✔ governor collar closes a real gap at the displayed reference speed (59.0556ms)
+✔ soundbox lever displaces diaphragm centre while its rim stays fixed (75.2154ms)
+✔ visible gramophone signal follows note envelope and has no signal at record end (90.417ms)
+✔ sewing lower thread stays at preceding lock through hook wrap and recovers continuously (11.15ms)
+✔ completed sewing locks remain attached to moving cloth (102.779ms)
+✔ keyboard spring and debounce lessons use the same physical contacts with distinct filtered registration (85.7643ms)
+✔ gramophone platter and every coaxial output wheel share direction and displacement (208.8612ms)
+✖ completed sewing lock is at the previous pierced hole, never ahead beneath the needle (92.3751ms)
+✔ MX cam and rear support route through a real housing notch over the whole stroke (541.9476ms)
+✔ debounce opens only the electrical leaf while the pressed key keeps a continuous downward stroke (408.6571ms)
+✔ study import provides pure duration and vibration without creating web audio (1.574ms)
+✔ study sound and drawn state share source time, speed, pitch and independent owner snapshots (1.3007ms)
+✔ repeated start from same owner does not create a second voice (0.3753ms)
+✔ stop cancels delayed audio permission and cannot create a late unwanted voice (0.2658ms)
+✔ late resume from a superseded owner cannot replace the current voice (0.421ms)
+✔ visibility loss during resume cancels sound and context suspension pauses at its saved position (0.3586ms)
+✔ record end stops once while explicit looping uses the same PCM loop and source modulo (0.5228ms)
+✔ no audio context before an actual press, with distinct decaying down/up mechanical strokes (60.2548ms)
+✔ first stroke waits for resumed context; release during resume preserves the pair (62.4541ms)
+✔ repeat keydown is suppressed until release and down/up use different buffers (41.3807ms)
+✔ owner stop cancels unresolved presses and all scheduled tails without cancelling other owners (84.6747ms)
+✔ mute invalidates a pending first resume and re-enable causes no automatic sound (78.0028ms)
+✔ fast scrubbing still emits bottom-out and return once, including a complete jump (5.2332ms)
+✔ ANSI 60% rows: 15u each, real stagger and a 6.25u space bar (2.115ms)
+✔ every keycap is an 18 mm-class shell sized from its width, with 1.05 mm gaps and no overlaps (265.9458ms)
+✔ rows are sculpted and every top is a concave dish (1.6795ms)
+✔ R key prints R left, ㄲ upper right, ㄱ lower right; legends lie on the dish (148.4393ms)
+✔ typing moves exactly the matching key 4 mm and releases it; Hangul resolves to 2-set keys (126.2131ms)
+✔ pressed caps clear the plate and their own switch housing (49.9557ms)
+✔ only keys with an on-screen button forward clicks; all keep the hero API (192.6027ms)
+✔ 1u keycap is a thick standard-height shell, not a thin plate (168.5781ms)
+✔ top is one cylindrical concave dish: lower in the middle, straight along the finger axis (76.4226ms)
+✔ shell surfaces face outward, cavity faces inward, rim faces down (69.8858ms)
+✔ socket is a real cross bore that clears the stem and never pokes through the top (54.3854ms)
+✔ legends: R on the left, ㄲ upper right, ㄱ lower right, printed on the dish (38.9575ms)
+✔ stem is built from cross, shoulder head, bored slider, guide wings, spring pole and cam leg (13.5957ms)
+✔ assembled sweep 0-4 mm: no part passes through another (251.814ms)
+✔ 2 mm actuation, 4 mm bottom-out and spring return keep their order (62.8034ms)
+✔ explode and reassemble round-trip; lifted cap shows its socket to the study camera (64.871ms)
+✔ canonical API stays available to the study, anatomy and lesson builders (52.6293ms)
+✔ partial explode with any press depth: cross, socket, plate, cam and leaf never interpenetrate (2026.1751ms)
+✔ actual keyboard study preserves canonical housing, notch and mounting height (210.886ms)
+✔ active keyboard study routes every moving stem part through the housing opening over four millimetres (1635.2144ms)
+✔ actual sector occludes the complete landscape gate throughout film transport (1608.5264ms)
+✔ 16 sprocket teeth advance four holes per quarter turn with a common Geneva shaft (372.5273ms)
+✔ projector comparison removes physical shutter and continuous mode really moves during exposure (856.175ms)
+✔ espresso reaches the coffee outlet before stream and cup, then fill increases monotonically (200.4901ms)
+✔ actual hero gauge needle aligns with its indexed ticks at every pressure (187.2873ms)
+✔ pump is active before every teaching-clock water motion (7.6998ms)
+✔ rendered hero machine pipes terminate on actual pump and boiler surfaces (105.5848ms)
+✔ projector moving film and shutter clear actual gate and Geneva surfaces (1230.3308ms)
+✔ active replacement machine starts its visible stream below the actual spout outlet (100.4699ms)
+✔ one clock holds the frame still through exposure and masks the complete pull-down (7.8078ms)
+✔ all public hero parts and finite ribbon geometry survive repeated forward and backward scrubbing (675.5672ms)
+✔ actual sector closes the complete aperture for every transporting phase (1384.352ms)
+✔ a stopped snapshot has no independent clock and image exposure matches beam (384.9057ms)
+✔ visible exposure passes the actual aperture and Geneva shares the sprocket axis (1057.1212ms)
+✔ integer frame buttons stop at visible exposure rather than a permanently dark screen (432.6914ms)
+✔ four-slot drive rotates uniformly and its actual pin clears slot walls through engagement (1762.5695ms)
+✔ the rendered Geneva output holds during dwell and accumulates quarter turns across cycles (9025.2541ms)
+✔ 35mm stock spans the reel axle, with landscape cells inside separated flanges (559.4813ms)
+✔ film enters the gate along Y and light crosses it on X, with one common Z output shaft (393.895ms)
+✔ hero anatomy and optical study share joined rest coordinates and reversible explosion (1293.977ms)
+✔ continuous reels turn during gate dwell, while the film image and Geneva output stay still (210.3347ms)
+✔ thin separated reel flanges clear the gate and film leaves winding packs tangentially (245.133ms)
+✔ all film clears both full-width incoming illumination and outgoing projection frusta except at the gate (3067.6511ms)
+✔ actual upper and lower loop arc lengths exchange equal material while gate perforations dwell (237.1119ms)
+✔ drawn upper frame becomes the next center frame without changing its drawing at index wrap (157.8505ms)
+✔ screen radiance follows actual rendered sector clearance through the complete cycle (1553.8488ms)
+✔ continuous feed roller tooth pitch matches actual perforation spacing and its own tangent direction (106.2935ms)
+✔ light hits the actual projected image before its black backing across the screen (109.3165ms)
+✔ anatomy reading follows the actual clock engagement and partial optical opening, including rewinding (2411.4561ms)
+✔ viewer note updates once per changed reading and leaves unrelated model notes intact (336.6475ms)
+✔ actual film stock points stay outside base feet case gate lens and rotating shutter solids (9438.2194ms)
+✔ removing the intermittent mechanism hides driver and Geneva while output transport is continuous (70.1218ms)
+✔ upper entry guide has exact top and right tangencies with the shutter envelope below it (41.732ms)
+✔ rotating shutter triangles clear the complete idler solids, and old radius reproduces collision (572.1762ms)
+✔ four tuning pegs occupy four distinct stations and each passes through both pegbox cheeks (4762.5478ms)
+✔ modern bow camber approaches its hair at centre while both hair ends meet real anchors (404.0716ms)
+✔ ebony gluing face meets the actual maple neck across every tested neck station (11.5387ms)
+✔ rib wall vertices have horizontal normals, vertical edges and no exterior inner rim (3.1131ms)
+✔ two cork seats physically connect the chinrest bowl to the actual arched plate (64.9587ms)
+✔ chinrest edge uses dedicated outward wall normals and clears the ebony tailpiece (636.5581ms)
+✔ rib wall is inset from plate cut walls so the two cannot z-fight (34.4568ms)
+✔ fingerboard has outward triangles, positive closed volume and independent side normals (4.56ms)
+✔ arched plate boundaries close against the rib heights, with real bilateral f openings (30.1655ms)
+✔ four open strings clear the actual tapered fingerboard and sit on the curved nut (1.3874ms)
+✔ soundpost end caps and both carved bridge feet fit actual triangulated plates (442.1554ms)
+✔ bassbar upper edge fits the actual underside along its entire length (590.3361ms)
+✔ bow hair contact tracks every selected string through transverse travel (1795.6808ms)
+✔ stick slip study is continuous at full-cycle boundaries and keeps fixed string endpoints (222.9947ms)
+✔ speaking strings rest above, rather than through, the arched bridge crown (4.2827ms)
+✔ active vibration keeps the contact ring on the moving tilted bow surface (233.9662ms)
+✔ bridge study keeps the soundpost rigid while the bass foot moves about its support side (313.1288ms)
+✔ body disassembly withdraws neck before lifting top, with no fingerboard intersection (276.2829ms)
+✔ both f openings have simple non-crossing boundaries and mirror exactly (9.5014ms)
+✔ skin triangulation preserves projected area without filling or overlapping the holes (41.2351ms)
+✔ cut walls have independent horizontal normals and arched skins retain smooth upward normals (9.3363ms)
+✔ the closed shell has exactly two incident triangles per geometric edge (1198.7114ms)
+✔ explicitly closed outer and hole loops cannot shift Earcut vertex offsets (1281.1619ms)
+✔ actual violin contour preserves every outer and f-opening boundary and projected polygon area (619.4476ms)
+✔ outer plate edge retains varnish while the inside and f holes expose cavity wood (4.2612ms)
+✔ approved f proportions retain tangent-continuous eyes and positive bank separation (1.0637ms)
+✔ actual soundboard triangles cannot span a broad arch with a long flat fan (2371.6289ms)
+ℹ tests 133
+ℹ suites 0
+ℹ pass 131
+ℹ fail 2
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 15394.8228
+
+✖ failing tests:
+
+test at goodeasy\espresso-ratio-volume.test.mjs:42:1
+✖ ratio annotation endpoints stay on the actual changing coffee faces and front readout (168.1993ms)
+  AssertionError [ERR_ASSERTION]: The expression evaluated to a falsy value:
+  
+    assert.ok(resolve(m.annotations[2]).isMesh)
+  
+      at TestContext.<anonymous> (file:///C:/Users/user/.codex/worktrees/piano-finish/editshop/goodeasy/espresso-ratio-volume.test.mjs:49:9)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1397:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:969:18)
+      at Test.postRun (node:internal/test_runner/test:1537:19)
+      at Test.run (node:internal/test_runner/test:1462:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:969:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: true,
+    operator: '==',
+    diff: 'simple'
+  }
+
+test at goodeasy\gramophone\release-quality.test.mjs:75:1
+✖ completed sewing lock is at the previous pierced hole, never ahead beneath the needle (92.3751ms)
+  AssertionError [ERR_ASSERTION]: The expression evaluated to a falsy value:
+  
+    assert.ok(Math.abs(shared.upper[14][2]-shared.lock[2])<1e-8)
+  
+      at TestContext.<anonymous> (file:///C:/Users/user/.codex/worktrees/piano-finish/editshop/goodeasy/gramophone/release-quality.test.mjs:80:23)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1397:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:969:18)
+      at Test.postRun (node:internal/test_runner/test:1537:19)
+      at Test.run (node:internal/test_runner/test:1462:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:969:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: '==',
+    diff: 'simple'
+  }

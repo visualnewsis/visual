@@ -1,0 +1,107 @@
+[
+  {
+    "path": "goodeasy/camera/index.html",
+    "status": 200,
+    "bytes": 15568,
+    "matches_local": true,
+    "url": "https://visual.newsis.com/goodeasy/camera/?v=b4abda1"
+  },
+  {
+    "path": "goodeasy/guitar/index.html",
+    "status": 200,
+    "bytes": 17392,
+    "matches_local": true,
+    "url": "https://visual.newsis.com/goodeasy/guitar/?v=b4abda1"
+  },
+  {
+    "path": "goodeasy/fishing-reel/index.html",
+    "status": 200,
+    "bytes": 15433,
+    "matches_local": true,
+    "url": "https://visual.newsis.com/goodeasy/fishing-reel/?v=b4abda1"
+  },
+  {
+    "path": "goodeasy/watch/index.html",
+    "status": 200,
+    "bytes": 21468,
+    "matches_local": true,
+    "url": "https://visual.newsis.com/goodeasy/watch/?v=b4abda1"
+  },
+  {
+    "path": "goodeasy/violin/index.html",
+    "status": 200,
+    "bytes": 14767,
+    "matches_local": true,
+    "url": "https://visual.newsis.com/goodeasy/violin/?v=b4abda1"
+  },
+  {
+    "path": "goodeasy/projector/index.html",
+    "status": 200,
+    "bytes": 10974,
+    "matches_local": true,
+    "url": "https://visual.newsis.com/goodeasy/projector/?v=b4abda1"
+  },
+  {
+    "path": "goodeasy/keyboard/index.html",
+    "status": 200,
+    "bytes": 14518,
+    "matches_local": true,
+    "url": "https://visual.newsis.com/goodeasy/keyboard/?v=b4abda1"
+  },
+  {
+    "path": "goodeasy/espresso-machine/index.html",
+    "status": 200,
+    "bytes": 14993,
+    "matches_local": true,
+    "url": "https://visual.newsis.com/goodeasy/espresso-machine/?v=b4abda1"
+  },
+  {
+    "path": "goodeasy/gramophone/index.html",
+    "status": 200,
+    "bytes": 13769,
+    "matches_local": true,
+    "url": "https://visual.newsis.com/goodeasy/gramophone/?v=b4abda1"
+  },
+  {
+    "path": "goodeasy/sewing-machine/index.html",
+    "status": 200,
+    "bytes": 14557,
+    "matches_local": true,
+    "url": "https://visual.newsis.com/goodeasy/sewing-machine/?v=b4abda1"
+  },
+  {
+    "path": "goodeasy/assets/lab.js",
+    "status": 200,
+    "bytes": 19534,
+    "matches_local": true,
+    "url": "https://visual.newsis.com/goodeasy/assets/lab.js?v=b4abda1"
+  },
+  {
+    "path": "goodeasy/assets/research.js",
+    "status": 200,
+    "bytes": 13320,
+    "matches_local": true,
+    "url": "https://visual.newsis.com/goodeasy/assets/research.js?v=b4abda1"
+  },
+  {
+    "path": "goodeasy/gramophone/app.js",
+    "status": 200,
+    "bytes": 13525,
+    "matches_local": true,
+    "url": "https://visual.newsis.com/goodeasy/gramophone/app.js?v=b4abda1"
+  },
+  {
+    "path": "goodeasy/sewing-machine/app.js",
+    "status": 200,
+    "bytes": 16396,
+    "matches_local": true,
+    "url": "https://visual.newsis.com/goodeasy/sewing-machine/app.js?v=b4abda1"
+  },
+  {
+    "path": "goodeasy/sewing-machine/sewing-model.js",
+    "status": 200,
+    "bytes": 21750,
+    "matches_local": true,
+    "url": "https://visual.newsis.com/goodeasy/sewing-machine/sewing-model.js?v=b4abda1"
+  }
+]

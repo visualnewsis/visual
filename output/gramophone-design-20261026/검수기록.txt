@@ -1,0 +1,7 @@
+ChatGPT 모델 설계·코드: https://chatgpt.com/c/6adf56d9-b76c-83e8-9bc1-174d6f815d83
+Claude 명세·코드 텍스트 검수: https://claude.ai/chat/de57d7c9-fe8a-44bb-b01a-29f9b9d94ab0
+Claude는 코드·명세 텍스트를 검토했으며 실제 화면·오디오를 실행 검증한 것은 아님.
+Codex: 실제 브라우저 입력, 1280/390/320px viewport 및 8개 Node 테스트, 12개 GOODEASY 경로 검사. 실제 iPhone/Android 기기 검증은 미실시.
+최종 커밋: b1360c8
+새 콘텐츠 폴더만 추가. 번호·랜딩·메뉴·자동화 변경 없음. 초안 noindex,nofollow.
+참고: CLPGS The Reproducer and Sound Box / The Spring Motor / Speed Regulating, LOC Gramophone, PBS Edison 대본.

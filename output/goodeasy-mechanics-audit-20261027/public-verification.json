@@ -1,0 +1,250 @@
+[
+  {
+    "path": "goodeasy/assets/camera-lessons.js",
+    "url": "https://visual.newsis.com/goodeasy/assets/camera-lessons.js?verify=b1d6bfb",
+    "status": 200,
+    "matches": true,
+    "bytes": 28014,
+    "sha256": "6dc90dac486058826cef5cb14575524ec9e95a3820a538bb1abd58b4f21dad26"
+  },
+  {
+    "path": "goodeasy/assets/coffee-detail.js",
+    "url": "https://visual.newsis.com/goodeasy/assets/coffee-detail.js?verify=b1d6bfb",
+    "status": 200,
+    "matches": true,
+    "bytes": 40714,
+    "sha256": "79d5192ce42be6ce301c1b109903144eb5370cd7064eda2b6862fb1d03ea1a6f"
+  },
+  {
+    "path": "goodeasy/assets/espresso-lessons.js",
+    "url": "https://visual.newsis.com/goodeasy/assets/espresso-lessons.js?verify=b1d6bfb",
+    "status": 200,
+    "matches": true,
+    "bytes": 4926,
+    "sha256": "d8f66cd5ae1569785d4d9245f630ccfd20f8330e605577d33e3d02a1d5f9f249"
+  },
+  {
+    "path": "goodeasy/assets/lesson-annotations.js",
+    "url": "https://visual.newsis.com/goodeasy/assets/lesson-annotations.js?verify=b1d6bfb",
+    "status": 200,
+    "matches": true,
+    "bytes": 2472,
+    "sha256": "37c4214dc59526418e2bad89a1de6b0f15e9348de72084ce64cbe5ca947e126f"
+  },
+  {
+    "path": "goodeasy/assets/models/mx-switch.js",
+    "url": "https://visual.newsis.com/goodeasy/assets/models/mx-switch.js?verify=b1d6bfb",
+    "status": 200,
+    "matches": true,
+    "bytes": 6647,
+    "sha256": "f5ba948dafe82be5e844d74e201ca86110a0eefbd0819c90c29dd36c81c81775"
+  },
+  {
+    "path": "goodeasy/assets/music.js",
+    "url": "https://visual.newsis.com/goodeasy/assets/music.js?verify=b1d6bfb",
+    "status": 200,
+    "matches": true,
+    "bytes": 7797,
+    "sha256": "9c95032a7503d8c6978a54f26ab6a6936eaafc261f0b288ace56c98fe8d2b2b8"
+  },
+  {
+    "path": "goodeasy/assets/quality-instruments.js",
+    "url": "https://visual.newsis.com/goodeasy/assets/quality-instruments.js?verify=b1d6bfb",
+    "status": 200,
+    "matches": true,
+    "bytes": 1834,
+    "sha256": "cd1e4b181584355beb6f8b700ab74f81d6e6c47edfb9168221e1dc17ef17a4b8"
+  },
+  {
+    "path": "goodeasy/assets/quality-machines.js",
+    "url": "https://visual.newsis.com/goodeasy/assets/quality-machines.js?verify=b1d6bfb",
+    "status": 200,
+    "matches": true,
+    "bytes": 17421,
+    "sha256": "d635bd8f9b1abe63b62e6ae6406d379335701adb2b734f4830d94d9964407585"
+  },
+  {
+    "path": "goodeasy/assets/quality-replacements.js",
+    "url": "https://visual.newsis.com/goodeasy/assets/quality-replacements.js?verify=b1d6bfb",
+    "status": 200,
+    "matches": true,
+    "bytes": 5154,
+    "sha256": "f82e949da0c0ae580e671bfb1dcbd5732944f82cacaf151167ac5dbf23fa226d"
+  },
+  {
+    "path": "goodeasy/assets/quality-stage.js",
+    "url": "https://visual.newsis.com/goodeasy/assets/quality-stage.js?verify=b1d6bfb",
+    "status": 200,
+    "matches": true,
+    "bytes": 8856,
+    "sha256": "3103b3cddb0df4595f40360c2daaea0315a46b78ac2c159a5108284cb392b1a8"
+  },
+  {
+    "path": "goodeasy/assets/research-other.js",
+    "url": "https://visual.newsis.com/goodeasy/assets/research-other.js?verify=b1d6bfb",
+    "status": 200,
+    "matches": true,
+    "bytes": 19463,
+    "sha256": "71002ff7fc2d01fc74604bd1bea07ef02b499df5f988267138afe46e85eb4641"
+  },
+  {
+    "path": "goodeasy/assets/research-watch.js",
+    "url": "https://visual.newsis.com/goodeasy/assets/research-watch.js?verify=b1d6bfb",
+    "status": 200,
+    "matches": true,
+    "bytes": 10656,
+    "sha256": "4582a72a45138794b3af6ffd12e52a77336074400fc0907e11ef14575130ed89"
+  },
+  {
+    "path": "goodeasy/assets/research.js",
+    "url": "https://visual.newsis.com/goodeasy/assets/research.js?verify=b1d6bfb",
+    "status": 200,
+    "matches": true,
+    "bytes": 15995,
+    "sha256": "4fb5f9a9236be20f56e3c9d16a1fe908f6ba25f89967f3e76e0a33075878af81"
+  },
+  {
+    "path": "goodeasy/assets/stable-stage.js",
+    "url": "https://visual.newsis.com/goodeasy/assets/stable-stage.js?verify=b1d6bfb",
+    "status": 200,
+    "matches": true,
+    "bytes": 463,
+    "sha256": "9d96f47514975283a4fcb6964053618625756b3bf84567a41d9578a3f926c661"
+  },
+  {
+    "path": "goodeasy/assets/violin-vibration.js",
+    "url": "https://visual.newsis.com/goodeasy/assets/violin-vibration.js?verify=b1d6bfb",
+    "status": 200,
+    "matches": true,
+    "bytes": 1621,
+    "sha256": "131458b1da9b9a095c92868b7bee65f7fb0874d61e064e8fea1429c5d9c8ce97"
+  },
+  {
+    "path": "goodeasy/camera/index.html",
+    "url": "https://visual.newsis.com/goodeasy/camera/index.html?verify=b1d6bfb",
+    "status": 200,
+    "matches": true,
+    "bytes": 15625,
+    "sha256": "77d3c3f9f64a69d76b1aadf50413016117470a8946331989575987e4f5ae2d24"
+  },
+  {
+    "path": "goodeasy/espresso-machine/index.html",
+    "url": "https://visual.newsis.com/goodeasy/espresso-machine/index.html?verify=b1d6bfb",
+    "status": 200,
+    "matches": true,
+    "bytes": 15078,
+    "sha256": "7864ae807fd9aeabac5cd4cb56605f3baf41c227bf86666aff7a2721465f59cd"
+  },
+  {
+    "path": "goodeasy/fishing-reel/index.html",
+    "url": "https://visual.newsis.com/goodeasy/fishing-reel/index.html?verify=b1d6bfb",
+    "status": 200,
+    "matches": true,
+    "bytes": 15434,
+    "sha256": "478d4a1f47d53a82e42be499cb7a128f9775d1b24cb77e68d55170758c98186b"
+  },
+  {
+    "path": "goodeasy/gramophone/app.js",
+    "url": "https://visual.newsis.com/goodeasy/gramophone/app.js?verify=b1d6bfb",
+    "status": 200,
+    "matches": true,
+    "bytes": 13690,
+    "sha256": "2ec14a55cf0b18aad206c9f74cbb8e3249a0ea973ad3e8c54b1bb26e4ced3961"
+  },
+  {
+    "path": "goodeasy/gramophone/gramophone-model.js",
+    "url": "https://visual.newsis.com/goodeasy/gramophone/gramophone-model.js?verify=b1d6bfb",
+    "status": 200,
+    "matches": true,
+    "bytes": 17000,
+    "sha256": "0ddbb43c3f8d192b05f15bb59a28356247635c1ec0aac3b05b7b881f4687b5fc"
+  },
+  {
+    "path": "goodeasy/gramophone/index.html",
+    "url": "https://visual.newsis.com/goodeasy/gramophone/index.html?verify=b1d6bfb",
+    "status": 200,
+    "matches": true,
+    "bytes": 13771,
+    "sha256": "20d304d403d448dbf1f7c806bbd3103facf9831efbae73d70972fb70dacb8f3c"
+  },
+  {
+    "path": "goodeasy/gramophone/playback.js",
+    "url": "https://visual.newsis.com/goodeasy/gramophone/playback.js?verify=b1d6bfb",
+    "status": 200,
+    "matches": true,
+    "bytes": 1871,
+    "sha256": "9876e517b4b1e47df95cabaa6c0c32d76673fe019776622edcfb0eb8beff17da"
+  },
+  {
+    "path": "goodeasy/guitar/index.html",
+    "url": "https://visual.newsis.com/goodeasy/guitar/index.html?verify=b1d6bfb",
+    "status": 200,
+    "matches": true,
+    "bytes": 17412,
+    "sha256": "e57b4951bb9fb46074bae4f3381f4c0ed4c31860651b918fae30c69ae91c019c"
+  },
+  {
+    "path": "goodeasy/keyboard/index.html",
+    "url": "https://visual.newsis.com/goodeasy/keyboard/index.html?verify=b1d6bfb",
+    "status": 200,
+    "matches": true,
+    "bytes": 14519,
+    "sha256": "69b1d4fa92745e4a484c3f991d8fcc6d0dcd013ac09ee2deab613e2196a3c7e2"
+  },
+  {
+    "path": "goodeasy/projector/index.html",
+    "url": "https://visual.newsis.com/goodeasy/projector/index.html?verify=b1d6bfb",
+    "status": 200,
+    "matches": true,
+    "bytes": 10975,
+    "sha256": "b2fc6fb6a833caeb215c13fb31d9839855281d645b4a6b2718ba56224165ef2a"
+  },
+  {
+    "path": "goodeasy/sewing-machine/app.js",
+    "url": "https://visual.newsis.com/goodeasy/sewing-machine/app.js?verify=b1d6bfb",
+    "status": 200,
+    "matches": true,
+    "bytes": 16546,
+    "sha256": "e6554aef7b7671b7b9d4c7ab17c713424fd564b7cc694b573307478385cbb47d"
+  },
+  {
+    "path": "goodeasy/sewing-machine/index.html",
+    "url": "https://visual.newsis.com/goodeasy/sewing-machine/index.html?verify=b1d6bfb",
+    "status": 200,
+    "matches": true,
+    "bytes": 14559,
+    "sha256": "3676ace17068472f2c7c57efd2b3c35838b56bb0dbf51e756148784bc31393ca"
+  },
+  {
+    "path": "goodeasy/sewing-machine/motion.js",
+    "url": "https://visual.newsis.com/goodeasy/sewing-machine/motion.js?verify=b1d6bfb",
+    "status": 200,
+    "matches": true,
+    "bytes": 3509,
+    "sha256": "8ebf352309fb1c412a8c0a3be8ca48822e99da3794db5e5764bf92a861d3f36c"
+  },
+  {
+    "path": "goodeasy/sewing-machine/sewing-model.js",
+    "url": "https://visual.newsis.com/goodeasy/sewing-machine/sewing-model.js?verify=b1d6bfb",
+    "status": 200,
+    "matches": true,
+    "bytes": 21780,
+    "sha256": "139833e830f759c85e805983585a9cfcc08c091f706e3b97cb835316d6891b1d"
+  },
+  {
+    "path": "goodeasy/violin/index.html",
+    "url": "https://visual.newsis.com/goodeasy/violin/index.html?verify=b1d6bfb",
+    "status": 200,
+    "matches": true,
+    "bytes": 14787,
+    "sha256": "2830ef04f8a79de1058d10cb1a326a70b6759586a2db6e66c25dd3b1de5ae5af"
+  },
+  {
+    "path": "goodeasy/watch/index.html",
+    "url": "https://visual.newsis.com/goodeasy/watch/index.html?verify=b1d6bfb",
+    "status": 200,
+    "matches": true,
+    "bytes": 21469,
+    "sha256": "bfcb15221c368b9a2241e570895f0217a859516c38854ead0b370bbeea68999f"
+  }
+]

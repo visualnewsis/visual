@@ -1,0 +1,44 @@
+{
+  "stages": [
+    {
+      "stage": "바늘 진입",
+      "expected": ".250",
+      "rendered": "0.250"
+    },
+    {
+      "stage": "고리 형성",
+      "expected": ".540",
+      "rendered": "0.540"
+    },
+    {
+      "stage": "훅 포착",
+      "expected": ".580",
+      "rendered": "0.580"
+    },
+    {
+      "stage": "고리 운반",
+      "expected": ".740",
+      "rendered": "0.740"
+    },
+    {
+      "stage": "실 회수",
+      "expected": ".900",
+      "rendered": "0.900"
+    },
+    {
+      "stage": "천 이송",
+      "expected": ".950",
+      "rendered": "0.950"
+    }
+  ],
+  "playEnded": "0.999",
+  "reset": {
+    "selected": "all",
+    "zoom": 1
+  },
+  "mobile": {
+    "width": 390,
+    "scroll": 375
+  },
+  "reviewScope": "再봉틀 cycle scene only; previous overall release judgment withdrawn"
+}

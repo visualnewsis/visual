@@ -1,0 +1,72 @@
+[
+  {
+    "device": "desktop",
+    "game": "words",
+    "status": "passed",
+    "errors": [],
+    "failed": []
+  },
+  {
+    "device": "desktop",
+    "game": "brickrunch",
+    "status": "passed",
+    "errors": [],
+    "failed": []
+  },
+  {
+    "device": "desktop",
+    "game": "chungmuman",
+    "status": "passed",
+    "errors": [],
+    "failed": []
+  },
+  {
+    "device": "desktop",
+    "game": "puzzle",
+    "status": "passed",
+    "errors": [],
+    "failed": []
+  },
+  {
+    "device": "desktop",
+    "game": "dododok",
+    "status": "passed",
+    "errors": [],
+    "failed": []
+  },
+  {
+    "device": "mobile",
+    "game": "words",
+    "status": "passed",
+    "errors": [],
+    "failed": []
+  },
+  {
+    "device": "mobile",
+    "game": "brickrunch",
+    "status": "passed",
+    "errors": [],
+    "failed": []
+  },
+  {
+    "device": "mobile",
+    "game": "chungmuman",
+    "status": "passed",
+    "errors": [],
+    "failed": []
+  },
+  {
+    "device": "mobile",
+    "game": "puzzle",
+    "status": "passed",
+    "errors": [],
+    "failed": []
+  },
+  {
+    "device": "mobile",
+    "game": "dododok",
+    "status": "passed",
+    "errors": [],
+    "failed": []
+  }
+]

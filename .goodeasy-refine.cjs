@@ -1,0 +1,7 @@
+const fs=require('fs'),path=require('path'),base=path.join(process.argv[2],'goodeasy');
+const jp=path.join(base,'assets/lab.js');let js=fs.readFileSync(jp,'utf8');
+js=js.replace('viewBox="0 0 1000 580"','viewBox="${innerWidth<700?({\'espresso-machine\':\'210 30 580 480\',watch:\'280 0 560 580\',\'fishing-reel\':\'220 50 570 490\'}[kind]||\'0 0 1000 580\'):\'0 0 1000 580\'}"');
+js+='\nwindow.addEventListener(\'resize\',()=>{render();if(record)showInside();});\n';fs.writeFileSync(jp,js,'utf8');
+fs.appendFileSync(path.join(base,'assets/lab.css'),'\n@media(max-width:700px){body[data-experiment=espresso-machine] .instrument svg,body[data-experiment=fishing-reel] .instrument svg{min-height:310px;max-height:46dvh} .keyrow{overflow-x:auto;justify-content:flex-start;padding:0 3px 7px;scrollbar-width:thin}.keyrow button{flex:0 0 44px}.keyrow .space{flex-basis:60%;margin:auto}}\n','utf8');
+fs.mkdirSync(path.join(base,'tests'),{recursive:true});const test=path.join(process.argv[2],'goodeasy-model.test.mjs');fs.writeFileSync(path.join(base,'tests/model.test.mjs'),fs.readFileSync(test,'utf8').replace('./goodeasy/assets/model.mjs','../assets/model.mjs'),'utf8');fs.unlinkSync(test);
+fs.appendFileSync(path.join(base,'README.md'),'\n## 검증\n- node goodeasy/tests/model.test.mjs: 여섯 편 상태 계산과 경계값.\n- Python goodeasy/check.py 저장소경로: 8개 경로의 자산/링크/앵커/중복 ID/JSON-LD/GA/noindex.\n- Chromium: 여섯 편 버튼 입력·릴 저항 0에서 슬립·카메라 촬영 기록·태엽 작동·프레임 이동·키 접점·포터필터 장착 조건과 추출량 확인. 릴 관찰 기록을 새 조작 후에도 보존.\n- 390px viewport 여섯 편 넘침 없음·오류 로그 없음. 실제 iPhone/Android 기기 검증은 미완료.\n','utf8');

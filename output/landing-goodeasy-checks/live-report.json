@@ -1,0 +1,62 @@
+[
+  {
+    "url": "https://visual.newsis.com/",
+    "width": 390,
+    "overflow": false,
+    "lab": "https://visual.newsis.com/goodeasy/",
+    "images": [
+      {
+        "source": "https://visual.newsis.com/newsmap/assets/here-news-thumbnail-360x240.jpg",
+        "width": 100
+      },
+      {
+        "source": "https://visual.newsis.com/assets/landing-goodeasy-piano-320.webp",
+        "width": 100
+      }
+    ],
+    "ga": 1
+  },
+  {
+    "url": "https://visual.newsis.com/editshop/",
+    "width": 390,
+    "overflow": false,
+    "lab": "https://visual.newsis.com/goodeasy/",
+    "images": [
+      {
+        "source": "https://visual.newsis.com/assets/landing-goodeasy-piano-320.webp",
+        "width": 100
+      }
+    ],
+    "ga": 1
+  },
+  {
+    "url": "https://visual.newsis.com/",
+    "width": 1440,
+    "overflow": false,
+    "lab": "https://visual.newsis.com/goodeasy/",
+    "images": [
+      {
+        "source": "https://visual.newsis.com/newsmap/assets/here-news-thumbnail-360x240.jpg",
+        "width": 136
+      },
+      {
+        "source": "https://visual.newsis.com/assets/landing-goodeasy-piano-320.webp",
+        "width": 136
+      }
+    ],
+    "ga": 1
+  },
+  {
+    "url": "https://visual.newsis.com/editshop/",
+    "width": 1440,
+    "overflow": false,
+    "lab": "https://visual.newsis.com/goodeasy/",
+    "images": [
+      {
+        "source": "https://visual.newsis.com/assets/landing-goodeasy-piano-320.webp",
+        "width": 280
+      }
+    ],
+    "ga": 1
+  }
+]

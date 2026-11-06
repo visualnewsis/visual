@@ -1,0 +1,65 @@
+[
+  {
+    "url": "https://visual.newsis.com/goodeasy/assets/research-other.js",
+    "status": 200,
+    "public_matches_local": true,
+    "bytes": 18037,
+    "sha256": "10351f8cf7568473f8e0919832bc7bd6f88879cf64aa60b521595c2af4bc1c16"
+  },
+  {
+    "url": "https://visual.newsis.com/goodeasy/assets/espresso-lessons.js",
+    "status": 200,
+    "public_matches_local": true,
+    "bytes": 4711,
+    "sha256": "25d7aa84b6204fdd5d8443d9dfe22064a67d4b8e04af17af040902538592137c"
+  },
+  {
+    "url": "https://visual.newsis.com/goodeasy/assets/research-watch.js",
+    "status": 200,
+    "public_matches_local": true,
+    "bytes": 10595,
+    "sha256": "965ebb51a1bc5d9d008c7123b1df93b1245b71a3000430550f74779f5658cbb7"
+  },
+  {
+    "url": "https://visual.newsis.com/goodeasy/assets/quality-stage.js",
+    "status": 200,
+    "public_matches_local": true,
+    "bytes": 8354,
+    "sha256": "8ca888637623d7c1941c66e1f53d51bb48d9cabf0c056bf7b7b7bd887b8a4036"
+  },
+  {
+    "url": "https://visual.newsis.com/goodeasy/assets/quality-machines.js",
+    "status": 200,
+    "public_matches_local": true,
+    "bytes": 15417,
+    "sha256": "6983b7a148e75ae0f0b4d56917ce5858b812ed481d7c8e77fc0fa762bd314f39"
+  },
+  {
+    "url": "https://visual.newsis.com/goodeasy/assets/quality-instruments.js",
+    "status": 200,
+    "public_matches_local": true,
+    "bytes": 1078,
+    "sha256": "5209f4932825a49fb6f3a62d225a5ae535b70e0357bb92e78d9154414b804449"
+  },
+  {
+    "url": "https://visual.newsis.com/goodeasy/gramophone/playback.js",
+    "status": 200,
+    "public_matches_local": true,
+    "bytes": 1845,
+    "sha256": "22d97a8da6bf93b767ae4fb71eb7bede975e6ca41ce8157c4d3b2aa677fc5570"
+  },
+  {
+    "url": "https://visual.newsis.com/goodeasy/sewing-machine/motion.js",
+    "status": 200,
+    "public_matches_local": true,
+    "bytes": 3397,
+    "sha256": "3fe8a344a75f1fe391fd806e447179f3f7f9a21b43f3ef2b08b61aa4e0424ea4"
+  },
+  {
+    "url": "https://visual.newsis.com/goodeasy/assets/quality-kit.js",
+    "status": 200,
+    "public_matches_local": true,
+    "bytes": 9831,
+    "sha256": "5670a35be40514521d0c763362f0508a8d4297690618ad09f5d11ef18dd675cf"
+  }
+]

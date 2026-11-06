@@ -1,0 +1,10 @@
+from pathlib import Path
+r=Path(r'C:\Users\user\.codex\worktrees\piano-finish\editshop')
+p=r/'goodeasy/assets/violin-lessons.js';s=p.read_text(encoding='utf-8').replace(' m.parts.neck.position.x=neckX-withdraw*.8;m.parts.scroll.position.x=scrollX-withdraw*.8;', ' m.parts.neck.position.x=neckX-withdraw*.8;m.parts.scroll.position.x=scrollX-withdraw*.8;m.parts.chinrest.position.x=withdraw*.65;').replace('먼저 넥과 지판을 빼냅니다.','먼저 턱받침 고정을 풀고 넥과 지판을 빼냅니다.');p.write_text(s,encoding='utf-8')
+p=r/'goodeasy/assets/anatomy-models.js';s=p.read_text(encoding='utf-8');anchor="C.push(entry('bow','활과 활털','활의 접촉각과 이동이 현의 마찰 진동을 만듭니다.',m.bow,[0,.3,0],colors.balance));"
+assert anchor in s;s=s.replace(anchor,anchor+"C.push(entry('chinrest','턱받침·패드·클램프','얇은 코르크 패드와 바깥 클램프로 고정합니다. 뒤판을 열기 전에 먼저 분리합니다.',p.chinrest,[.65,.04,0]));")
+old="if(violin){result.explodedEye=[.2,-2.5,5];C.find(c=>c.id==='top').eye=[.2,-2.8,4];}"
+new="if(violin){const nativeUpdate=result.update,rest=p.chinrest.position.clone();result.update=s=>{const e=clamp(s.explode||0),release=clamp(e/.22);nativeUpdate({...s,explode:clamp((e-.22)/.78)});p.chinrest.position.copy(rest).add(new T.Vector3(.65*release,.04*release,0));};result.note='턱받침 고정을 먼저 분리한 뒤, 뒤판과 측판을 엽니다. 상판·브리지·현의 접촉은 유지합니다.';result.explodedEye=[.2,-2.5,5];C.find(c=>c.id==='top').eye=[.2,-2.8,4];}"
+assert old in s;s=s.replace(old,new);p.write_text(s,encoding='utf-8')
+p=r/'goodeasy/assets/coffee-detail.js';s=p.read_text(encoding='utf-8').replace('uFront:   { value: 0 },','uGrainScale:{value:1},\n    uFront:   { value: 0 },').replace('uniform float uFront, uChannel, uSeed, uHasMap;','uniform float uFront, uChannel, uSeed, uHasMap, uGrainScale;').replace('vUv * vec2(3.84, 1.5)','vUv * vec2(3.84, 1.5)*uGrainScale').replace('uniforms.uChannel.value = channel ? 1 : 0;','uniforms.uChannel.value = channel ? 1 : 0;\n    uniforms.uGrainScale.value=lerp(.75,1.75,g/100);');p.write_text(s,encoding='utf-8')
+print('Released clamps before opening plates; grind texture frequency follows the comparison setting')

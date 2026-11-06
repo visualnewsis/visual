@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <title>Grand Tour Around — 충무로 | 충무로딩</title>
+  <meta name="description" content="골목을 걸으면 공간이 깨어나는 충무로딩 3D 탐험 기술 프로토타입.">
+  <meta name="robots" content="noindex,nofollow">
+  <link rel="canonical" href="https://visual.newsis.com/arcade/cta/">
+  <meta property="og:type" content="website"><meta property="og:title" content="Grand Tour Around — 충무로">
+  <meta property="og:description" content="돌아다니는 과정 자체가 충무로딩이다. 0–10% 탐험 프로토타입.">
+  <meta property="og:url" content="https://visual.newsis.com/arcade/cta/">
+  <meta name="twitter:card" content="summary"><meta name="twitter:title" content="Grand Tour Around — 충무로"><meta name="twitter:description" content="걸을수록 완성되는 작은 도시 블록.">
+  <link rel="stylesheet" href="./style.css?v=20260908-2">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-6BKMWE02W5"></script>
+  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','G-6BKMWE02W5');</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"VideoGame","name":"Grand Tour Around — 충무로","url":"https://visual.newsis.com/arcade/cta/","inLanguage":"ko","genre":"Exploration","isAccessibleForFree":true,"gamePlatform":"Web browser"}</script>
+</head>
+<body>
+  <header><a href="../">CHUNGMU-LOADING</a><a href="https://www.newsis.com/" class="newsis"><img src="../../assets/logo2024.png" alt="NEWSIS"></a><a href="../../">VISUAL NEWSIS</a></header>
+  <main id="game">
+    <canvas id="world" aria-label="3D 골목 탐험. WASD로 이동, 방향키로 시점 조작, E로 대화." tabindex="0"></canvas>
+    <div class="hud"><div class="eyebrow">CHUNGMU-LOADING</div><div class="percentage"><span id="progress">0</span><small>%</small></div><div class="track"><i id="fill"></i></div><p id="phase">공간이 깨어나기 전</p></div>
+    <div class="top-actions"><button id="sound" aria-pressed="false">소리 꺼짐</button><button id="pause">도움말 · 일시정지</button></div>
+    <div id="crosshair" aria-hidden="true">+</div>
+    <div id="toast" role="status" aria-live="polite"></div>
+    <button id="interact" hidden>이야기 듣기 · E</button>
+    <div class="coordinates"><span>BLOCK STUDY / 01</span><span id="position">0 · 16</span></div>
+    <div class="touch-controls"><div id="stick" aria-label="이동 조이스틱"><i></i><span>이동</span></div><span class="look-hint">오른쪽 화면을 밀어 둘러보기</span></div>
+    <section id="intro" class="overlay" aria-labelledby="title"><div class="intro-content"><p class="eyebrow">CHUNGMU-LOADING / FACADE STUDY 01</p><h1 id="title">Grand Tour<br>Around<span class="title-sub">충무로</span></h1><p class="lead">비어 있는 간판. 조용한 작업실.<br>당신이 다가가면 도시가 조금씩 깨어납니다.</p><p class="notice">충무로 인쇄골목 사진을 참고한 외관 연구입니다.<br>배치는 압축 재구성했으며 인물·대사·소리는 시연용입니다.<br>이번 탐험은 10%까지 이어집니다.</p><button id="start" class="primary">골목에 들어가기 <span>↗</span></button><p class="help">WASD 이동 · 마우스 드래그로 시점 · Shift 달리기<br>방향키로도 시점 조작 · E 대화 · Esc 일시정지<br>모바일: 왼쪽 패드 이동 · 오른쪽 화면 시점</p><p id="error" role="alert"></p></div><div class="intro-side" aria-hidden="true">0 → 10<span>돌아다니는 과정 자체가<br>충무로딩이다.</span></div></section>
+    <section id="dialog" class="overlay" hidden aria-label="이야기"><div class="dialog-content"><p class="eyebrow">골목에서 만난 사람</p><p id="dialog-text"></p><button id="close-dialog" class="primary">다시 걷기</button></div></section>
+  </main>
+  <script type="module">import('./game.js').catch(error=>{document.querySelector('#error').textContent='3D 화면을 불러오지 못했습니다. 최신 브라우저에서 다시 열어 주세요.';document.querySelector('#start').disabled=true;console.error(error);});</script>
+</body>
+</html>

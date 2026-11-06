@@ -1,0 +1,38 @@
+06 재봉틀 / 07 축음기 — 검수 기록
+수정 커밋: f21393c / e7e8e6e / bac1b7a
+공개 범위: 실주소 직접 확인. 랜딩 카드와 noindex/Draft 유지.
+
+실제 외부 검수
+GPT: https://chatgpt.com/c/6ae2df54-1cdc-83ee-9386-af0cc3ecca59
+Claude: https://claude.ai/chat/04071242-d268-4d86-84fe-c5e9548aef16
+GPT: 수정된 PC 접점 확대 및 모바일 스크린샷 확인. 접점 가림 해결 후 시각 차단 없음 판정. 실행/청음 미수행.
+Claude: 실제 소스와 스크린샷 검수. 재start/wind 시계 연속성 지적 반영. UI 매프레임 commit 근거로 소진 정지 P1 철회. 완성된 땀 메시 좌표 근거로 실 단절 지적 철회. 버튼 대비 지적 반영.
+
+Codex 실제 검증
+동작 회귀 테스트 45개 통과. 기타 진동 회귀 통과.
+GOODEASY 13 경로: 로컬 자산/링크/ID/JSON-LD/GA/공개 및 noindex 검사 통과.
+공용 검사 20 서비스 페이지 통과.
+1440x900, 390x844, 412x915 브라우저 viewport 확인. 가로 넘침 없음.
+재봉틀: 5mm 한 땀 완료 → 내부 기록 1땀/5mm/5mm 이동 유지 확인.
+축음기: 바늘 내리기/올리기 정상, 재생시계 진행/정지, 내부 WebAudio running과 음원시계 0.691 확인.
+분해가 stale visibility에서 갱신되지 않는 현상 발견. wake 시 화면 경계를 재확인하도록 보강 후 실제 펼침 100%/재생 확인.
+
+검증 한계
+실제 iPhone Safari/Android Chrome 기기 및 물리 스피커 청음은 수행하지 않음.
+개념 모형: 제품 치수/실 장력/마찰·내구성/실물 음향 응답을 재현하는 설계 자료가 아님.
+실제 직물 관통 구멍 변형은 미구현. 경로와 이송의 이해를 위한 시각화.
+
+출처 재확인
+https://www.pbs.org/wgbh/americanexperience/films/edison/ — 대본의 I was never so taken aback 회고 확인. 원통형 장치와 원반형 모형 구분 유지.
+https://www.loc.gov/loc/lcib/1106/records.html — 바늘/사운드박스/진동판/톤암의 기계적 음향 재생 확인.
+https://www.supsew.com/download/Singer/Singer%20206K25%20Service%20Manual.pdf — 제조사 본봉·훅·실채기 순서 참고. 특정 모델 복제 아님.
+관련 NEWSIS 기사 3개 실페이지 제목 확인.
+
+배포 결과
+최종 main: bac1b7a32a2027517c6c1b07bbf5492d1e25bbda
+https://github.com/visualnewsis/visual/actions/runs/40830314891 — 전체 6개 작업 성공.
+https://visual.newsis.com/goodeasy/sewing-machine/ — HTTP200, 최신 HTML 일치.
+https://visual.newsis.com/goodeasy/gramophone/ — HTTP200, 최신 HTML 일치.
+HTML이 실제로 요청하는 버전 쿼리 자산까지 모두 커밋 바이트 일치 확인. 일부 무버전 URL은 CDN 이전 캐시여서 버전 쿼리로 따로 검증함.
+실서버 PC 접점확대/버튼 활성·대비 확인. 390px 모바일 두 경로 확인, 가로 넘침 없음. noindex,nofollow 유지.
+랜딩 파일은 원본 유지, 실서버 바이트 일치. 작업 트리 깨끗함, origin/main과 동일.

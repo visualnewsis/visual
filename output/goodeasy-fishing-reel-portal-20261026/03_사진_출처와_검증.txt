@@ -1,0 +1,18 @@
+﻿발행표시: 2026-10-29 10:00 KST. 랜딩 비활성 유지, 직접 주소로 확인.
+인용: Izaak Walton, The Compleat Angler, To the Reader. 1653년 초간 작품. 번역은 첫 절의 의미를 옮김. 현대 스피닝 릴에 관한 발언으로 소개하지 않음.
+원문 발췌: For angling may be said to be so like the mathematics, that it can never be fully learnt
+https://luminarium.org/renascence-editions/walton/walton1.html
+https://anglicanhistory.org/walton/angler/dedicatory.html
+메커니즘 참고: SHIMANO 공식 스피닝 릴 설명서 검색 본문 및 줄 감기 기술 설명. 설명서 PDF는 웹 도구에서 503으로 전체 열람되지 않아, 세부 수치나 특정 제품 설명을 원고에 사용하지 않음.
+https://www.shimanofishingservice.jp/img/product/manual/manual_spinning_reel_ov.pdf
+https://fishshop.shimano.com/pages/infinity-loop
+DAIWA 공식 설명으로 기어비=손잡이 한 바퀴당 로터 회전수, 스풀 크기에 따른 회수 길이 차이, 드랙의 저항·줄 방출 역할을 추가 대조함.
+https://www.daiwa.com/scandinavia/fishing_tips/How_to_choose_spinning_reel?category=ALL&page=1
+실사: Thirdman, Close-Up Shot of a Fishing Reel. 공식 사진 페이지와 작가 확인.
+https://www.pexels.com/photo/close-up-shot-of-a-fishing-reel-5537641/
+원본 1600×2400에서 스풀·베일·몸체 중심의 가로 4:3 크롭. 손잡이 하단은 화면 밖임.
+
+사진 공통 이용조건 확인: 2026-10-26 Pexels 공식 라이선스. 무료 사용·수정 허용. 인물·브랜드의 추천이나 보증으로 사용하지 않고 사진 자체 재판매·스톡 재배포를 하지 않음.
+https://www.pexels.com/license/
+두 번째 사진은 해당 시리즈 랜딩 티저를 스타일 참고로 built-in image_gen으로 별도 제작한 무문구 AI 이미지. 실사·실측 구조도·특정 실물 제품으로 제시하지 않음. 사진 두 장 모두 RGB JPG.
+원고 본문에는 검증 출처 URL이나 제작 과정 설명을 삽입하지 않았음. 위 메모는 내부 확인용이며 송고 본문이 아님.

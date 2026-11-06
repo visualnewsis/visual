@@ -1,0 +1,32 @@
+[
+  {
+    "asset": "foliage",
+    "size": [
+      768,
+      768
+    ],
+    "bytes": 108182,
+    "alpha": [
+      0,
+      255
+    ]
+  },
+  {
+    "asset": "materials",
+    "size": [
+      1024,
+      1024
+    ],
+    "bytes": 253042,
+    "alpha": null
+  },
+  {
+    "asset": "newsroom-screen",
+    "size": [
+      1280,
+      801
+    ],
+    "bytes": 186556,
+    "alpha": null
+  }
+]

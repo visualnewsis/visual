@@ -1,0 +1,474 @@
+[
+  {
+    "input": "ㄱ",
+    "internal": "=a",
+    "expected": "631",
+    "unicode": "⠿⠁",
+    "world": "⠿⠁",
+    "jeomsarang": "⠿⠁"
+  },
+  {
+    "input": "ㄴ",
+    "internal": "=3",
+    "expected": "6318",
+    "unicode": "⠿⠒",
+    "world": "⠿⠒",
+    "jeomsarang": "⠿⠒"
+  },
+  {
+    "input": "ㄷ",
+    "internal": "=9",
+    "expected": "6320",
+    "unicode": "⠿⠔",
+    "world": "⠿⠔",
+    "jeomsarang": "⠿⠔"
+  },
+  {
+    "input": "ㄹ",
+    "internal": "=1",
+    "expected": "632",
+    "unicode": "⠿⠂",
+    "world": "⠿⠂",
+    "jeomsarang": "⠿⠂"
+  },
+  {
+    "input": "ㅁ",
+    "internal": "=5",
+    "expected": "6334",
+    "unicode": "⠿⠢",
+    "world": "⠿⠢",
+    "jeomsarang": "⠿⠢"
+  },
+  {
+    "input": "ㅂ",
+    "internal": "=b",
+    "expected": "633",
+    "unicode": "⠿⠃",
+    "world": "⠿⠃",
+    "jeomsarang": "⠿⠃"
+  },
+  {
+    "input": "ㅅ",
+    "internal": "='",
+    "expected": "634",
+    "unicode": "⠿⠄",
+    "world": "⠿⠄",
+    "jeomsarang": "⠿⠄"
+  },
+  {
+    "input": "ㅇ",
+    "internal": "=7",
+    "expected": "6354",
+    "unicode": "⠿⠶",
+    "world": "⠿⠶",
+    "jeomsarang": "⠿⠶"
+  },
+  {
+    "input": "ㅈ",
+    "internal": "=k",
+    "expected": "635",
+    "unicode": "⠿⠅",
+    "world": "⠿⠅",
+    "jeomsarang": "⠿⠅"
+  },
+  {
+    "input": "ㅊ",
+    "internal": "=2",
+    "expected": "636",
+    "unicode": "⠿⠆",
+    "world": "⠿⠆",
+    "jeomsarang": "⠿⠆"
+  },
+  {
+    "input": "ㅋ",
+    "internal": "=6",
+    "expected": "6322",
+    "unicode": "⠿⠖",
+    "world": "⠿⠖",
+    "jeomsarang": "⠿⠖"
+  },
+  {
+    "input": "ㅌ",
+    "internal": "=8",
+    "expected": "6338",
+    "unicode": "⠿⠦",
+    "world": "⠿⠦",
+    "jeomsarang": "⠿⠦"
+  },
+  {
+    "input": "ㅍ",
+    "internal": "=4",
+    "expected": "6350",
+    "unicode": "⠿⠲",
+    "world": "⠿⠲",
+    "jeomsarang": "⠿⠲"
+  },
+  {
+    "input": "ㅎ",
+    "internal": "=0",
+    "expected": "6352",
+    "unicode": "⠿⠴",
+    "world": "⠿⠴",
+    "jeomsarang": "⠿⠴"
+  },
+  {
+    "input": "ㄲ",
+    "internal": "=aa",
+    "expected": "6311",
+    "unicode": "⠿⠁⠁",
+    "world": "⠿⠁⠁",
+    "jeomsarang": "⠿⠁⠁"
+  },
+  {
+    "input": "ㄸ",
+    "internal": "=99",
+    "expected": "632020",
+    "unicode": "⠿⠔⠔",
+    "world": "⠿⠠⠊",
+    "jeomsarang": "⠿⠔⠔"
+  },
+  {
+    "input": "ㅃ",
+    "internal": "=bb",
+    "expected": "6333",
+    "unicode": "⠿⠃⠃",
+    "world": "⠿⠠⠘",
+    "jeomsarang": "⠿⠃⠃"
+  },
+  {
+    "input": "ㅆ",
+    "internal": "=''",
+    "expected": "6344",
+    "unicode": "⠿⠄⠄",
+    "world": "⠿⠌",
+    "jeomsarang": "⠿⠄⠄"
+  },
+  {
+    "input": "ㅉ",
+    "internal": "=kk",
+    "expected": "6355",
+    "unicode": "⠿⠅⠅",
+    "world": "⠿⠠⠨",
+    "jeomsarang": "⠿⠅⠅"
+  },
+  {
+    "input": "ㄳ",
+    "internal": "=a'",
+    "expected": "6314",
+    "unicode": "⠿⠁⠄",
+    "world": "⠁⠄",
+    "jeomsarang": "⠿⠁⠄"
+  },
+  {
+    "input": "ㄵ",
+    "internal": "=3k",
+    "expected": "63185",
+    "unicode": "⠿⠒⠅",
+    "world": "⠒⠅",
+    "jeomsarang": "⠿⠒⠅"
+  },
+  {
+    "input": "ㄶ",
+    "internal": "=30",
+    "expected": "631852",
+    "unicode": "⠿⠒⠴",
+    "world": "⠒⠴",
+    "jeomsarang": "⠿⠒⠴"
+  },
+  {
+    "input": "ㄺ",
+    "internal": "=1a",
+    "expected": "6321",
+    "unicode": "⠿⠂⠁",
+    "world": "⠂⠁",
+    "jeomsarang": "⠿⠂⠁"
+  },
+  {
+    "input": "ㄻ",
+    "internal": "=15",
+    "expected": "63234",
+    "unicode": "⠿⠂⠢",
+    "world": "⠂⠢",
+    "jeomsarang": "⠿⠂⠢"
+  },
+  {
+    "input": "ㄼ",
+    "internal": "=1b",
+    "expected": "6323",
+    "unicode": "⠿⠂⠃",
+    "world": "⠂⠃",
+    "jeomsarang": "⠿⠂⠃"
+  },
+  {
+    "input": "ㄽ",
+    "internal": "=1'",
+    "expected": "6324",
+    "unicode": "⠿⠂⠄",
+    "world": "⠂⠄",
+    "jeomsarang": "⠿⠂⠄"
+  },
+  {
+    "input": "ㄾ",
+    "internal": "=18",
+    "expected": "63238",
+    "unicode": "⠿⠂⠦",
+    "world": "⠂⠦",
+    "jeomsarang": "⠿⠂⠦"
+  },
+  {
+    "input": "ㄿ",
+    "internal": "=14",
+    "expected": "63250",
+    "unicode": "⠿⠂⠲",
+    "world": "⠂⠲",
+    "jeomsarang": "⠿⠂⠲"
+  },
+  {
+    "input": "ㅀ",
+    "internal": "=10",
+    "expected": "63252",
+    "unicode": "⠿⠂⠴",
+    "world": "",
+    "jeomsarang": "⠿⠂⠴"
+  },
+  {
+    "input": "ㅄ",
+    "internal": "=b'",
+    "expected": "6334",
+    "unicode": "⠿⠃⠄",
+    "world": "",
+    "jeomsarang": "⠿⠃⠄"
+  },
+  {
+    "input": "ㅏ",
+    "internal": "=<",
+    "expected": "6335",
+    "unicode": "⠿⠣",
+    "world": "⠿⠣",
+    "jeomsarang": "⠿⠣"
+  },
+  {
+    "input": "ㅑ",
+    "internal": "=>",
+    "expected": "6328",
+    "unicode": "⠿⠜",
+    "world": "⠿⠜",
+    "jeomsarang": "⠿⠜"
+  },
+  {
+    "input": "ㅓ",
+    "internal": "=s",
+    "expected": "6314",
+    "unicode": "⠿⠎",
+    "world": "⠿⠎",
+    "jeomsarang": "⠿⠎"
+  },
+  {
+    "input": "ㅕ",
+    "internal": "=:",
+    "expected": "6349",
+    "unicode": "⠿⠱",
+    "world": "⠿⠱",
+    "jeomsarang": "⠿⠱"
+  },
+  {
+    "input": "ㅗ",
+    "internal": "=u",
+    "expected": "6337",
+    "unicode": "⠿⠥",
+    "world": "⠿⠥",
+    "jeomsarang": "⠿⠥"
+  },
+  {
+    "input": "ㅛ",
+    "internal": "=+",
+    "expected": "6344",
+    "unicode": "⠿⠬",
+    "world": "⠿⠬",
+    "jeomsarang": "⠿⠬"
+  },
+  {
+    "input": "ㅜ",
+    "internal": "=m",
+    "expected": "6313",
+    "unicode": "⠿⠍",
+    "world": "⠿⠍",
+    "jeomsarang": "⠿⠍"
+  },
+  {
+    "input": "ㅠ",
+    "internal": "=%",
+    "expected": "6341",
+    "unicode": "⠿⠩",
+    "world": "⠿⠩",
+    "jeomsarang": "⠿⠩"
+  },
+  {
+    "input": "ㅡ",
+    "internal": "=[",
+    "expected": "6342",
+    "unicode": "⠿⠪",
+    "world": "⠿⠪",
+    "jeomsarang": "⠿⠪"
+  },
+  {
+    "input": "ㅣ",
+    "internal": "=o",
+    "expected": "6321",
+    "unicode": "⠿⠕",
+    "world": "⠿⠕",
+    "jeomsarang": "⠿⠕"
+  },
+  {
+    "input": "ㅐ",
+    "internal": "=r",
+    "expected": "6323",
+    "unicode": "⠿⠗",
+    "world": "⠿⠗",
+    "jeomsarang": "⠿⠗"
+  },
+  {
+    "input": "ㅒ",
+    "internal": "=>r",
+    "expected": "632823",
+    "unicode": "⠿⠜⠗",
+    "world": "⠿⠜⠗",
+    "jeomsarang": "⠿⠜⠗"
+  },
+  {
+    "input": "ㅔ",
+    "internal": "=n",
+    "expected": "6329",
+    "unicode": "⠿⠝",
+    "world": "⠿⠝",
+    "jeomsarang": "⠿⠝"
+  },
+  {
+    "input": "ㅖ",
+    "internal": "=/",
+    "expected": "6312",
+    "unicode": "⠿⠌",
+    "world": "⠿⠌",
+    "jeomsarang": "⠿⠌"
+  },
+  {
+    "input": "ㅘ",
+    "internal": "=v",
+    "expected": "6339",
+    "unicode": "⠿⠧",
+    "world": "⠿⠧",
+    "jeomsarang": "⠿⠧"
+  },
+  {
+    "input": "ㅙ",
+    "internal": "=vr",
+    "expected": "633923",
+    "unicode": "⠿⠧⠗",
+    "world": "⠿⠧⠗",
+    "jeomsarang": "⠿⠧⠗"
+  },
+  {
+    "input": "ㅚ",
+    "internal": "=y",
+    "expected": "6361",
+    "unicode": "⠿⠽",
+    "world": "⠿⠽",
+    "jeomsarang": "⠿⠽"
+  },
+  {
+    "input": "ㅝ",
+    "internal": "=p",
+    "expected": "6315",
+    "unicode": "⠿⠏",
+    "world": "⠿⠏",
+    "jeomsarang": "⠿⠏"
+  },
+  {
+    "input": "ㅞ",
+    "internal": "=pr",
+    "expected": "631523",
+    "unicode": "⠿⠏⠗",
+    "world": "⠿⠏⠗",
+    "jeomsarang": "⠿⠏⠗"
+  },
+  {
+    "input": "ㅟ",
+    "internal": "=mr",
+    "expected": "631323",
+    "unicode": "⠿⠍⠗",
+    "world": "⠿⠍⠗",
+    "jeomsarang": "⠿⠍⠗"
+  },
+  {
+    "input": "ㅢ",
+    "internal": "=w",
+    "expected": "6358",
+    "unicode": "⠿⠺",
+    "world": "⠿⠺",
+    "jeomsarang": "⠿⠺"
+  },
+  {
+    "input": "파열음에는 ㄱ, ㄷ, ㅂ 등이 있다.",
+    "internal": "d<|{5ncz`=a\"`=9\"`=b`i{7o`o/i4",
+    "expected": "25355142342995306311606320160633010425421021121050",
+    "unicode": "⠙⠣⠳⠪⠢⠝⠉⠵⠀⠿⠁⠐⠀⠿⠔⠐⠀⠿⠃⠀⠊⠪⠶⠕⠀⠕⠌⠊⠲",
+    "world": "⠙⠣⠳⠪⠢⠝⠉⠵ ⠿⠁⠐ ⠿⠔⠐ ⠿⠃ ⠊⠪⠶⠕ ⠕⠌⠊⠲",
+    "jeomsarang": "⠙⠣⠳⠪⠢⠝⠉⠵⠀⠿⠁⠐⠀⠿⠔⠐⠀⠿⠃⠀⠊⠪⠶⠕⠀⠕⠌⠊⠲"
+  },
+  {
+    "input": "삼각형 ㄱㄴㄷ",
+    "internal": "l5$aj}`=a=3=9",
+    "expected": "7344312659063163186320",
+    "unicode": "⠇⠢⠫⠁⠚⠻⠀⠿⠁⠿⠒⠿⠔",
+    "world": "⠇⠢⠫⠁⠚⠻ ⠿⠁⠿⠒⠿⠔",
+    "jeomsarang": "⠇⠢⠫⠁⠚⠻⠀⠿⠁⠿⠒⠿⠔"
+  },
+  {
+    "input": "외래어의 받침을 표기할 때에는 ‘ㄱ, ㄴ, ㄹ, ㅁ, ㅂ, ㅅ, ㅇ’만을 사용한다.",
+    "internal": "y\"rsw`~9;o5!`d+@oj1`,irncz`,8=a\"`=3\"`=1\"`=5\"`=b\"`='\"`=70'e3!`l+7j3i4",
+    "expected": "61162314580242048213446025448212620321023299530323863116063181606321606334160633160634160635452417184607445426181050",
+    "unicode": "⠽⠐⠗⠎⠺⠀⠘⠔⠰⠕⠢⠮⠀⠙⠬⠈⠕⠚⠂⠀⠠⠊⠗⠝⠉⠵⠀⠠⠦⠿⠁⠐⠀⠿⠒⠐⠀⠿⠂⠐⠀⠿⠢⠐⠀⠿⠃⠐⠀⠿⠄⠐⠀⠿⠶⠴⠄⠑⠒⠮⠀⠇⠬⠶⠚⠒⠊⠲",
+    "world": "⠽⠐⠗⠎⠺ ⠘⠔⠰⠕⠢⠮ ⠙⠬⠈⠕⠚⠂ ⠠⠊⠗⠝⠉⠵ ⠠⠦⠿⠁⠐ ⠿⠒⠐ ⠿⠂⠐ ⠿⠢⠐ ⠿⠃⠐ ⠿⠄⠐ ⠿⠶⠴⠄⠑⠒⠮ ⠇⠬⠶⠚⠒⠊⠲",
+    "jeomsarang": "⠽⠐⠗⠎⠺⠀⠘⠔⠰⠕⠢⠮⠀⠙⠬⠈⠕⠚⠂⠀⠠⠊⠗⠝⠉⠵⠀⠠⠦⠿⠁⠐⠀⠿⠒⠐⠀⠿⠂⠐⠀⠿⠢⠐⠀⠿⠃⠐⠀⠿⠄⠐⠀⠿⠶⠴⠄⠑⠒⠮⠀⠇⠬⠶⠚⠒⠊⠲"
+  },
+  {
+    "input": "‘계, 례, 몌, 폐, 혜’의 ‘ㅖ’는 ‘ㅔ’로 소리 나는 경우가 있더라도 ‘ㅖ’로 적는다.",
+    "internal": ",8@/\"`\"/\"`e/\"`d/\"`j/0'w`,8=/0'cz`,8=n0'\"u`,u\"o`ccz`@}m$`o/is\"<iu`,8=/0'\"u`.?czi4",
+    "expected": "323881216016121601712160251216026125245803238631252495303238632952416370323716210995308591343021121014163510370323863125241637040579531050",
+    "unicode": "⠠⠦⠈⠌⠐⠀⠐⠌⠐⠀⠑⠌⠐⠀⠙⠌⠐⠀⠚⠌⠴⠄⠺⠀⠠⠦⠿⠌⠴⠄⠉⠵⠀⠠⠦⠿⠝⠴⠄⠐⠥⠀⠠⠥⠐⠕⠀⠉⠉⠵⠀⠈⠻⠍⠫⠀⠕⠌⠊⠎⠐⠣⠊⠥⠀⠠⠦⠿⠌⠴⠄⠐⠥⠀⠨⠹⠉⠵⠊⠲",
+    "world": "⠠⠦⠈⠌⠐ ⠐⠌⠐ ⠑⠌⠐ ⠙⠌⠐ ⠚⠌⠴⠄⠺ ⠠⠦⠿⠌⠴⠄⠉⠵ ⠠⠦⠿⠝⠴⠄⠐⠥ ⠠⠥⠐⠕ ⠉⠉⠵ ⠈⠻⠍⠫ ⠕⠌⠊⠎⠐⠣⠊⠥ ⠠⠦⠿⠌⠴⠄⠐⠥ ⠨⠹⠉⠵⠊⠲",
+    "jeomsarang": "⠠⠦⠈⠌⠐⠀⠐⠌⠐⠀⠑⠌⠐⠀⠙⠌⠐⠀⠚⠌⠴⠄⠺⠀⠠⠦⠿⠌⠴⠄⠉⠵⠀⠠⠦⠿⠝⠴⠄⠐⠥⠀⠠⠥⠐⠕⠀⠉⠉⠵⠀⠈⠻⠍⠫⠀⠕⠌⠊⠎⠐⠣⠊⠥⠀⠠⠦⠿⠌⠴⠄⠐⠥⠀⠨⠹⠉⠵⠊⠲"
+  },
+  {
+    "input": "낫 놓고 ㄱ자도 모른다.",
+    "internal": "c'`cu0@u`=a.iu`eu\"zi4",
+    "expected": "9409375283706314010370173716531050",
+    "unicode": "⠉⠄⠀⠉⠥⠴⠈⠥⠀⠿⠁⠨⠊⠥⠀⠑⠥⠐⠵⠊⠲",
+    "world": "⠉⠄ ⠉⠥⠴⠈⠥ ⠿⠁⠨⠊⠥ ⠑⠥⠐⠵⠊⠲",
+    "jeomsarang": "⠉⠄⠀⠉⠥⠴⠈⠥⠀⠿⠁⠨⠊⠥⠀⠑⠥⠐⠵⠊⠲"
+  },
+  {
+    "input": "ㅂ은 여섯 번째 자음이다.",
+    "internal": "=bz`:,s'`~),.r`.<{5oi4",
+    "expected": "633530493214402462324023040354234211050",
+    "unicode": "⠿⠃⠵⠀⠱⠠⠎⠄⠀⠘⠾⠠⠨⠗⠀⠨⠣⠪⠢⠕⠊⠲",
+    "world": "⠿⠃⠵ ⠱⠠⠎⠄ ⠘⠾⠠⠨⠗ ⠨⠣⠪⠢⠕⠊⠲",
+    "jeomsarang": "⠿⠃⠵⠀⠱⠠⠎⠄⠀⠘⠾⠠⠨⠗⠀⠨⠣⠪⠢⠕⠊⠲"
+  },
+  {
+    "input": "컴퓨터 자판의 모음 배열에서 ㅗ, ㅓ, ㅏ, ㅣ는 나란히 있다.",
+    "internal": "fs5d%hs`.d3w`eu{5`~r|n,s`=u\"`=s\"`=<\"`=ocz`c\"<3jo`o/i4",
+    "expected": "11143425411914040251858017374234024235129321406337160631416063351606321953091635182621021121050",
+    "unicode": "⠋⠎⠢⠙⠩⠓⠎⠀⠨⠙⠒⠺⠀⠑⠥⠪⠢⠀⠘⠗⠳⠝⠠⠎⠀⠿⠥⠐⠀⠿⠎⠐⠀⠿⠣⠐⠀⠿⠕⠉⠵⠀⠉⠐⠣⠒⠚⠕⠀⠕⠌⠊⠲",
+    "world": "⠋⠎⠢⠙⠩⠓⠎ ⠨⠙⠒⠺ ⠑⠥⠪⠢ ⠘⠗⠳⠝⠠⠎ ⠿⠥⠐ ⠿⠎⠐ ⠿⠣⠐ ⠿⠕⠉⠵ ⠉⠐⠣⠒⠚⠕ ⠕⠌⠊⠲",
+    "jeomsarang": "⠋⠎⠢⠙⠩⠓⠎⠀⠨⠙⠒⠺⠀⠑⠥⠪⠢⠀⠘⠗⠳⠝⠠⠎⠀⠿⠥⠐⠀⠿⠎⠐⠀⠿⠣⠐⠀⠿⠕⠉⠵⠀⠉⠐⠣⠒⠚⠕⠀⠕⠌⠊⠲"
+  },
+  {
+    "input": "업무상 횡령 혐의로 ㄱ 대학교 ㄴ 교수가 구속되었다.",
+    "internal": "sbeml7`jy7\"}`j:5w\"u`=a`irja@+`=3`@+,m$`@m,xiys/i4",
+    "expected": "143171375402661541659026493458163706310102326184406318084432134308133245106114121050",
+    "unicode": "⠎⠃⠑⠍⠇⠶⠀⠚⠽⠶⠐⠻⠀⠚⠱⠢⠺⠐⠥⠀⠿⠁⠀⠊⠗⠚⠁⠈⠬⠀⠿⠒⠀⠈⠬⠠⠍⠫⠀⠈⠍⠠⠭⠊⠽⠎⠌⠊⠲",
+    "world": "⠎⠃⠑⠍⠇⠶ ⠚⠽⠶⠐⠻ ⠚⠱⠢⠺⠐⠥ ⠿⠁ ⠊⠗⠚⠁⠈⠬ ⠿⠒ ⠈⠬⠠⠍⠫ ⠈⠍⠠⠭⠊⠽⠎⠌⠊⠲",
+    "jeomsarang": "⠎⠃⠑⠍⠇⠶⠀⠚⠽⠶⠐⠻⠀⠚⠱⠢⠺⠐⠥⠀⠿⠁⠀⠊⠗⠚⠁⠈⠬⠀⠿⠒⠀⠈⠬⠠⠍⠫⠀⠈⠍⠠⠭⠊⠽⠎⠌⠊⠲"
+  }
+]

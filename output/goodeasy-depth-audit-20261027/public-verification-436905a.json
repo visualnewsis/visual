@@ -1,0 +1,344 @@
+[
+  {
+    "path": "dmz/css/dmz.css",
+    "status": 200,
+    "match": true,
+    "sha256": "80a13f29e00f1b7f6823b995fe3005d98ae31a447c368f72cb28ae858fd5bee7"
+  },
+  {
+    "path": "dmz/index.html",
+    "status": 200,
+    "match": true,
+    "sha256": "9e63962174b41e47787ffd69dd586ce74cc74a49c324533de75daa1023325e76"
+  },
+  {
+    "path": "dmz/js/camera.js",
+    "status": 200,
+    "match": true,
+    "sha256": "60edd9f247b0c222cd6406dcacdebe9ce27b4cce782eb506c18f211229f336a8"
+  },
+  {
+    "path": "dmz/js/canopy.js",
+    "status": 200,
+    "match": true,
+    "sha256": "9c0b4a06660a0ec04a9b4fce6d7fc0b14945df2be6c514abe86d9c8f883470e2"
+  },
+  {
+    "path": "dmz/js/fence.js",
+    "status": 200,
+    "match": true,
+    "sha256": "c7b791c81bb991b04ecda81c7025cf0cc22573b53007661b5d229602f8a5a74a"
+  },
+  {
+    "path": "dmz/js/hero.js",
+    "status": 200,
+    "match": true,
+    "sha256": "c141e95d4935cd6443a2e702cba600cc4635018ff329b5879faf81826b33d203"
+  },
+  {
+    "path": "dmz/js/main.js",
+    "status": 200,
+    "match": true,
+    "sha256": "4e75e82f0ba2c81c4dfca79cab81af9ff3cf64827bf2147b706c26b84181a648"
+  },
+  {
+    "path": "dmz/js/scene3d.js",
+    "status": 200,
+    "match": true,
+    "sha256": "86798567ae7a6e9fcda75faa01d46ef29211048aba0590218e768367122ae684"
+  },
+  {
+    "path": "dmz/js/surface-detail.js",
+    "status": 200,
+    "match": true,
+    "sha256": "b453f0ac570da96b13d136a219b119ae07d3f40a6ccec039abfae1f19b1804b0"
+  },
+  {
+    "path": "dmz/js/terrain.js",
+    "status": 200,
+    "match": true,
+    "sha256": "991b3a43fb45092d580320cf3e14589410ef7e2e5c761d4ddcecef9e059986f1"
+  },
+  {
+    "path": "dmz/js/tree-detail.js",
+    "status": 200,
+    "match": true,
+    "sha256": "39b2d41659a1d322681abd89fa40525d7824cd35c0fe10e66ad0aab7e6bb9a80"
+  },
+  {
+    "path": "dmz/js/ui.js",
+    "status": 200,
+    "match": true,
+    "sha256": "4a9e1f8b9ec277f694e40964342ff10ce80c3e99ec071b04afd96ad5f1e9c7db"
+  },
+  {
+    "path": "dmz/js/vegetation.js",
+    "status": 200,
+    "match": true,
+    "sha256": "5d8d93996fbab5dc3f8897e1ac1f5988d22a1688293c7f9f58fc696e217332bb"
+  },
+  {
+    "path": "dmz/js/xray.js",
+    "status": 200,
+    "match": true,
+    "sha256": "7f733d3fb9a7a1a28f853bfa466ded00401f0fcc52e4e176bd6f7e6cdf95c947"
+  },
+  {
+    "path": "goodeasy/assets/anatomy-controls.js",
+    "status": 200,
+    "match": true,
+    "sha256": "8c6acb331dff87910b4de2a96c18dcdd9f57ea7731114c8366fd9311299433e7"
+  },
+  {
+    "path": "goodeasy/assets/anatomy-core.js",
+    "status": 200,
+    "match": true,
+    "sha256": "5ded337d1837213ad266b6ebf3e0cee9ce909a6175463c9c08b755a10d1acf62"
+  },
+  {
+    "path": "goodeasy/assets/anatomy-espresso.js",
+    "status": 200,
+    "match": true,
+    "sha256": "fa69dc43db0b2cf776871fb4be20fd07d4fe3fe26ac3b52c5a2d644fc2b6d797"
+  },
+  {
+    "path": "goodeasy/assets/anatomy-models.js",
+    "status": 200,
+    "match": true,
+    "sha256": "a8bdb07140629ca853f07e86e8fbd0c103a2e8266300e6750f02058896092805"
+  },
+  {
+    "path": "goodeasy/assets/anatomy-optics.js",
+    "status": 200,
+    "match": true,
+    "sha256": "7b22b2b9ae6d4f8e502710110234aeca35d43f12ce3594e3b3076f6570eddd16"
+  },
+  {
+    "path": "goodeasy/assets/anatomy-viewer.js",
+    "status": 200,
+    "match": true,
+    "sha256": "f10ce9e1de3c4c0c8727b50e1c7bfb8a52d7c21eb271011a31f2d7f0d1918167"
+  },
+  {
+    "path": "goodeasy/assets/anatomy-watch.js",
+    "status": 200,
+    "match": true,
+    "sha256": "6e993f5bb8644ac6cd0a827132dc266e94149d24649b052294452d8b35e6ab9f"
+  },
+  {
+    "path": "goodeasy/assets/anatomy.css",
+    "status": 200,
+    "match": true,
+    "sha256": "4c72c2736d0da45db4eac502fd4af98e7c91384620dd2ef32f92781d0ac615e3"
+  },
+  {
+    "path": "goodeasy/assets/audio-notice.css",
+    "status": 200,
+    "match": true,
+    "sha256": "2607b4a4c7dcd0c8e6053299d3e8c1d2d6edf2a4b5ad87679ba3c8281b8c04c8"
+  },
+  {
+    "path": "goodeasy/assets/camera-exposure-photo.js",
+    "status": 200,
+    "match": true,
+    "sha256": "0161e06d62ee1586c2924258cf035e83aa59c6a8e1723a0653cf5f989477a4bd"
+  },
+  {
+    "path": "goodeasy/assets/episode-release.css",
+    "status": 200,
+    "match": true,
+    "sha256": "b985c1b267b7c98c4402f45706f569de7bbec56d2f9bb54d6025b8f62bddc9af"
+  },
+  {
+    "path": "goodeasy/assets/guitar-lessons.js",
+    "status": 200,
+    "match": true,
+    "sha256": "7ed5b865d9e5d2427b45401a06c838fda969f9ebe1b08211e565842a9babcd6c"
+  },
+  {
+    "path": "goodeasy/assets/guitar-vibration.js",
+    "status": 200,
+    "match": true,
+    "sha256": "b28d2a4688dd05c85559b9cf4e5c2cf1a1ecdcb090c71ffe5e979129d5134523"
+  },
+  {
+    "path": "goodeasy/assets/lab.js",
+    "status": 200,
+    "match": true,
+    "sha256": "edabccb6936b5d624a38ecbb43342924064a3e22460006b9ff1d112d087d5048"
+  },
+  {
+    "path": "goodeasy/assets/landing-camera.js",
+    "status": 200,
+    "match": true,
+    "sha256": "b21f7c71d74273d80654befbdca21c588479f5a943deddc321dbdb9eabde0174"
+  },
+  {
+    "path": "goodeasy/assets/landing-guitar.js",
+    "status": 200,
+    "match": true,
+    "sha256": "580f2d861ea2a6c99380eb1b1180da7b00e0bd50299c860a29ebe549b1efe177"
+  },
+  {
+    "path": "goodeasy/assets/landing.css",
+    "status": 200,
+    "match": true,
+    "sha256": "43613ec4b6c353cde9742f728ddb60342601ddc099187c5bcb02fa0a3aec5593"
+  },
+  {
+    "path": "goodeasy/assets/landing.js",
+    "status": 200,
+    "match": true,
+    "sha256": "d53e69e603dc96d827352cf5f418314cb1c2997276291af249f4b26c399e85ff"
+  },
+  {
+    "path": "goodeasy/assets/models/guitar-craft.js",
+    "status": 200,
+    "match": true,
+    "sha256": "797a046253ee0b9aa11958d5c29aea1b31b9003b1f412ba9887dad56d7718b2d"
+  },
+  {
+    "path": "goodeasy/assets/models/guitar.js",
+    "status": 200,
+    "match": true,
+    "sha256": "1f02b1c6309f5479406dec4058e05abfcea64b56ae2c37f97e9645399b726059"
+  },
+  {
+    "path": "goodeasy/assets/music.js",
+    "status": 200,
+    "match": true,
+    "sha256": "e62dad87a3ecf1975a376ed88f669f9455ff0df3a076eb542e3164f69abc1f56"
+  },
+  {
+    "path": "goodeasy/assets/quality-instruments.js",
+    "status": 200,
+    "match": true,
+    "sha256": "32e66b495b8c6a8de5c0f424c9159c80f2d7a695796afd89d26a27929050ddde"
+  },
+  {
+    "path": "goodeasy/assets/quality-kit.js",
+    "status": 200,
+    "match": true,
+    "sha256": "c6b8225fd8ec692f235e210c76632f9e933e032c3031c4ab63843db7edfd0570"
+  },
+  {
+    "path": "goodeasy/assets/quality-stage.js",
+    "status": 200,
+    "match": true,
+    "sha256": "3560b9ccd913d8d88a0221e3b4d8234bd4ca442d34721a6a34cd513416c4f01d"
+  },
+  {
+    "path": "goodeasy/assets/research-other.js",
+    "status": 200,
+    "match": true,
+    "sha256": "4632f1065e9687303593a75070727f09db378f18c26dec8e79c2f64dbe5eb4ef"
+  },
+  {
+    "path": "goodeasy/assets/research.js",
+    "status": 200,
+    "match": true,
+    "sha256": "32b188410926119b44f1fa5fae3f8455286077a1f3efd4660759a9837f3869a3"
+  },
+  {
+    "path": "goodeasy/assets/study-audio.js",
+    "status": 200,
+    "match": true,
+    "sha256": "18955bea36f35ea80d368384b7ff27e9ac7c56476a43cc0d1e5bbbfe2056bd36"
+  },
+  {
+    "path": "goodeasy/camera/index.html",
+    "status": 200,
+    "match": true,
+    "sha256": "60ef8451631820476b55a5f47ca41c03d74237ce38cf93646c9494d8c308c85a"
+  },
+  {
+    "path": "goodeasy/camera/viewfinder.css",
+    "status": 200,
+    "match": true,
+    "sha256": "5277dd1be4220890a85375779997699b5b6ca4fba757ff6799b9ed6fff8a2452"
+  },
+  {
+    "path": "goodeasy/espresso-machine/index.html",
+    "status": 200,
+    "match": true,
+    "sha256": "7577ab22afa442ae627acbc698731fd02a4d164f6ccc4ef29f760c0b61cd1ea4"
+  },
+  {
+    "path": "goodeasy/fishing-reel/index.html",
+    "status": 200,
+    "match": true,
+    "sha256": "f5208d3de185218c29443cfca686505f32fa24b6f62c7d8531c5a006e204607c"
+  },
+  {
+    "path": "goodeasy/gramophone/index.html",
+    "status": 200,
+    "match": true,
+    "sha256": "7f17b3f7c271412bb4a61c40517944430326847de0dee009c79e9294f72ce234"
+  },
+  {
+    "path": "goodeasy/guitar/index.html",
+    "status": 200,
+    "match": true,
+    "sha256": "d0958e56c792f1bdcbeb5f2d03b6630e9f3dec1973eb8dbcd97ddbb794a1690b"
+  },
+  {
+    "path": "goodeasy/guitar/premium.css",
+    "status": 200,
+    "match": true,
+    "sha256": "193af986e4c706bb6f56034a6b891511bc8c8476554f8b9b3338fe45be0eaa82"
+  },
+  {
+    "path": "goodeasy/index.html",
+    "status": 200,
+    "match": true,
+    "sha256": "e374f270c928978bb28f85e6e31531a719a5268af747add52e99b27e2402450b"
+  },
+  {
+    "path": "goodeasy/keyboard/index.html",
+    "status": 200,
+    "match": true,
+    "sha256": "e0c6fd20f37204219cdfdcde7afc0574dcd0357cf43cd727a4a0b139c923df46"
+  },
+  {
+    "path": "goodeasy/piano/index.html",
+    "status": 200,
+    "match": true,
+    "sha256": "398d831ee0fdeeee25c4891f4add5bc0c064104181de2de81c8bf09e656f6f31"
+  },
+  {
+    "path": "goodeasy/piano/piano.css",
+    "status": 200,
+    "match": true,
+    "sha256": "d972aaf0f1471462bc05aaa7d6023634a16aafb10dae2bd8b462b48329607629"
+  },
+  {
+    "path": "goodeasy/projector/index.html",
+    "status": 200,
+    "match": true,
+    "sha256": "b71ec3a84528f3401f07f86e6f141ff22c5162d78a0dd8e0dcd5471ac23b99cd"
+  },
+  {
+    "path": "goodeasy/review/index.html",
+    "status": 200,
+    "match": true,
+    "sha256": "61d743036c2c8235e1fbf2903a7656a750efe25e7c4dca45ccdda50d6105a135"
+  },
+  {
+    "path": "goodeasy/sewing-machine/index.html",
+    "status": 200,
+    "match": true,
+    "sha256": "247f8f837abcfd962d03cb45def6a381914f261adaa708f6bce0770b6e4d524f"
+  },
+  {
+    "path": "goodeasy/violin/index.html",
+    "status": 200,
+    "match": true,
+    "sha256": "234e7ff8e8ee6fe119cfa9a143196d768a334c5fed574f8bee4cc686ec95fe42"
+  },
+  {
+    "path": "goodeasy/watch/index.html",
+    "status": 200,
+    "match": true,
+    "sha256": "b069987b95f6777e89a6183be9bfe6455b3f7603324116f8eb248f683ff1a9df"
+  }
+]

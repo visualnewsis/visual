@@ -1,0 +1,82 @@
+[
+  {
+    "episode": "violin",
+    "size": "1200 desktop",
+    "canvases": 6,
+    "height": 640,
+    "overflow": false,
+    "width": 1200
+  },
+  {
+    "episode": "violin",
+    "size": "390 mobile",
+    "canvases": 6,
+    "height": 844,
+    "overflow": false,
+    "width": 390
+  },
+  {
+    "episode": "espresso-machine",
+    "size": "1200 desktop",
+    "canvases": 6,
+    "height": 640,
+    "overflow": false,
+    "width": 1200
+  },
+  {
+    "episode": "espresso-machine",
+    "size": "390 mobile",
+    "canvases": 6,
+    "height": 844,
+    "overflow": false,
+    "width": 390
+  },
+  {
+    "episode": "gramophone",
+    "size": "1200 desktop",
+    "canvases": 5,
+    "height": 640,
+    "overflow": false,
+    "width": 1200
+  },
+  {
+    "episode": "gramophone",
+    "size": "390 mobile",
+    "canvases": 5,
+    "height": 844,
+    "overflow": false,
+    "width": 390
+  },
+  {
+    "episode": "keyboard",
+    "size": "1200 desktop",
+    "canvases": 6,
+    "height": 640,
+    "overflow": false,
+    "width": 1200
+  },
+  {
+    "episode": "keyboard",
+    "size": "390 mobile",
+    "canvases": 6,
+    "height": 844,
+    "overflow": false,
+    "width": 390
+  },
+  {
+    "episode": "projector",
+    "size": "1200 desktop",
+    "canvases": 6,
+    "height": 640,
+    "overflow": false,
+    "width": 1200
+  },
+  {
+    "episode": "projector",
+    "size": "390 mobile",
+    "canvases": 6,
+    "height": 844,
+    "overflow": false,
+    "width": 390
+  }
+]

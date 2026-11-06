@@ -1,0 +1,5 @@
+from pathlib import Path
+r=Path(r'C:\Users\user\.codex\worktrees\piano-finish\editshop');p=r/'goodeasy/assets/coffee-detail.js';s=p.read_text(encoding='utf-8');s=s.replace('float irregular=0.10*sin(angle*3.0+0.8)+0.065*sin(angle*7.0-1.2);\nfloat pigment=smoothstep(0.58+irregular,0.78+irregular,radius);','float pigment=pow(smoothstep(0.72,1.0,radius),1.7);')
+s=s.replace('float coverage=clamp(pigment*(0.60+fineGrain*.20),0.0,0.80);','float coverage=clamp(pigment*(0.36+fineGrain*.24),0.0,0.60);').replace('object: rightReadout.group.children[0]','object: rightReadout.group');p.write_text(s,encoding='utf-8')
+# Targeted model focus for close material examination in the private QA only.
+p=r/'output/five-final-review-20261102/violin-diagnostic.html';s=p.read_text(encoding='utf-8').replace('<button id="all">전체</button>','<button id="all">전체</button><button id="cup">커피 액면 확대</button>');s=s.replace("$('side').onclick=", "$('cup').onclick=()=>{const c=model.group.getObjectByName('yield cup reused from hero');if(c)focus(c,.28);};\n$('side').onclick=");p.write_text(s,encoding='utf-8')

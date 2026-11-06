@@ -1,0 +1,136 @@
+{
+  "policy": "domestic-local-v2",
+  "method": "conservative-v4-domestic-local-v2-8629ae2d21a9",
+  "dataCollectedAt": "2026-11-03T04:51:06+00:00",
+  "counts": {
+    "all": 347,
+    "local": 39
+  },
+  "reviewers": {
+    "gpt": {
+      "url": "https://chatgpt.com/c/6ae93f21-e970-83ec-8c7a-c27a348269bc",
+      "model": "Instant",
+      "scope": "Actual PC/mobile image review; final screenshots no new P1/P2 visual defects"
+    },
+    "claude": {
+      "url": "https://claude.ai/chat/81c25f3b-8b5f-4dfe-bb84-8ad17b3234c0",
+      "model": "Opus 5.5",
+      "scope": "Actual independent static source review; did not execute tests",
+      "finalResult": "Identified counterexamples fixed and actual Codex regression tests passed; final focused static review found prior P1 fixed and no new exposure regression from final diff. Omission P2 intentionally accepted."
+    },
+    "codex": {
+      "scope": "Implementation, actual geography-based regression execution, live source metadata, viewport behavior and deployment verification"
+    }
+  },
+  "adopted": [
+    "Sentence boundary preservation; legacy unverified lead cannot infer places",
+    "Official international and overseas sections plus mixed-feed/semantic veto",
+    "Local subject required; headquarters, court and relocation destination are not neighborhood news",
+    "Current domestic exhibition venue required; old venue cannot lend a pin",
+    "Cross-feed sports screening; Korean timezone is not domestic evidence",
+    "Rule+geography digest invalidates classifications on changes",
+    "Invalid, older, timed-out or incompatible snapshot preserves last verified data",
+    "320/390/430px mode buttons 63x44 font12; first marker tap opens full article sheet",
+    "Desktop national fit reserves legend/label clearance",
+    "All sports including domestic leagues require current domestic location evidence; no headquarters/team hometown, background qualifiers, foreign-city or bare postposition bridge"
+  ],
+  "retainedByUser": [
+    "Upper and footer credits",
+    "Accessible zoom buttons",
+    "Current bright map and two-panel design"
+  ],
+  "limits": [
+    "Viewport tests are not physical iPhone/Android device tests",
+    "Conservative rules intentionally omit ambiguous articles and some valid unlocated or indirectly named news",
+    "Automatic classification cannot guarantee zero semantic mistakes in future source material"
+  ],
+  "verification": {
+    "python": [
+      "collector.py (includes domestic-policy.py)",
+      "locations.py",
+      "static.py",
+      "validate_snapshot.py",
+      ".github/scripts/check_visual_site.py"
+    ],
+    "node": [
+      "rules.cjs (includes modes/snapshot)",
+      "navigation.cjs",
+      "pulse.cjs",
+      "location.cjs",
+      "performance.cjs",
+      "node --check app.js/core.js"
+    ],
+    "ui": [
+      "320px no overlap/overflow",
+      "390px first marker tap opens sheet with readable full titles",
+      "430px no overlap/overflow",
+      "PC 1280x900 and 1280x720 Jeju label above legend",
+      "PC preview unique URLs; mode switch retains selected region"
+    ],
+    "portability": "PASS: Git-normalized LF collector and geography produce identical reviewed policy digest"
+  },
+  "deployment": {
+    "publicStatus": "PASS",
+    "url": "https://visual.newsis.com/newsmap/",
+    "run": "https://github.com/visualnewsis/visual/actions/runs/41582136090",
+    "activation": "success",
+    "afterHook": "success",
+    "cleanup": "queued",
+    "publicVerification": {
+      "status": "PASS",
+      "url": "https://visual.newsis.com/newsmap/",
+      "verifiedAt": "2026-11-03T05:18:07Z",
+      "policy": "domestic-local-v2",
+      "method": "conservative-v4-domestic-local-v2-8629ae2d21a9",
+      "articles": 347,
+      "local": 39,
+      "metadataInternational": 0,
+      "excludedIds": 244,
+      "collectedAt": "2026-11-03T04:51:06+00:00",
+      "dataSha256": "263d601d931fae906ca825dcdcad1695ac293b01df11e1e5250dc44b6d44b416",
+      "sourceAssetsMatch": true
+    }
+  },
+  "commit": "b389511b1d2dbcfdfd056bcec1b4dddfb21344bc",
+  "intentionalOmissions": [
+    "Unverified legacy/unlocated retained articles can be removed on rule migration",
+    "Short sports location forms 서/일대 and supplementary postpositions 에서는/에서도 are not accepted as event-location evidence"
+  ],
+  "automaticCollectionVerification": {
+    "workflowState": "active",
+    "schedule": "3,13,23,33,43,53 * * * *",
+    "manualDispatch": "HTTP 403: Must have admin rights to Repository",
+    "lastSuccessfulRun": "https://github.com/visualnewsis/visual/actions/runs/41566951756",
+    "newPolicyHostedRun": "not verified; deployment completion trigger waits on queued cleanup",
+    "localLiveCollection": "Official RSS live collection and complete new-policy re-evaluation validated before publication"
+  },
+  "screenshots": [
+    "here-news-production-v2-desktop.jpg",
+    "here-news-audit-v2-mobile-390-articles.jpg",
+    "here-news-audit-v2-mobile-320-map.jpg",
+    "here-news-audit-v2-mobile-430-map.jpg",
+    "here-news-audit-v2-desktop-popup.jpg"
+  ],
+  "changedFiles": [
+    "C:/Users/user/.codex/worktrees/newsmap-review/editshop/newsmap/app.js",
+    "C:/Users/user/.codex/worktrees/newsmap-review/editshop/newsmap/core.js",
+    "C:/Users/user/.codex/worktrees/newsmap-review/editshop/newsmap/data/articles.js",
+    "C:/Users/user/.codex/worktrees/newsmap-review/editshop/newsmap/index.html",
+    "C:/Users/user/.codex/worktrees/newsmap-review/editshop/newsmap/style.css",
+    "C:/Users/user/.codex/worktrees/newsmap-review/editshop/newsmap/tests/collector.py",
+    "C:/Users/user/.codex/worktrees/newsmap-review/editshop/newsmap/tests/domestic-policy.py",
+    "C:/Users/user/.codex/worktrees/newsmap-review/editshop/newsmap/tests/modes.cjs",
+    "C:/Users/user/.codex/worktrees/newsmap-review/editshop/newsmap/tests/navigation.cjs",
+    "C:/Users/user/.codex/worktrees/newsmap-review/editshop/newsmap/tests/pulse.cjs",
+    "C:/Users/user/.codex/worktrees/newsmap-review/editshop/newsmap/tests/snapshot.cjs",
+    "C:/Users/user/.codex/worktrees/newsmap-review/editshop/newsmap/tools/collect_news.py",
+    "C:/Users/user/.codex/worktrees/newsmap-review/editshop/newsmap/tools/validate_snapshot.py"
+  ],
+  "preserved": [
+    "Page title and SEO identity",
+    "Upper map and footer creative director credits",
+    "Google tracking tag",
+    "Global header, common landing pages and deployment workflows",
+    "Existing unrelated untracked thumbnail assets"
+  ]
+}

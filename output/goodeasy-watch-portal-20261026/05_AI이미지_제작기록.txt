@@ -1,0 +1,4 @@
+﻿도구: built-in image_gen
+스타일 참고: goodeasy/assets/landing-teasers-three.png
+프롬프트 요지: 검은 가죽줄과 브론즈 색 케이스의 스켈레톤 기계식 손목시계 한 개. 기어와 브리지의 질감, 차콜 배경과 앰버 조명. 문구·숫자·로고·허공의 부품 제외.
+가로 3:2, 본문용 일러스트. PNG 원본을 JPG로 변환.

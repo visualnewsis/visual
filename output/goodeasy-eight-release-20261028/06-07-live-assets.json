@@ -1,0 +1,86 @@
+[
+  {
+    "file": "goodeasy/sewing-machine/index.html",
+    "status": 200,
+    "matches_commit": true,
+    "sha256": "061c12bfcc5103d9"
+  },
+  {
+    "file": "goodeasy/gramophone/index.html",
+    "status": 200,
+    "matches_commit": true,
+    "sha256": "99faefd78c2f3b97"
+  },
+  {
+    "file": "goodeasy/sewing-machine/app.js",
+    "status": 200,
+    "matches_commit": true,
+    "sha256": "b9505101ab1a3d54"
+  },
+  {
+    "file": "goodeasy/gramophone/app.js",
+    "status": 200,
+    "matches_commit": true,
+    "sha256": "bdd29bc0fa2c6f50"
+  },
+  {
+    "file": "goodeasy/sewing-machine/sewing-model.js",
+    "status": 200,
+    "matches_commit": true,
+    "sha256": "d919495f09b6f00c"
+  },
+  {
+    "file": "goodeasy/gramophone/gramophone-model.js",
+    "status": 200,
+    "matches_commit": false,
+    "sha256": "6f6b9709cd057c57"
+  },
+  {
+    "file": "goodeasy/sewing-machine/sewing.css",
+    "status": 200,
+    "matches_commit": true,
+    "sha256": "76b129944acd38fb"
+  },
+  {
+    "file": "goodeasy/gramophone/gramophone.css",
+    "status": 200,
+    "matches_commit": true,
+    "sha256": "83b9b8100e53ff88"
+  },
+  {
+    "file": "goodeasy/gramophone/playback.js",
+    "status": 200,
+    "matches_commit": true,
+    "sha256": "b53d58a6feb234d9"
+  },
+  {
+    "file": "goodeasy/sewing-machine/motion.js",
+    "status": 200,
+    "matches_commit": false,
+    "sha256": "3fe8a344a75f1fe3"
+  },
+  {
+    "file": "goodeasy/assets/inspect-controls.js",
+    "status": 200,
+    "matches_commit": true,
+    "sha256": "40f1a8d8e841affc"
+  },
+  {
+    "file": "goodeasy/assets/anatomy-models.js",
+    "status": 200,
+    "matches_commit": true,
+    "sha256": "3d63364dfe2e128d"
+  },
+  {
+    "file": "goodeasy/assets/anatomy-viewer.js",
+    "status": 200,
+    "matches_commit": false,
+    "sha256": "ab2bdce701dea5c7"
+  },
+  {
+    "file": "goodeasy/index.html",
+    "status": 200,
+    "matches_commit": true,
+    "sha256": "5c7a049d4e11de56"
+  }
+]

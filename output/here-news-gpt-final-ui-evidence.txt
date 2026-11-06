@@ -1,0 +1,357 @@
+Browser tab: 1, Title: "여기뉴스 정책 검토", URL: "https://chatgpt.com/c/6ae93f21-e970-83ec-8c7a-c27a348269bc".
+0 AXWebArea 여기뉴스 정책 검토, URL: chatgpt.com/c/6ae93f21-e970-83ec-8c7a-c27a348269bc
+	1 container
+		2 container root
+			3 container
+				4 link Description: 콘텐츠로 바로 가기, Value: chatgpt.com/c/6ae93f21-e970-83ec-8c7a-c27a348269bc#_r_6g_
+				5 container
+					6 container app-shell-sidebar
+						7 container 앱 탐색
+							8 button (collapsed) 홈, Secondary Actions: Expand
+							9 button (collapsed) 스페이스, Secondary Actions: Expand
+							10 button (collapsed) 예약, Secondary Actions: Expand
+							11 button (collapsed) 플러그인, Secondary Actions: Expand
+							12 pop up button (collapsed) 탐색, Secondary Actions: Expand
+							13 button 사이트
+							14 pop up button (collapsed) Description: 프로필 메뉴 열기, ID: radix-_R_4nef9n9f6kpdbjmm68n9kldlb5_, Secondary Actions: Expand
+						15 container
+							16 container 홈
+								17 container
+									18 link Description: 홈, Value: chatgpt.com/
+									19 pop up button 검색
+									20 button (expanded) Description: 사이드바 표시/숨기기, Secondary Actions: Collapse
+									21 button 새 채팅
+									22 button 내 dot
+								23 container
+									24 container
+										25 sortable (expanded) 프로젝트, Secondary Actions: Collapse
+										26 pop up button (collapsed) Description: 프로젝트 사이드바 옵션, ID: radix-_r_5l_, Secondary Actions: Expand
+										27 button 새 프로젝트 추가
+											28 image
+									29 content list
+										30 text 프로젝트 없음
+									31 container
+										32 sortable (expanded) 최근, Secondary Actions: Collapse
+										33 pop up button (collapsed) Description: 채팅 사이드바 옵션, ID: radix-_r_1h_, Secondary Actions: Expand
+										34 checkbox (collapsed) Description: 채팅 및 작업 필터링, Value: 0, ID: radix-_r_1k_, Secondary Actions: Expand
+											35 image
+										36 button 새 채팅
+									37 content list
+										43 container 여기뉴스 정책 검토
+											44 link Description: 여기뉴스 정책 검토, Value: chatgpt.com/c/6ae93f21-e970-83ec-8c7a-c27a348269bc
+											45 container
+												46 pop up button (collapsed) Description: 채팅 액션, ID: radix-_r_8r_, Secondary Actions: Expand
+												47 button 채팅 고정
+										379 container 기획 검토 title
+											380 link Description: 기획 검토 title, Value: chatgpt.com/c/6ae7e98e-ed44-83e8-9fe8-c413dc2408d8
+											381 container
+												382 pop up button (collapsed) Description: 채팅 액션, ID: radix-_r_1p_, Secondary Actions: Expand
+												383 button 채팅 고정
+										48 container 대한민국의 나이테
+											49 link Description: 대한민국의 나이테, Value: chatgpt.com/c/6ae27d1f-17d0-83e8-a562-6a9e6c4b8deb
+											50 container
+												51 pop up button (collapsed) Description: 채팅 액션, ID: radix-_r_2s_, Secondary Actions: Expand
+												52 button 채팅 고정
+										53 container 사주
+											54 link Description: 사주, Value: chatgpt.com/c/6ae932d3-2840-83ec-ba2f-445abe0a0540
+											55 container
+												56 pop up button (collapsed) Description: 채팅 액션, ID: radix-_r_41_, Secondary Actions: Expand
+												57 button 채팅 고정
+										58 container 코디
+											59 link Description: 코디, Value: chatgpt.com/c/6ae9213f-28c4-83e8-bc0c-f4751ee5f8d3
+											60 container
+												61 pop up button (collapsed) Description: 채팅 액션, ID: radix-_r_48_, Secondary Actions: Expand
+												62 button 채팅 고정
+										63 container 재봉틀 랜딩 검수 기준
+											64 link Description: 재봉틀 랜딩 검수 기준, Value: chatgpt.com/c/6ae7a17c-59dc-83e8-88d7-385d82d6fda0
+											65 container
+												66 pop up button (collapsed) Description: 채팅 액션, ID: radix-_r_20_, Secondary Actions: Expand
+												67 button 채팅 고정
+										68 container 3D 디자인 명세
+											69 link Description: 3D 디자인 명세, Value: chatgpt.com/c/6ae3e3c0-9838-83e8-8459-432afb019f09
+											70 container
+												71 pop up button (collapsed) Description: 채팅 액션, ID: radix-_r_27_, Secondary Actions: Expand
+												72 button 채팅 고정
+										73 container 출고 검수 지시
+											74 link Description: 출고 검수 지시, Value: chatgpt.com/c/6ae2df54-1cdc-83ee-9386-af0cc3ecca59
+											75 container
+												76 pop up button (collapsed) Description: 채팅 액션, ID: radix-_r_2e_, Secondary Actions: Expand
+												77 button 채팅 고정
+										78 container UI UX 독립 검토
+											79 link Description: UI UX 독립 검토, Value: chatgpt.com/c/6ae2bf3b-dae0-83ee-844e-60579a96cdd2
+											80 container
+												81 pop up button (collapsed) Description: 채팅 액션, ID: radix-_r_2l_, Secondary Actions: Expand
+												82 button 채팅 고정
+										83 container 뉴시스 제목 작업
+											84 link Description: 뉴시스 제목 작업, Value: chatgpt.com/c/6ae18a04-072c-83ec-a3d0-beb6fddd9357
+											85 container
+												86 pop up button (collapsed) Description: 채팅 액션, ID: radix-_r_33_, Secondary Actions: Expand
+												87 button 채팅 고정
+										88 container 편집상 후보 추천
+											89 link Description: 편집상 후보 추천, Value: chatgpt.com/c/6ae18f57-f878-83ee-88df-9c86a4177af7
+											90 container
+												91 pop up button (collapsed) Description: 채팅 액션, ID: radix-_r_3a_, Secondary Actions: Expand
+												92 button 채팅 고정
+										93 container 피아노 기구 작동 디자인
+											94 link Description: 피아노 기구 작동 디자인, Value: chatgpt.com/c/6adac6a0-350c-83ee-a7b4-0b56b50e9be4
+											95 container
+												96 pop up button (collapsed) Description: 채팅 액션, ID: radix-_r_4f_, Secondary Actions: Expand
+												97 button 채팅 고정
+										98 container 포털 내용 검수
+											99 link Description: 포털 내용 검수, Value: chatgpt.com/c/6adf0d26-993c-83ec-9d55-0cec098100bc
+											100 container
+												101 pop up button (collapsed) Description: 채팅 액션, ID: radix-_r_4m_, Secondary Actions: Expand
+												102 button 채팅 고정
+										103 container 매일 아침 주요 뉴스 5건
+											104 link Description: 매일 아침 주요 뉴스 5건, Value: chatgpt.com/c/6ade80e6-1598-83ec-9e39-1fc62eba74d5
+											105 container
+												106 pop up button (collapsed) Description: 채팅 액션, ID: radix-_r_4t_, Secondary Actions: Expand
+												107 button 채팅 고정
+										108 container KT 아이폰 통화녹음 비교
+											109 link Description: KT 아이폰 통화녹음 비교, Value: chatgpt.com/c/6add5138-2834-83ee-a79f-c8b7d0afff57
+											110 container
+												111 pop up button (collapsed) Description: 채팅 액션, ID: radix-_r_54_, Secondary Actions: Expand
+												112 button 채팅 고정
+							113 button 팀원 초대
+								114 text 팀원 초대
+					115 container
+						116 pop up button (collapsed) Description: 채팅 작업, ID: radix-_r_82_, Secondary Actions: Expand
+						117 button 공유
+					118 container
+						119 container 대화
+							120 container
+								251 heading 내가 한 말:, Value: 4
+									252 text 내가 한 말:
+								253 text 검토 반영: 동네 3조건을 코드에 긍정 근거로 요구하고, 구형 스냅샷은 새 정책버전 표기가 없으면 두 모드에서 표시하지 않도록 구현 중입니다. 전체뉴스에는 국내 위치 미지정 기사를 전국 목록에만 허용하므로 지도 핀을 임의로 만들지 않습니다. 문화는 사용자 지시를 보수적으로 해석해 이번에는 국내 실제 전시/미술관·박물관 전시만 허용하고 축제/공연까지 확대하지 않겠습니다. 모드 전환 시 선택 지역은 유지하고 버튼에는 현재 동네뉴스/전체뉴스를 표시했습니다. 이 정책의 가장 위험한 반례 두 개만 지적해주세요.
+								254 button 메시지 복사
+									255 image
+								256 button 프롬프트 공유
+								503 button 메시지 편집
+									504 image
+								259 heading ChatGPT 답변:, Value: 4
+									260 text ChatGPT 답변:
+								261 text 1. 긍정 근거의 형식적 충족 — 동네뉴스 오염 (P1)
+								262 text 기사에 지역명·주민·사업이 모두 등장해도 지역 자체가 주제라는 보장은 없어. 예컨대 전국 부동산 정책 기사에 서초구 아파트 가격과 주민 반응이 포함된 경우, 3조건을 형식적으로 충족해 동네뉴스에 유입될 위험이 있어.
+								263 container
+									264 text 방어 기준:  근거 3개를 단순 키워드가 아닌 기사의  중심 주제·지역에 발생한 구체적 변화·본문 근거 문장 으로 검증. 전국 이슈의 지역 사례는 원칙적으로 제외.
+								265 text 2. 정책버전 통과 후 잘못된 장소 연결 — 전체뉴스 오염 (P1)
+								266 text 새 정책버전이 붙어도 장소 매핑이 정확하다는 보장은 없어. 미국 중간선거 관련 국내 정치인 반응 기사가 국내 정치로 분류되면서 국회 핀에 표시되는 경우가 대표적이야.
+								267 container
+									268 text 방어 기준:  정책버전과 별도로  기사의 국내 중심 주제 및 장소 연결 근거 를 검증. 국내 반응만 다룬 국제 사건 중심 기사는 양쪽 제외. 전체뉴스에서도 기관 소재지·발언 장소만으로 핀 생성 금지.
+								269 container
+									270 text 두 반례 모두  분류 통과와 장소 배치 승인을 별개로 검증 해야 막을 수 있어.
+								271 button 복사
+									272 image
+								273 pop up button (collapsed) Description: 응답 평가, ID: radix-_r_99_, Secondary Actions: Expand
+								274 checkbox Description: 소리 내어 읽기, Value: 0
+								275 button 공유
+								505 pop up button (collapsed) Description: 응답 다시 생성, ID: radix-_r_d7_, Secondary Actions: Expand
+								277 pop up button (collapsed) Description: 추가 액션, ID: radix-_r_9i_, Secondary Actions: Expand
+								278 splitter 오늘 오후 12:49
+								279 heading 내가 한 말:, Value: 4
+									280 text 내가 한 말:
+								281 text 여기뉴스 출고 전 추가 삼단검수입니다. 이전 의견을 반영했으나 실제 공개 849건을 다시 검사하니 P1이 남았습니다: 미국 ISM 지표·미 FDA 승인·뉴욕마라톤·해외축구가 전체뉴스 통과. 한국은행 화폐박물관 전시 기사에서 배경설명인 부산 유네스코위원회 개최를 전시 위치로 오인. KISTI 슈퍼컴 가동식은 대전 기관 소재만으로 동네 판정. 문장을 전처리 중 합쳐 버려 1문장 근거 검사 자체가 무력화된 것이 원인입니다. 기술검수에서 새로고침의 구버전/과거시각 응답이 정상목록을 0건으로 덮는 문제, 모바일 기사원 첫탭에 목록이 안 열리고 두번탭해야 하는 문제도 재현했습니다. 사용자 요구: 동네/전체 두모드 상시버튼, 국제 양쪽 제외, 동네는 실제 지역 주제만 매우보수적, 문화는 국내실제전시 중심. 수정안: 문장경계보존과 핵심문장 event-place검증, 해외주제 공통veto+국내주제 긍정근거, 정책v2전량재평가, 구버전/과거/정책위반 응답거부하고 정상기존데이터 유지, 모바일 비클러스터 첫탭에 기사목록 열기. 빨강은지난방문후기사,파동은최근수집10분미열람으로현재별도여서 범례도 명확히할예정. 이안에서 출고전 반드시막아야할 UX·신뢰도 문제와 반대의견을 구체적인 수용기준 5개 이내로 주세요. 아직 코드실행·실제화면확인은 주장하지마세요. 다음에 실화면증거를 첨부하겠습니다.
+								282 button 메시지 복사
+									283 image
+								284 button 프롬프트 공유
+								506 button 메시지 편집
+									507 image
+								287 heading ChatGPT 답변:, Value: 4
+									288 text ChatGPT 답변:
+								289 heading 여기뉴스 출고 전 독립 검수 — P1 수용 기준, Value: 2
+									290 text 여기뉴스 출고 전 독립 검수 — P1 수용 기준
+								291 container
+									292 text 판정: 현재 출고 보류.  제시한 수정 방향은 타당해. 다만 정책 정확성뿐 아니라 정상 데이터 보존과 첫 탭 동작까지 출고 차단 조건으로 봐야 해.
+								293 table
+									294 row
+										295 cell
+											296 text 우선
+										297 cell
+											298 text 필수 수용 기준
+										299 cell
+											300 text 차단 반례·검증 조건
+									301 row
+										302 cell
+											303 text P1
+										304 cell
+											305 text 국제뉴스 공통 차단
+										306 cell
+											307 text ISM·FDA·뉴욕마라톤·해외축구가 국내 기관·인물 언급만으로 전체뉴스에 통과하면 실패. 해외 주제가 중심인 기사는 양쪽 제외. 국내 주제의 긍정 근거도 필수.
+									308 row
+										309 cell
+											310 text P1
+										311 cell
+											312 text 기사 핵심 사건과 장소 일치
+										313 cell
+											314 text 화폐박물관 전시를 부산에 배치하면 실패. 원문 문장 경계를 보존하고 전시 개최 장소를 확인해야 해. 배경설명·기관 소재·인용 장소는 배치 근거 불인정.
+									315 row
+										316 cell
+											317 text P1
+										318 cell
+											319 text 동네뉴스 독립 판정
+										320 cell
+											321 text KISTI 가동식이 대전 기관 소재만으로 통과하면 실패. 가동식 개최 자체보다 지역 주민·행정·생활·현장에 관한 실질적 지역 주제인지 검증. 불명확하면 제외.
+									322 row
+										323 cell
+											324 text P1
+										325 cell
+											326 text 새로고침 데이터 무결성
+										327 cell
+											328 text 정상 목록 확보 후 구버전·과거 시각·정책 위반 응답이 도착해도 기존 정상 목록·핀·선택 지역을 유지해야 해. 유효한 최신 빈 목록과 잘못된 0건 응답도 구별.
+									329 row
+										330 cell
+											331 text P1
+										332 cell
+											333 text 모바일 첫 탭·상태 전달
+										334 cell
+											335 text 비클러스터 기사원 첫 탭에서 목록이 열려야 해. 모드 전환 시 지역 유지, 두 버튼 상시 노출 및 현재 모드 식별. 빨강은 ‘지난 방문 이후 등록’, 파동은 ‘최근 10분 수집·미열람’으로 별도 설명.
+								336 heading 수정안에 대한 반대 의견 2개, Value: 3
+									337 text 수정안에 대한 반대 의견 2개
+								338 text ① 해외주제 veto의 과잉 차단 위험
+								339 container
+									340 text 해외 국가·기업·인물이 등장한다는 이유만으로 차단하면 국내에서 실제 개최되는 해외 작가 전시까지 탈락할 수 있어. 해외 키워드가 아니라  기사의 중심 사건이 국내인지 해외인지 를 판단해야 해. 해외 작가의 국내 전시는 허용하되 해외 미술관 전시는 제외.
+								341 text ② KISTI 가동식의 일률적 제외 위험
+								342 text 기관 소재만으로 동네 판정하는 것은 잘못이지만, 모든 가동식을 무조건 제외하는 것도 과도해. 대전 지역의 구체적인 주민 영향이나 지역 사업 연계가 기사 핵심으로 확인되면 허용 가능해. 단순 기관 행사라면 제외하는 게 맞아.
+								343 heading 최종 출고 게이트, Value: 3
+									344 text 최종 출고 게이트
+								345 container
+									346 text 849건 전량을 정책 v2로 재평가하되,  기존 오분류 3종(국제·장소 오인·기관 소재 오인)의 재발 0건 을 필수 조건으로 제안해. 여기에 잘못된 새로고침 응답으로 정상 목록이 사라지는 현상 0건, 모바일 첫 탭 실패 0건을 추가해.
+								347 text 정책 버전 표기만으로 통과시키지 말고, 분류 근거와 장소 근거를 각각 검증해야 해.
+								348 text 이번 판정은 제공한 재현 결과와 수정 명세에 대한 검토야. 코드 실행이나 실제 화면 확인은 수행하지 않았어.
+								349 button 복사
+									350 image
+								351 pop up button (collapsed) Description: 응답 평가, ID: radix-_r_a1_, Secondary Actions: Expand
+								352 checkbox Description: 소리 내어 읽기, Value: 0
+								353 button 공유
+								508 pop up button (collapsed) Description: 응답 다시 생성, ID: radix-_r_da_, Secondary Actions: Expand
+								355 pop up button (collapsed) Description: 추가 액션, ID: radix-_r_aa_, Secondary Actions: Expand
+								393 heading 내가 한 말:, Value: 4
+									394 text 내가 한 말:
+								395 button 사용자 첨부 파일
+									396 image 사용자 첨부 파일
+								397 button 사용자 첨부 파일
+									398 image 사용자 첨부 파일
+								399 text 실제 공개서비스 PC/390x844모바일 viewport 캡처 두장을첨부했습니다(실제휴대폰아님). 이것은 수정전v1화면이며새v2에선범례를색과파동으로구분하고모바일첫탭시트열기/오래된자료경고/검증실패시정상자료보존을구현했습니다. 분류는현재제목지역확인필수·전시지명→전시장→에서→개최술어인접·국내리그/국내개최근거없는sports제외·한국시간은국내주제근거에서삭제·보험회사/정전협정/비유적폭발마스킹·정책rulehash자동갱신으로강화중입니다. 사용자최신확정은 기사수줄어도오탐최소화가우선입니다. 실제이미지에서모드버튼(모바일각47x44px,10px글자)의가독성,지도위덮임,PC팝업과모바일시트방향성만시각검수해주세요. 320/390/430폭에서버튼글자를최소12px로키우려면 controls너비확대(예128px)와지도공간균형이적절한지권고해주세요. 코드는이메시지에제공하지않았으니기능실행했다고하지말고이미지에근거해핵심3가지만답해주세요.
+								400 button 메시지 복사
+									401 image
+								402 button 프롬프트 공유
+								509 button 메시지 편집
+									510 image
+								405 heading ChatGPT 답변:, Value: 4
+									406 text ChatGPT 답변:
+								407 container
+									408 text 시각검수 판정: 조건부 승인.  PC·390px 캡처에서 치명적인 겹침은 보이지 않아. 다만 모바일 모드 버튼의 가독성은 출고 전 개선 권고야.
+								409 heading 1. 모드 버튼 — 12px 확대 필요 (P2), Value: 3
+									410 text 1. 모드 버튼 — 12px 확대 필요 (P2)
+								411 text 현재 모바일의 47×44px 버튼과 10px 글자는 작아. 특히 비활성 ‘전체뉴스’가 흐릿하고 두 모드의 선택 상태도 직관적으로 읽히지 않아.
+								412 container
+									413 text 권고:  전체 컨트롤 너비 128px, 버튼 각각 64×44px, 글자 12px·중간 이상 굵기. 320/390/430px 모두 동일 규격을 우선 적용하고, ‘동네뉴스’와 ‘전체뉴스’는 줄바꿈 없이 유지해. 128px에서도 실제 폰트에 따라 글자가 빠듯할 수 있으므로 좌우 패딩을 최소화해야 해.
+								414 heading 2. 지도 위 덮임 — 현재 배치 유지 가능 (P2), Value: 3
+									415 text 2. 지도 위 덮임 — 현재 배치 유지 가능 (P2)
+								416 text 390px에서는 좌측 설명 카드와 우측 컨트롤이 분리돼 있고, 지도 주요 클러스터도 가리지 않아. 128px로 확대해도 현재 지도 오른쪽 여백 안에서 수용 가능해 보여.
+								417 container
+									418 text 다만  320px에서는 좌측 카드와 우측 컨트롤의 수평 충돌 가능성 이 있어. 카드와 버튼의 실제 너비·간격을 확인하고, 충돌하면 카드 폭이나 설명 문구를 줄이는 쪽이 우선이야. 지도 조작 버튼이나 모드 선택을 화면 밖으로 밀어내면 안 돼.
+								419 heading 3. PC 팝업·모바일 시트 — 방향성 적절 (유지), Value: 3
+									420 text 3. PC 팝업·모바일 시트 — 방향성 적절 (유지)
+								421 text PC는 좌측 기사 목록과 지도 위 설명 카드가 분리돼 정보 탐색 구조가 명확해. 모바일은 하단 시트가 지도 탐색을 방해하지 않으면서 기사 목록으로 이어지는 구조라 적절해.
+								422 container
+									423 text 다만 모바일 캡처에서는 시트가 거의 접혀 있어  기사 목록이 열렸을 때의 높이·제목 가독성·지도와의 균형은 아직 판정 불가 야. PC 설명 카드도 현재처럼 작게 유지하고, 모바일에서 추가로 키우지 않는 편이 좋아.
+								424 container
+									425 text 결론:  128px·12px 적용을 권고해. 390/430px은 적합할 가능성이 높고, 320px의 상단 충돌 여부만 실제 화면으로 재확인하면 돼. 기능 동작은 이번 이미지 검수의 판정 대상에서 제외했어.
+								426 button 복사
+									427 image
+								428 pop up button (collapsed) Description: 응답 평가, ID: radix-_r_b6_, Secondary Actions: Expand
+								429 checkbox Description: 소리 내어 읽기, Value: 0
+								430 button 공유
+								511 pop up button (collapsed) Description: 응답 다시 생성, ID: radix-_r_dd_, Secondary Actions: Expand
+								432 pop up button (collapsed) Description: 추가 액션, ID: radix-_r_bf_, Secondary Actions: Expand
+								456 heading 내가 한 말:, Value: 4
+									457 text 내가 한 말:
+								458 button 사용자 첨부 파일
+									459 image 사용자 첨부 파일
+								460 text 후속검수입니다. 요청대로 모바일 모드 두버튼 각각63×44px 폰트12px 전체128px로 변경. 320/390/430 viewport 가로넘침false, 좌안내/우버튼 겹침false. 첨부390×844 부산 마커 첫한탭 후 기사시트 열린 결과: 기사목록393.5px, 3줄제목65px 전부 표시. 실기기 검증은 아닙니다. 유지할 디자인에서 실제 배포차단 UI문제 남았는지 짧게 검토해주세요. PC 제주범례 가림은 별도조정중, 크레딧유지는 사용자지시.
+								461 button 메시지 복사
+									462 image
+								463 button 프롬프트 공유
+								512 button 메시지 편집
+									513 image
+								466 heading ChatGPT 답변:, Value: 4
+									467 text ChatGPT 답변:
+								468 text 판정: 모바일 UI 배포 차단 결함 없음. 현 디자인 유지 권고.
+								469 text 390×844 실제 캡처 기준으로 확인했어.
+								470 content list
+									471 container
+										472 AXListMarker • 
+										473 text 기사 시트:  상단 검색·필터와 기사 목록의 위계가 명확해. 3줄 제목도 잘림 없이 표시되고, 썸네일과 본문 정보가 충돌하지 않아.
+									474 container
+										475 AXListMarker • 
+										476 text 지도 복귀:  상단 ‘아래로 내려 지도 보기’ 문구와 핸들이 있어 시트를 닫는 방향을 이해할 수 있어. 다만 실제 제스처 동작은 판정 대상이 아니야.
+									477 container
+										478 AXListMarker • 
+										479 text 정보 밀도:  부산 3건이 자연스럽게 배열되고, 스크롤 영역과 하단 크레딧도 시각적으로 구분돼. 불필요한 여백이나 가로 잘림은 보이지 않아.
+								480 container
+									481 text 남은 경미한 사항(P3):  ‘부산의 소식 3’의 숫자 3이 상대적으로 작지만 판독에는 문제없어. 수정 필수 아님.
+								482 text 제공한 320/390/430px 넘침·겹침 검사 결과를 전제로, 버튼 확대도 수용 가능해. PC 제주 범례는 별도 검수 대상으로 두고, 크레딧은 유지하면 돼.
+								483 container
+									484 text 이번 화면에서 새로 발견된 P1·P2 UI 결함은 없어.  실기기·기능 검증까지 완료했다는 의미는 아니야.
+								485 button 복사
+									486 image
+								487 pop up button (collapsed) Description: 응답 평가, ID: radix-_r_cd_, Secondary Actions: Expand
+								488 checkbox Description: 소리 내어 읽기, Value: 0
+								489 button 공유
+								514 pop up button (collapsed) Description: 응답 다시 생성, ID: radix-_r_dg_, Secondary Actions: Expand
+								491 pop up button (collapsed) Description: 추가 액션, ID: radix-_r_cm_, Secondary Actions: Expand
+								515 heading 내가 한 말:, Value: 4
+									516 text 내가 한 말:
+								517 button 사용자 첨부 파일
+									518 image 사용자 첨부 파일
+								519 text PC도 후속입니다. 전국 보기 bottom padding45→105px, 모바일132px유지. 첨부는1280x900 fullPage, 제주마커/지명이 범례위에 나타납니다. 이 지점 확인하고 새배포차단 결함있으면 알려주세요. 크레딧과 접근성 줌버튼 유지. 파동은 페이지진입 짧은소개 +새수집미열람10분 기준.
+								520 button 메시지 복사
+									521 image
+								522 button 프롬프트 공유
+								523 button 메시지 편집
+									524 image
+								525 heading ChatGPT 답변:, Value: 4
+									526 text ChatGPT 답변:
+								527 text PC 1280×900 시각검수: 배포 차단 UI 결함 없음. 유지 승인.
+								528 container
+									529 text 1.  제주 마커·범례 충돌 해결(P1 해소) 제주 마커와 ‘제주’ 지명이 범례 위에 완전히 나타나고, 파동 외곽도 범례와 겹치지 않아. bottom padding 105px 조정은 현재 화면에서 적절해.
+								530 container
+									531 text 2.  지도·컨트롤 배치 양호 좌측 기사 패널, 우측 모드 버튼, 줌 버튼, 하단 범례가 서로 침범하지 않아. 경상남도·부산 파동은 일부 겹치지만 마커 숫자와 지명은 구별 가능해. 출고 차단 사유는 아니야.
+								532 container
+									533 text 3.  범례·상태 표현(P3) 빨강(지난 방문 후 새 기사), 초록(기사 수), 파동(새 수집·미열람 10분)의 구분이 이전보다 명확해. 다만 초록 항목의 ‘기사 수’는 마커 숫자의 의미를 설명한다는 점에서 적절하고, 파동이 일시적이라는 안내도 충분해.
+								534 container
+									535 text 최종 판정:  제공된 PC 화면에서 새 P1·P2 시각 결함은 발견되지 않았어. 크레딧과 접근성 줌 버튼은 그대로 유지해도 돼.
+								536 text 이는 첨부 화면에 대한 시각 판정이며, 실제 동작이나 데이터 분류 정확성까지 승인한 것은 아니야.
+								537 button 복사
+									538 image
+								539 pop up button (collapsed) Description: 응답 평가, ID: radix-_r_dj_, Secondary Actions: Expand
+								540 checkbox Description: 소리 내어 읽기, Value: 0
+								541 button 공유
+								542 pop up button (collapsed) Description: 응답 다시 생성, ID: radix-_r_dp_, Secondary Actions: Expand
+								543 pop up button (collapsed) Description: 추가 액션, ID: radix-_r_ds_, Secondary Actions: Expand
+								544 container 이 성격이 마음에 드시나요?
+									545 text 이 성격이 마음에 드시나요?
+									546 checkbox Description: 네, Value: 0
+									547 checkbox Description: 아니요, Value: 0
+									548 button 평가 프롬프트 닫기
+							356 container
+								357 text ChatGPT는 실수할 수 있습니다. 워크스페이스 데이터는 모델 학습에 사용되지 않습니다.
+							358 container
+								359 button 맨 아래로 스크롤
+								360 heading 최신 응답, Value: 4
+									361 text 최신 응답
+								362 container
+									363 container
+										502 button (collapsed) Description: 파일 등 추가, Secondary Actions: Expand
+										549 text entry area (settable) Description: ChatGPT에게 물어보세요, Value: 
+
+											550 container
+												551 text ChatGPT에게 물어보세요
+										368 pop up button (collapsed) Description: ChatGPT 모델 선택, ID: radix-_r_7i_, Secondary Actions: Expand
+											369 text Instant
+										370 button 음성 입력
+										552 button 음성 대화 시작
+		553 text 응답이 완료되었습니다
+
+The focused UI element is 549 text entry area (settable) Description: ChatGPT에게 물어보세요, Value: 

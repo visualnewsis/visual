@@ -1,0 +1,26 @@
+heading "ChatGPT 답변:" [level=4]
+    - paragraph:
+      - generic: "최종 판정: 편집 원고·납품 형식 범위에서 잔여 P1·P2 없음. 승인."
+    - paragraph: 원본 출처 분리, 캡션 유지, HTML 링크 확인 적절. CMS 호환성은 이후 발행 단계 확인 사항이다. 실제 발행 및 전문 점역 감수 승인은 포함하지 않는다.
+    - button "복사":
+    - button "응답 평가":
+    - button "소리 내어 읽기":
+    - button "공유":
+    - button "응답 다시 생성":
+    - button "추가 액션":
+    - generic: ChatGPT는 실수할 수 있습니다. 워크스페이스 데이터는 모델 학습에 사용되지 않습니다.
+    - button:
+    - heading "최신 응답" [level=4]
+    - status
+    - button "파일 등 추가":
+    - textbox "ChatGPT에게 물어보세요" [active]:
+      - paragraph: ChatGPT에게 물어보세요
+    - button "ChatGPT 모델 선택":
+      - generic: 추론 수준
+      - generic: Instant
+    - button "음성 입력":
+    - button "음성 대화 시작":
+- status
+- status: 응답이 완료되었습니다
+- status
+- status

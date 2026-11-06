@@ -1,0 +1,91 @@
+[
+  {
+    "path": "goodeasy/gramophone/index.html",
+    "status": 200,
+    "matches": true,
+    "bytes": 15392,
+    "noindex": true
+  },
+  {
+    "path": "goodeasy/keyboard/index.html",
+    "status": 200,
+    "matches": true,
+    "bytes": 18295,
+    "noindex": true
+  },
+  {
+    "path": "goodeasy/projector/index.html",
+    "status": 200,
+    "matches": true,
+    "bytes": 14614,
+    "noindex": true
+  },
+  {
+    "path": "goodeasy/espresso-machine/index.html",
+    "status": 200,
+    "matches": true,
+    "bytes": 19210,
+    "noindex": true
+  },
+  {
+    "path": "goodeasy/violin/index.html",
+    "status": 200,
+    "matches": true,
+    "bytes": 18579,
+    "noindex": true
+  },
+  {
+    "path": "goodeasy/review/index.html",
+    "status": 200,
+    "matches": true,
+    "bytes": 9777
+  },
+  {
+    "path": "goodeasy/assets/coffee-detail.js",
+    "status": 200,
+    "matches": true,
+    "bytes": 41459
+  },
+  {
+    "path": "goodeasy/assets/models/violin.js",
+    "status": 200,
+    "matches": true,
+    "bytes": 20810
+  },
+  {
+    "path": "goodeasy/assets/models/violin-fittings.js",
+    "status": 200,
+    "matches": true,
+    "bytes": 4557
+  },
+  {
+    "path": "goodeasy/assets/models/violin-surface.js",
+    "status": 200,
+    "matches": true,
+    "bytes": 5478
+  },
+  {
+    "path": "goodeasy/assets/projector-hero.js",
+    "status": 200,
+    "matches": true,
+    "bytes": 13486
+  },
+  {
+    "path": "goodeasy/assets/eight-release.js",
+    "status": 200,
+    "matches": true,
+    "bytes": 2068
+  },
+  {
+    "path": "goodeasy/gramophone/gramophone-model.js",
+    "status": 200,
+    "matches": true,
+    "bytes": 20300
+  },
+  {
+    "path": "goodeasy/index.html",
+    "status": 200,
+    "matches": true,
+    "bytes": 9795
+  }
+]

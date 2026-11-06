@@ -1,0 +1,48 @@
+heading "Claude 응답: #018 범위 최종 정리 (Claude)" [level=3]'
+      - heading "#018 범위 최종 정리 (Claude)" [level=2]
+      - paragraph: 편집 원고 텍스트와 납품 형식 범위에서 수정이 필요한 P1·P2는 남아 있지 않습니다. 원본 출처 행 분리와 제목·부제 유지 결정도 받아들입니다.
+      - paragraph: CMS 발행과 전문 점역 감수는 이 판정에 포함되지 않습니다.
+      - toolbar "메시지 작업":
+        - button "복사":
+          - generic: 
+        - status
+        - button "소리 내어 읽기":
+          - generic: 
+        - button "좋은 응답":
+          - generic: 
+        - button "나쁜 응답":
+          - generic: 
+        - button "재시도":
+          - generic: 
+        - time: 지금
+  - status
+  - button:
+    - generic: 
+  - status
+  - status
+  - status
+  - status
+  - generic: 메시지를 입력하세요…
+  - textbox "Claude에게 프롬프트를 입력하세요." [active]:
+    - paragraph
+  - status
+  - button "파일, 커넥터 등 추가":
+    - generic: 
+  - group "받아쓰기":
+    - button "받아쓰기":
+      - generic: 
+    - button "마이크":
+      - generic: 
+  - button "음성 모드 시작":
+  - note:
+    - link "Claude는 AI이므로 실수를 할 수 있습니다. 응답을 다시 한번 확인해 주세요.":
+      - /url: https://support.anthropic.com/en/articles/8525154-claude-is-providing-incorrect-or-misleading-responses-what-s-going-on
+      - text: Claude는 AI이므로 실수를 할 수 있습니다.
+      - generic: 응답을 다시 한번 확인해 주세요.
+  - 'button "모델: Opus 5.5 중간"':
+    - generic: Opus 5.5
+    - generic: 중간
+  - heading [level=3]: 콘텐츠
+  - button:
+    - heading [level=3]: violin.js
+    - p

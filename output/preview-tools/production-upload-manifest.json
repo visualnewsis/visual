@@ -1,0 +1,101 @@
+{
+  "commit": "2ea55f0f09c8658df4a3c220a039894384386bce",
+  "files": [
+    {
+      "file": "braille-100/braille-engine.js",
+      "sha256": "7558467576d2d6149223dba98c123d5aa77bbdf7d3f1ae040e41f69a9a793db3"
+    },
+    {
+      "file": "braille-100/braille-experience.js",
+      "sha256": "6494aadbc33a1244c67dfe38339b4801eea0808445aae2ccfe4c8fc77c7b159e"
+    },
+    {
+      "file": "braille-100/images/book-1280.jpg",
+      "sha256": "3e0b0cc6d3619a68b5aeaf28a3e27d08d674af465d14a115a3a0c0b18a39d999"
+    },
+    {
+      "file": "braille-100/images/book-1920.jpg",
+      "sha256": "60001e35a33da42ec44210f60a625ca4b2f13cd0057902a9fe8dc515b1e02e83"
+    },
+    {
+      "file": "braille-100/images/book-720.jpg",
+      "sha256": "30f1e23d97e1752ed02be3739a94af7d4c96aded8900a35252468a6b308ab499"
+    },
+    {
+      "file": "braille-100/images/contact-1280.jpg",
+      "sha256": "cd417ac75f163271e013dda03e4b34fa104b94be54b20dcd8d5e0e6e1ffd02ab"
+    },
+    {
+      "file": "braille-100/images/contact-1920.jpg",
+      "sha256": "71eb3a5bbcf9be4fb01fcb3f4f6dc22fdc30cbb4e24bc211ebe7300a611f7170"
+    },
+    {
+      "file": "braille-100/images/contact-720.jpg",
+      "sha256": "e961d42969dd510f83be86020c2ab834d96a1e0b33bc38083c696a120ee15bec"
+    },
+    {
+      "file": "braille-100/images/document-1280.jpg",
+      "sha256": "b38318e4d6e66865e2cb422767a9f986dadebf13e0bd211198134b2c059dc2dd"
+    },
+    {
+      "file": "braille-100/images/document-1920.jpg",
+      "sha256": "34538f5ab920cf8070728473ab5f5fe9df53bdd4ca5ee299361607cc43b92c9d"
+    },
+    {
+      "file": "braille-100/images/document-720.jpg",
+      "sha256": "6213686e57df06ada1373d14aaa27b4efa0420e638d7ad81ebf876d184f58dfe"
+    },
+    {
+      "file": "braille-100/images/history-1280.jpg",
+      "sha256": "b8afdc8e32937cd77ba67e61c030e239f0ad088a038b2015401539f4efdd072a"
+    },
+    {
+      "file": "braille-100/images/history-1920.jpg",
+      "sha256": "c790236e4e6702b515025b53174e93673478bade7ba8d768ee3d243404c7260d"
+    },
+    {
+      "file": "braille-100/images/history-720.jpg",
+      "sha256": "a24e76f6f8348e6fb6d52e80690e82f4b809169babc7fa8b78d854bbd87cd15d"
+    },
+    {
+      "file": "braille-100/index.html",
+      "sha256": "41e0da67a92fdd5a19edf5164650777650e66ccae7af550d85f4ce46d3db97ec"
+    },
+    {
+      "file": "braille-100/learn.css",
+      "sha256": "06964de3411cbeee1d9d02e90353fe7773c0e3591c4a77decf02add0bfc8360b"
+    },
+    {
+      "file": "braille-100/learn.html",
+      "sha256": "18a085c9cacfc12d04cc35efb56ee08590ef92935bb17a775123768ec6c5ffd9"
+    },
+    {
+      "file": "braille-100/learn.js",
+      "sha256": "e4f6c20539ab9940257d3f9e4258c02de6ce4a370966874f2645482cba754f77"
+    },
+    {
+      "file": "braille-100/story.css",
+      "sha256": "40f1681388c0eb478c659714aba50890d7dc71225296d7669011dd89e436fb70"
+    },
+    {
+      "file": "braille-100/story.js",
+      "sha256": "80b7c25ec632c7b8021938d458d725d32084ef9a9c7f1a49074cc93078ef3826"
+    },
+    {
+      "file": "braille-100/vendor/braillify/LICENSE.txt",
+      "sha256": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4"
+    },
+    {
+      "file": "braille-100/vendor/braillify/NOTICE.txt",
+      "sha256": "c9c3af53bde4a4f996b93a61d5626b50031252b16df6a0909ba8ffe3590fc5c4"
+    },
+    {
+      "file": "braille-100/vendor/braillify/index_bg.js",
+      "sha256": "b20389e806656a702683b689ebd52791164773bbb10fb9e38a11f162f6718f7d"
+    },
+    {
+      "file": "braille-100/vendor/braillify/index_bg.wasm",
+      "sha256": "410321ef1c908002de616454275364c3ebf1a3df18a35b5edd0bf188f2a29458"
+    }
+  ]
+}

@@ -1,0 +1,23 @@
+/* VISUAL NEWSIS / GUDIGUJI observation controls v1 */
+:root {
+ --obs-bg:#121619; --obs-panel:#202529; --obs-panel-hover:#3a4042;
+ --obs-border:#50585b; --obs-text:#f3eee5; --obs-muted:#aeb5b6;
+ --obs-accent:#d9ad71; --obs-accent-surface:#6b5135;
+ --obs-focus:#f3d5a4; --obs-error:#e3a39a;
+ --obs-radius:12px; --obs-space-1:4px; --obs-space-2:8px;
+ --obs-space-3:12px; --obs-space-4:16px; --obs-space-6:24px;
+ --obs-control-height:44px; --obs-icon:20px; --obs-stroke:1.75px;
+ --obs-font: 'Noto Sans KR', 'Noto Sans CJK KR', system-ui, sans-serif;
+}
+.obs-control {min-width:44px;min-height:44px;display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:0 14px;border:1px solid var(--obs-border);border-radius:var(--obs-radius);background:#2b3033;color:var(--obs-text);font:500 14px/1.3 var(--obs-font);cursor:pointer;touch-action:manipulation;}
+.obs-control:hover:not(:disabled){background:var(--obs-panel-hover);}
+.obs-control:focus-visible{outline:2px solid var(--obs-focus);outline-offset:3px;}
+.obs-control:active:not(:disabled){transform:translateY(1px);}
+.obs-control[aria-pressed="true"],.obs-control[aria-selected="true"]{background:var(--obs-accent-surface);border-color:var(--obs-accent);}
+.obs-control:disabled{opacity:.42;cursor:not-allowed;}
+.obs-control[data-error="true"]{border-color:var(--obs-error);background:#402829;}
+.obs-control[aria-busy="true"]{cursor:progress;}
+.obs-timeline{touch-action:pan-y;accent-color:var(--obs-accent);min-height:44px;}
+.obs-icon{width:var(--obs-icon);height:var(--obs-icon);stroke:currentColor;stroke-width:var(--obs-stroke);fill:none;stroke-linecap:round;stroke-linejoin:round;}
+@media (max-width:680px){.obs-control{min-width:44px;min-height:48px}.obs-toolbar{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}.obs-secondary{display:none}}
+@media (prefers-reduced-motion:reduce){.obs-control{transition:none!important;animation:none!important}}

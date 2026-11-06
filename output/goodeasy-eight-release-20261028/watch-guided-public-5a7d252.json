@@ -1,0 +1,62 @@
+[
+  {
+    "file": "goodeasy/assets/anatomy-models.js",
+    "status": 200,
+    "match": true
+  },
+  {
+    "file": "goodeasy/assets/anatomy-viewer.js",
+    "status": 200,
+    "match": true
+  },
+  {
+    "file": "goodeasy/assets/anatomy-watch.js",
+    "status": 200,
+    "match": true
+  },
+  {
+    "file": "goodeasy/assets/quality-machines.js",
+    "status": 200,
+    "match": true
+  },
+  {
+    "file": "goodeasy/assets/quality-stage.js",
+    "status": 200,
+    "match": true
+  },
+  {
+    "file": "goodeasy/assets/release-machine-models.js",
+    "status": 200,
+    "match": true
+  },
+  {
+    "file": "goodeasy/assets/research-watch.js",
+    "status": 200,
+    "match": true
+  },
+  {
+    "file": "goodeasy/assets/research.js",
+    "status": 200,
+    "match": true
+  },
+  {
+    "file": "goodeasy/assets/watch-hero.js",
+    "status": 200,
+    "match": true
+  },
+  {
+    "file": "goodeasy/assets/watch-observation-tour.css",
+    "status": 200,
+    "match": true
+  },
+  {
+    "file": "goodeasy/assets/watch-observation-tour.js",
+    "status": 200,
+    "match": true
+  },
+  {
+    "file": "goodeasy/watch/index.html",
+    "status": 200,
+    "match": true
+  }
+]

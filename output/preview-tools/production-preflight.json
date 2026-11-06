@@ -1,0 +1,336 @@
+{
+  "passed": 81,
+  "results": [
+    {
+      "name": "Article JSON-LD parses",
+      "pass": true
+    },
+    {
+      "name": "JavaScript parses",
+      "pass": true
+    },
+    {
+      "name": "Unique IDs",
+      "pass": true
+    },
+    {
+      "name": "Anchor #story",
+      "pass": true
+    },
+    {
+      "name": "Anchor #history",
+      "pass": true
+    },
+    {
+      "name": "Anchor #history",
+      "pass": true
+    },
+    {
+      "name": "Anchor #structure",
+      "pass": true
+    },
+    {
+      "name": "Anchor #learning",
+      "pass": true
+    },
+    {
+      "name": "Anchor #document",
+      "pass": true
+    },
+    {
+      "name": "Anchor #book",
+      "pass": true
+    },
+    {
+      "name": "Anchor #access",
+      "pass": true
+    },
+    {
+      "name": "Anchor #your-message",
+      "pass": true
+    },
+    {
+      "name": "Anchor #source-history",
+      "pass": true
+    },
+    {
+      "name": "Anchor #source-structure",
+      "pass": true
+    },
+    {
+      "name": "Anchor #source-writing",
+      "pass": true
+    },
+    {
+      "name": "Anchor #source-learning",
+      "pass": true
+    },
+    {
+      "name": "Anchor #source-courses",
+      "pass": true
+    },
+    {
+      "name": "Anchor #source-transcription",
+      "pass": true
+    },
+    {
+      "name": "Anchor #source-document",
+      "pass": true
+    },
+    {
+      "name": "Anchor #source-music",
+      "pass": true
+    },
+    {
+      "name": "Anchor #source-rnib",
+      "pass": true
+    },
+    {
+      "name": "Anchor #source-digital",
+      "pass": true
+    },
+    {
+      "name": "Anchor #source-survey",
+      "pass": true
+    },
+    {
+      "name": "Anchor #opening",
+      "pass": true
+    },
+    {
+      "name": "Local asset ../assets/logo2024.png",
+      "pass": true
+    },
+    {
+      "name": "Local asset ../assets/visual-header.css?v=20261026-goodeasy-lab1",
+      "pass": true
+    },
+    {
+      "name": "Local asset ../assets/editshop-carousel.css",
+      "pass": true
+    },
+    {
+      "name": "Local asset ../assets/editshop-brand-banner.css",
+      "pass": true
+    },
+    {
+      "name": "Local asset story.css",
+      "pass": true
+    },
+    {
+      "name": "Local asset ../assets/visual-header.js?v=20261026-menuorder1",
+      "pass": true
+    },
+    {
+      "name": "Local asset ../assets/editshop-carousel.js",
+      "pass": true
+    },
+    {
+      "name": "Local asset story.js",
+      "pass": true
+    },
+    {
+      "name": "Local asset braille-experience.js",
+      "pass": true
+    },
+    {
+      "name": "Local asset ../",
+      "pass": true
+    },
+    {
+      "name": "Local asset ../editshop/",
+      "pass": true
+    },
+    {
+      "name": "Local asset images/contact-1920.jpg",
+      "pass": true
+    },
+    {
+      "name": "Local asset images/history-1280.jpg",
+      "pass": true
+    },
+    {
+      "name": "Local asset images/document-1280.jpg",
+      "pass": true
+    },
+    {
+      "name": "Local asset images/book-1920.jpg",
+      "pass": true
+    },
+    {
+      "name": "Local asset learn.html",
+      "pass": true
+    },
+    {
+      "name": "Local asset vendor/braillify/LICENSE.txt",
+      "pass": true
+    },
+    {
+      "name": "Local asset vendor/braillify/NOTICE.txt",
+      "pass": true
+    },
+    {
+      "name": "Local asset images/contact-720.jpg",
+      "pass": true
+    },
+    {
+      "name": "Local asset images/contact-1280.jpg",
+      "pass": true
+    },
+    {
+      "name": "Local asset images/history-720.jpg",
+      "pass": true
+    },
+    {
+      "name": "Local asset images/history-1920.jpg",
+      "pass": true
+    },
+    {
+      "name": "Local asset images/document-720.jpg",
+      "pass": true
+    },
+    {
+      "name": "Local asset images/document-1920.jpg",
+      "pass": true
+    },
+    {
+      "name": "Local asset images/book-720.jpg",
+      "pass": true
+    },
+    {
+      "name": "Local asset images/book-1280.jpg",
+      "pass": true
+    },
+    {
+      "name": "Shared header reused",
+      "pass": true
+    },
+    {
+      "name": "Shared carousel reused",
+      "pass": true
+    },
+    {
+      "name": "Shared brand banner reused",
+      "pass": true
+    },
+    {
+      "name": "15 original provenance records retained",
+      "pass": true
+    },
+    {
+      "name": "Four selected originals have embedded captions",
+      "pass": true
+    },
+    {
+      "name": "Preview excluded from search indexing",
+      "pass": true
+    },
+    {
+      "name": "Publication date not fabricated",
+      "pass": true
+    },
+    {
+      "name": "Source images not stretched or cropped",
+      "pass": true
+    },
+    {
+      "name": "Reduced motion supported",
+      "pass": true
+    },
+    {
+      "name": "Contrast body 14.08:1",
+      "pass": true
+    },
+    {
+      "name": "Contrast caption 5.08:1",
+      "pass": true
+    },
+    {
+      "name": "Contrast green 5.61:1",
+      "pass": true
+    },
+    {
+      "name": "Contrast structure 13.26:1",
+      "pass": true
+    },
+    {
+      "name": "Carousel image /oil/images/visual-01.jpg",
+      "pass": true
+    },
+    {
+      "name": "Carousel image /thief/images/visual-01.png",
+      "pass": true
+    },
+    {
+      "name": "Carousel image /shelter/images/thumbnail-emergency-bg-v1.png",
+      "pass": true
+    },
+    {
+      "name": "Carousel image /temperature/images/thermometer.jpg",
+      "pass": true
+    },
+    {
+      "name": "Carousel image /kangin/images/hero.jpg",
+      "pass": true
+    },
+    {
+      "name": "Carousel image /children/images/children-running.jpg",
+      "pass": true
+    },
+    {
+      "name": "Carousel image /buy-live/images/hero.jpg",
+      "pass": true
+    },
+    {
+      "name": "Carousel image /witness/images/thumbnail-carousel-1600x948.jpg",
+      "pass": true
+    },
+    {
+      "name": "Carousel image /aijob/images/hero-newsroom-night-v7.png",
+      "pass": true
+    },
+    {
+      "name": "Carousel image /pension/images/hero-payslip-final.jpg",
+      "pass": true
+    },
+    {
+      "name": "Carousel image /senior/images/NISI20240905_0020511616.jpg",
+      "pass": true
+    },
+    {
+      "name": "Carousel image /atleti-2gang/images/hero-derby-bellingham.jpg",
+      "pass": true
+    },
+    {
+      "name": "Carousel image /homecoming/images/NISI20260831_0021417256.jpg",
+      "pass": true
+    },
+    {
+      "name": "Carousel image /dmz/images/dmz-cover-1200x800.jpg",
+      "pass": true
+    },
+    {
+      "name": "Carousel image /smartwatch/images/og-songpa-court-1200x630.jpg",
+      "pass": true
+    },
+    {
+      "name": "Carousel image /spai/images/og-spai-1200x630.jpg",
+      "pass": true
+    },
+    {
+      "name": "Carousel image /quit/images/og-quit-1200x630.jpg",
+      "pass": true
+    },
+    {
+      "name": "Preview HTTP 200",
+      "pass": true
+    }
+  ],
+  "releasePending": [
+    "Final title and canonical URL",
+    "Absolute OG/Twitter image URL",
+    "Publication date and indexing change",
+    "Editorial/point-user sign-off",
+    "Real iPhone Safari and Android Chrome checks"
+  ]
+}

@@ -1,0 +1,29 @@
+{
+  "commit": "43895db040bf271c0c0d4e694ef3ab0f9e81b730",
+  "scope": [
+    "재봉틀 본편 정식 공개",
+    "랜딩 재봉틀 체험과 여섯 번째 카드",
+    "사이트맵 및 공개 검사"
+  ],
+  "published": "2026-11-02T10:00:00+09:00",
+  "tests": 23,
+  "checked_routes": 13,
+  "checked_service_pages": 20,
+  "verified_viewports": [
+    "1280x720",
+    "390x844"
+  ],
+  "hardware_tested": false,
+  "gpt": "https://chatgpt.com/c/6ae7a17c-59dc-83e8-88d7-385d82d6fda0",
+  "claude": "https://claude.ai/chat/04071242-d268-4d86-84fe-c5e9548aef16",
+  "review_scope": "GPT: design brief + actual PC screenshot. Claude: actual landing code static review; no new P0/P1. Adopted minor background stop status, error recovery and audio cache query.",
+  "preserved": [
+    "기존 공개 다섯 편",
+    "미공개 회차 검색 제외",
+    "공용 헤더 및 추적 태그",
+    "VISUAL NEWSIS 루트 작품 목록"
+  ],
+  "deployment": "https://github.com/visualnewsis/visual/actions/runs/41347647567",
+  "deployment_status": "success",
+  "public_verification": "6 resources match; live one-stitch 3mm action and quote navigation verified; no browser errors"
+}

@@ -1,0 +1,28 @@
+{
+  "landing": {
+    "status": 200,
+    "bytes": 11031,
+    "sha256": "deaf52faa8e210f07ff5eeac18bfee6e3053a62adc84d0cffc4b3483142be637",
+    "cards": [
+      "piano/",
+      "camera/",
+      "guitar/",
+      "fishing-reel/",
+      "watch/",
+      "sewing-machine/",
+      "gramophone/",
+      "keyboard/"
+    ]
+  },
+  "keyboard/": {
+    "status": 200,
+    "bytes": 18612,
+    "sha256": "d611d3f16dc976c2dd0d15676935f98d335c725f795e56984fd7b7dbc36abe91",
+    "published": true
+  },
+  "assets/landing-keyboard.jpg": {
+    "status": 200,
+    "bytes": 355081,
+    "sha256": "50ef8a8ef167bc4244554561152e38bf58460ae5cdb4c7cd3fb86be0107d570f"
+  }
+}

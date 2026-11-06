@@ -1,0 +1,178 @@
+[
+  {
+    "engine": "chromium",
+    "width": 360,
+    "p": "/",
+    "overflow": false,
+    "navWidth": 324,
+    "cards": [
+      {
+        "href": "/newsmap/",
+        "width": 324,
+        "text": "뉴스가 빛나는 지도 · 여기뉴스\n여기 무슨\n일 있어?\n\n궁금한 곳을 눌러보세요.\n우리 동네 뉴스를 지도에서 만납니다.\n\n여기뉴스에서 찾아보기\n↗",
+        "image": 76,
+        "imageOK": true
+      },
+      {
+        "href": "/goodeasy/",
+        "width": 324,
+        "text": "안재현의\n굳이구지\n연구소\n\n건반을 누르고,\n한 음이 만들어지는 안쪽까지.\n\n연구소 들어가기\n↗",
+        "image": 76,
+        "imageOK": true
+      }
+    ],
+    "ga": 1,
+    "errors": []
+  },
+  {
+    "engine": "chromium",
+    "width": 360,
+    "p": "/editshop/",
+    "overflow": false,
+    "navWidth": 360,
+    "cards": [
+      {
+        "href": "/goodeasy/",
+        "width": 320,
+        "text": "안재현의\n굳이구지\n연구소\n\n건반을 누르고,\n한 음이 만들어지는 안쪽까지.\n\n연구소 들어가기\n↗",
+        "image": 76,
+        "imageOK": true
+      }
+    ],
+    "ga": 1,
+    "errors": []
+  },
+  {
+    "engine": "chromium",
+    "width": 390,
+    "p": "/",
+    "overflow": false,
+    "navWidth": 354,
+    "cards": [
+      {
+        "href": "/newsmap/",
+        "width": 354,
+        "text": "뉴스가 빛나는 지도 · 여기뉴스\n여기 무슨\n일 있어?\n\n궁금한 곳을 눌러보세요.\n우리 동네 뉴스를 지도에서 만납니다.\n\n여기뉴스에서 찾아보기\n↗",
+        "image": 100,
+        "imageOK": true
+      },
+      {
+        "href": "/goodeasy/",
+        "width": 354,
+        "text": "안재현의\n굳이구지\n연구소\n\n건반을 누르고,\n한 음이 만들어지는 안쪽까지.\n\n연구소 들어가기\n↗",
+        "image": 100,
+        "imageOK": true
+      }
+    ],
+    "ga": 1,
+    "errors": []
+  },
+  {
+    "engine": "chromium",
+    "width": 390,
+    "p": "/editshop/",
+    "overflow": false,
+    "navWidth": 390,
+    "cards": [
+      {
+        "href": "/goodeasy/",
+        "width": 350,
+        "text": "안재현의\n굳이구지\n연구소\n\n건반을 누르고,\n한 음이 만들어지는 안쪽까지.\n\n연구소 들어가기\n↗",
+        "image": 100,
+        "imageOK": true
+      }
+    ],
+    "ga": 1,
+    "errors": []
+  },
+  {
+    "engine": "chromium",
+    "width": 768,
+    "p": "/",
+    "overflow": false,
+    "navWidth": 706.5625,
+    "cards": [
+      {
+        "href": "/newsmap/",
+        "width": 342.28125,
+        "text": "뉴스가 빛나는 지도 · 여기뉴스\n여기 무슨\n일 있어?\n\n궁금한 곳을 눌러보세요.\n우리 동네 뉴스를 지도에서 만납니다.\n\n여기뉴스에서 찾아보기\n↗",
+        "image": 96,
+        "imageOK": true
+      },
+      {
+        "href": "/goodeasy/",
+        "width": 342.28125,
+        "text": "안재현의\n굳이구지\n연구소\n\n건반을 누르고,\n한 음이 만들어지는 안쪽까지.\n\n연구소 들어가기\n↗",
+        "image": 96,
+        "imageOK": true
+      }
+    ],
+    "ga": 1,
+    "errors": []
+  },
+  {
+    "engine": "chromium",
+    "width": 768,
+    "p": "/editshop/",
+    "overflow": false,
+    "navWidth": 768,
+    "cards": [
+      {
+        "href": "/goodeasy/",
+        "width": 694.28125,
+        "text": "안재현의\n굳이구지\n연구소\n\n건반을 누르고,\n한 음이 만들어지는 안쪽까지.\n\n연구소 들어가기\n↗",
+        "image": 194.484375,
+        "imageOK": true
+      }
+    ],
+    "ga": 1,
+    "errors": []
+  },
+  {
+    "engine": "chromium",
+    "width": 1440,
+    "p": "/",
+    "overflow": false,
+    "navWidth": 1312,
+    "cards": [
+      {
+        "href": "/newsmap/",
+        "width": 645,
+        "text": "뉴스가 빛나는 지도 · 여기뉴스\n여기 무슨\n일 있어?\n\n궁금한 곳을 눌러보세요.\n우리 동네 뉴스를 지도에서 만납니다.\n\n여기뉴스에서 찾아보기\n↗",
+        "image": 136,
+        "imageOK": true
+      },
+      {
+        "href": "/goodeasy/",
+        "width": 645,
+        "text": "안재현의\n굳이구지\n연구소\n\n건반을 누르고,\n한 음이 만들어지는 안쪽까지.\n\n연구소 들어가기\n↗",
+        "image": 136,
+        "imageOK": true
+      }
+    ],
+    "ga": 1,
+    "errors": []
+  },
+  {
+    "engine": "chromium",
+    "width": 1440,
+    "p": "/editshop/",
+    "overflow": false,
+    "navWidth": 1440,
+    "cards": [
+      {
+        "href": "/goodeasy/",
+        "width": 1301.78125,
+        "text": "안재현의\n굳이구지\n연구소\n\n건반을 누르고,\n한 음이 만들어지는 안쪽까지.\n\n연구소 들어가기\n↗",
+        "image": 280,
+        "imageOK": true
+      }
+    ],
+    "ga": 1,
+    "errors": []
+  },
+  {
+    "engine": "webkit",
+    "unavailable": "browserType.launch: Executable doesn't exist at C:\\Users\\user\\AppData\\Local\\ms-playwright\\webkit-2336\\Playwright.exe"
+  }
+]

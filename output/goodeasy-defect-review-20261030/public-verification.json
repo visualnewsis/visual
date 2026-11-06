@@ -1,0 +1,91 @@
+{
+  "pages": {
+    "violin": {
+      "status": 200,
+      "jsonld_blocks": 1,
+      "prototype_indexing": true,
+      "episode": "09",
+      "cache": "reviewed12"
+    },
+    "projector": {
+      "status": 200,
+      "jsonld_blocks": 1,
+      "prototype_indexing": true,
+      "episode": "10",
+      "cache": "reviewed12"
+    },
+    "espresso-machine": {
+      "status": 200,
+      "jsonld_blocks": 1,
+      "prototype_indexing": true,
+      "episode": "11",
+      "cache": "reviewed12"
+    },
+    "goodeasy/": {
+      "status": 200,
+      "matches_approved_local": true
+    },
+    "goodeasy/review/": {
+      "status": 200,
+      "matches_approved_local": true
+    }
+  },
+  "assets": {
+    "assets/models/violin.js": {
+      "status": 200,
+      "matches_local": true,
+      "sha256": "e694656cf6f89b0c19c654d84a4e35359f1fc9dcc5498aa0efd57fa7362f6ba3"
+    },
+    "assets/models/violin-surface.js": {
+      "status": 200,
+      "matches_local": true,
+      "sha256": "bed62b2a8f56f1e0f0bef7c24400808da673afe077c3bf06d5277ddbc98b843e"
+    },
+    "assets/models/violin-finish.js": {
+      "status": 200,
+      "matches_local": true,
+      "sha256": "fa4ee5142b1ed35f2844997e90b405406e5874d623548c4f047f7344ae16a36c"
+    },
+    "assets/coffee-detail.js": {
+      "status": 200,
+      "matches_local": true,
+      "sha256": "f784bc54428b95064c69fb80bf0200280b8639e5d0504f050af06e3bfc511591"
+    },
+    "assets/projector-hero.js": {
+      "status": 200,
+      "matches_local": true,
+      "sha256": "b877624bf39d263bef8219c2e5ee91deb9a2ee37ab2666d81d2c334336627f8d"
+    },
+    "assets/projector-hero-clock.js": {
+      "status": 200,
+      "matches_local": true,
+      "sha256": "3181d8a607ace518d7f13537a595f01feb70758227ba1a12966fc469dc2255a5"
+    },
+    "assets/projector-film-route.js": {
+      "status": 200,
+      "matches_local": true,
+      "sha256": "b299f7eb97abbaec4aa058e05b8d8dee48ace60faa6085ff0a09679d261ba563"
+    },
+    "assets/anatomy-optics.js": {
+      "status": 200,
+      "matches_local": true,
+      "sha256": "c538b59fc46b65f127327b7563dd6ea9e3651a9f47193b2b0c1541553079451f"
+    },
+    "assets/anatomy-viewer.js": {
+      "status": 200,
+      "matches_local": true,
+      "sha256": "9cbb1e05dd9aa9f51bba75ed53d65485231a082ceced91e544f50c8ca2edb2a4"
+    },
+    "assets/anatomy.css": {
+      "status": 200,
+      "matches_local": true,
+      "sha256": "8ade1183d0dd60b2d97fb5d07acde6d027b62408b5f201104e0763e8a88448fc"
+    },
+    "assets/quality-stage.js": {
+      "status": 200,
+      "matches_local": true,
+      "sha256": "5ce34ea1f2a5a3eef28154460491bd3d9a00301941a665137aa8036f5c319e16"
+    }
+  },
+  "all_passed": true
+}

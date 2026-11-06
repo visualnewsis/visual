@@ -1,0 +1,259 @@
+[
+  {
+    "slug": "camera",
+    "buttons": [
+      "",
+      "셔터 누르기",
+      "뷰파인더로 돌아가기",
+      "처음 상태로",
+      "1. 조리개",
+      "2. 기계식 셔터",
+      "3. 상 기록",
+      "작동 재생",
+      "‹",
+      "›"
+    ],
+    "scroll": 1425,
+    "studies": [
+      "#research-iris",
+      "#research-shutter",
+      "#research-exposure"
+    ],
+    "width": 1440
+  },
+  {
+    "slug": "guitar",
+    "buttons": [
+      "",
+      "E41",
+      "B32",
+      "G33",
+      "D34",
+      "A25",
+      "E26",
+      "현",
+      "브리지",
+      "상판과 몸통",
+      "작동 재생",
+      "계산한 음 들어보기",
+      "작동 재생",
+      "작동 재생",
+      "‹",
+      "›"
+    ],
+    "scroll": 1425,
+    "studies": [
+      "#research-string",
+      "#research-harmonics",
+      "#research-guitar-body"
+    ],
+    "width": 1440
+  },
+  {
+    "slug": "fishing-reel",
+    "buttons": [
+      "",
+      "한 바퀴 감기",
+      "줄 당기기",
+      "처음 상태로",
+      "1. 손잡이와 기어",
+      "2. 로터와 베일",
+      "3. 스풀",
+      "4. 드랙",
+      "손잡이 한 바퀴",
+      "작동 재생",
+      "작동 재생",
+      "작동 재생",
+      "‹",
+      "›"
+    ],
+    "scroll": 1425,
+    "studies": [
+      "#research-retrieve",
+      "#research-oscillation",
+      "#research-drag"
+    ],
+    "width": 1440
+  },
+  {
+    "slug": "watch",
+    "buttons": [
+      "",
+      "용두 한 번 감기",
+      "처음 상태로",
+      "펼쳐보기",
+      "다시 조립",
+      "작동 재생",
+      "손 놓고 풀기",
+      "다시 감기",
+      "한 톱니 진행",
+      "작동 재생",
+      "다음 단계",
+      "한 비트 진행",
+      "작동 재생",
+      "밀어보기",
+      "원래대로",
+      "초침 한 바퀴 +60초",
+      "분침 한 바퀴 +1시간",
+      "작동 재생",
+      "0시로",
+      "‹",
+      "›"
+    ],
+    "scroll": 1425,
+    "studies": [
+      "#research-assembly",
+      "#research-power",
+      "#research-gears",
+      "#research-escapement",
+      "#research-balance",
+      "#research-hands"
+    ],
+    "width": 1440
+  },
+  {
+    "slug": "violin",
+    "buttons": [
+      "누르는 동안 활 긋기",
+      "활과 현",
+      "브리지",
+      "몸통과 사운드포스트",
+      "작동 재생",
+      "작동 재생"
+    ],
+    "scroll": 1425,
+    "studies": [
+      "#research-bow",
+      "#research-violin-bridge",
+      "#research-violin-body"
+    ],
+    "width": 1440
+  },
+  {
+    "slug": "projector",
+    "buttons": [
+      "한 프레임 넘기기",
+      "처음 상태로",
+      "1. 핸들",
+      "2. 간헐 이송",
+      "3. 회전 셔터",
+      "4. 렌즈와 화면",
+      "작동 재생",
+      "작동 재생"
+    ],
+    "scroll": 1425,
+    "studies": [
+      "#research-film-gate",
+      "#research-frames"
+    ],
+    "width": 1440
+  },
+  {
+    "slug": "keyboard",
+    "buttons": [
+      "Q",
+      "W",
+      "E",
+      "R",
+      "T",
+      "Y",
+      "U",
+      "I",
+      "O",
+      "P",
+      "A",
+      "S",
+      "D",
+      "F",
+      "G",
+      "H",
+      "J",
+      "K",
+      "L",
+      "Z",
+      "X",
+      "C"
+    ],
+    "scroll": 1425,
+    "studies": [
+      "#research-mx-structure",
+      "#research-spring-force",
+      "#research-debounce"
+    ],
+    "width": 1440
+  },
+  {
+    "slug": "espresso-machine",
+    "buttons": [
+      "포터필터 끼우기",
+      "추출하기",
+      "잔 비우기",
+      "처음 상태로",
+      "1. 펌프",
+      "2. 보일러",
+      "3. 커피층",
+      "4. 추출구",
+      "1 물탱크",
+      "2 펌프",
+      "3 보일러",
+      "4 커피층",
+      "5 잔",
+      "작동 재생",
+      "같은 굵기로 맞추기",
+      "오른쪽만 가늘게",
+      "작동 재생"
+    ],
+    "scroll": 1425,
+    "studies": [
+      "#research-water-path",
+      "#research-puck",
+      "#research-brew-ratio"
+    ],
+    "width": 1440
+  },
+  {
+    "slug": "gramophone",
+    "buttons": [
+      "",
+      "바늘 내리기",
+      "회전 멈추기",
+      "태엽 감기 ↻",
+      "처음부터 듣기",
+      "천천히 움직이기",
+      "떨림 관찰하기",
+      "이 속도로 듣기",
+      "모터 움직임 보기",
+      "태엽 한 번 감기 ↻",
+      "‹",
+      "›"
+    ],
+    "scroll": 1425,
+    "studies": [],
+    "width": 1440
+  },
+  {
+    "slug": "sewing-machine",
+    "buttons": [
+      "",
+      "한 땀 박기",
+      "누르는 동안 박기",
+      "새 천으로",
+      "소리 켜짐",
+      "한 땀 천천히 재생",
+      "바늘 진입",
+      "고리 형성",
+      "훅 포착",
+      "고리 운반",
+      "실 회수",
+      "천 이송",
+      "경로 따라가기",
+      "균형으로 돌아가기",
+      "이송 순서 재생",
+      "‹",
+      "›"
+    ],
+    "scroll": 1425,
+    "studies": [],
+    "width": 1440
+  }
+]

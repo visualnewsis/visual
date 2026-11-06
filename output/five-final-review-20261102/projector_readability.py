@@ -1,0 +1,6 @@
+from pathlib import Path
+r=Path(r'C:\Users\user\.codex\worktrees\piano-finish\editshop');p=r/'goodeasy/assets/projector-hero.js';s=p.read_text(encoding='utf-8').replace('opacity:.038','opacity:.06').replace('opacity=.038*clock.openFraction','opacity=.06*clock.openFraction');p.write_text(s,encoding='utf-8')
+p=r/'goodeasy/assets/eight-release.js';s=p.read_text(encoding='utf-8').replace('투사 화면 확대 · ${','같은 장면 · 투사 화면 확대 · ${');p.write_text(s,encoding='utf-8')
+p=r/'goodeasy/projector/index.html';s=p.read_text(encoding='utf-8').replace('손잡이를 돌리면 24장의 그림이 차례로 나옵니다.','한 프레임씩 넘겨 24장의 그림을 이어보세요.').replace('작동 원리를 보여주는 모형입니다.','작동 원리를 보여주는 모형입니다. 손잡이 움직임은 한 프레임씩 살펴보기 위한 조작입니다.');p.write_text(s,encoding='utf-8')
+# A QA-only button shows the complete active observation region without changing model state.
+p=r/'output/five-final-review-20261102/responsive.html';s=p.read_text(encoding='utf-8').replace('<button id="top">화면 맨 위</button>','<button id="top">화면 맨 위</button><button id="modeltop">관찰 화면 상단</button>');s=s.replace("document.getElementById('top').onclick=", "document.getElementById('modeltop').onclick=()=>{window.scrollTo(0,0);const t=p.contentDocument.getElementById('anatomy');if(t)p.contentWindow.scrollTo(0,t.getBoundingClientRect().top+p.contentWindow.scrollY-65);};document.getElementById('top').onclick=");p.write_text(s,encoding='utf-8')

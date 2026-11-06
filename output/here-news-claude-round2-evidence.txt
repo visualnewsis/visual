@@ -1,0 +1,638 @@
+Browser tab: 8, Title: "여기뉴스 정책 v2 코드 검토 반례 - Claude", URL: "https://claude.ai/chat/81c25f3b-8b5f-4dfe-bb84-8ad17b3234c0".
+0 AXWebArea 여기뉴스 정책 v2 코드 검토 반례 - Claude, URL: claude.ai/chat/81c25f3b-8b5f-4dfe-bb84-8ad17b3234c0
+	1 container
+		2 container
+			3 heading Claude, Value: 1
+				4 text Claude
+			5 container 사이드바
+				474 button 사이드바 숨기기
+				475 link Description: Claude, Value: claude.ai/new
+				476 모드
+					477 radio button Description: 채팅 및 Cowork, Value: 1, ID: base-ui-_r_km_
+					478 radio button Description: Code, Value: 0, ID: base-ui-_r_ks_
+				11 container frame-peek-popover
+					12 heading 탐색, Value: 2
+						13 text 탐색
+					14 container
+						15 link Description: 새로 만들기, Value: claude.ai/new
+						16 button 빠른 작업
+						479 button 검색
+						18 link Description: 프로젝트, Value: claude.ai/cowork/projects
+						19 link Description: 아티팩트, Value: claude.ai/artifacts
+						20 pop up button (collapsed) Description: 템플릿으로 새로 만들기, Secondary Actions: Expand
+						21 link Description: 예약됨, Value: claude.ai/scheduled-task
+						22 pop up button (collapsed) Description: 새 작업, Secondary Actions: Expand
+						23 link Description: 사용자 지정, Value: claude.ai/customize
+						24 heading 고정됨, Value: 3
+							25 button (expanded) 고정됨, Secondary Actions: Collapse
+						26 container
+							27 link Description: VISUAL NEWSIS · editshop, Value: claude.ai/project/01a0422f-e72b-72c4-a756-51c1638916a9
+							28 pop up button (collapsed) Description: VISUAL NEWSIS · editshop에 대한 더 많은 옵션, ID: base-ui-_r_1s_, Secondary Actions: Expand
+						29 content list
+							30 container
+								31 link Description: 유휴 제안서 독립 관계 검수 요청, Value: claude.ai/chat/b0b2bc73-3465-4803-8abf-297f126d4f3f
+								32 pop up button (collapsed) Description: 제안서 독립 관계 검수 요청에 대한 더 많은 옵션, ID: base-ui-_r_25_, Secondary Actions: Expand
+							33 container
+								34 link Description: 유휴 Claude 데스크톱 앱 설치 확인, Value: claude.ai/chat/d3bf1ef7-0b4e-4f02-9041-551b2fdb4507
+								35 pop up button (collapsed) Description: Claude 데스크톱 앱 설치 확인에 대한 더 많은 옵션, ID: base-ui-_r_2b_, Secondary Actions: Expand
+							36 container
+								37 link Description: 유휴 에딧샵 GitHub 접근 권한 확인, Value: claude.ai/chat/815f410b-e2ff-4597-85e4-a359d1ed0342
+								38 pop up button (collapsed) Description: 에딧샵 GitHub 접근 권한 확인에 대한 더 많은 옵션, ID: base-ui-_r_2h_, Secondary Actions: Expand
+						39 heading 채팅 및 작업, Value: 3
+							40 button (expanded) 채팅 및 작업, Secondary Actions: Collapse
+						41 pop up button (collapsed) Description: 최근 항목 필터링 및 그룹화, ID: base-ui-_r_2n_, Secondary Actions: Expand
+						42 container
+							43 link Description: 유휴 여기뉴스 정책 v2 코드 검토 반례, Value: claude.ai/chat/81c25f3b-8b5f-4dfe-bb84-8ad17b3234c0
+							44 pop up button (collapsed) Description: 여기뉴스 정책 v2 코드 검토 반례에 대한 더 많은 옵션, ID: base-ui-_r_fu_, Secondary Actions: Expand
+						45 container
+							46 link Description: 유휴 훈맹정음 100년 기획 검토, Value: claude.ai/chat/8e172e0f-992d-49c2-bb23-e66a4a0ded76
+							47 pop up button (collapsed) Description: 훈맹정음 100년 기획 검토에 대한 더 많은 옵션, ID: base-ui-_r_2v_, Secondary Actions: Expand
+						48 container
+							49 link Description: 유휴 여기뉴스 삼단검수 코드 검토, Value: claude.ai/chat/c8053007-d5aa-4804-b0a0-8f01cd14949a
+							50 pop up button (collapsed) Description: 여기뉴스 삼단검수 코드 검토에 대한 더 많은 옵션, ID: base-ui-_r_35_, Secondary Actions: Expand
+						51 container
+							52 link Description: 유휴 정적 검토 결과 보고, Value: claude.ai/chat/04071242-d268-4d86-84fe-c5e9548aef16
+							53 pop up button (collapsed) Description: 정적 검토 결과 보고에 대한 더 많은 옵션, ID: base-ui-_r_3b_, Secondary Actions: Expand
+						54 container
+							55 link Description: 유휴 제목 없음, Value: claude.ai/chat/a29e2302-5d59-422b-b0ee-816afbb089bb
+							56 pop up button (collapsed) Description: 더 많은 옵션, ID: base-ui-_r_3h_, Secondary Actions: Expand
+						57 container
+							58 link Description: 유휴 삼단체크 독립 검수 의뢰, Value: claude.ai/chat/a119f2f1-96e3-4652-ae09-80eed29af556
+							59 pop up button (collapsed) Description: 삼단체크 독립 검수 의뢰에 대한 더 많은 옵션, ID: base-ui-_r_3n_, Secondary Actions: Expand
+						60 container
+							61 link Description: 유휴 굳이구지 10편 기계 모형 검수, Value: claude.ai/chat/10ac709a-1d7c-4491-9998-dba7df002709
+							62 pop up button (collapsed) Description: 굳이구지 10편 기계 모형 검수에 대한 더 많은 옵션, ID: base-ui-_r_3t_, Secondary Actions: Expand
+						63 container
+							64 link Description: 유휴 비주얼뉴시스 제작 체계 연봉협상 검수, Value: claude.ai/chat/214c00e9-c2cc-493b-aa0e-497ebbd2f80c
+							65 pop up button (collapsed) Description: 비주얼뉴시스 제작 체계 연봉협상 검수에 대한 더 많은 옵션, ID: base-ui-_r_43_, Secondary Actions: Expand
+						66 container
+							67 link Description: 유휴 Three.js 조감 지형 고도화 및 surface-detail 모듈 설계, Value: claude.ai/chat/7d414b54-d481-436e-ae4e-34f40ad4d5c8
+							68 pop up button (collapsed) Description: Three.js 조감 지형 고도화 및 surface-detail 모듈 설계에 대한 더 많은 옵션, ID: base-ui-_r_49_, Secondary Actions: Expand
+						69 container
+							70 link Description: 유휴 교열 검토 결과 및 수정 사항, Value: claude.ai/chat/4307dd4c-8c6a-4c94-a7f7-1ac80cd490f1
+							71 pop up button (collapsed) Description: 교열 검토 결과 및 수정 사항에 대한 더 많은 옵션, ID: base-ui-_r_4f_, Secondary Actions: Expand
+						72 container
+							73 link Description: 유휴 재봉틀 편의 독립 원리·UX 명세 검수, Value: claude.ai/chat/bd2776d3-fd7d-45ac-ae64-f33bddba801b
+							74 pop up button (collapsed) Description: 재봉틀 편의 독립 원리·UX 명세 검수에 대한 더 많은 옵션, ID: base-ui-_r_4l_, Secondary Actions: Expand
+						75 container
+							76 link Description: 유휴 축음기 편 독립 설계 명세 검수, Value: claude.ai/chat/de57d7c9-fe8a-44bb-b01a-29f9b9d94ab0
+							77 pop up button (collapsed) Description: 축음기 편 독립 설계 명세 검수에 대한 더 많은 옵션, ID: base-ui-_r_4r_, Secondary Actions: Expand
+						78 container
+							79 link Description: 읽지 않음으로 표시 ChatGPT 비즈니스 계정 해킹, Value: claude.ai/cowork/cse_01T9Pzhs88yzwJ2Qi1sKY9At
+							80 pop up button (collapsed) Description: ChatGPT 비즈니스 계정 해킹에 대한 더 많은 옵션, ID: base-ui-_r_58_, Secondary Actions: Expand
+						81 container
+							82 link Description: 읽지 않음으로 표시 날래 앱 로고 디자인, Value: claude.ai/cowork/cse_019DjLbgobsBkFBn3xTd2uaP
+							83 pop up button (collapsed) Description: 날래 앱 로고 디자인에 대한 더 많은 옵션, ID: base-ui-_r_5l_, Secondary Actions: Expand
+						84 container
+							85 link Description: 유휴 앱 개발 프로젝트 링크 찾기, Value: claude.ai/chat/e6d5bd65-9388-4bd1-b32c-f46cabde97a3
+							86 pop up button (collapsed) Description: 앱 개발 프로젝트 링크 찾기에 대한 더 많은 옵션, ID: base-ui-_r_5r_, Secondary Actions: Expand
+						87 container
+							88 link Description: 읽지 않음으로 표시 사주 분석, Value: claude.ai/cowork/cse_0127TYsusikCBhow1WBtP7QJ
+							89 pop up button (collapsed) Description: 사주 분석에 대한 더 많은 옵션, ID: base-ui-_r_68_, Secondary Actions: Expand
+						90 container
+							91 link Description: 유휴 Axe 다크템테이션 vs 블랙 향수 비교, Value: claude.ai/chat/2a83d7cf-b013-478b-9a11-6c734fafb4e0
+							92 pop up button (collapsed) Description: Axe 다크템테이션 vs 블랙 향수 비교에 대한 더 많은 옵션, ID: base-ui-_r_6e_, Secondary Actions: Expand
+						93 container
+							94 link Description: 읽지 않음으로 표시 승인된 도구 연결, Value: claude.ai/cowork/cse_017TEQUoERFpYhot2auA1Uri
+							95 pop up button (collapsed) Description: 승인된 도구 연결에 대한 더 많은 옵션, ID: base-ui-_r_6r_, Secondary Actions: Expand
+						96 container
+							97 link Description: 유휴 Claude를 활용한 영상 기획 및 제작 효율화, Value: claude.ai/chat/4c0d7f09-1231-4c30-b974-c8565e2d43ae
+							98 pop up button (collapsed) Description: Claude를 활용한 영상 기획 및 제작 효율화에 대한 더 많은 옵션, ID: base-ui-_r_71_, Secondary Actions: Expand
+						99 container
+							100 link Description: 읽지 않음으로 표시 작업지시문 전달, Value: claude.ai/cowork/cse_01FSDM9XPLEodJUkhEnGERks
+							101 pop up button (collapsed) Description: 작업지시문 전달에 대한 더 많은 옵션, ID: base-ui-_r_7e_, Secondary Actions: Expand
+						102 button 모두 보기
+					103 container
+						104 pop up button (collapsed) 재현 뉴시스 편집부 워크스페이스, ID: base-ui-_r_7v_, Secondary Actions: Expand
+						105 link Description: 앱 및 확장 프로그램 다운로드, Value: claude.ai/downloads
+				106 splitter Description: 사이드바 크기 조정, Value: 288
+			107 container
+				108 container
+					109 toolbar 페이지 도구
+						110 heading 여기뉴스 정책 v2 코드 검토 반례, Value: 2
+							111 button 여기뉴스 정책 v2 코드 검토 반례, 채팅 이름 바꾸기
+								148 text 여기뉴스 정책 v2 코드 검토 반례
+						113 pop up button (collapsed) Description: 여기뉴스 정책 v2 코드 검토 반례에 대한 더 많은 옵션, Secondary Actions: Expand
+						417 container dframe-header-actions-slot
+							418 checkbox Description: 파일, Value: 0
+							419 pop up button (disabled, collapsed) 공유, Secondary Actions: Expand
+				115 container
+					116 container 채팅 메시지
+						117 text 위아래 화살표 키를 사용하여 메시지 간에 이동하세요.
+						118 container
+							119 container 6개 메시지 중 1번째
+								120 button 붙여넣은 텍스트, pasted, 1632줄
+									121 text 여기뉴스 정책v2 삼단검수 독립 코드 검토 요청입니다. 사용자 최우선: 기사수가 줄어도 실제 장소·지역주제 근거가 애매하면 제외. 동네/전체 2모드만, 국제 양쪽 제외, 문화는 국내실제전시 중심. 실제공개849건에서 미국ISM/FDA/뉴욕마라톤/해외축구, 한국은행전시의 부산배경행사 오인, KISTI본원소재 오인을 발견했습니다. 원인: 문장경계손실과 문화재단의 화재 부분일치. 아래는 수정한 실제소스입니다. 기존테스트PASS만 승인하지말고 추가P1반례를 재현가능입력으로 찾아주세요. 특히 한국선수의 해외 비인기종목대회, 같은문장내 서로다
+									122 text PASTED
+								149 toolbar 메시지 작업
+									150 text 37분 전
+									151 button 재시도
+									152 button 편집
+									153 container
+										154 button (disabled) 복사
+							124 container 6개 메시지 중 2번째
+								125 container
+									155 heading Claude 응답: 여기뉴스 정책 v2 독립 코드 검토: 핵심 반례 4건 (P1), Value: 3
+										156 text Claude 응답: 여기뉴스 정책 v2 독립 코드 검토: 핵심 반례 4건 (P1)
+									157 container 테스트 코드 예시와 반례 검증 계획 정리 중.
+										158 button (collapsed) 테스트 코드 예시와 반례 검증 계획 정리 중, Secondary Actions: Expand
+											159 text 테스트 코드 예시와 반례 검증 계획 정리 중
+									129 text 테스트 코드 예시와 반례 검증 계획 정리 중
+									160 heading 여기뉴스 정책 v2 독립 코드 검토: 핵심 반례 4건 (P1), Value: 4
+										161 text 여기뉴스 정책 v2 독립 코드 검토: 핵심 반례 4건 (P1)
+									162 text 검증 범위를 먼저 밝힙니다.
+									163 text  아래 내용은 붙여주신 소스를 정적으로 추적한 결과이고, 실제로 실행한 것은 하나도 없습니다. 
+									164 text data/geography.js
+									165 text 를 받지 못했기 때문에, 노드 ID는 
+									166 text province_alias
+									167 text 에 맞춰 
+									168 text 대전광역시
+									169 text , 
+									170 text 부산광역시
+									171 text , 
+									172 text 경기도/파주시
+									173 text 로 가정했습니다. 화면도 보지 않았으므로 시각 검수는 하지 않았습니다. 각 반례는 
+									174 text tests/domestic-policy.py
+									175 text 의 
+									176 text build()
+									177 text  형식으로 적었으니 실제 geography 환경에서 그대로 돌려보시면 됩니다.
+									178 heading 1. [P1] 한국 선수의 해외 대회 기사가 전체 모드에 '위치 미지정'으로 노출됨, Value: 5
+										179 text 1. [P1] 한국 선수의 해외 대회 기사가 전체 모드에 '위치 미지정'으로 노출됨
+									180 text 원인
+									181 text FOREIGN_TOPIC
+									182 text 에는 승부 관련 어휘로 
+									183 text 우승|결승|승리|패배|리그
+									184 text 만 있습니다. 그래서 
+									185 text 금메달
+									186 text , 
+									187 text 결선
+									188 text , 
+									189 text 톱10
+									190 text , 
+									191 text 투어
+									192 text , 
+									193 text 세계선수권
+									194 text , 
+									195 text (한국시간)
+									196 text  같은 표현은 잡지 못합니다. 
+									197 text FOREIGN_SPORT
+									198 text 도 축구와 NBA·MLB 위주라 PGA, LPGA, ISU, ISSF, FIS, F1 같은 종목을 모릅니다. 한편 
+									199 text DOMESTIC_SUBJECT
+									200 text 의 
+									201 text 한국
+									202 text 은 단어가 하나만 있어도 
+									203 text unverified-domestic-subject
+									204 text  검사를 통과시킵니다.
+									205 text FOREIGN_PLACE
+									206 text 의 lookahead에도 구멍이 있습니다. 
+									207 text 미국프로골프
+									208 text , 
+									209 text 일본프로야구
+									210 text 처럼 국가명 바로 뒤에 한글이 붙는 합성어는 
+									211 text 미국
+									212 text 으로 매칭되지 않습니다.
+									213 text 재현 입력
+									214 container python 코드
+										215 container
+											216 button 클립보드에 복사
+										217 text python
+										218 container
+											219 text r = build ( '한국 사격, 세계선수권 금메달…여자 10m 공기권총' , '[서울=뉴시스] 기자 = 한국 사격 대표팀이 2일(한국시간) 이집트 카이로에서 열린 국제사격연맹(ISSF) 세계선수권대회 여자 10m 공기권총 결선에서 금메달을 획득했다.' , ( 'sports' ,)) assert  r  is None # 예상 실제값: accepted, relatedPlaces=[] r2 = build ( '임성재, 한국 선수 최초 미국프로골프 투어 3연속 톱10' , '' ,( 'sports' ,)) assert  r2  is None # '미국프로'는 FOREIGN_PLACE 미매칭, PGA는 FOREIGN_SPORT에 없음
+									220 text 왜 노출되는가
+									221 text 두 기사 모두 
+									222 text places
+									223 text 가 비어 있어 동네 모드에서는 빠집니다. 하지만 전체 모드에서는 
+									224 text includeUnlocated
+									225 text 가 켜져 있어 전국 목록에 그대로 나옵니다. "국제 기사는 양쪽 모드 모두 제외"라는 요구를 위반합니다.
+									226 text 수용 조건
+									227 content list
+										228 container
+											229 AXListMarker • 
+											230 text sports 피드는 기본적으로 제외합니다. 국내 경기장을 장소로 하는 문장( ACTUAL_SITE )이나 국내 리그임이 확인될 때만 통과시킵니다.
+										231 container
+											232 AXListMarker • 
+											233 text 해외 신호에  (한국시간) ,  메달 ,  결선 ,  톱10 ,  투어 ,  월드컵 ,  세계선수권 ,  그랑프리 와 종목 약어를 추가합니다.
+										234 container
+											235 AXListMarker • 
+											236 text FOREIGN_PLACE  뒤에  프로 ,  여자 ,  남자 ,  대표 가 붙는 합성어도 국가로 매칭되게 합니다.
+										237 container
+											238 AXListMarker • 
+											239 text 위 두 케이스와, 국내 개최 국제대회(예: 부산 개최) 수용 케이스를 함께 테스트에 추가합니다.
+									240 heading 2. [P1] 같은 문장 안의 배경 행사 장소가 현재 행사 장소로 잡힘 (한국은행 사례의 표현만 바꾼 변형), Value: 5
+										241 text 2. [P1] 같은 문장 안의 배경 행사 장소가 현재 행사 장소로 잡힘 (한국은행 사례의 표현만 바꾼 변형)
+									242 text 원인
+									243 text BACKGROUND_LOCATION
+									244 text 은 
+									245 text 개최된 해
+									246 text , 
+									247 text 열렸던
+									248 text 처럼 정해진 문구만 막습니다. 
+									249 text 개최된 ○○를 계기로
+									250 text , 
+									251 text 열린 ○○에 맞춰
+									252 text  같은 관형절은 통과합니다. 문화 확정 조건도 너무 느슨합니다. 한 문장 안에 전시어, 장소명, 
+									253 text 열린
+									254 text 이 각각 하나씩만 있으면 됩니다. 장소명이 전시장의 위치인지는 확인하지 않습니다. 또 
+									255 text related_locations
+									256 text 와 
+									257 text local_places
+									258 text 는 제목에 지명만 있으면 배경 검사를 아예 건너뜁니다.
+									259 text 재현 입력
+									260 container python 코드
+										261 container
+											262 button 클립보드에 복사
+										263 text python
+										264 container
+											265 text t= '한국은행, 세계유산 기념주화 기획전' x= '한국은행은 유네스코한국위원회와 화폐기획전을 개최한다고 밝혔다. \n 올해 부산에서 개최된 세계유산위원회를 계기로 한국은행 화폐박물관에서 기획전이 열린다.' r=build ( t , x ,( 'bank' ,)) assert  r  is None or '부산광역시' not in  r [ 'relatedPlaces' ] # 예상 실제값: relatedPlaces=['부산광역시'] → 전체 모드 부산 핀 t2= '부산 세계유산위 기념주화 기획전 개막…한은 화폐박물관' r2=build ( t2 , '한국은행은 화폐박물관에서 기획전을 연다. \n 올해 부산에서 개최된 세계유산위원회를 기념했다.' ,( 'bank' ,)) assert  r2  is None or not  r2 [ 'localEligible' ] # 예상 실제값: localEligible=True, 부산 (제목 지명+기획전)
+									266 text 첫 번째 입력은 전체 모드에 부산 핀을 만들고, 두 번째 입력은 동네 모드까지 오염시킵니다.
+									267 text 수용 조건
+									268 content list
+										269 container
+											270 AXListMarker • 
+											271 text 전시 확정은 장소가 전시장 자체를 수식할 때만 인정합니다. 예를 들어  지명 + (구·동)? + 기관명 + EXHIBIT_VENUE + 에서 + 현재형 술어 처럼 인접 구간 안에서 확인합니다.
+										272 container
+											273 AXListMarker • 
+											274 text 개최된|열린|치러진 + 명사 + (를 계기로|에 맞춰|를 기념)  형태의 관형절 안에 있는 지명은 배경으로 처리합니다.
+										275 container
+											276 AXListMarker • 
+											277 text 제목 지명도 본문에서 실제 장소로 확인될 때만  local 로 인정합니다.
+										278 container
+											279 AXListMarker • 
+											280 text 위 두 입력과, 정상 케이스( 서울 종로구 미술관에서 특별전이 열린다 , 수용 유지)를 테스트에 추가합니다.
+									281 heading 3. [P1] '문화재단→화재'와 같은 원인의 부분일치가 남아 있고, 이것이 스포츠·구단 필터를 무력화함, Value: 5
+										282 text 3. [P1] '문화재단→화재'와 같은 원인의 부분일치가 남아 있고, 이것이 스포츠·구단 필터를 무력화함
+									283 text 원인
+									284 text (?<!문)화재
+									285 text 는 
+									286 text 문화재단
+									287 text  하나만 막습니다. 
+									288 text 삼성화재
+									289 text , 
+									290 text 해상화재
+									291 text , 
+									292 text 화재보험
+									293 text 은 여전히 걸립니다. 
+									294 text 폭발(?!적)
+									295 text 은 
+									296 text 폭발력
+									297 text 과 
+									298 text 3점포 폭발…
+									299 text 을 걸고, 
+									300 text 정전
+									301 text 은 
+									302 text 정전협정
+									303 text 을 겁니다. 더 큰 문제는 매칭 이후입니다. 
+									304 text local_places
+									305 text 에서 
+									306 text physical_impact
+									307 text 가 참이 되면 
+									308 text 부산 KCC
+									309 text ·
+									310 text 울산 HD
+									311 text  구단 필터, sports 피드 제외, 
+									312 text NATIONAL_SUBJECT
+									313 text  검사가 모두 우회됩니다. 
+									314 text domestic_policy
+									315 text 의 문화 게이트(
+									316 text not (LOCAL_IMPACT and related)
+									317 text )도 마찬가지로 우회됩니다.
+									318 text 재현 입력
+									319 container python 코드
+										320 container
+											321 button 클립보드에 복사
+										322 text python
+										323 container
+											324 text assert not  build ( '대전 삼성화재, 현대캐피탈 꺾고 홈 개막전 승리' , '' ,( 'sports' ,))[ 'localEligible' ] # 예상 실제값: True, 대전광역시, '사건·안전' assert not  build ( '부산 KCC 허웅 3점포 폭발…홈 3연승' , '' ,( 'sports' ,))[ 'localEligible' ] # 기존 'KCC' 테스트 의도를 우회 r=build ( '경기 파주시 정전협정 기념 평화음악회' , '경기도 파주시에서 평화음악회가 열린다.' ,( 'culture' ,)) assert  r  is None # 정전 → physical_impact → 문화 전시 게이트 우회
+									325 text 수용 조건
+									326 content list
+										327 container
+											328 AXListMarker • 
+											329 text 사건 어휘에 대한 부정 사전을 둡니다. 최소한  삼성화재 ,  ○○화재보험 ,  해상화재 ,  폭발력 ,  득점·공격 폭발 ,  정전협정 ,  수비 붕괴 는 포함합니다.
+										330 container
+											331 AXListMarker • 
+											332 text physical_impact 만으로 스포츠·구단·국가주체·문화 게이트를 통과시키지 않습니다. 본문 도입부에서  ACTUAL_SITE 로 사건 발생이 확인될 때만 우회를 허용합니다.
+										333 container
+											334 AXListMarker • 
+											335 text category() 에도 같은 사전을 적용합니다. 지금은 서울문화재단 기사가 여전히 '사건·안전' 라벨을 받습니다.
+									336 heading 4. [P1, 조건부] v2로 캐시된 기사는 규칙을 바꿔도 30일 동안 다시 판정되지 않음 (오염된 snapshot이 고착됨), Value: 5
+										337 text 4. [P1, 조건부] v2로 캐시된 기사는 규칙을 바꿔도 30일 동안 다시 판정되지 않음 (오염된 snapshot이 고착됨)
+									338 text 원인
+									339 text collect
+									340 text 에서 이전 기사의 
+									341 text sourceFingerprint
+									342 text , 
+									343 text LOCATION_METHOD
+									344 text , 
+									345 text POLICY_VERSION
+									346 text 이 모두 일치하면 다시 빌드하지 않고 그대로 재사용합니다. RSS에서 빠진 기사도 
+									347 text retained
+									348 text  루프에서 그대로 유지됩니다.
+									349 text LOCATION_METHOD
+									350 text 는 정책 문자열 상수일 뿐, 규칙 내용이 바뀌어도 값이 변하지 않습니다. 그래서 이번 수정 전후의 v2 결과를 구분할 수 없습니다. Codex가 재생성 중인 후보나 중간 배포본이 이미 v2로 공개됐다면, 그 안의 오류는 이번 수정과 무관하게 계속 남습니다. 클라이언트의 
+									351 text validSnapshot
+									352 text 도 v2이기만 하면 기사를 받아들입니다. 받아들이는 snapshot의 최대 나이에도 제한이 없습니다.
+									353 text 재현 입력
+									354 text 이전 snapshot에 아래 기사가 있고, 이번 RSS에도 같은 항목(title/text/image/publishedAt/feeds 동일)이 들어온다고 가정합니다.
+									355 container python 코드
+										356 container
+											357 button 클립보드에 복사
+										358 text python
+										359 container
+											360 text { 'id' : 'NISX20261102_0003850501' , 'policyVersion' : 'domestic-local-v2' , 'locationMethod' : C . LOCATION_METHOD , 'domesticPolicy' : 'accepted' , 'leadChecked' : True , 'sourceFingerprint' : <같은 RSS 항목의 fingerprint> , 'relatedPlaces' :[ '부산광역시' ],  ... }
+									361 text 이 경우 
+									362 text collect()
+									363 text  결과에 해당 기사가 그대로 남습니다. RSS에서 빠진 경우에도 
+									364 text retained
+									365 text 로 유지됩니다.
+									366 text 수용 조건
+									367 content list
+										368 container
+											369 AXListMarker • 
+											370 text LOCATION_METHOD 에 규칙 해시를 포함합니다. 예를 들어 정규식과 정책 함수 소스의 sha256을 붙입니다.
+										371 container
+											372 AXListMarker • 
+											373 text 또는 매 실행마다 보존된  locationLead (v2는 줄 경계가 보존됨)로 모든 기사를 다시 빌드합니다.
+										374 container
+											375 AXListMarker • 
+											376 text 테스트: 위 레코드에서 method 해시만 바꿨을 때 다시 판정되어 부산이 제거되어야 합니다.
+									377 heading P2 이하 및 확인하지 못한 부분, Value: 5
+										378 text P2 이하 및 확인하지 못한 부분
+									379 text 초기 방문 기록 (P2).
+									380 text  브라우저에 캐시된 오래된 v2 
+									381 text articles.js
+									382 text 를 처음 로드한 시점에 
+									383 text lastVisit
+									384 text 이 바로 저장됩니다. 이후 
+									385 text refreshData
+									386 text 가 실패하면, 사용자가 실제로 보지 못한 기사들이 다음 방문 때 NEW 표시를 받지 못합니다.
+									387 content list
+										388 container
+											389 AXListMarker • 
+											390 text 수용 조건:  lastVisit 은 refresh가 성공하거나, 캐시 snapshot의  collectedAt 이 최근일 때만 저장합니다.
+										391 container
+											392 AXListMarker • 
+											393 text 수용 조건:  validSnapshot 에 최대 나이(예: 수 시간) 상한을 두거나, 오래된 snapshot임을 화면에 경고합니다.
+									394 text 모바일 첫 탭.
+									395 text  정적으로 읽었을 때 마커 첫 탭의 흐름(
+									396 text selectPlace
+									397 text  → 
+									398 text sheet.expand
+									399 text , 
+									400 text userMapInteraction
+									401 text  리셋)에서는 P1을 찾지 못했습니다. 다만 1px 이상 미세하게 드래그된 탭이 
+									402 text dragstart
+									403 text 를 일으킬 때 
+									404 text moveend
+									405 text 와 
+									406 text click
+									407 text  중 무엇이 먼저 실행되는지는 실제 기기에서만 확인할 수 있습니다. 미검증으로 남겨 두세요.
+									408 text 기존 테스트.
+									409 text  위 반례들은 모두 기존 테스트가 다루지 않는 입력입니다. 따라서 기존 테스트가 PASS라고 해서 이 반례들이 해결됐다는 근거는 되지 않습니다.
+									410 toolbar 메시지 작업
+										411 button 복사
+										412 button 소리 내어 읽기
+										413 checkbox Description: 좋은 응답, Value: 0
+										414 checkbox Description: 나쁜 응답, Value: 0
+										415 button 재시도
+										416 text 33분 전
+							420 container 6개 메시지 중 3번째
+								421 heading 입력 내용: 좋은 지적입니다., Value: 3
+									422 text 입력 내용: 좋은 지적입니다.
+								423 button 1793679485123_clipboard.jpeg
+								424 button 1793679548191_clipboard.jpeg
+								425 text 좋은 지적입니다. 실제 geography로 각 반례를 재현·보완 중입니다. 한국시간/해외 비인기종목/같은문장배경행사/삼성화재·정전협정·비유적폭발을 필수회귀에 추가하며, rule내용변경시재분류되도록 LOCATION_METHOD에규칙hash를 붙이는 보강도 진행합니다. v2는 아직 공개하지 않았으므로 현재v2캐시고착 사례는 조건부 위험으로 구분합니다. 오래된snapshot으로방문시각을현재로덮지않고 실제데이터수집시각까지만확인워터마크저장·수집지연안내도 보완합니다. 첨부2장은 수정 전 실제공개서비스 PC와390x844 모바일 viewport 캡처입니다(실제휴대폰아님). 앞서이미지첨부실패했지만이번엔별도브라우저클립보드로이미지첨부확인했습니다. 화면상2모드버튼은mobile각47x44px,글자10px입니다. 현재디자인보존하며가독성과지도공간균형,PC팝업/모바일시트방향성만시각검토해주세요. 수정후최종화면은다시드릴것이라지금이미지를최종본으로표시하지마세요. 치명문제있으면말하고 억지로칭찬하지마세요. 700자이내.
+								432 toolbar 메시지 작업
+									433 text 26분 전
+									434 button 재시도
+									435 button 편집
+									436 button 복사
+							427 container 6개 메시지 중 4번째
+								428 container
+									437 heading Claude 응답: 수정 전 PC 캡처와 390×844 viewport 캡처(실기기 아님)를 기준으로 본 시각 검토입니다., Value: 3
+										438 text Claude 응답: 수정 전 PC 캡처와 390×844 viewport 캡처(실기기 아님)를 기준으로 본 시각 검토입니다.
+									439 container 모바일 화면의 터치 영역과 글자 크기 검토 중.
+										440 button (collapsed) 모바일 화면의 터치 영역과 글자 크기 검토 중, Secondary Actions: Expand
+											441 text 모바일 화면의 터치 영역과 글자 크기 검토 중
+									442 text 모바일 화면의 터치 영역과 글자 크기 검토 중 수정 전 PC 캡처와 390×844 viewport 캡처(실기기 아님)를 기준으로 본 시각 검토입니다. 최종본으로 보지 않았습니다.
+									443 text 치명 문제:
+									444 text  없음.
+									445 text 우선 수정할 점
+									446 content list
+										447 container
+											448 AXListMarker 1. 
+											449 text 모드 버튼 글자:  10px는 작습니다. 터치 영역 47×44는 괜찮지만, 가장 핵심인 2모드 전환치고 읽히지 않습니다. 12px 이상을 권하고, 버튼 폭을 넓히거나 세로 스택 구조를 정리해야 합니다.
+										450 container
+											451 AXListMarker 2. 
+											452 text 모바일 상단 점유:  좌측 안내 카드와 우측 버튼 3개가 약 250px를 차지해 경기·인천 핀에 바짝 붙습니다. 디렉터 표기는 카드와 하단에 중복이라 한 곳으로 줄일 수 있습니다. 모바일 +/− 버튼도 핀치 줌과 겹치는 기능입니다.
+										453 container
+											454 AXListMarker 3. 
+											455 text PC 제주 잘림:  1265×712에서 제주 핀이 하단에 걸려 일부만 보입니다. 상단 헤더 두 줄(약 184px) 때문에 전국 fit 패딩이 부족합니다.
+										456 container
+											457 AXListMarker 4. 
+											458 text 지명 표기 혼용:  '경기도·충청북도·경상남도'와 '전북·강원'이 섞여 있습니다. '경기도 외 1곳'은 서울이 숨어 있다는 점이 드러나지 않습니다.
+										459 container
+											460 AXListMarker 5. 
+											461 text 하단 공간:  범례 바와 시트 사이가 좁아 제주 핀과 범례가 몰려 있습니다.
+									462 text 방향성:
+									463 text  모바일 시트의 peek에 '지역·기사 검색 / 전국·65건'만 보여 기사가 하나도 노출되지 않습니다. 첫 기사 한 줄을 미리 보여주는 쪽이 낫습니다. PC 팝업은 캡처에 없어 판단하지 않았습니다.
+									464 toolbar 메시지 작업
+										465 button 복사
+										466 button 소리 내어 읽기
+										467 checkbox Description: 좋은 응답, Value: 0
+										468 checkbox Description: 나쁜 응답, Value: 0
+										469 button 재시도
+										470 text 25분 전
+							480 container 6개 메시지 중 5번째
+								481 button 붙여넣은 텍스트, pasted, 1300줄
+									482 text 이전 P1 4건을 수정한 실제 소스 재검수입니다. 정적검수이며 실행했다고 쓰지 마세요. 1 해외스포츠 default deny, 한국시간 삭제 후 국내근거 확인; 2 문장구분 복구, 전시 장소-전시관-에서-개최 인접; 3 화재보험/문화재단/스포츠폭발 어휘마스킹; 4 inspect소스+정규식+시설/피드설정 SHA256 LOCATION_METHOD; 과거 leadBoundariesVerified=false 유지. 갱신오류는 마지막 clean snapshot 보존, stale age30분 UI경고, 관측워터마크 min(now,collect
+									483 text PASTED
+								586 toolbar 메시지 작업
+									587 text 2분 전
+									588 button 재시도
+									589 button 편집
+									590 container
+										591 button (disabled) 복사
+							485 container 6개 메시지 중 6번째
+								486 container
+									592 heading Claude 응답: 정책 v2 수정본 재검수: 배포를 막아야 할 새 반례 3건 (P1), Value: 3
+										593 text Claude 응답: 정책 v2 수정본 재검수: 배포를 막아야 할 새 반례 3건 (P1)
+									493 container 기획전 사례에서 전시 장소 판정의 과거형 문장 처리를 점검 중.
+										494 button (collapsed) 기획전 사례에서 전시 장소 판정의 과거형 문장 처리를 점검 중, Secondary Actions: Expand
+											495 text 기획전 사례에서 전시 장소 판정의 과거형 문장 처리를 점검 중
+									492 text 기획전 사례에서 전시 장소 판정의 과거형 문장 처리를 점검 중
+									496 heading 정책 v2 수정본 재검수: 배포를 막아야 할 새 반례 3건 (P1), Value: 4
+										497 text 정책 v2 수정본 재검수: 배포를 막아야 할 새 반례 3건 (P1)
+									498 text 이번 검토도 수정 소스를 읽고 경로를 추적한 정적 검수입니다. 아무것도 실행하지 않았고, 실제 geography 파일 없이 노드 ID를 
+									499 text 서울특별시
+									500 text , 
+									501 text 서울특별시/종로구
+									502 text  형태로 가정했습니다. 별도로 수정 중인 세종 건은 제외했습니다.
+									503 text 결론:
+									504 text  세종 건과 별개로, 배포를 막을 P1이 3건 더 있습니다.
+									505 text 수정이 확인된 항목
+									506 text  (정적 추적 기준)
+									507 content list
+										508 container
+											509 AXListMarker • 
+											510 text 대전 삼성화재…홈 개막전 ,  부산 KCC 3점포 폭발 은 이제 막힙니다.  verified_physical_event 가 도입부 두 문장 안에서  ACTUAL_SITE 를 요구하기 때문입니다.
+										511 container
+											512 AXListMarker • 
+											513 text 원래의 한국은행 '계기로' 반례는  exhibition_locations 의 bridge 검사에서 막힙니다.
+										514 container
+											515 AXListMarker • 
+											516 text digest는 정규식, 함수 소스, 설정 변경을 반영합니다.
+									517 heading 1. [P1] 해외 스포츠 차단이 sports 피드에 들어 있을 때만 작동함, Value: 5
+										518 text 1. [P1] 해외 스포츠 차단이 sports 피드에 들어 있을 때만 작동함
+									519 text 원인
+									520 text unverified-domestic-sports
+									521 text 와 
+									522 text foreign-international-competition
+									523 text  검사는 
+									524 text 'sports' in feeds
+									525 text 일 때만 실행됩니다. 그래서 같은 기사가 sokbo나 society 피드로만 들어오면 이 검사를 전부 건너뜁니다. 예를 들어 sports RSS에서는 이미 빠지고 sokbo에만 남아 있는 경우입니다.
+									526 text FOREIGN_PLACE
+									527 text  합성어 문제(
+									528 text 미국프로…
+									529 text )도 아직 그대로입니다.
+									530 text 재현 입력
+									531 container python 코드
+										532 container
+											533 button 클립보드에 복사
+										534 text python
+										535 container
+											536 text assert  build ( '임성재, 한국 선수 최초 미국프로골프 투어 3연속 톱10' , '' ,( 'sokbo' ,)) is None # 예상 실제값: accepted. news_category는 제목의 '선수'로 '스포츠'가 되지만, 차단 검사는 피드만 봄
+									594 text 수용 조건
+									538 content list
+										539 container
+											540 AXListMarker • 
+											541 text 스포츠 차단 검사의 조건을  news_category(raw)=='스포츠'  또는 스포츠 어휘 판별로 바꿉니다.
+										542 container
+											543 AXListMarker • 
+											544 text 위 입력을  ('sokbo',) 와  ('society',)  피드로 각각 넣은 경우를 회귀 테스트에 추가합니다.
+									545 heading 2. [P1] 같은 문장에 국내 예선 언급이 있으면 해외 대회가 국내 경기로 판정되고 서울 핀까지 생김, Value: 5
+										546 text 2. [P1] 같은 문장에 국내 예선 언급이 있으면 해외 대회가 국내 경기로 판정되고 서울 핀까지 생김
+									547 text 원인
+									548 text korean_event
+									549 text 는 핵심 두 문장 안에 
+									550 text 국내지명…에서 열린
+									551 text 이 한 번만 있어도 참이 됩니다. 이 값이 참이면 
+									552 text foreign-international-competition
+									553 text  검사가 면제됩니다. 같은 문장에 해외 지명이 있어도 마찬가지입니다.
+									554 text 지난달
+									555 text 은 
+									556 text BACKGROUND_LOCATION
+									557 text 에 없어서 배경으로 걸러지지 않습니다. 
+									558 text 결선
+									559 text 과 
+									560 text 금메달
+									561 text 도 
+									562 text FOREIGN_TOPIC
+									563 text 에 없습니다.
+									564 text 재현 입력
+									565 container python 코드
+										566 container
+											567 button 클립보드에 복사
+										568 text python
+										569 container
+											570 text r=build ( '사격 대표팀, 세계선수권 금메달' , '지난달 서울에서 열린 선발전을 통과한 한국 사격 대표팀이 2일 카타르 도하에서 열린 세계선수권대회 결선에서 금메달을 땄다.' , ( 'sports' ,)) assert  r  is None # 예상 실제값: accepted, relatedPlaces=['서울특별시'] → 전체 모드에 서울 핀
+									595 text 수용 조건
+									572 content list
+										573 container
+											574 AXListMarker • 
+											575 text 핵심 문장이나 제목에 해외 지명과 대회 관련 어휘가 함께 있으면, 국내 경기 근거로 인정하지 않고 차단합니다.
+										576 container
+											577 AXListMarker • 
+											578 text 국내 경기 판정은 그 문장의 주된 술어가 국내 개최일 때만 인정합니다.
+										579 container
+											580 AXListMarker • 
+											581 text 선발전이나 예선 같은 이전 단계 행사 언급은 배경으로 처리합니다.
+									582 heading 3. [P1] 이전 전시장(‘…에서 열린 기획전이')이 현재 전시장으로 인정됨, Value: 5
+										583 text 3. [P1] 이전 전시장(‘…에서 열린 기획전이')이 현재 전시장으로 인정됨
+									596 text 원인
+									597 text exhibition_locations
+									598 text 의 
+									599 text site
+									600 text  검사는 
+									601 text 열린
+									602 text 을 현재 개최로 받아들입니다. 이 문장의 주된 술어는 뒤쪽의 
+									603 text 개막한다
+									604 text 이지만, 앞의 과거 관형절이 먼저 매칭됩니다. 실제 개최지인 
+									605 text 부산으로
+									606 text (조사 '으로'), 
+									607 text 부산시립미술관
+									608 text 은 matcher의 lookahead 조건에 맞지 않아 아예 매칭되지 않습니다. 그 결과 과거 전시장만 남습니다.
+									609 text 재현 입력
+									610 container python 코드
+										611 container
+											612 button 클립보드에 복사
+										613 text python
+										614 container
+											615 text r=build ( '국립현대미술관 기획전, 부산 순회 개막' , '서울 종로구 국립현대미술관에서 열린 기획전이 부산으로 옮겨 3일 개막한다.' ,( 'culture' ,)) assert  r  is None or not any ( p . startswith ( '서울특별시' ) for  p  in  r [ 'relatedPlaces' ]) # 예상 실제값: relatedPlaces=['서울특별시/종로구'], 문화 전시 확정 통과
+									616 text 수용 조건
+									617 content list
+										618 container
+											619 AXListMarker • 
+											620 text 열린 ,  개최된 ,  선보인  뒤에 전시 명사와 주격 조사(이/가/은/는)가 오고 다른 술어가 이어지는 구조는 배경으로 처리합니다.
+										621 container
+											622 AXListMarker • 
+											623 text 전시 술어는 문장 끝의 주된 술어일 때만 인정합니다.
+										624 container
+											625 AXListMarker • 
+											626 text 부산으로 ,  ○○시립미술관  형태는 별도 P2로 다룹니다. 지금은 매칭 실패가 오히려 오류 방향을 키우고 있습니다.
+									627 heading 참고 사항, Value: 5
+										628 text 참고 사항
+									629 text 세종 건 수정 범위 (P1, 수정 중인 건).
+									630 text  원인은 
+									631 text local_places
+									632 text 의 제목 분기입니다. 제목에 지명이 있고 
+									633 text 시민
+									634 text 이나 
+									635 text 지원
+									636 text  같은 단어만 있으면, 그 지명이 행위의 주체인지 대상인지 확인하지 않고 동네 기사로 인정합니다.
+									637 content list
+										638 container
+											639 AXListMarker • 
+											640 text 수정 범위: 세종 한 건만 고치지 말고, 제목에 지역이 두 곳 나오는 일반적인 경우를 처리해야 합니다.
+										641 container
+											642 AXListMarker • 
+											643 text 회귀 예시:  부산 시민단체, 산업은행 서울 잔류 규탄 을 함께 추가하시기 바랍니다.
+									644 text digest (P2).
+									645 text geography.js
+									646 text 와 
+									647 text collect()
+									648 text 의 캐시 재사용 조건이 digest에 포함되지 않습니다. 행정구역 데이터를 갱신해도 기존 v2 캐시가 다시 판정되지 않습니다. 또 상단의 
+									649 text LOCATION_METHOD
+									650 text  첫 정의는 하단 정의에 덮이는 죽은 코드이니 삭제하세요.
+									651 text 앱.
+									652 text  관측 워터마크(
+									653 text min(now, collectedAt)
+									654 text )와 수집 지연 경고에서는 정적 검수상 새 P1을 찾지 못했습니다. 모바일 한 탭으로 시트가 열리는 동작은 실기기에서 확인되지 않았습니다.
+									655 toolbar 메시지 작업
+										656 button 복사
+										657 button 소리 내어 읽기
+										658 checkbox Description: 좋은 응답, Value: 0
+										659 checkbox Description: 나쁜 응답, Value: 0
+										660 button 재시도
+										661 text 지금
+					585 button 맨 아래로 스크롤
+					130 container
+						131 container
+						132 container
+							133 container
+								134 container
+									135 text entry area (settable) Description: Claude에게 프롬프트를 입력하세요., Value: 
+
+								136 pop up button (collapsed) Description: 파일, 커넥터 등 추가, ID: base-ui-_r_dp_, Secondary Actions: Expand
+								429 container 받아쓰기
+									430 button 받아쓰기
+									431 pop up button (collapsed) Description: 마이크, Secondary Actions: Expand
+								662 button 음성 모드 시작
+							141 link Description: Claude는 AI이므로 실수를 할 수 있습니다. 응답을 다시 한번 확인해 주세요., Value: support.anthropic.com/en/articles/8525154-claude-is-providing-incorrect-or-misleading-responses-what-s-going-on
+							142 pop up button (collapsed) Description: 모델: Opus 5.5 중간, ID: base-ui-_r_f6_, Secondary Actions: Expand
+								143 text Opus 5.5
+								144 text 중간
+				663 text Claude가 응답을 완료했습니다
+		146 container
+			147 container Notifications
+
+The focused UI element is 135 text entry area (settable) Description: Claude에게 프롬프트를 입력하세요., Value: 

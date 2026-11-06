@@ -1,0 +1,72 @@
+[
+  {
+    "slug": "camera",
+    "canvases": 6,
+    "errors": [],
+    "scroll": 375,
+    "width": 390
+  },
+  {
+    "slug": "guitar",
+    "canvases": 5,
+    "errors": [],
+    "scroll": 375,
+    "width": 390
+  },
+  {
+    "slug": "fishing-reel",
+    "canvases": 5,
+    "errors": [],
+    "scroll": 375,
+    "width": 390
+  },
+  {
+    "slug": "watch",
+    "canvases": 8,
+    "errors": [],
+    "scroll": 375,
+    "width": 390
+  },
+  {
+    "slug": "violin",
+    "canvases": 5,
+    "errors": [],
+    "scroll": 375,
+    "width": 390
+  },
+  {
+    "slug": "projector",
+    "canvases": 4,
+    "errors": [],
+    "scroll": 375,
+    "width": 390
+  },
+  {
+    "slug": "keyboard",
+    "canvases": 5,
+    "errors": [],
+    "scroll": 375,
+    "width": 390
+  },
+  {
+    "slug": "espresso-machine",
+    "canvases": 5,
+    "errors": [],
+    "scroll": 375,
+    "width": 390
+  },
+  {
+    "slug": "gramophone",
+    "canvases": 4,
+    "errors": [],
+    "scroll": 375,
+    "width": 390
+  },
+  {
+    "slug": "sewing-machine",
+    "canvases": 5,
+    "errors": [],
+    "scroll": 375,
+    "width": 390
+  }
+]

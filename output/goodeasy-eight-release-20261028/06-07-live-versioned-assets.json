@@ -1,0 +1,20 @@
+[
+  {
+    "path": "goodeasy/gramophone/gramophone-model.js",
+    "query": "20261029-release67",
+    "status": 200,
+    "matches_commit": true
+  },
+  {
+    "path": "goodeasy/sewing-machine/motion.js",
+    "query": "20261029-release67",
+    "status": 200,
+    "matches_commit": true
+  },
+  {
+    "path": "goodeasy/assets/anatomy-viewer.js",
+    "query": "20261029-release67b",
+    "status": 200,
+    "matches_commit": true
+  }
+]

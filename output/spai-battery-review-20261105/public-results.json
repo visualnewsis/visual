@@ -1,0 +1,90 @@
+{
+  "checkedAt": "2026-11-05T07:20:40.389Z",
+  "commit": "8693bade0e329534c650ac5c18ca4b67fa1390c9",
+  "passed": true,
+  "checks": [
+    {
+      "file": "spai/index.html",
+      "status": 200,
+      "matchesCommit": true,
+      "jsonLdBlocks": 1,
+      "analyticsConfigs": 1,
+      "canonicalCorrect": true
+    },
+    {
+      "file": "spai/css/spai.css",
+      "status": 200,
+      "matchesCommit": true
+    },
+    {
+      "file": "spai/js/main.js",
+      "status": 200,
+      "matchesCommit": true
+    },
+    {
+      "file": "smartwatch/index.html",
+      "status": 200,
+      "matchesCommit": true,
+      "jsonLdBlocks": 1,
+      "analyticsConfigs": 1,
+      "canonicalCorrect": true
+    },
+    {
+      "file": "smartwatch/css/smartwatch.css",
+      "status": 200,
+      "matchesCommit": true
+    },
+    {
+      "file": "smartwatch/js/main.js",
+      "status": 200,
+      "matchesCommit": true
+    }
+  ],
+  "media": [
+    {
+      "file": "assets/logo2024.png",
+      "status": 200,
+      "type": "image/png"
+    },
+    {
+      "file": "spai/images/hero-office-night-1536.webp",
+      "status": 200,
+      "type": "image/webp"
+    },
+    {
+      "file": "spai/images/hero-office-night-mobile-1120.webp",
+      "status": 200,
+      "type": "image/webp"
+    },
+    {
+      "file": "spai/images/headset-desk-800.webp",
+      "status": 200,
+      "type": "image/webp"
+    },
+    {
+      "file": "spai/images/empty-chair-meeting-800.webp",
+      "status": 200,
+      "type": "image/webp"
+    },
+    {
+      "file": "smartwatch/images/hero-watch-off-pc.webp",
+      "status": 200,
+      "type": "image/webp"
+    },
+    {
+      "file": "smartwatch/images/hero-watch-off-mobile.webp",
+      "status": 200,
+      "type": "image/webp"
+    },
+    {
+      "file": "smartwatch/images/songpa-court-20261013-800.webp",
+      "status": 200,
+      "type": "image/webp"
+    },
+    {
+      "file": "smartwatch/images/watch-demo-20220412-800.webp",
+      "status": 200,
+      "type": "image/webp"
+    }
+  ]
+}

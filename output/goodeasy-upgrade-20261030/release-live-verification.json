@@ -1,0 +1,44 @@
+[
+  {
+    "url": "https://visual.newsis.com/goodeasy/keyboard/",
+    "status": 200,
+    "marker": "20261030-craft-release1",
+    "matched": true
+  },
+  {
+    "url": "https://visual.newsis.com/goodeasy/violin/",
+    "status": 200,
+    "marker": "20261030-craft-release1",
+    "matched": true
+  },
+  {
+    "url": "https://visual.newsis.com/goodeasy/projector/",
+    "status": 200,
+    "marker": "20261030-craft-release1",
+    "matched": true
+  },
+  {
+    "url": "https://visual.newsis.com/goodeasy/assets/quality-machines.js",
+    "status": 200,
+    "marker": "buildKeyboardHero(T,M)",
+    "matched": false
+  },
+  {
+    "url": "https://visual.newsis.com/goodeasy/assets/models/violin.js",
+    "status": 200,
+    "marker": ".078*",
+    "matched": true
+  },
+  {
+    "url": "https://visual.newsis.com/goodeasy/assets/projector-hero-clock.js",
+    "status": 200,
+    "marker": "phase>=.75",
+    "matched": true
+  },
+  {
+    "url": "https://visual.newsis.com/goodeasy/sewing-machine/thread-path.js",
+    "status": 200,
+    "marker": ".045",
+    "matched": true
+  }
+]

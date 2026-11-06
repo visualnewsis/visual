@@ -1,0 +1,1325 @@
+콘텐츠로 바로 가기
+공유
+내가 한 말:
+강력한 재설계 의뢰입니다. 첨부 두 장은 VISUAL NEWSIS 굳이구지 기타 편의 실제 작동 화면입니다. 사용자가 그래픽 수준이 낮다고 다시 지적했습니다. 단순 칭찬이나 색만 바꾸는 제안이 아니라, 숙련된 악기 3D 아트 디렉터 관점에서 구현 가능한 설계안을 주세요. 첫 장은 연주 가능한 어쿠스틱 기타, 둘째는 상판-측판-뒤판이 펼쳐지는 관찰 화면입니다. 현재는 평평한 노란 판과 원통 목처럼 보입니다. ① 가장 크게 가짜처럼 보이는 형상·재질·접촉 문제 5개, ② 사운드홀 내부·실제 두께·곡면 목/힐·테이퍼 지판·프렛·새들/브리지핀·현의 고정·도장·목재결·내부 X 브레이싱/브리지판/라이닝을 포함한 구체적 재설계 명세, ③ Three.js용 절차적 재질과 형상 예시 코드를 주세요. 정적 사진으로 교체하지 않습니다. 기존의 6현 클릭·진동·음·분해·회전·확대축소를 유지해야 합니다. 좌표계는 X가 너트(-2.34)에서 새들(+.63) 방향, Y가 상판 법선(+Y), Z가 현 간격. 현 끝점은 너트 y=.190, 새들 y=.206, 현 길이 2.97단위. 몸통 상판 윗면 y=.101, 측판 .085~-.115, 뒤판 -.115~-.130, 사운드홀 중심 x=-.10 반지름 .205. 특정 제조사 CAD가 아닌 한 가지 일관된 스틸현 기타입니다. 부품이 접하고 지지하는 관계가 보이는 교육용 관찰 모델로 높여야 합니다. 브레이싱은 판에 붙어 함께 이동하고 목재결은 부품별 방향이 맞아야 합니다. 새 이미지가 필요한 부분은 텍스처 같은 실제 그래픽 자산만 제안하세요. 출처없는 권위나 보이지 않는 동작의 합격 판정은 하지 말아주세요. 검수용 말이 아니라 제가 실제 코드에 반영할 수 있는 수치·곡선·UV와 재질 값 중심으로 엄격하게 주세요.
+…
+더 보기
+Worked for 1m 22s
+ChatGPT 답변:
+
+아래는 “보기 좋은 그림”이 아니라 실제 코드로 옮길 수 있는 재설계 명세입니다.
+전제는 특정 브랜드 복제가 아닌, 14프렛 접합의 일반적인 스틸현 어쿠스틱 기타 1종이며,
+기존 기능인 6현 클릭·진동·음·분해·회전·확대축소는 그대로 유지하는 방향입니다.
+
+0) 기준 스케일과 좌표 해석
+
+사용자 좌표를 그대로 기준으로 잡겠습니다.
+
+X: 너트 -2.34 → 새들 +0.63
+Y: 상판 법선 위쪽 +Y
+Z: 현 간격 방향
+현 길이: 2.97
+너트 높이: y=.190
+새들 높이: y=.206
+상판 윗면 기준: y=.101
+측판 범위: .085 ~ -.115
+뒤판 범위: -.115 ~ -.130
+사운드홀 중심: x=-.10
+사운드홀 반지름: .205
+
+스케일 환산은 다음처럼 두는 게 가장 안정적입니다.
+
+스틸현 어쿠스틱 스케일 길이 648 mm 가정
+2.97 world units = 648 mm
+따라서
+1 world unit ≈ 218.18 mm
+1 mm ≈ 0.004584 world units
+JavaScript
+const MM_TO_U = 2.97 / 648;   // 0.00458333...
+const U = mm => mm * MM_TO_U;
+① 가장 크게 가짜처럼 보이는 형상·재질·접촉 문제 5개
+1. 상판·뒤판이 “판자 한 장”처럼 평평하고 두께감/구조감이 없다
+
+지금은 노란 면 하나를 얹은 느낌이라,
+사운드홀의 절단 두께, 판의 실제 두께, 아치/돔, 바인딩과 가장자리 단면이 전혀 읽히지 않습니다.
+특히 사운드홀 내부가 그냥 빈 구멍처럼 보여서 교육용 관찰 모델로서도 손해입니다.
+
+왜 가짜처럼 보이나
+
+상판이 평면 한 장이면 광 반응이 너무 단순함
+사운드홀 테두리에 실제 절단면이 없어 종이처럼 보임
+뒤판도 평면이면 진짜 목재 공명판의 느낌이 사라짐
+2. 넥이 “원통 막대”처럼 보여 실제 악기 조형이 무너진다
+
+현재는 곡면 넥 프로파일, 헤드-넥 전이(volute 또는 완만한 전이),
+힐(heel) 덩어리, 지판이 넥 위에 얹힌 관계, 지판 테이퍼가 거의 읽히지 않습니다.
+
+왜 가짜처럼 보이나
+
+넥 뒷면은 원통이 아니라 위치별로 두께가 달라지는 C/D 프로파일
+넥 힐이 없으면 바디와의 구조적 결합이 없어 보임
+지판 폭이 안 벌어지면 장난감 우쿨렐레처럼 보임
+3. 브리지·새들·브리지핀·현 고정 관계가 모형처럼 단순하다
+
+현은 기타에서 가장 “진짜/가짜”를 빨리 들키는 부위입니다.
+지금은 현이 그냥 떠 있는 선처럼 보이고,
+너트 슬롯 → 지판 위 현고 → 새들 브레이크 앵글 → 브리지핀 고정의 연속 구조가 안 읽힙니다.
+
+왜 가짜처럼 보이나
+
+현 끝이 브리지 위에 얹힌 듯하고 “몸통 안에서 핀으로 고정되는 느낌”이 없음
+새들 높이와 경사, 현의 꺾임 각이 없어 장력감이 없음
+헤드 쪽도 페그 축 감김이 없으면 현이 허공에서 시작하는 느낌이 됨
+4. 재질이 “색칠된 플라스틱”에 가깝다
+
+상판·측후판·지판·브리지·금속부가 각각 다른 재료로 읽혀야 하는데,
+현재는 알베도 한 장 + 단순 광택처럼 보여 목재/금속/본(bone)의 차이가 약합니다.
+
+왜 가짜처럼 보이나
+
+상판 목재결 방향이 안 맞거나 너무 균질
+측후판이 휘어진 목재 리본이 아니라 갈색 덩어리처럼 보임
+니켈/스틸 금속이 플라스틱처럼 무광이면 값싼 모형처럼 보임
+도장(clearcoat) 층이 없으니 고급 악기 특유의 얕은 반사가 없음
+5. 분해 화면에서 “접하고 지지하는 관계”가 안 보인다
+
+현재 분해 뷰는 상판-측판-뒤판이 그냥 층으로 벌어지는 그림에 가깝고,
+실제 기타 내부의 핵심인 X 브레이싱, 브리지판, 라이닝(kerfed lining), 넥 블록/테일 블록이 빠져 구조 논리가 없습니다.
+
+왜 가짜처럼 보이나
+
+상판이 무엇에 붙는지 안 보임
+뒤판이 무엇으로 지지되는지 안 보임
+내부 브레이싱이 없으면 사운드홀 안쪽이 텅 빈 모형처럼 보임
+교육용 모델인데 “왜 이렇게 붙어 있는지” 설명력이 떨어짐
+② 구체적 재설계 명세
+A. 전체 형상 기준: 한 가지 일관된 스틸현 어쿠스틱
+
+브랜드 복제 없이 아래처럼 정리하면 됩니다.
+
+형식: 14프렛 접합, 스틸현, dreadnought/OM 중간 느낌의 범용형
+스케일: 현재 고정 2.97
+프렛 수: 20
+사운드홀: 중심 x=-0.10, 반지름 .205 유지
+상판 외형: 완전 평면 금지, 아주 약한 돔
+뒤판 외형: 상판보다 도드라진 아치
+구성 레이어:
+헤드/튜너/넥
+지판/프렛/너트
+상판(브리지/새들/핀 포함)
+림(측판 + 라이닝 + 넥블록 + 테일블록)
+뒤판
+현
+
+분해 화면에서는 최소한 다음이 보이게 하세요.
+
+상판 underside에 X 브레이싱과 브리지판 부착
+림 안쪽에 상·하 라이닝 부착
+뒤판 안쪽에 백 브레이스 부착
+넥 블록/테일 블록이 림의 구조체임이 보이게
+
+즉, **판이 단독으로 떠다니는 게 아니라 “붙은 부품이 함께 이동”**해야 합니다.
+
+B. 상판·뒤판·측판의 실제 두께와 곡면
+1) 상판
+상판 윗면 중심 기준 높이: y=.101
+실제 두께: 2.7~2.9 mm
+추천값: 2.8 mm = U(2.8) ≈ .0128
+따라서 상판 underside 기준:
+대략 y ≈ .088 ~ .089
+형상
+완전 평면 금지
+중앙부에 아주 약한 돔:
+lower bout 중심에서 +1.5 ~ +2.0 mm
+world로 +.0069 ~ +.0092
+상판 외곽으로 갈수록 평평해지게
+사운드홀
+컷팅된 원공이어야 함
+절단면 두께가 보여야 함
+로제트(rosette) 띠 2~3중 추가
+내경: .205
+외경: .225 ~ .245
+사운드홀 안에서 보이는 것:
+상판 절단면
+X 브레이스 일부
+브리지판 일부
+반대편 측판 안쪽 라이닝
+2) 뒤판
+현재 외형 범위 -.115 ~ -.130를 살리되, 평면 대신 아치형
+실제 두께: 2.8~3.2 mm
+추천 3.0 mm = .0137
+형상
+가장자리보다 중앙이 더 깊은 아치
+중심부 오목/볼록 방향을 “외형상 뒤로 불룩”하게 읽히게
+아치량:
+중앙에서 가장자리 대비 약 4~6 mm
+world로 .018 ~ .027
+
+상판보다 뒤판이 조금 더 분명하게 곡면이어야
+회전 시 “판 두 장이 아니라 실제 공명체”처럼 보입니다.
+
+3) 측판(림)
+높이 범위는 현재처럼 y=.085 ~ -.115 사용 가능
+하지만 벽 두께가 있어야 함
+실제 두께: 2.0~2.3 mm
+추천 2.1 mm = .0096
+형상
+측판은 단면상 “띠”가 아니라 안팎 두 겹 면을 가진 얇은 쉘
+waist(허리) 부근 곡률이 살아 있어야 함
+상판/뒤판과 만나는 에지엔 바인딩/퍼플링 표현
+C. 사운드홀 내부와 내부 구조
+1) X 브레이싱 (상판 underside에 부착)
+
+교육용 관찰 모델에서 필수입니다.
+
+추천 구성
+메인 X 브레이스 2개
+톤 바 2개
+핑거 브레이스 2개
+상부 횡브레이스(upper transverse brace) 1개
+브리지판(bridge plate) 1개
+메인 X 브레이스
+단면: 높이 11~14 mm / 폭 5.5~6.5 mm
+추천: h=12.5mm (.057), w=6mm (.0275)
+브레이스 교차점:
+사운드홀 중심보다 약간 브리지 쪽
+추천 x ≈ .02 ~ .08
+경사:
+상단 시작점 대략 x≈-.36, z≈±.31
+하단 끝점 대략 x≈.46, z≈∓.10
+끝으로 갈수록 taper (scallop 가능하지만 과장 금지)
+브리지판
+위치: 브리지 바로 아래, 상판 underside
+크기: 약 70 × 35 × 2 mm
+world: 0.321 × 0.160 × 0.009
+결 방향: 브리지와 직교되게 두면 시각적으로 구분 쉬움
+톤 바 / 핑거 브레이스
+사운드홀 안쪽에서 일부 보이게
+사운드홀을 통해 **“상판 아래에 뭔가 실제로 붙어 있다”**는 인상이 중요
+2) 라이닝(kerfed lining)
+
+이게 없으면 분해 화면이 매우 싸 보입니다.
+
+위치
+측판 안쪽 상단/하단 가장자리를 따라 둘러감
+즉 림에 붙은 부품이어야 하고, 상판/뒤판이 아님
+치수
+대략 12 mm 높이 × 7 mm 폭
+world: 0.055 × 0.032
+톱니(kerf) 표현은 모두 모델링하지 않아도 됨
+8~12 mm 간격의 노치 normal/bump로 표현 가능
+3) 넥 블록 / 테일 블록
+
+분해 구조 설명력을 위해 필요합니다.
+
+넥 블록
+상부 내부에 위치
+넥과 림이 구조적으로 이어진다는 것을 보여줌
+테일 블록
+하부 끝 내부
+뒤판/측판 접합이 판자 붙이기가 아님을 보여줌
+D. 넥·힐·헤드와 지판
+1) 넥 뒷면 프로파일
+
+원통형 금지.
+최소한 1프렛 근처 soft C, 9프렛 근처 fuller C/D, 힐로 갈수록 두꺼워짐이 보여야 합니다.
+
+기준값
+1프렛 뒷면 두께(지판 제외): 20.5~21.5 mm
+추천 21 mm = .096
+9프렛: 22.5~23.5 mm
+추천 23 mm = .105
+12프렛~힐 전이: 점진적으로 두꺼워짐
+2) 힐(heel)
+힐 길이: 약 80~90 mm
+추천 85 mm = .389
+힐 폭: 바디 접합부에서 약 55~58 mm
+≈ .252 ~ .266
+힐 하단이 측판에 “박히는” 느낌이 있어야 함
+옆에서 보면 그냥 목이 몸통에 꽂힌 막대가 아니라,
+넥에서 볼록하게 부풀어 바디로 이어지는 형태
+3) 지판(fretboard)
+
+반드시 테이퍼.
+
+폭
+너트 쪽 폭: 43 mm
+≈ .197
+12프렛 부근 폭: 52~54 mm
+추천 53 mm = .243
+14프렛/바디 접합 근처: 55~56 mm
+≈ .252 ~ .257
+두께
+지판 두께: 5.8~6.5 mm
+추천 6.2 mm = .028
+프렛 포함 시 더 올라옴
+곡률
+지판 반경: 12" (304.8 mm) 정도 추천
+과도하게 평평한 판 금지
+UV/결
+목재결 방향은 X 방향
+지판은 ebony/rosewood 질감으로 상판보다 훨씬 어둡고 세밀
+4) 프렛
+
+지금처럼 선만 얹으면 안 됩니다.
+
+프렛 수: 20
+위치: 등비식 정확 적용
+크라운 폭: 2.2~2.5 mm
+추천 2.3 mm = .0105
+크라운 높이: 1.0~1.2 mm
+추천 1.1 mm = .0050
+프렛 끝은 30~35° bevel
+지판 옆면과 프렛 끝이 만나는 느낌이 보여야 함
+
+프렛 위치 공식:
+
+JavaScript
+const scale = 2.97;
+const nutX = -2.34;
+function fretX(n){ // n = 1..20
+  return nutX + scale * (1 - Math.pow(2, -n / 12));
+}
+E. 브리지·새들·브리지핀·현 고정
+1) 브리지
+
+generic belly bridge로 가면 됩니다.
+
+치수
+길이: 150~155 mm
+추천 152 mm = .697
+폭(X 방향): 30~32 mm
+추천 31 mm = .142
+두께(Y): 8~9 mm
+추천 8.5 mm = .039
+배치
+새들 크레스트가 x=.63에 오도록
+브리지는 그 앞뒤로 두께를 가져야 함
+브리지 하단이 상판에 밀착 접착되어야 함
+틈새 금지
+2) 새들
+재질: bone 계열
+높이: 브리지 상면 위 2.5~3.5 mm
+두께: 2.5~3 mm
+약간의 보상(compensation) 표현 가능
+1,2번현은 약간 전진
+5,6번현은 약간 후퇴
+world 오프셋 ±.002 ~ .006 정도면 충분
+3) 브리지핀
+6개 독립 오브젝트
+핀 구멍은 새들 뒤쪽에 위치
+핀 머리가 브리지 위에 보이고,
+현은 핀 홀에서 들어가 내부 브리지판 쪽으로 걸린 뒤 새들 위로 올라오는 경로가 보여야 진짜 같습니다.
+4) 현의 실제 고정 경로
+너트 쪽
+
+각 현은
+
+페그 포스트에 감김
+너트 슬롯을 통과
+지판 위 일정 현고를 유지
+새들에서 꺾임
+브리지핀 쪽으로 내려감
+
+이 연속성이 보여야 합니다.
+
+현 간격 추천
+너트에서 Z 위치
+[-.080, -.048, -.016, .016, .048, .080]
+새들에서 Z 위치
+[-.124, -.074, -.025, .025, .074, .124]
+
+즉, 지판 테이퍼에 맞춰 현도 살짝 벌어져야 합니다.
+
+현 굵기 예시 (라이트 게이지)
+E4 .012
+B3 .016
+G3 .024
+D3 .032
+A2 .042
+E2 .053
+
+world radius로는 단순화해도 됩니다.
+너무 얇으면 렌더링에서 사라지므로 실제보다 1.3~1.6배 시각 보정 권장.
+
+현고(교육용 시각화 기준)
+12프렛 부근에서 상판 대비가 아니라 프렛 탑 대비로 보여야 함
+모델상:
+1번현 약 1.7 mm
+6번현 약 2.3 mm
+즉, 현이 지판에 붙어 있지 않아야 함
+F. 도장, 목재결, 재질 규칙
+1) 상판
+재질: spruce 계열
+목재결 방향: X 방향(넥→테일)
+로제트/바인딩으로 가장자리 구조를 분리
+도장:
+반무광~중광
+clearcoat 존재
+roughness:
+생목처럼 너무 거칠지도, 플라스틱처럼 너무 매끈하지도 않게
+0.45 ~ 0.60
+2) 측후판
+rosewood 또는 mahogany 중 하나로 통일
+목재결 방향:
+뒤판은 X 방향
+측판은 언랩 UV 기준 U 방향(림을 따라 흐름)
+상판보다 더 짙고 반사 약간 강함
+뒤판은 북매치(bookmatch) 느낌을 주면 좋음
+3) 넥
+mahogany 계열 추천
+결 방향 X
+측후판보다 약간 덜 광택
+힐과 헤드 전이부에서 하이라이트가 부드럽게 이어져야 함
+4) 지판/브리지
+ebony 또는 dark rosewood
+지판 결 X
+브리지는 Z 방향 결이 더 안정적
+시각적으로 상판 결과 구분도 쉬움
+5) 금속
+프렛: 니켈 실버
+튜너 축/와셔/현: 니켈/스틸
+완전 거울처럼 만들지 말고 micro roughness 유지
+G. 분해 화면 구조 명세
+
+지금처럼 단순 3층보다는 아래가 좋습니다.
+
+권장 분해 그룹
+
+상판 그룹
+
+상판
+브리지
+새들
+브리지핀
+로제트
+상판 underside의 X 브레이싱
+브리지판
+
+림 그룹
+
+측판
+상/하 라이닝
+넥 블록
+테일 블록
+
+뒤판 그룹
+
+뒤판
+백 브레이스
+
+넥 그룹
+
+헤드
+튜너
+넥
+지판
+프렛
+너트
+분해 동작
+상판 그룹: +Y로 상승
+뒤판 그룹: -Y로 하강
+넥 그룹: -X로 약간 빠지거나, 림에 남겨도 됨
+림 그룹: 중앙 유지
+
+핵심은 **“판이 떨어지는 것”이 아니라 “조립 관계가 드러나는 것”**입니다.
+
+③ Three.js용 절차적 재질과 형상 예시 코드
+
+아래 코드는 실제 구현 방향을 잡는 예시입니다.
+외부 텍스처 없이도 시작 가능하게 CanvasTexture 기반 절차적 목재결로 적었습니다.
+
+3-1. 절차적 목재 재질 예시
+JavaScript
+import * as THREE from 'three';
+
+const MM_TO_U = 2.97 / 648;
+const U = mm => mm * MM_TO_U;
+
+function lerp(a, b, t){ return a + (b - a) * t; }
+function clamp(x, a, b){ return Math.max(a, Math.min(b, x)); }
+
+// 간단한 해시 노이즈
+function hash2(x, y){
+  const s = Math.sin(x * 127.1 + y * 311.7) * 43758.5453123;
+  return s - Math.floor(s);
+}
+function noise2(x, y){
+  const ix = Math.floor(x), iy = Math.floor(y);
+  const fx = x - ix, fy = y - iy;
+  const a = hash2(ix, iy);
+  const b = hash2(ix + 1, iy);
+  const c = hash2(ix, iy + 1);
+  const d = hash2(ix + 1, iy + 1);
+  const ux = fx * fx * (3 - 2 * fx);
+  const uy = fy * fy * (3 - 2 * fy);
+  return lerp(lerp(a, b, ux), lerp(c, d, ux), uy);
+}
+
+// bookmatch 옵션 포함 절차적 우드 알베도
+function makeWoodCanvas({
+  width = 1024,
+  height = 1024,
+  base = '#d8bc84',
+  dark = '#b18956',
+  pore = '#7f5f3c',
+  grainDir = 'x',   // x / y
+  lineDensity = 220,
+  waviness = 0.06,
+  poreAmount = 0.20,
+  bookmatch = false
+} = {}){
+  const canvas = document.createElement('canvas');
+  canvas.width = width;
+  canvas.height = height;
+  const ctx = canvas.getContext('2d');
+  const img = ctx.createImageData(width, height);
+  const data = img.data;
+
+  const baseC = new THREE.Color(base);
+  const darkC = new THREE.Color(dark);
+  const poreC = new THREE.Color(pore);
+
+  for(let y = 0; y < height; y++){
+    for(let x = 0; x < width; x++){
+      let u = x / (width - 1);
+      let v = y / (height - 1);
+
+      // center seam 기준 bookmatch
+      if(bookmatch){
+        const side = u < 0.5 ? u * 2.0 : (1.0 - u) * 2.0;
+        u = side;
+      }
+
+      const axis = grainDir === 'x' ? u : v;
+      const ortho = grainDir === 'x' ? v : u;
+
+      // 고운 연선 + 장주기 왜곡
+      const warp =
+        (noise2(axis * 4.0, ortho * 8.0) - 0.5) * waviness +
+        (noise2(axis * 15.0, ortho * 2.0) - 0.5) * waviness * 0.35;
+
+      const g = Math.sin((axis + warp) * lineDensity * Math.PI * 2.0) * 0.5 + 0.5;
+      const g2 = Math.sin((axis + warp * 0.35) * lineDensity * 0.32 * Math.PI * 2.0) * 0.5 + 0.5;
+      const grain = clamp(g * 0.55 + g2 * 0.45, 0, 1);
+
+      const pores = Math.pow(noise2(u * 120, v * 120), 8.0) * poreAmount;
+      const broad = noise2(u * 6.0, v * 6.0);
+
+      const c = baseC.clone()
+        .lerp(darkC, grain * 0.32 + broad * 0.12)
+        .lerp(poreC, pores * 0.55);
+
+      const i = (y * width + x) * 4;
+      data[i + 0] = Math.round(c.r * 255);
+      data[i + 1] = Math.round(c.g * 255);
+      data[i + 2] = Math.round(c.b * 255);
+      data[i + 3] = 255;
+    }
+  }
+
+  ctx.putImageData(img, 0, 0);
+  return canvas;
+}
+
+function makeWoodMaterial(kind){
+  let canvas, repeat = new THREE.Vector2(1, 1), params;
+
+  if(kind === 'spruceTop'){
+    canvas = makeWoodCanvas({
+      base: '#d9c08a',
+      dark: '#b79357',
+      pore: '#8b6a45',
+      grainDir: 'x',
+      lineDensity: 300,
+      waviness: 0.025,
+      poreAmount: 0.10,
+      bookmatch: true
+    });
+    params = {
+      color: 0xffffff,
+      roughness: 0.52,
+      metalness: 0.0,
+      clearcoat: 0.18,
+      clearcoatRoughness: 0.42,
+      ior: 1.47,
+      specularIntensity: 0.35
+    };
+  } else if(kind === 'rosewood'){
+    canvas = makeWoodCanvas({
+      base: '#4e2416',
+      dark: '#2b130d',
+      pore: '#7a4d31',
+      grainDir: 'x',
+      lineDensity: 180,
+      waviness: 0.08,
+      poreAmount: 0.28,
+      bookmatch: true
+    });
+    params = {
+      color: 0xffffff,
+      roughness: 0.40,
+      metalness: 0.0,
+      clearcoat: 0.25,
+      clearcoatRoughness: 0.32,
+      ior: 1.50,
+      specularIntensity: 0.42
+    };
+  } else if(kind === 'mahoganyNeck'){
+    canvas = makeWoodCanvas({
+      base: '#71412a',
+      dark: '#4d2618',
+      pore: '#8f5b42',
+      grainDir: 'x',
+      lineDensity: 220,
+      waviness: 0.045,
+      poreAmount: 0.18
+    });
+    params = {
+      color: 0xffffff,
+      roughness: 0.48,
+      metalness: 0.0,
+      clearcoat: 0.16,
+      clearcoatRoughness: 0.38,
+      ior: 1.48,
+      specularIntensity: 0.34
+    };
+  } else if(kind === 'ebonyBoard'){
+    canvas = makeWoodCanvas({
+      base: '#2a2522',
+      dark: '#161312',
+      pore: '#3d3430',
+      grainDir: 'x',
+      lineDensity: 260,
+      waviness: 0.03,
+      poreAmount: 0.12
+    });
+    params = {
+      color: 0xffffff,
+      roughness: 0.62,
+      metalness: 0.0,
+      clearcoat: 0.06,
+      clearcoatRoughness: 0.60,
+      ior: 1.46,
+      specularIntensity: 0.20
+    };
+  } else {
+    params = { color: 0xffffff, roughness: 0.5, metalness: 0.0 };
+  }
+
+  const map = new THREE.CanvasTexture(canvas);
+  map.wrapS = map.wrapT = THREE.RepeatWrapping;
+  map.repeat.copy(repeat);
+  map.anisotropy = 8;
+  map.colorSpace = THREE.SRGBColorSpace;
+
+  const mat = new THREE.MeshPhysicalMaterial({
+    map,
+    ...params
+  });
+  return mat;
+}
+
+const MAT = {
+  top: makeWoodMaterial('spruceTop'),
+  sideBack: makeWoodMaterial('rosewood'),
+  neck: makeWoodMaterial('mahoganyNeck'),
+  board: makeWoodMaterial('ebonyBoard'),
+  bridge: new THREE.MeshPhysicalMaterial({
+    map: new THREE.CanvasTexture(makeWoodCanvas({
+      base: '#3b261c',
+      dark: '#1e1613',
+      pore: '#63453a',
+      grainDir: 'y',   // 브리지 길이(Z) 방향으로 흐르도록 UV 세팅과 맞추기
+      lineDensity: 180,
+      waviness: 0.06,
+      poreAmount: 0.20
+    })),
+    roughness: 0.58,
+    metalness: 0.0,
+    clearcoat: 0.08,
+    clearcoatRoughness: 0.58
+  }),
+  bone: new THREE.MeshPhysicalMaterial({
+    color: '#e8dfcf',
+    roughness: 0.34,
+    metalness: 0.0,
+    clearcoat: 0.04,
+    transmission: 0.0
+  }),
+  fret: new THREE.MeshStandardMaterial({
+    color: '#c7c9cc',
+    roughness: 0.24,
+    metalness: 1.0
+  }),
+  tuner: new THREE.MeshStandardMaterial({
+    color: '#b9bdc1',
+    roughness: 0.22,
+    metalness: 1.0
+  }),
+  stringPlain: new THREE.MeshStandardMaterial({
+    color: '#d8d8d8',
+    roughness: 0.10,
+    metalness: 1.0
+  }),
+  stringWound: new THREE.MeshStandardMaterial({
+    color: '#c2c4c8',
+    roughness: 0.13,
+    metalness: 1.0
+  })
+};
+3-2. 바디 외형 / 상판 / 뒤판 / 림 예시
+JavaScript
+function bodyHalfWidth(x){
+  // x는 body local 기준 대략 -0.95 ~ 0.92 범위
+  // 단순 수식보다 샘플 곡선이 수정/검수에 유리함
+  const pts = [
+    { x: -0.95, z: 0.00 }, // neck joint side
+    { x: -0.78, z: 0.32 },
+    { x: -0.55, z: 0.58 }, // upper bout max
+    { x: -0.15, z: 0.43 }, // waist
+    { x:  0.38, z: 0.76 }, // lower bout swell
+    { x:  0.76, z: 0.82 },
+    { x:  0.92, z: 0.00 }  // tail
+  ];
+
+  // piecewise linear + smoothstep 보간
+  for(let i=0; i<pts.length-1; i++){
+    const a = pts[i], b = pts[i+1];
+    if(x >= a.x && x <= b.x){
+      const t = (x - a.x) / (b.x - a.x);
+      const s = t * t * (3 - 2 * t);
+      return lerp(a.z, b.z, s);
+    }
+  }
+  return 0;
+}
+
+function makeBodyOutlineShape(segments = 120){
+  const shape = new THREE.Shape();
+  let first = true;
+  for(let i=0; i<=segments; i++){
+    const t = i / segments;
+    const x = lerp(-0.95, 0.92, t);
+    const z = bodyHalfWidth(x);
+    if(first){ shape.moveTo(x, z); first = false; }
+    else shape.lineTo(x, z);
+  }
+  for(let i=segments; i>=0; i--){
+    const t = i / segments;
+    const x = lerp(-0.95, 0.92, t);
+    const z = -bodyHalfWidth(x);
+    shape.lineTo(x, z);
+  }
+  shape.closePath();
+
+  // 사운드홀
+  const hole = new THREE.Path();
+  hole.absellipse(-0.10, 0.0, 0.205, 0.205, 0, Math.PI * 2, false, 0);
+  shape.holes.push(hole);
+
+  return shape;
+}
+
+// 플레이트 중앙 돔
+function topDome(x, z){
+  // lower bout 중심 쪽에 약한 돔
+  const cx = 0.18, cz = 0.0;
+  const rx = 0.95, rz = 0.85;
+  const dx = (x - cx) / rx;
+  const dz = (z - cz) / rz;
+  const r2 = dx * dx + dz * dz;
+  const h = Math.max(0, 1 - r2);
+  return U(1.8) * h * h; // 약 1.8mm
+}
+
+function backArch(x, z){
+  const cx = 0.20, cz = 0.0;
+  const rx = 0.95, rz = 0.85;
+  const dx = (x - cx) / rx;
+  const dz = (z - cz) / rz;
+  const r2 = dx * dx + dz * dz;
+  const h = Math.max(0, 1 - r2);
+  return U(5.0) * h * h; // 약 5mm
+}
+
+function buildPlate({
+  kind = 'top',   // top / back
+  yOuter = 0.101,
+  thickness = U(2.8),
+  material = MAT.top
+} = {}){
+  const shape = makeBodyOutlineShape(160);
+  const geo = new THREE.ExtrudeGeometry(shape, {
+    depth: thickness,
+    bevelEnabled: false,
+    curveSegments: 64,
+    steps: 1
+  });
+
+  // ExtrudeGeometry 기본 축 정리
+  geo.rotateX(Math.PI / 2);
+
+  // top은 위에서 아래로, back은 아치 방향 반대로
+  const pos = geo.attributes.position;
+  const v = new THREE.Vector3();
+
+  for(let i = 0; i < pos.count; i++){
+    v.fromBufferAttribute(pos, i);
+
+    // 회전 후 좌표계 해석:
+    // x = x, y = depth축, z = original y(shape)
+    // 편집 편의를 위해 y를 원하는 판 위치로 재설정
+    const x = v.x;
+    const z = v.z;
+
+    if(kind === 'top'){
+      // 윗면을 yOuter 근처에 맞추고 underside는 thickness 만큼 아래
+      const onOuter = v.y < thickness * 0.5; // 임시 판정
+      const dome = topDome(x, z);
+      const localY = onOuter ? yOuter + dome : (yOuter - thickness + dome * 0.70);
+      v.y = localY;
+    } else {
+      // back outer가 더 아치
+      const arch = backArch(x, z);
+      const edgeY = -0.115;
+      const outerY = edgeY - arch;
+      const innerY = outerY + thickness;
+      const onOuter = v.y < thickness * 0.5;
+      v.y = onOuter ? outerY : innerY;
+    }
+
+    pos.setXYZ(i, v.x, v.y, v.z);
+  }
+  geo.computeVertexNormals();
+
+  const mesh = new THREE.Mesh(geo, material);
+  return mesh;
+}
+3-3. 림(측판) + 라이닝 예시
+JavaScript
+function buildRim(){
+  const outer = [];
+  const inner = [];
+  const xMin = -0.95, xMax = 0.92;
+  const rimThick = U(2.1);
+
+  const yTop = 0.085;
+  const yBottom = -0.115;
+
+  const seg = 140;
+  for(let i=0; i<=seg; i++){
+    const t = i / seg;
+    const x = lerp(xMin, xMax, t);
+    const zOut = bodyHalfWidth(x);
+    const zIn = Math.max(0, zOut - rimThick);
+    outer.push(new THREE.Vector3(x, yTop, zOut));
+    inner.push(new THREE.Vector3(x, yTop, zIn));
+  }
+
+  // 간단 구현: 좌우 별도 strip를 만들어도 되고, 실제론 contour loft가 더 깔끔
+  const group = new THREE.Group();
+
+  function makeSide(sign = 1){
+    const positions = [];
+    for(let i=0; i<seg; i++){
+      const a = outer[i], b = outer[i+1];
+      const ai = inner[i], bi = inner[i+1];
+
+      const z0 = a.z * sign, z1 = b.z * sign, zi0 = ai.z * sign, zi1 = bi.z * sign;
+
+      const quad = [
+        [a.x, yTop, z0], [b.x, yTop, z1], [b.x, yBottom, z1],
+        [a.x, yTop, z0], [b.x, yBottom, z1], [a.x, yBottom, z0], // outer wall
+
+        [ai.x, yTop, zi0], [ai.x, yBottom, zi0], [bi.x, yBottom, zi1],
+        [ai.x, yTop, zi0], [bi.x, yBottom, zi1], [bi.x, yTop, zi1], // inner wall
+
+        [a.x, yTop, z0], [ai.x, yTop, zi0], [bi.x, yTop, zi1],
+        [a.x, yTop, z0], [bi.x, yTop, zi1], [b.x, yTop, z1], // top edge
+
+        [a.x, yBottom, z0], [b.x, yBottom, z1], [bi.x, yBottom, zi1],
+        [a.x, yBottom, z0], [bi.x, yBottom, zi1], [ai.x, yBottom, zi0] // bottom edge
+      ];
+      positions.push(...quad.flat());
+    }
+
+    const geo = new THREE.BufferGeometry();
+    geo.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3));
+    geo.computeVertexNormals();
+
+    const m = new THREE.Mesh(geo, MAT.sideBack);
+    return m;
+  }
+
+  group.add(makeSide(1));
+  group.add(makeSide(-1));
+
+  // 라이닝: 시각적으로는 strip + notch bump 만으로도 충분
+  function makeLining(y, sign, inset = U(1.0)){
+    const pts = [];
+    for(let i=0; i<=seg; i++){
+      const t = i / seg;
+      const x = lerp(xMin, xMax, t);
+      const z = (bodyHalfWidth(x) - rimThick + inset) * sign;
+      pts.push(new THREE.Vector3(x, y, z));
+    }
+    const curve = new THREE.CatmullRomCurve3(pts);
+    const geo = new THREE.TubeGeometry(curve, 180, U(3.5), 8, false);
+    return new THREE.Mesh(geo, new THREE.MeshPhysicalMaterial({
+      color: '#8a6a4b',
+      roughness: 0.62,
+      metalness: 0.0
+    }));
+  }
+
+  group.add(makeLining(0.083, 1));
+  group.add(makeLining(0.083, -1));
+  group.add(makeLining(-0.113, 1));
+  group.add(makeLining(-0.113, -1));
+
+  return group;
+}
+3-4. 넥 / 힐 / 지판 / 프렛 예시
+JavaScript
+function neckHalfWidthAt(x){
+  // 대략 nut 근처 21.5mm half, heel 쪽 28mm half
+  // x: -2.34 ~ -0.72
+  const t = clamp((x + 2.34) / (1.62), 0, 1);
+  return lerp(U(21.5), U(28.0), t);
+}
+
+function neckThicknessAt(x){
+  const t = clamp((x + 2.34) / (1.62), 0, 1);
+  return lerp(U(21.0), U(23.0), t); // back-of-neck only
+}
+
+function buildFretboard(){
+  const x0 = -2.34;
+  const x1 = -0.66; // body extension 조금 포함 가능
+  const nSeg = 80;
+
+  const nutW = U(43);
+  const endW = U(56);
+  const boardT = U(6.2);
+  const radius = U(304.8);
+
+  const positions = [];
+  const indices = [];
+  const vertsPerRow = 10;
+
+  function yArc(z, halfW){
+    // 12" radius 지판 곡률
+    const zz = z;
+    return Math.sqrt(Math.max(0.000001, radius * radius - zz * zz)) - radius;
+  }
+
+  for(let i=0; i<=nSeg; i++){
+    const tx = i / nSeg;
+    const x = lerp(x0, x1, tx);
+    const halfW = lerp(nutW * 0.5, endW * 0.5, tx);
+
+    for(let j=0; j<vertsPerRow; j++){
+      const tj = j / (vertsPerRow - 1);
+      const z = lerp(-halfW, halfW, tj);
+      const yTop = 0.190 - U(6.2) + yArc(z, halfW); // 너트 높이 기준 근사
+      const yBottom = yTop - boardT;
+
+      positions.push(x, yTop, z);
+      positions.push(x, yBottom, z);
+    }
+  }
+
+  const rowStride = vertsPerRow * 2;
+  for(let i=0; i<nSeg; i++){
+    for(let j=0; j<rowStride - 2; j++){
+      const a = i * rowStride + j;
+      const b = a + rowStride;
+      const c = b + 1;
+      const d = a + 1;
+      indices.push(a, b, d, b, c, d);
+    }
+  }
+
+  const geo = new THREE.BufferGeometry();
+  geo.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3));
+  geo.setIndex(indices);
+  geo.computeVertexNormals();
+
+  return new THREE.Mesh(geo, MAT.board);
+}
+
+function fretX(n){
+  return -2.34 + 2.97 * (1 - Math.pow(2, -n / 12));
+}
+
+function boardWidthAt(x){
+  const x0 = -2.34, x1 = -0.66;
+  const t = clamp((x - x0) / (x1 - x0), 0, 1);
+  return lerp(U(43), U(56), t);
+}
+
+function buildFrets(group){
+  for(let n=1; n<=20; n++){
+    const x = fretX(n);
+    const w = boardWidthAt(x) - U(1.6); // 끝에서 약간 inset
+    const geo = new THREE.CapsuleGeometry(U(0.55), w, 4, 12);
+    geo.rotateZ(Math.PI / 2);
+
+    const fret = new THREE.Mesh(geo, MAT.fret);
+    fret.position.set(x, 0.190 - U(5.0), 0);
+    // 엄밀히는 지판 반경에 맞춰 눕혀야 함
+    group.add(fret);
+  }
+}
+
+function buildNut(){
+  const geo = new THREE.BoxGeometry(U(5.5), U(3.6), U(43));
+  const nut = new THREE.Mesh(geo, MAT.bone);
+  nut.position.set(-2.34, 0.190 - U(1.8), 0);
+  return nut;
+}
+3-5. 브리지 / 새들 / 브리지핀 / 현 예시
+JavaScript
+function buildBridgeGroup(){
+  const g = new THREE.Group();
+
+  // 브리지 본체
+  const bridgeL = U(152);   // Z 방향
+  const bridgeW = U(31);    // X 방향
+  const bridgeT = U(8.5);   // Y 방향
+
+  const body = new THREE.Mesh(
+    new THREE.BoxGeometry(bridgeW, bridgeT, bridgeL),
+    MAT.bridge
+  );
+  body.position.set(0.64, 0.101 + bridgeT * 0.5 - U(0.4), 0);
+  g.add(body);
+
+  // 새들
+  const saddle = new THREE.Mesh(
+    new THREE.BoxGeometry(U(3.0), U(3.2), U(72)),
+    MAT.bone
+  );
+  saddle.position.set(0.63, 0.206 - U(1.6), 0);
+  g.add(saddle);
+
+  // 브리지핀
+  const pinZ = [-.124, -.074, -.025, .025, .074, .124];
+  for(let i=0; i<6; i++){
+    const pin = new THREE.Mesh(
+      new THREE.CylinderGeometry(U(1.3), U(2.1), U(7.0), 12),
+      MAT.bone
+    );
+    pin.position.set(0.71, 0.101 + U(3.6), pinZ[i]);
+    g.add(pin);
+  }
+
+  return g;
+}
+
+const STRING_Z_NUT = [-.080, -.048, -.016, .016, .048, .080];
+const STRING_Z_SAD = [-.124, -.074, -.025, .025, .074, .124];
+const STRING_R = [U(0.16), U(0.20), U(0.28), U(0.36), U(0.48), U(0.60)];
+
+function makeStringCurve(i){
+  const z0 = STRING_Z_NUT[i];
+  const z1 = STRING_Z_SAD[i];
+
+  const pts = [
+    new THREE.Vector3(-2.34, 0.190, z0),               // nut
+    new THREE.Vector3(-1.50, 0.178, lerp(z0, z1, 0.32)),
+    new THREE.Vector3(-0.40, 0.162, lerp(z0, z1, 0.68)),
+    new THREE.Vector3( 0.63, 0.206, z1),               // saddle crest
+    new THREE.Vector3( 0.71, 0.185, z1)                // pin hole side
+  ];
+  return new THREE.CatmullRomCurve3(pts);
+}
+
+function buildStrings(){
+  const g = new THREE.Group();
+  for(let i=0; i<6; i++){
+    const curve = makeStringCurve(i);
+    const geo = new THREE.TubeGeometry(curve, 80, STRING_R[i], 8, false);
+    const mat = i < 2 ? MAT.stringPlain : MAT.stringWound;
+    const s = new THREE.Mesh(geo, mat);
+    s.userData = { stringIndex: i, baseCurve: curve };
+    g.add(s);
+  }
+  return g;
+}
+3-6. 현 진동 표현 예시
+
+현 클릭 유지가 중요하므로, 현은 body에 병합하지 말고 독립 오브젝트로 두는 게 맞습니다.
+
+JavaScript
+function updateStringVibration(stringMesh, t, amp){
+  const i = stringMesh.userData.stringIndex;
+  const z0 = STRING_Z_NUT[i];
+  const z1 = STRING_Z_SAD[i];
+
+  const curvePts = [];
+  const N = 24;
+  for(let k=0; k<=N; k++){
+    const s = k / N;
+    const x = lerp(-2.34, 0.63, s);
+    const z = lerp(z0, z1, s);
+
+    // 양 끝 고정, 중앙 최대
+    const env = Math.sin(Math.PI * s);
+    // 1차 진동 모드 + 감쇠
+    const y =
+      lerp(0.190, 0.206, s) +
+      Math.sin(t * 42.0) * amp * env;
+
+    curvePts.push(new THREE.Vector3(x, y, z));
+  }
+
+  // saddle 뒤쪽 꺾임 추가
+  curvePts.push(new THREE.Vector3(0.71, 0.185, z1));
+
+  const curve = new THREE.CatmullRomCurve3(curvePts);
+  stringMesh.geometry.dispose();
+  stringMesh.geometry = new THREE.TubeGeometry(curve, 64, STRING_R[i], 8, false);
+}
+
+진동을 Y만 주면 단조로우니, 확대 시엔 미세한 Z 흔들림을 10~15% 섞어도 좋습니다.
+단, 너트와 새들, 핀 쪽 끝점은 절대 움직이지 않게 해야 장력감이 살아납니다.
+
+④ UV 배치 규칙 (중요)
+
+이 작업은 형상만큼 UV 방향이 중요합니다.
+
+상판 / 뒤판
+planar UV
+U = X, V = Z
+결 방향 = X
+중앙 seam 표현하려면 좌우 반쪽을 거울 UV로 나눠도 좋음
+측판
+rim perimeter unwrap
+U = 둘레 방향, V = Y
+결이 림을 따라 흐르게
+지금처럼 그냥 박스 UV 주면 가짜 티 남
+넥
+U = X, V = 단면 둘레
+힐과 헤드 전이부에서 UV stretch 최소화
+지판
+U = X, V = Z
+프렛 슬롯 위치가 UV에 영향 적도록 단순 유지
+브리지
+브리지 결은 Z 방향 추천
+상판과 구분이 잘 됨
+⑤ 실제 그래픽 자산이 필요하다면, 딱 이 정도만
+
+질문 취지상 사진 대체가 아니라 3D 모델 고도화가 목적이므로,
+외부 자산 의존은 최소화해야 합니다.
+그래도 추가 자산을 쓴다면 아래 정도만 유효합니다.
+
+중립 스튜디오 HDRI 1장
+
+목재 clearcoat와 금속 반사를 살리기 위한 환경맵
+과장된 반사보다 중성광이 중요
+
+소형 grayscale roughness/noise 맵
+
+목재 모공/라이닝 노치/브러시드 금속의 미세 질감용
+512~1024px면 충분
+
+선택적 normal map
+
+wound string의 미세 감김감
+로제트의 얕은 단차
+바인딩 경계
+
+하지만 형상이 부정확한 상태에서 텍스처만 얹는 건 무의미합니다.
+우선순위는 항상:
+
+형상 → 접촉 관계 → 두께 → UV → 재질
+
+입니다.
+
+⑥ 우선 수정 순서(실무용)
+
+코드에 반영할 때는 아래 순서가 가장 효율적입니다.
+
+1차
+상판/뒤판 두께와 곡면 추가
+사운드홀 절단면 추가
+넥 원통형 제거, 힐/지판 테이퍼 추가
+브리지/새들/핀/현 경로 재작성
+2차
+X 브레이싱/브리지판/라이닝/넥블록/테일블록 추가
+분해 그룹 재구성
+UV 방향 정리
+3차
+절차적 목재 재질
+clearcoat/roughness 세팅
+금속/본 재질 분리
+현 진동 업데이트 개선
+
+원하시면 다음 단계로 바로 이어서
+**“현재 좌표계를 유지한 채 buildGuitarModel() 수준의 Three.js 구조 코드 골격”**까지 더 구체적으로 써드릴 수 있습니다.
+
+내가 한 말:
+검토 후 일부 예시 코드는 그대로 쓸 수 없습니다. ExtrudeGeometry를 +PI/2 회전하면 depth는 음의 Y인데 onOuter=v.y<thickness*.5이면 양면 모두 true가 되어 판이 납작해집니다. 현에 중간 처짐을 넣으면 장력 있는 너트↔새들 직선이 깨지고, CapsuleGeometry를 Z축 회전하면 프렛이 X로 놓입니다. 저는 기존 진동 코드·양 끝 고정을 보존하며, UV/재질·테이퍼 목/힐·연결부부터 직접 구현하겠습니다. 숫자 재검토 결과 기존 줄 폭도 너트 .2904인데 지판 .192로 실제로 밖에 나와 있습니다. 너트 E-E .160, 새들 .250으로 좁히고 지판은 .205→.29로 테이퍼, body top .126 / underside .110 / ribs bottom -.230 / back -.230~-.245로 일관되게 맞출 계획입니다. fingerboard bottom .126 top .153, fret crown .1626, nut string bottom .1645, saddle string bottom .176으로 접촉 높이를 바로잡습니다. 상판 곡면은 연결부가 뜨지 않을 정도로만 적용합니다. 이 구체안에서 남는 치명적인 구조 충돌만 최대3개로 지적해 주세요. 특히 X 브레이싱을 제시해 줄 땐 한 판 안쪽에 붙는 대표 배치로, 새들 바로 아래 브리지판이 빠지지 않게 해 주세요.
+…
+더 보기
+ChatGPT 답변:
+
+수정 방향은 타당합니다. 특히 상판·측판·뒤판의 높이 체계 재설정, 현 간격 축소, 지판 테이퍼 확대는 기존 모형의 핵심 문제를 해결합니다. 다만 실제 형상 구현 전에 구조적으로 충돌할 수 있는 부분이 3개 남습니다.
+
+1. 너트·프렛·새들의 접촉 높이와 현 반지름
+
+설정값은 다음과 같습니다.
+
+부위
+
+	
+
+Y
+
+
+
+
+지판 상면
+
+	
+
+.153
+
+
+
+
+프렛 크라운
+
+	
+
+.1626
+
+
+
+
+너트 현 바닥
+
+	
+
+.1645
+
+
+
+
+새들 현 바닥
+
+	
+
+.176
+
+문제는 현의 바닥과 중심선은 서로 다른 좌표라는 점입니다.
+
+너트와 새들에서 현 바닥 높이를 지정했다면, 현 중심선은 각각 바닥 Y + 현 반지름으로 계산해야 합니다. 6현의 반지름이 다르면 중심선도 달라집니다.
+
+또한 현 바닥이 너트에서 .1645, 새들에서 .176인 직선이라고 가정하면 12프렛 위치의 현 바닥은 약 .17025입니다. 프렛 크라운 .1626과의 차이는 .00765, 환산 약 1.67mm입니다.
+
+이는 일정한 프렛 높이를 가정할 때의 값이며, 고음현에는 가능하지만 저음현에는 다소 낮을 수 있습니다.
+
+수정: 기존 진동 알고리즘은 유지하고, 현별 반지름과 프렛 위치별 간극만 검사하세요. 진동 전 정지 상태의 현 중심선은 너트와 새들 사이를 직선 보간해야 합니다.
+
+2. 상판·측판·뒤판의 접합면 충돌
+
+현재 계획:
+
+상판 외면 .126
+
+상판 내면 .110
+
+측판 하단 -.230
+
+뒤판 -.230 ~ -.245
+
+상판과 측판의 상단 접합 위치가 지정되지 않았습니다.
+
+측판 상단을 .110으로 설정해야 상판 내면에 닿습니다. 측판을 기존 상단 .085로 유지하면 상판 아래에 .025의 틈이 생깁니다.
+
+뒤판은 -.230을 내면, -.245를 외면으로 정의하면 됩니다. 측판 하단 -.230과 접합됩니다.
+
+수정: 기준을 명확히 고정하세요.
+
+JavaScript
+const BODY_Y = {
+  topOuter:  0.126,
+  topInner:  0.110,
+  ribTop:    0.110,
+  ribBottom:-0.230,
+  backInner:-0.230,
+  backOuter:-0.245
+};
+
+상판 돔은 상판 외면과 내면에 같은 변위를 주어 두께를 유지하되, 림 접합선에서는 변위가 0이 되게 해야 합니다. 뒤판 아치 역시 접합선에서 0이어야 틈이 생기지 않습니다.
+
+3. X 브레이싱 교차점·브리지판·사운드홀 간섭
+
+이 부분은 앞선 제안의 수치가 부정확했습니다. 특히 기존에 제시한 X 브레이스 교차점과 끝점은 일관된 X 배치를 이루지 못했습니다.
+
+이번에는 상판 안쪽 한 면에 붙는 구조로 고정하는 편이 좋습니다.
+
+개념 배치도. 상판 내부를 바라보는 도식이며 실제 좌표 축척은 아닙니다. X 브레이스와 브리지판의 접착면 간섭은 별도로 처리해야 합니다.
+
+추천 좌표는 다음과 같습니다.
+
+구조
+
+	
+
+X 위치
+
+
+
+
+사운드홀
+
+	
+
+중심 -.10, 범위 -.305 ~ .105
+
+
+
+
+X 교차점
+
+	
+
+.26
+
+
+
+
+브리지판
+
+	
+
+.55 ~ .82
+
+
+
+
+새들 바로 아래
+
+	
+
+.63
+
+브리지판은 새들 .63과 브리지핀 구멍을 모두 지지할 수 있도록 배치해야 합니다. 따라서 단순한 70×35mm 판을 임의로 놓기보다, 브리지핀 X 위치와 Z 전체 간격을 포함하도록 크기를 결정해야 합니다.
+
+X 브레이스는 사운드홀을 가로지르지 않게 하고, 상판 내면 y=.110에 상단 접착면을 맞춥니다. 브리지판도 같은 면에 접착하되, X 브레이스가 지나가는 영역에서는 브리지판의 모서리를 절삭하거나 브레이스 위치에 맞게 형상을 조정해야 합니다. 서로 관통하는 두 솔리드를 그대로 겹쳐 놓으면 안 됩니다.
+
+최종 판단: 현 중심선과 접촉 높이, 판과 림의 접합 Y, X 브레이스와 브리지판의 평면상 간섭만 먼저 확정하면 됩니다. 나머지 UV·목재결·넥/힐 형상·재질 개선은 현재 계획대로 진행해도 구조적 모순을 추가로 만들 필요가 없습니다. 다만 실제 조립·분해 렌더링의 합격 여부는 구현 화면에서 별도로 확인해야 합니다.
+
+ChatGPT는 실수할 수 있습니다. 중요한 정보는 확인하세요.
+최신 응답
+
+
+
+
+추론 수준
+Medium
+응답이 완료되었습니다

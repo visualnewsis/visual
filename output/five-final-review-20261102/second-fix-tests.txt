@@ -1,0 +1,65 @@
+✔ crema is one connected liquid surface, with no floating pieces or torus arcs (37.1676ms)
+✔ every fill stays finite, below the cup rim, inside its cavity, and changes continuously (96.8643ms)
+✔ empty or invalid fills hide actual liquid and cannot leave crema suspended (9.7719ms)
+✖ continuous crema is warm low-contrast microfoam with a matte liquid surface (20.4339ms)
+✔ wetting front advances from the top before first discharge; no zigzag strands remain (142.1365ms)
+✔ falling espresso starts at the real outlet and reaches the actual changing liquid plane (43.9704ms)
+✔ powder and beverage are continuous textured surfaces with no separate nut-sized chunks (31.7793ms)
+✔ beverage surface is dark opaque espresso and cannot inherit the all-foam appearance (6.403ms)
+✖ lateral-cut stylus vibration crosses the groove rather than running along it (128.6643ms)
+✔ both f openings have simple non-crossing boundaries and mirror exactly (3.5683ms)
+✔ skin triangulation preserves projected area without filling or overlapping the holes (5.4824ms)
+✔ cut walls have independent horizontal normals and arched skins retain smooth upward normals (3.3418ms)
+✔ the closed shell has exactly two incident triangles per geometric edge (382.4578ms)
+✔ explicitly closed outer and hole loops cannot shift Earcut vertex offsets (386.1002ms)
+✔ actual violin contour preserves every outer and f-opening boundary and projected polygon area (227.1587ms)
+✔ outer plate edge retains varnish while the inside and f holes expose cavity wood (0.9168ms)
+✔ approved f proportions retain tangent-continuous eyes and positive bank separation (0.3818ms)
+✔ actual soundboard triangles cannot span a broad arch with a long flat fan (1649.5839ms)
+ℹ tests 18
+ℹ suites 0
+ℹ pass 16
+ℹ fail 2
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 3220.2446
+
+✖ failing tests:
+
+test at goodeasy\espresso-crema-clearance.test.mjs:45:1
+✖ continuous crema is warm low-contrast microfoam with a matte liquid surface (20.4339ms)
+  AssertionError [ERR_ASSERTION]: The expression evaluated to a falsy value:
+  
+    assert.ok(material.roughness>=.55&&material.roughness<=.75)
+  
+      at TestContext.<anonymous> (file:///C:/Users/user/.codex/worktrees/piano-finish/editshop/goodeasy/espresso-crema-clearance.test.mjs:47:85)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1397:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:969:18)
+      at Test.postRun (node:internal/test_runner/test:1537:19)
+      at Test.run (node:internal/test_runner/test:1462:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:969:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: '==',
+    diff: 'simple'
+  }
+
+test at goodeasy\gramophone\lateral-direction.test.mjs:2:1
+✖ lateral-cut stylus vibration crosses the groove rather than running along it (128.6643ms)
+  AssertionError [ERR_ASSERTION]: lateral movement must align with local disc radius, dot -0.9542770032968161
+      at TestContext.<anonymous> (file:///C:/Users/user/.codex/worktrees/piano-finish/editshop/goodeasy/gramophone/lateral-direction.test.mjs:6:255)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1397:25)
+      at Test.start (node:internal/test_runner/test:1257:17)
+      at startSubtestAfterBootstrap (node:internal/test_runner/harness:387:17) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: '==',
+    diff: 'simple'
+  }

@@ -1,0 +1,40 @@
+{
+  "mode": "built-in image_gen",
+  "reference": "C:/Users/user/Documents/editshop/output/tongi-demo/tongi-poses-logo-mint-v4.png",
+  "assets": [
+    {
+      "path": "C:/Users/user/Documents/editshop/output/tongi-demo/tongi-roam-poses-v1.png",
+      "prompt": "Create ONE production transparent sprite atlas of exactly this existing character Tongi, preserve identity completely: plump cute glossy cream robot, cyan NEWSIS mint trim, circular ear receivers, large cyan eyes, black goggles above forehead, same high quality polished 3D. Reference is identity/style only. Canvas landscape, THREE equal-width columns in ONE horizontal row, each character fully inside its own column with 10% padding, equal scale; no labels/text/grid/background/shadows on ground. LEFT: front facing upper body looking slightly right, BOTH rounded hands gripping an invisible horizontal ledge at chest height, elbows bent, head and eyes clearly above fingers, torso below ledge, designed to rise up behind webpage divider. No visible physical bar in image. CENTER: full body behind a curved blank white sheet/paper, lifting one curled corner with right hand, head and delighted face above the paper, paper at waist level, cream robot feet visible below; paper no text. RIGHT: front three-quarter body leaning and peeking from LEFT side of an imaginary vertical edge into the right side, head tilted playfully, left hand gripping invisible vertical edge at waist, right hand pointing right. No visible wall or card in image. Clean real transparent alpha around each pose. These are separate pose sprites for subtle webpage emergence animations, not a mockup.",
+      "usage": "Left and right poses remain in use; the middle paper pose was superseded by the real article curtain.",
+      "relative_path": "tongi-roam-poses-v1.png"
+    },
+    {
+      "path": "C:/Users/user/Documents/editshop/output/tongi-demo/tongi-curtain-lift-v1.png",
+      "prompt": "Production UI mascot sprite, ONE robot Tongi matching identity in supplied reference exactly: plump rounded glossy cream robot, cyan NEWSIS mint trim, circular ear receivers, expressive cyan eyes, black flip goggles above forehead. Full body front three-quarter facing slightly left, looking UP with delighted effort. BOTH ARMS RAISED ABOVE ITS HEAD, hands palms up, rounded fingers curling over an INVISIBLE horizontal curtain hem at top of frame, as if lifting the lower edge of a webpage article thumbnail curtain upward. Hands reach above head, elbows bent outward. This is NOT holding a white sheet, NOT paper in front of body. No visible curtain, no paper, no bar, no text or props. Body, feet, both fingers fully visible. Premium glossy 3D render, clean silhouette, soft studio lighting. Canvas portrait square, robot centred with 8% transparent padding at all sides including raised fingers, TRUE transparent alpha background. Used behind an actual article photo that will rise in CSS; hand contact is at top of sprite.",
+      "relative_path": "tongi-curtain-lift-v1.png"
+    },
+    {
+      "path": "C:/Users/user/Documents/editshop/output/tongi-demo/tongi-grip-hands-v1.png",
+      "prompt": "Make ONE clean transparent UI sprite atlas containing ONLY TWO small robot hands from the supplied Tongi robot design. No robot face/head/torso/body. Cream glossy 3D rounded robot glove-like fingers, short dark graphite wrist cuff. Exactly two isolated sprites in two equal columns, LEFT is robot right hand and RIGHT is mirrored left hand, same size and lighting. Hands viewed from FRONT and slightly above as they rest on/grip the TOP of an invisible horizontal ledge: FOUR rounded curled fingertips pointing DOWN over the ledge toward viewer, thumb slightly visible to one side. Each hand has 4 compact rounded knuckles across the top, a small lower palm, cuff behind wrist ABOVE the knuckles. No arms beyond tiny cuff. No actual bar or ledge, no props, no labels, no text, no ground shadow, no rectangular backing, TRUE transparent alpha all around each isolated hand. Whole hand silhouette entirely within its cell with generous 15% padding. Wide landscape canvas suitable for slicing into two equal cells with CSS. Match the cream polished robot material and soft studio lighting in reference exactly.",
+      "relative_path": "tongi-grip-hands-v1.png"
+    }
+  ],
+  "review_sessions": {
+    "gpt": "https://chatgpt.com/c/6aeaf754-aaec-83ee-9eaf-9e019838f5ea",
+    "claude": "https://claude.ai/chat/a0e26e38-a703-44c3-835c-8fc1adb7bf63"
+  },
+  "scope": "Local VISUAL NEWSIS landing sample only; no production changes. Goodeasy assistance remains a feasibility proposal, not implemented.",
+  "verification": {
+    "node_tests_passed": 9,
+    "static_landing_main_unchanged": true,
+    "curtain_card_position_delta_px": 0,
+    "curtain_card_height_delta_px": 0,
+    "cards_measured": 26,
+    "latest_motion_viewports": [
+      1280,
+      319
+    ],
+    "real_phone_tested": false
+  },
+  "reference_relative": "tongi-poses-logo-mint-v4.png"
+}

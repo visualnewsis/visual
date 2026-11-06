@@ -1,0 +1,140 @@
+[
+  {
+    "path": "goodeasy/assets/anatomy-viewer.js",
+    "status": 200,
+    "sha256": "5a9bfdf0c3ecc0f0f72618811e708e517c15f78db3233d92e0ecac184ecddf0a",
+    "matches": true
+  },
+  {
+    "path": "goodeasy/assets/episode-release.css",
+    "status": 200,
+    "sha256": "b7de31e9bb1e073d992ffa2eb4ae9b1b6a3f37236b99c87b5c6c1a231b801174",
+    "matches": true
+  },
+  {
+    "path": "goodeasy/assets/landing-reel.js",
+    "status": 200,
+    "sha256": "a7f1835ed845d396d2e0f80c5994d2f633611091914051dea7a014e71e2a3ed1",
+    "matches": true
+  },
+  {
+    "path": "goodeasy/assets/landing.css",
+    "status": 200,
+    "sha256": "88f461852146d63d1350578bf0c14709501a6b7aaa7741845ba05a39c6b29b4b",
+    "matches": true
+  },
+  {
+    "path": "goodeasy/assets/quality-kit.js",
+    "status": 200,
+    "sha256": "6f9baa1928ccbc66ffdf2b160342837b8117664d4ac1215bb6ad5ec98fcd9d7f",
+    "matches": true
+  },
+  {
+    "path": "goodeasy/assets/quality-machines.js",
+    "status": 200,
+    "sha256": "1a57c11cb49573f907dca1f26ce593c895b98ca48c7f87e02a0c39c364a588f9",
+    "matches": true
+  },
+  {
+    "path": "goodeasy/assets/quality-stage.js",
+    "status": 200,
+    "sha256": "8b8ae43700fad6219f1db0c9297245297caaecf465baf0a60b11f66abeab82e8",
+    "matches": true
+  },
+  {
+    "path": "goodeasy/assets/release-machine-models.js",
+    "status": 200,
+    "sha256": "5a6e2d2ebd4bcf32182a1972c8d1d2c94f161ffb29fe53cf485ee03c549f7f94",
+    "matches": true
+  },
+  {
+    "path": "goodeasy/assets/watch-hero.js",
+    "status": 200,
+    "sha256": "cdcfc982f9772e0aa7770766dc0251d2fd99cbc39ea04c0c0d178bf07678a813",
+    "matches": true
+  },
+  {
+    "path": "goodeasy/assets/watch-observation-tour.css",
+    "status": 200,
+    "sha256": "81620775c82e9a63b5eeef54983b67f6bef49f70e4d95935d55cdb8c3785e685",
+    "matches": true
+  },
+  {
+    "path": "goodeasy/camera/index.html",
+    "status": 200,
+    "sha256": "e88935d8cd28032dd885b48a2e3bce51a08391176dc7b142ca82a05206abc7a4",
+    "matches": true
+  },
+  {
+    "path": "goodeasy/espresso-machine/index.html",
+    "status": 200,
+    "sha256": "2fcaa6b153eefc34a5d597eb30bdeba41c5c62a9da932ecf7c4d200e3a14007e",
+    "matches": true
+  },
+  {
+    "path": "goodeasy/fishing-reel/index.html",
+    "status": 200,
+    "sha256": "693626855450881969b18097cea6143a6ad35e3715b2d44a073ec12812c44eec",
+    "matches": true
+  },
+  {
+    "path": "goodeasy/gramophone/index.html",
+    "status": 200,
+    "sha256": "fc82ff9d262e909b83069a45ec3bb5069a4f42b8cb33def75be581c6834b6cd1",
+    "matches": true
+  },
+  {
+    "path": "goodeasy/guitar/index.html",
+    "status": 200,
+    "sha256": "06c9a3d82dc581c290e04f00d3d42855d26f0064e31816e132fe7dbf4edbc795",
+    "matches": true
+  },
+  {
+    "path": "goodeasy/index.html",
+    "status": 200,
+    "sha256": "5c7a049d4e11de56995e2aed5822f97dee1d73becf403bd4ab0d508882574f4c",
+    "matches": true
+  },
+  {
+    "path": "goodeasy/keyboard/index.html",
+    "status": 200,
+    "sha256": "d86b2f87afe2d07b309c4e8d8b05191fb7a4769d538be4288375da310a0a6ee4",
+    "matches": true
+  },
+  {
+    "path": "goodeasy/projector/index.html",
+    "status": 200,
+    "sha256": "374887678dae665a78ecb8fe79de059cafbec92343f8297763a1d6436259acbc",
+    "matches": true
+  },
+  {
+    "path": "goodeasy/sewing-machine/index.html",
+    "status": 200,
+    "sha256": "33aeb549407082e00946a3aa0f7d9759c74d603b22a4bb8f0cae76fdc5bb67af",
+    "matches": true
+  },
+  {
+    "path": "goodeasy/violin/index.html",
+    "status": 200,
+    "sha256": "21d92f07e287885c463e5b42e96898c5528402008582ee274d529ad698943012",
+    "matches": true
+  },
+  {
+    "path": "goodeasy/watch/index.html",
+    "status": 200,
+    "sha256": "cb50d3a723a386b819e3d759c103ace463ab641631a26eb629507ba6165b0f9f",
+    "matches": true
+  },
+  {
+    "path": "sitemap-sections.xml",
+    "status": 200,
+    "sha256": "dd46074433a00c022a451d9d55300ed809c3b2e52fca8c6ff9460c24eed23daf",
+    "matches": true
+  },
+  {
+    "path": "sitemap.xml",
+    "status": 200,
+    "sha256": "69b6390ff8f02ab01a7cb9d076a0a826c1dc5e0800b497f3a654ff0e67b980a8",
+    "matches": true
+  }
+]

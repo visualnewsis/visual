@@ -1,0 +1,60 @@
+공개 웹사이트 VISUAL NEWSIS 굳이구지의 에스프레소 3D 개선 구현 의뢰입니다. 아래 자료는 https://visual.newsis.com/goodeasy/assets/espresso-lessons.js 및 research-other.js, quality-kit.js 에서 인증 없이 HTTP200으로 공개되며 로컬 파일과 내용 일치까지 검증한 코드입니다. 비공개 코드나 비밀 정보는 없습니다. 사용자는 파란 구슬 샤워 같은 물, 단순 원통·얇은 원판 커피잔이 조잡하다고 합니다. coffee-detail.js 정적 ES모듈 전체 코드를 한 code block으로 주세요. import {T,materials as M,mesh,box,cyl,ring,rod,tube,part,lathe} from ./quality-kit.js?v=20261026-release3; import {coffeeFlow} from ./model.js?v=20261026-release3. export buildCoffeeComparison(),buildBrewRatio(),createCoffeeCup(). Y위. pbr골드/그린/갈색, 네온금지. buildCoffeeComparison: 절개 금속바스켓·펀칭바닥·180개이상불규칙입자 InstancedMesh·입자틈의 가는 연속물길·아래갈색커피흐름. 구슬샤워금지. defaults{grind:70,pressure:9,channel:0,time:0}; reference=coffeeFlow(30,9), 양쪽grind30/s.grind 같은pressure, s.comparison=[percent,percent], compare(s) {left,right,pressure,grind,channel}; annotations두단면;advance s.time+=dt. grain·flowgeometry preallocated, rebuild금지. createCoffeeCup(): 두꺼운 porcelain Lathe컵·림·수직손잡이·접시·깊이있는커피볼륨·meniscus·미세크레마얼룩, {group,setFill(fraction,time=0,pouring=false)}. unitcupheight1.1 baseline0, fill은내부안에만, 0일때 empty, Node검사위해document필수금지. buildBrewRatio defaults{dose:18,yield:36}, 두저울위원두바스켓과컵, 무게/추출비 조작즉시반영, annotations, reading은질량비정확하고잔높이는상징표현. 동일컵을히어로에도재사용할것. buildCoffeeWaterPath는기존유지하므로 구현불필요. 납작장난감아닌교육용고급단면, 390px명확, GPU비용적당, 실제물리계산주장금지. 자료:
+import {T,materials as M,box,cyl,rod,tube,part} from './quality-kit.js?v=20261026-release3';
+import {buildEspressoStudy} from './quality-replacements.js?v=20261026-release3';
+import {coffeeFlow} from './model.js?v=20261026-release3';
+
+const water=new T.MeshStandardMaterial({color:0x70cbd5,emissive:0x164651,roughness:.25});
+const clamp=x=>Math.max(0,Math.min(1,x));
+export function buildCoffeeComparison(){
+ const group=new T.Group(),beds=[],labels=[];
+ for(let side=0;side<2;side++){
+  const g=part(group,side?'selected grind':'coarse reference');g.position.x=side?1.45:-1.45;
+  box(g,2,.08,1.4,M.steel,0,-.18,0);
+  // An open section: particles and the water between them remain visible.
+  const particles=[];
+  for(let row=0;row<10;row++)for(let col=0;col<16;col++){
+   const grain=cyl(g,.11,.12,M.coffee,-.78+col*.26,-.01+row*.17,(col%2? .09:-.09));grain.rotation.x=Math.PI/2;particles.push(grain);
+  }
+  const drops=[];for(let i=0;i<18;i++){
+   const o=new T.Mesh(new T.SphereGeometry(.032,12,8),water);g.add(o);drops.push(o);
+  }
+  const glass=new T.MeshStandardMaterial({color:0xacc9c9,transparent:true,opacity:.16,depthWrite:false,side:T.DoubleSide});
+  const cup=cyl(g,.52,.56,glass,0,-.78,0);const fill=cyl(g,.47,.02,M.coffee,0,-1,0);
+  beds.push({g,particles,drops,fill});labels.push({text:side?'② 분쇄도 변경':'① 굵게 고정',point:[g.position.x,1.18,0]});
+ }
+ return {group,eye:[0,2,9],defaults:{grind:70,pressure:9,channel:0,time:0},annotations:labels,
+  update(s){const reference=coffeeFlow(30,9),values=[30,s.grind??70];s.comparison=[];
+   beds.forEach((b,side)=>{const grind=values[side],q=coffeeFlow(grind,s.pressure??9)/reference;
+    s.comparison.push(Math.round(q*100));
+    const cols=Math.max(4,Math.min(16,Math.round(7+(grind-30)*.175))),rows=Math.max(3,Math.min(10,Math.round(4+(grind-30)*.1)));b.particles.forEach((o,i)=>{const col=i%16,row=Math.floor(i/16);o.visible=col<cols&&row<rows;o.scale.setScalar((.76/cols)/.11);o.position.set(-.82+col*1.64/(cols-1),.02+row*.65/(rows-1),.02);});
+    b.drops.forEach((o,i)=>{const channel=!!s.channel&&side===1;const phase=((s.time||0)*q*.45+i/18)%1;o.position.set(channel? .53+(i%3)*.025:-.79+(i%7)*.26,1.06-phase*2.0,.14);});
+    const fraction=clamp(q*.65);b.fill.position.y=-1+fraction*.45;
+   });
+  },advance(s,dt){s.time+=dt;},reading:s=>`두 쪽 모두 ${s.pressure}bar · 왼쪽 ${s.comparison[0]} / 오른쪽 ${s.comparison[1]} · 굵게·9bar의 흐름을 100으로 둔 비교값`,
+  compare:s=>({left:s.comparison[0],right:s.comparison[1],pressure:s.pressure,grind:s.grind,channel:!!s.channel})};
+}
+
+
+(){const group=new T.Group(),cup=part(group,'cup');const profile=[[.55,0],[.62,.12],[.72,1.2],[.73,1.28],[.64,1.28],[.54,.13],[.55,0]].map(p=>new T.Vector2(...p));mesh(cup,new T.LatheGeometry(profile,64),M.ivory);ring(cup,.35,.08,M.ivory,.83,.7,0,'z');const coffee=cyl(cup,.58,.05,M.coffee,0,.1,0);const puck=cyl(group,.55,.2,M.coffee,-1.6,.15,0);return finish(group,s=>{coffee.position.y=.1+Math.min(1,(s.yield||36)/80);},{defaults:{dose:18,yield:36},reading:s=>`${s.dose}g 넣고 ${s.yield}g 추출 · 질량비 1:${(s.yield/s.dose).toFixed(2)} · 잔 높이는 상징 표현`});}
+
+import * as T from '../piano/vendor/three.module.min.js';
+export {T};
+const cache=new Map();
+function grain(){const c=document.createElement('canvas');c.width=512;c.height=512;const x=c.getContext('2d'),d=x.createImageData(512,512);let seed=73;const rand=()=>((seed=seed*16807%2147483647)/2147483647);for(let y=0;y<512;y++)for(let i=0;i<512;i++){const a=(y*512+i)*4,v=Math.sin(i*1.55+Math.sin(y*.008)*.7)*.38+Math.sin(i*2.76+y*.007)*.16,n=rand()*3;d.data[a]=171+v*7+n;d.data[a+1]=121+v*5+n;d.data[a+2]=67+v*3+n;d.data[a+3]=255;}x.putImageData(d,0,0);const tex=new T.CanvasTexture(c);tex.colorSpace=T.SRGBColorSpace;tex.wrapS=tex.wrapT=T.RepeatWrapping;return tex;}
+function leather(){const c=document.createElement('canvas');c.width=c.height=128;const x=c.getContext('2d');x.fillStyle='#3b3c3a';x.fillRect(0,0,128,128);for(let i=0;i<4000;i++){x.fillStyle=i%2?'#292b29':'#535450';x.fillRect((i*37)%128,(i*71+Math.floor(i/128))%128,1,1);}const tex=new T.CanvasTexture(c);tex.wrapS=tex.wrapT=T.RepeatWrapping;tex.repeat.set(4,3);return tex;}
+const woodMap=grain(),leatherMap=leather();
+export const materials={wood:new T.MeshPhysicalMaterial({color:0xffffff,map:woodMap,roughness:.36,clearcoat:.6,clearcoatRoughness:.28}),darkWood:new T.MeshPhysicalMaterial({color:0x62402a,map:woodMap,roughness:.4,clearcoat:.4}),ivory:new T.MeshPhysicalMaterial({color:0xe5e0ca,roughness:.35,clearcoat:.24}),steel:new T.MeshStandardMaterial({color:0xbac2c0,metalness:.92,roughness:.32}),brass:new T.MeshStandardMaterial({color:0xb79c61,metalness:1,roughness:.24}),black:new T.MeshPhysicalMaterial({color:0x131a1b,metalness:.35,roughness:.29,clearcoat:.4}),felt:new T.MeshStandardMaterial({color:0x262e28,roughness:1}),leather:new T.MeshStandardMaterial({color:0x242621,map:leatherMap,bumpMap:leatherMap,bumpScale:.035,roughness:.8}),glass:new T.MeshPhysicalMaterial({color:0x163b42,metalness:.22,roughness:.07,clearcoat:1,transparent:true,opacity:.86}),red:new T.MeshStandardMaterial({color:0x913d25,roughness:.4}),coffee:new T.MeshPhysicalMaterial({color:0x60361c,roughness:.18,clearcoat:.8})};
+export function mesh(parent,g,m,x=0,y=0,z=0){const o=new T.Mesh(g,m);o.position.set(x,y,z);o.castShadow=true;o.receiveShadow=true;parent.add(o);return o;}
+export function rounded(w,h,d,r=.05){const key=[w,h,d,r].join('/');if(cache.has(key))return cache.get(key);const s=new T.Shape(),x=-w/2,y=-h/2;r=Math.min(r,w/3,h/3,d/3);s.moveTo(x+r,y);s.lineTo(x+w-r,y);s.quadraticCurveTo(x+w,y,x+w,y+r);s.lineTo(x+w,y+h-r);s.quadraticCurveTo(x+w,y+h,x+w-r,y+h);s.lineTo(x+r,y+h);s.quadraticCurveTo(x,y+h,x,y+h-r);s.lineTo(x,y+r);s.quadraticCurveTo(x,y,x+r,y);const g=new T.ExtrudeGeometry(s,{depth:d,bevelEnabled:true,bevelSize:r*.5,bevelThickness:r*.5,bevelSegments:3,curveSegments:10});g.translate(0,0,-d/2);cache.set(key,g);return g;}
+export const box=(p,w,h,d,m,x=0,y=0,z=0,r=.05)=>mesh(p,rounded(w,h,d,r),m,x,y,z);
+export const cyl=(p,r,h,m,x=0,y=0,z=0,r2=r)=>mesh(p,new T.CylinderGeometry(r,r2,h,64),m,x,y,z);
+export function ring(p,r,t,m,x=0,y=0,z=0,axis='y'){const o=mesh(p,new T.TorusGeometry(r,t,12,96),m,x,y,z);if(axis==='y')o.rotation.x=Math.PI/2;if(axis==='x')o.rotation.y=Math.PI/2;return o;}
+export function rod(p,a,b,r,m,segments=12){const A=new T.Vector3(...a),B=new T.Vector3(...b),d=B.clone().sub(A),o=mesh(p,new T.CylinderGeometry(r,r,d.length(),segments),m);o.position.copy(A.add(B).multiplyScalar(.5));o.quaternion.setFromUnitVectors(new T.Vector3(0,1,0),d.normalize());return o;}
+export function tube(p,points,r,m){return mesh(p,new T.TubeGeometry(new T.CatmullRomCurve3(points.map(v=>new T.Vector3(...v))),64,r,8,false),m);}
+export function sphere(p,r,m,x,y,z,scale=[1,1,1]){const o=mesh(p,new T.SphereGeometry(r,32,24),m,x,y,z);o.scale.set(...scale);return o;}
+export function label(p,text,w,x,y,z,color='#b9c0b4',bg=null){const c=document.createElement('canvas');c.width=512;c.height=128;const a=c.getContext('2d');if(bg){a.fillStyle=bg;a.fillRect(0,0,512,128);}a.fillStyle=color;a.textAlign='center';a.textBaseline='middle';a.font='52px Arial';a.fillText(text,256,64);const tex=new T.CanvasTexture(c);tex.colorSpace=T.SRGBColorSpace;const o=mesh(p,new T.PlaneGeometry(w,w/4),new T.MeshBasicMaterial({map:tex,transparent:true,depthWrite:false}),x,y,z);return o;}
+export function bolt(p,x,y,z){cyl(p,.055,.03,materials.steel,x,y,z);box(p,.067,.008,.012,materials.black,x,y+.02,z,.003);}
+export function gear(p,r,x,y,z,teeth=32){const s=new T.Shape();for(let i=0;i<teeth*4;i++){const a=i/(teeth*4)*Math.PI*2,R=i%4===0||i%4===3?r:r+.065;const X=Math.cos(a)*R,Y=Math.sin(a)*R;i?s.lineTo(X,Y):s.moveTo(X,Y);}s.closePath();const hole=new T.Path();hole.absarc(0,0,r*.28,0,Math.PI*2,true);s.holes.push(hole);const g=new T.ExtrudeGeometry(s,{depth:.055,bevelEnabled:true,bevelSize:.008,bevelThickness:.008,bevelSegments:2});g.rotateX(-Math.PI/2);const o=mesh(p,g,materials.brass,x,y,z);cyl(o,.06,.16,materials.steel,0,0,0);return o;}
+export function part(parent,name){const g=new T.Group();g.name=name;g.userData.part=name;parent.add(g);return g;}
+export function tag(group,name,action){group.traverse(o=>{if(o.isMesh){o.userData.part=name;if(action)o.userData.action=action;}});return group;}
+export function lathe(p,profile,m,x=0,y=0,z=0){return mesh(p,new T.LatheGeometry(profile.map(v=>new T.Vector2(...v)),96),m,x,y,z);}

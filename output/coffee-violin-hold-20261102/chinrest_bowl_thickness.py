@@ -1,0 +1,2 @@
+from pathlib import Path
+p=Path(r'C:\Users\user\.codex\worktrees\piano-finish\editshop\goodeasy\assets\models\violin-fittings.js');s=p.read_text(encoding='utf-8');s=s.replace('base+.016+rise*r*r','underside(x,z)+.028+.018*r*r').replace('2*rise*(x-cx)/(rx*rx)','(underside(x+h,z)-underside(x-h,z))/(2*h)+.036*(x-cx)/(rx*rx)').replace('2*rise*(z-cz)/(rz*rz)','(underside(x,z+h)-underside(x,z-h))/(2*h)+.036*(z-cz)/(rz*rz)');p.write_text(s,encoding='utf-8')

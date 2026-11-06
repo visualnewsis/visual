@@ -1,0 +1,40 @@
+{
+  "commit": "50ea00b",
+  "gptReview": {
+    "url": "https://chatgpt.com/c/6ae93f21-e970-83ec-8c7a-c27a348269bc",
+    "rounds": 2,
+    "evidence": "Text-only policy and UX brief; no image inspection claimed"
+  },
+  "claudeReview": {
+    "url": "https://claude.ai/chat/c8053007-d5aa-4804-b0a0-8f01cd14949a",
+    "model": "Opus 5.5",
+    "completedRounds": 1,
+    "evidence": "Actual source and regression files attached. Reviewer used synthetic geography, not the production geography. Codex reproduced and tested fixes with actual geography.",
+    "followup": "Updated files attached as an unsent draft. Further UI interaction stopped at user request. Final-source Claude rereview remains pending."
+  },
+  "acceptedFindings": [
+    "Separate a local subject from an incidental place mention",
+    "Persist international exclusion IDs for 30 days; fail collection if exclusion feed is unavailable",
+    "Recheck legacy records and block unreviewed snapshots in both browser modes",
+    "Exclude book reviews and foreign cultural venues; require a domestic exhibition connection",
+    "Prevent team names, company names, aggregate schedules and metaphorical action words from granting local eligibility",
+    "Preserve domestic incidents involving foreign nationals and actual local impact around institutions"
+  ],
+  "notAdopted": [
+    "GPT's blanket prohibition on institutional pins in all-news mode conflicts with the user's requested court-related all-news placement; the strict prohibition applies to local-news eligibility instead",
+    "Broadening culture to concerts and festivals was deferred in favour of the user's conservative exhibition requirement"
+  ],
+  "initialPublishedCandidate": {
+    "articles": 849,
+    "localEligible": 81,
+    "allModeLocated": 486,
+    "internationalCategory": 0,
+    "excludedInternationalIds": 154
+  },
+  "verification": {
+    "passed": ["collector", "domestic-policy", "locations", "static HTML and JSON-LD", "snapshot validator", "rules", "modes", "navigation", "location", "pulse", "performance", "VISUAL NEWSIS global checks", "git diff --check"],
+    "desktop": "Intermediate local UI was inspected before the user stopped computer use",
+    "mobile": "Final mobile viewport and physical device verification not performed after computer-use stop",
+    "automation": "New policy and mode regressions are called by existing workflow test entry points; deployment workflow itself unchanged"
+  }
+}

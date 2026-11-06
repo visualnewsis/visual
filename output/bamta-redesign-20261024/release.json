@@ -1,0 +1,6 @@
+{
+  "release": "20261025-mesh1",
+  "deployment": 2,
+  "features": ["fictional-volumetric-heads", "polite-hallway-dialogue"],
+  "portraitTextures": false
+}

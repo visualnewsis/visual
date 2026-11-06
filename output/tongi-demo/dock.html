@@ -1,0 +1,18 @@
+<div class="tg-launch-wrap" data-placement="auto">
+ <button class="tg-launch" aria-haspopup="dialog" aria-controls="tg-dialog" aria-expanded="false"><span class="tg-mini" aria-hidden="true"><img src="./tongi-poses-logo-mint-v4.png" alt=""></span><span class="tg-launch-copy"><strong>아는 AI, 통이</strong><small>궁금한 걸 물어보세요 ↗</small></span><span class="tg-preview">체험</span></button>
+ <button class="tg-hide" aria-label="통이 버튼 작게 접기" title="작게 접기">−</button>
+</div>
+<dialog id="tg-dialog" aria-labelledby="tg-dialog-title">
+ <div class="tg-dialog-head"><div><span class="tg-kicker">NEWSIS · AI COMPANION</span><h2 id="tg-dialog-title" tabindex="-1">아는 AI, <em>통이</em><span>체험판</span></h2></div><button class="tg-close" aria-label="통이 닫기">✕</button></div>
+ <div class="tg-scroll">
+  <p class="tg-welcome">궁금한 세상과, 말이 통하다.</p>
+  <nav class="tg-services" aria-label="통이 서비스"><button data-service="find" aria-pressed="true"><b>⌕</b>기사 탐색</button><button data-service="brief" aria-pressed="false"><b>✧</b>관심사</button><button data-service="calc" aria-pressed="false"><b>＋</b>계산대로</button><button data-service="here" aria-pressed="false"><b>◎</b>여기뉴스</button></nav>
+  <div class="tg-notice">UI 체험 · 실제 AI 검색과 뉴스 요약은 연결 전입니다.</div>
+  <!-- PANEL -->
+  <section class="tg-extra" data-view="brief" hidden><h3>어떤 소식에 관심 있으세요?</h3><p>이 브라우저에 관심 주제를 저장해 볼 수 있어요.</p><div class="tg-interests"><button aria-pressed="false">정치</button><button aria-pressed="false">경제</button><button aria-pressed="false">사회</button><button aria-pressed="false">국제</button><button aria-pressed="false">문화</button><button aria-pressed="false">스포츠</button><button aria-pressed="false">IT·과학</button><button aria-pressed="false">우리 동네</button></div><button class="tg-primary" id="tg-save">관심사 저장하기</button><p id="tg-saved" role="status"></p></section>
+  <section class="tg-extra" data-view="calc" hidden><span class="tg-section-tag">계산대로 · 대화형 진입 시안</span><h3>숫자가 궁금할 땐,<br>말로 먼저 물어보세요.</h3><p>통이가 조건을 확인한 뒤 기존 계산기로 안내하는 흐름입니다.</p><form id="tg-calc-form"><label for="tg-calc-query">무엇을 계산해 볼까요?</label><textarea id="tg-calc-query" rows="2" placeholder="예: 퇴사하면 생활비를 얼마나 버틸까?" maxlength="200" required></textarea><div class="tg-examples"><button type="button" data-fill="퇴사 후 생활비가 궁금해요">퇴사 후 생활비</button><button type="button" data-fill="집을 사려면 얼마나 필요할까?">내 집 마련</button></div><button class="tg-primary">조건 입력 흐름 보기 ↗</button></form><div id="tg-calc-result" class="tg-flow-result" role="status" hidden></div></section>
+  <section class="tg-extra" data-view="here" hidden><span class="tg-section-tag">여기뉴스 · 지역 질문 시안</span><h3>여기, 무슨 일 있어?</h3><p>궁금한 동네를 입력하고 지도 뉴스로 이어가세요.</p><form id="tg-here-form"><label for="tg-location">어느 지역이 궁금하세요?</label><input id="tg-location" placeholder="예: 서울 중구" maxlength="60" required><button class="tg-primary">지역 확인하기 ↗</button></form><div id="tg-here-result" class="tg-flow-result" role="status" hidden></div></section>
+  <details class="tg-settings"><summary>배치 비교 · 시안 설정</summary><fieldset><legend>통이 버튼 위치</legend><label><input type="radio" name="placement" value="auto" checked> 기기별 추천</label><label><input type="radio" name="placement" value="top"> 우측 상단</label><label><input type="radio" name="placement" value="float"> 하단 플로팅</label></fieldset><p>PC는 상단, 모바일은 하단을 기본으로 합니다. 자동으로 열리거나 본문 위를 돌아다니지 않아요.</p></details>
+ </div>
+ <div class="tg-dialog-foot"><span>뉴스는 그대로, 궁금할 때만 통이.</span><button class="tg-close-text">닫고 기사 읽기 ↗</button></div>
+</dialog>

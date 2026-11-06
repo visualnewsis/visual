@@ -1,0 +1,102 @@
+[
+  {
+    "slug": "camera",
+    "explode": "1",
+    "parts": 9,
+    "phase": "1",
+    "ready": "true",
+    "scroll": 1265,
+    "width": 1280,
+    "errors": []
+  },
+  {
+    "slug": "watch",
+    "explode": "1",
+    "parts": 15,
+    "phase": "1",
+    "ready": "true",
+    "scroll": 1265,
+    "width": 1280,
+    "errors": []
+  },
+  {
+    "slug": "espresso-machine",
+    "explode": "1",
+    "parts": 10,
+    "phase": "1",
+    "ready": "true",
+    "scroll": 1265,
+    "width": 1280,
+    "errors": []
+  },
+  {
+    "slug": "projector",
+    "explode": "1",
+    "parts": 8,
+    "phase": "1",
+    "ready": "true",
+    "scroll": 1265,
+    "width": 1280,
+    "errors": []
+  },
+  {
+    "slug": "guitar",
+    "explode": "1",
+    "parts": 6,
+    "phase": "1",
+    "ready": "true",
+    "scroll": 1265,
+    "width": 1280,
+    "errors": []
+  },
+  {
+    "slug": "violin",
+    "explode": "1",
+    "parts": 8,
+    "phase": "1",
+    "ready": "true",
+    "scroll": 1265,
+    "width": 1280,
+    "errors": []
+  },
+  {
+    "slug": "fishing-reel",
+    "explode": "1",
+    "parts": 8,
+    "phase": "1",
+    "ready": "true",
+    "scroll": 1265,
+    "width": 1280,
+    "errors": []
+  },
+  {
+    "slug": "keyboard",
+    "explode": "1",
+    "parts": 7,
+    "phase": "1",
+    "ready": "true",
+    "scroll": 1265,
+    "width": 1280,
+    "errors": []
+  },
+  {
+    "slug": "gramophone",
+    "explode": "1",
+    "parts": 7,
+    "phase": "1",
+    "ready": "true",
+    "scroll": 1265,
+    "width": 1280,
+    "errors": []
+  },
+  {
+    "slug": "sewing-machine",
+    "explode": "1",
+    "parts": 11,
+    "phase": "1",
+    "ready": "true",
+    "scroll": 1265,
+    "width": 1280,
+    "errors": []
+  }
+]

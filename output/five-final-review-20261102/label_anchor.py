@@ -1,0 +1,2 @@
+from pathlib import Path
+p=Path(r'C:\Users\user\.codex\worktrees\piano-finish\editshop\goodeasy\assets\coffee-detail.js');s=p.read_text(encoding='utf-8');a=s.index('function createBalanceReadout(');b=s.index('export function buildBrewRatio()',a);chunk=s[a:b].replace('  box(\n    root,','  const face = box(\n    root,',1).replace('    group: root,\n    setProgress','    group: root,\n    face,\n    setProgress');s=s[:a]+chunk+s[b:];s=s.replace('object: rightReadout.group\n','object: rightReadout.face\n');p.write_text(s,encoding='utf-8')

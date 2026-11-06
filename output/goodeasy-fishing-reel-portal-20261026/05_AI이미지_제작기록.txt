@@ -1,0 +1,4 @@
+﻿도구: built-in image_gen
+스타일 참고: goodeasy/assets/landing-teasers-three.png
+프롬프트 요지: 검은 스피닝 릴 한 개. 스풀·베일·줄 안내 장치·손잡이가 보이는 사선 구도. 차콜 배경, 절제된 앰버 조명. 기타·시계·문구·로고·가상 분해 부품 제외.
+가로 3:2, 본문용 일러스트. PNG 원본을 JPG로 변환.

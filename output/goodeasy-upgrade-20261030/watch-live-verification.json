@@ -1,0 +1,26 @@
+[
+  {
+    "url": "https://visual.newsis.com/goodeasy/",
+    "status": 200,
+    "hasChange": true,
+    "xRobotsTag": null,
+    "cache": null,
+    "watchCard": true
+  },
+  {
+    "url": "https://visual.newsis.com/goodeasy/watch/",
+    "status": 200,
+    "hasChange": true,
+    "xRobotsTag": null,
+    "cache": null,
+    "datePreserved": true,
+    "noindex": false
+  },
+  {
+    "url": "https://visual.newsis.com/sitemap-sections.xml",
+    "status": 200,
+    "hasChange": true,
+    "xRobotsTag": null,
+    "cache": null
+  }
+]

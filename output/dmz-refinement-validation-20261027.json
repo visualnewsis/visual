@@ -1,0 +1,14 @@
+{
+  "commit": "0b3c377bc42286ba33f7ebe339c064da23a57dc8",
+  "scope": "DMZ presentation and 3D assets; article text, photographs, captions, metadata, JSON-LD and links preserved",
+  "cameraAndTransitionChecks": ["1440x900", "390x844", "320x740", "412x915", "844x390"],
+  "checks": ["JavaScript module syntax", "git diff --check", "article text and asset equality", "JSON-LD parse and equality", "single Google tag", "local asset and import existence", "camera ground clearance", "forward/reverse transition determinism", "one or two composited images", "aligned image coverage", "MAP/live projection agreement within 0.72 CSS pixels"],
+  "measurements": {
+    "environment": "Same desktop in-app Chromium browser; single 6-second forward/reverse sweep per scenario. Mobile dimensions are viewport simulation, not a physical phone.",
+    "desktopOpening": {"viewport": "1280x720", "before": {"samples":211,"medianFrameMs":16.7,"p95FrameMs":50.2,"over50ms":17},"after":{"samples":302,"medianFrameMs":16.7,"p95FrameMs":33.3,"over50ms":3}},
+    "mobileFenceTravel": {"viewport":"390x844", "before":{"samples":329,"medianFrameMs":16.7,"p95FrameMs":16.8,"over50ms":1},"after":{"samples":330,"medianFrameMs":16.7,"p95FrameMs":16.8,"over50ms":0}},
+    "mobileOpeningAfter": {"viewport":"390x844","samples":330,"medianFrameMs":16.7,"p95FrameMs":16.8,"over50ms":0},
+    "note": "Final cleanup removed one small grass mesh after measurement; it added no render work. Frame times are local observations and do not guarantee equivalent performance on other devices."
+  },
+  "physicalDevicesTested": false
+}

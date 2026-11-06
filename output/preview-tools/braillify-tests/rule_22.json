@@ -1,0 +1,218 @@
+[
+  {
+    "input": "ㅲ",
+    "note": "비읍기역 — PDF 제22항 합용 병서 옛 자음자. 단독은 제8항 온표 ⠿ + 옛글자표 ⠐ + 어울러 적은 형태.",
+    "internal": "=\"^@",
+    "expected": "6316248",
+    "unicode": "⠿⠐⠘⠈",
+    "world": "",
+    "jeomsarang": "⠐⠘⠈"
+  },
+  {
+    "input": "ㅳ",
+    "note": "비읍디귿 — PDF 제22항 합용 병서 옛 자음자. 단독은 제8항 온표 ⠿ + 옛글자표 ⠐ + 어울러 적은 형태.",
+    "internal": "=\"^i",
+    "expected": "63162410",
+    "unicode": "⠿⠐⠘⠊",
+    "world": "",
+    "jeomsarang": "⠐⠘⠊"
+  },
+  {
+    "input": "ᄡ",
+    "note": "비읍시옷 — PDF 제22항 합용 병서 옛 자음자. 단독은 제8항 온표 ⠿ + 옛글자표 ⠐ + 어울러 적은 형태. Old Hangul Choseong ᄡ (U+1121) 사용 — 모던 ㅄ(U+3144)는 받침으로 별도 처리.",
+    "internal": "=\"^,",
+    "expected": "63162432",
+    "unicode": "⠿⠐⠘⠠",
+    "world": "",
+    "jeomsarang": "⠐⠘⠠"
+  },
+  {
+    "input": "ㅶ",
+    "note": "비읍지읒 — PDF 제22항 합용 병서 옛 자음자. 단독은 제8항 온표 ⠿ + 옛글자표 ⠐ + 어울러 적은 형태.",
+    "internal": "=\"^.",
+    "expected": "63162440",
+    "unicode": "⠿⠐⠘⠨",
+    "world": "",
+    "jeomsarang": "⠐⠘⠨"
+  },
+  {
+    "input": "ㅷ",
+    "note": "비읍티읕 — PDF 제22항 합용 병서 옛 자음자. 단독은 제8항 온표 ⠿ + 옛글자표 ⠐ + 어울러 적은 형태.",
+    "internal": "=\"^h",
+    "expected": "63162419",
+    "unicode": "⠿⠐⠘⠓",
+    "world": "",
+    "jeomsarang": "⠐⠘⠓"
+  },
+  {
+    "input": "ㅴ",
+    "note": "비읍시옷기역 — PDF 제22항 합용 병서 옛 자음자. 단독은 제8항 온표 ⠿ + 옛글자표 ⠐ + 어울러 적은 형태.",
+    "internal": "=\"^,@",
+    "expected": "631624328",
+    "unicode": "⠿⠐⠘⠠⠈",
+    "world": "",
+    "jeomsarang": "⠐⠘⠠⠈"
+  },
+  {
+    "input": "ㅵ",
+    "note": "비읍시옷디귿 — PDF 제22항 합용 병서 옛 자음자. 단독은 제8항 온표 ⠿ + 옛글자표 ⠐ + 어울러 적은 형태.",
+    "internal": "=\"^,i",
+    "expected": "6316243210",
+    "unicode": "⠿⠐⠘⠠⠊",
+    "world": "",
+    "jeomsarang": "⠐⠘⠠⠊"
+  },
+  {
+    "input": "ㅺ",
+    "note": "시옷기역 — PDF 제22항 합용 병서 옛 자음자. 단독은 제8항 온표 ⠿ + 옛글자표 ⠐ + 어울러 적은 형태.",
+    "internal": "=\",@",
+    "expected": "6316328",
+    "unicode": "⠿⠐⠠⠈",
+    "world": "",
+    "jeomsarang": "⠐⠠⠈"
+  },
+  {
+    "input": "ㅻ",
+    "note": "시옷니은 — PDF 제22항 합용 병서 옛 자음자. 단독은 제8항 온표 ⠿ + 옛글자표 ⠐ + 어울러 적은 형태.",
+    "internal": "=\",c",
+    "expected": "6316329",
+    "unicode": "⠿⠐⠠⠉",
+    "world": "",
+    "jeomsarang": "⠐⠠⠉"
+  },
+  {
+    "input": "ㅼ",
+    "note": "시옷디귿 — PDF 제22항 합용 병서 옛 자음자. 단독은 제8항 온표 ⠿ + 옛글자표 ⠐ + 어울러 적은 형태.",
+    "internal": "=\",i",
+    "expected": "63163210",
+    "unicode": "⠿⠐⠠⠊",
+    "world": "",
+    "jeomsarang": "⠐⠠⠊"
+  },
+  {
+    "input": "ㅽ",
+    "note": "시옷비읍 — PDF 제22항 합용 병서 옛 자음자. 단독은 제8항 온표 ⠿ + 옛글자표 ⠐ + 어울러 적은 형태.",
+    "internal": "=\",^",
+    "expected": "63163224",
+    "unicode": "⠿⠐⠠⠘",
+    "world": "",
+    "jeomsarang": "⠐⠠⠘"
+  },
+  {
+    "input": "ㅾ",
+    "note": "시옷지읒 — PDF 제22항 합용 병서 옛 자음자. 단독은 제8항 온표 ⠿ + 옛글자표 ⠐ + 어울러 적은 형태.",
+    "internal": "=\",.",
+    "expected": "63163240",
+    "unicode": "⠿⠐⠠⠨",
+    "world": "",
+    "jeomsarang": "⠐⠠⠨"
+  },
+  {
+    "input": "리더라",
+    "note": "감싸더라, 보호하더라",
+    "internal": "\"^@[\"ois\"<",
+    "expected": "1624842162110141635",
+    "unicode": "⠐⠘⠈⠪⠐⠕⠊⠎⠐⠣",
+    "world": "⠐⠕⠊⠎⠐⠣",
+    "jeomsarang": "⠐⠘⠈⠪⠐⠕⠊⠎⠐⠣"
+  },
+  {
+    "input": "디시니",
+    "note": "뜻이시니",
+    "internal": "\"^I[IO,OCO",
+    "expected": "1624104210213221921",
+    "unicode": "⠐⠘⠊⠪⠊⠕⠠⠕⠉⠕",
+    "world": "⠊⠕⠠⠕⠉⠕",
+    "jeomsarang": "⠐⠘⠊⠪⠊⠕⠠⠕⠉⠕"
+  },
+  {
+    "input": "호",
+    "note": "싸우는",
+    "internal": "\"^,<juc\"#3",
+    "expected": "1624323526379166018",
+    "unicode": "⠐⠘⠠⠣⠚⠥⠉⠐⠼⠒",
+    "world": "⠚⠥",
+    "jeomsarang": "⠐⠘⠠⠣⠚⠥⠉⠐⠼⠒"
+  },
+  {
+    "input": "",
+    "note": "짝",
+    "internal": "\"^.<a",
+    "expected": "162440351",
+    "unicode": "⠐⠘⠨⠣⠁",
+    "world": "",
+    "jeomsarang": "⠐⠘⠨⠣⠁"
+  },
+  {
+    "input": "디며",
+    "note": "터지며",
+    "internal": "\"^hsioe:",
+    "expected": "1624191410211749",
+    "unicode": "⠐⠘⠓⠎⠊⠕⠑⠱",
+    "world": "⠊⠕⠑⠱",
+    "jeomsarang": "⠐⠘⠓⠎⠊⠕⠑⠱"
+  },
+  {
+    "input": "",
+    "note": "틈",
+    "internal": "\"^,@[5",
+    "expected": "16243284234",
+    "unicode": "⠐⠘⠠⠈⠪⠢",
+    "world": "",
+    "jeomsarang": "⠐⠘⠠⠈⠪⠢"
+  },
+  {
+    "input": "",
+    "note": "때, 시각",
+    "internal": "\"^,ir",
+    "expected": "1624321023",
+    "unicode": "⠐⠘⠠⠊⠗",
+    "world": "",
+    "jeomsarang": "⠐⠘⠠⠊⠗"
+  },
+  {
+    "input": "디여",
+    "note": "꺼져서, 무너져서",
+    "internal": "\",@sio:",
+    "expected": "1632814102149",
+    "unicode": "⠐⠠⠈⠎⠊⠕⠱",
+    "world": "⠊⠕⠱",
+    "jeomsarang": "⠐⠠⠈⠎⠊⠕⠱"
+  },
+  {
+    "input": "",
+    "note": "사나이",
+    "internal": "\",c<j\"#r",
+    "expected": "163293526166023",
+    "unicode": "⠐⠠⠉⠣⠚⠐⠼⠗",
+    "world": "",
+    "jeomsarang": "⠐⠠⠉⠣⠚⠐⠼⠗"
+  },
+  {
+    "input": "",
+    "note": "딸",
+    "internal": "\",i\"#1",
+    "expected": "16321016602",
+    "unicode": "⠐⠠⠊⠐⠼⠂",
+    "world": "",
+    "jeomsarang": "⠐⠠⠊⠐⠼⠂"
+  },
+  {
+    "input": "나모",
+    "note": "뽕나무",
+    "internal": "\",^u\"4ceu",
+    "expected": "16322437165091737",
+    "unicode": "⠐⠠⠘⠥⠐⠲⠉⠑⠥",
+    "world": "⠉⠑⠥",
+    "jeomsarang": "⠐⠠⠘⠥⠐⠲⠉⠑⠥"
+  },
+  {
+    "input": "여디고",
+    "note": "째어지고",
+    "internal": "\",.w:io@u",
+    "expected": "16324058491021837",
+    "unicode": "⠐⠠⠨⠺⠱⠊⠕⠈⠥",
+    "world": "⠱⠊⠕⠈⠥",
+    "jeomsarang": "⠐⠠⠨⠺⠱⠊⠕⠈⠥"
+  }
+]

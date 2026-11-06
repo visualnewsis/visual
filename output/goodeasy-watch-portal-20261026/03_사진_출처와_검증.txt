@@ -1,0 +1,17 @@
+﻿발행표시: 2026-10-30 10:00 KST. 랜딩 비활성 유지, 직접 주소로 확인.
+인용: Benjamin Franklin, Advice to a Young Tradesman, 21 July 1748.
+원문: Remember that Time is Money. 한국어 인용은 핵심 절 Time is Money의 번역이며 첫 사용·창안자라는 주장은 하지 않음.
+https://founders.archives.gov/documents/Franklin/01-03-02-0130
+기계 작동 검증: FHH의 winding/barrel/wheel train/escapement/regulator 설명. 수동·자동 감기를 구분. 배터리가 없는 모든 시계를 기계식으로 단정하지 않으며 체험은 수동 감기 모형.
+https://www.hautehorlogerie.org/en/watches-and-culture/library/how-does-a-mechanical-watch-work
+https://corporate.epson/en/technology/overview/wearable/orient-watch.html
+구성 참고: 아래 레퍼런스의 설명이나 도판을 원고에 복제하지 않음.
+https://ciechanow.ski/mechanical-watch/
+실사: Ruslan Alekso, Photo Of Wristwatch. 원본 페이지가 mechanical wristwatch로 설명하지만 수동·자동 여부나 모델명은 확인되지 않아 캡션에 쓰지 않음.
+https://www.pexels.com/photo/photo-of-wristwatch-1401847/
+원본 1125×750에서 중앙 가로 5:3 크롭.
+
+사진 공통 이용조건 확인: 2026-10-26 Pexels 공식 라이선스. 무료 사용·수정 허용. 인물·브랜드의 추천이나 보증으로 사용하지 않고 사진 자체 재판매·스톡 재배포를 하지 않음.
+https://www.pexels.com/license/
+두 번째 사진은 해당 시리즈 랜딩 티저를 스타일 참고로 built-in image_gen으로 별도 제작한 무문구 AI 이미지. 실사·실측 구조도·특정 실물 제품으로 제시하지 않음. 사진 두 장 모두 RGB JPG.
+원고 본문에는 검증 출처 URL이나 제작 과정 설명을 삽입하지 않았음. 위 메모는 내부 확인용이며 송고 본문이 아님.

@@ -1,0 +1,60 @@
+[
+  {
+    "path": "goodeasy/violin/index.html",
+    "status": 200,
+    "matches": true,
+    "bytes": 18577
+  },
+  {
+    "path": "goodeasy/espresso-machine/index.html",
+    "status": 200,
+    "matches": true,
+    "bytes": 19208
+  },
+  {
+    "path": "goodeasy/assets/coffee-detail.js",
+    "status": 200,
+    "matches": true,
+    "bytes": 40603
+  },
+  {
+    "path": "goodeasy/assets/coffee-material-textures.js",
+    "status": 200,
+    "matches": true,
+    "bytes": 525144
+  },
+  {
+    "path": "goodeasy/assets/models/violin.js",
+    "status": 200,
+    "matches": true,
+    "bytes": 18294
+  },
+  {
+    "path": "goodeasy/assets/models/violin-fittings.js",
+    "status": 200,
+    "matches": true,
+    "bytes": 4067
+  },
+  {
+    "path": "goodeasy/assets/models/violin-ribs.js",
+    "status": 200,
+    "matches": true,
+    "bytes": 6878
+  },
+  {
+    "path": "goodeasy/assets/models/violin-surface.js",
+    "status": 200,
+    "matches": true,
+    "bytes": 4909
+  },
+  {
+    "path": "goodeasy/review/index.html",
+    "status": 200,
+    "matches": true,
+    "bytes": 9766
+  },
+  {
+    "path": "goodeasy/index.html",
+    "unchanged": true
+  }
+]

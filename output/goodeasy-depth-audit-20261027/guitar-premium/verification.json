@@ -1,0 +1,50 @@
+{
+  "revision": "436905a",
+  "status": "public deployment succeeded; 57/57 files matched; live UI verified",
+  "scope": "guitar; landing release order preserved",
+  "checks": {
+    "regressionTests": 69,
+    "staticRoutes": 13,
+    "openPlateEdges": 0,
+    "consistentPlateOrientation": true,
+    "frets": 19,
+    "fixedNutSaddleEnds": true,
+    "selectedStringOnly": true,
+    "reversibleAnatomy": true,
+    "bodyBridgeStaysAttached": true,
+    "actualFretRatios0Through19": true,
+    "openedSoundboardUndersideVisible": true
+  },
+  "motion": {
+    "heroLateralBefore": 0.12,
+    "heroLateralAfter": 0.0075,
+    "heroNormalBefore": 0.05,
+    "heroNormalAfter": 0.0035,
+    "decayMsBefore": 3600,
+    "decayMsAfter": 2200
+  },
+  "browser": {
+    "heroBuildMs": 325,
+    "lessonWarmBuildMs": 64,
+    "mobileViewportWidth": 390,
+    "horizontalOverflow": 0,
+    "zoomControlsOutsideCanvas": true,
+    "lastRapidInputHz": 659.26,
+    "displayHz": 659.3,
+    "fret12E2Hz": 164.81,
+    "fret19E2Hz": 246.94,
+    "publicConsoleErrors": 0,
+    "publicMobileZoomRoundTrip": "100% -> 125% -> 100%"
+  },
+  "reviewers": [
+    "Codex independent source/geometry review",
+    "ChatGPT actual screenshot review, two rounds",
+    "Claude actual mechanism/UX screenshot review, three rounds"
+  ],
+  "limits": [
+    "Illustrative acoustic guitar, not manufacturer CAD",
+    "Synthesized audio",
+    "Physical iPhone and Android GPU/audio not tested"
+  ],
+  "deploymentRun": "https://github.com/visualnewsis/visual/actions/runs/40457414826"
+}

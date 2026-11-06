@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="64" height="80" viewBox="0 0 64 80">
+  <defs>
+    <linearGradient id="glass" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#f5faf8"/><stop offset="1" stop-color="#cbdcd6"/></linearGradient>
+    <linearGradient id="liquid" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#00bdd1"/><stop offset=".55" stop-color="#00b4c9"/><stop offset="1" stop-color="#00a9bf"/></linearGradient>
+  </defs>
+  <path d="M23 6H41C45 6 45 12 40 12V28C40 31 42 34 44 38L57 61C62 70 57 76 48 76H16C7 76 2 70 7 61L20 38C22 34 24 31 24 28V12C19 12 19 6 23 6Z" fill="url(#glass)" stroke="#283332" stroke-width="2.8" stroke-linejoin="round"/>
+  <path d="M14 56C24 52 40 62 50 58L55 65C58 71 52 73 47 73H17C11 73 6 70 10 64Z" fill="url(#liquid)"/>
+  <path d="M24 9H40" fill="none" stroke="#b8d0c7" stroke-width="2" stroke-linecap="round" opacity=".7"/>
+  <path d="M27 16V28M26 35L12 60" fill="none" stroke="#fff" stroke-width="2.1" stroke-linecap="round" opacity=".74"/>
+  <circle cx="37" cy="46" r="2.2" fill="#00b4c9"/><circle cx="43" cy="53" r="3.2" fill="#00b4c9"/>
+  <circle cx="37.7" cy="45.2" r=".65" fill="#fff"/><circle cx="44" cy="52" r=".9" fill="#fff"/>
+</svg>

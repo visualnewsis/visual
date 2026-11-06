@@ -1,0 +1,12 @@
+재봉틀 편 작업·검수 기록
+커밋: 55f7416aeb17d532c11b54d1bdfc2c55676805c6
+새 폴더: goodeasy/sewing-machine/ (기존 정적 사이트)
+ChatGPT 실제 디자인·3D 모델·고리 경로 설계 의뢰. 원본 sewing-model-gpt.js, thread-path-gpt.js 보관.
+Claude 실제 명세·코드 텍스트 검수: https://claude.ai/chat/bd2776d3-fd7d-45ac-ae64-f33bddba801b
+Claude는 파일 실행·브라우저·소리를 직접 검증하지 않았음.
+Codex 교정: 수평 천/노루발, 막힌 바늘판·베드, 바늘눈, world/local 좌표, 고리 단절·케이스 관통·역행, 보빈 누적 회전, 페달 세션/짧은탭/블러/멀티터치, 땀 기록 인계, 이송도표 누적.
+13개 Node 테스트 통과. 13 GOODEASY 경로 검사 통과.
+실제 브라우저 1280/390/320px, 한 땀·짧은 페달 탭·키보드Space·3mm 이송·스냅샷 인계 확인. 실제 iPhone/Android 기기는 미검증.
+실의 마찰·장력·위상 전체에 대한 정밀 물리 시뮬레이션이나 가우스 연결수 증명은 아님. 관찰용 개념 모형으로 본문에 범위 명시.
+참고1차자료: FAA Parachute Rigger Handbook (공식 PDF 166~168p), Groz-Beckert 301 자료, Brother Museum. JUKI 웹은 현재 임시중단 안내로 대체되어 링크를 다른 1차자료로 변경.
+랜딩·공개번호·공용파일·자동화 수정 없음. 초안 noindex,nofollow.

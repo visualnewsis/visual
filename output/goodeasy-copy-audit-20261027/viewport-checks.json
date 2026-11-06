@@ -1,0 +1,136 @@
+{
+  "mobile": [
+    {
+      "brokenImages": [],
+      "documentWidth": 375,
+      "h1": "자, 사진을 찍어볼까요?",
+      "path": "/goodeasy/camera/",
+      "width": 390
+    },
+    {
+      "brokenImages": [],
+      "documentWidth": 375,
+      "h1": "자, 줄을 튕겨볼까요?",
+      "path": "/goodeasy/guitar/",
+      "width": 390
+    },
+    {
+      "brokenImages": [],
+      "documentWidth": 375,
+      "h1": "자, 릴을 감아볼까요?",
+      "path": "/goodeasy/fishing-reel/",
+      "width": 390
+    },
+    {
+      "brokenImages": [],
+      "documentWidth": 375,
+      "h1": "자, 태엽을 감아볼까요?",
+      "path": "/goodeasy/watch/",
+      "width": 390
+    },
+    {
+      "brokenImages": [],
+      "documentWidth": 375,
+      "h1": "자, 활을 그어볼까요?",
+      "path": "/goodeasy/violin/",
+      "width": 390
+    },
+    {
+      "brokenImages": [],
+      "documentWidth": 375,
+      "h1": "자, 필름을 돌려볼까요?",
+      "path": "/goodeasy/projector/",
+      "width": 390
+    },
+    {
+      "brokenImages": [],
+      "documentWidth": 375,
+      "h1": "자, 한 줄 써볼까요?",
+      "path": "/goodeasy/keyboard/",
+      "width": 390
+    },
+    {
+      "brokenImages": [],
+      "documentWidth": 375,
+      "h1": "자, 한 잔 내려볼까요?",
+      "path": "/goodeasy/espresso-machine/",
+      "width": 390
+    },
+    {
+      "brokenImages": [],
+      "documentWidth": 375,
+      "h1": "자, 바늘을\n내려볼까요?",
+      "path": "/goodeasy/gramophone/",
+      "width": 390
+    },
+    {
+      "brokenImages": [],
+      "documentWidth": 375,
+      "h1": "자, 한 땀\n박아볼까요?",
+      "path": "/goodeasy/sewing-machine/",
+      "width": 390
+    }
+  ],
+  "desktop": [
+    {
+      "documentWidth": 1425,
+      "h1": "자, 사진을 찍어볼까요?",
+      "path": "/goodeasy/camera/",
+      "width": 1440
+    },
+    {
+      "documentWidth": 1425,
+      "h1": "자, 줄을 튕겨볼까요?",
+      "path": "/goodeasy/guitar/",
+      "width": 1440
+    },
+    {
+      "documentWidth": 1425,
+      "h1": "자, 릴을 감아볼까요?",
+      "path": "/goodeasy/fishing-reel/",
+      "width": 1440
+    },
+    {
+      "documentWidth": 1425,
+      "h1": "자, 태엽을 감아볼까요?",
+      "path": "/goodeasy/watch/",
+      "width": 1440
+    },
+    {
+      "documentWidth": 1425,
+      "h1": "자, 활을 그어볼까요?",
+      "path": "/goodeasy/violin/",
+      "width": 1440
+    },
+    {
+      "documentWidth": 1425,
+      "h1": "자, 필름을 돌려볼까요?",
+      "path": "/goodeasy/projector/",
+      "width": 1440
+    },
+    {
+      "documentWidth": 1425,
+      "h1": "자, 한 줄 써볼까요?",
+      "path": "/goodeasy/keyboard/",
+      "width": 1440
+    },
+    {
+      "documentWidth": 1425,
+      "h1": "자, 한 잔 내려볼까요?",
+      "path": "/goodeasy/espresso-machine/",
+      "width": 1440
+    },
+    {
+      "documentWidth": 1425,
+      "h1": "자, 바늘을\n내려볼까요?",
+      "path": "/goodeasy/gramophone/",
+      "width": 1440
+    },
+    {
+      "documentWidth": 1425,
+      "h1": "자, 한 땀\n박아볼까요?",
+      "path": "/goodeasy/sewing-machine/",
+      "width": 1440
+    }
+  ]
+}

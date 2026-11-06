@@ -1,0 +1,11 @@
+const fs=require('fs');
+const p='.goodeasy-lab.js';let s=fs.readFileSync(p,'utf8');
+s=s.replace('photo??{t:0,','photo??{t:performance.now()/1000,');
+s=s.replace("'撮影 '","'촬영 '").replace('LIVE · 仮想シーン','가상 장면 · 뷰파인더');
+s=s.replace("$('lock').textContent=state.locked?'ポルタフィルターを外す':'포터필터 끼우기';",'');
+fs.writeFileSync(p,s,'utf8');
+const b='.goodeasy-build.cjs';s=fs.readFileSync(b,'utf8');
+s=s.replace("const url=`https://visual.newsis.com/goodeasy/${i.slug}/`", "fs.copyFileSync(path.join(src,'.goodeasy-design-review/goodeasy_six/screens',`${i.no}_${i.slug}_desktop.png`),(()=>{const p=path.join(base,i.slug,'preview.png');fs.mkdirSync(path.dirname(p),{recursive:true});return p;})());\n const url=`https://visual.newsis.com/goodeasy/${i.slug}/`");
+s=s.replaceAll('https://visual.newsis.com/goodeasy/piano/preview.jpg','https://visual.newsis.com/goodeasy/${i.slug}/preview.png');
+s=s.replace('href="#action">조작으로','href="#${i.slug===\'keyboard\'?\'typing\':\'action\'}">조작으로');
+fs.writeFileSync(b,s,'utf8');

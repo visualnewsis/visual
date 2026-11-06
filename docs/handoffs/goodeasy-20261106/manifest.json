@@ -1,0 +1,54 @@
+{
+  "keyboard-portal/00_사진포함_미리보기.html": {
+    "bytes": 6971,
+    "sha256": "bfab98d644566b1976906052a766c8512aea870fb989625a9b154de6e6afd3b6"
+  },
+  "keyboard-portal/01_포털_출고원고.txt": {
+    "bytes": 3158,
+    "sha256": "009bf3b4895a117178c8d7ebece75bdc4bcb4f0368361fa27555965c8ef69db2"
+  },
+  "keyboard-portal/02_대표사진_실사_무문구.jpg": {
+    "bytes": 295638,
+    "sha256": "a3de99f3d5f34ac7b78f3e7ab6bd43b0d7b9af3b36a977268f9d906315d16129"
+  },
+  "keyboard-portal/03_사진_출처와_검증.txt": {
+    "bytes": 2309,
+    "sha256": "955c055d0055378283bdb7f31c65ffe49d9e6f21fab522c8060eae5f35bd681e"
+  },
+  "keyboard-portal/04_본문사진_AI_무문구.jpg": {
+    "bytes": 355081,
+    "sha256": "50ef8a8ef167bc4244554561152e38bf58460ae5cdb4c7cd3fb86be0107d570f"
+  },
+  "keyboard-portal/05_AI이미지_제작기록.txt": {
+    "bytes": 630,
+    "sha256": "7a1f1512d603eadc264bd2095163aa77c2303add705cabf056f58197993cedb8"
+  },
+  "keyboard-portal/06_삼단검수_기록.txt": {
+    "bytes": 1616,
+    "sha256": "d60c2108828e47c00c3ddc99d61f549398846aa1772191cbf27ad3b5e9584375"
+  },
+  "keyboard-thumbnail/keyboard-mobile-center-360x203.jpg": {
+    "bytes": 28909,
+    "sha256": "f05250b983b911c7c7658672ffa260cc6a367a72908a65d6d92808efdc3a06b1"
+  },
+  "keyboard-thumbnail/keyboard-mobile-top-360x203.jpg": {
+    "bytes": 29392,
+    "sha256": "a3b14d7b886177ac68df10b3679290f50b6e44db937253261eeef1719bf06a55"
+  },
+  "keyboard-thumbnail/keyboard-site-thumbnail-360x240.jpg": {
+    "bytes": 30814,
+    "sha256": "7781d4660963ba88e73e12c1675800ae1eb96d2aab88b8ebaf8a8f5872bc2953"
+  },
+  "keyboard-thumbnail/keyboard-thumbnail-source.jpg": {
+    "bytes": 449036,
+    "sha256": "04aabdb8cfbbb69bc2b785785b9f7009f3ee0eafccd2521e25f18881a24db1cd"
+  },
+  "keyboard-thumbnail/제작_정보.txt": {
+    "bytes": 635,
+    "sha256": "6a3c7cb8157e59c192271e85bca354bca87c29f54726536f306591b791a0be59"
+  },
+  "README.md": {
+    "bytes": 11961,
+    "sha256": "6d2930ce213553361a2e7e126cde1ed5f613f2eb63131a510de7056183b20e61"
+  }
+}

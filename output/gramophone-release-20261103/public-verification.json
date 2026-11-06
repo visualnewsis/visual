@@ -1,0 +1,37 @@
+[
+  {
+    "path": "goodeasy/index.html",
+    "status": 200,
+    "matches": true
+  },
+  {
+    "path": "goodeasy/gramophone/index.html",
+    "status": 200,
+    "matches": true
+  },
+  {
+    "path": "goodeasy/assets/landing-gramophone.js",
+    "status": 200,
+    "matches": true
+  },
+  {
+    "path": "goodeasy/assets/landing-gramophone.css",
+    "status": 200,
+    "matches": true
+  },
+  {
+    "path": "goodeasy/gramophone/share.jpg",
+    "status": 200,
+    "matches": true
+  },
+  {
+    "path": "goodeasy/gramophone/site-thumbnail.jpg",
+    "status": 200,
+    "matches": true
+  },
+  {
+    "path": "sitemap-sections.xml",
+    "status": 200,
+    "matches": true
+  }
+]

@@ -1,0 +1,194 @@
+[
+  {
+    "slug": "spai",
+    "width": 1440,
+    "height": 900,
+    "reducedMotion": true,
+    "checks": [
+      "choice retained after previous/next",
+      "keyboard arrow selection",
+      "report shown",
+      "flip aria state",
+      "expanded detail height",
+      "report no overflow",
+      "retry clears report"
+    ],
+    "jsErrors": [],
+    "missing": [],
+    "passed": true
+  },
+  {
+    "slug": "spai",
+    "width": 390,
+    "height": 900,
+    "reducedMotion": true,
+    "checks": [
+      "choice retained after previous/next",
+      "keyboard arrow selection",
+      "report shown",
+      "flip aria state",
+      "expanded detail height",
+      "report no overflow",
+      "retry clears report"
+    ],
+    "jsErrors": [],
+    "missing": [],
+    "passed": true
+  },
+  {
+    "slug": "spai",
+    "width": 360,
+    "height": 900,
+    "reducedMotion": true,
+    "checks": [
+      "choice retained after previous/next",
+      "keyboard arrow selection",
+      "report shown",
+      "flip aria state",
+      "expanded detail height",
+      "report no overflow",
+      "retry clears report"
+    ],
+    "jsErrors": [],
+    "missing": [],
+    "passed": true
+  },
+  {
+    "slug": "spai",
+    "width": 320,
+    "height": 568,
+    "reducedMotion": true,
+    "checks": [
+      "choice retained after previous/next",
+      "keyboard arrow selection",
+      "report shown",
+      "flip aria state",
+      "expanded detail height",
+      "report no overflow",
+      "retry clears report"
+    ],
+    "jsErrors": [],
+    "missing": [],
+    "passed": true
+  },
+  {
+    "slug": "smartwatch",
+    "width": 1440,
+    "height": 900,
+    "reducedMotion": true,
+    "checks": [
+      "cards fully opaque",
+      "details expands",
+      "empty copy feedback",
+      "input count",
+      "clipboard content matches",
+      "edited input clears copy feedback"
+    ],
+    "jsErrors": [],
+    "missing": [],
+    "passed": true
+  },
+  {
+    "slug": "smartwatch",
+    "width": 390,
+    "height": 900,
+    "reducedMotion": true,
+    "checks": [
+      "cards fully opaque",
+      "details expands",
+      "empty copy feedback",
+      "input count",
+      "clipboard content matches",
+      "edited input clears copy feedback"
+    ],
+    "jsErrors": [],
+    "missing": [],
+    "passed": true
+  },
+  {
+    "slug": "smartwatch",
+    "width": 360,
+    "height": 900,
+    "reducedMotion": true,
+    "checks": [
+      "cards fully opaque",
+      "details expands",
+      "empty copy feedback",
+      "input count",
+      "clipboard content matches",
+      "edited input clears copy feedback"
+    ],
+    "jsErrors": [],
+    "missing": [],
+    "passed": true
+  },
+  {
+    "slug": "smartwatch",
+    "width": 320,
+    "height": 568,
+    "reducedMotion": true,
+    "checks": [
+      "cards fully opaque",
+      "details expands",
+      "empty copy feedback",
+      "input count",
+      "clipboard content matches",
+      "edited input clears copy feedback"
+    ],
+    "jsErrors": [],
+    "missing": [],
+    "passed": true
+  },
+  {
+    "slug": "spai",
+    "width": 390,
+    "height": 844,
+    "reducedMotion": false,
+    "checks": [
+      "no repeating button animation",
+      "keyboard flip and return focus",
+      "front/back inert and aria-hidden",
+      "focused title below sticky bar",
+      "expanded detail height",
+      "no horizontal overflow"
+    ],
+    "focusGeometry": {
+      "back": {
+        "title": 256.390625,
+        "bar": 185.390625
+      },
+      "front": {
+        "title": 238.03125,
+        "bar": 177
+      }
+    },
+    "jsErrors": [],
+    "passed": true
+  },
+  {
+    "slug": "spai",
+    "width": 844,
+    "height": 390,
+    "reducedMotion": false,
+    "checks": [
+      "no repeating button animation",
+      "keyboard flip and return focus",
+      "front/back inert and aria-hidden",
+      "focused title below sticky bar",
+      "expanded detail height",
+      "no horizontal overflow"
+    ],
+    "focusGeometry": {
+      "back": {
+        "title": 281.40625,
+        "bar": 206.40625
+      },
+      "front": {
+        "title": 284.046875,
+        "bar": 156.40625
+      }
+    },
+    "jsErrors": [],
+    "passed": true
+  }
+]

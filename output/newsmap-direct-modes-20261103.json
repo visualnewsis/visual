@@ -1,0 +1,9 @@
+{
+  "commit": "894a810",
+  "url": "https://visual.newsis.com/newsmap/?v=20261103-direct-modes",
+  "changes": "Replaced the expandable mode panel with two persistent side-by-side buttons. Selected mode uses green and aria-pressed. Region selection remains intact.",
+  "files": ["newsmap/index.html", "newsmap/app.js", "newsmap/style.css", "newsmap/tests/navigation.cjs", "newsmap/tests/modes.cjs"],
+  "preserved": ["international exclusion", "article classification", "credits", "branding", "analytics", "deployment workflows"],
+  "verified": ["navigation and selected state regressions", "mode gate and international exclusion regressions", "HTML and JSON-LD", "global site checks", "JavaScript syntax", "git diff check", "public HTML directly exposes only the two buttons and no category popup"],
+  "deviceVerification": "No computer/browser UI interaction performed at user's request. Physical iPhone/Android and final viewport rendering not inspected. Responsive CSS and automatic behavior checks performed."
+}

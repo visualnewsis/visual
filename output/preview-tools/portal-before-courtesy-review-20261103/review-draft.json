@@ -1,0 +1,47 @@
+{
+  "date": "2026-11-03",
+  "status": "Portal text draft, not submitted or published",
+  "gpt": "Actual session two rounds: draft acceptable, no P1; three copy-edit recommendations.",
+  "claude": "Actual session two rounds: draft acceptable, no major defects; three copy-edit recommendations.",
+  "adopted": [
+    "Remove duplicate date wording",
+    "Remove abstract bridge from book storage to transcription",
+    "Use verified specific music transcription/correction example instead of all-materials assertion",
+    "Retain survey denominators 499/492 and multiple-response scope; drop unsupported causal lead",
+    "Integrate user core phrase into experience description rather than separate advertisement line",
+    "Distinguish knowing dot pattern from tactile reading without universal learning sequence",
+    "History paragraph completes research-to-1926 link",
+    "Add 코너 after quoted experience heading"
+  ],
+  "codexDisagreement": "Reject paper-only universal definition suggested by Claude; describe raised dots without limiting substrate because refreshable digital braille also exists.",
+  "limits": [
+    "Text review only; no portal image set produced",
+    "Primary Incheon/NIKL/Hasang/Siloam sources reopened by Codex, not independently by reviewers in these rounds",
+    "Not a professional braille sign-off",
+    "Current headline remains provisional"
+  ],
+  "sourceRechecked": [
+    "https://korean.go.kr/front/page/pageView.do?mn_id=205&page_id=P000302",
+    "https://www.incheon.go.kr/goodmorning/GM010100/view?curPage=1&nttNo=2042464&srchPblicteIssnoCode=202511",
+    "https://musicbraille.org/business/fabrication.php",
+    "https://www.hasang.org/page/s0104.php"
+  ],
+  "userCurrentStyle": "했다·한다 기사체. User instruction overrides prior handoff 합니다 style.",
+  "finalTitle": "손끝으로 읽는 우리말…점자로 옮겨보는 내 문장 [훈맹정음 100년]",
+  "finalSubtitle": "11월 4일 한글 점자의 날…박두성의 당부와 오늘의 배움\n교과서·투표안내문·악보에 쓰이는 점자…본편에선 내 말도 자동 점역",
+  "finalFollowup": {
+    "gpt": "Actual GPT session: existing P2 all resolved; title/subtitle/body editorial draft acceptable, no additional P1/P2.",
+    "claude": "Actual Claude session: both P2 resolved; editorial text draft acceptable.",
+    "codex": "Verified declarative prose, source attribution, survey item bases, pinned output scope, original image hashes, ZIP integrity. Professional braille and portal publishing approval not claimed."
+  },
+  "photoFilesDelivered": 4,
+  "zip": "portal-package-draft-20261103.zip",
+  "portalPublished": false,
+  "finalDeliveryReview": {
+    "gpt": "Actual final response: no remaining P1/P2 within editorial text and delivery format; CMS publication and professional braille review excluded.",
+    "claude": "Actual final response: no remaining P1/P2 within editorial text and delivery format; accepts source-row separation and title/subtitle decision.",
+    "codex": "Verified complete byline/title/subtitle, four existing JPGs and exact original hashes, source pages200 with matching photoID/caption metadata, per-image placements, fixed HTML footer, separate clean CMS text and editorial memo, preview four images loaded and no horizontal overflow at390."
+  },
+  "sourceRows": "Bracketed editorial-only in delivery draft, removed from clean CMS copy and article preview; source links also in separate notes.",
+  "webHeadlineUnchanged": true
+}

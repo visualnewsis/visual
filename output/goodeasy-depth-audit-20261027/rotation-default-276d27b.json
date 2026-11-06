@@ -1,0 +1,24 @@
+{
+  "commit": "276d27b",
+  "defaultChecked": true,
+  "optOut": true,
+  "htmlControls": 28,
+  "checkedPages": [
+    "piano",
+    "camera",
+    "guitar",
+    "fishing-reel",
+    "watch",
+    "violin",
+    "projector",
+    "keyboard",
+    "espresso-machine"
+  ],
+  "desktopDrag": "verified",
+  "mobileViewport": {
+    "width": 390,
+    "uncheckedTouchAction": "pan-y",
+    "horizontalOverflow": 0
+  },
+  "physicalDevices": "not tested"
+}

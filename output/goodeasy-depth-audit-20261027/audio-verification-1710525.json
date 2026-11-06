@@ -1,0 +1,38 @@
+{
+  "commit": "1710525",
+  "automatedTests": 65,
+  "staticRoutes": 13,
+  "mobileViewport": {
+    "width": 390,
+    "heroNoticeOverflow": 0,
+    "checked": [
+      "piano",
+      "camera",
+      "guitar",
+      "violin",
+      "watch",
+      "fishing-reel",
+      "projector",
+      "keyboard",
+      "gramophone",
+      "sewing-machine"
+    ]
+  },
+  "limits": [
+    "Physical iPhone and Android audio hardware not tested",
+    "Study tones are synthesized"
+  ],
+  "browserChecks": {
+    "firstPhaseInput": {
+      "midi": 40,
+      "hz": 82.41,
+      "audioContext": "running"
+    },
+    "thirdHarmonic": {
+      "hz": 247.22,
+      "audioContext": "running"
+    },
+    "muteButton": "verified",
+    "consoleErrors": []
+  }
+}
