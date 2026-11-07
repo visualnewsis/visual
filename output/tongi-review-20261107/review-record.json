@@ -1,0 +1,92 @@
+{
+  "date": "2026-11-07 Asia/Seoul",
+  "owner": "안재현 기자",
+  "branch": "codex/tongi-guide-20261107",
+  "production_commit": "8e53aa6d7940e137430824a381959a1b870dac9f",
+  "production_scope": "goodeasy landing keyboard only, 8 files; no episode body or VISUAL root landing edits",
+  "deployment": {
+    "status": "success",
+    "run": "https://github.com/visualnewsis/visual/actions/runs/42364078726",
+    "quality_run": "https://github.com/visualnewsis/visual/actions/runs/42364078681",
+    "quality_result": "success",
+    "public_url": "https://visual.newsis.com/goodeasy/",
+    "runtime_assets_verified": 7,
+    "public_browser": "1280x720 real public browser: ready=true, case-click automatic hint observed, actual key appended V then hid guide, manual next-link pointing and native Tab observed"
+  },
+  "review_sessions": {
+    "gpt": "https://chatgpt.com/c/6aeaf754-aaec-83ee-9eaf-9e019838f5ea",
+    "claude": "https://claude.ai/chat/a0e26e38-a703-44c3-835c-8fc1adb7bf63"
+  },
+  "decisions": [
+    "VISUAL landing: small content-discovery entry at PC upper right/mobile lower right, no new top section. Situations are reader-provided text/chips plus editor-defined topics, not inferred private user profiling.",
+    "Remove article-curtain UI and execution. Preserve owner-requested bar-climb and side-peek in the local sample. Do not treat GPT's objection to all playful motion as authority to remove approved features.",
+    "Goodeasy: guide the next actionable control, not pretend to understand the whole 3D model. First production scope is the keyboard landing input then explicit next-link help.",
+    "Use a real failed attempt signal: two valid short case hits within six seconds without a successful input. Background misses, drags, multi-touch, scrolling, long presses and lost WebGL contexts do not count.",
+    "No timer-only confusion inference. Offer once per tab session; closed/manual-toggle-close suppresses later automatic help. Reduced motion uses manual static help only.",
+    "Input success hides the guide immediately. Do not pop another tour over typing. Further next-link pointing requires the reader to request it.",
+    "Manual help uses visible call-button text if safe overlay placement fails; no forced scrolling. Focus changes only through explicit move buttons or restoration when a focused guide closes.",
+    "Keep sound enabled/disabled information visible when the existing status slot is temporarily used. Two lines distinguish action from sound state. Inline focus outlines draw inside the box.",
+    "No new backend, LLM, API router or analytics events. Only four booleans are kept in sessionStorage. Input text and pointer coordinates are not saved or transmitted by the guide."
+  ],
+  "adopted_objections": [
+    "GPT: noisy gray halo on initial sprite; regenerated clean v2 and additional upward-looking mobile pose.",
+    "GPT: mobile direction mismatch and tiny silhouette; upward text/pose, roughly 30px silhouette within a 32px box.",
+    "GPT: sound and instruction hierarchy; split into 16px + 14px lines within the 32px action button.",
+    "Claude: Tab order was at document end; guide now follows the call button in the DOM.",
+    "Claude: invisible feedback when placement fails; manual call itself now shows the relevant visible instruction.",
+    "Claude: initial inline mode hid the sound warning; warning state now remains visible and is announced.",
+    "Claude: placeholder duplication added no new information; automatic hint now explains the alternative to small keycaps.",
+    "Claude: narrow automatic text may overflow; shortened text, nowrap, measured caption fit and shorter fallback, 32px close target verified.",
+    "Claude: coarse-pointer hover can stick; hold-on-hover only applies to a fine pointer with hover support.",
+    "Claude final P3: manual users may not have tried keycaps; manual copy shortened independently after final source-line follow-up."
+  ],
+  "verification": {
+    "codex_node_tests": 15,
+    "guide_core_tests": 6,
+    "recommend_and_search_tests": 9,
+    "goodeasy_routes": 13,
+    "site_quality_pages": 20,
+    "json_ld_and_existing_ga": "passed by goodeasy/check.py and site checks; existing metadata/GA preserved",
+    "desktop_browser_width": 1280,
+    "mobile_css_viewports": [
+      "390x844 iframe (earlier)",
+      "320x844 iframe (earlier)",
+      "320x600 iframe (final)"
+    ],
+    "viewport_limit": "Browser viewport capability did not change actual 1280x720 size; iframe with real CSS viewport used instead. Full-page screenshot can affect viewport, so final evidence uses viewport screenshot.",
+    "native_case_click_auto_hint": "observed on desktop using real pointer input, no synthetic signal injection",
+    "keyboard": "native Tab moved from call to action; Enter focused input and hid hint; clear retained completed experience",
+    "layout_delta": "hero/tools/input/next/collection top and height all 0px on show/hide",
+    "narrow_metrics": "mobile-320-metrics.json: longest shared v3 instruction fits, close 32x32, action height32, slot37.375, lower scope gap7, horizontal overflow0",
+    "claude_execution": "v1 core plus 9 independent boundary/geometry counterexamples: 15 passed, reported by actual Claude. v2/v3 follow-ups read source, screenshots and metrics without browser execution or rerunning tests.",
+    "final_gpt": "no remaining P1/P2 visual issue after v3 screenshot",
+    "final_claude": "No remaining P1/P2; final shorter manual source-line follow-up received no additional material objection. Browser/real-device limitations retained.",
+    "real_iphone_safari": false,
+    "real_android_chrome": false,
+    "real_user_effectiveness_measured": false,
+    "actual_os_ime_and_virtual_keyboard": "not verified; existing input/change/composition handlers preserved",
+    "public_native_case_click_auto_hint": true,
+    "public_native_key_and_manual_next_help": true,
+    "public_runtime_urls_match_deployment_commit": true,
+    "cache_note": "Unversioned existing landing-keyboard.js response was stale. Exact cache-busted runtime URL from deployed HTML matches the commit; newly added runtime assets also match.",
+    "browser_console_errors": "not separately audited in final public pass; ready, actual input, hints and served asset bytes verified"
+  },
+  "next_proposals_not_implemented": [
+    "Keyboard body: one explicit DOM-control adapter at a time for disassembly/travel. Do not claim all Goodeasy chapters are guided.",
+    "End-of-story content suggestions can use editor-approved links; this phase retains landing-only recommendations.",
+    "Usage counts may be designed later without input text; no extra measurement was added without a separate decision."
+  ],
+  "preserved": [
+    "Production VISUAL root landing",
+    "Global header/footer and identity",
+    "Goodeasy 8 published cards and unreleased status",
+    "Original keyboard interaction/audio and article links",
+    "Tongi 80-percent search panel, credit, Easter egg, sulking/petting"
+  ],
+  "evidence": {
+    "public_input": "public-guide-desktop.png",
+    "public_next": "public-guide-next.png",
+    "mobile_final": "guide-mobile-320-v3.png",
+    "note": "v3 mobile evidence used the longest automatic/manual-shared label before manual-only text was shortened; final automatic label and all dimensions unchanged."
+  }
+}

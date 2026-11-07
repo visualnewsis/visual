@@ -1,0 +1,13 @@
+2026-11-07 호출형 샘플 검증 (Codex)
+- JS Node 문법 검사: 통과
+- index.html/piano.html 상대 링크·자산 및 JSON-LD 파싱: 통과
+- 기존 굳이구지 13 경로 검사: 통과
+- 기존 VISUAL NEWSIS 20 서비스 페이지 검사: 통과
+- 브라우저: 작은 호출 버튼으로 시작, 호출 후 안내, X 후 복귀 확인
+- 숨김: launcher/guide 모두 사라짐, 새로고침 후 숨김 유지, 통이 도움으로 복구 확인
+- 실제 건반: 키보드 A로 C4 연주, 성공 대사 및 자동 복귀 확인. 소리 청취 검증은 아님
+- 390px viewport: 문서 가로 넘침 0. 안내 열린 동안 iframe bottom593/guide top599 (이전 fixed body 전), 겹침 없음
+- 최신 fixed-body 버전: 안내 중 iframe503px, 작은 ArrowDown 후에도503px; X 후676px로 복귀
+- 외부 모델은 전달된 코드/이미지를 검토했으며 실제 브라우저 실행은 하지 않음
+- 초기 원본 MutationObserver 오류가 관찰됨. 원본 공용 파일 수정 안 함
+- 실제 iPhone/Android 및 새 Mac 실행 미검증. 실제 운영 배포 안 함

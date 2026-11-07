@@ -1,0 +1,30 @@
+<section class="tongi-panel" id="tongi" aria-labelledby="tongi-title" data-state="idle">
+ <div class="tongi-topline"><span>NEWSIS · AI COMPANION</span><span class="tongi-demo">INTERACTION PREVIEW · 샘플</span></div>
+ <div class="tongi-layout">
+  <div class="tongi-copy">
+   <p class="tongi-eyebrow">궁금한 세상과, 말이 통하다.</p>
+   <h2 id="tongi-title">아는 AI, <em>통이.</em></h2>
+   <p class="tongi-intro">정치부터 우리 동네까지, 뉴시스 전체 기사에서 찾아보세요.</p>
+   <div class="tongi-tabs" role="tablist" aria-label="통이 이용 방식"><button type="button" role="tab" id="tab-find" aria-selected="true" aria-controls="tongi-search-area" data-mode="find">전체 기사 찾기</button><button type="button" role="tab" id="tab-brief" tabindex="-1" aria-selected="false" aria-controls="tongi-search-area" data-mode="brief">관심사 브리핑</button></div>
+   <div role="tabpanel" id="tongi-search-area" aria-labelledby="tab-find">
+    <form class="tongi-form" role="search"><label class="tongi-sr" for="tongi-query">통이에게 물어보기</label><input id="tongi-query" type="search" maxlength="160" autocomplete="off" placeholder="키워드를 입력하세요" enterkeyhint="search"><button class="tongi-submit" type="submit" aria-label="통이에게 검색 요청">↗</button></form>
+    <div class="tongi-prompts"><button type="button" data-query="퇴사와 생활비">퇴사와 생활비 ↗</button><button type="button" data-query="AI와 일자리">AI와 일자리 ↗</button><button type="button" data-query="국민연금">국민연금 ↗</button></div>
+   </div>
+  </div>
+  <div class="tongi-character-area">
+   <div class="tongi-bubble" id="tongi-speech" role="status" aria-live="polite">안녕! 나는 통이예요.</div>
+   <button class="tongi-character" type="button" aria-label="통이와 인사하기. 좌우로 쓰다듬으면 좋아하고, 세 번 누르면 삐져요.">
+    <span class="tongi-portrait" aria-hidden="true">
+ <span class="tongi-pose tongi-pose-normal"><img src="./tongi-poses-logo-mint-v4.png" alt="" draggable="false" width="1536" height="1024"></span>
+ <span class="tongi-pose tongi-pose-search"><img src="./tongi-poses-logo-mint-v4.png" alt="" draggable="false" width="1536" height="1024"></span>
+ <span class="tongi-pose tongi-pose-happy"><img src="./tongi-poses-logo-mint-v4.png" alt="" draggable="false" width="1536" height="1024"></span>
+ <span class="tongi-pose tongi-pose-sulk"><img src="./tongi-poses-logo-mint-v4.png" alt="" draggable="false" width="1536" height="1024"></span>
+ <span class="tongi-scan-glint"></span>
+</span>
+   </button>
+   <p class="tongi-caption"><span class="tongi-state-dot"></span><span id="tongi-state-label">반가워요</span><span class="tongi-touch-hint">통이를 좌우로 쓰다듬어 보세요</span></p>
+  </div>
+ </div>
+ <div class="tongi-result" id="tongi-result" aria-live="polite" hidden></div>
+ <div class="tongi-footnote"><span>전체 기사 검색·AI 브리핑은 데이터 연결 전입니다. 지금은 통이의 반응을 체험할 수 있어요.</span><button type="button" id="tongi-reset">처음부터 ↺</button></div>
+</section>

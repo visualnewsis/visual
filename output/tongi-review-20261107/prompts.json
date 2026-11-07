@@ -1,0 +1,20 @@
+{
+  "tool": "built-in image_gen (no API CLI)",
+  "reference": "../tongi-demo/tongi-poses-logo-mint-v4.png",
+  "selected": [
+    {
+      "path": "../../goodeasy/assets/tongi-guide-poses-v2.png",
+      "edit_reference": "rejected-poses-v1.png",
+      "transparent_background": true,
+      "prompt": "Precise asset cleanup. KEEP all three existing Tongi robot poses, identity, glossy cream material, cyan accents, facial expressions, column positions and anatomy unchanged. Replace ONLY everything outside the actual three robot silhouettes with perfectly clean transparent alpha zero. Remove ALL gray haze, feathered shadows, smoky glow, white noise, stray colored speckles, soft fringe or matte surrounding the robots. NO outer glow, NO drop shadow, NO cast shadow, NO translucent smoky shape. Solid clean cutout boundaries along robot outlines with only one-pixel antialiasing transition, not broad translucent edges. Three equal columns, square cells, each robot entirely within its own cell with clear transparent margin at top and bottom as well. Premium clean hard-surface 3D UI sprite atlas on TRUE transparent background, readable against near-black #0b1110. Do not recreate a background or add labels."
+    },
+    {
+      "path": "../../goodeasy/assets/tongi-guide-up-v1.png",
+      "reference": "../../goodeasy/assets/tongi-guide-poses-v2.png",
+      "transparent_background": true,
+      "prompt": "Create ONE additional UI sprite of exact same approved Tongi identity in reference (reference only, preserve cream glossy plump robot, NEWSIS cyan trims, eyes, ear receivers and goggles on forehead). ONE robot full body, front facing slight left, RIGHT ARM RAISED with rounded index finger pointing STRAIGHT UP and slightly LEFT, eyes looking UP LEFT at an implied webpage input box above its head. Friendly calm attentive face. Other hand on tummy. Premium clean glossy 3D material, match same design. Square canvas, full robot fingers and feet inside with 12 percent true transparent padding on every edge. Absolutely no background, floor, shadow, smoke, glow, halo, gray fringe, text, symbols or props. Very clean solid cutout silhouette with only narrow antialiased alpha edge. Intended for 32px mobile UI below a text input, robot must clearly look and point upward toward it. No other poses, only one robot."
+    }
+  ],
+  "initial_atlas_prompt": "Create production UI sprite atlas for this EXACT approved Tongi character using reference image solely for identity, glossy cream plump cute robot, cyan NEWSIS mint #00b4c9 trims, round ear receivers, expressive large cyan eyes, dark goggles UP on forehead, premium polished high-definition 3D studio render. Preserve identity and proportions, no redesign. ONE landscape canvas THREE EQUAL WIDTH COLUMNS in ONE horizontal row, NO labels/grid/text, each robot fully visible inside its cell, equal body scale, transparent padding 12 percent each side. LEFT CELL: full body facing three quarter RIGHT, right arm clearly extended horizontally to RIGHT, rounded index finger pointing, eyes looking precisely right at implied webpage button, other hand rests at tummy, friendly slight smile. CENTER CELL: full body front three quarter facing slightly RIGHT, one arm points DIAGONALLY DOWN AND RIGHT toward a webpage control below, eyes look down-right, other hand at tummy, friendly attentive smile. RIGHT CELL: full body front facing, happy smile eyes closed, two hands giving small thumbs up at chest, calm success pose. Feet on same baseline, all fully within own cell with no overlap. These are separate UI pointing and success poses, not webpage mockup and not an animation film. Absolutely no props, no physical background, no floor, no background gradient, no black/white rectangular fill, no cast ground shadow; TRUE TRANSPARENT ALPHA outside silhouettes. Large clean silhouettes for 64px webpage display. No paper or curtain.",
+  "note": "GPT found the first atlas gray halo. v2 was generated to clean it. The success pose is available but input never triggers an intrusive success popup. Actual runtime uses right/down pointing and an upward mobile pose."
+}

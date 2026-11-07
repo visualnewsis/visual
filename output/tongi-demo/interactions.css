@@ -1,0 +1,9 @@
+.tongi-character{touch-action:pan-y;user-select:none;-webkit-user-select:none;cursor:grab}
+.tongi-character:active{cursor:grabbing}
+.tongi-panel[data-state=petting] .tongi-bubble{background:#fff5e8;border-color:#dec7ad}
+.tongi-official{padding-bottom:18px;margin-bottom:16px;border-bottom:1px solid #ccd7c6}
+.tongi-official:last-child{padding-bottom:0;margin-bottom:0;border:0}
+.tongi-official-button{border:0;border-radius:6px;background:#214533;color:#d1ffe8;padding:13px 19px;font:inherit;font-size:13px;font-weight:700;cursor:pointer}
+.tongi-official-button:hover{background:#14684e}
+.tongi-result a.tongi-official-button{display:inline-block;background:#214533;color:#d1ffe8;padding:13px 19px;border:0}
+.tongi-touch-hint{font-size:10px;opacity:.9}

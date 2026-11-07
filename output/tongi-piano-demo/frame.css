@@ -3,3 +3,5 @@
 /* Only the sample copy: fit the first usable keyboard into its embedded viewport. */
 .play{min-height:0!important;height:auto!important;min-height:calc(100svh - 64px)!important}
 @media(max-width:600px){.play{padding-top:12px!important;padding-bottom:12px!important;gap:9px!important}.play h1{font-size:25px!important;margin:5px 0!important}.audio-notice{font-size:11px!important;padding:8px!important}.mechanism-preview{min-height:90px!important;height:105px!important;flex:none!important}.keyboard{height:130px!important}.piano-key{min-height:0!important}.invitation{margin:0!important}}
+.tongi-inline-help{border:1px solid #00b4c94d;background:transparent;color:#8cd6dd;border-radius:6px;min-height:32px;padding:4px 10px;font:11px Arial,sans-serif;align-self:flex-end;cursor:pointer}
+.tongi-inline-help{display:none!important}html[data-tongi-hidden="true"] .tongi-inline-help{display:inline-block!important}
