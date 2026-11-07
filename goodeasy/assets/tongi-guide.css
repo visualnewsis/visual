@@ -1,0 +1,36 @@
+/* One quiet, optional guide; native controls keep their original hit areas. */
+.keyboard-actions{flex-wrap:wrap;gap:12px;align-items:center}
+.keyboard-actions .tongi-help{margin-left:auto;color:#76d9df;border-bottom:1px dotted #76d9df80;font-family:inherit;font-size:11px;min-height:32px}
+.tongi-help:focus-visible,.tongi-guide button:focus-visible{outline:2px solid #00b4c9;outline-offset:3px}
+.tongi-guide[hidden]{display:none!important}
+.tongi-guide{position:fixed;z-index:190;box-sizing:border-box;display:flex;align-items:center;gap:8px;pointer-events:none;isolation:isolate;font-family:inherit}
+.tongi-guide-sprite{flex:none;width:56px;height:56px;background-repeat:no-repeat;background-size:300% 100%;background-position:0 0;pointer-events:none}
+.tongi-guide[data-pose="down"] .tongi-guide-sprite{background-position:50% 0}
+.tongi-guide[data-pose="left"] .tongi-guide-sprite{transform:scaleX(-1)}
+.tongi-guide[data-pose="success"] .tongi-guide-sprite{background-position:100% 0}
+.tongi-guide[data-pose="up"] .tongi-guide-sprite{background-size:112% 112%;background-position:50% 50%}
+.tongi-guide-bubble{box-sizing:border-box;position:relative;flex:1;min-width:0;height:56px;padding:6px 35px 5px 10px;border:1px solid #8ddde2;border-radius:11px;background:rgba(247,254,254,.98);color:#163b42;box-shadow:0 5px 24px #0003;pointer-events:auto}
+.tongi-guide-message{margin:0!important;font-size:12px!important;font-weight:600;line-height:20px!important;color:#23464c!important;white-space:normal}
+.tongi-guide-action{display:inline-block;min-height:20px;padding:0!important;border:0!important;background:none!important;border-radius:0!important;color:#006675!important;text-decoration:underline;text-underline-offset:3px;font-family:inherit!important;font-size:11px!important;line-height:20px!important;cursor:pointer}
+.tongi-guide .tongi-guide-close{position:absolute;top:2px;right:1px;display:grid;place-items:center;width:32px;min-width:32px;min-height:32px;height:32px;padding:0!important;border:0!important;border-radius:50%;background:none!important;color:#44676a!important;font:20px/1 sans-serif;cursor:pointer}
+.tongi-guide-audio{display:none}
+.tongi-guide-target{outline:2px solid #39d5e5!important;outline-offset:5px!important;box-shadow:0 0 0 5px #071c21,0 0 17px #00b4c950!important}
+.tongi-guide[data-inline="true"]{gap:5px;align-items:center}
+.tongi-guide[data-inline="true"] .tongi-guide-sprite{width:32px;height:32px}
+.tongi-guide[data-inline="true"] .tongi-guide-bubble{height:100%;padding:0 32px 0 0;border:0;border-radius:0;box-shadow:none;background:none;color:#b9f4f5;display:flex;align-items:center}
+.tongi-guide[data-inline="true"] .tongi-guide-message{display:none}
+.tongi-guide[data-inline="true"] .tongi-guide-action{display:flex;flex-direction:column;align-items:flex-start;justify-content:center;max-width:100%;font-family:inherit!important;font-size:11px!important;color:#b9f4f5!important;line-height:16px!important;text-align:left;min-height:32px;height:32px;text-decoration:none}
+.tongi-guide[data-inline="true"] .tongi-guide-action-label{display:block;max-width:100%;white-space:nowrap;line-height:16px;text-decoration:underline;text-underline-offset:2px}
+.tongi-guide[data-inline="true"] .tongi-guide-audio{display:block;font-family:inherit;font-size:10px;color:#9bbfc1;line-height:14px;white-space:nowrap}
+.tongi-guide[data-inline="true"] button:focus-visible{outline-offset:-2px;border-radius:3px}
+.tongi-guide[data-inline="true"] .tongi-guide-close{color:#b9f4f5!important;top:50%;transform:translateY(-50%)}
+.tongi-guide-suppressed{visibility:hidden}
+.tongi-guide-sr{position:absolute!important;width:1px;height:1px;padding:0;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
+@media(prefers-reduced-motion:no-preference){
+ .tongi-guide[data-enter="true"] .tongi-guide-sprite{animation:tongi-guide-enter .28s cubic-bezier(.2,.7,.2,1) both,tongi-guide-point .65s .3s ease-in-out 2}
+ .tongi-guide[data-enter="true"] .tongi-guide-bubble{animation:tongi-guide-bubble .22s ease-out both}
+ @keyframes tongi-guide-enter{from{opacity:0;translate:0 7px}to{opacity:1;translate:0 0}}
+ @keyframes tongi-guide-point{0%,100%{translate:0 0}50%{translate:2px 1px}}
+ @keyframes tongi-guide-bubble{from{opacity:0}to{opacity:1}}
+}
+@media(forced-colors:active){.tongi-guide-target{outline:3px solid Highlight!important}.tongi-guide-bubble{background:Canvas;color:CanvasText;border-color:CanvasText}.tongi-guide-message,.tongi-guide-action,.tongi-guide-close{color:CanvasText!important}}
