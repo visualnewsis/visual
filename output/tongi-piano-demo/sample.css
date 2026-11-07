@@ -8,5 +8,3 @@
 /* Smaller inspection stage: leave more room for the actual piano. */
 .sample-layout{grid-template-columns:minmax(0,1fr) 210px}.tongi-stage{padding:16px 12px}.home{height:140px}.speech{padding:12px;min-height:110px}.speech p{font-size:14px}#actor{width:92px;height:92px}.stage-note{font-size:10px}
 @media(max-width:820px){.sample-layout{display:flex}.tongi-stage{height:104px;grid-template-columns:70px minmax(0,1fr);padding:5px 10px 15px;column-gap:7px;grid-template-rows:12px 1fr}.home{height:72px}.home i{width:60px;bottom:0}.speech{padding:6px 9px;min-height:0}.speech small{font-size:8px;margin-bottom:2px}.speech p{font-size:11px;line-height:1.45}#actor{width:70px;height:70px}.stage-credit{font-size:7px}.stage-note{display:none}}
-
-

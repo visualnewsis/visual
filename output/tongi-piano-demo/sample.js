@@ -159,4 +159,3 @@ document.addEventListener('visibilitychange',()=>{if(document.hidden){clearTimeo
 window.addEventListener('resize',()=>{dock();clearHighlight();});
 frame.addEventListener('load',bind); dock();
 if(frame.contentDocument?.readyState==='complete' && frame.contentDocument.URL.endsWith('/piano.html')) bind();
-
