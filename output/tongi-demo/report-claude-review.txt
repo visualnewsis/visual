@@ -1,0 +1,221 @@
+article "18개 메시지 중 15번째":
+      - 'heading "입력 내용: [새 삼단 재논의 보고서 독립검토 2026-11-05] 사용자: Google은내부에서쓰고통이안에결과표시가능한지, 통이활용다시회의해서보고서요청." [level=3]'
+      - paragraph:
+        - text: "[새 삼단 재논의 보고서 독립검토 2026-11-05] 사용자: Google은내부에서쓰고통이안에결과표시가능한지, 통이활용다시회의해서보고서요청. 이번기획보고서가주작업,계정생성/유료가입/검색내장구현없음. 실제현재340px정적팝오버,규칙검색어추출+랜딩metadata관련기사3건+Google외부링크. 새허용수정은창배경rgba255,.9/blur3,자식opacity1/크레딧유지;PCcomputed확인. GPT초안은A편집자질문인덱스우선/BGoogleSearchElement조건부/C공식검색보류/D계산후순위. Codex반대:A만최종안이면사용자요구전체기사를비주얼수십건으로축소하므로A보완기능,최종C2공식검색결과데이터연동(단순외부URL넘기기C1과구분),단기B검증으로수정. branding-off공식설정사용은자사디자인이지그자체위장아님,자체엔진사칭과구분해야함。"
+        - text: "공식근거확인: developers.google.com/custom-search/docs/element JS정적임베드/results-only/execute지원. support.google.com/programmable-search/answer/12423918 브랜드on/off공식설정·overlay지원. developers.google.com/custom-search/v1/overview JSON API신규종료·기존2027-01-01전환. developers.google.com/custom-search/docs/paid_element 무광고유료SearchElement도신규종료(기존영향없음). 비교표Everyone/$5보다상품별최신안내우선. 무료광고형은후보지만실제계정cxID/광고표시/차단/서비스도메인미검증. support.google.com/programmable-search/answer/1714300 1.3/1.4 결과캐시·혼합·순서변경·표식임의제거·pop-up/expanding button표시금지,2.3귀속표시요구. 도움말overlay/brandingoff와충돌범위는확답하지않음. B는공식설정지원범위만,Google결과는같은사이트전용결과영역/페이지에표시검증,작은통이창은질문/자체콘텐츠길잡이. 별도사이트/서버신설아님. 외부GET/POST뉴시스search_val차단실측,visual서비스리퍼러허용여부미검증;허용되어도JSON데이터+제목/날짜/URL 등피드연동은별도사내협조필요。"
+        - text: "보고서권고안: 전체기사목표유지,1차PSE무료광고형실제PoC gate(광고허용/브랜드공식설정/한국어30질문원문링크/최신기사/모바일) 실패면배포보류+C2내부연계협의. A는관련비주얼보완,별도4메뉴없음. MAI서질문/추천질문/후속탐색만채택,생성요약/브리핑보류. 비용/일정단정X. 보고서에실현가능성표/시나리오/게이트/담당분장/실패대안/측정지표/현재와미구현구분. 독립적으로이안의기획효용과중대오류·기술막힘·과장·반대·현실적우선순위를1000자내평가. 문서근거추론과실험을구분,다수결승인금지。"
+      - generic: 메시지 접힘
+      - button "더 보기":
+        - generic: 더 보기
+      - toolbar "메시지 작업":
+        - time: 5분 전
+        - button "재시도":
+          - generic: 
+        - button "편집":
+          - generic: 
+        - button "복사":
+          - generic: 
+        - status
+      - status
+    - article "18개 메시지 중 16번째":
+      - 'heading "Claude 응답: 판정: 방향은 타당합니다." [level=3]'
+      - generic: "Fetched: Custom Search JSON API | Google for Developers"
+      - 'button "Fetched: Custom Search JSON API | Google for Developers"':
+        - generic: 
+      - status: "Fetched: Custom Search JSON API | Google for Developers"
+      - paragraph:
+        - strong: "판정: 방향은 타당합니다. 다만 중대 누락 1건과 보완 3건이 있습니다. 과장은 없습니다."
+      - paragraph:
+        - strong: 문서 근거 (제가 직접 확인)
+      - list:
+        - text: JSON API 페이지에서 신규 고객 차단과 기존 고객의 2027년 1월 1일까지 전환을 확인했습니다. 보고서 기술과 같습니다.
+        - link "google":
+          - /url: https://developers.google.com/custom-search/v1/overview
+          - generic: google
+          - generic: 
+        - text: 같은 페이지는 Vertex AI Search를 50개 도메인 이하 검색의 대안으로 권장합니다.
+        - link "google":
+          - /url: https://developers.google.com/custom-search/v1/overview
+          - generic: google
+          - generic: 
+        - listitem: paid_element 종료와 1714300 정책 조항은 제가 직접 확인하지 않았습니다.
+      - paragraph:
+        - strong: 중대 누락
+      - list:
+        - listitem: 보고서 선택지에 Vertex AI Search가 없습니다. C2(사내 연동)가 지연될 경우의 현실적인 장기 대안인데, 백엔드와 GCP 결제가 필요해서 이번 범위 밖이라는 점을 명시하고 비교표에 넣어야 합니다.
+      - paragraph:
+        - strong: 보완 (추론)
+      - list:
+        - strong: "C2 착수 시점:"
+        - text: C2를 “B 실패 시”로 두면 사내 협조에 걸리는 기간 때문에 공백이 생깁니다. B 검증과 C2 협의는 동시에 시작해야 합니다. 리퍼러 허용만으로는 C1 수준에 그치고, JSON 피드와 CORS는 별도 요청이라는 구분은 맞습니다.
+        - strong: "B 게이트 기준 정량화:"
+        - list:
+          - listitem: 30개 질문마다 정답 기사 기준을 정하고, 상위 3건 적합률을 공식 검색 결과와 비교해야 합니다.
+          - listitem: 최신성은 "발행 후 몇 시간 안에 노출되는 비율"로 측정해야 합니다.
+          - listitem: 광고 노출은 광고팀 승인이 필요합니다. 경쟁 매체나 부적절한 광고가 뜰 위험이 있기 때문입니다.
+        - strong: "개인정보 고지:"
+        - text: 무료 PSE는 Google 스크립트와 광고 쿠키를 사용합니다. 개인정보처리방침과 쿠키 고지를 게이트 항목에 넣어야 합니다.
+      - paragraph:
+        - strong: 과장 위험 (가장 중요)
+        - text: "\"아는 AI, 통이\"라는 이름과 달리 실제로는 규칙 기반 추출과 Google 결과입니다. 언론사 서비스에서 AI 표방은 신뢰 문제로 이어지므로, 공개 전에 명칭과 표시를 바꿀지를 결정 항목으로 보고서에 넣으세요."
+      - paragraph:
+        - strong: 구조 판단
+        - text: Google 결과는 별도 결과 페이지에 두고 통이 팝오버는 질문용 길잡이로만 쓰는 설계는 팝업 표시 금지 조항과 정면으로 부딪히지 않게 한 점에서 적절합니다. 다만 통이 창에서 결과 페이지로 넘어가는 동선은 PoC에서 실제로 측정해야 합니다.
+      - paragraph:
+        - strong: 현실적 우선순위
+      - list:
+        - listitem: C2 협의 착수와 B PoC를 병행합니다.
+        - listitem: A는 관련 비주얼 기사 보완 기능으로 유지합니다.
+        - listitem: Vertex AI Search는 장기 대안으로 기록해 둡니다.
+        - listitem: 생성형 요약은 보류합니다.
+      - toolbar "메시지 작업":
+        - button "복사":
+          - generic: 
+        - status
+        - button "소리 내어 읽기":
+          - generic: 
+        - button "좋은 응답":
+          - generic: 
+        - button "나쁜 응답":
+          - generic: 
+        - button "재시도":
+          - generic: 
+        - time: 4분 전
+    - article "18개 메시지 중 17번째":
+      - 'heading "입력 내용: 보고서최종반영안: C2협의와B시험동시착수." [level=3]'
+      - paragraph:
+        - text: "보고서최종반영안: C2협의와B시험동시착수. A자체비주얼질문인덱스는보완이며전체기사목표축소금지. Vertex AI Search를장기대안비교표에추가;Codex가cloud.google.com/use-cases/site-search 직접확인:Cloud프로젝트·데이터저장소·검색앱·위젯/API,advanced도메인검증. 따라서\"백엔드필수\"단정은피하고별도과금/인증/데이터운영검토필요,현재범위밖으로기술. 30질문에편집자관련기사기준+top3중1적합24/30제안,당일기사10개의노출지연측정·최신검색표방조건1시간내9/10제안(측정값아님),광고수용/표시조건/검색어전송고지/실서비스경로/실기기gate. AI명칭은기존브랜드임의변경않고현기능규칙기반표시/AI가답했다표현금지와공개표시결정사항으로정리. 비용일정확약없음. Google공식branding off는허용설정시가능하지만약관2.3/팝업문구와지원레이아웃적용확인전출고보류. 이번보고서는실제가입·검색내장구현안함. 현재CSS만90%white+blur3+자식opacity1,작은글씨"
+        - code: "#526773"
+        - text: 로가독성보완. 위보고서에남은중대논리오류있으면300자내후속평가.
+      - toolbar "메시지 작업":
+        - time: 지금
+        - button "재시도":
+          - generic: 
+        - button "편집":
+          - generic: 
+        - button "복사":
+          - generic: 
+        - status
+      - status
+    - article "18개 메시지 중 18번째":
+      - 'heading "Claude 응답: 판정: 중대한 논리 오류는 없습니다." [level=3]'
+      - generic: Reviewing the contrast and sample size of the design
+      - button "Reviewing the contrast and sample size of the design":
+        - generic: 
+      - status: Reviewing the contrast and sample size of the design
+      - paragraph:
+        - strong: "판정: 중대한 논리 오류는 없습니다. 최종안을 수용합니다."
+      - paragraph:
+        - strong: "정정 수용:"
+        - text: 지난번에 Vertex AI Search를 "백엔드와 GCP 결제가 필요"하다고 쓴 것은 단정이었습니다. 위젯 방식이 있으므로 철회합니다.
+      - paragraph:
+        - strong: 경미한 보완 2건
+      - list:
+        - strong: "24/30 기준의 근거:"
+        - text: 같은 30개 질문을 뉴시스 공식 검색에도 돌려서 기준선으로 함께 기록하세요. 그래야 24/30이라는 문턱에 근거가 생깁니다.
+        - strong: "최신성 표본 크기:"
+        - text: 10건은 표본이 작아 9/10 결과가 우연에 흔들릴 수 있습니다. 서로 다른 날짜와 분야로 두 번 측정하라고 명시하기를 권합니다.
+      - paragraph:
+        - strong: "가독성:"
+        - code: "#526773"
+        - text: 글자색을 흰 배경 90% 위에 쓴 조합은 대비가 충분하다고 봅니다. 다만 수치로 계산한 값은 아니고 추정입니다.
+      - toolbar "메시지 작업":
+        - button "복사":
+          - generic: 
+        - status
+        - button "소리 내어 읽기":
+          - generic: 
+        - button "좋은 응답":
+          - generic: 
+        - button "나쁜 응답":
+          - generic: 
+        - button "재시도":
+          - generic: 
+        - time: 지금
+  - status
+  - button "맨 아래로 스크롤":
+    - generic: 
+  - status
+  - status
+  - status
+  - status
+  - generic: 메시지를 입력하세요…
+  - textbox "Claude에게 프롬프트를 입력하세요." [active]:
+    - paragraph
+  - status
+  - button "파일, 커넥터 등 추가":
+    - generic: 
+  - group "받아쓰기":
+    - button "받아쓰기":
+      - generic: 
+    - button "마이크":
+      - generic: 
+  - button "음성 모드 시작":
+  - note:
+    - link "Claude는 AI이므로 실수를 할 수 있습니다. 응답을 다시 한번 확인해 주세요.":
+      - /url: https://support.anthropic.com/en/articles/8525154-claude-is-providing-incorrect-or-misleading-responses-what-s-going-on
+      - text: Claude는 AI이므로 실수를 할 수 있습니다.
+      - generic: 응답을 다시 한번 확인해 주세요.
+  - 'button "모델: Opus 5.5 중간"':
+    - generic: Opus 5.5
+    - generic: 중간
+  - heading [level=3]: 콘텐츠
+  - button:
+  - button:
+  - button:
+  - button:
+  - button:
+  - button:
+  - button:
+  - button:
+  - button:
+  - button:
+  - button:
+  - button:
+  - button:
+  - button:
+  - button:
+    - heading [level=3]: character.css
+    - paragraph: 25줄
+    - paragraph: css
+  - button:
+    - heading [level=3]: tongi.js
+    - paragraph: 69줄
+    - paragraph: js
+  - button:
+    - heading [level=3]: interactions.css
+    - paragraph: 19줄
+    - paragraph: css
+  - button:
+    - heading [level=3]: character.css
+    - paragraph: 25줄
+    - paragraph: css
+  - button:
+    - heading [level=3]: dock.js
+    - paragraph: 24줄
+    - paragraph: js
+  - button:
+    - heading [level=3]: dock.css
+    - paragraph: 23줄
+    - paragraph: css
+  - button:
+    - heading [level=3]: dock.html
+    - paragraph: 19줄
+    - paragraph: html
+  - button:
+    - heading [level=3]: compact.js
+    - paragraph: 34줄
+    - paragraph: js
+  - button:
+    - heading [level=3]: search-core.js
+    - paragraph: 14줄
+    - paragraph: js
+  - button:
+    - heading [level=3]: compact.css
+    - paragraph: 7줄
+    - paragraph: css
+  - status: Claude가 응답을 완료했습니다
+  - status
+- status
+- status
+- region "Notifications"

@@ -1,0 +1,247 @@
+2026-11-07 actual implementation for independent review. Landing only; no keyboard body changes. Debug instrumentation removed.
+
+
+===== goodeasy/assets/tongi-guide-core.js =====
+/* Pure state/geometry: no input text, network, analytics or 3D dependency. */
+export function createGuideState(saved={}) {
+  let experienced=!!saved.experienced, muted=!!saved.muted, autoShown=!!saved.autoShown, done=!!saved.done;
+  let misses=[], pendingUntil=0;
+  return {
+    get experienced(){return experienced;},
+    get stage(){return experienced?'next':'input';},
+    get pendingUntil(){return pendingUntil;},
+    export(){return {experienced,muted,autoShown,done};},
+    experience(nonempty){if(nonempty){experienced=true;misses=[];pendingUntil=0;}},
+    attempt(result,time){
+      if(result==='key'){misses=[];pendingUntil=0;return;}
+      if(result!=='case'||experienced||muted||autoShown||done)return;
+      misses=misses.filter(t=>time-t<=6000);misses.push(time);
+      if(misses.length>=2){pendingUntil=time+10000;misses=[];}
+    },
+    eligible(time,{reduced=false,blocked=false}={}){return !reduced&&!blocked&&!experienced&&!muted&&!autoShown&&!done&&time<=pendingUntil&&pendingUntil>0;},
+    shown(){autoShown=true;pendingUntil=0;},
+    clearAttempts(){misses=[];pendingUntil=0;},
+    dismiss(){muted=true;misses=[];pendingUntil=0;},
+    finish(){done=true;misses=[];pendingUntil=0;}
+  };
+}
+export function intersects(a,b,pad=0){return a.left<b.right+pad&&a.right>b.left-pad&&a.top<b.bottom+pad&&a.bottom>b.top-pad;}
+export function findGuidePosition(target,obstacles,viewport,{labelTop=target.top,width=360,height=56}={}) {
+  width=Math.min(width,viewport.width-24);
+  const candidates=[
+    {left:target.left,top:labelTop-height-4,pose:'down'},
+    {left:target.left-width-12,top:target.top+(target.height-height)/2,pose:'right'},
+    {left:target.right+12,top:target.top+(target.height-height)/2,pose:'left'},
+    {left:target.right-width,top:labelTop-height-4,pose:'down'}
+  ];
+  for(const p of candidates){const r={...p,width,height,right:p.left+width,bottom:p.top+height};
+    if(r.left<12||r.right>viewport.width-12||r.top<viewport.top+4||r.bottom>viewport.bottom-4)continue;
+    if(!obstacles.some(o=>intersects(r,o,2)))return r;
+  }
+  return null;
+}
+
+
+===== goodeasy/assets/tongi-guide.js =====
+import {createGuideState,findGuidePosition,intersects} from './tongi-guide-core.js?v=20261107-tongi1';
+
+const input=document.querySelector('#landing-typing'),canvas=document.querySelector('#landing-keyboard-canvas'),next=document.querySelector('.hero-next'),call=document.querySelector('#tongi-help');
+if(input&&canvas&&next&&call)mount();
+function mount(){
+  const storageKey='goodeasy-tongi-guide-v1',reduced=matchMedia('(prefers-reduced-motion: reduce)');
+  let saved={};try{saved=JSON.parse(sessionStorage.getItem(storageKey)||'{}')||{};}catch{}
+  const state=createGuideState(saved),status=document.querySelector('#landing-keyboard-status');
+  const guide=document.createElement('aside');guide.className='tongi-guide';guide.hidden=true;guide.setAttribute('aria-label','통이 조작 안내');guide.id='tongi-guide';
+  guide.innerHTML='<span class="tongi-guide-sprite" aria-hidden="true"></span><div class="tongi-guide-bubble"><p class="tongi-guide-message"></p><button type="button" class="tongi-guide-action"></button><button type="button" class="tongi-guide-close" aria-label="통이 안내 닫기">×</button></div>';
+  const live=document.createElement('span');live.className='tongi-guide-sr';live.setAttribute('role','status');live.setAttribute('aria-live','polite');live.setAttribute('aria-atomic','true');
+  document.body.append(guide,live);call.setAttribute('aria-controls','tongi-guide');call.setAttribute('aria-expanded','false');
+  const sprite=guide.querySelector('.tongi-guide-sprite'),message=guide.querySelector('.tongi-guide-message'),action=guide.querySelector('.tongi-guide-action');
+  let target=null,stage='',composing=false,active=false,quietUntil=0,autoTimer=0,hideTimer=0,announceTimer=0;
+  function save(){try{sessionStorage.setItem(storageKey,JSON.stringify(state.export()));}catch{}}
+  function sync(){state.experience(input.value.trim().length>0);call.textContent=state.experienced?'통이 · 다음은?':'통이 · 어디부터 하지?';save();}
+  function blocked(){return document.hidden||composing||document.activeElement===input||performance.now()<quietUntil||!!document.querySelector('dialog[open],.vnh-header[data-open="true"],[aria-label="전체 메뉴 닫기"]');}
+  function viewport(){const v=window.visualViewport;return {width:document.documentElement.clientWidth,top:Math.max(64,v?.offsetTop||0),bottom:(v?.offsetTop||0)+(v?.height||innerHeight)};}
+  function inView(r,v){return r.width>0&&r.height>0&&r.top>=v.top&&r.bottom<=v.bottom-2;}
+  function obstacles(){return [...document.querySelectorAll('.hero-copy,.keyboard-preview canvas,.keyboard-tools>label,.keyboard-actions,#landing-keyboard-status,.keyboard-scope,.hero-next,.down,.vnh-header')].filter(e=>e.getClientRects().length).map(e=>e.getBoundingClientRect());}
+  function place(){
+    const v=viewport(),r=target.getBoundingClientRect();if(!inView(r,v))return false;
+    const label=document.querySelector('.keyboard-tools>label'),all=obstacles();
+    let p=findGuidePosition(r,all,v,{labelTop:stage==='input'?label.getBoundingClientRect().top:r.top,width:360});
+    let inline=false;
+    if(!p){
+      const s=status.getBoundingClientRect(),height=Math.max(32,s.height),top=s.top-(height-s.height)/2;
+      const slot={left:s.left,right:s.right,top,bottom:top+height,width:s.width,height};
+      const sameStatus=o=>Math.abs(o.top-s.top)<1&&Math.abs(o.left-s.left)<1&&Math.abs(o.width-s.width)<1;
+      if(!inView(slot,v)||all.some(o=>!sameStatus(o)&&intersects(slot,o,0)))return false;
+      p={...slot,pose:stage==='input'?'up':'down'};inline=true;
+    }
+    guide.dataset.inline=String(inline);guide.dataset.pose=p.pose;
+    Object.assign(guide.style,{left:p.left+'px',top:p.top+'px',width:p.width+'px',height:p.height+'px'});
+    status.classList.toggle('tongi-guide-suppressed',inline);
+    return true;
+  }
+  function updateSprite(){const up=guide.dataset.pose==='up';sprite.style.backgroundImage='url("'+new URL(up?'./tongi-guide-up-v1.png':'./tongi-guide-poses-v2.png',import.meta.url).href+'")';}
+  function hide({returnFocus=false}={}){
+    clearTimeout(hideTimer);clearTimeout(announceTimer);active=false;target?.classList.remove('tongi-guide-target');target=null;
+    if(returnFocus&&guide.contains(document.activeElement))call.focus({preventScroll:true});
+    guide.hidden=true;status.classList.remove('tongi-guide-suppressed');call.setAttribute('aria-expanded','false');
+  }
+  function dismiss(){state.dismiss();save();hide({returnFocus:true});}
+  function show(automatic=false){
+    if(blocked())return false;
+    sync();stage=state.stage;target=stage==='input'?input:next;
+    if(!place()){target=null;return false;}
+    updateSprite();
+    message.textContent=stage==='input'?'여기에 한 줄 써보세요.':'키캡 아래도 살펴볼까요?';
+    action.textContent=guide.dataset.inline==='true'?(stage==='input'?'이 입력칸에 한 줄 써보세요 →':'키보드 파헤쳐보기를 눌러보세요 →'):(stage==='input'?'입력칸으로 이동 →':'파헤쳐보기로 이동 →');
+    target.classList.add('tongi-guide-target');guide.dataset.enter=String(!reduced.matches);guide.hidden=false;active=true;call.setAttribute('aria-expanded','true');
+    live.textContent='';announceTimer=setTimeout(()=>{if(active)live.textContent=message.textContent;},100);
+    // Focus/hover holds the guide; otherwise it quietly retires after 12 seconds.
+    hideTimer=setTimeout(expire,12000);
+    if(automatic){state.shown();save();}
+    return true;
+  }
+  function expire(){if(!active)return;if(guide.matches(':hover')||guide.contains(document.activeElement)){hideTimer=setTimeout(expire,1500);return;}hide();}
+  function tryAuto(){clearTimeout(autoTimer);if(!state.eligible(performance.now(),{reduced:reduced.matches,blocked:blocked()}))return;show(true);}
+  function schedule(){clearTimeout(autoTimer);const delay=Math.max(180,quietUntil-performance.now()+20);autoTimer=setTimeout(tryAuto,delay);}
+  function pause(){quietUntil=performance.now()+700;clearTimeout(autoTimer);hide({returnFocus:true});if(state.pendingUntil>0)schedule();}
+  call.addEventListener('click',()=>{if(active){dismiss();return;}quietUntil=0;if(!show(false)){live.textContent='입력칸과 다음 링크가 보이는 위치에서 도움을 열어주세요.';}});
+  guide.querySelector('.tongi-guide-close').addEventListener('click',dismiss);
+  action.addEventListener('click',()=>{const node=target;hide();node?.focus({preventScroll:true});});
+  for(const type of ['input','change','compositionend'])input.addEventListener(type,()=>{if(type==='compositionend')composing=false;sync();hide();state.clearAttempts();save();});
+  input.addEventListener('compositionstart',()=>{composing=true;pause();});input.addEventListener('focus',()=>hide());
+  document.querySelector('#landing-clear')?.addEventListener('click',()=>{sync();hide();});
+  document.querySelector('#landing-sound')?.addEventListener('click',()=>hide({returnFocus:true}));
+  next.addEventListener('click',()=>{state.finish();save();hide();});
+  canvas.addEventListener('goodeasy:keyboard-attempt',e=>{state.attempt(e.detail?.result,performance.now());if(e.detail?.result==='key')sync();if(state.pendingUntil>0)schedule();});
+  canvas.addEventListener('pointerdown',()=>{quietUntil=performance.now()+150;hide();});
+  canvas.addEventListener('webglcontextlost',()=>{state.clearAttempts();pause();});
+  document.addEventListener('click',()=>{if(blocked()&&active){state.clearAttempts();pause();}});
+  document.addEventListener('keydown',e=>{if(e.key==='Escape'&&active){e.preventDefault();dismiss();}});
+  window.addEventListener('scroll',pause,{passive:true});window.addEventListener('resize',pause,{passive:true});
+  window.addEventListener('wheel',pause,{passive:true});window.addEventListener('blur',()=>{state.clearAttempts();pause();});
+  window.addEventListener('pagehide',()=>{state.clearAttempts();hide();});
+  window.addEventListener('pageshow',()=>{sync();hide();});
+  document.addEventListener('visibilitychange',()=>{state.clearAttempts();pause();});
+  window.visualViewport?.addEventListener('resize',pause);window.visualViewport?.addEventListener('scroll',pause);
+  reduced.addEventListener('change',()=>{state.clearAttempts();pause();});
+  const header=document.querySelector('.vnh-header');if(header)new MutationObserver(()=>{if(blocked()){state.clearAttempts();pause();}}).observe(header,{attributes:true,attributeFilter:['data-open']});
+  const layout=new ResizeObserver(()=>{if(active){if(!place())hide({returnFocus:true});else updateSprite();}});layout.observe(document.querySelector('.hero'));
+  sync();
+}
+
+
+===== goodeasy/assets/tongi-guide.css =====
+/* One quiet, optional guide; native controls keep their original hit areas. */
+.keyboard-actions{flex-wrap:wrap;gap:12px;align-items:center}
+.keyboard-actions .tongi-help{margin-left:auto;color:#76d9df;border-bottom:1px dotted #76d9df80;font-family:inherit;font-size:11px;min-height:32px}
+.tongi-help:focus-visible,.tongi-guide button:focus-visible{outline:2px solid #00b4c9;outline-offset:3px}
+.tongi-guide[hidden]{display:none!important}
+.tongi-guide{position:fixed;z-index:190;box-sizing:border-box;display:flex;align-items:center;gap:8px;pointer-events:none;isolation:isolate;font-family:inherit}
+.tongi-guide-sprite{flex:none;width:56px;height:56px;background-repeat:no-repeat;background-size:300% 100%;background-position:0 0;pointer-events:none}
+.tongi-guide[data-pose="down"] .tongi-guide-sprite{background-position:50% 0}
+.tongi-guide[data-pose="left"] .tongi-guide-sprite{transform:scaleX(-1)}
+.tongi-guide[data-pose="success"] .tongi-guide-sprite{background-position:100% 0}
+.tongi-guide[data-pose="up"] .tongi-guide-sprite{background-size:100% 100%;background-position:0 0}
+.tongi-guide-bubble{box-sizing:border-box;position:relative;flex:1;min-width:0;height:56px;padding:6px 35px 5px 10px;border:1px solid #8ddde2;border-radius:11px;background:rgba(247,254,254,.94);color:#23464c;box-shadow:0 5px 24px #0003;pointer-events:auto}
+.tongi-guide-message{margin:0!important;font-size:12px!important;font-weight:600;line-height:20px!important;color:#23464c!important;white-space:normal}
+.tongi-guide-action{display:inline-block;min-height:20px;padding:0!important;border:0!important;background:none!important;border-radius:0!important;color:#006675!important;text-decoration:underline;text-underline-offset:3px;font-family:inherit!important;font-size:11px!important;line-height:20px!important;cursor:pointer}
+.tongi-guide-close{position:absolute;top:2px;right:1px;display:grid;place-items:center;width:32px;min-height:32px;height:32px;padding:0!important;border:0!important;border-radius:50%;background:none!important;color:#44676a!important;font:20px/1 sans-serif;cursor:pointer}
+.tongi-guide-target{outline:2px solid #39d5e5!important;outline-offset:5px!important;box-shadow:0 0 0 5px #071c21,0 0 17px #00b4c950!important}
+.tongi-guide[data-inline="true"]{gap:5px;align-items:center}
+.tongi-guide[data-inline="true"] .tongi-guide-sprite{width:32px;height:32px}
+.tongi-guide[data-inline="true"] .tongi-guide-bubble{height:100%;padding:0 32px 0 0;border:0;border-radius:0;box-shadow:none;background:none;color:#b9f4f5;display:flex;align-items:center}
+.tongi-guide[data-inline="true"] .tongi-guide-message{display:none}
+.tongi-guide[data-inline="true"] .tongi-guide-action{font-family:inherit!important;font-size:11px!important;color:#b9f4f5!important;line-height:18px!important;text-align:left;min-height:32px}
+.tongi-guide[data-inline="true"] .tongi-guide-close{color:#b9f4f5!important;top:50%;transform:translateY(-50%)}
+.tongi-guide-suppressed{visibility:hidden}
+.tongi-guide-sr{position:absolute!important;width:1px;height:1px;padding:0;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
+@media(prefers-reduced-motion:no-preference){
+ .tongi-guide[data-enter="true"] .tongi-guide-sprite{animation:tongi-guide-enter .28s cubic-bezier(.2,.7,.2,1) both,tongi-guide-point .65s .3s ease-in-out 2}
+ .tongi-guide[data-enter="true"] .tongi-guide-bubble{animation:tongi-guide-bubble .22s ease-out both}
+ @keyframes tongi-guide-enter{from{opacity:0;translate:0 7px}to{opacity:1;translate:0 0}}
+ @keyframes tongi-guide-point{0%,100%{translate:0 0}50%{translate:2px 1px}}
+ @keyframes tongi-guide-bubble{from{opacity:0}to{opacity:1}}
+}
+@media(forced-colors:active){.tongi-guide-target{outline:3px solid Highlight!important}.tongi-guide-bubble{background:Canvas;color:CanvasText;border-color:CanvasText}.tongi-guide-message,.tongi-guide-action,.tongi-guide-close{color:CanvasText!important}}
+
+
+===== goodeasy/assets/landing-keyboard.js =====
+import {T,materials,makeStage} from './quality-kit.js?v=20261028-craft7';
+import {buildKeyboardHero} from './models/keyboard-hero.js?v=20261030-craft-release1';
+import {pressKeyboard,releaseKeyboard,stopKeyboard,setKeyboardAudioEnabled} from './keyboard-audio.js?v=20261028-uxaudio2';
+const canvas=document.getElementById('landing-keyboard-canvas'),input=document.getElementById('landing-typing'),status=document.getElementById('landing-keyboard-status');
+const owner='collection-keyboard',held=new Map();let stage,model,last='',timer=0,muted=false,lost=false,composing=false;
+// Emit only an observed key/case attempt; never the key, text, pointer coordinates or a background miss.
+const gestures=new Map();let validTapUntil=0;
+canvas.addEventListener('pointerdown',e=>{if(e.button!==0)return;validTapUntil=0;for(const g of gestures.values())g.cancelled=true;gestures.set(e.pointerId,{x:e.clientX,y:e.clientY,at:performance.now(),cancelled:gestures.size>0});});
+canvas.addEventListener('pointermove',e=>{const g=gestures.get(e.pointerId);if(g&&Math.hypot(e.clientX-g.x,e.clientY-g.y)>7)g.cancelled=true;},{passive:true});
+canvas.addEventListener('pointerup',e=>{const g=gestures.get(e.pointerId);if(g&&!g.cancelled&&gestures.size===1&&performance.now()-g.at<650&&Math.hypot(e.clientX-g.x,e.clientY-g.y)<=7)validTapUntil=performance.now()+250;gestures.delete(e.pointerId);});
+canvas.addEventListener('pointercancel',e=>{gestures.delete(e.pointerId);validTapUntil=0;});
+window.addEventListener('scroll',()=>{validTapUntil=0;for(const g of gestures.values())g.cancelled=true;},{passive:true});
+function clearGestures(){gestures.clear();validTapUntil=0;}
+window.addEventListener('blur',clearGestures);window.addEventListener('pagehide',clearGestures);document.addEventListener('visibilitychange',()=>{if(document.hidden)clearGestures();});
+function attempt(result){canvas.dispatchEvent(new CustomEvent('goodeasy:keyboard-attempt',{detail:{result}}));}
+function draw(){if(!model||lost)return;const key=[...held.values()].at(-1)||last;model.update({key,travel:held.size?4:0});stage.draw();canvas.dataset.ready='true';document.body.classList.add('keyboard-ready');canvas.dataset.pressedKey=held.size?key:'';}
+function down(id,key){if(held.has(id))return;held.set(id,key);last=key;draw();pressKeyboard(owner,id).then(result=>{canvas.dataset.audioState=result.state;if(result.state==='unavailable')status.textContent='소리를 켜지 못했습니다. 브라우저의 소리 설정을 확인해 주세요.';});}
+function up(id){if(!held.has(id))return;held.delete(id);releaseKeyboard(owner,id);draw();}
+function stop(){clearTimeout(timer);held.clear();stopKeyboard(owner);draw();}
+function tap(key){clearTimeout(timer);up('tap');down('tap',key);timer=setTimeout(()=>up('tap'),100);}
+const physical=e=>e.code.startsWith('Key')?e.code.slice(3):e.code.startsWith('Digit')?e.code.slice(5):e.key;
+input.addEventListener('keydown',e=>{if(e.repeat||e.ctrlKey||e.metaKey||e.altKey)return;if(e.key.length===1||['Backspace','Enter','Process'].includes(e.key)||e.isComposing||e.keyCode===229)down('physical:'+e.code,physical(e));});
+input.addEventListener('keyup',e=>up('physical:'+e.code));
+input.addEventListener('compositionstart',()=>{composing=true;});input.addEventListener('compositionend',()=>{composing=false;if(!held.size)tap(Array.from(input.value).at(-1)||' ');});
+input.addEventListener('input',e=>{if(!composing&&!held.size&&e.inputType!=='insertFromPaste')tap(Array.from(e.data||input.value).at(-1)||'Backspace');});
+input.addEventListener('blur',stop);
+document.getElementById('landing-clear').addEventListener('click',()=>{stop();input.value='';input.focus();});
+document.getElementById('landing-sound').addEventListener('click',e=>{muted=!muted;setKeyboardAudioEnabled(!muted);e.currentTarget.setAttribute('aria-pressed',String(!muted));e.currentTarget.textContent=muted?'스위치 소리 꺼짐':'스위치 소리 켜짐';status.textContent=muted?'소리를 껐습니다.':'소리가 납니다. 스피커를 켜거나 이어폰을 사용해 주세요.';});
+try{stage=makeStage(canvas);model=buildKeyboardHero(T,materials);stage.setModel(model,model.eye);draw();new ResizeObserver(draw).observe(canvas.parentElement);
+ const ray=new T.Raycaster(),point=new T.Vector2();
+ canvas.addEventListener('click',e=>{if(lost)return;const valid=e.isTrusted&&e.detail>0&&performance.now()<validTapUntil;validTapUntil=0;const r=canvas.getBoundingClientRect();point.set((e.clientX-r.left)/r.width*2-1,-(e.clientY-r.top)/r.height*2+1);ray.setFromCamera(point,stage.camera);const hits=ray.intersectObject(model.group,true),hit=hits.find(h=>h.object.userData.action?.startsWith('key:'));if(!hit){if(valid&&hits.length)attempt('case');return;}const key=hit.object.userData.action.slice(4);input.value=(input.value+key).slice(-300);input.dispatchEvent(new Event('change',{bubbles:true}));attempt('key');tap(key);if(matchMedia('(pointer:fine)').matches)input.focus({preventScroll:true});});
+ canvas.addEventListener('webglcontextlost',e=>{e.preventDefault();lost=true;canvas.dataset.ready='false';gestures.clear();validTapUntil=0;stop();status.textContent='3D 화면이 중단됐습니다. 입력칸에서는 계속 타이핑할 수 있습니다.';});
+ canvas.addEventListener('webglcontextrestored',()=>{lost=false;draw();});
+}catch(error){canvas.hidden=true;status.textContent='입력칸에서 타이핑하거나 아래 링크로 키보드 본편을 열어보세요.';console.error(error);}
+window.addEventListener('blur',stop);window.addEventListener('pagehide',stop);document.addEventListener('visibilitychange',()=>{if(document.hidden)stop();});
+
+
+===== goodeasy/assets/tongi-guide.test.mjs =====
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import {readFileSync} from 'node:fs';
+const source=readFileSync(new URL('./tongi-guide-core.js',import.meta.url),'utf8');
+const {createGuideState,findGuidePosition,intersects}=await import('data:text/javascript;base64,'+Buffer.from(source).toString('base64'));
+
+test('two model-case attempts in six seconds offer one hint; background is ignored',()=>{
+ const s=createGuideState();s.attempt('background',100);s.attempt('case',200);assert.equal(s.eligible(300),false);
+ s.attempt('case',800);assert.equal(s.eligible(900),true);s.shown();s.attempt('case',1000);s.attempt('case',1100);assert.equal(s.eligible(1200),false);
+});
+test('success between misses and widely separated attempts never imply confusion',()=>{
+ const s=createGuideState();s.attempt('case',100);s.attempt('key',200);s.attempt('case',300);assert.equal(s.eligible(400),false);
+ s.attempt('case',7000);assert.equal(s.eligible(7100),false);s.experience(true);s.attempt('case',7200);s.attempt('case',7300);assert.equal(s.eligible(7400),false);
+});
+test('closing, completed navigation, reduced motion, busy state and expiry suppress automatic help',()=>{
+ for(const end of ['dismiss','finish']){const s=createGuideState();s.attempt('case',100);s.attempt('case',200);s[end]();assert.equal(s.eligible(300),false);}
+ const s=createGuideState();s.attempt('case',100);s.attempt('case',200);assert.equal(s.eligible(300,{reduced:true}),false);assert.equal(s.eligible(300,{blocked:true}),false);assert.equal(s.eligible(10201),false);
+});
+test('experience is monotonic after clear and browser restoration; storage contains only four booleans',()=>{
+ const s=createGuideState();s.experience(true);s.experience(false);assert.equal(s.stage,'next');
+ assert.deepEqual(s.export(),{experienced:true,muted:false,autoShown:false,done:false});
+ const restored=createGuideState({...s.export(),muted:true,autoShown:true});restored.attempt('case',100);restored.attempt('case',200);assert.equal(restored.eligible(300),false);assert.equal(restored.stage,'next');
+});
+test('context changes invalidate stale attempts and pending suggestions',()=>{
+ const s=createGuideState();s.attempt('case',100);s.attempt('case',200);s.clearAttempts();assert.equal(s.pendingUntil,0);assert.equal(s.eligible(400),false);s.attempt('case',500);assert.equal(s.eligible(600),false);
+});
+test('placement uses a genuinely empty gap and never covers the target or viewport edges',()=>{
+ const target={left:57,top:534,right:467,bottom:622,width:410,height:88};
+ const obstacles=[target,{left:57,top:86,right:383,bottom:445},{left:57,top:508,right:200,bottom:524},{left:493,top:109,right:1240,bottom:619}];
+ const v={width:1265,top:64,bottom:720};const p=findGuidePosition(target,obstacles,v,{labelTop:508});
+ assert.ok(p);assert.equal(p.pose,'down');assert.ok(!obstacles.some(o=>intersects(p,o,2)));assert.ok(p.bottom<=v.bottom);
+ const filled=[{left:0,top:0,right:1265,bottom:720}];assert.equal(findGuidePosition(target,filled,v),null);
+});
+
+
+===== HTML insertions =====
+  <script type="module" src="assets/landing-keyboard.js?v=20261107-tongi1"></script>
+  <link rel="stylesheet" href="assets/tongi-guide.css?v=20261107-tongi1">
+  <script type="module" src="assets/tongi-guide.js?v=20261107-tongi1"></script>
+        <div class="keyboard-actions"><button id="landing-sound" type="button" aria-pressed="true">스위치 소리 켜짐</button><button id="landing-clear" type="button">지우기</button><button id="tongi-help" class="tongi-help" type="button">통이 · 어디부터 하지?</button></div>

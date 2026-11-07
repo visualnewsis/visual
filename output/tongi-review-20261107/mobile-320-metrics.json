@@ -1,0 +1,17 @@
+{
+  "actionHeight": 32,
+  "boxHeight": 37.375,
+  "captionFits": true,
+  "close": {
+    "h": 32,
+    "w": 32
+  },
+  "overflow": 0,
+  "scopeGap": 7,
+  "shown": true,
+  "text": "↑ 키캡 대신 위 칸에 써보세요",
+  "viewport": {
+    "h": 600,
+    "w": 320
+  }
+}
