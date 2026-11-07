@@ -1,0 +1,5 @@
+.tongi-piano-target{outline:2px solid #36d5df!important;outline-offset:4px!important;box-shadow:0 0 14px #00b4c92b!important}
+@media(forced-colors:active){.tongi-piano-target{outline:3px solid Highlight!important}}
+/* Only the sample copy: fit the first usable keyboard into its embedded viewport. */
+.play{min-height:0!important;height:auto!important;min-height:calc(100svh - 64px)!important}
+@media(max-width:600px){.play{padding-top:12px!important;padding-bottom:12px!important;gap:9px!important}.play h1{font-size:25px!important;margin:5px 0!important}.audio-notice{font-size:11px!important;padding:8px!important}.mechanism-preview{min-height:90px!important;height:105px!important;flex:none!important}.keyboard{height:130px!important}.piano-key{min-height:0!important}.invitation{margin:0!important}}
