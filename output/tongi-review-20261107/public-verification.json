@@ -1,0 +1,60 @@
+[
+  {
+    "path": "goodeasy/index.html",
+    "url": "https://visual.newsis.com/goodeasy/",
+    "status": 200,
+    "content_type": "text/html",
+    "matches_commit": true,
+    "sha256": "9c6f1d07b4e20f6cb2893659cad473d3166b29c6300c60ebdf0daa3c0231617d"
+  },
+  {
+    "path": "goodeasy/assets/landing-keyboard.js",
+    "url": "https://visual.newsis.com/goodeasy/assets/landing-keyboard.js?v=20261107-tongi1",
+    "status": 200,
+    "content_type": "application/javascript",
+    "matches_commit": true,
+    "sha256": "e649f23e06258792a0d7fb515575ed92831f0aec50584f770f7e803d6593d5e8",
+    "unversioned_url_matched": false,
+    "note": "Actual HTML runtime uses this cache-busted URL. Initial unversioned URL returned a different cached response."
+  },
+  {
+    "path": "goodeasy/assets/tongi-guide.js",
+    "url": "https://visual.newsis.com/goodeasy/assets/tongi-guide.js",
+    "status": 200,
+    "content_type": "application/javascript",
+    "matches_commit": true,
+    "sha256": "1aa19d4a2170ecc927b71053df12a7cddb8a5eb3b843695d79858865cbdee0f7"
+  },
+  {
+    "path": "goodeasy/assets/tongi-guide-core.js",
+    "url": "https://visual.newsis.com/goodeasy/assets/tongi-guide-core.js",
+    "status": 200,
+    "content_type": "application/javascript",
+    "matches_commit": true,
+    "sha256": "a7c93695906ad14619df16c677e1ef754faf4ae3aa7344002a96b32a66c1b6a4"
+  },
+  {
+    "path": "goodeasy/assets/tongi-guide.css",
+    "url": "https://visual.newsis.com/goodeasy/assets/tongi-guide.css",
+    "status": 200,
+    "content_type": "text/css",
+    "matches_commit": true,
+    "sha256": "61bf02b52e79b920d5a0509db4d444b17a58a432857f76602d5d1177f4e192fc"
+  },
+  {
+    "path": "goodeasy/assets/tongi-guide-poses-v2.png",
+    "url": "https://visual.newsis.com/goodeasy/assets/tongi-guide-poses-v2.png",
+    "status": 200,
+    "content_type": "image/png",
+    "matches_commit": true,
+    "sha256": "55c2ec13bb143ef8b7ee74c58529be627bbe865767880b9ab9a0677944c6c75b"
+  },
+  {
+    "path": "goodeasy/assets/tongi-guide-up-v1.png",
+    "url": "https://visual.newsis.com/goodeasy/assets/tongi-guide-up-v1.png",
+    "status": 200,
+    "content_type": "image/png",
+    "matches_commit": true,
+    "sha256": "0384b1eb287842b866f178fc24e8bf1043213ee05b33e1f8bc3883b15bf5fcb5"
+  }
+]
