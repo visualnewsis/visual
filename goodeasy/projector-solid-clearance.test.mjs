@@ -7,8 +7,8 @@ function inside(mesh,p){
  const distances=ray.intersectObject(mesh,false).map(h=>h.distance).filter(d=>d>1e-7).sort((a,b)=>a-b);mesh.material.side=old;
  return distances.filter((d,i)=>i===0||Math.abs(d-distances[i-1])>1e-6).length%2===1;
 }
-test('actual film stock points stay outside base feet case gate lens and rotating shutter solids',()=>{
- const h=buildProjector(),solids=[];for(const root of [h.parts.body,h.parts.gate,h.parts.lens,h.parts.lamp,h.parts.shutter,h.parts.idler])root.traverse(o=>{if(o.isMesh&&o.geometry?.type!=='PlaneGeometry'&&o.material.opacity!==0)solids.push(o);});
+test('actual film stock points stay outside base feet case gate lens shutter and drive solids',()=>{
+ const h=buildProjector(),solids=[];for(const root of [h.parts.body,h.parts.gate,h.parts.lens,h.parts.lamp,h.parts.shutter,h.parts.idler,h.parts.drive])root.traverse(o=>{if(o.isMesh&&o.geometry?.type!=='PlaneGeometry'&&o.material.opacity!==0)solids.push(o);});
  for(const phase of Array.from({length:129},(_,i)=>i/128)){
   h.update({frames:phase-.35},true);h.group.updateMatrixWorld(true);const bounds=solids.map(o=>new T.Box3().setFromObject(o,true)),a=h.parts.film.geometry.attributes.position,unique=new Set();
   for(let i=0;i<h.parts.film.geometry.drawRange.count;i++){const p=new T.Vector3().fromBufferAttribute(a,i).applyMatrix4(h.parts.film.matrixWorld),key=p.toArray().map(v=>v.toFixed(6)).join('/');if(unique.has(key))continue;unique.add(key);for(let k=0;k<solids.length;k++)if(bounds[k].containsPoint(p))assert.equal(inside(solids[k],p),false,`film inside ${solids[k].name||solids[k].parent.name} phase${phase} point${p.toArray()}`);}

@@ -10,7 +10,7 @@ if(kind==='projector'){
  const canvas=document.createElement('canvas');canvas.width=320;canvas.height=240;canvas.setAttribute('role','img');canvas.setAttribute('aria-label','지금 넘긴 필름의 그림 확대');
  const caption=document.createElement('figcaption');figure.append(canvas,caption);host?.append(figure);
  const draw=s=>{paintFilmFrame(canvas.getContext('2d'),s.frame||0,320,240);caption.textContent=`같은 장면 · 투사 화면 확대 · ${(s.frame||0)+1} / 24`;};draw(window.GoodeasyRenderState||{});window.addEventListener('goodeasy:state',e=>draw(e.detail));
- const action=document.getElementById('action'),link=document.createElement('a');link.href='#research-film-gate';link.className='first-comparison';link.textContent='셔터를 빼면 어떻게 될까요? → 비교 실험';action?.parentElement.append(link);
+ const action=document.getElementById('action'),link=document.createElement('a');link.href='#research-film-gate';link.className='first-comparison';link.textContent='셔터를 빼면 어떻게 될까요? → 비교 실험';link.addEventListener('click',()=>window.dispatchEvent(new Event('goodeasy:projector-snapshot')));action?.parentElement.append(link);
 }
 
 // Deferred 3D panels add height above deep links. Align once after their initial layout.

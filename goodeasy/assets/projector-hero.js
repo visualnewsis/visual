@@ -2,6 +2,7 @@ import {T,materials as M,mesh,box,cyl,ring,rod,sphere,part,tag,label} from './qu
 import {paintFilmFrame,frameNumber} from './projector-frames.js?v=20261028-release3';
 import {projectorHeroClock,PROJECTOR_PITCH as PITCH,PROJECTOR_PERF_PITCH as PERF} from './projector-hero-clock.js?v=20261030-reviewed11';
 import {projectorFilmRoute,FEED_RADIUS} from './projector-film-route.js?v=20261030-reviewed11';
+import {buildProjectorDrive} from './projector-drive.js?v=20261108-projector1';
 const TAU=Math.PI*2;
 const metal=(color,roughness=.3)=>new T.MeshStandardMaterial({color,metalness:.88,roughness});
 function disc(parent,r,h,material,x,y,z){const o=cyl(parent,r,h,material,x,y,z);o.rotation.x=Math.PI/2;return o;}
@@ -51,16 +52,22 @@ export function buildProjector(){
  const gateStay=rod(body,[0,1.48,-.72],[0,1.48,-.36],.035,silver);gateStay.name='Gate rear stay joined to chassis';
  const filmGroup=part(transport,'Film and paired slack loops'),filmStock=filmRibbon(filmGroup,'Continuous film through two buffer loops and the gate');
  // Stopping gate frame: adjacent frames leave only when the Geneva shaft advances.
- const frames=[],frameMaterials=[];for(let i=-2;i<=2;i++){const c=document.createElement('canvas');c.width=192;c.height=144;const ctx=c.getContext('2d'),texture=new T.CanvasTexture(c);texture.colorSpace=T.SRGBColorSpace;const mat=new T.MeshBasicMaterial({map:texture,side:T.DoubleSide});const o=mesh(filmGroup,new T.PlaneGeometry(.65,.472),mat,.012,1.48+i*PITCH,.20);o.rotation.y=Math.PI/2;o.name='Film image cell '+i;frames.push({object:o,ctx,texture,index:i});frameMaterials.push(mat);}
+ const frames=[],frameMaterials=[];for(let i=-2;i<=2;i++){const c=document.createElement('canvas');c.width=192;c.height=144;const ctx=c.getContext('2d'),texture=new T.CanvasTexture(c);texture.colorSpace=T.SRGBColorSpace;const mat=new T.MeshBasicMaterial({map:texture,side:T.DoubleSide});const o=mesh(filmGroup,new T.PlaneGeometry(.65,.472),mat,.012,1.48+i*PITCH,.20);o.rotation.y=Math.PI/2;o.rotation.z=Math.PI;o.name='Film image cell '+i;frames.push({object:o,ctx,texture,index:i});frameMaterials.push(mat);}
  const rollers=[];for(const [x,y]of [[-1.05,2.80],[.90,.40]]){const root=part(filmGroup,'Continuously feeding toothed roller');root.position.set(x,y,.20);disc(root,FEED_RADIUS-.015,1.03,dark,0,0,0);for(const z of [-.445,.445])for(let i=0;i<16;i++){const a=i*TAU/16;box(root,.026,.032,.045,silver,Math.sin(a)*FEED_RADIUS,Math.cos(a)*FEED_RADIUS,z,.003);}rollers.push(root);}
  const idler=part(filmGroup,'Upper gate entry idler');idler.position.set(-.15,2.85,.20);disc(idler,.145,1.03,dark,0,0,0);for(const z of [-.55,.55])disc(idler,.165,.035,silver,0,0,z);rod(body,[-.15,2.15,-.65],[-.15,2.85,-.65],.045,silver);rod(body,[-.15,2.85,-.65],[-.15,2.85,.20],.025,silver);
  // Four-slot Geneva output on the front face. No claw is combined with this mechanism.
  const sr=PITCH/(Math.PI/2),mechanismMount=part(transport,'Common transverse Geneva and sprocket shaft');mechanismMount.position.set(sr,.91,.91);
  const geneva=part(mechanismMount,'Four slot Geneva intermittent output');const star=new T.Shape(),R=.235,halfSlot=.017,slotRoot=.073,entry=Math.asin(halfSlot/R);
  const point=(r,t)=>[Math.cos(t)*r,Math.sin(t)*r];star.moveTo(...point(R,-entry));
- for(let k=0;k<4;k++){const a=k*Math.PI/2,rotate=(x,y)=>[x*Math.cos(a)-y*Math.sin(a),x*Math.sin(a)+y*Math.cos(a)];star.lineTo(...rotate(slotRoot,-halfSlot));star.lineTo(...rotate(slotRoot,halfSlot));star.lineTo(...point(R,a+entry));star.absarc(0,0,R,a+entry,(k+1)*Math.PI/2-entry,false);}star.closePath();
+ for(let k=0;k<4;k++){const a=k*Math.PI/2,rotate=(x,y)=>[x*Math.cos(a)-y*Math.sin(a),x*Math.sin(a)+y*Math.cos(a)];star.lineTo(...rotate(slotRoot,-halfSlot));star.lineTo(...rotate(slotRoot,halfSlot));star.lineTo(...point(R,a+entry));// Concave dwell faces mate with the driver's locking sector.
+  const end=(k+1)*Math.PI/2-entry,center=a+Math.PI/4,lockRadius=.143;
+  for(let j=1;j<=40;j++){const t=a+entry+(end-a-entry)*j/40,dot=.32*Math.cos(t-center),disc=dot*dot-(.32*.32-lockRadius*lockRadius),r=disc>0?Math.min(R,dot-Math.sqrt(disc)):R;star.lineTo(...point(r,t));}}star.closePath();
  mesh(geneva,new T.ExtrudeGeometry(star,{depth:.035,bevelEnabled:true,bevelSize:.004,bevelThickness:.004,bevelSegments:1}),silver);disc(geneva,.045,.07,brass,0,0,.02);
- const driver=part(mechanismMount,'Geneva continuous pin driver');driver.position.set(.32,0,0);disc(driver,.115,.03,dark,0,0,0);rod(driver,[0,0,.04],[-.32*Math.SQRT1_2,0,.04],.015,silver);const driverPin=disc(driver,.012,.09,brass,-.32*Math.SQRT1_2,0,.06);driverPin.name='Geneva driving pin';
+ const driver=part(mechanismMount,'Geneva continuous pin driver');driver.position.set(.32,0,0);disc(driver,.080,.03,dark,0,0,0);rod(driver,[0,0,.04],[-.32*Math.SQRT1_2,0,.04],.015,silver);const driverPin=disc(driver,.012,.09,brass,-.32*Math.SQRT1_2,0,.06);driverPin.name='Geneva driving pin';
+ const lock=new T.Shape(),opening=Math.PI/4+.008,from=Math.PI+opening,to=Math.PI-opening+TAU;
+ lock.absarc(0,0,.135,from,to,false);lock.lineTo(...point(.078,to));lock.absarc(0,0,.078,to,from,true);lock.closePath();
+ const lockingSector=mesh(driver,new T.ExtrudeGeometry(lock,{depth:.025,bevelEnabled:false}),dark,0,0,.004);lockingSector.name='Geneva dwell locking sector';
+
  const sprocket=part(filmGroup,'Four perforations per quarter turn');sprocket.position.set(sr,.91,.20);rod(transport,[sr,.91,-.40],[sr,.91,.99],.027,silver);for(const z of [-.445,.445]){disc(sprocket,sr-.018,.04,brass,0,0,z);for(let i=0;i<16;i++){const a=i*TAU/16;box(sprocket,.025,.025,.045,silver,Math.cos(a)*sr,Math.sin(a)*sr,z,.003);}}
  // Projection axis is straight: lamp -> gate -> sector shutter -> condenser/lens -> screen.
  const optics=part(group,'Coaxial illumination and projection');optics.position.set(.03,1.48,.20);optics.rotation.y=-Math.PI/2;const lens=part(optics,'lens');
@@ -70,18 +77,19 @@ export function buildProjector(){
  mesh(lens,new T.CircleGeometry(.231,64),new T.MeshPhysicalMaterial({color:0x789d9b,metalness:.2,roughness:.06,transparent:true,opacity:.67,clearcoat:1}),0,0,.922);
  const shutter=part(optics,'Rotating sector shutter synchronized with pull down');shutter.position.set(.75,0,.11);const sector=new T.Shape();sector.moveTo(0,0);sector.absarc(0,0,1.22,-Math.PI*.56,Math.PI*.56,false);sector.lineTo(0,0);mesh(shutter,new T.ExtrudeGeometry(sector,{depth:.012,bevelEnabled:false,curveSegments:64}),dark);disc(shutter,.05,.06,brass,0,0,.02);
  const handle=part(body,'handle');handle.position.set(-1.03,.93,-.58);disc(handle,.11,.11,silver,0,0,0);rod(handle,[0,0,.08],[.34,-.19,.08],.035,silver);disc(handle,.07,.24,M.black,.34,-.19,.18);
+ const drive=buildProjectorDrive({parent:group,handle,framePitch:PITCH,feedRadius:FEED_RADIUS,windingRadius:1.05,outputX:sr,steel:silver,brass,dark});
  const screen=part(optics,'screen');screen.position.set(0,0,3.77);const screenFrame=box(screen,2.45,1.88,.055,dark,0,0,0,.03);screenFrame.name='Screen backing behind projected image';const canvas=document.createElement('canvas');canvas.width=512;canvas.height=384;const ctx=canvas.getContext('2d'),texture=new T.CanvasTexture(canvas);texture.colorSpace=T.SRGBColorSpace;const projected=mesh(screen,new T.PlaneGeometry(2.30,1.73),new T.MeshBasicMaterial({map:texture,color:0xffffff,side:T.DoubleSide}),0,0,-.048);projected.rotation.y=Math.PI;projected.name='Projected image facing lens';
  const beamGeometry=new T.BufferGeometry();const beamPoints=[-.23,-.17,.93,.23,-.17,.93,.23,.17,.93,-.23,.17,.93,-1.15,-.865,3.722,1.15,-.865,3.722,1.15,.865,3.722,-1.15,.865,3.722];beamGeometry.setAttribute('position',new T.Float32BufferAttribute(beamPoints,3));beamGeometry.setIndex([0,1,5,0,5,4,1,2,6,1,6,5,2,3,7,2,7,6,3,0,4,3,4,7]);const beam=mesh(optics,beamGeometry,new T.MeshBasicMaterial({color:0xffdc9d,transparent:true,opacity:.06,side:T.DoubleSide,depthWrite:false}));beam.name='Gate to screen light frustum';beam.castShadow=false;
  tag(body,'body');tag(handle,'handle','action');tag(reels[0],'reel','action');tag(lens,'lens');tag(screen,'screen');
 
- let old=-1;function update(s,detail=false){const standard=projectorHeroClock((Number(s.frames)||0)+.35),clock=s.continuousFilm?{...standard,progress:standard.phase,travel:standard.cycle*PITCH,buffer:0,sprocketAngle:standard.cycle*Math.PI/2}:standard,pictureIndex=clock.index+(Number(s.startFrame)||0);reels.forEach(r=>r.rotation.z=clock.reelAngle);handle.rotation.z=-clock.cycle/24*TAU;rollers.forEach((r,i)=>r.rotation.z=(i?1:-1)*clock.cycle*PITCH/FEED_RADIUS);geneva.rotation.z=clock.index*Math.PI/2+clock.beta;driver.rotation.z=-clock.theta;sprocket.rotation.z=clock.sprocketAngle;
+ let old=-1;function update(s,detail=false){const standard=projectorHeroClock((Number(s.frames)||0)+.35),clock=s.continuousFilm?{...standard,progress:standard.phase,travel:standard.cycle*PITCH,buffer:0,sprocketAngle:standard.cycle*Math.PI/2}:standard,pictureIndex=clock.index+(Number(s.startFrame)||0);reels.forEach(r=>r.rotation.z=clock.reelAngle);drive.update(clock);rollers.forEach((r,i)=>r.rotation.z=(i?1:-1)*clock.cycle*PITCH/FEED_RADIUS);geneva.rotation.z=clock.index*Math.PI/2+clock.beta;driver.rotation.z=-clock.theta-TAU*clock.index;sprocket.rotation.z=clock.sprocketAngle;
   const route=projectorFilmRoute(clock.buffer);filmStock.update(route.points,clock.cycle*PITCH,route.curve);filmStock.object.userData.slack=route;idler.rotation.z=-clock.travel/.15;
   for(const f of frames){f.object.position.y=1.48+(f.index-clock.progress)*PITCH;f.object.visible=f.object.position.y>.82&&f.object.position.y<2.15;if(old!==pictureIndex){paintFilmFrame(f.ctx,pictureIndex+f.index,192,144);f.texture.needsUpdate=true;}}
   if(old!==pictureIndex){paintFilmFrame(ctx,frameNumber(pictureIndex),512,384);texture.needsUpdate=true;old=pictureIndex;}
   // Outside the dwell exposure the screen is dark, not a continuously glowing still image.
-  projected.material.color.setScalar(.045+.955*clock.openFraction);beam.visible=clock.openFraction>0;beam.material.opacity=.06*clock.openFraction;shutter.rotation.z=TAU*(clock.phase-.84)+Math.PI;shell.visible=!detail;shutter.visible=detail;mechanismMount.visible=!s.continuousFilm;
+  projected.material.color.setScalar(.045+.955*clock.openFraction);beam.visible=clock.openFraction>0;beam.material.opacity=.06*clock.openFraction;shutter.rotation.z=TAU*(clock.phase-.84)+Math.PI;shell.visible=!detail;shutter.visible=true;mechanismMount.visible=!s.continuousFilm;
   group.userData.transport={...clock,mechanism:'four-slot Geneva',format:'educational 35mm / 4-perforation',continuousSupply:true};
  }
  update({frames:0,frame:0});
- return {group,eye:[7,3.2,10],heroFitScale:.98,parts:{body,handle,reel:reels[0],reels:reelGroup,gate,lamp,optics,lens,screen,film:filmStock.object,filmGroup,shutter,intermittent:geneva,mechanismMount,driver,sprocket,rollers,idler,beam,projected},frames,update};
+ return {group,eye:[7,3.2,10],heroFitScale:.98,parts:{body,handle,drive:drive.group,transmission:drive,reel:reels[0],reels:reelGroup,gate,lamp,optics,lens,screen,film:filmStock.object,filmGroup,shutter,intermittent:geneva,mechanismMount,driver,sprocket,rollers,idler,beam,projected},frames,update};
 }

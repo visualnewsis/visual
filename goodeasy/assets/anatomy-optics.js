@@ -1,6 +1,6 @@
 import {T,M,TAU,clamp,colors,metal,component,assembly,part,mesh,box,cyl,ring,rod,bolt,sleeve} from './anatomy-core.js?v=20261028-craft7';
 import {buildIris} from './camera-lessons.js?v=20261028-craft7';
-import {buildProjector} from './projector-hero.js?v=20261102-rescue2';
+import {buildProjector} from './projector-hero.js?v=20261108-projector1';
 import {curtainWindow,filmCycle} from './mechanism-checks.js?v=20261026-release3';
 export function cameraAssembly(){
  const group=new T.Group(),C=[],add=(...a)=>{const c=component(group,...a);C.push(c);return c.object;},chrome=metal(colors.frame),blue=new T.MeshPhysicalMaterial({color:0x87b8c4,metalness:.15,roughness:.12,transparent:true,opacity:.52,side:T.DoubleSide,depthWrite:false});
@@ -26,6 +26,7 @@ export function projectorAssembly(){
  parts.screen.removeFromParent();parts.beam.removeFromParent();
  const descriptors=[
  ['frame','지지 프레임','릴과 게이트, 광학계를 지지하는 본체입니다.',parts.body,[0,0,-1.5],colors.frame],
+ ['drive','핸들과 구동 기어·벨트','핸들의 회전을 기어로 빠르게 하고, 연속 이송축과 회전 셔터에 전달합니다. 이 모형의 증속비는 1:24입니다.',parts.drive,[0,0,-2.0],colors.drive],
  ['reels','공급 릴과 권취 릴','릴은 연속으로 돌고, 상하 루프는 게이트의 간헐 이송을 받아 줍니다.',parts.reels,[0,1.2,-.8],colors.drive],
  ['gate','게이트와 압판','세워진 필름 한 프레임을 광축과 직각으로 붙잡습니다.',parts.gate,[-.8,0,0],colors.frame],
  ['film','필름과 상하 루프','같은 폭의 필름이 릴에서 게이트를 지나 권취 릴로 이어집니다.',parts.filmGroup,[0,0,.9],colors.spring],
@@ -35,7 +36,7 @@ export function projectorAssembly(){
  ['lens','투사 렌즈','필름과 직각인 같은 광축에서 상을 확대합니다.',parts.lens,[0,0,2.0],colors.optics]];
  const components=descriptors.map(([id,title,description,object,offset,color])=>({id,title,description,object,offset:new T.Vector3(...offset),color}));
  const model=assembly(group,components,s=>{
- hero.update({frames:(Number(s.phase)||0)-.35},false);
+ hero.update({frames:(Number(s.projectorFrame)||0)+(Number(s.phase)||0)-.35},false);
  parts.screen.visible=false;parts.beam.visible=false;parts.shutter.visible=true;
  },{eye:[7,3.2,10],phaseLabel:'멈춤·차광·한 프레임 이송',note:'릴에서 풀린 필름이 게이트를 지나 다시 감깁니다. 필름이 움직이는 동안 셔터가 빛을 가리는 순서를 살펴보세요.'});
  model.anatomyReading=()=>{

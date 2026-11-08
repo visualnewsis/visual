@@ -2,7 +2,8 @@ import {clamp,reelStep,reelPull,observationRecord,exposure,wind,watchStep,filmSt
 const $=id=>document.getElementById(id),kind=document.body.dataset.experiment;
 const base={turns:0,rotor:0,distance:20,drag:50,pull:35,payout:0,slipping:false,aperture:2.8,shutter:250,shots:0,photo:null,reserve:0,elapsed:0,frames:0,frame:0,text:'',key:'A',travel:0,locked:false,brewing:false,volume:0,grind:50,pressure:9};
 let state={...base},record=null,step=0,animation=0,last=0,visible=true,frameTime=0;
-let reelExperience=null,watchExperience=null,espressoExperience=null;
+let reelExperience=null,watchExperience=null,espressoExperience=null,projectorExperience=null;
+if(kind==='projector'){const f=Number(new URLSearchParams(location.search).get('landing-frame'));if(Number.isInteger(f)&&f>=0&&f<24){state.frames=f;state.frame=f;}}
 const reduced=matchMedia('(prefers-reduced-motion: reduce)');
 const svg=(body)=>`<svg viewBox="${innerWidth<700?({'espresso-machine':'210 30 580 480',watch:'280 0 560 580','fishing-reel':'220 50 570 490'}[kind]||'0 0 1000 580'):'0 0 1000 580'}" role="img" aria-label="${document.body.dataset.name} 조작 모형"><defs><linearGradient id="steel" x2=".3" y2="1"><stop stop-color="#d5d6d1"/><stop offset=".2" stop-color="#7e8789"/><stop offset=".5" stop-color="#222b31"/><stop offset=".8" stop-color="#a4aba9"/><stop offset="1" stop-color="#343b40"/></linearGradient><linearGradient id="black" x2="0" y2="1"><stop stop-color="#394047"/><stop offset=".5" stop-color="#12191e"/><stop offset="1" stop-color="#090d10"/></linearGradient><radialGradient id="glass"><stop stop-color="#313e44"/><stop offset=".4" stop-color="#14292e"/><stop offset=".8" stop-color="#0c161b"/><stop offset="1" stop-color="#657578"/></radialGradient><linearGradient id="brass" x2=".7" y2="1"><stop stop-color="#e6d5a5"/><stop offset=".5" stop-color="#8b6b37"/><stop offset="1" stop-color="#d8bd79"/></linearGradient></defs>${body}</svg>`;
 const ring=(x,y,r,fill='url(#steel)')=>`<circle cx="${x}" cy="${y}" r="${r}" fill="${fill}" stroke="#767c79" stroke-width="2"/>`;
@@ -30,13 +31,13 @@ function render(){
   say(!state.locked?'‘포터필터 끼우기’를 눌러 머신에 끼우세요.':`${state.brewing?'추출 중':state.volume>=40?'잔이 찼습니다. 잔을 비우면 다시 내릴 수 있습니다.':'추출 버튼을 눌러보세요.'} · ${state.volume.toFixed(1)}mL · ${state.pressure}bar`);
  }
 }
-function snapshot(){record=observationRecord(kind,state);step=0;showInside();}
+function snapshot(){projectorExperience?.settle();record=observationRecord(kind,state);if(kind==='projector')window.GoodeasyProjectorRecord={...record};step=0;showInside();}
 function showInside(){if(!record){$('record').textContent='위에서 조작한 뒤 파헤쳐보기를 누르세요.';return;}if(!document.body.classList.contains('has-3d'))$('detail').innerHTML=scene(record,true);window.dispatchEvent(new CustomEvent('goodeasy:record',{detail:{record:JSON.parse(JSON.stringify(record)),step}}));$('record').textContent=`직전 입력 기록 · ${kind==='keyboard'?record.key:kind==='camera'?record.shots+'번째 촬영 · f/'+record.aperture+' · 1/'+record.shutter+'초':kind==='watch'?record.reserve.toFixed(0)+'% 잔량':kind==='projector'?(record.frame+1)+'번 프레임':kind==='fishing-reel'?record.turns.toFixed(1)+'바퀴 · 드랙 '+record.drag+' · 당기는 힘 '+record.pull:'잔 '+Math.round(record.volume/40*100)+'%'}`;document.querySelectorAll('[data-step]').forEach((b,i)=>{b.setAttribute('aria-pressed',String(i===step));});$('part-copy').textContent=document.querySelectorAll('[data-step]')[step].dataset.copy;}
 function action(){
  if(kind==='fishing-reel'){if(reelExperience){reelExperience.turn();return;}state=reelStep(state,1);}
  if(kind==='watch'){if(watchExperience){watchExperience.wind();return;}state=wind(state,1);wake();}
  if(kind==='camera'){state.shots++;state.photo={t:performance.now()/1000,a:state.aperture,d:state.shutter};say(`${state.shots}번째 촬영 · f/${state.aperture} · 1/${state.shutter}초`);clickSound(75);}
- if(kind==='projector'){state=filmStep(state,1);clickSound(130);}
+ if(kind==='projector'){if(projectorExperience){projectorExperience.forward();return;}state=filmStep(state,1);clickSound(130);}
  if(kind==='espresso-machine'){if(espressoExperience){espressoExperience.brew();return;}if(!state.locked){say('먼저 포터필터를 끼우세요.');return;}state.brewing=!state.brewing;wake();}
  render();
 }
@@ -47,7 +48,7 @@ number('drag','drag');number('pull','pull');
 $('pull-line')?.addEventListener('click',()=>{if(reelExperience){reelExperience.pull();return;}state=reelPull(state);render();if(!state.slipping)say('스풀이 멈춰 있습니다. 당기는 힘을 키우거나 드랙 저항을 낮춰보세요.');});number('aperture','aperture');number('shutter','shutter');number('grind','grind');number('pressure','pressure');
 $('lock')?.addEventListener('click',()=>{if(espressoExperience){espressoExperience.brew();return;}if(state.brewing)return;state.locked=!state.locked;$('lock').setAttribute('aria-pressed',state.locked);$('lock').textContent=state.locked?'포터필터 빼기':'포터필터 끼우기';render();});
 $('empty')?.addEventListener('click',()=>{if(espressoExperience){espressoExperience.reset();return;}state.brewing=false;state.volume=0;render();});
-$('reset')?.addEventListener('click',()=>{state={...base};reelExperience?.reset();watchExperience?.reset();espressoExperience?.reset();record=null;step=0;window.dispatchEvent(new CustomEvent('goodeasy:record',{detail:{record:null,step:0}}));document.querySelectorAll('[data-initial]').forEach(el=>{el.value=el.dataset.initial;el.dispatchEvent(new Event('input'));});espressoExperience?.reset();if($('typing'))$('typing').value='';if($('lock')){$('lock').textContent=state.locked?'포터필터 빼기':'포터필터 끼우기';$('lock').setAttribute('aria-pressed',String(state.locked));}render();$('detail').innerHTML='';$('record').textContent='조작 기록이 없습니다.';$('part-copy').textContent='부품을 선택하면 설명이 나옵니다.';});
+$('reset')?.addEventListener('click',()=>{state={...base};projectorExperience?.reset();reelExperience?.reset();watchExperience?.reset();espressoExperience?.reset();record=null;step=0;if(kind==='projector')window.GoodeasyProjectorRecord=null;window.dispatchEvent(new CustomEvent('goodeasy:record',{detail:{record:null,step:0}}));document.querySelectorAll('[data-initial]').forEach(el=>{el.value=el.dataset.initial;el.dispatchEvent(new Event('input'));});espressoExperience?.reset();if($('typing'))$('typing').value='';if($('lock')){$('lock').textContent=state.locked?'포터필터 빼기':'포터필터 끼우기';$('lock').setAttribute('aria-pressed',String(state.locked));}render();$('detail').innerHTML='';$('record').textContent='조작 기록이 없습니다.';$('part-copy').textContent='부품을 선택하면 설명이 나옵니다.';});
 if(kind==='keyboard'){
  const {pressKeyboard,releaseKeyboard,stopKeyboard,setKeyboardAudioEnabled}=await import('./keyboard-audio.js?v=20261028-uxaudio2');
  const owner='keyboard-hero',travelOwner='keyboard-travel',held=new Map(),pointerHeld=new Map(),timers=new Set();let tapSerial=0,visualSerial=0,atBottom=false;
@@ -78,7 +79,7 @@ if(kind==='keyboard'){
 let pointer=null,dragAngle=0,dragY=0;
 $('turn-area')?.addEventListener('pointerdown',e=>{if((kind==='watch'||kind==='fishing-reel')&&matchMedia('(max-width:700px)').matches&&!e.currentTarget.classList.contains('is-gesture-mode'))return;pointer=e.pointerId;e.currentTarget.setPointerCapture(pointer);const r=e.currentTarget.getBoundingClientRect();dragAngle=Math.atan2(e.clientY-r.top-r.height/2,e.clientX-r.left-r.width/2);dragY=e.clientY;});
 $('turn-area')?.addEventListener('pointermove',e=>{if(pointer!==e.pointerId)return;const r=e.currentTarget.getBoundingClientRect(),a=Math.atan2(e.clientY-r.top-r.height/2,e.clientX-r.left-r.width/2);let delta=a-dragAngle;if(delta>Math.PI)delta-=Math.PI*2;if(delta<-Math.PI)delta+=Math.PI*2;dragAngle=a;
- if(kind==='watch'){const turns=Math.abs(e.clientY-dragY)/80;dragY=e.clientY;if(watchExperience)watchExperience.wind(turns);else state=wind(state,turns);wake();}else if(kind==='fishing-reel'){if(reelExperience)reelExperience.drag(Math.max(0,delta)/(Math.PI*2));else state=reelStep(state,Math.max(0,delta)/(Math.PI*2));}else if(kind==='projector')state=filmStep(state,Math.max(0,delta)/(Math.PI*2)*24);render();});
+ if(kind==='watch'){const turns=Math.abs(e.clientY-dragY)/80;dragY=e.clientY;if(watchExperience)watchExperience.wind(turns);else state=wind(state,turns);wake();}else if(kind==='fishing-reel'){if(reelExperience)reelExperience.drag(Math.max(0,delta)/(Math.PI*2));else state=reelStep(state,Math.max(0,delta)/(Math.PI*2));}else if(kind==='projector'){const frames=Math.max(0,delta)/(Math.PI*2)*24;if(projectorExperience)projectorExperience.drag(frames);else state=filmStep(state,frames);}render();});
 for(const event of ['pointerup','pointercancel','lostpointercapture'])$('turn-area')?.addEventListener(event,()=>pointer=null);
 function tick(now){animation=0;const dt=Math.min(.1,(now-last)/1000||0);last=now;if(!visible||document.hidden)return;
  let running=false;
@@ -86,6 +87,7 @@ function tick(now){animation=0;const dt=Math.min(.1,(now-last)/1000||0);last=now
  if(watchExperience)running=watchExperience.tick(dt)||running;
  else if(kind==='watch'&&state.reserve>0){state=watchStep(state,dt);running=true;}
  if(reelExperience)running=reelExperience.tick(dt)||running;
+ if(projectorExperience)running=projectorExperience.tick(dt)||running;
  if(espressoExperience)running=espressoExperience.tick(dt)||running;
  else if(kind==='espresso-machine'&&state.brewing){state.volume=Math.min(40,state.volume+coffeeFlow(state.grind,state.pressure)*dt);if(state.volume>=40)state.brewing=false;running=state.brewing;}
  if(now-frameTime>60){render();frameTime=now;}if(running)animation=requestAnimationFrame(tick);
@@ -101,6 +103,7 @@ if(kind==='watch'){
  watchExperience=createWatchExperience(experienceOptions);
  for(const [id,mode] of [['watch-regulated',true],['watch-free','free']])$(id)?.addEventListener('click',()=>{watchExperience.regulate(mode);$('watch-regulated')?.setAttribute('aria-pressed',String(mode===true));$('watch-free')?.setAttribute('aria-pressed',String(mode==='free'));});
 }
+if(kind==='projector'){const {createProjectorExperience}=await import('./projector-experience.js?v=20261108-projector1');projectorExperience=createProjectorExperience({...experienceOptions,sound:()=>clickSound(130),reduced:reduced.matches,stopSound:()=>audio?.suspend()});window.addEventListener('goodeasy:projector-snapshot',snapshot);document.addEventListener('visibilitychange',()=>{if(document.hidden)audio?.suspend();});window.addEventListener('pagehide',()=>audio?.suspend());}
 if(kind==='espresso-machine'){
  const {createEspressoExperience}=await import('./espresso-experience.js?v=20261028-craft7');
  espressoExperience=createEspressoExperience(experienceOptions);espressoExperience.reset();
@@ -109,6 +112,7 @@ new IntersectionObserver(([e])=>{visible=e.isIntersecting;if(visible)wake();else
 document.addEventListener('visibilitychange',()=>{if(document.hidden){cancelAnimationFrame(animation);animation=0;}else wake();});
 window.addEventListener('blur',()=>pointer=null);
 render();
+if(kind==='projector'&&new URLSearchParams(location.search).has('landing-frame'))snapshot();
 $('live')?.addEventListener('click',()=>{state.photo=null;render();wake();});
 
 window.addEventListener('resize',()=>{render();if(record)showInside();});

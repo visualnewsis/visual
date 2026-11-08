@@ -1,5 +1,5 @@
 import {T,M,box,cyl,rod,part} from './anatomy-core.js?v=20261028-craft7';
-import {projectorAssembly} from './anatomy-optics.js?v=20261102-rescue2';
+import {projectorAssembly} from './anatomy-optics.js?v=20261108-projector1';
 import {paintFilmFrame,frameNumber,FILM_FRAME_COUNT} from './projector-frames.js?v=20261028-release3';
 import {projectorHeroClock} from './projector-hero-clock.js?v=20261030-reviewed11';
 const TAU=Math.PI*2,pitch=.56,clamp=x=>Math.max(0,Math.min(1,x));
@@ -28,7 +28,7 @@ export function buildProjectorGateStudy(){
   for(const p of samples){const q=projectorTransport(p,mode).progress;ctx.drawImage(frames[index],0,-q*384,512,384);if(q>0)ctx.drawImage(frames[frameNumber(index+1)],0,(1-q)*384,512,384);}
   ctx.globalAlpha=1;ctx.globalCompositeOperation='source-over';texture.needsUpdate=true;
  }
- const result={group,allowZoom:true,eye:[7,3.2,10],defaults:{cycle:0,mode:0,fps:12,startFrame:0},parts:{shutter:parts.shutter,intermittent:parts.mechanismMount,film:parts.filmGroup,screen:parts.screen},update(s){
+ const result={group,allowZoom:true,eye:[7,3.2,10],defaults:{cycle:.35,mode:0,fps:12,startFrame:0},parts:{shutter:parts.shutter,intermittent:parts.mechanismMount,film:parts.filmGroup,screen:parts.screen},update(s){
   const state=projectorTransport(s.cycle,s.mode,s.startFrame);model.update({phase:state.phase,explode:0});hero.update({frames:Math.max(0,Number(s.cycle)||0)-.35,startFrame:s.startFrame||0,continuousFilm:state.continuous},false);parts.screen.visible=true;parts.shutter.visible=!state.shutterRemoved;parts.mechanismMount.visible=!state.continuous;
   group.updateMatrixWorld(true);const direction=new T.Vector3(0,0,1).transformDirection(parts.optics.matrixWorld);let covered=0;
   if(!state.shutterRemoved)for(const x of [-.325,0,.325])for(const y of [-.236,0,.236]){const origin=parts.optics.localToWorld(new T.Vector3(x,y,-.03));ray.set(origin,direction);if(ray.intersectObjects(opaque,false).length)covered++;}

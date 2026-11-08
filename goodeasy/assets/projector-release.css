@@ -1,0 +1,5 @@
+body[data-experiment=projector] .projector-result{width:clamp(150px,18vw,250px)}
+.projector-sound-tools{display:flex;align-items:center;gap:18px;flex-wrap:wrap;margin:14px 4vw}
+.projector-sound-tools button{border:1px solid #71968866;border-radius:4px;background:#14211d;color:#dae5d9;padding:10px 14px;min-height:44px;cursor:pointer;font:inherit;font-size:12px}
+.projector-sound-tools p{margin:0;color:#b5cebf;font-size:12px;line-height:1.7}
+@media(max-width:650px){body[data-experiment=projector] .projector-result{width:130px}.projector-sound-tools{gap:10px}.projector-sound-tools p{font-size:11px}}

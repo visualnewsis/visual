@@ -1,7 +1,7 @@
 import {buildBowStudy,buildBridgeStudy,buildViolinBodyStudy} from './violin-lessons.js?v=20261102-rescue2';
 import {buildReelRetrieve as reelRetrieve,buildReelOscillation,buildReelDrag} from './reel-lessons.js?v=20261102-rescue2';
 import {buildKeyboardSpringStudy,buildKeyboardDebounceStudy} from './keyboard-lessons.js?v=20261030-craft-release1';
-import {buildProjectorGateStudy,buildProjectorFramesStudy} from './projector-lessons.js?v=20261102-rescue2';
+import {buildProjectorGateStudy,buildProjectorFramesStudy} from './projector-lessons.js?v=20261108-projector1';
 import {buildLengthStudy,buildHarmonicStudy,buildBodyStudy} from './guitar-lessons.js?v=20261027-premium6';
 import {espressoAssembly} from './anatomy-espresso.js?v=20261102-rescue2';
 import {buildBrewRatio as detailedBrewRatio} from './coffee-detail.js?v=20261102-rescue2';
