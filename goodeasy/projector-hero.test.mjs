@@ -32,7 +32,7 @@ test('integer frame buttons stop at visible exposure rather than a permanently d
   for(let i=1;i<999;i++){const a=projectorHeroClock(i/1000),b=projectorHeroClock((i+1)/1000);assert.ok(Math.abs((b.theta-a.theta)-Math.PI*2/1000)<1e-10);}
   const m=buildProjector(),mount=m.group.getObjectByName('Common transverse Geneva and sprocket shaft'),pin=m.group.getObjectByName('Geneva driving pin'),star=m.parts.intermittent.children.find(o=>o.isMesh),ray=new T.Raycaster();
   for(let i=0;i<=200;i++){m.update({frames:.75+i/200*.249999-.35},true);m.group.updateMatrixWorld(true);const center=mount.worldToLocal(pin.getWorldPosition(new T.Vector3()));
-   for(let k=0;k<8;k++){const a=k*TAU/8,start=mount.localToWorld(new T.Vector3(center.x+Math.cos(a)*.012,center.y+Math.sin(a)*.012,-.12)),dir=new T.Vector3(0,0,1).transformDirection(mount.matrixWorld);ray.set(start,dir);assert.equal(ray.intersectObject(star).length,0,'pin clips slot wall at '+i);}
+   for(let k=0;k<8;k++){const a=k*TAU/8,pinRadius=pin.geometry.parameters.radiusTop,start=mount.localToWorld(new T.Vector3(center.x+Math.cos(a)*pinRadius,center.y+Math.sin(a)*pinRadius,-.12)),dir=new T.Vector3(0,0,1).transformDirection(mount.matrixWorld);ray.set(start,dir);assert.equal(ray.intersectObject(star).length,0,'pin clips slot wall at '+i);}
   }
  });
 

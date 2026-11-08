@@ -3,7 +3,7 @@ import {playStudyTone,stopStudyTone,midiFrequency} from './study-audio.js?v=2026
 import {lessonAnnotations} from './lesson-annotations.js?v=20261027-detail1';
 import {T,materials as M} from './quality-kit.js?v=20261028-watchmechanism2';
 import {watchBuilders} from './research-watch.js?v=20261028-watchguide4';
-import {otherBuilders} from './research-other.js?v=20261108-projector1';
+import {otherBuilders} from './research-other.js?v=20261108-projector2';
 import {clamp} from './research-math.js?v=20261026-release3';
 const refined=!!(document.body.dataset.experiment||document.body.dataset.music);
 const cards=[...document.querySelectorAll('[data-research]')],views=[],reduced=matchMedia('(prefers-reduced-motion: reduce)');
@@ -14,7 +14,7 @@ function adoptGuitarNote(v,record){
   if(v.id==='film-gate'){v.state.startFrame=frame;v.state.cycle=.35;v.state.running=false;}
   if(v.id==='frames'){v.state.frame=frame;v.state.frameIndex=frame;v.state.running=false;}
   const key=v.id==='frames'?'frame':v.id==='film-gate'?'cycle':null,input=key&&v.card.querySelector('[data-param='+key+']');
-  if(input){input.value=String(v.state[key]);input.closest('label').querySelector('output').textContent=key==='frame'?(frame+1)+' / 24':'.35';if(key==='frame')input.setAttribute('aria-valuetext',(frame+1)+'번 그림');}
+  if(input){input.value=String(v.state[key]);input.closest('label').querySelector('output').textContent=key==='frame'?(frame+1)+' / 24':'0.35';if(key==='frame')input.setAttribute('aria-valuetext',(frame+1)+'번 그림');}
   syncPlay(v);v.dirty=true;
  }
  if(!['guitar','violin'].includes(document.body.dataset.music)||!['string','harmonics','guitar-body','bow','violin-bridge','violin-body'].includes(v.id)||!record?.midi)return;

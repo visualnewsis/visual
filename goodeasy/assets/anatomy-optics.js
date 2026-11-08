@@ -1,6 +1,6 @@
 import {T,M,TAU,clamp,colors,metal,component,assembly,part,mesh,box,cyl,ring,rod,bolt,sleeve} from './anatomy-core.js?v=20261028-craft7';
 import {buildIris} from './camera-lessons.js?v=20261028-craft7';
-import {buildProjector} from './projector-hero.js?v=20261108-projector1';
+import {buildProjector} from './projector-hero.js?v=20261108-projector2';
 import {curtainWindow,filmCycle} from './mechanism-checks.js?v=20261026-release3';
 export function cameraAssembly(){
  const group=new T.Group(),C=[],add=(...a)=>{const c=component(group,...a);C.push(c);return c.object;},chrome=metal(colors.frame),blue=new T.MeshPhysicalMaterial({color:0x87b8c4,metalness:.15,roughness:.12,transparent:true,opacity:.52,side:T.DoubleSide,depthWrite:false});

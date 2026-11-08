@@ -30,8 +30,8 @@ test('continuous reels turn during gate dwell, while the film image and Geneva o
 test('thin separated reel flanges clear the gate and film leaves winding packs tangentially',()=>{
  const h=buildProjector(),reels=h.parts.reels.children,path=h.parts.film.userData.path,curve=h.parts.film.userData.slack.curve;
  const flanges=reels.map(r=>r.children.filter(o=>o.geometry?.type==='ExtrudeGeometry'&&o.name!=='Film winding pack between open flanges'));
- for(const f of flanges.flat()){assert.equal(f.geometry.parameters.options.depth,.025);f.geometry.computeBoundingBox();assert.ok(f.geometry.boundingBox.max.x>1.79&&f.geometry.boundingBox.max.x<1.81);}
- assert.ok(reels[1].position.x-reels[0].position.x-3.60>.4999);assert.ok(reels.every(r=>r.position.y-1.8>2.35));
+ for(const f of flanges.flat()){assert.equal(f.geometry.parameters.options.depth,.025);f.geometry.computeBoundingBox();assert.ok(f.geometry.boundingBox.max.x>1.65&&f.geometry.boundingBox.max.x<1.67);}
+ assert.ok(reels[1].position.x-reels[0].position.x-3.32>.4999);assert.ok(reels.every(r=>r.position.y-1.66>2.35));
  for(const [i,p]of [[0,path[0]],[1,path.at(-1)]]){const r=reels[i],dx=p[0]-r.position.x,dy=p[1]-r.position.y;assert.ok(Math.abs(Math.hypot(dx,dy)-1.05)<1e-10);assert.ok(Math.abs(p[2]-r.position.z)<1e-10);const tangent=curve.getTangent(i);assert.ok(tangent.dot(new T.Vector3(1,0,0))>.99999);const positiveRotationTangent=new T.Vector3(-dy,dx,0).normalize();assert.ok(tangent.dot(positiveRotationTangent)>.99999);}
  h.update({frames:.1});const a=h.parts.reel.rotation.z;h.update({frames:.2});assert.ok(Math.abs((h.parts.reel.rotation.z-a)*1.05-.1*.56)<1e-12);
  assert.ok(h.parts.film.geometry.drawRange.count/30>=Math.ceil(h.parts.film.userData.length/.14));

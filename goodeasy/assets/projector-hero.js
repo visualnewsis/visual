@@ -2,16 +2,16 @@ import {T,materials as M,mesh,box,cyl,ring,rod,sphere,part,tag,label} from './qu
 import {paintFilmFrame,frameNumber} from './projector-frames.js?v=20261028-release3';
 import {projectorHeroClock,PROJECTOR_PITCH as PITCH,PROJECTOR_PERF_PITCH as PERF} from './projector-hero-clock.js?v=20261030-reviewed11';
 import {projectorFilmRoute,FEED_RADIUS} from './projector-film-route.js?v=20261030-reviewed11';
-import {buildProjectorDrive} from './projector-drive.js?v=20261108-projector1';
+import {buildProjectorDrive,PROJECTOR_GENEVA_DISTANCE as GD} from './projector-drive.js?v=20261108-projector2';
 const TAU=Math.PI*2;
 const metal=(color,roughness=.3)=>new T.MeshStandardMaterial({color,metalness:.88,roughness});
 function disc(parent,r,h,material,x,y,z){const o=cyl(parent,r,h,material,x,y,z);o.rotation.x=Math.PI/2;return o;}
 function reel(parent,x,y,material){
- const root=part(parent,'Machined reel with five relief windows');root.position.set(x,y,.20);root.userData.reel={flangeRadius:1.80,windingRadius:1.05,flangeGap:1.14,coreRadius:.33};
- const shape=new T.Shape();shape.absarc(0,0,1.80,0,TAU,false);
+ const root=part(parent,'Machined reel with five relief windows');root.position.set(x,y,.20);root.userData.reel={flangeRadius:1.66,windingRadius:1.05,flangeGap:1.14,coreRadius:.33};
+ const shape=new T.Shape();shape.absarc(0,0,1.66,0,TAU,false);
  for(let i=0;i<5;i++){const a=i*TAU/5,hole=new T.Path();hole.absarc(Math.sin(a)*1.14,Math.cos(a)*1.14,.43,0,TAU,true);shape.holes.push(hole);}
  const geo=new T.ExtrudeGeometry(shape,{depth:.025,bevelEnabled:true,bevelThickness:.004,bevelSize:.004,bevelSegments:2,curveSegments:40});
- for(const z of [-.57,.57]){mesh(root,geo,material,0,0,z);ring(root,1.79,.012,material,0,0,z,'z');}
+ for(const z of [-.57,.57]){mesh(root,geo,material,0,0,z);ring(root,1.65,.012,material,0,0,z,'z');}
  disc(root,.33,1.04,M.black,0,0,0);disc(root,.15,1.22,material,0,0,0);disc(root,.08,.04,M.brass,0,0,.69);
  const winding=new T.Shape();winding.absarc(0,0,1.05,0,TAU,false);const core=new T.Path();core.absarc(0,0,.332,0,TAU,true);winding.holes.push(core);
  const wound=mesh(root,new T.ExtrudeGeometry(winding,{depth:1.03,bevelEnabled:false,curveSegments:64}),M.darkWood,0,0,-.515);wound.name='Film winding pack between open flanges';
@@ -40,10 +40,10 @@ export function buildProjector(){
  const group=new T.Group(),body=part(group,'body'),shell=part(body,'Removable graphite cast chassis');
  const enamel=new T.MeshPhysicalMaterial({color:0x243337,metalness:.58,roughness:.32,clearcoat:.32}),silver=metal(0xb7bfba),dark=metal(0x303a3c,.4),brass=metal(0xb09a60);
  shell.position.z=-.60;
- // Sculpted plinth, cast base and a rounded lamp house. The exposed transport is in front.
+ // Sculpted plinth, cast base and a ventilated gear cover. The exposed transport is in front.
  const basePlate=box(shell,3.65,.20,1.55,dark,0,.07,-.58,.09);basePlate.name='Base plate clear behind stock';for(const x of [-1.35,1.35]){const foot=box(shell,.45,.80,1.28,M.black,x,-.40,-.58,.07);foot.name='Support foot behind stock';}
  box(shell,2.85,2.12,.82,enamel,-.18,1.27,-.47,.22);box(shell,2.62,.14,.88,silver,-.18,.30,-.44,.05);
- box(shell,1.11,1.38,.45,dark,-.71,1.37,-.98,.14);for(let i=0;i<10;i++)box(shell,.77,.025,.025,M.black,-.71,.86+i*.10,-1.22,.007);
+ const gearCover=box(shell,1.11,1.38,.45,dark,-.71,1.37,-.98,.14);gearCover.name='Ventilated rear transmission cover';for(let i=0;i<10;i++)box(shell,.77,.025,.025,M.black,-.71,.86+i*.10,-1.22,.007);
  for(const x of [-1.37,1.04])for(const y of [.52,2.04]){disc(shell,.04,.025,silver,x,y,-.025);box(shell,.04,.008,.006,M.black,x,y,-.009,.002);}
  const badge=label(shell,'GOODEASY',.82,-.67,.57,-.012,'#b9c3bc');badge.name='Engraved maker plate';
  const reelGroup=part(group,'Supply and take-up reels'),reels=[];for(const [x,y]of [[-2.05,4.20],[2.05,4.20]]){rod(body,[Math.sign(x),2.19,-.41],[x,y,-.53],.09,silver);disc(body,.17,.16,dark,x,y,-.51);reels.push(reel(reelGroup,x,y,silver));}
@@ -57,15 +57,15 @@ export function buildProjector(){
  const idler=part(filmGroup,'Upper gate entry idler');idler.position.set(-.15,2.85,.20);disc(idler,.145,1.03,dark,0,0,0);for(const z of [-.55,.55])disc(idler,.165,.035,silver,0,0,z);rod(body,[-.15,2.15,-.65],[-.15,2.85,-.65],.045,silver);rod(body,[-.15,2.85,-.65],[-.15,2.85,.20],.025,silver);
  // Four-slot Geneva output on the front face. No claw is combined with this mechanism.
  const sr=PITCH/(Math.PI/2),mechanismMount=part(transport,'Common transverse Geneva and sprocket shaft');mechanismMount.position.set(sr,.91,.91);
- const geneva=part(mechanismMount,'Four slot Geneva intermittent output');const star=new T.Shape(),R=.235,halfSlot=.017,slotRoot=.073,entry=Math.asin(halfSlot/R);
+ const geneva=part(mechanismMount,'Four slot Geneva intermittent output');const star=new T.Shape(),genevaScale=GD/.32,R=.235*genevaScale,halfSlot=.017*genevaScale,slotRoot=.073*genevaScale,entry=Math.asin(halfSlot/R);
  const point=(r,t)=>[Math.cos(t)*r,Math.sin(t)*r];star.moveTo(...point(R,-entry));
  for(let k=0;k<4;k++){const a=k*Math.PI/2,rotate=(x,y)=>[x*Math.cos(a)-y*Math.sin(a),x*Math.sin(a)+y*Math.cos(a)];star.lineTo(...rotate(slotRoot,-halfSlot));star.lineTo(...rotate(slotRoot,halfSlot));star.lineTo(...point(R,a+entry));// Concave dwell faces mate with the driver's locking sector.
-  const end=(k+1)*Math.PI/2-entry,center=a+Math.PI/4,lockRadius=.143;
-  for(let j=1;j<=40;j++){const t=a+entry+(end-a-entry)*j/40,dot=.32*Math.cos(t-center),disc=dot*dot-(.32*.32-lockRadius*lockRadius),r=disc>0?Math.min(R,dot-Math.sqrt(disc)):R;star.lineTo(...point(r,t));}}star.closePath();
+  const end=(k+1)*Math.PI/2-entry,center=a+Math.PI/4,lockRadius=.143*genevaScale;
+  for(let j=1;j<=40;j++){const t=a+entry+(end-a-entry)*j/40,dot=GD*Math.cos(t-center),disc=dot*dot-(GD*GD-lockRadius*lockRadius),r=disc>0?Math.min(R,dot-Math.sqrt(disc)):R;star.lineTo(...point(r,t));}}star.closePath();
  mesh(geneva,new T.ExtrudeGeometry(star,{depth:.035,bevelEnabled:true,bevelSize:.004,bevelThickness:.004,bevelSegments:1}),silver);disc(geneva,.045,.07,brass,0,0,.02);
- const driver=part(mechanismMount,'Geneva continuous pin driver');driver.position.set(.32,0,0);disc(driver,.080,.03,dark,0,0,0);rod(driver,[0,0,.04],[-.32*Math.SQRT1_2,0,.04],.015,silver);const driverPin=disc(driver,.012,.09,brass,-.32*Math.SQRT1_2,0,.06);driverPin.name='Geneva driving pin';
+ const driver=part(mechanismMount,'Geneva continuous pin driver');driver.position.set(GD,0,0);disc(driver,.080*genevaScale,.03,dark,0,0,0);rod(driver,[0,0,.04],[-GD*Math.SQRT1_2,0,.04],.015*genevaScale,silver);const driverPin=disc(driver,.012*genevaScale,.09,brass,-GD*Math.SQRT1_2,0,.06);driverPin.name='Geneva driving pin';
  const lock=new T.Shape(),opening=Math.PI/4+.008,from=Math.PI+opening,to=Math.PI-opening+TAU;
- lock.absarc(0,0,.135,from,to,false);lock.lineTo(...point(.078,to));lock.absarc(0,0,.078,to,from,true);lock.closePath();
+ lock.absarc(0,0,.135*genevaScale,from,to,false);lock.lineTo(...point(.078*genevaScale,to));lock.absarc(0,0,.078*genevaScale,to,from,true);lock.closePath();
  const lockingSector=mesh(driver,new T.ExtrudeGeometry(lock,{depth:.025,bevelEnabled:false}),dark,0,0,.004);lockingSector.name='Geneva dwell locking sector';
 
  const sprocket=part(filmGroup,'Four perforations per quarter turn');sprocket.position.set(sr,.91,.20);rod(transport,[sr,.91,-.40],[sr,.91,.99],.027,silver);for(const z of [-.445,.445]){disc(sprocket,sr-.018,.04,brass,0,0,z);for(let i=0;i<16;i++){const a=i*TAU/16;box(sprocket,.025,.025,.045,silver,Math.cos(a)*sr,Math.sin(a)*sr,z,.003);}}

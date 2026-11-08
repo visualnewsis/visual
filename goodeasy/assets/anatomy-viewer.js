@@ -3,7 +3,7 @@ import {mountWatchStudies} from './watch-observation-tour.js?v=20261028-watchgui
 import {playStudyTone,stopStudyTone,midiFrequency} from './study-audio.js?v=20261028-release3';
 import {zoomDistance,wheelZoom,pinchZoom,zoomPercent} from './anatomy-controls.js?v=20261027-orbit1';
 import {T,makeStage} from './quality-kit.js?v=20261029-seconds1';
-import {anatomyBuilders} from './anatomy-models.js?v=20261108-projector1';
+import {anatomyBuilders} from './anatomy-models.js?v=20261108-projector2';
 // Track visibility once per object, and rendering properties once per unique
 // material slot. Multi-material shells need the same cutaway treatment as meshes.
 function captureAnatomyMaterials(root){

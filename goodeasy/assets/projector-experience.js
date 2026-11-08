@@ -6,7 +6,7 @@ export function createProjectorExperience({getState,setState,render,wake,sound=(
  mute?.addEventListener('click',()=>{enabled=!enabled;if(!enabled)stopSound();mute.setAttribute('aria-pressed',String(enabled));mute.textContent=enabled?'클릭 소리 켜짐':'클릭 소리 꺼짐';});
  function forward(){
   if(motion)return;
-  const from=getState().frames,to=Math.floor(from+1e-8)+1;
+  const from=getState().frames,to=Math.floor(from+.35)+1;
   if(enabled)sound();
   if(reduced){commit(to);return;}
   motion={from,to,elapsed:0};button.disabled=true;button.setAttribute('aria-busy','true');wake();

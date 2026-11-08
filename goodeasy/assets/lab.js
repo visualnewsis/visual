@@ -1,9 +1,10 @@
 import {clamp,reelStep,reelPull,observationRecord,exposure,wind,watchStep,filmStep,switchState,coffeeFlow} from './model.js?v=20261026-release3';
 const $=id=>document.getElementById(id),kind=document.body.dataset.experiment;
 const base={turns:0,rotor:0,distance:20,drag:50,pull:35,payout:0,slipping:false,aperture:2.8,shutter:250,shots:0,photo:null,reserve:0,elapsed:0,frames:0,frame:0,text:'',key:'A',travel:0,locked:false,brewing:false,volume:0,grind:50,pressure:9};
+let fromLanding=false;
 let state={...base},record=null,step=0,animation=0,last=0,visible=true,frameTime=0;
 let reelExperience=null,watchExperience=null,espressoExperience=null,projectorExperience=null;
-if(kind==='projector'){const f=Number(new URLSearchParams(location.search).get('landing-frame'));if(Number.isInteger(f)&&f>=0&&f<24){state.frames=f;state.frame=f;}}
+if(kind==='projector'){const raw=new URLSearchParams(location.search).get('landing-frame'),f=Number(raw);if(raw!==null&&/^\d+$/.test(raw)&&Number.isInteger(f)&&f>=0&&f<24){state.frames=f;state.frame=f;fromLanding=true;}}
 const reduced=matchMedia('(prefers-reduced-motion: reduce)');
 const svg=(body)=>`<svg viewBox="${innerWidth<700?({'espresso-machine':'210 30 580 480',watch:'280 0 560 580','fishing-reel':'220 50 570 490'}[kind]||'0 0 1000 580'):'0 0 1000 580'}" role="img" aria-label="${document.body.dataset.name} 조작 모형"><defs><linearGradient id="steel" x2=".3" y2="1"><stop stop-color="#d5d6d1"/><stop offset=".2" stop-color="#7e8789"/><stop offset=".5" stop-color="#222b31"/><stop offset=".8" stop-color="#a4aba9"/><stop offset="1" stop-color="#343b40"/></linearGradient><linearGradient id="black" x2="0" y2="1"><stop stop-color="#394047"/><stop offset=".5" stop-color="#12191e"/><stop offset="1" stop-color="#090d10"/></linearGradient><radialGradient id="glass"><stop stop-color="#313e44"/><stop offset=".4" stop-color="#14292e"/><stop offset=".8" stop-color="#0c161b"/><stop offset="1" stop-color="#657578"/></radialGradient><linearGradient id="brass" x2=".7" y2="1"><stop stop-color="#e6d5a5"/><stop offset=".5" stop-color="#8b6b37"/><stop offset="1" stop-color="#d8bd79"/></linearGradient></defs>${body}</svg>`;
 const ring=(x,y,r,fill='url(#steel)')=>`<circle cx="${x}" cy="${y}" r="${r}" fill="${fill}" stroke="#767c79" stroke-width="2"/>`;
@@ -31,8 +32,8 @@ function render(){
   say(!state.locked?'‘포터필터 끼우기’를 눌러 머신에 끼우세요.':`${state.brewing?'추출 중':state.volume>=40?'잔이 찼습니다. 잔을 비우면 다시 내릴 수 있습니다.':'추출 버튼을 눌러보세요.'} · ${state.volume.toFixed(1)}mL · ${state.pressure}bar`);
  }
 }
-function snapshot(){projectorExperience?.settle();record=observationRecord(kind,state);if(kind==='projector')window.GoodeasyProjectorRecord={...record};step=0;showInside();}
-function showInside(){if(!record){$('record').textContent='위에서 조작한 뒤 파헤쳐보기를 누르세요.';return;}if(!document.body.classList.contains('has-3d'))$('detail').innerHTML=scene(record,true);window.dispatchEvent(new CustomEvent('goodeasy:record',{detail:{record:JSON.parse(JSON.stringify(record)),step}}));$('record').textContent=`직전 입력 기록 · ${kind==='keyboard'?record.key:kind==='camera'?record.shots+'번째 촬영 · f/'+record.aperture+' · 1/'+record.shutter+'초':kind==='watch'?record.reserve.toFixed(0)+'% 잔량':kind==='projector'?(record.frame+1)+'번 프레임':kind==='fishing-reel'?record.turns.toFixed(1)+'바퀴 · 드랙 '+record.drag+' · 당기는 힘 '+record.pull:'잔 '+Math.round(record.volume/40*100)+'%'}`;document.querySelectorAll('[data-step]').forEach((b,i)=>{b.setAttribute('aria-pressed',String(i===step));});$('part-copy').textContent=document.querySelectorAll('[data-step]')[step].dataset.copy;}
+function snapshot(source){projectorExperience?.settle();record=observationRecord(kind,state);if(kind==='projector')record.source=source==='landing'?'landing':'experience';if(kind==='projector')window.GoodeasyProjectorRecord={...record};step=0;showInside();}
+function showInside(){if(!record){$('record').textContent='위에서 조작한 뒤 파헤쳐보기를 누르세요.';return;}if(!document.body.classList.contains('has-3d'))$('detail').innerHTML=scene(record,true);window.dispatchEvent(new CustomEvent('goodeasy:record',{detail:{record:JSON.parse(JSON.stringify(record)),step}}));$('record').textContent=`${kind==='projector'&&record.source==='landing'?'랜딩에서 이어온 장면':'직전 입력 기록'} · ${kind==='keyboard'?record.key:kind==='camera'?record.shots+'번째 촬영 · f/'+record.aperture+' · 1/'+record.shutter+'초':kind==='watch'?record.reserve.toFixed(0)+'% 잔량':kind==='projector'?(record.frame+1)+'번 프레임':kind==='fishing-reel'?record.turns.toFixed(1)+'바퀴 · 드랙 '+record.drag+' · 당기는 힘 '+record.pull:'잔 '+Math.round(record.volume/40*100)+'%'}`;document.querySelectorAll('[data-step]').forEach((b,i)=>{b.setAttribute('aria-pressed',String(i===step));});$('part-copy').textContent=document.querySelectorAll('[data-step]')[step].dataset.copy;}
 function action(){
  if(kind==='fishing-reel'){if(reelExperience){reelExperience.turn();return;}state=reelStep(state,1);}
  if(kind==='watch'){if(watchExperience){watchExperience.wind();return;}state=wind(state,1);wake();}
@@ -103,7 +104,7 @@ if(kind==='watch'){
  watchExperience=createWatchExperience(experienceOptions);
  for(const [id,mode] of [['watch-regulated',true],['watch-free','free']])$(id)?.addEventListener('click',()=>{watchExperience.regulate(mode);$('watch-regulated')?.setAttribute('aria-pressed',String(mode===true));$('watch-free')?.setAttribute('aria-pressed',String(mode==='free'));});
 }
-if(kind==='projector'){const {createProjectorExperience}=await import('./projector-experience.js?v=20261108-projector1');projectorExperience=createProjectorExperience({...experienceOptions,sound:()=>clickSound(130),reduced:reduced.matches,stopSound:()=>audio?.suspend()});window.addEventListener('goodeasy:projector-snapshot',snapshot);document.addEventListener('visibilitychange',()=>{if(document.hidden)audio?.suspend();});window.addEventListener('pagehide',()=>audio?.suspend());}
+if(kind==='projector'){const {createProjectorExperience}=await import('./projector-experience.js?v=20261108-projector2');projectorExperience=createProjectorExperience({...experienceOptions,sound:()=>clickSound(130),reduced:reduced.matches,stopSound:()=>audio?.suspend()});window.addEventListener('goodeasy:projector-snapshot',snapshot);document.addEventListener('visibilitychange',()=>{if(document.hidden)audio?.suspend();});window.addEventListener('pagehide',()=>audio?.suspend());}
 if(kind==='espresso-machine'){
  const {createEspressoExperience}=await import('./espresso-experience.js?v=20261028-craft7');
  espressoExperience=createEspressoExperience(experienceOptions);espressoExperience.reset();
@@ -112,7 +113,7 @@ new IntersectionObserver(([e])=>{visible=e.isIntersecting;if(visible)wake();else
 document.addEventListener('visibilitychange',()=>{if(document.hidden){cancelAnimationFrame(animation);animation=0;}else wake();});
 window.addEventListener('blur',()=>pointer=null);
 render();
-if(kind==='projector'&&new URLSearchParams(location.search).has('landing-frame'))snapshot();
+if(kind==='projector'){const url=new URL(location.href);if(fromLanding)snapshot('landing');if(url.searchParams.has('landing-frame')){url.searchParams.delete('landing-frame');history.replaceState(history.state,'',url.pathname+url.search+url.hash);}}
 $('live')?.addEventListener('click',()=>{state.photo=null;render();wake();});
 
 window.addEventListener('resize',()=>{render();if(record)showInside();});

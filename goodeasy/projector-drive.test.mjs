@@ -8,10 +8,10 @@ test('representative drive gears stay in mesh without tooth interpenetration ove
  assert.equal(drive.group.userData.transmission.crankToFrame,24);
  for(const p of drive.pairs){
   assert.ok(Math.abs(Math.hypot(p.gb.position.x-p.ga.position.x,p.gb.position.y-p.ga.position.y)-p.radii[0]-p.radii[1])<1e-10);
-  for(let k=0;k<48;k++){
-   m.update({frames:k/48},true);m.group.updateMatrixWorld(true);
-   const a=p.ga.children[0],b=p.gb.children[0],attr=a.geometry.attributes.position;
-   for(let j=0;j<attr.count;j+=6){const v=new T.Vector3().fromBufferAttribute(attr,j);v.z=-.2;a.localToWorld(v);ray.set(v,new T.Vector3(0,0,1));assert.equal(ray.intersectObject(b).length,0,'gear teeth overlap '+p.a+'→'+p.b+' at '+k);}
+  for(let k=0;k<97;k++){
+   m.update({frames:k/97},true);m.group.updateMatrixWorld(true);
+   for(const [a,b] of [[p.ga.children[0],p.gb.children[0]],[p.gb.children[0],p.ga.children[0]]]){const attr=a.geometry.attributes.position;
+   for(let j=0;j<attr.count;j+=6){const v=new T.Vector3().fromBufferAttribute(attr,j);v.z=-.2;a.localToWorld(v);ray.set(v,new T.Vector3(0,0,1));assert.equal(ray.intersectObject(b).length,0,'gear teeth overlap '+p.a+'→'+p.b+' at '+k);}}
   }
  }
  m.update({frames:0});const before=drive.pairs.map(p=>[p.ga.rotation.z,p.gb.rotation.z]);const crank=m.parts.handle.rotation.z,driver=m.parts.driver.rotation.z;

@@ -1,0 +1,20 @@
+import test from 'node:test';import assert from 'node:assert/strict';import * as T from './piano/vendor/three.module.min.js';
+const ctx=new Proxy({createImageData:(w,h)=>({data:new Uint8ClampedArray(w*h*4)}),measureText:()=>({width:10}),createLinearGradient:()=>({addColorStop(){}})},{get:(o,k)=>o[k]??(()=>{})});globalThis.document={createElement:()=>({getContext:()=>ctx})};
+const {buildProjector}=await import('./assets/projector-hero.js');
+const ray=new T.Raycaster(),dirs=[new T.Vector3(.31,.73,.61).normalize(),new T.Vector3(-.57,.21,.79).normalize(),new T.Vector3(.12,-.83,.54).normalize()];
+function inside(m,p){const old=m.material.side;m.material.side=T.DoubleSide;let votes=0;for(const d of dirs){ray.set(p,d);ray.near=1e-7;ray.far=100;const ds=ray.intersectObject(m,false).map(h=>h.distance).sort((a,b)=>a-b).filter((d,i,a)=>!i||Math.abs(d-a[i-1])>1e-6);if(ds.length%2)votes++;}m.material.side=old;return votes>=2;}
+function shaftHits(h,phases){const shafts=[],targets=[],hits=new Set();h.parts.drive.traverse(o=>{const p=o.geometry?.parameters;if(o.geometry?.type==='CylinderGeometry'&&p.radiusTop<=.026&&p.radiusBottom<=.026&&p.height>.35)shafts.push(o)});for(const r of [h.parts.lamp,h.parts.reels,h.parts.sprocket,h.parts.idler,h.parts.lens])r.traverse(o=>{if(o.isMesh&&!['PlaneGeometry','CircleGeometry'].includes(o.geometry.type))targets.push(o)});
+ for(const phase of phases){h.update({frames:phase},false);h.group.updateMatrixWorld(true);const boxes=targets.map(o=>new T.Box3().setFromObject(o));for(const [si,s]of shafts.entries()){const p=s.geometry.parameters,n=Math.ceil(p.height/.035);for(let k=0;k<=n;k++)for(let a=0;a<8;a++){const q=new T.Vector3(Math.cos(a*Math.PI/4)*p.radiusTop,p.height*(k/n-.5),Math.sin(a*Math.PI/4)*p.radiusTop).applyMatrix4(s.matrixWorld);for(let j=0;j<targets.length;j++){
+ let reel=targets[j];while(reel&&!reel.userData.reel)reel=reel.parent;
+ // A reel is intentionally keyed to its own coaxial axle; off-axis feed spindles are not allowed.
+ if(reel){const rc=reel.getWorldPosition(new T.Vector3()),sc=s.getWorldPosition(new T.Vector3());if(Math.hypot(rc.x-sc.x,rc.y-sc.y)<1e-8)continue;}
+ if(boxes[j].containsPoint(q)&&inside(targets[j],q))hits.add(si+':'+(targets[j].name||targets[j].parent.name));}}}}return [...hits];}
+test('drive shafts clear lamp optics intermittent flanges and both reel flanges through rotation',()=>{const h=buildProjector();assert.deepEqual(shaftHits(h,[0,.127,.353,.501,.757,.853]),[]);
+ // Reproduce the old two spindle positions without changing the fixed objects.
+ h.parts.transmission.shafts[4].position.x=h.parts.sprocket.position.x+.32;h.parts.transmission.shafts[5].position.x=h.parts.sprocket.position.x+.32;assert.ok(shaftHits(h,[0]).length>=2);
+});
+test('the former supply flange radius reproduces the feed shaft collision',()=>{const h=buildProjector(),supply=h.parts.reels.children[0];for(const f of supply.children.filter(o=>o.geometry?.type==='ExtrudeGeometry'&&o.geometry.parameters.options.depth===.025)){f.scale.x=f.scale.y=1.80/1.66;}assert.ok(shaftHits(h,[0]).some(x=>x.includes('Machined reel')));});
+test('perpendicular bevel shafts terminate before the common pitch-cone apex',()=>{const h=buildProjector();h.group.updateMatrixWorld(true);assert.equal(new T.Box3().setFromObject(h.parts.transmission.shafts[5]).intersectsBox(new T.Box3().setFromObject(h.parts.transmission.shutterShaft)),false);});
+test('actual tapered bevel teeth clear each other at 257 non-aliasing phases',()=>{const h=buildProjector(),b=[];h.parts.drive.traverse(o=>{if(o.name==='1 to 1 bevel gear')b.push(o.children[0])});assert.equal(b.length,2);
+ for(let k=0;k<257;k++){h.update({frames:k/257},false);h.group.updateMatrixWorld(true);for(const [A,B]of [[b[0],b[1]],[b[1],b[0]]]){const box=new T.Box3().setFromObject(B),a=A.geometry.attributes.position;for(let i=0;i<a.count;i+=3){const p=new T.Vector3().fromBufferAttribute(a,i).applyMatrix4(A.matrixWorld);if(box.containsPoint(p))assert.equal(inside(B,p),false,'bevel penetration at '+k);}}}
+});

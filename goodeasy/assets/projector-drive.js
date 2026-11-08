@@ -1,5 +1,6 @@
 import {T,mesh,rod,ring,part} from './quality-kit.js?v=20261028-watchmechanism2';
 const TAU=Math.PI*2;
+export const PROJECTOR_GENEVA_DISTANCE=.44;
 
 // A representative transmission, not a reconstruction of a historic make.
 // The existing teaching ratio is retained: crank : frame shaft = 1 : 24.
@@ -41,38 +42,51 @@ function cord(parent,A,B,rA,rB,z,material){
  const belt=mesh(parent,new T.TubeGeometry(path,160,.012,6,true),material);belt.name='Continuous open drive cord';return belt;
 }
 function miter(parent,apex,axis,material){
- const root=part(parent,'1 to 1 bevel gear');root.position.set(...apex);root.quaternion.setFromUnitVectors(new T.Vector3(0,0,1),new T.Vector3(...axis));
- const cone=mesh(root,new T.CylinderGeometry(.018,.22,.202,48,1,true),material,0,0,-.105);cone.rotation.x=Math.PI/2;
- for(let k=0;k<24;k++){
-  const a=k/24*TAU;rod(root,[.205*Math.cos(a),.205*Math.sin(a),-.202],[.045*Math.cos(a),.045*Math.sin(a),-.042],.012,material);
+ // Representative straight bevel teeth on a 45° pitch cone, with shared end radii and a cylindrical bore.
+ const root=spur(parent,1,24,material);root.name='1 to 1 bevel gear';
+ const geometry=root.children[0].geometry,positions=geometry.attributes.position;
+ for(let i=0;i<positions.count;i++){
+  const x=positions.getX(i),y=positions.getY(i),r=Math.hypot(x,y),depth=.07+(positions.getZ(i)+.0275)/.055*.14;
+  const scale=r<.044?.031/r:depth*.98;positions.setXYZ(i,x*scale,y*scale,-Math.sqrt(2*depth*depth-r*r*scale*scale));
  }
+ positions.needsUpdate=true;geometry.computeVertexNormals();geometry.computeBoundingBox();geometry.computeBoundingSphere();
+ root.userData.pitchRadius=.21;root.userData.representative=true;
+ root.position.set(...apex);root.quaternion.setFromUnitVectors(new T.Vector3(0,0,1),new T.Vector3(...axis));
  return root;
 }
 export function buildProjectorDrive({parent,handle,framePitch,feedRadius,windingRadius,outputX,steel,brass,dark}){
- const group=part(parent,'Crank shafts gears and drive cords'),shafts=[],pairs=[],pulleys=[];
+ const group=part(parent,'Crank shafts gears and drive cords'),shafts=[],pairs=[],pulleys=[],gears=new Map();
  // Separate gear planes leave the compound gears and all four shaft journals visible.
- const nodes=[[-1.03,.93],[-.38,1.43],[.45,1.75],[1.10,1.20],[outputX+.32,.91],[outputX+.32,1.48]];
- const speeds=[-TAU/24,TAU/8,-TAU/2,TAU,-TAU,TAU];
- const ratios=[[0,1,72,24,-1.70],[1,2,96,24,-1.90],[2,3,48,24,-2.10],[3,4,48,48,-2.30],[4,5,48,48,-1.55]];
+ const C=[1.20,2.40],D=[outputX+PROJECTOR_GENEVA_DISTANCE,.91];
+ const nodes=[[-1.03,.93],[-.38,1.43],[.45,1.75],C,D,[1.00,1.48],... [1/3,2/3].map(t=>C.map((v,i)=>v+(D[i]-v)*t))];
+ const speeds=[-TAU/24,TAU/8,-TAU/2,TAU,-TAU,TAU,-TAU,TAU];
+ const ratios=[[0,1,72,24,-2.00],[1,2,96,24,-2.20],[2,3,48,24,-2.40],[3,6,48,48,-2.60],[6,7,48,48,-2.60],[7,4,48,48,-2.60],[4,5,48,48,-1.75]];
  for(const [a,b,na,nb,z] of ratios){
   const A=nodes[a],B=nodes[b],d=Math.hypot(B[0]-A[0],B[1]-A[1]),rA=d*na/(na+nb),rB=d-rA,angle=Math.atan2(B[1]-A[1],B[0]-A[0]);
-  const ga=spur(group,rA,na,brass),gb=spur(group,rB,nb,brass);ga.position.set(...A,z);gb.position.set(...B,z);
-  const offset=(na*angle+nb*(angle+Math.PI)-Math.PI)/nb;
+  const getGear=(node,radius,teeth,phase)=>{
+   const key=[node,z,teeth].join('/');if(gears.has(key))return gears.get(key);
+   const gear=spur(group,radius,teeth,brass);gear.position.set(...nodes[node],z);gear.userData.axisIndex=node;gear.userData.phase=phase;gears.set(key,gear);return gear;
+  };
+  const ga=getGear(a,rA,na,0),offset=(na*angle+nb*(angle+Math.PI)-Math.PI-na*ga.userData.phase)/nb,gb=getGear(b,rB,nb,offset);
   pairs.push({a,b,ga,gb,offset,ratio:na/nb,centers:[A,B],radii:[rA,rB]});
  }
  // Open support frame, with journals on the same axes as the gears.
- for(const y of [.23,2.48])rod(group,[-1.80,y,-2.70],[1.58,y,-2.70],.038,steel);
- for(const x of [-1.80,1.58]){rod(group,[x,.23,-2.70],[x,2.48,-2.70],.038,steel);for(const y of [.23,2.48])rod(group,[x,y,-2.70],[x,y,-1.04],.035,steel);}
+ for(const y of [.23,2.48])rod(group,[-1.80,y,-2.70],[2.22,y,-2.70],.038,steel);
+ for(const [x,anchorX] of [[-1.80,-1.35],[2.22,1.0]]){
+  rod(group,[x,.23,-2.70],[x,2.48,-2.70],.038,steel);
+  for(const [y,anchorY] of [[.23,.50],[2.48,2.05]])rod(group,[x,y,-2.70],[anchorX,anchorY,-1.43],.035,steel);
+ }
  nodes.forEach(([x,y],i)=>{
-  const zFront=i===4?1.01:i===5?.95:-.48;
-  shafts.push(rod(group,[x,y,i===5?-1.63:-2.80],[x,y,zFront],.025,steel));
-  const journal=i===5?-1.63:-2.70;ring(group,.060,.018,steel,x,y,journal,'z');rod(group,[x,y+.08,journal],[x<-.5?-1.80:1.58,y+.08,journal],.022,steel);
+  const zFront=i===4?1.01:i===5?.88:i>=6?-2.54:-.48;
+  shafts.push(rod(group,[x,y,i===5?-1.83:-2.80],[x,y,zFront],.025,steel));
+  const journal=i===5?-1.83:-2.70;ring(group,.060,.018,steel,x,y,journal,'z');rod(group,[x,y+.08,journal],[x<-.5?-1.80:2.22,y+.08,journal],.022,steel);
+  if(i===5)rod(group,[2.22,y+.08,journal],[2.22,y+.08,-2.70],.022,steel);
  });
  // The Z shaft and the shutter's X shaft meet at a pair of 45 degree bevel gears.
  const apex=[nodes[5][0],1.48,.95];
  const bevelZ=miter(group,apex,[0,0,1],brass),bevelX=miter(group,apex,[1,0,0],brass);
- const shutterShaft=rod(group,[-.08,1.48,.95],[apex[0]+.03,1.48,.95],.025,steel);
- for(const x of [.02,apex[0]-.28])ring(group,.055,.016,steel,x,1.48,.95,'x');
+ const shutterShaft=rod(group,[-.08,1.48,.95],[apex[0]-.065,1.48,.95],.025,steel);
+ for(const x of [.30,apex[0]-.38]){ring(group,.055,.016,steel,x,1.48,.95,'x');rod(group,[x,1.535,.95],[x,2.05,.95],.02,steel);rod(group,[x,2.05,.95],[x,2.05,-.70],.02,steel);}
  const feed=[[ -1.05,2.80],[.90,.40]],reels=[[-2.05,4.20],[2.05,4.20]];
  const beltSpecs=[{a:nodes[4],b:feed[0],ra:.10,rb:.40,z:-2.88,sa:-TAU,sb:-TAU/4},{a:nodes[3],b:feed[1],ra:.10,rb:.40,z:-3.06,sa:TAU,sb:TAU/4},...reels.map((b,i)=>({a:feed[1],b,ra:.10,rb:.10*windingRadius/feedRadius,z:-3.24-i*.18,sa:TAU/4,sb:framePitch/windingRadius}))];
  for(const s of beltSpecs){
@@ -83,8 +97,8 @@ export function buildProjectorDrive({parent,handle,framePitch,feedRadius,winding
  group.userData.transmission={crankToFrame:24,spurPairs:pairs.map(p=>({ratio:p.ratio,centers:p.centers,radii:p.radii})),bevelRatio:1,beltRatios:beltSpecs.map(s=>s.ra/s.rb),representative:true};
  function update(clock){
   const cycle=clock.cycle;handle.rotation.z=speeds[0]*cycle;
-  for(const p of pairs){p.ga.rotation.z=speeds[p.a]*cycle;p.gb.rotation.z=speeds[p.b]*cycle+p.offset;}
-  bevelZ.rotation.z=TAU*cycle;bevelX.rotation.x=-TAU*cycle;
+  for(const gear of gears.values())gear.rotation.z=speeds[gear.userData.axisIndex]*cycle+gear.userData.phase;
+  bevelZ.rotation.z=TAU*cycle;bevelX.rotation.x=-TAU*cycle+Math.PI/24;
   for(const p of pulleys){p.a.rotation.z=p.sa*cycle;p.b.rotation.z=p.sb*cycle;}
  }
  return {group,shafts,shutterShaft,pairs,pulleys,update};
