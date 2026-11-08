@@ -77,7 +77,7 @@ export function buildProjectorDrive({parent,handle,framePitch,feedRadius,winding
   for(const [y,anchorY] of [[.23,.50],[2.48,2.05]])rod(group,[x,y,-2.70],[anchorX,anchorY,-1.43],.035,steel);
  }
  nodes.forEach(([x,y],i)=>{
-  const zFront=i===4?1.01:i===5?.88:i>=6?-2.54:-.48;
+  const zFront=i===4?1.01:i===5?.88:i>=6?-2.54:i===3?-.65:-.48;
   shafts.push(rod(group,[x,y,i===5?-1.83:-2.80],[x,y,zFront],.025,steel));
   const journal=i===5?-1.83:-2.70;ring(group,.060,.018,steel,x,y,journal,'z');rod(group,[x,y+.08,journal],[x<-.5?-1.80:2.22,y+.08,journal],.022,steel);
   if(i===5)rod(group,[2.22,y+.08,journal],[2.22,y+.08,-2.70],.022,steel);
