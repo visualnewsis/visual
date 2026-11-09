@@ -1,4 +1,4 @@
-import {T,makeStage} from './quality-kit.js?v=20261028-watchmechanism2';
+import {T,makeStage} from './quality-kit.js?v=20261109-loading3';
 import {attachInspectControls} from './inspect-controls.js?v=20261028-uxaudio2';
 import {buildWatchCase} from './watch-case.js?v=20261028-watchmechanism2';
 const host=document.getElementById('watch-case-study');

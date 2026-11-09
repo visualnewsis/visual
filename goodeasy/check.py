@@ -10,7 +10,7 @@ class Page(HTMLParser):
   a=dict(attrs)
   if a.get('id'):self.ids.append(a['id'])
   if tag in ['script','img','link','a','use']:
-   r=a.get('src') or a.get('href')
+   r=a.get('src') or a.get('data-gd-src') or a.get('href')
    if r:self.refs.append(r)
   if tag=='script' and a.get('type')=='application/ld+json':self.ld=True;self.json=[]
  def handle_data(self,s):

@@ -1,4 +1,4 @@
-import {makeStage} from './quality-kit.js?v=20261028-watchmechanism2';
+import {makeStage} from './quality-kit.js?v=20261109-loading3';
 import {buildProjector} from './projector-hero.js?v=20261108-projector2';
 import {paintFilmFrame} from './projector-frames.js?v=20261028-release3';
 const canvas=document.getElementById('landing-projector-canvas'),picture=document.getElementById('landing-projector-picture'),button=document.getElementById('landing-projector-next'),status=document.getElementById('landing-projector-status'),link=document.getElementById('projector-next');
