@@ -1,8 +1,8 @@
-import {espressoAssembly} from './anatomy-espresso.js?v=20261102-rescue2';
+import {espressoAssembly} from './anatomy-espresso.js?v=20261109-espresso5';
 import {espressoSequence} from './espresso-sequence.js?v=20261028-release3';
-import {buildCoffeeComparison as detailedCoffeeComparison} from './coffee-detail.js?v=20261102-rescue2';
+import {buildCoffeeComparison as detailedCoffeeComparison} from './coffee-detail.js?v=20261109-espresso5';
 import {T,materials as M,box,cyl,rod,tube,part} from './quality-kit.js?v=20261028-craft7';
-import {buildEspressoStudy} from './quality-replacements.js?v=20261102-rescue2';
+import {buildEspressoStudy} from './quality-replacements.js?v=20261109-espresso5';
 import {coffeeFlow} from './model.js?v=20261026-release3';
 
 const water=new T.MeshStandardMaterial({color:0x70cbd5,emissive:0x164651,roughness:.25});
@@ -38,8 +38,8 @@ function legacyCoffeeComparison(){
 
 export function buildCoffeeWaterPath(){
  const m=espressoAssembly(),update=m.update.bind(m),ids=['tank','pump','boiler','head','cup'];
- const captions=['물탱크 바닥의 흡입구 → 펌프 입구','펌프 출구 → 보일러 입구','보일러의 히터 → 데워진 물의 출구','그룹헤드 → 샤워스크린 → 커피층','바스켓의 구멍 → 추출구 → 잔'];
- return {...m,allowZoom:true,defaults:{phase:0,explode:0},annotations:ids.map((id,i)=>({object:m.components.find(c=>c.id===id).object,text:['물탱크','펌프','보일러','그룹헤드','잔'][i]})),update(s){s.activePart=espressoSequence(s.phase).stage;update(s);},advance(s,dt){s.phase=Math.min(1,(s.phase||0)+Math.max(0,dt)/12);if(s.phase>=1)s.running=false;},reading:s=>captions[s.activePart||0]+' · 펌프식 단일 보일러의 개념 구조입니다.'};
+ const captions=['물탱크 아래쪽 흡입구 → 펌프 입구','펌프 출구 → 보일러 입구','보일러의 히터 → 데워진 물의 출구','그룹헤드 → 샤워스크린 → 커피층','바스켓의 구멍 → 추출구 → 잔'];
+ return {...m,allowZoom:true,defaults:{phase:0,explode:0},annotations:ids.map((id,i)=>({object:m.components.find(c=>c.id===id).object,text:['물탱크','펌프','보일러','그룹헤드·커피층','잔'][i]})),update(s){s.activePart=espressoSequence(s.phase).stage;update({...s,cutaway:true});},advance(s,dt){s.phase=Math.min(1,(s.phase||0)+Math.max(0,dt)/12);if(s.phase>=1)s.running=false;},reading:s=>captions[s.activePart||0]+' · 펌프식 단일 보일러의 개념 구조입니다.'};
 }
 
 export {detailedCoffeeComparison as buildCoffeeComparison};

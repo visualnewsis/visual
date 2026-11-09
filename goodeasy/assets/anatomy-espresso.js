@@ -1,36 +1,43 @@
-import {T,M,TAU,clamp,colors,metal,component,assembly,part,mesh,box,cyl,ring,rod,bolt,sleeve,tube} from './anatomy-core.js?v=20261028-craft7';
+import {T,M,assembly,clamp} from './anatomy-core.js?v=20261028-craft7';
+import {buildEspressoStudy} from './quality-replacements.js?v=20261109-espresso5';
 import {espressoSequence} from './espresso-sequence.js?v=20261028-release3';
-import {createCoffeeCup} from './coffee-detail.js?v=20261102-rescue2';
 export function espressoAssembly(){
- const group=new T.Group(),C=[],add=(...a)=>{const c=component(group,...a);C.push(c);return c.object;},steel=metal(0xa9b9b7),copper=metal(0xba875b),water=new T.MeshPhysicalMaterial({color:0x459dad,transparent:true,opacity:.55,roughness:.15}),connections=[];
- const chassis=add('chassis','프레임과 드립 트레이','펌프·보일러·그룹헤드를 같은 프레임에 고정합니다.',[0,-.35,-.3]);box(chassis,5.2,.12,2.3,M.black,0,-.1,0);for(const x of [-2.3,2.3])rod(chassis,[x,0,-.6],[x,3,-.6],.065,steel);box(chassis,5.2,.12,1.4,metal(0x31544a),0,3,-.6);for(let i=0;i<17;i++)box(chassis,.045,.04,1.0,steel,.8+i*.08,.04,.55,.005);
- const tank=add('tank','물탱크와 흡입구','바닥 쪽 흡입구에서 펌프로 물을 보냅니다.',[-.7,1.1,0],colors.water);tank.position.set(-1.9,1.25,-.05);const glass=new T.MeshPhysicalMaterial({color:0x91c4c8,transparent:true,opacity:.24,roughness:.18,side:T.DoubleSide,depthWrite:false});box(tank,.85,2.15,.9,glass,0,0,0,.07);box(tank,.77,1.65,.81,water,0,-.2,0,.04);box(tank,.88,.10,.94,M.black,0,1.10,0);cyl(tank,.06,.20,steel,0,-1.04,.15);cyl(tank,.11,.09,steel,0,-.91,.15);for(let i=0;i<12;i++){const a=i/12*TAU;rod(tank,[Math.cos(a)*.11,-.95,.15+Math.sin(a)*.11],[Math.cos(a)*.11,-.87,.15+Math.sin(a)*.11],.007,M.black);}
- const pump=add('pump','펌프와 피스톤','진동하는 피스톤이 물을 밀어 압력을 만듭니다.',[-.8,0,1],colors.drive);pump.position.set(-.9,.7,0);const coil=cyl(pump,.32,.55,metal(0x3a4f4c));coil.rotation.z=Math.PI/2;for(let i=0;i<8;i++){const o=ring(pump,.27,.018,copper,-.22+i*.06,0,0,'x');}const piston=cyl(pump,.08,.65,steel);piston.rotation.z=Math.PI/2;for(const x of [-.38,.38]){const p=cyl(pump,.07,.20,steel,x,0,0);p.rotation.z=Math.PI/2;}
- const opv=add('opv','과압 밸브','설정 압력을 넘는 경우 물을 탱크 쪽으로 돌려보내는 경로입니다.',[-.4,.6,.7],colors.spring);opv.position.set(-.6,1.2,0);cyl(opv,.12,.35,copper);ring(opv,.13,.025,steel,0,.18,0);
- const boiler=add('boiler','보일러와 히터','히터가 물을 데웁니다. 출구는 그룹헤드로 이어집니다.',[0,1.1,-1],colors.spring);boiler.position.set(.1,1.6,-.15);mesh(boiler,new T.CylinderGeometry(.48,.48,1.55,64,1,true,Math.PI*.25,Math.PI*1.35),copper,0,.025,0);cyl(boiler,.47,.07,steel,0,-.75,0);ring(boiler,.48,.035,steel,0,.80,0);const lid=cyl(boiler,.47,.07,copper,0,.82,0);const heater=tube(boiler,Array.from({length:91},(_,i)=>{const t=i/90,a=t*TAU*4;return [Math.cos(a)*.29,-.58+t*.65,Math.sin(a)*.29];}),.025,metal(0xe29647));const boilerWater=cyl(boiler,.37,1.1,water,0,-.10,0);for(const x of [-.22,.22])cyl(boiler,.04,.25,steel,x,-.88,0);
- const head=add('head','그룹헤드와 분산 블록','보일러에서 온 물을 샤워스크린 쪽으로 분산시킵니다.',[1,.55,0]);head.position.set(1.6,2.2,.3);cyl(head,.12,.54,steel,0,.47,0);box(head,.36,.10,.40,steel,0,.71,0,.025);mesh(head,new T.CylinderGeometry(.47,.47,.42,64,1,true,Math.PI*.35,Math.PI*1.25),steel);ring(head,.47,.025,steel,0,.21,0);ring(head,.48,.06,M.black,0,-.2,0);cyl(head,.32,.09,water,0,-.05,0);for(let i=0;i<8;i++){const a=i/8*TAU;rod(head,[0,-.04,0],[Math.cos(a)*.29,-.16,Math.sin(a)*.29],.011,water);}for(let i=0;i<6;i++){const a=i/6*TAU;cyl(head,.045,.08,M.brass,Math.cos(a)*.37,.25,Math.sin(a)*.37);}
- const screen=add('screen','가스켓과 샤워스크린','고무 가스켓은 틈을 막고, 작은 구멍들은 물을 커피층 위로 나눕니다.',[1.15,-.1,.3],colors.water);screen.position.set(1.6,1.96,.3);ring(screen,.41,.035,M.black);perforated(screen,.37,0,steel);
- const basket=add('basket','타공 바스켓과 커피층','바닥의 작은 구멍으로 액체가 빠져나옵니다. 커피층의 저항이 물의 흐름에 영향을 줍니다.',[1.5,-.1,.5],colors.coffee);basket.position.set(1.6,1.90,.3);sleeve(basket,.42,.25,steel,0,-.15,0);perforated(basket,.35,-.15,steel);const grounds=cyl(basket,.33,.15,M.coffee,0,-.025,0);for(let i=0;i<90;i++){const a=i*2.39996,r=.31*Math.sqrt(i/90);const grain=mesh(basket,new T.IcosahedronGeometry(.027,0),M.darkWood,Math.cos(a)*r,.06,Math.sin(a)*r);}
- const filter=add('filter','포터필터와 추출구','바스켓을 그룹헤드에 잠그고, 통과한 커피를 아래로 모읍니다.',[1.9,-.45,.8]);filter.position.set(1.6,1.70,.3);sleeve(filter,.45,.20,steel);cyl(filter,.43,.05,steel);rod(filter,[.4,.12,0],[1.20,.12,0],.09,M.black);rod(filter,[0,-.03,0],[0,-.25,0],.055,steel);
- const cupPart=add('cup','잔과 받침','추출구 바로 아래에서 커피를 받습니다.',[1.9,0,1.1]);cupPart.position.set(1.6,.09,.3);const cup=createCoffeeCup();cup.group.scale.setScalar(.66);cupPart.add(cup.group);
- function connect(id,A,a,B,b,via=[]){const p=part(group,'pipe-'+id),localPoints=[A.localToWorld(new T.Vector3(...a)),...via.map(v=>new T.Vector3(...v)),B.localToWorld(new T.Vector3(...b))];const pipe=tube(p,localPoints.map(v=>v.toArray()),.035,metal(0x287e8b));const flow=tube(p,localPoints.map(v=>v.toArray()),.018,water);connections.push({id,A,a:new T.Vector3(...a),B,b:new T.Vector3(...b),points:localPoints,curve:new T.CatmullRomCurve3(localPoints),pipe:p,flow});for(const [idx,obj,pos] of [[0,A,a],[1,B,b]]){const o=cyl(obj,.065,.09,copper,...pos),v=idx?localPoints.at(-1).clone().sub(localPoints.at(-2)):localPoints[1].clone().sub(localPoints[0]);v.applyQuaternion(obj.getWorldQuaternion(new T.Quaternion()).invert()).normalize();o.quaternion.setFromUnitVectors(new T.Vector3(0,1,0),v);}}
- group.updateMatrixWorld(true);
- connect('tank-pump',tank,[0,-1.13,.15],pump,[-.48,0,0],[[-1.9,.12,.1],[-1.38,.12,0]]);
- connect('pump-boiler',pump,[.48,0,0],boiler,[-.22,-.88,0],[[-.35,.7,0],[-.12,.72,-.15]]);
- connect('boiler-head',boiler,[0,.86,0],head,[-.47,.12,0],[[.1,2.68,-.15],[.95,2.68,.3],[.95,2.32,.3]]);
- connect('pump-opv',pump,[.28,.12,0],opv,[0,-.19,0],[[-.6,.86,0]]);
- connect('opv-tank',opv,[0,.19,0],tank,[.15,.95,0],[[-.6,2.65,-.1],[-1.75,2.65,-.05]]);
- const hotWater=new T.MeshPhysicalMaterial({color:0xe0bf79,transparent:true,opacity:.8,roughness:.2});const stream=rod(group,[1.6,1.45,.3],[1.6,.35,.3],.018,M.coffee),droplet=mesh(group,new T.SphereGeometry(.045,16,12),water);
- const cover=add('cover','기계 외피 덮개','먼저 외피를 열어 연결된 펌프·보일러·배관을 봅니다. 그다음 추출부를 나눕니다.');box(cover,5.2,3.1,.045,steel,0,1.5,-.74,.008);box(cover,.045,3.1,1.2,steel,-2.58,1.5,-.15,.008);
- for(const c of C)c.offset.set(0,0,0);
- const ghostMaterial=new T.LineDashedMaterial({color:0x53939c,dashSize:.08,gapSize:.07,transparent:true,opacity:.65});for(const c of connections){c.guide=new T.Line(new T.BufferGeometry().setFromPoints([c.points[0],c.points.at(-1)]),ghostMaterial);group.add(c.guide);}
- return assembly(group,C,s=>{const e=clamp(s.explode||0),split=clamp((e-.4)/.6);cover.position.z=-Math.min(1,e/.35)*1.9;head.position.x+=split*.65;screen.position.x+=split*.65;screen.position.y-=split*.25;basket.position.x+=split*.65;basket.position.y-=split*.52;filter.position.x+=split*1.15;cupPart.position.x+=split*1.7;const q=espressoSequence(s.phase),p=q.phase;piston.position.x=q.pump?Math.sin(p*TAU*8)*.04:0;cup.setFill(q.fill,p*16,q.pouring);stream.visible=q.pouring;const surface=.09+.66*(cup.group.userData.surfaceY||.19),bottom=1.45-(1.45-surface)*q.front;stream.scale.y=Math.max(.0001,(1.45-bottom)/1.10);stream.position.y=(1.45+bottom)/2;group.userData.flowSequence=q;},{eye:[5,4.1,8],duration:12,phaseLabel:'압력이 오르고 잔이 차는 과정',connections,note:'먼저 외피만 열어 연결된 물길을 봅니다. 더 펼치면 샤워스크린·바스켓·포터필터가 나뉩니다. 점은 이미 물이 차 있는 회로의 흐름 방향을 짚는 표식입니다.',after(s){const e=clamp(s.explode||0);for(const c of connections){const A=c.A.localToWorld(c.a.clone()),B=c.B.localToWorld(c.b.clone());group.worldToLocal(A);group.worldToLocal(B);const separated=A.distanceTo(c.points[0])>1e-6||B.distanceTo(c.points.at(-1))>1e-6;c.pipe.visible=!separated;c.guide.visible=separated;c.guide.geometry.setFromPoints([A,B]);c.guide.computeLineDistances();}const q=espressoSequence(s.phase),p=q.phase;
-if(p<.2)droplet.position.copy(connections[0].curve.getPoint(p/.2));
-else if(p<.4)droplet.position.copy(connections[1].curve.getPoint((p-.2)/.2));
-else if(p<.6){const t=(p-.4)/.2;droplet.position.set(-.22*(1-t)+Math.sin(t*TAU*2)*.08,-.88+1.74*t,Math.sin(t*Math.PI)*.13).applyMatrix4(boiler.matrixWorld);group.worldToLocal(droplet.position);}
-else if(p<.72)droplet.position.copy(connections[2].curve.getPoint((p-.6)/.12));
-else if(p<.8){const t=(p-.72)/.08,points=[[1.13,2.32,.3],[1.6,2.15,.3],[1.6,1.98,.3],[1.6,1.82,.3],[1.6,1.70,.3],[1.6,1.45,.3]],step=Math.min(points.length-2,Math.floor(t*(points.length-1))),f=t*(points.length-1)-step;droplet.position.fromArray(points[step]).lerp(new T.Vector3(...points[step+1]),f);}
-else {const surface=.09+.66*(cup.group.userData.surfaceY||.19),t=p<.84?(p-.8)/.04:((p-.84)/.04)%1;droplet.position.set(1.6,1.45-(1.45-surface)*t,.3);}
-droplet.material=p>=.765?M.coffee:p>=.6?hotWater:water;droplet.visible=e<=.4&&p>.02&&p<1;stream.visible=stream.visible&&e<=.4;}});
+ const m=buildEspressoStudy(T,M),p=m.parts,group=m.group,C=[],connections=[];
+ m.update({locked:true,brewing:false,volume:0,pressure:0});
+ const basket=new T.Group();basket.name='teaching basket and puck';basket.position.copy(p.filter.position);group.add(basket);
+ for(const o of [...p.filter.children])if(o.name==='coffee puck inside locked basket'||o.name==='grounds below shower screen'||o.name==='actual perforated basket floor'||o.geometry?.type==='ExtrudeGeometry')basket.add(o);
+ const entries=[['cover','외피와 상판','덮개를 열어 같은 기계의 물길을 봅니다.',p.body],['rear','뒤쪽 덮개','섀시에서 분리하는 외피입니다.',p.rearPanel],['warmer','컵 워머','위쪽을 열어 내부를 관찰합니다.',p.cupWarmer],['chassis','지지 프레임과 앞판','내부 부품과 외부 조작부의 지지 위치를 유지합니다.',p.chassis],['tank','물탱크','오른쪽 물탱크 아래쪽 흡입구에서 펌프로 이어집니다.',p.tank],['pump','펌프','물을 밀어 압력을 만듭니다.',p.pump],['boiler','보일러','가로 보일러의 물을 히터로 데웁니다.',p.boiler],['head','그룹헤드와 샤워스크린','뜨거운 물을 커피층 위로 나눕니다.',p.head],['basket','바스켓과 커피층','물은 커피층을 지나 바스켓 바닥으로 나옵니다.',basket],['filter','포터필터와 추출구','바스켓을 고정하고 커피를 아래로 모읍니다.',p.filter],['cup','잔','추출구 아래에서 커피를 받습니다.',p.cup]];
+ for(const [id,title,description,object]of entries)C.push({id,title,description,object,offset:new T.Vector3(),color:0x8fa7a3});
+ const routes=[['tank-pump',p.tank,p.pump,'tank outlet to pump inlet'],['pump-boiler',p.pump,p.boiler,'pump outlet to boiler endcap'],['boiler-head',p.boiler,p.head,'boiler surface to grouphead inlet']];
+ function connect(id,A,a,B,b,pipe,curve){const points=[new T.Vector3(...a),new T.Vector3(...b)],guide=new T.Line(new T.BufferGeometry().setFromPoints(points),new T.LineDashedMaterial({color:0x70cbd5,dashSize:.07,gapSize:.04}));group.add(guide);connections.push({id,A,a:points[0].clone(),B,b:points[1].clone(),points,pipe,curve,guide});}
+ for(const[id,A,B,name]of routes){const pipe=p.pipes.getObjectByName(name),curve=pipe.geometry.parameters.path;connect(id,A,curve.getPoint(0).toArray(),B,curve.getPoint(1).toArray(),pipe,curve);}
+ // A dashed port connection replaces only the opened group-to-basket joint.
+ const joint=new T.Group();group.add(joint);connect('head-basket',p.head,[-.62,1.2875,1.72],basket,[0,.042,0],joint,null);connections.at(-1).points[1].add(basket.position);
+ const marker=new T.Mesh(new T.SphereGeometry(.045,16,12),new T.MeshBasicMaterial({color:0x70cbd5}));marker.name='water route teaching marker';group.add(marker);
+ const vec=(object,point)=>{const q=object.localToWorld(new T.Vector3(...point));return group.worldToLocal(q);};
+ const filters=p.filter.position.clone(),basketRest=basket.position.clone();for(const stream of p.cup.children.filter(o=>o.name==='detailed coffee stream'))stream.userData.side=stream.position.x>-.62?1:-1;
+ return assembly(group,C,s=>{
+  const e=clamp(s.explode||0),split=clamp((e-.4)/.6),q=espressoSequence(s.phase);
+  m.update({locked:true,brewing:q.pump,pressure:q.pump?9:0,volume:q.fill*40,brewElapsed:q.phase*12,espressoCutaway:e>0||!!s.cutaway,espressoPouring:q.pouring,espressoStreamProgress:q.front},false,q.phase*12000);
+  p.body.visible=!s.cutaway;p.cupWarmer.visible=!s.cutaway;p.rearPanel.visible=!s.cutaway;
+  p.body.position.set(0,e*3.4,0);p.cupWarmer.position.y=e*4;p.rearPanel.position.z=-e*2;
+  const stage=(start,end)=>clamp((e-start)/(end-start));
+  p.cup.position.set(0,stage(.15,.2)*.04-stage(.6,.8)*.65,stage(.2,.4)*1.65);
+  p.filter.position.copy(filters).add(new T.Vector3(0,-stage(.4,.45)*.10-stage(.6,.8)*.65,stage(.45,.6)*1.65));
+  basket.position.copy(p.filter.position).add(new T.Vector3(0,stage(.8,.9)*.40,stage(.9,1)*.65));
+  p.flowInterior.getObjectByName('continuous flow through puck and spouts').visible=q.pump&&e<=.4;group.userData.flowSequence=q;group.userData.canonicalMachine='buildEspressoStudy';
+ },{eye:m.eye,duration:12,phaseLabel:'물의 이동 · 앞뒤로 보기',connections,note:'첫 체험과 같은 기계입니다. 외피를 먼저 열고 바스켓과 포터필터를 나눕니다. 분리된 부품 사이의 점과 점선은 원래 연결 순서를 짚는 표시입니다. 커피 줄기는 추출구 바로 아래에 잔이 있을 때만 보입니다.',after(s){
+  group.updateMatrixWorld(true);const q=espressoSequence(s.phase),t=q.phase;
+  for(const c of connections){const A=vec(c.A,c.a.toArray()),B=vec(c.B,c.b.toArray()),separated=A.distanceTo(c.points[0])>1e-6||B.distanceTo(c.points[1])>1e-6;c.pipe.visible=!separated;c.guide.visible=separated;c.guide.geometry.setFromPoints([A,B]);c.guide.computeLineDistances();}
+  if(t<.2)marker.position.copy(connections[0].curve.getPoint(t/.2));
+  else if(t<.4)marker.position.copy(connections[1].curve.getPoint((t-.2)/.2));
+  else if(t<.6)marker.position.lerpVectors(new T.Vector3(.235,1.47,-.43),new T.Vector3(-.43,2,-.43),(t-.4)/.2);
+  else if(t<.72)marker.position.copy(connections[2].curve.getPoint((t-.6)/.12));
+  else if(t<.76)marker.position.lerpVectors(vec(p.head,[-.62,2.37,1.27647]),vec(p.head,[-.62,1.2875,1.72]),(t-.72)/.04);
+  else if(t<.8)marker.position.lerpVectors(vec(basket,[0,.042,0]),vec(p.filter,[0,-.275,.27]),(t-.76)/.04);
+  else marker.position.lerpVectors(vec(p.filter,[0,-.275,.27]),vec(p.cup,[-.62,.15+.58*.2,1.99]),((t-.8)/.04)%1);
+  marker.material.color.setHex(t<.6?0x70cbd5:t<.76?0xe3bd73:0x61381b);marker.visible=t>.02&&t<1;
+  // Streams follow the actual moved outlet and cup at every independent explode value.
+  for(const stream of p.cup.children.filter(o=>o.name==='detailed coffee stream')){const side=stream.userData.side,A=vec(p.filter,[side*.12,-.275,.27]),B=vec(p.cup,[-.62+side*.12,.15+.58*(p.cup.children.find(o=>o.name==='Reusable porcelain espresso cup')?.userData.surfaceY||.2),1.99]);const end=A.clone().lerp(B,q.front);const a=p.cup.worldToLocal(group.localToWorld(A.clone())),b=p.cup.worldToLocal(group.localToWorld(end));stream.position.copy(a).add(b).multiplyScalar(.5);stream.scale.y=Math.max(.0001,a.distanceTo(b));stream.quaternion.setFromUnitVectors(new T.Vector3(0,1,0),a.clone().sub(b).normalize());stream.visible=q.pouring&&Math.hypot(A.x-B.x,A.z-B.z)<.01&&B.y<A.y;}
+ }});
 }
-function perforated(p,r,y,m){const shape=new T.Shape();shape.absarc(0,0,r,0,TAU,false);for(let j=-4;j<=4;j++)for(let i=-4;i<=4;i++){const x=i*.067,z=j*.067;if(Math.hypot(x,z)>r-.04)continue;const h=new T.Path();h.absarc(x,z,.015,0,TAU,true);shape.holes.push(h);}const g=new T.ExtrudeGeometry(shape,{depth:.025,bevelEnabled:false,curveSegments:8});g.rotateX(-Math.PI/2);mesh(p,g,m,0,y,0);}

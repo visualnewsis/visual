@@ -1238,7 +1238,7 @@ export function buildCoffeeComparison() {
 
   const annotations = [
     {
-      text: '① 기준 분쇄도 30 · 금속 바스켓과 커피 입자 단면',
+      text: '① 굵게 30 고정 · 금속 바스켓과 커피 입자 단면',
       point: [-1.52, 1.28, 0.05]
     },
     {

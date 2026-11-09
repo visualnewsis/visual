@@ -23,7 +23,7 @@ test('projector comparison removes physical shutter and continuous mode really m
 });
 test('espresso reaches the coffee outlet before stream and cup, then fill increases monotonically',()=>{
  const m=espressoAssembly();let prev=0;for(let i=0;i<=100;i++){const p=i/100,q=espressoSequence(p);m.update({phase:p,explode:0});assert.ok(q.fill>=prev);prev=q.fill;if(p<=.8){assert.equal(q.pouring,false);assert.equal(q.fill,0);}if(p<=.84)assert.ok(q.fill<1e-12);assert.deepEqual(m.group.userData.flowSequence,q);}
- m.update({phase:.95,explode:1});const drops=[];m.group.traverse(o=>{if(o.geometry?.type==='SphereGeometry'&&o.geometry.parameters.radius===.045)drops.push(o)});assert.ok(drops.every(o=>!o.visible));
+ m.update({phase:.95,explode:1});const drops=[];m.group.traverse(o=>{if(o.geometry?.type==='SphereGeometry'&&o.geometry.parameters.radius===.045)drops.push(o)});assert.ok(drops.length===1&&drops.every(o=>o.visible),'route marker remains visible while structure is opened');
 });
 test('actual hero gauge needle aligns with its indexed ticks at every pressure',()=>{
  const mats={};for(const n of ['steel','black','ivory','red','brass','glass','coffee','wood','darkWood','felt','leather'])mats[n]=new T.MeshStandardMaterial();const m=buildEspresso(T,mats),pivot=m.parts.gauge.children.find(o=>o.isGroup);assert.ok(pivot);for(const p of [0,3,6,9,12]){m.update({pressure:p,volume:0});const actual=new T.Vector2(-Math.sin(pivot.rotation.z),Math.cos(pivot.rotation.z)),angle=(-.75+p/12*1.5)*Math.PI;assert.ok(actual.distanceTo(new T.Vector2(Math.sin(angle),Math.cos(angle)))<1e-10);}
@@ -33,7 +33,7 @@ const {buildCoffeeComparison}=await import('./assets/coffee-detail.js');
 test('pump is active before every teaching-clock water motion',()=>{for(let i=1;i<1000;i++)assert.equal(espressoSequence(i/1000).pump,true);assert.equal(espressoSequence(0).pump,false);assert.equal(espressoSequence(1).pump,false);});
 test('rendered hero machine pipes terminate on actual pump and boiler surfaces',()=>{
  const m=buildEspresso(T),p=m.parts.pipes;const expected={
- 'tank outlet to pump inlet':[[1.02,.33,-.54],[1.13,.57,.24]],
+ 'tank outlet to pump inlet':[[1.02,.46,-.06],[1.13,.57,.24]],
  'pump outlet to boiler endcap':[[.47,.57,.24],[.235,1.47,-.43]],
  'boiler surface to grouphead inlet':[[-.43,2,-.43],[-.62,2.37,1.27647]]};
  for(const [name,ends]of Object.entries(expected)){const pipe=p.getObjectByName(name),curve=pipe.geometry.parameters.path;assert.ok(pipe);assert.ok(curve.getPoint(0).distanceTo(new T.Vector3(...ends[0]))<1e-10);assert.ok(curve.getPoint(1).distanceTo(new T.Vector3(...ends[1]))<1e-10);}
