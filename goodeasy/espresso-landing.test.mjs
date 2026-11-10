@@ -1,0 +1,9 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import {createEspressoExperience,espressoTrialAt} from './assets/espresso-experience.js';
+function controller(){let state={grind:50};const control=createEspressoExperience({getState:()=>state,setState:s=>state=s});return {control,get:()=>state};}
+test('a completed landing trial reaches the episode without automatic brewing or a changed grind/result',()=>{const c=controller();assert.equal(c.control.restore({grind:75,elapsed:12}),true);assert.equal(c.get().grind,75);assert.equal(c.get().volume,espressoTrialAt(12,75).volume);assert.equal(c.get().brewing,false);assert.equal(c.get().espressoPouring,false);assert.equal(c.get().espressoPhase,'done');c.control.tick(.1);assert.equal(c.get().brewElapsed,12);});
+test('a partial landing trial stays stopped until a user resumes, then continues from the same elapsed time',()=>{const c=controller();c.control.restore({grind:30,elapsed:4.2});const volume=c.get().volume;c.control.tick(.1);assert.equal(c.get().volume,volume);assert.equal(c.get().espressoPhase,'paused');assert.equal(c.control.brew(),true);assert.equal(c.get().brewElapsed,4.2);c.control.tick(.1);assert.ok(c.get().volume>volume);assert.equal(c.get().grind,30);});
+test('invalid landing parameters do not overwrite a valid experiment',()=>{const c=controller();c.control.restore({grind:75,elapsed:6});const before={...c.get()};for(const bad of [{grind:999,elapsed:6},{grind:50,elapsed:-1},{grind:50,elapsed:13},{grind:50,elapsed:NaN}]){assert.equal(c.control.restore(bad),false);assert.deepEqual(c.get(),before);}});
+
+test('repeated visibility pauses preserve the elapsed trial for an explicit resume',()=>{const c=controller();c.control.brew();c.control.tick(.15);const elapsed=c.get().brewElapsed;c.control.pause();c.control.pause();c.control.brew();assert.equal(c.get().brewElapsed,elapsed);});

@@ -17,12 +17,13 @@ export function createEspressoExperience({getState,setState,render=()=>{},announ
  }
  function show(){render();sync();const s=getState();announce(s.espressoPhase==='ready'?'원두와 뜨거운 물이 준비됐습니다. 버튼을 눌러 한 잔 내려보세요.':s.espressoPhase==='wetting'?'물이 커피층을 적십니다. 아직 잔으로 나오지 않습니다.':s.espressoPhase==='first-drop'?'커피층을 지난 첫 방울이 추출구 아래로 내려옵니다.':s.espressoPhase==='paused'?'추출을 멈췄습니다. 다시 누르면 이어집니다.':s.espressoPhase==='done'?'같은 12초를 관찰했습니다. 분쇄도를 바꿔 잔에 모인 양을 비교해보세요.':'커피가 잔에 모입니다. ‘물길 보기’를 누르면 내부의 연결을 볼 수 있습니다.');}
  function reset(){const s=getState();paused=false;setState({...s,locked:true,brewing:false,volume:0,pressure:0,brewElapsed:0,espressoPhase:'ready',espressoPouring:false,espressoStreamProgress:0,grind:espressoGrinds.reduce((a,b)=>Math.abs(b.value-s.grind)<Math.abs(a.value-s.grind)?b:a).value});show();}
- function pause(){const s=getState();paused=!!s.brewing;setState({...s,brewing:false,pressure:0,espressoPouring:false,espressoPhase:s.brewing?'paused':s.espressoPhase});show();}
+ function pause(){const s=getState();paused=!!s.brewing||s.espressoPhase==='paused';setState({...s,brewing:false,pressure:0,espressoPouring:false,espressoPhase:s.brewing?'paused':s.espressoPhase});show();}
  function brew(){const s=getState();if(s.brewing){pause();return false;}const resume=paused&&s.espressoPhase==='paused';paused=false;setState({...s,...espressoTrialAt(resume?s.brewElapsed:0,s.grind)});show();wake();return true;}
  function tick(dt){const s=getState();if(!s.brewing)return false;const next={...s,...espressoTrialAt((s.brewElapsed||0)+clamp(dt,0,.15),s.grind)};setState(next);if(!next.brewing)results.set(next.grind,next.volume);show();return next.brewing;}
  if(typeof document!=='undefined'){
   for(const b of document.querySelectorAll('[data-espresso-grind]'))b.addEventListener('click',()=>{setState({...getState(),grind:Number(b.dataset.espressoGrind)});reset();});
   el('espresso-cutaway')?.addEventListener('click',e=>{const open=!getState().espressoCutaway;setState({...getState(),espressoCutaway:open});e.currentTarget.setAttribute('aria-pressed',String(open));e.currentTarget.textContent=open?'외피 닫기':'물길 보기';show();});
  }
- reset();return {brew,tick,reset,pause};
+ function restore({grind,elapsed}){if(!espressoGrinds.some(p=>p.value===grind)||!Number.isFinite(elapsed)||elapsed<0||elapsed>12)return false;const trial=espressoTrialAt(elapsed,grind);paused=elapsed>0&&elapsed<12;setState({...getState(),...trial,brewing:false,pressure:0,espressoPouring:false,espressoPhase:elapsed>=12?'done':paused?'paused':'ready'});if(elapsed>=12)results.set(grind,trial.volume);show();return true;}
+ reset();return {brew,tick,reset,pause,restore};
 }
