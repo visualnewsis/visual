@@ -15,7 +15,8 @@
     {slug:"witness",num:"011",meta:"광복 · 증언 · 기억 · 인터랙티브",title:"내가 증인입니다.",image:"/witness/images/thumbnail-carousel-1600x948.jpg",alt:"태극기를 든 시민들의 3·1 만세운동 재현행사"},
     {slug:"aijob",num:"012",meta:"AI · 노동시장 · 인터랙티브",title:"삐빅— 지금부터 당신을 대체합니다",image:"/aijob/images/hero-newsroom-night-v7.png",alt:"남산타워가 보이는 야간 도심을 배경으로, 사람 없이 재킷만 걸쳐진 의자와 듀얼 모니터가 켜져 있는 편집부 자리"},
     {slug:"nepal-flood",num:"013",meta:"네팔 · 빙하 붕괴 · 기후재난",title:"마른 하늘 대홍수, 뒤집힌 재난 공식",image:"/nepal-flood/images/hero-aftermath.webp",alt:"진흙과 잔해로 뒤덮인 네팔 마을을 바라보는 주민"},
-    {slug:"pension",num:"014",meta:"국민연금 · 노후 · 인터랙티브",title:"국민연금, 믿어도 돼?",image:"/pension/images/hero-payslip-final.jpg",alt:"어두운 여백 안에 놓인 실제 급여명세서 캡처, 국민연금 공제액 1,579,379원이 강조돼 있음"},
+    {slug:"pension",num:"014",meta:"국민연금 · 노후 · 인터랙티브",title:"국민연금, 믿어도 돼?",image:"/pension/images/hero-payslip-final.jpg",alt:"어두운 여백 안에 놓인 실제 급여명세서 캡처, 국민연금 공제액 1,579,379원이 강조돼 있음"}
+,
     {slug:"senior",num:"015",meta:"고령화 · 나이 기준 · 인터랙티브",title:"환갑이면 고령? 천만예요",image:"/senior/images/NISI20240905_0020511616.jpg",alt:"웨딩 의상을 입고 붉은 런웨이를 걷는 두 사람"},
     {slug:"moreno",num:"016",meta:"축구 · 국가대표 · 인터랙티브",title:"눈 앞의 기록, 눈 안의 열망",image:"/moreno/images/taegeukgi-crowd.jpg",alt:"대형 태극기가 펼쳐진 축구 경기장 관중석"},
     {slug:"atleti-2gang",num:"017",meta:"라리가 · 팀 전술 · 인터랙티브",title:"AT, 라리가 '2강 IN'",image:"/atleti-2gang/images/hero-derby-bellingham.jpg",alt:"레알 마드리드전에서 상대 선수와 몸싸움하며 공을 지키는 이강인"},
@@ -28,7 +29,8 @@
     {slug:"spai",num:"024",meta:"AI 직원 감시 · 근무 기록 · 인터랙티브",title:"“쟤 지금 딴짓해요”<br>회사가 고용한 SPAI",image:"/spai/images/og-spai-1200x630.jpg",alt:"밤늦은 사무실에서 모니터 앞에 앉은 직원의 뒷모습과 천장의 감시 카메라"},
     {slug:"quit",num:"025",meta:"퇴사 후 생활비 · 통장 잔고 · 인터랙티브",title:"퇴사할게여 · 내 통장 몇 달 버틸 수 있을까",image:"/quit/images/site-thumbnail-360x240.jpg",alt:"사직서를 내미는 직장인과 퇴사 후 통장 잔고를 묻는 문구, 생성형 AI 이미지"},
     {slug:"running",num:"026",meta:"러닝 안전 · 응급대응 · 인터랙티브",title:"끝까지 달릴 준비, 도중에 멈출 대비",image:"/assets/landing/story-running.webp",alt:"강변 코스를 따라 달리는 뉴시스 바다마라톤 참가자들"},
-    {slug:"braille-100",num:"027",meta:"훈맹정음 100년 · 한글 점자 · 인터랙티브",title:"점점⠿<br><span class='vns-braille-title-line'>문장이 손에 잡혔다</span>",image:"/braille-100/images/contact-720.jpg",alt:"점자책 위에 놓인 손끝. 사진 김종택 기자"}
+    {slug:"braille-100",num:"027",meta:"훈맹정음 100년 · 한글 점자 · 인터랙티브",title:"점점⠿<br><span class='vns-braille-title-line'>문장이 손에 잡혔다</span>",image:"/braille-100/images/contact-720.jpg",alt:"점자책 위에 놓인 손끝. 사진 김종택 기자"},
+    {"slug":"turn-toward-busan","num":"028","meta":"유엔참전용사 · 부산을 향한 묵념","title":"111명의 이름을 다시 · 11월 11일 오전 11시, 부산을 향한 1분","image":"/turn-toward-busan/images/NISI20251111_0021053031-1600.jpg","alt":"부산 유엔기념공원에서 경례하는 캐나다 참전용사와 유가족"}
 
   ];
   const mount=host=>{
