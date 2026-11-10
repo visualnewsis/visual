@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-11-10T12:49:23+00:00",
+  "updatedAt": "2026-11-10T21:54:26+00:00",
   "source": "VISUAL NEWSIS editshop landing page",
   "articles": [
     {
@@ -181,6 +181,16 @@
       "image": "https://visual.newsis.com/braille-100/images/contact-720.jpg",
       "url": "https://visual.newsis.com/braille-100/",
       "profile": "center"
+    },
+    {
+      "id": "turn-toward-busan",
+      "issue": "편집#019",
+      "label": "유엔참전용사 / 국제추모의 날",
+      "title": "111명의 이름을 다시 11월 11일 오전 11시, 부산을 향한 1분",
+      "description": "97세 참전용사가 부산에 묻힌 이유, 추모명비 이름 뒤 ◇의 뜻. 참전용사의 기록을 읽고 내 자리에서 묵념에 참여합니다.",
+      "image": "https://visual.newsis.com/turn-toward-busan/images/NISI20251111_0021053031-1600.jpg",
+      "url": "https://visual.newsis.com/turn-toward-busan/",
+      "profile": "edge"
     }
   ]
 }
