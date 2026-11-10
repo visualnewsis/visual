@@ -13,3 +13,12 @@ function render(){const a=M.evaluate({...st,multicultural:false}),b=M.evaluate(s
 }
 for(const b of document.querySelectorAll('[data-working]'))b.addEventListener('click',()=>{st.working=b.dataset.working==='true';lastAction='work';render();});$('#family-match').addEventListener('change',e=>{st.multicultural=e.target.checked;lastAction='family';render();});$('#common-scenario').addEventListener('change',e=>{st.scenario=e.target.value;lastAction='scenario';render();});$('#reset-example').addEventListener('click',()=>{Object.assign(st,{working:true,multicultural:true,scenario:'none'});lastAction='initial';render();});render();
 })();
+
+(()=>{
+'use strict';
+const scenes={waiting:{kicker:'어린이집 대기 중',number:'두 달',title:'부모님이 아이를 맡았다.',copy:'입소 차례가 오지 않은 두 달 동안 조부모가 아이를 돌봤다. 김씨는 부모님이 근처에 계시지 않았다면 복직이 어려웠을 것이라고 말했다.'},longday:{kicker:'다른 도움을 받기 어려웠던 때',number:'11~12시간',title:'아이가 어린이집에서 보낸 하루.',copy:'김씨의 출근은 오전 9시, 퇴근은 오후 6시였다. 김씨는 아이가 우울해하고 정서적으로 힘들어했다고도 전했다.'},service:{kicker:'다른 돌봄을 찾아서',number:'긴급돌봄·맘시터',title:'이용해봤지만 충분하지 않았다고 했다.',copy:'김씨는 정부 긴급돌봄과 민간 맘시터를 이용했지만 자신에게는 큰 도움이 되지 않았다고 말했다.'}};
+for(const button of document.querySelectorAll('[data-kim]'))button.addEventListener('click',()=>{const scene=scenes[button.dataset.kim];for(const b of document.querySelectorAll('[data-kim]'))b.setAttribute('aria-pressed',String(b===button));for(const [id,key]of [['kim-kicker','kicker'],['kim-number','number'],['kim-scene-title','title'],['kim-scene-copy','copy']])document.getElementById(id).textContent=scene[key];});
+function openTarget(){const id=location.hash.slice(1),target=document.getElementById(id);if(target){let parent=target.closest('details');while(parent){parent.open=true;parent=parent.parentElement.closest('details');}}}
+window.addEventListener('hashchange',openTarget);openTarget();
+document.getElementById('reopen-compare').addEventListener('click',()=>{document.getElementById('deep-dive').open=true;});
+})();
