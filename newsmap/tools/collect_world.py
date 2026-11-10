@@ -13,7 +13,7 @@ sys.dont_write_bytecode=True
 import collect_news as C
 
 ROOT=Path(__file__).resolve().parents[1]
-VERSION='world-country-v2'
+VERSION='world-country-v3'
 COUNTRIES=json.loads((ROOT/'data/world-countries.json').read_text())
 ALIASES={'US':['미국','美'], 'CN':['중국','中'], 'JP':['일본','日'], 'GB':['영국','英'],
  'RU':['러시아','러'], 'UA':['우크라이나','우크라'], 'DE':['독일','獨'], 'FR':['프랑스','佛'],
@@ -34,10 +34,43 @@ COUNTRY_CUES={'IN':r'뉴델리|뭄바이|모디|루피|인도\s*(?:정부|총리
 def match_name(text,name):
     return re.search(r'(?<![가-힣A-Za-z])'+re.escape(name)+r'(?=$|[^가-힣A-Za-z]|에서|의|은|는|이|가|을|를|과|와|내|서|에)',text)
 
+
+BACKGROUND = re.compile(r'출신|태생|출생|태어|과거|지난해|작년|당시|역임|사진|자료|회고')
+PUBLISHER = re.compile(r'^\s*(?:의\s*)?(?:외신|언론|매체|통신|일간|방송|CNBC|CNN|BBC|블룸버그|로이터|AP|뉴욕타임스|워싱턴포스트|가디언|NHK)')
+SPEAKER = re.compile(r'^\s*(?:의\s*)?(?:전문가|교수|학자|연구원|기자|언론인)')
+EVENT = re.compile(r'지진|홍수|산불|화재|총격|폭발|충돌|추락|개최|열렸|열린|발생|상륙|공습|피격|시위')
+
+def sentence(text,start,end):
+    left=max(text.rfind(mark,0,start) for mark in ['.','!','?','\n'])+1
+    ends=[p for mark in ['.','!','?','\n'] if (p:=text.find(mark,end))>=0]
+    right=min(ends) if ends else len(text)
+    return text[left:right],right
+
+def explicit_place(text,start,end,code):
+    excerpt,right=sentence(text,start,end)
+    after=text[end:min(right,end+65)]
+    if BACKGROUND.search(excerpt) or not re.match(r'\s*(?:에서|서(?=\s))',after):
+        return False
+    event=EVENT.search(after)
+    if not event:
+        return False
+    prefix=after[:event.start()]
+    if re.search(r'보도|전했|언급|논평|인용|전망|주장|우려',prefix):
+        return False
+    # A report/discussion at one place must not borrow another country's event.
+    for other,country in COUNTRIES.items():
+        if other==code: continue
+        if any(match_name(prefix,n) for n in ALIASES.get(other,[country['name']]) if len(n)>1): return False
+    if any(c!=code and match_name(prefix,city) for city,c in CITIES.items()): return False
+    return True
+
 def classify(title,lead):
     lead=C.focus_lead(lead)
-    text=title+'\n'+'\n'.join(lead.splitlines()[:2])
-    text=re.sub(r'(?:한국|현지)\s*(?:시간|시각)','',text)
+    title=re.sub(r'(?:한국|현지)\s*(?:시간|시각)','',title)
+    lead=re.sub(r'(?:한국|현지)\s*(?:시간|시각)','',lead)
+    lines=lead.splitlines()[:2]
+    text=title+'\n'+'\n'.join(lines)
+    primary_end=len(title)+1+(len(lines[0]) if lines else 0)
     result={}
     for code,country in COUNTRIES.items():
         names=ALIASES.get(code,[country['name']])
@@ -57,24 +90,29 @@ def classify(title,lead):
                 if name=='이란' and before and (unicodedata.category(before[-1]) in {'Pe','Pf'} or before[-1] in ['"', "'", '>']) and not re.match(r'\s*(?:정부|대통령|외무|군|핵|수도|당국)',after): continue
                 if name=='가자' and not re.match(r'\s*(?:지구|전쟁|휴전|전투|주민|구호|공습|기근|지상전|봉쇄|북부|남부|에서|의)',after): continue
             if len(name)==1 and name in '러' and not re.match(r'[·,\s\-"“”]',after): continue
+            excerpt,_=sentence(text,hit.start(),hit.end())
+            place=explicit_place(text,hit.start(),hit.end(),code)
+            if BACKGROUND.search(excerpt): continue
+            if hit.start()>=len(title) and (PUBLISHER.match(after) or SPEAKER.match(after)) and re.search(r'보도|전했|따르면|인용|말했|설명|주장',excerpt): continue
+            # Secondary paragraphs alone are not enough to attach a country.
+            if hit.start()>primary_end and not place: continue
             hits.append((name,hit.start(),hit.end()))
         for city,c in CITIES.items():
-            if c==code:
-                h=match_name(text,city)
-                if h and not (city=='도하' and ('카타르' not in text and not re.match(r'\s*(?:에서|시내|국제공항|협정|라운드|정상회의|회의)',text[h.end():]))): hits.append((city,h.start(),h.end()))
+            if c!=code: continue
+            h=match_name(text,city)
+            if not h: continue
+            excerpt,_=sentence(text,h.start(),h.end())
+            if BACKGROUND.search(excerpt): continue
+            # City names alone (Paris, Bangkok, Washington, a club or player)
+            # do not establish a country unless a current physical place is clear.
+            if not explicit_place(text,h.start(),h.end(),code): continue
+            hits.append((city,h.start(),h.end()))
         if not hits: continue
         role='related'
         evidence=[]
         for name,start,end in hits:
-            # Slice the exact matched sentence, not an earlier mention.
-            unit_start=max(text.rfind(mark,0,start) for mark in ['.','!','?','\n'])+1
-            ends=[p for mark in ['.','!','?','\n'] if (p:=text.find(mark,end))>=0]
-            unit_end=min(ends) if ends else len(text)
-            excerpt=text[unit_start:unit_end]
-            # Explicit locative phrase + physical event only. Governments in
-            # Washington/Beijing, datelines, nationality and past events are not locations.
-            after=text[end:min(unit_end,end+70)]
-            if re.match(r'\s*(?:에서|서(?=\s))',after) and re.search(r'지진|홍수|산불|화재|총격|폭발|충돌|추락|개최|열렸|열린|발생|상륙|공습|피격|시위',after) and not re.search(r'출신|과거|지난해|사진|자료|회고|언급|보도|발표|논평',excerpt):
+            excerpt,_=sentence(text,start,end)
+            if explicit_place(text,start,end,code):
                 role='place'
             evidence.append(excerpt.strip()[:160])
         result[code]={'country':code,'role':role,'evidence':list(dict.fromkeys(evidence))[:2]}
@@ -111,7 +149,13 @@ def collect(previous=None,now=None,source=None):
         valid(previous,now)
         previous_valid=True
         old={a['id']:a for a in previous['articles'] if C.parse_time(a['publishedAt'])>=now-timedelta(days=30)}
-    except (AssertionError,KeyError,TypeError,ValueError): pass
+    except (AssertionError,KeyError,TypeError,ValueError):
+        if isinstance(previous,dict) and previous.get('policyVersion')=='world-country-v2':
+            compatible={**previous,'policyVersion':VERSION}
+            try:
+                valid(compatible,now)
+                old={a['id']:{**a,'locations':classify(a['title'],'')} for a in compatible['articles'] if C.parse_time(a['publishedAt'])>=now-timedelta(days=30)}
+            except (AssertionError,KeyError,TypeError,ValueError): pass
     for raw in records.values():
         if len(raw['title'])>500: continue
         locations=classify(raw['title'],raw['text'])

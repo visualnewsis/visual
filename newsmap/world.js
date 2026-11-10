@@ -75,7 +75,7 @@ window.NewsmapWorld=root=>{
     const title=state.country==='unlocated'?'위치 미지정':state.country?name(state.country):'세계';
     $('world-title').textContent=title+'의 소식';$('world-count').textContent=shown.length+'건';
     $('world-drawer-label').textContent=title+' 뉴스';$('world-drawer-summary').textContent=shown.length+'건 · '+(root.querySelector('.world-sidebar').dataset.drawer==='open'?'지도 보기':'목록 펼치기');
-    $('world-map-title').innerHTML=state.country?esc(title)+' 관련<br>소식':'지구 반대편에는<br>무슨 일이 있을까?';
+    $('world-map-title').innerHTML=state.country?esc(title)+' 관련<br>소식':'세계에서는<br>무슨 일이 있을까?';
     const stale=data&&Date.now()-Date.parse(data.collectedAt)>1800000;
     $('world-status').textContent=data?(state.country?'선택한 나라의 ':'')+shown.length+'개 기사'+(stale?' · 최근 30분간 새 갱신 없음':'')+(state.country?' · 기사 속 장소·관련국 포함':' · 국가별 수에는 같은 기사가 포함될 수 있습니다.'):'세계 기사 데이터를 확인하고 있습니다.';
     const html=!data?'<div class="world-empty"><strong>세계 뉴스를 불러오고 있어요.</strong><p>잠시 후에도 보이지 않으면 다시 확인해 주세요.</p><button data-world-action="retry">다시 확인</button></div>':shown.length?shown.slice(0,limit).map(card).join('')+(shown.length>limit?'<button class="world-load-more" data-world-action="more">기사 더 보기</button>':''):'<div class="world-empty"><strong>선택한 조건에 모인 뉴스가 없어요.</strong><p>기간을 넓히거나 다른 나라의 소식을 살펴보세요.</p><button data-world-action="clear">전체 세계 뉴스 보기</button></div>';
@@ -112,9 +112,9 @@ window.NewsmapWorld=root=>{
     if(renderer||mapLoading)return;mapLoading=true;
     try{
       if(!window.d3?.geoOrthographic){if(!window.d3?.range)await loadScript('vendor/d3-array.min.js');await loadScript('vendor/d3-geo.min.js');}
-      if(!window.NEWSMAP_WORLD_GEOGRAPHY)await loadScript('data/world-geography.js?v=20261110-2');
+      if(!window.NEWSMAP_WORLD_GEOGRAPHY)await loadScript('data/world-geography.js?v=20261110-3');
       geometry=window.NEWSMAP_WORLD_GEOGRAPHY;countries=geometry.countries;
-      if(!window.NewsmapGlobe)await loadScript('world-globe.js?v=20261110-2');
+      if(!window.NewsmapGlobe)await loadScript('world-globe.js?v=20261110-3');
       renderer=window.NewsmapGlobe(root,geometry,select);renderer.setActive(active);
       $('world-map-notice').hidden=true;$('world-retry').hidden=true;root.querySelector('.world-controls').hidden=false;root.querySelector('.world-map-legend').hidden=false;
       render(false);if(state.country&&countries[state.country])renderer.focus(countries[state.country].center);

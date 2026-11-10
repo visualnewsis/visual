@@ -10,8 +10,8 @@
     if(view)return view;
     if(!loading)loading=(async()=>{
       // List/data state is independent from geographic rendering.
-      if(!window.NewsmapWorldRules)await load('world-core.js?v=20261110-2');
-      if(!window.NewsmapWorld)await load('world.js?v=20261110-2');
+      if(!window.NewsmapWorldRules)await load('world-core.js?v=20261110-3');
+      if(!window.NewsmapWorld)await load('world.js?v=20261110-3');
       view=window.NewsmapWorld(world);
       view.restore();
       return view;
@@ -24,7 +24,7 @@
     document.body.classList.toggle('world-active',active);
     buttons.forEach(b=>b.setAttribute('aria-pressed',String((b.dataset.scope==='world')===active)));
     if(active){ensure().then(v=>{v?.setActive(isWorld());if(isWorld())v?.restore();});}
-    else{view?.setActive(false);window.NewsmapApp?.render('none');requestAnimationFrame(()=>{const m=window.NewsmapApp?.map;if(m){m.invalidateSize({pan:false});if(domesticCamera)m.setView(domesticCamera.center,domesticCamera.zoom,{animate:false});}});}
+    else{view?.setActive(false);window.NewsmapApp?.render('none');requestAnimationFrame(()=>{const m=window.NewsmapApp?.map;if(m){m.invalidateSize({pan:false});if(domesticCamera)m.setView(domesticCamera.center,domesticCamera.zoom,{animate:false});else window.NewsmapApp?.selectPlace(window.NewsmapApp.state.region,{historyMode:'none'});}});}
   }
   buttons.forEach(b=>b.addEventListener('click',()=>{
     const next=b.dataset.scope==='world';if(next===isWorld())return;

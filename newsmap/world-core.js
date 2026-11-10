@@ -1,7 +1,7 @@
 /* Pure world snapshot and filtering rules; no domestic policy changes. */
 (function(root){
   'use strict';
-  const VERSION='world-country-v2';
+  const VERSION='world-country-v3';
   function valid(data,{now=Date.now(),previousTime=-Infinity}={}){
     if(!data||data.schemaVersion!==1||data.policyVersion!==VERSION||!Array.isArray(data.articles)||data.articles.length>3000)return false;
     const collected=Date.parse(data.collectedAt);

@@ -407,7 +407,11 @@
     let errors=0,loaded=0;
     tiles.on('tileload',()=>{loaded++;nativeBase?.disable();if(loaded>3&&errors>2&&shown.length)$('map-message').hidden=true;});
     tiles.on('tileerror',()=>{errors++;if(errors>2&&loaded===0)useNative();});
+    // Preserve the surrounding-country variant in the named backup; the
+    // reader's default remains the established domestic administrative map.
+    const DOMESTIC_BASEMAP='administrative';
     const loadBackground=async()=>{
+      if(DOMESTIC_BASEMAP==='administrative'&&nativeBase){useNative();return;}
       try{
         const response=await fetch(location.href,{method:'HEAD',cache:'no-store'});
         const policy=response.headers.get('Content-Security-Policy')||'';
