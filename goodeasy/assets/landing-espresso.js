@@ -1,4 +1,4 @@
-import {createEspressoExperience} from './espresso-experience.js?v=20261110-landing1';
+import {createEspressoExperience} from './espresso-experience.js?v=20261110-landing2';
 const canvas=document.getElementById('landing-espresso-canvas'),link=document.getElementById('espresso-next'),status=document.getElementById('landing-espresso-status');
 let state={grind:50},stage,model,raf=0,last=0,visible=true,lost=false,interacted=false;
 function render(){

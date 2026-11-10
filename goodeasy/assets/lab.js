@@ -106,7 +106,7 @@ if(kind==='watch'){
 }
 if(kind==='projector'){const {createProjectorExperience}=await import('./projector-experience.js?v=20261108-projector2');projectorExperience=createProjectorExperience({...experienceOptions,sound:()=>clickSound(130),reduced:reduced.matches,stopSound:()=>audio?.suspend()});window.addEventListener('goodeasy:projector-snapshot',snapshot);document.addEventListener('visibilitychange',()=>{if(document.hidden)audio?.suspend();});window.addEventListener('pagehide',()=>audio?.suspend());}
 if(kind==='espresso-machine'){
- const {createEspressoExperience}=await import('./espresso-experience.js?v=20261110-landing1');
+ const {createEspressoExperience}=await import('./espresso-experience.js?v=20261110-landing2');
  espressoExperience=createEspressoExperience(experienceOptions);espressoExperience.reset();
  const url=new URL(location.href),g=url.searchParams.get('landing-grind'),t=url.searchParams.get('landing-time');if(g!==null&&t!==null&&/^(30|50|75)$/.test(g)&&/^\d+(?:\.\d{1,3})?$/.test(t)&&espressoExperience.restore({grind:Number(g),elapsed:Number(t)})){snapshot();url.searchParams.delete('landing-grind');url.searchParams.delete('landing-time');history.replaceState(history.state,'',url.pathname+url.search+url.hash);}
 }
