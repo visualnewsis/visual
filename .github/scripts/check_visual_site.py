@@ -5,6 +5,7 @@ from __future__ import annotations
 
 import json
 import re
+import subprocess
 import sys
 from pathlib import Path
 
@@ -46,6 +47,12 @@ def fail(errors: list[str], message: str) -> None:
 
 def main() -> int:
     errors: list[str] = []
+    banner_check = subprocess.run(
+        [sys.executable, str(ROOT / "tools/check_editshop_banner.py")],
+        cwd=ROOT, capture_output=True, text=True,
+    )
+    if banner_check.returncode:
+        fail(errors, "shared ending banner check failed: " + (banner_check.stdout + banner_check.stderr).strip())
     carousel_js = (ROOT / "assets" / "editshop-carousel.js").read_text(encoding="utf-8")
     carousel_css = (ROOT / "assets" / "editshop-carousel.css").read_text(encoding="utf-8")
     if 'node.textContent.includes("편집#이 끌어올립니다")' not in carousel_js or "banner.before(section)" not in carousel_js:
@@ -56,7 +63,7 @@ def main() -> int:
     visual_carousel_css = (ROOT / "assets" / "visual-stories-carousel.css").read_text(encoding="utf-8")
     archive_html = (ROOT / "index.html").read_text(encoding="utf-8")
     archive_slugs = set(re.findall(r'class="archive-card[^\"]*" href="\./([^/\"]+)', archive_html))
-    carousel_slugs = set(re.findall(r'\{slug:"([^"]+)"', visual_carousel_js))
+    carousel_slugs = set(re.findall(r'\{\s*"?slug"?\s*:\s*"([^"]+)"', visual_carousel_js))
     if archive_slugs != carousel_slugs:
         fail(errors, "VISUAL NEWSIS carousel stories must match the main ALL STORIES archive")
     news_sitemap = (ROOT / "sitemap-news.xml").read_text(encoding="utf-8")
