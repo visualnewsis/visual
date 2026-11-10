@@ -19,7 +19,7 @@
 
 .voices-grid{grid-template-columns:1fr;max-width:850px}.community-reading{border-block:1px solid var(--line);padding:17px 0;margin-top:25px}.community-reading summary{font-size:15px;font-weight:600;cursor:pointer;min-height:40px}.community-reading article{max-width:850px;padding:15px 0}.community-reading h3{font-size:23px;margin-top:15px}.community-reading p{font-size:14px;line-height:1.95;margin-top:15px}.community-reading .voice-context{font-size:12px;color:var(--muted)}.community-reading a{display:inline-block;font-size:12px;color:var(--teal);margin-top:15px}.deep-dive>.wrap>.ending-current{margin:0 0 40px}.hours-range{pointer-events:none}
 
-.cover-photo img{aspect-ratio:720/453}.deep-title{font-size:clamp(29px,3.4vw,46px);font-weight:800;line-height:1.38;letter-spacing:-.05em;margin-top:20px}.deep-dive .bridge .deep-title{margin-top:0}
+.cover-photo img{aspect-ratio:2000/1337}.deep-title{font-size:clamp(29px,3.4vw,46px);font-weight:800;line-height:1.38;letter-spacing:-.05em;margin-top:20px}.deep-dive .bridge .deep-title{margin-top:0}
 @media(max-width:650px){.deep-title{font-size:28px;line-height:1.45}}
 
 /* The headline fractures once; its accessible name remains a single sentence. */
