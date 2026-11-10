@@ -749,7 +749,33 @@ def main():
         except Exception as exc:
             # Never replace an unknown published history with a stale checkout.
             raise RuntimeError('Cannot load published history; publication stopped') from exc
-    payload, changed, report = collect(previous,datetime.now(timezone.utc),enrich_limit=args.enrich_limit)
+    # Reuse the exact international RSS response already fetched for the domestic
+    # exclusion policy. Domestic collect()/policy_digest remain unchanged.
+    feed_cache = {}
+    def cached_fetch(url):
+        source = request(url)
+        feed_cache[url] = source
+        return source
+    collected_now = datetime.now(timezone.utc)
+    payload, changed, report = collect(previous,collected_now,fetch=cached_fetch,enrich_limit=args.enrich_limit)
+    from collect_world import collect as collect_world, valid as valid_world
+    prior_world = previous.get('world')
+    try:
+        world = collect_world(prior_world,collected_now,source=feed_cache['https://www.newsis.com/RSS/international.xml'])
+    except Exception as exc:
+        # A world failure must not replace its last valid snapshot or stop
+        # unrelated domestic updates. The UI reports its own collection time.
+        try:
+            valid_world(prior_world,collected_now)
+            world = prior_world
+        except (AssertionError,KeyError,TypeError,ValueError):
+            world = None
+        report['worldWarning'] = str(exc)[:180]
+    changed = changed or ('world' in previous and world is None)
+    if world:
+        payload['world'] = world
+        changed = changed or world != prior_world
+        report['worldArticles'] = len(world['articles'])
     args.output.parent.mkdir(parents=True,exist_ok=True)
     write_snapshot(args.output,payload if changed else previous)
     print(json.dumps({'changed':changed,**report},ensure_ascii=False))

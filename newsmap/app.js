@@ -63,7 +63,7 @@
   const isNew=a=>Date.parse(a.publishedAt)>cutoff&&Date.parse(a.publishedAt)<=now();
   const safeUrl=url=>{try{const u=new URL(url);return u.protocol==='https:'&&(/(^|\.)newsis\.com$/.test(u.hostname))?u.href:'';}catch{return '';}};
   function updateUrl(mode='push'){
-    if(restoring||mode==='none')return;
+    if(restoring||mode==='none'||new URLSearchParams(location.search).get('view')==='world')return;
     const p=new URLSearchParams();
     if(state.region)p.set('place',state.region);
     if(state.period!=='24')p.set('period',state.period);
@@ -271,6 +271,7 @@
     $('article-list').scrollTop=0;
   }
   function restoreUrl(){
+    if(new URLSearchParams(location.search).get('view')==='world'){restoring=false;return;}
     const next=readUrl();
     restoring=true;
     try{
@@ -364,7 +365,11 @@
   $('credits-button').addEventListener('click',()=>{openAbout();$('credits').scrollIntoView({block:'end'});});
   $('about').querySelector('.dialog-close').addEventListener('click',()=>$('about').close());
   $('about').addEventListener('click',event=>{if(event.target===$('about')){const rect=$('about').getBoundingClientRect();if(event.clientX<rect.left||event.clientX>rect.right||event.clientY<rect.top||event.clientY>rect.bottom)$('about').close();}});
+  let pendingRefresh=null;
   function refreshData(silent=false){
+    if(pendingRefresh){if(!silent){refreshStatus='데이터 다시 확인 중…';renderList();}return pendingRefresh;}
+    let complete;pendingRefresh=new Promise(resolve=>{complete=resolve;});
+    const completion=pendingRefresh;
     const button=$('refresh');button.disabled=true;button.setAttribute('aria-busy','true');
     if(!silent){refreshStatus='데이터 다시 확인 중…';renderList();}
     const script=document.createElement('script');script.src='data/articles.js?v='+now();
@@ -376,6 +381,8 @@
       button.disabled=false;button.removeAttribute('aria-busy');script.remove();
       if(!ok)window.NEWSMAP_ARTICLES=payload;
       if(!silent||changed||!hasValidSnapshot)render('replace');else updateDataStatus();
+      pendingRefresh=null;complete(ok);
+      if(window.dispatchEvent)window.dispatchEvent(new CustomEvent('newsmap:snapshot',{detail:{valid:ok,world:payload.world}}));
     };
     script.onload=()=>{
       if(finished){window.NEWSMAP_ARTICLES=payload;return;}
@@ -387,6 +394,7 @@
     };
     script.onerror=()=>finish(false);
     document.head.append(script);
+    return completion;
   }
   $('refresh').addEventListener('click',()=>refreshData());
   window.setInterval(()=>{if(!document.hidden&&!$('refresh').disabled)refreshData(true);},60000);
@@ -436,5 +444,5 @@
   }
   // Static script URLs may be cached across releases; verify current data immediately.
   refreshData(true);
-  window.NewsmapApp={state,nodes,get articles(){return payload.articles;},get shown(){return shown;},selectPlace,render,get map(){return map;},cutoff};
+  window.NewsmapApp={state,nodes,refreshData,get world(){return payload.world;},get articles(){return payload.articles;},get shown(){return shown;},selectPlace,render,get map(){return map;},cutoff};
 })();

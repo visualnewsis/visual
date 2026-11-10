@@ -49,6 +49,9 @@ def validate(path):
         assert all(p in nodes for p in article.get('relatedPlaces',[])),'Unknown related place'
         assert isinstance(article.get('evidence'),list) and all(isinstance(e,str) for e in article['evidence']),'Missing evidence'
         assert 'text' not in article and 'articleBody' not in article,'Full body must not be published'
+    if 'world' in payload:
+        from collect_world import valid as valid_world
+        valid_world(payload['world'])
     return len(articles)
 
 if __name__=='__main__':
