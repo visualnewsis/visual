@@ -26,10 +26,10 @@
     const local = `${part('month')}월 ${part('day')}일 ${part('dayPeriod')} ${part('hour')}시`;
     document.getElementById('local-moment').textContent = `부산의 2026년 11월 11일 오전 11시, ${city.name}에서는 ${local}입니다.`;
     const finding = city.zone === 'Asia/Seoul'
-      ? '한국의 도시는 시각이 같아도 부산을 향하는 방향이 다릅니다. 서울·광주·제주를 바꿔보세요.'
+      ? '한국에서는 날짜와 시각이 같습니다.'
       : city.name === '오타와'
-        ? '오타와에서는 아직 11월 10일 밤입니다. 날짜가 달라도 부산의 11월 11일 오전 11시와 같은 순간입니다.'
-        : `${city.name}의 시계가 오전 11시가 되기를 기다리는 것이 아닙니다. 부산의 오전 11시를 현지 시각으로 바꾼 결과입니다.`;
+        ? '부산의 묵념 시각은 오타와의 전날 밤 9시와 같은 순간입니다.'
+        : `${city.name}의 현지 시각으로 환산한 값입니다.`;
     document.getElementById('moment-discovery').textContent = finding;
   }
   // Reveal controls only after all required browser time-zone calculations have succeeded.

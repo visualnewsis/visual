@@ -134,10 +134,10 @@
   }
   function finish() {
     clearTimeout(timer); state='finished'; section.dataset.state=state;document.documentElement.classList.remove('is-remembering');
-    el('silence-title').textContent='묵념을 마치며';
+    el('silence-title').textContent='묵념을 마쳤습니다.';
     el('silence-context').textContent='';
     el('silence-status').textContent='';
-    toggle.hidden=false;toggle.textContent='다시 묵념하기';end.hidden=true;el('silence-after').hidden=false;
+    toggle.hidden=true;end.hidden=true;el('silence-after').hidden=false;el('silence-title').setAttribute('tabindex','-1');el('silence-title').focus({preventScroll:true});
   }
   toggle.addEventListener('click',()=>{
     state='running';started=Date.now();section.dataset.state=state;document.documentElement.classList.add('is-remembering');
@@ -148,7 +148,7 @@
     stopSensor();locationRequest++;el('use-location').disabled=false;
     clearTimeout(timer);timer=setTimeout(cue,60000);
   });
-  end.addEventListener('click',()=>{finish();toggle.focus();});
+  end.addEventListener('click',()=>{finish();});
   document.addEventListener('visibilitychange',()=>{
     if(document.hidden){stopSensor();locationRequest++;el('use-location').disabled=false;}
     else cue();
