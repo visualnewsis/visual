@@ -13,7 +13,7 @@ sys.dont_write_bytecode=True
 import collect_news as C
 
 ROOT=Path(__file__).resolve().parents[1]
-VERSION='world-country-v3'
+VERSION='world-country-v8'
 COUNTRIES=json.loads((ROOT/'data/world-countries.json').read_text())
 ALIASES={'US':['미국','美'], 'CN':['중국','中'], 'JP':['일본','日'], 'GB':['영국','英'],
  'RU':['러시아','러'], 'UA':['우크라이나','우크라'], 'DE':['독일','獨'], 'FR':['프랑스','佛'],
@@ -31,19 +31,25 @@ CITIES={'워싱턴':'US','뉴욕':'US','로스앤젤레스':'US','베이징':'CN
 AMBIGUOUS={'인도','조지아','콩고','니제르','이란','가자','오만','말리','가나','차드','토고'}
 COUNTRY_CUES={'IN':r'뉴델리|뭄바이|모디|루피|인도\s*(?:정부|총리|대통령|북부|남부|동부|서부|중부|[가-힣]{2,}주)', 'OM':r'무스카트|오만\s*(?:정부|국왕|술탄|외무|수도|해역|항구|당국)', 'ML':r'바마코|말리\s*(?:정부|군정|대통령|총리|수도|북부|남부)', 'GH':r'아크라|가나\s*(?:정부|대통령|총리|수도|대표팀)', 'TD':r'은자메나|차드\s*(?:정부|대통령|수도|군정)', 'TG':r'로메|토고\s*(?:정부|대통령|수도)'}
 
+ALIASES['AU']=['호주','오스트레일리아']
+ALIASES['PG']=['파푸아뉴기니','파푸아 뉴기니']
+
 def match_name(text,name):
+    # A one-character country abbreviation is never part of a Han word.
+    if len(name)==1 and '\u3400'<=name<='\u9fff':
+        return re.search(r'(?<![가-힣A-Za-z\u3400-\u9fff])'+re.escape(name)+r'(?=$|[^가-힣A-Za-z\u3400-\u9fff]|에서|의|은|는|이|가|을|를|과|와|내|서|에)',text)
     return re.search(r'(?<![가-힣A-Za-z])'+re.escape(name)+r'(?=$|[^가-힣A-Za-z]|에서|의|은|는|이|가|을|를|과|와|내|서|에)',text)
 
 
 BACKGROUND = re.compile(r'출신|태생|출생|태어|과거|지난해|작년|당시|역임|사진|자료|회고')
-PUBLISHER = re.compile(r'^\s*(?:의\s*)?(?:외신|언론|매체|통신|일간|방송|CNBC|CNN|BBC|블룸버그|로이터|AP|뉴욕타임스|워싱턴포스트|가디언|NHK)')
-SPEAKER = re.compile(r'^\s*(?:의\s*)?(?:전문가|교수|학자|연구원|기자|언론인)')
+PUBLISHER = re.compile(r'^\s*(?:의\s*)?(?:외신|언론|매체|통신|일간|방송|[가-힣A-Za-z·-]{1,20}(?:통신|신문|방송|매체|연구소|연구센터|조사국)|월스트리트저널|파이낸셜타임스|연합조보|사우스차이나모닝포스트|지질조사국|USGS|CNBC|CNN|BBC|블룸버그|로이터|AP|뉴욕타임스|워싱턴포스트|가디언|NHK)')
+SPEAKER = re.compile(r'^\s*(?:의\s*)?(?:전문가|교수|학자|연구원|연구센터|연구소|지구과학연구센터|기자|언론인)')
 EVENT = re.compile(r'지진|홍수|산불|화재|총격|폭발|충돌|추락|개최|열렸|열린|발생|상륙|공습|피격|시위')
 
 def sentence(text,start,end):
-    left=max(text.rfind(mark,0,start) for mark in ['.','!','?','\n'])+1
-    ends=[p for mark in ['.','!','?','\n'] if (p:=text.find(mark,end))>=0]
-    right=min(ends) if ends else len(text)
+    breaks=[m.start() for m in re.finditer(r'(?<!\d)\.|\.(?!\d)|[!?\n]',text)]
+    left=max((p+1 for p in breaks if p<start),default=0)
+    right=min((p for p in breaks if p>=end),default=len(text))
     return text[left:right],right
 
 def explicit_place(text,start,end,code):
@@ -65,7 +71,8 @@ def explicit_place(text,start,end,code):
     return True
 
 def classify(title,lead):
-    lead=C.focus_lead(lead)
+    title=unicodedata.normalize('NFC',title)
+    lead=C.focus_lead(unicodedata.normalize('NFC',lead))
     title=re.sub(r'(?:한국|현지)\s*(?:시간|시각)','',title)
     lead=re.sub(r'(?:한국|현지)\s*(?:시간|시각)','',lead)
     lines=lead.splitlines()[:2]
@@ -89,11 +96,15 @@ def classify(title,lead):
                 if code in COUNTRY_CUES and not re.search(COUNTRY_CUES[code],text): continue
                 if name=='이란' and before and (unicodedata.category(before[-1]) in {'Pe','Pf'} or before[-1] in ['"', "'", '>']) and not re.match(r'\s*(?:정부|대통령|외무|군|핵|수도|당국)',after): continue
                 if name=='가자' and not re.match(r'\s*(?:지구|전쟁|휴전|전투|주민|구호|공습|기근|지상전|봉쇄|북부|남부|에서|의)',after): continue
+            if name=='日' and before and before[-1].isdigit(): continue
             if len(name)==1 and name in '러' and not re.match(r'[·,\s\-"“”]',after): continue
+            if len(name)==1 and '\u3400'<=name<='\u9fff' and re.match(r'\s*[·ㆍ]',after):
+                tail=re.sub(r'^\s*[·ㆍ]\s*','',after)
+                if not any((m:=match_name(tail,alias)) and m.start()==0 for other,c in COUNTRIES.items() for alias in ALIASES.get(other,[c['name']])): continue
             excerpt,_=sentence(text,hit.start(),hit.end())
             place=explicit_place(text,hit.start(),hit.end(),code)
             if BACKGROUND.search(excerpt): continue
-            if hit.start()>=len(title) and (PUBLISHER.match(after) or SPEAKER.match(after)) and re.search(r'보도|전했|따르면|인용|말했|설명|주장',excerpt): continue
+            if hit.start()>=len(title) and (PUBLISHER.match(after) or SPEAKER.match(after)) and re.search(r'보도|전했|따르면|인용|말했|설명|주장|발표|밝혔',excerpt): continue
             # Secondary paragraphs alone are not enough to attach a country.
             if hit.start()>primary_end and not place: continue
             hits.append((name,hit.start(),hit.end()))
@@ -130,7 +141,7 @@ def valid(world,now=None):
         assert re.fullmatch(r'NISX\d+_\d+',a['id']) and a['id'] not in seen
         seen.add(a['id'])
         assert a['url']=='https://www.newsis.com/view/'+a['id']
-        assert isinstance(a['title'],str) and 0<len(a['title'])<=500
+        assert isinstance(a['title'],str) and 0<len(a['title'].strip()) and len(a['title'])<=500
         assert collected-timedelta(days=30)<=C.parse_time(a['publishedAt'])<=collected
         assert isinstance(a.get('locations'),list) and len(a['locations'])<=len(COUNTRIES)
         assert len({x['country'] for x in a['locations']})==len(a['locations'])
@@ -138,24 +149,31 @@ def valid(world,now=None):
         assert not any(k in a for k in ['text','articleBody'])
     return True
 
+def preserve(previous,now):
+    """Keep valid history even when RSS fails during a policy upgrade."""
+    try:
+        valid(previous,now)
+        return previous
+    except (AssertionError,KeyError,TypeError,ValueError):
+        if not isinstance(previous,dict) or previous.get('policyVersion') not in {'world-country-v2','world-country-v3','world-country-v4','world-country-v5','world-country-v6','world-country-v7'}:
+            return None
+        candidate={**previous,'policyVersion':VERSION}
+        try:
+            valid(candidate,now)
+            candidate['articles']=[{**a,'locations':classify(a['title'],'')} for a in candidate['articles']]
+            valid(candidate,now)
+            return candidate
+        except (AssertionError,KeyError,TypeError,ValueError):
+            return None
+
 def collect(previous=None,now=None,source=None):
     now=now or datetime.now(timezone.utc)
     source=source if source is not None else C.request('https://www.newsis.com/RSS/international.xml')
     records,rejected=C.parse_feed(source,'international',now)
     if not records: raise ValueError('International feed empty; previous world snapshot preserved')
-    old={}
-    previous_valid=False
-    try:
-        valid(previous,now)
-        previous_valid=True
-        old={a['id']:a for a in previous['articles'] if C.parse_time(a['publishedAt'])>=now-timedelta(days=30)}
-    except (AssertionError,KeyError,TypeError,ValueError):
-        if isinstance(previous,dict) and previous.get('policyVersion')=='world-country-v2':
-            compatible={**previous,'policyVersion':VERSION}
-            try:
-                valid(compatible,now)
-                old={a['id']:{**a,'locations':classify(a['title'],'')} for a in compatible['articles'] if C.parse_time(a['publishedAt'])>=now-timedelta(days=30)}
-            except (AssertionError,KeyError,TypeError,ValueError): pass
+    saved=preserve(previous,now)
+    previous_valid=saved is previous and saved is not None
+    old={a['id']:a for a in (saved or {}).get('articles',[]) if C.parse_time(a['publishedAt'])>=now-timedelta(days=30)}
     for raw in records.values():
         if len(raw['title'])>500: continue
         locations=classify(raw['title'],raw['text'])

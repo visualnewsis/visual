@@ -39,6 +39,9 @@ jobs:
           python newsmap/tests/locations.py
           python newsmap/tests/collector.py
           node newsmap/tests/rules.cjs
+          python newsmap/tests/world.py
+          node newsmap/tests/world.cjs
+          node newsmap/tests/world-entry.cjs
       - name: Read existing deployment destinations
         id: servers
         run: echo "matrix=$(jq -c . .github/workflows/deployment-config.json)" >> "$GITHUB_OUTPUT"

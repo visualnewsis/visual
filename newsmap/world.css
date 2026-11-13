@@ -67,3 +67,48 @@
 }
 
 @media(max-width:700px){.world-retry{top:auto;bottom:calc(var(--world-peek) + 36px)}}
+
+/* This is an interpretation warning, not a fine-print credit. */
+.world-map-note{font-size:11px;color:#c1d6db;max-width:calc(100% - 60px)}
+@media(max-width:700px){
+ .world-map-note{font-size:11px;line-height:1.45;max-width:calc(100% - 40px);display:block}
+ .world-map-legend{bottom:calc(var(--world-peek) + 65px)}
+ .world-controls{bottom:calc(var(--world-peek) + 94px)}
+}
+
+@media(max-width:700px){.world-controls #world-spin span{display:inline;font-size:10px}.world-controls{gap:6px}}
+
+/* GPT 2026-11-13: a quiet rectangular atlas for flat browsing. */
+.world-flat-mode .world-stage{background:#E8F1F3;color:#213A40}
+.world-flat-mode .world-space-heading h2{color:#213A40}
+.world-flat-mode .world-space-heading p,.world-flat-mode .world-eyebrow{color:#62777C}
+.world-flat-mode .world-map-switch{background:#ffffffc9;border-color:#C5D5D8}
+.world-flat-mode .world-map-switch button{color:#62777C}
+.world-flat-mode .world-map-switch button[aria-pressed=true]{background:#0C6666;color:#fff}
+.world-flat-mode .world-controls button{background:#fff;color:#213A40;border-color:#B8C9CC;box-shadow:0 1px 3px #213a400a}
+.world-flat-mode .world-pin span{background:#fffffff2;color:#213A40;border:1px solid #B8C9CC;box-shadow:0 1px 3px #213a400a}
+.world-flat-mode .world-pin[aria-pressed=true] span{background:#0C6666;color:#fff;border-color:#0C6666}
+.world-flat-mode .world-map-legend,.world-flat-mode .world-map-note,.world-flat-mode .world-map-note a{color:#415D64}
+.world-flat-mode .world-dot-place{background:#087B79}.world-flat-mode .world-dot-related{border-color:#087B79}
+.world-flat-mode .world-map-notice{background:#fff;color:#213A40;border-color:#B8C9CC}
+.world-flat-mode .world-retry{color:#0C6666;background:#fff;border-color:#087B79}
+.world-flat-mode .new-pulse i:before,.world-flat-mode .new-pulse i:after{display:none}
+
+.world-flat-mode .world-pin span{border-radius:6px;box-shadow:none;font-size:12px;font-weight:600}
+.world-flat-mode .world-controls button:focus-visible{outline:2px solid #087B79;outline-offset:2px}
+@media(min-width:701px){.world-flat-mode .world-space-heading h2 br{display:none}.world-flat-mode .world-space-heading h2{font-size:24px}}
+@media(max-width:700px){
+ .world-flat-mode{--world-peek:clamp(150px,calc(100dvh - 549px),295px)}
+ .world-flat-mode .world-controls{gap:6px}
+ .world-flat-mode .world-controls button{min-height:44px;min-width:44px;padding:0 8px}
+ .world-flat-mode .world-map-switch button{min-height:44px}
+ .world-flat-mode .world-space-heading h2{font-size:20px}
+}
+@media(max-width:700px){.world-flat-mode .world-space-heading{max-width:calc(100% - 145px)}}
+
+@media(max-width:700px) and (max-height:620px){.world-flat-mode .world-eyebrow{display:none}.world-flat-mode .world-space-heading h2{font-size:16px;margin-top:0}.world-flat-mode .world-controls{bottom:calc(var(--world-peek) + 72px)}}
+
+/* Resolve clamp()/calc() peek heights through layout for Canvas projection. */
+.world-stage:before{content:'';position:absolute;width:0;height:var(--world-peek,0px);visibility:hidden;pointer-events:none}
+
+.world-pin{min-height:44px}

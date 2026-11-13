@@ -23,7 +23,7 @@ def main():
         if any(x['id']==code for x in features):
             continue
         features.append({'type':'Feature','id':code,'properties':{'name':p['NAME_KO'] or p['NAME'],'english':p['NAME'],'center':[round(p['LABEL_X'],3),round(p['LABEL_Y'],3)]},'geometry':{'type':f['geometry']['type'],'coordinates':rounded(f['geometry']['coordinates'])}})
-    names={'CN':'중국','TW':'대만','KP':'북한','KR':'대한민국','TR':'튀르키예','SA':'사우디아라비아'}
+    names={'CN':'중국','TW':'대만','KP':'북한','KR':'대한민국','TR':'튀르키예','SA':'사우디아라비아','AU':'호주'}
     for f in features:
         f['properties']['name']=names.get(f['id'],f['properties']['name'])
     countries={f['id']:f['properties'] for f in features}

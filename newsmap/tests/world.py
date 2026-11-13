@@ -81,8 +81,11 @@ for mutate in [lambda x:x['articles'].append(copy.deepcopy(x['articles'][0])),la
     else:raise AssertionError('Invalid snapshot accepted')
 root=Path(__file__).resolve().parents[1]
 payload=C.decode_snapshot((root/'data/articles.js').read_bytes())
-assert W.valid(payload['world'])
-assert all(a['id'] not in {x['id'] for x in payload['world']['articles']} for a in payload['articles'])
+if 'world' in payload:
+    assert W.valid(payload['world'])
+    assert all(a['id'] not in {x['id'] for x in payload['world']['articles']} for a in payload['articles'])
+# Regression fixtures must also work when the production candidate has no world.
+payload.setdefault('world',copy.deepcopy(w))
 print('PASS: physical places vs related countries, dateline/nationality/ambiguity, Singapore, retention, duplicate IDs, malformed data, empty feed preservation, domestic/world isolation.')
 
 # Exercise the production main entry without live network: domestic schema/data
@@ -97,13 +100,45 @@ with TemporaryDirectory() as directory:
     def domestic(previous,at,fetch,enrich_limit):
         fetch('https://www.newsis.com/RSS/international.xml')
         return {k:v for k,v in before.items() if k!='world'},False,{}
-    with patch.object(C,'request',return_value=xml),patch.object(C,'collect',side_effect=domestic),patch.object(sys,'argv',['collect_news.py','--output',str(out)]),redirect_stdout(StringIO()):
+    with patch.object(C,'decode_snapshot',return_value=before),patch.object(C,'request',return_value=xml),patch.object(C,'collect',side_effect=domestic),patch.object(sys,'argv',['collect_news.py','--output',str(out)]),redirect_stdout(StringIO()):
         C.main()
     result=C.decode_snapshot(out.read_bytes())
     assert {k:v for k,v in result.items() if k!='world'}=={k:v for k,v in before.items() if k!='world'}
     assert W.valid(result['world'])
-    with patch.object(C,'request',return_value=b'<rss><channel/></rss>'),patch.object(C,'collect',side_effect=domestic),patch.object(sys,'argv',['collect_news.py','--output',str(out)]),redirect_stdout(StringIO()):
+    with patch.object(C,'decode_snapshot',return_value=before),patch.object(C,'request',return_value=b'<rss><channel/></rss>'),patch.object(C,'collect',side_effect=domestic),patch.object(sys,'argv',['collect_news.py','--output',str(out)]),redirect_stdout(StringIO()):
         C.main()
     failed=C.decode_snapshot(out.read_bytes())
     assert failed['world']==before['world']
 print('PASS: production entry caches international feed, isolates world failure, preserves all domestic fields and previous world data.')
+
+for title in ['中東 긴장 고조','中企 지원 확대','北極 탐사','佛敎 문화','單獨 보도','獨島 방문']:
+    assert roles(title)=={}, title
+assert roles('美·中 무역 협상')=={'US':'related','CN':'related'}
+
+for title in ['中·장기 전략 발표','中·소형 아파트','中·고교생','中·대형 위성','中·단기 과제','中·저소득층 지원','中·후반 레이스']:
+    assert roles(title)=={}, title
+assert W.preserve(legacy,now)['policyVersion']==W.VERSION
+assert len(W.preserve(legacy,now)['articles'])==len(legacy['articles'])
+
+with TemporaryDirectory() as directory:
+    out=Path(directory)/'articles.js'
+    prior=copy.deepcopy(payload);prior['world']['policyVersion']='world-country-v4'
+    capture=StringIO()
+    with patch.object(C,'decode_snapshot',return_value=prior),patch.object(C,'request',return_value=b'<rss><channel/></rss>'),patch.object(C,'collect',side_effect=domestic),patch.object(sys,'argv',['collect_news.py','--output',str(out)]),redirect_stdout(capture):
+        C.main()
+    migrated=C.decode_snapshot(out.read_bytes())
+    assert migrated['world']['policyVersion']==W.VERSION
+    assert len(migrated['world']['articles'])==len(prior['world']['articles'])
+    assert migrated['world']['collectedAt']==prior['world']['collectedAt']
+    assert json.loads(capture.getvalue())['changed'] is True
+print('PASS: real main preserves every prior-version article and original timestamp during empty-feed policy migration.')
+
+assert roles('파푸아 뉴기니에서 규모 5.9 강진 발생','파푸아 뉴기니에서 규모 5.9 지진이 발생했다고 독일 지구과학연구센터가 발표했다.')=={'PG':'place'}
+
+assert roles('美·이란 협상')=={'US':'related','IR':'related'}
+assert roles('美·호주 국방장관')=={'US':'related','AU':'related'}
+assert roles('美·中과 협상')=={'US':'related','CN':'related'}
+for source in ['미국 지질조사국(USGS)','일본 교도통신','중국 신화통신','러시아 타스통신','미국 월스트리트저널','영국 파이낸셜타임스']:
+    assert roles('인도네시아에서 규모 6.0 지진 발생','인도네시아에서 규모 6.0 지진이 발생했다고 '+source+'이 밝혔다.')=={'ID':'place'}, source
+
+assert roles('13日 새벽 지진 발생')=={}

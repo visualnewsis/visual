@@ -758,18 +758,14 @@ def main():
         return source
     collected_now = datetime.now(timezone.utc)
     payload, changed, report = collect(previous,collected_now,fetch=cached_fetch,enrich_limit=args.enrich_limit)
-    from collect_world import collect as collect_world, valid as valid_world
+    from collect_world import collect as collect_world, preserve as preserve_world
     prior_world = previous.get('world')
     try:
         world = collect_world(prior_world,collected_now,source=feed_cache['https://www.newsis.com/RSS/international.xml'])
     except Exception as exc:
         # A world failure must not replace its last valid snapshot or stop
         # unrelated domestic updates. The UI reports its own collection time.
-        try:
-            valid_world(prior_world,collected_now)
-            world = prior_world
-        except (AssertionError,KeyError,TypeError,ValueError):
-            world = None
+        world = preserve_world(prior_world,collected_now)
         report['worldWarning'] = str(exc)[:180]
     changed = changed or ('world' in previous and world is None)
     if world:

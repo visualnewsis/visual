@@ -19,3 +19,12 @@ assert.equal(R.filter(articles,{onlyNew:true,cutoff:now-3600001,now}).length,2);
 assert.equal(R.filter([...articles,articles[0]],{now}).length,3);
 assert.deepEqual(R.groups(articles).map(g=>[g.country,g.count,g.placeCount]),[['US',1,0],['CN',2,1]]);
 console.log('PASS: world schema/chronology/ID validation, period, location-unknown, country filtering, multi-country non-additive counts, unique overall article count.');
+
+const points=[{country:'SG',x:100,y:100},{country:'MY',x:120,y:100}];
+assert.equal(R.nearestCountry(points,[102,104],14),'SG');
+assert.equal(R.nearestCountry(points,[119,100],14),'MY');
+assert.equal(R.nearestCountry(points,[140,130],14),null);
+console.log('PASS: rendered country dots win over polygon containment; nearest adjacent country selected; distant point ignored.');
+
+const unknownCountry=JSON.parse(JSON.stringify(world));
+if(unknownCountry.articles.length){unknownCountry.articles[0].locations=[{country:'ZZ',role:'related',evidence:['unknown']}];assert.equal(R.valid(unknownCountry,{now}),false);}

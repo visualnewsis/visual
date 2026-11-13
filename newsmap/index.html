@@ -34,19 +34,19 @@
   <link rel="stylesheet" href="../assets/visual-header.css?v=20261026-goodeasy-lab1">
   <link rel="stylesheet" href="vendor/leaflet.css">
   <link rel="stylesheet" href="style.css?v=20261103-review-v2">
-  <link rel="stylesheet" href="world.css?v=20261110-3">
+  <link rel="stylesheet" href="world.css?v=20261113-6">
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-6BKMWE02W5"></script>
   <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','G-6BKMWE02W5');</script>
   <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"여기뉴스","alternateName":["여기 뉴스"],"url":"https://visual.newsis.com/newsmap/","description":"여기 무슨 일 있어? 우리 동네부터 세계까지 뉴시스 기사를 지역과 나라별로 탐색하는 뉴스 지도","applicationCategory":"NewsApplication","operatingSystem":"Any","inLanguage":"ko-KR","isAccessibleForFree":true,"publisher":{"@type":"NewsMediaOrganization","name":"뉴시스","url":"https://www.newsis.com/"},"@id":"https://visual.newsis.com/newsmap/#app","image":"https://visual.newsis.com/newsmap/assets/share-here-news-final-20261023.png?v=20261023-final","creator":{"@type":"Person","name":"안재현","jobTitle":["뉴시스 기자","크리에이티브 디렉터"]},"isPartOf":{"@type":"WebSite","name":"VISUAL NEWSIS","url":"https://visual.newsis.com/"},"keywords":["여기뉴스","여기 뉴스","지역 뉴스","동네 뉴스","뉴스 지도","국제 뉴스","세계 뉴스","뉴시스"]}</script>
   <script defer src="../assets/visual-header.js?v=20261026-menuorder1" data-section="여기뉴스" data-current="newsmap" data-section-href="./"></script>
   <script defer src="vendor/leaflet.js"></script>
   <script defer src="data/geography.js"></script>
-  <script defer src="data/articles.js?v=20261110-world-3"></script>
+  <script defer src="data/articles.js?v=20261113-world-6"></script>
   <script defer src="core.js?v=20261103-review-v2"></script>
   <script defer src="basemap.js?v=20261023-performance"></script>
   <script defer src="mobile-sheet.js?v=20261022-4"></script>
-  <script defer src="app.js?v=20261110-world-3"></script>
-  <script defer src="world-entry.js?v=20261110-3"></script>
+  <script defer src="app.js?v=20261113-world-6"></script>
+  <script defer src="world-entry.js?v=20261113-6"></script>
 </head>
 <body>
   <a class="skip" href="#results">기사 목록으로 건너뛰기</a>
@@ -105,7 +105,7 @@
         <div id="world-canvas-wrap"><canvas id="world-canvas" tabindex="0" role="img" aria-label="회전할 수 있는 세계 뉴스 지구본. 방향키로 회전하고 더하기 빼기로 확대합니다. 나라 선택과 기사 목록으로도 탐색할 수 있습니다."></canvas><div id="world-pins" aria-label="지도에 보이는 나라"></div></div>
         <p class="world-map-notice" id="world-map-notice" role="status">지구본을 준비하고 있습니다. 기사 목록은 먼저 볼 수 있어요.</p>
         <button id="world-retry" class="world-retry" hidden>다시 확인</button>
-        <div class="world-controls" role="group" aria-label="지구본 조작"><button id="world-spin" aria-pressed="false" aria-label="지구본 회전 시작">↻ <span>회전 시작</span></button><button id="world-home" aria-label="세계 전체 보기">전체 보기</button><button id="world-zoom-in" aria-label="세계지도 확대">+</button><button id="world-zoom-out" aria-label="세계지도 축소">−</button><button id="world-expand" aria-label="지구본 크게 보기" aria-pressed="false">⤢</button></div>
+        <div class="world-controls" role="group" aria-label="지구본 조작"><button id="world-spin" aria-pressed="false" aria-label="지구본 회전 시작">↻ <span>회전 시작</span></button><button id="world-find" hidden>국가 찾기</button><button id="world-home" aria-label="세계지도 초기화">지도 초기화</button><button id="world-zoom-in" aria-label="세계지도 확대">+</button><button id="world-zoom-out" aria-label="세계지도 축소">−</button><button id="world-expand" aria-label="지구본 크게 보기" aria-pressed="false">⤢</button></div>
         <div class="world-map-legend"><span><i class="world-dot-place"></i>기사 속 장소</span><span><i class="world-dot-related"></i>관련 국가</span><button id="world-motion" aria-pressed="true">파동 켜짐</button></div>
         <p class="world-map-note">점은 나라별 대표 위치입니다. 정확한 사건 지점은 아닙니다.<br><a href="https://www.naturalearthdata.com/about/terms-of-use/" target="_blank" rel="noopener noreferrer">Natural Earth</a> · 경계는 탐색용 참고 자료</p>
       </div>

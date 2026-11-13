@@ -448,5 +448,5 @@
   }
   // Static script URLs may be cached across releases; verify current data immediately.
   refreshData(true);
-  window.NewsmapApp={state,nodes,refreshData,get world(){return payload.world;},get articles(){return payload.articles;},get shown(){return shown;},selectPlace,render,get map(){return map;},cutoff};
+  window.NewsmapApp={state,nodes,refreshData,restoreView:restoreUrl,get world(){return payload.world;},get articles(){return payload.articles;},get shown(){return shown;},selectPlace,render,get map(){return map;},cutoff};
 })();
