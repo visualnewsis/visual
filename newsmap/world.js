@@ -119,9 +119,9 @@ window.NewsmapWorld=root=>{
     if(renderer||mapLoading)return;mapLoading=true;
     try{
       if(!window.d3?.geoOrthographic){if(!window.d3?.range)await loadScript('vendor/d3-array.min.js');await loadScript('vendor/d3-geo.min.js');}
-      if(!window.NEWSMAP_WORLD_GEOGRAPHY)await loadScript('data/world-geography.js?v=20261113-8');
+      if(!window.NEWSMAP_WORLD_GEOGRAPHY)await loadScript('data/world-geography.js?v=20261114-2');
       geometry=window.NEWSMAP_WORLD_GEOGRAPHY;countries=geometry.countries;
-      if(!window.NewsmapGlobe)await loadScript('world-globe.js?v=20261113-8');
+      if(!window.NewsmapGlobe)await loadScript('world-globe.js?v=20261114-2');
       renderer=window.NewsmapGlobe(root,geometry,id=>select(id,true));renderer.setActive(active);
       $('world-map-notice').hidden=true;$('world-retry').hidden=true;root.querySelector('.world-controls').hidden=false;root.querySelector('.world-map-legend').hidden=false;
       render(false);if(state.country&&countries[state.country])renderer.focus(countries[state.country].center);
@@ -132,7 +132,7 @@ window.NewsmapWorld=root=>{
   }
   // Metadata is small; its load failure never blocks headline links.
   async function countryNames(){
-    try{const response=await fetch('data/world-countries.json?v=20261113-8');if(!response.ok)throw new Error();countries=await response.json();render(false);}catch{/* The globe can supply the same names when ready. */}
+    try{const response=await fetch('data/world-countries.json?v=20261114-2');if(!response.ok)throw new Error();countries=await response.json();render(false);}catch{/* The globe can supply the same names when ready. */}
   }
   async function refresh(){
     if(refreshing)return;refreshing=true;$('world-refresh').disabled=true;

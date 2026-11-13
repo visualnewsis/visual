@@ -33,7 +33,8 @@ if(unknownCountry.articles.length){unknownCountry.articles[0].locations=[{countr
 // clock. Pulses must cover dots even when their HTML labels are collision-hidden.
 {
   const vm=require('node:vm'),fs=require('node:fs');
-  let clock=0,nextFrame=0,arcs=[],reduced=false;
+  let clock=0,nextFrame=0,arcs=[],reduced=false,mobile=false,compact=false,peek=150,clipCircle;
+  let bounds={left:0,top:0,width:1000,height:700},circles=[];
   const frames=new Map();
   class Element {
     constructor(tag='div'){this.tag=tag;this.children=[];this.style={};this.attrs={};this.hidden=false;this.listeners={};this.classes=new Set();this.classList={toggle:(k,v)=>v?this.classes.add(k):this.classes.delete(k),add:k=>this.classes.add(k),remove:k=>this.classes.delete(k)};}
@@ -42,20 +43,21 @@ if(unknownCountry.articles.length){unknownCountry.articles[0].locations=[{countr
     setAttribute(k,v){this.attrs[k]=v;}
     addEventListener(k,fn){this.listeners[k]=fn;}
     remove(){}
-    getBoundingClientRect(){return {left:0,top:0,width:1000,height:700};}
+    getBoundingClientRect(){return bounds;}
   }
-  const context2d=new Proxy({arc:(x,y,r)=>arcs.push(r),createLinearGradient:()=>({addColorStop(){}}),createRadialGradient:()=>({addColorStop(){}})},{get:(o,k)=>o[k]||(()=>{})});
+  const context2d=new Proxy({arc:(x,y,r)=>{arcs.push(r);circles.push({x,y,r});},clip:()=>{clipCircle=circles.at(-1);},createLinearGradient:()=>({addColorStop(){}}),createRadialGradient:()=>({addColorStop(){}})},{get:(o,k)=>o[k]||(()=>{})});
   const canvas=new Element('canvas');canvas.getContext=()=>context2d;
   const pins=new Element(),spin=new Element();spin.append(new Element('span'));
   const nodes={'#world-canvas':canvas,'#world-canvas-wrap':new Element(),'#world-pins':pins,'#world-spin':spin,'#world-map-notice':new Element()};
   const root={querySelector:s=>nodes[s],querySelectorAll:()=>[]};
-  const sandbox={console,Map,Set,Math,performance:{now:()=>clock},document:{createElement:tag=>new Element(tag)},matchMedia:query=>({get matches(){return query.includes('reduced-motion')&&reduced;},addEventListener(){}}),ResizeObserver:class {observe(){}},requestAnimationFrame:fn=>{frames.set(++nextFrame,fn);return nextFrame;},cancelAnimationFrame:id=>frames.delete(id)};
+  const sandbox={console,Map,Set,Math,performance:{now:()=>clock},document:{createElement:tag=>new Element(tag)},matchMedia:query=>({get matches(){return query.includes('reduced-motion')?reduced:query.includes('max-width')?mobile:query.includes('max-height')?compact:false;},addEventListener(){}}),ResizeObserver:class {observe(){}},requestAnimationFrame:fn=>{frames.set(++nextFrame,fn);return nextFrame;},cancelAnimationFrame:id=>frames.delete(id)};
+  sandbox.getComputedStyle=()=>({height:peek+'px'});
   sandbox.window=sandbox;
   vm.createContext(sandbox);
   for(const file of ['vendor/d3-array.min.js','vendor/d3-geo.min.js','world-globe.js'])vm.runInContext(fs.readFileSync(require.resolve('../'+file),'utf8'),sandbox);
   const renderer=sandbox.NewsmapGlobe(root,{features:[]},()=>{});
   const group=(key,pulse=true)=>({country:'US',name:'미국',count:1,placeCount:1,center:[-100,30],pulse,pulseKey:key});
-  function drawAt(time){clock=time;arcs=[];const pending=[...frames.values()];frames.clear();pending.forEach(fn=>fn(time));return arcs.filter(r=>r>5&&r<=22).length;}
+  function drawAt(time){clock=time;arcs=[];circles=[];const pending=[...frames.values()];frames.clear();pending.forEach(fn=>fn(time));return arcs.filter(r=>r>5&&r<=22).length;}
   renderer.update([group('batch1'),{...group('batch1'),country:'CA',name:'캐나다'}],'',true);
   assert(drawAt(500)>0,'Flat map must render new-article rings.');
   assert(pins.children.some(el=>el.hidden),'Fixture must include a collision-hidden label.');
@@ -69,6 +71,14 @@ if(unknownCountry.articles.length){unknownCountry.articles[0].locations=[{countr
   renderer.update([{...group('batch4'),center:[115,18]}],'',false);assert(drawAt(13500)>0,'Globe must retain new-article rings.');
   drawAt(19000);assert.equal(frames.size,0);
   reduced=true;renderer.update([{...group('batch5'),center:[115,18]}],'',false);assert.equal(drawAt(19500),0,'Renderer must independently respect device reduced motion.');assert.equal(frames.size,0);
+  reduced=false;mobile=true;compact=true;bounds={left:0,top:0,width:320,height:428};
+  for(const [height,drawerPeek] of [[428,150],[428,52],[314,52]]){
+    bounds.height=height;peek=drawerPeek;renderer.resize();renderer.update([{...group('compact',false),center:[115,18]}],'',false);drawAt(20000);
+    assert(clipCircle.y-clipCircle.r>=100-.01,'Short-phone globe must clear the heading.');
+    assert(clipCircle.y+clipCircle.r<=bounds.height-peek-56+.01,'Short-phone globe must clear the controls by 8px.');
+    assert(clipCircle.r>=40,'Short-phone globe must remain visible.');
+  }
+  console.log('PASS: short-phone globe fits between heading and controls in peek and enlarged-map states.');
   console.log('PASS: actual renderer flat/globe pulses, hidden labels, finite frames, same/new batch, motion/read stop and hidden-view expiry.');
 }
 

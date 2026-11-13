@@ -18,11 +18,11 @@ window.NewsmapGlobe=(root,geography,onSelect)=>{
   function configure(){
     const mobile=matchMedia('(max-width:700px)').matches;
     const peek=mobile?parseFloat(getComputedStyle(root.querySelector('.world-stage'),'::before').height)||210:0;
-    const usable=h-peek;
-    const center=mobile?[w*.5,Math.max(155,usable*.55+30)]:[w*.52,h*.54];
-    const radius=mobile?Math.max(80,Math.min(w*.43,(usable-120)/2)):Math.min(w*.41,(h-170)/2,310);
+    const usable=h-peek,compact=mobile&&matchMedia('(max-height:620px)').matches;
+    const globeTop=100,globeBottom=Math.max(globeTop+80,usable-56);
+    const center=compact?[w*.5,(globeTop+globeBottom)/2]:mobile?[w*.5,Math.max(155,usable*.55+30)]:[w*.52,h*.54];
+    const radius=compact?Math.min(w*.43,(globeBottom-globeTop)/2):mobile?Math.max(80,Math.min(w*.43,(usable-120)/2)):Math.min(w*.41,(h-170)/2,310);
     if(flat){
-      const compact=mobile&&matchMedia('(max-height:620px)').matches;
       const top=mobile?(compact?84:100):130;
       const bottom=mobile?Math.max(top+65,usable-148):Math.max(180,usable-80);
       projection=d3.geoEquirectangular().fitExtent([[24,top],[w-24,bottom]],sphere);

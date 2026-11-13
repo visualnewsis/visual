@@ -142,3 +142,11 @@ for source in ['미국 지질조사국(USGS)','일본 교도통신','중국 신�
     assert roles('인도네시아에서 규모 6.0 지진 발생','인도네시아에서 규모 6.0 지진이 발생했다고 '+source+'이 밝혔다.')=={'ID':'place'}, source
 
 assert roles('13日 새벽 지진 발생')=={}
+
+# Actual first-release RSS regressions: ordinary Korean noun and publisher origin.
+assert 'SD' not in roles('美전문가들 "전작권 전환, 트럼프엔 주한미군 철수 수단"')
+assert roles('수단 정부, 내전 중재안 수용')=={'SD':'related'}
+assert 'US' not in roles('북러, 정기 버스 노선 운영 준비','북한과 러시아가 정기 버스 노선을 준비하고 있다고 미국의 북한 전문 매체 NK 뉴스(NK NEWS)가 보도했다.')
+assert roles('미국에서 화재 발생','미국에서 화재가 발생했다고 미국의 북한 전문 매체 NK 뉴스가 보도했다.')=={'US':'place'}
+
+assert 'SD' not in roles('남수단 정부, 협상 수단 검토')
