@@ -9,7 +9,7 @@ window.NewsmapGlobe=(root,geography,onSelect)=>{
   const spinButton=root.querySelector('#world-spin'),notice=root.querySelector('#world-map-notice');
   const media=matchMedia('(prefers-reduced-motion:reduce)');
   let w=0,h=0,ratio=1,projection,groups=[],selected='',flat=false,scale=1,rotation=[-115,-18,0],pan=[0,0],active=true,spinning=false,frame=0,last=0,dirty=true;
-  const graticule=d3.geoGraticule10(),flatGrid=d3.geoGraticule().step([30,30])(),sphere={type:'Sphere'},elements=new Map(),pointers=new Map(),pulsed=new Set();
+  const graticule=d3.geoGraticule10(),flatGrid=d3.geoGraticule().step([30,30])(),sphere={type:'Sphere'},elements=new Map(),pointers=new Map(),pulsed=new Map();
   let gesture=null,dragged=false,drawnPoints=[],reserved=[];
   const stars=Array.from({length:115},(_,i)=>({x:((i*73.213+17)%997)/997,y:((i*137.9+53)%991)/991,r:i%19===0?1.5:i%3===0?.9:.5,a:i%7===0?.65:.25}));
   function circle(x,y,r){ctx.beginPath();ctx.arc(x,y,Math.max(0,r),0,Math.PI*2);}
@@ -66,6 +66,7 @@ window.NewsmapGlobe=(root,geography,onSelect)=>{
     const placed=reserved.map(box=>[...box]);
     const centerCoords=projection.invert(flat?[w/2,h/2]:center);
     let labels=0;
+    let animatingPulse=false;
     const sorted=[...groups].sort((a,b)=>(b.country===selected)-(a.country===selected)||b.count-a.count);
     for(const g of sorted){
       const el=elements.get(g.country);if(!el)continue;
@@ -73,6 +74,19 @@ window.NewsmapGlobe=(root,geography,onSelect)=>{
       const point=projection(g.center);
       if(!front||!point||point[0]<8||point[0]>w-8||point[1]<95||point[1]>usable-55){el.hidden=true;continue;}
       const [x,y]=point;
+      const pulse=pulsed.get(g.country);
+      if(g.pulse&&pulse&&!media.matches){
+        const elapsed=performance.now()-pulse.started;
+        for(const delay of [0,1100]){
+          const age=elapsed-delay;
+          if(age>=0&&age<4400){
+            const phase=(age%2200)/2200;
+            ctx.strokeStyle=flat?'rgba(8,123,121,'+(.65*(1-phase))+')':'rgba(101,224,188,'+(.7*(1-phase))+')';
+            ctx.lineWidth=1.5;circle(x,y,4+phase*18);ctx.stroke();
+          }
+        }
+        if(elapsed<5500)animatingPulse=true;
+      }
       drawnPoints.push({country:g.country,x,y});
       ctx.fillStyle=flat?(g.placeCount?'#087B79':'#E8F1F3'):(g.placeCount?'#65e0bc':'#1c4650');ctx.strokeStyle=flat?'#087B79':'#7ddabe';ctx.lineWidth=1;
       if(g.placeCount&&!flat){ctx.shadowColor='#65e0bc';ctx.shadowBlur=9;}circle(x,y,g.country===selected?5:3);ctx.fill();ctx.stroke();ctx.shadowBlur=0;
@@ -81,7 +95,7 @@ window.NewsmapGlobe=(root,geography,onSelect)=>{
       if(overlap||labels>=(flat?(mobile?(scale>=1.5?8:4):(scale>=1.5?16:10)):(mobile?7:18))){el.hidden=true;continue;}
       placed.push(box);labels++;el.hidden=false;el.style.left=(box[0]+8)+'px';el.querySelector('i').style.left=(x-box[0]-7)+'px';el.style.top=y+'px';
     }
-    if(spinning)frame=requestAnimationFrame(draw);
+    if(spinning||animatingPulse){dirty=true;frame=requestAnimationFrame(draw);}
   }
   function measureReserved(){
     const rect=wrap.getBoundingClientRect();
@@ -100,8 +114,9 @@ window.NewsmapGlobe=(root,geography,onSelect)=>{
       if(!el){el=document.createElement('button');el.className='world-pin';el.type='button';el.hidden=true;const dot=document.createElement('i');dot.setAttribute('aria-hidden','true');const label=document.createElement('span');el.append(dot,label);el.addEventListener('click',()=>{stop();onSelect(g.country);});pins.append(el);elements.set(g.country,el);}
       el.querySelector('span').textContent=g.name+' '+g.count;
       el.classList.toggle('related',!g.placeCount);
-      if(!g.pulse)el.classList.remove('new-pulse');
-      else if(!pulsed.has(g.country)){el.classList.add('new-pulse');pulsed.add(g.country);}
+      el.classList.remove('new-pulse');
+      const pulseKey=g.pulseKey||g.country;
+      if(g.pulse&&pulsed.get(g.country)?.key!==pulseKey)pulsed.set(g.country,{key:pulseKey,started:performance.now()});
       el.setAttribute('aria-label',g.name+' 기사 '+g.count+'건'+(g.placeCount?' · 기사 속 장소 '+g.placeCount+'건':' · 관련 국가'));
       el.setAttribute('aria-pressed',String(g.country===selected));
     }

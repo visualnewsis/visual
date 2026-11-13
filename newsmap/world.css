@@ -54,12 +54,12 @@
 .world-active main{display:flex;flex-direction:column;height:calc(100dvh - 64px - env(safe-area-inset-top,0px))}
 .world-active .mast,.world-active footer{flex:none}
 .world-active .world-workspace{flex:1;height:auto;min-height:0;max-height:none}
-.world-workspace{grid-template-rows:minmax(0,1fr);overflow:hidden}
+.world-workspace{grid-template-rows:minmax(0,1fr);overflow:hidden;overflow:clip}
 @media(min-width:701px) and (max-width:1000px){.world-active .mast-copy{display:none}}
 @media(max-width:700px){.world-filters select{font-size:16px}.world-card-head{font-size:12px}}
 
 /* Mobile controls share one row. Canvas draws country dots; the transparent
-   HTML i is only a pulse anchor and does not replace the Canvas dot. */
+   HTML i keeps the label alignment anchor; Canvas draws dots and pulses. */
 @media(max-width:700px){
  .mast{gap:8px}.mast .identity{flex:none}
  .scope-switch{position:static;transform:none;flex:none;margin-left:auto}
@@ -92,7 +92,8 @@
 .world-flat-mode .world-dot-place{background:#087B79}.world-flat-mode .world-dot-related{border-color:#087B79}
 .world-flat-mode .world-map-notice{background:#fff;color:#213A40;border-color:#B8C9CC}
 .world-flat-mode .world-retry{color:#0C6666;background:#fff;border-color:#087B79}
-.world-flat-mode .new-pulse i:before,.world-flat-mode .new-pulse i:after{display:none}
+.world-flat-mode .world-pin{text-shadow:none}
+.world-flat-mode .world-map-legend button{color:#415D64}
 
 .world-flat-mode .world-pin span{border-radius:6px;box-shadow:none;font-size:12px;font-weight:600}
 .world-flat-mode .world-controls button:focus-visible{outline:2px solid #087B79;outline-offset:2px}
@@ -112,3 +113,10 @@
 .world-stage:before{content:'';position:absolute;width:0;height:var(--world-peek,0px);visibility:hidden;pointer-events:none}
 
 .world-pin{min-height:44px}
+
+/* Keep the motion setting reachable on short phones without the full legend. */
+@media(max-width:700px) and (max-height:620px){
+ .world-map-legend{display:flex;bottom:calc(var(--world-peek) + 2px)}
+ .world-map-legend>span,.world-map-note{display:none}
+ .world-map-legend button{min-height:44px}
+}

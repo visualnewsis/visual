@@ -89,10 +89,11 @@ window.NewsmapWorld=root=>{
     $('world-all').setAttribute('aria-pressed',String(!state.onlyNew));$('world-new').setAttribute('aria-pressed',String(state.onlyNew));
     $('world-clear').hidden=!state.country&&!state.q;
     $('world-flat').setAttribute('aria-pressed',String(state.flat));$('world-globe').setAttribute('aria-pressed',String(!state.flat));
-    root.classList.toggle('world-flat-mode',state.flat);$('world-spin').hidden=state.flat;$('world-find').hidden=!state.flat;$('world-motion').hidden=state.flat;
+    root.classList.toggle('world-flat-mode',state.flat);$('world-spin').hidden=state.flat;$('world-find').hidden=!state.flat;$('world-motion').hidden=false;
     $('world-spin').disabled=!renderer||state.flat||motion.matches;
     ['world-flat','world-globe','world-zoom-in','world-zoom-out'].forEach(id=>{$(id).disabled=!renderer;});
-    $('world-motion').setAttribute('aria-pressed',String(state.motion&&!motion.matches));$('world-motion').textContent=motion.matches?'파동 꺼짐 · 기기 설정':state.motion?'파동 켜짐':'파동 꺼짐';root.classList.toggle('world-motion-off',!state.motion||motion.matches);
+    $('world-motion').disabled=motion.matches;
+    $('world-motion').setAttribute('aria-pressed',String(state.motion&&!motion.matches));$('world-motion').textContent=motion.matches?'파동 꺼짐 · 기기 설정':state.motion?'새 기사 파동 켜짐':'새 기사 파동 꺼짐';root.classList.toggle('world-motion-off',!state.motion||motion.matches);
     $('world-snapshot-time').textContent=data?stamp(data.collectedAt)+' 마지막 갱신 · 국제 RSS 일부 기사':'';
     // Country options are based on the whole retained snapshot, not just the globe front.
     const counts=R.groups(R.filter(data?.articles||[],{period:state.period}));
@@ -101,7 +102,8 @@ window.NewsmapWorld=root=>{
     if(state.country&&!counts.some(g=>g.country===state.country)&&state.country!=='unlocated')$('world-country').add(new Option(name(state.country),state.country));
     $('world-country').value=state.country;
     const groups=R.groups(shown).map(g=>({...g,name:name(g.country),center:countries[g.country]?.center,
-      pulse:!state.flat&&state.motion&&!motion.matches&&data&&Date.parse(data.collectedAt)+600000>Date.now()&&shown.some(a=>(pulseBatch.active||[]).includes(a.id)&&!readIds.has(a.id)&&a.locations.some(l=>l.country===g.country))})).filter(g=>g.center);
+      pulseKey:(data?.collectedAt||'')+':'+g.country,
+      pulse:state.motion&&!motion.matches&&data&&Date.parse(data.collectedAt)+600000>Date.now()&&shown.some(a=>(pulseBatch.active||[]).includes(a.id)&&!readIds.has(a.id)&&a.locations.some(l=>l.country===g.country))})).filter(g=>g.center);
     renderer?.update(groups,state.country,state.flat);
     if(update)url(replace);
   }
@@ -117,9 +119,9 @@ window.NewsmapWorld=root=>{
     if(renderer||mapLoading)return;mapLoading=true;
     try{
       if(!window.d3?.geoOrthographic){if(!window.d3?.range)await loadScript('vendor/d3-array.min.js');await loadScript('vendor/d3-geo.min.js');}
-      if(!window.NEWSMAP_WORLD_GEOGRAPHY)await loadScript('data/world-geography.js?v=20261113-6');
+      if(!window.NEWSMAP_WORLD_GEOGRAPHY)await loadScript('data/world-geography.js?v=20261113-8');
       geometry=window.NEWSMAP_WORLD_GEOGRAPHY;countries=geometry.countries;
-      if(!window.NewsmapGlobe)await loadScript('world-globe.js?v=20261113-6');
+      if(!window.NewsmapGlobe)await loadScript('world-globe.js?v=20261113-8');
       renderer=window.NewsmapGlobe(root,geometry,id=>select(id,true));renderer.setActive(active);
       $('world-map-notice').hidden=true;$('world-retry').hidden=true;root.querySelector('.world-controls').hidden=false;root.querySelector('.world-map-legend').hidden=false;
       render(false);if(state.country&&countries[state.country])renderer.focus(countries[state.country].center);
@@ -130,7 +132,7 @@ window.NewsmapWorld=root=>{
   }
   // Metadata is small; its load failure never blocks headline links.
   async function countryNames(){
-    try{const response=await fetch('data/world-countries.json?v=20261113-6');if(!response.ok)throw new Error();countries=await response.json();render(false);}catch{/* The globe can supply the same names when ready. */}
+    try{const response=await fetch('data/world-countries.json?v=20261113-8');if(!response.ok)throw new Error();countries=await response.json();render(false);}catch{/* The globe can supply the same names when ready. */}
   }
   async function refresh(){
     if(refreshing)return;refreshing=true;$('world-refresh').disabled=true;
@@ -163,7 +165,8 @@ window.NewsmapWorld=root=>{
   $('world-spin').addEventListener('click',()=>renderer?.spin());$('world-home').addEventListener('click',()=>{renderer?.home();});
   $('world-find').addEventListener('click',()=>{if(mobile())drawer('open');$('world-search').focus({preventScroll:true});});
   $('world-zoom-in').addEventListener('click',()=>renderer?.zoom(1.2));$('world-zoom-out').addEventListener('click',()=>renderer?.zoom(1/1.2));
-  $('world-motion').addEventListener('click',()=>{state.motion=!state.motion;storage.set('newsmap:motion',state.motion?'on':'off');render(false);});motion.addEventListener('change',()=>{renderer?.stop();render(false);});
+  $('world-motion').addEventListener('click',()=>{state.motion=!state.motion;storage.set('newsmap:motion',state.motion?'on':'off');render(false);window.dispatchEvent(new CustomEvent('newsmap:motion',{detail:state.motion}));});
+  window.addEventListener('newsmap:motion',event=>{if(state.motion===(event.detail===true))return;state.motion=event.detail===true;render(false);});motion.addEventListener('change',()=>{renderer?.stop();render(false);});
   $('world-expand').addEventListener('click',()=>drawer(root.dataset.mapLarge==='true'?'peek':'map'));
   $('world-drawer-toggle').addEventListener('click',()=>{if(Date.now()>suppressClick)drawer(root.querySelector('.world-sidebar').dataset.drawer==='open'?'peek':'open');});
   $('world-drawer-toggle').addEventListener('keydown',e=>{if(e.key==='ArrowUp'){e.preventDefault();drawer('open');}if(e.key==='ArrowDown'||e.key==='Escape'){e.preventDefault();drawer('peek');}});

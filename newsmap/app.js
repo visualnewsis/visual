@@ -320,7 +320,8 @@
   $('new-tab').addEventListener('click',()=>{state.onlyNew=true;render();});
   $('viewport-toggle').addEventListener('click',()=>{state.viewport=!state.viewport;render();});
   $('news-modes').addEventListener('click',event=>{const button=event.target.closest('[data-category]');if(!button||!categories.includes(button.dataset.category)||button.dataset.category===state.category)return;state.category=button.dataset.category;render();});
-  $('motion-toggle').addEventListener('click',()=>{state.motion=!state.motion;store.set('newsmap:motion',state.motion?'on':'off');if(state.motion)seenSignals.clear();syncControls();renderMarkers();});
+  $('motion-toggle').addEventListener('click',()=>{state.motion=!state.motion;store.set('newsmap:motion',state.motion?'on':'off');if(state.motion)seenSignals.clear();syncControls();renderMarkers();window.dispatchEvent(new CustomEvent('newsmap:motion',{detail:state.motion}));});
+  window.addEventListener('newsmap:motion',event=>{if(state.motion===(event.detail===true))return;state.motion=event.detail===true;syncControls();renderMarkers();});
   function markArticleRead(event){
     if(event.type==='auxclick'&&event.button!==1)return;
     const link=event.target.closest('a'),card=link?.closest('[data-article]');
