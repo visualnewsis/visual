@@ -63,15 +63,14 @@ window.NewsmapWorld=root=>{
     const focusedId=focusedCard?.dataset.worldArticle;
     const focusedCountry=focused?.dataset?.worldCountry;
     const focusedAction=list.contains(focused)?focused?.dataset?.worldAction:null;
-    const moreFocused=focusedAction==='more';
     const visible=old.filter(el=>{const r=el.getBoundingClientRect();return r.bottom>rect.top&&r.top<rect.bottom;});
     const firstVisible=visible.length?old.indexOf(visible[0]):0;
     const anchorOrder=visible.concat(old.slice(firstVisible+visible.length),old.slice(0,firstVisible).reverse());
     const anchors=preserve&&rect.height?anchorOrder.map(el=>({id:el.dataset.worldArticle,offset:el.getBoundingClientRect().top-rect.top})):[];
-    return {list,scroller,old,focusedCard,focusedId,focusedCountry,focusedAction,moreFocused,visible,anchors};
+    return {list,scroller,old,focusedCard,focusedId,focusedCountry,focusedAction,visible,anchors};
   }
   function syncList(shown,preserve,view){
-    const {list,scroller,old,focusedCard,focusedId,focusedCountry,focusedAction,moreFocused,visible,anchors}=view;
+    const {list,scroller,old,focusedCard,focusedId,focusedCountry,focusedAction,visible,anchors}=view;
     if(preserve)for(const el of visible.concat(focusedCard?[focusedCard]:[])){
       const index=shown.findIndex(a=>a.id===el.dataset.worldArticle);if(index>=limit)limit=index+1;
     }
@@ -108,8 +107,8 @@ window.NewsmapWorld=root=>{
     }else scroller.scrollTop=0;
   }
   const periodText=()=>({'24':'최근 24시간 보도','168':'최근 7일 보도','720':'최근 30일 보도',all:'모아둔 전체 기사'}[state.period]);
-  function render(update=true,replace=false){
-    const listView=captureList(!update);
+  function render(update=true,replace=false,preserve=!update){
+    const listView=captureList(preserve);
     if(state.country&&state.country!=='unlocated'&&Object.keys(countries).length&&!countries[state.country])state.country='';
     $('world-period-label').textContent=periodText();
     $('world-map-summary').textContent=data?'자료 갱신 '+stamp(data.collectedAt)+' · 일부 기사':'뉴시스 국제기사 일부';
@@ -119,7 +118,6 @@ window.NewsmapWorld=root=>{
     $('world-drawer-label').textContent=title+' 뉴스';$('world-drawer-summary').textContent=shown.length+'건 · '+(root.querySelector('.world-sidebar').dataset.drawer==='open'?'지도 보기':'목록 펼치기');
     $('world-map-title').innerHTML=state.country?esc(title)+' 관련<br>소식':state.flat?'세계의 소식':'세계에서는<br>무슨 일이 있을까?';
     $('world-status').textContent=(dataFailed?(data?'다시 확인하지 못했어요 · 마지막으로 받은 자료입니다. ':'세계 뉴스를 확인하지 못했어요. '):refreshing?'기사를 다시 확인하고 있습니다. ':'')+(data?(state.country?'선택한 나라의 ':'')+shown.length+'개 기사 · 뉴시스 국제기사 일부 · '+periodText()+(state.country?' · 기사 속 장소·관련국 포함':' · 국가별 수에는 같은 기사가 포함될 수 있습니다.'):'세계 기사 데이터를 확인하고 있습니다.');
-    syncList(shown,!update,listView);
     $('world-search').value=state.q;$('world-period').value=state.period;
     $('world-clear').hidden=!state.country&&!state.q;$('world-clear').parentElement.hidden=$('world-clear').hidden;
     $('world-flat').setAttribute('aria-pressed',String(state.flat));$('world-globe').setAttribute('aria-pressed',String(!state.flat));
@@ -136,6 +134,7 @@ window.NewsmapWorld=root=>{
     if($('world-country').innerHTML!==options)$('world-country').innerHTML=options;
     if(state.country&&!counts.some(g=>g.country===state.country)&&state.country!=='unlocated')$('world-country').add(new Option(name(state.country),state.country));
     $('world-country').value=state.country;
+    syncList(shown,preserve,listView);
     const groups=R.groups(shown).map(g=>({...g,name:name(g.country),center:countries[g.country]?.center,pulse:state.motion&&!motion.matches&&!dataFailed})).filter(g=>g.center);
     renderer?.update(groups,state.country,state.flat,{ready:!!data,failed:dataFailed,scope:JSON.stringify([state.country,state.period,state.q,state.flat])});
     if(update)url(replace);
@@ -209,5 +208,5 @@ window.NewsmapWorld=root=>{
   // Domestic and world views share the existing one-minute check.
   window.addEventListener('newsmap:snapshot',event=>{dataFailed=!(event.detail?.valid&&adopt(event.detail.world));if(active)render(false);});
   adopt(window.NEWSMAP_ARTICLES?.world);fromUrl();render(false);countryNames();loadMap();if(!data)refresh();
-  return {restore(){const prior=state.country,scope=JSON.stringify([state.country,state.period,state.q]);fromUrl();const changed=scope!==JSON.stringify([state.country,state.period,state.q]);if(changed)limit=30;render(false);if(changed)listScroller().scrollTop=0;if(state.country!==prior&&state.country&&countries[state.country])renderer?.focus(countries[state.country].center);},setActive(value){active=value;renderer?.setActive(value&&!document.hidden);if(value){adopt(window.NEWSMAP_ARTICLES?.world);dataFailed=window.NewsmapApp?.dataCheckFailed===true||dataFailed;render(false);}},openList(){drawer('open');},refresh,get state(){return state;},get articles(){return data?.articles||[];}};
+  return {restore(){const prior=state.country,scope=JSON.stringify([state.country,state.period,state.q]),listHadFocus=$('world-articles').contains(document.activeElement);fromUrl();const changed=scope!==JSON.stringify([state.country,state.period,state.q]);if(changed)limit=30;render(false,false,!changed);if(changed&&listHadFocus)$('world-title').focus({preventScroll:true});if(state.country!==prior&&state.country&&countries[state.country])renderer?.focus(countries[state.country].center);},setActive(value){active=value;renderer?.setActive(value&&!document.hidden);if(value){adopt(window.NEWSMAP_ARTICLES?.world);dataFailed=window.NewsmapApp?.dataCheckFailed===true||dataFailed;render(false);}},openList(){drawer('open');},refresh,get state(){return state;},get articles(){return data?.articles||[];}};
 };
