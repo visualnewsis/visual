@@ -13,7 +13,7 @@
 .espresso-scope{font-size:10px;line-height:1.8;color:#b1bcb2;margin:11px 0 0}
 #landing-espresso-status{font-size:11px;line-height:1.8;color:#c8c7b5;margin:9px 0 0;min-height:2em}
 .landing-espresso .hero-next{z-index:2;bottom:70px;max-width:42%;min-width:0}.landing-espresso .hero-next>span{line-height:1.7}.landing-espresso .hero-next strong{font-size:clamp(21px,2vw,27px)}.landing-espresso .down{bottom:20px}
-.art-projector,.art-espresso{background-size:cover;background-position:58% center}
+.art-projector,.art-espresso{background-size:cover;background-position:48% center}
 @media(max-width:900px){
  .landing-espresso .hero{display:flex;flex-direction:column;height:auto;min-height:0;max-height:none}
  .landing-espresso .hero-copy{position:relative;inset:auto;width:auto;padding:24px 24px 0}
