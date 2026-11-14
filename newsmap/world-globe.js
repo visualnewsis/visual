@@ -10,11 +10,26 @@ window.NewsmapGlobe=(root,geography,onSelect)=>{
   const media=matchMedia('(prefers-reduced-motion:reduce)');
   let w=0,h=0,ratio=1,projection,groups=[],selected='',flat=false,scale=1,rotation=[-115,-18,0],pan=[0,0],active=true,spinning=false,frame=0,last=0,dirty=true;
   const graticule=d3.geoGraticule10(),flatGrid=d3.geoGraticule().step([30,30])(),sphere={type:'Sphere'},elements=new Map(),pointers=new Map(),pulsed=new Map();
-  let gesture=null,dragged=false,drawnPoints=[],reserved=[],pulseBudget=3,initialViewSet=false,guideIdentity=null,guideEntry=null,pulseTargets=new Set(),guideSeenIds=new Set(),guideAddedIds=null,guideIsEntry=true,guideBatch=0;
+  let gesture=null,dragged=false,drawnPoints=[],reserved=[],introDone=false,guideReady=false,guideFailed=false,lastScope=null,viewTouched=false;
   const stars=Array.from({length:115},(_,i)=>({x:((i*73.213+17)%997)/997,y:((i*137.9+53)%991)/991,r:i%19===0?1.5:i%3===0?.9:.5,a:i%7===0?.65:.25}));
   function circle(x,y,r){ctx.beginPath();ctx.arc(x,y,Math.max(0,r),0,Math.PI*2);}
   function stop(){spinning=false;spinButton.setAttribute('aria-pressed','false');spinButton.setAttribute('aria-label','지구본 회전 시작');spinButton.querySelector('span').textContent='회전 시작';if(frame){cancelAnimationFrame(frame);frame=0;}last=0;}
   function request(){dirty=true;if(active&&!frame)frame=requestAnimationFrame(draw);}
+  function cancelGuide(){pulsed.clear();request();}
+  function interact(){viewTouched=true;cancelGuide();}
+  function visiblePoint(g,view){
+    const point=projection(g.center),centerCoords=projection.invert(flat?[w/2,h/2]:view.center);
+    return (flat||d3.geoDistance(g.center,centerCoords)<Math.PI/2-.025)&&point&&point[0]>=8&&point[0]<=w-8&&point[1]>=95&&point[1]<=view.usable-55&&!reserved.some(b=>point[0]>=b[0]&&point[0]<=b[0]+b[2]&&point[1]>=b[1]&&point[1]<=b[1]+b[3]);
+  }
+  function beginGuide(view){
+    introDone=true;
+    const candidates=[...groups].sort((a,b)=>(b.country===selected)-(a.country===selected)||(b.latest||0)-(a.latest||0)||b.count-a.count);
+    if(!viewTouched&&!selected&&!flat&&candidates.length&&!candidates.some(g=>visiblePoint(g,view))){
+      rotation=[-candidates[0].center[0],-candidates[0].center[1],0];view=configure();
+    }
+    if(!guideFailed&&!media.matches)candidates.filter(g=>g.pulse&&visiblePoint(g,view)).slice(0,3).forEach((g,i)=>pulsed.set(g.country,performance.now()+i*220));
+    return view;
+  }
   function configure(){
     const mobile=matchMedia('(max-width:700px)').matches;
     const peek=mobile?parseFloat(getComputedStyle(root.querySelector('.world-stage'),'::before').height)||210:0;
@@ -34,7 +49,9 @@ window.NewsmapGlobe=(root,geography,onSelect)=>{
     frame=0;if(!active)return;
     if(spinning){if(last)rotation[0]+=(time-last)*.0028;last=time;dirty=true;}
     if(!dirty&&!spinning)return;dirty=false;
-    const {mobile,center,radius,usable}=configure();
+    if(!w||!h)return;
+    let view=configure();if(!introDone&&guideReady)view=beginGuide(view);
+    const {mobile,center,radius,usable}=view;
     ctx.setTransform(ratio,0,0,ratio,0,0);ctx.clearRect(0,0,w,h);
     if(!flat)for(const s of stars){ctx.fillStyle='rgba(180,225,235,'+s.a+')';circle(s.x*w,s.y*h,s.r);ctx.fill();}
     const path=d3.geoPath(projection,ctx);
@@ -67,20 +84,16 @@ window.NewsmapGlobe=(root,geography,onSelect)=>{
     const centerCoords=projection.invert(flat?[w/2,h/2]:center);
     let labels=0;
     let animatingPulse=false;
-    const sorted=[...groups].sort((a,b)=>(b.country===selected)-(a.country===selected)||(b.pulsePriority||0)-(a.pulsePriority||0)||(b.latest||0)-(a.latest||0)||b.count-a.count);
-    let newlyStarted=0;
+    const sorted=[...groups].sort((a,b)=>(b.country===selected)-(a.country===selected)||(b.latest||0)-(a.latest||0)||b.count-a.count);
     for(const g of sorted){
       const el=elements.get(g.country);if(!el)continue;
       const front=flat||d3.geoDistance(g.center,centerCoords)<Math.PI/2-.025;
       const point=projection(g.center);
       if(!front||!point||point[0]<8||point[0]>w-8||point[1]<95||point[1]>usable-55){el.hidden=true;continue;}
       const [x,y]=point;
-      const pulse=pulsed.get(g.country);
-      if(g.pulse&&pulse?.ticket&&!media.matches){
-        if(pulse.started===null&&pulse.ticket.remaining>0&&!reserved.some(b=>x>=b[0]&&x<=b[0]+b[2]&&y>=b[1]&&y<=b[1]+b[3])){
-          pulse.started=performance.now()+newlyStarted*220;newlyStarted++;pulse.ticket.remaining--;
-        }
-        const elapsed=pulse.started===null?Infinity:performance.now()-pulse.started;
+      const started=pulsed.get(g.country);
+      if(g.pulse&&started!==undefined&&!guideFailed&&!media.matches){
+        const elapsed=performance.now()-started;
         for(const delay of [0,1100]){
           const age=elapsed-delay;
           if(age>=0&&age<4400){
@@ -111,17 +124,9 @@ window.NewsmapGlobe=(root,geography,onSelect)=>{
     canvas.width=Math.round(w*ratio);canvas.height=Math.round(h*ratio);measureReserved();request();
   }
   function update(next,id,mode,guide={}){
-    const entry=guide.entry??0,isEntry=entry!==guideEntry;
-    // Article removals and metadata-only corrections never start a live batch.
-    // Retain IDs seen during this entry so a removed/re-added ID cannot replay.
-    const added=Array.isArray(guide.ids)?guide.ids.filter(id=>!guideSeenIds.has(id)):null;
-    const identity=entry+':'+(guide.revision??next.map(g=>g.pulseKey||g.country).sort().join(','));
-    const newBatch=isEntry||(added?added.length>0:identity!==guideIdentity);
-    if(isEntry)guideSeenIds.clear();
-    for(const id of guide.ids||[])guideSeenIds.add(id);
-    if(newBatch){guideBatch++;guideAddedIds=added?new Set(added):null;guideIsEntry=isEntry;}
-    const eligible=g=>guideIsEntry||!guideAddedIds||(g.pulseIds||[]).some(id=>guideAddedIds.has(id));
-    if(newBatch){if(isEntry)initialViewSet=false;guideIdentity=identity;guideEntry=entry;pulseBudget=3;pulseTargets.clear();}
+    guideReady=guide.ready!==false;guideFailed=guide.failed===true;
+    const scope=guide.scope??id+':'+mode;
+    if(guideFailed||(lastScope!==null&&scope!==lastScope))cancelGuide();lastScope=scope;
     const oldFlat=flat;groups=next;selected=id;flat=mode;if(oldFlat!==flat){scale=1;pan=[0,0];stop();}
     const keep=new Set(next.map(g=>g.country));for(const [key,el] of elements)if(!keep.has(key)){el.remove();elements.delete(key);}
     for(const g of groups){
@@ -130,48 +135,27 @@ window.NewsmapGlobe=(root,geography,onSelect)=>{
       el.querySelector('span').textContent=g.name+' '+g.count;
       el.classList.toggle('related',!g.placeCount);
       el.classList.remove('new-pulse');
-      const pulseKey=g.pulseKey||g.country;
-      if(eligible(g)&&pulsed.get(g.country)?.batch!==guideBatch)pulsed.set(g.country,{key:pulseKey,started:null,batch:guideBatch});
       el.setAttribute('aria-label',g.name+' 기사 '+g.count+'건'+(g.placeCount?' · 기사 속 장소 '+g.placeCount+'건':' · 관련 국가'));
       el.setAttribute('aria-pressed',String(g.country===selected));
-    }
-    measureReserved();
-    const view=configure(),centerCoords=projection.invert(flat?[w/2,h/2]:view.center);
-    const facing=g=>{
-      const point=projection(g.center);
-      return (flat||d3.geoDistance(g.center,centerCoords)<Math.PI/2-.025)&&point&&point[0]>=8&&point[0]<=w-8&&point[1]>=95&&point[1]<=view.usable-55&&!reserved.some(b=>point[0]>=b[0]&&point[0]<=b[0]+b[2]&&point[1]>=b[1]&&point[1]<=b[1]+b[3]);
-    };
-    if(!pulseTargets.size&&pulseBudget>0){
-      const pending=next.filter(g=>g.pulse&&eligible(g)&&pulsed.get(g.country)?.started===null).sort((a,b)=>(b.latest||0)-(a.latest||0)||b.count-a.count);
-      const chosen=pending.filter(g=>g.country===selected);
-      for(const g of pending.filter(g=>g.pulsePriority&&!chosen.includes(g)))if(chosen.length<3)chosen.push(g);
-      for(const g of pending.filter(g=>!chosen.includes(g)).sort((a,b)=>Number(facing(b))-Number(facing(a))))if(chosen.length<3)chosen.push(g);
-      pulseTargets=new Set(chosen.map(g=>g.country));
-      if(chosen.length){const ticket={remaining:3};for(const g of chosen)pulsed.get(g.country).ticket=ticket;pulseBudget=0;}
-    }
-    if(!initialViewSet&&!flat&&pulseTargets.size){
-      initialViewSet=true;
-      const targets=[...pulseTargets].map(country=>next.find(g=>g.country===country)).filter(Boolean);
-      if(!selected&&targets.length&&!targets.some(facing))rotation=[-targets[0].center[0],-targets[0].center[1],0];
     }
     canvas.setAttribute('aria-label',flat?'세계 뉴스 평면지도. 방향키로 이동하고 더하기 빼기로 확대합니다.':'세계 뉴스 지구본. 드래그 또는 방향키로 회전하고 더하기 빼기로 확대합니다. 나라 선택과 기사 목록으로도 탐색할 수 있습니다.');
     measureReserved();request();
   }
   function clampScale(value){return Math.max(flat?1:.8,Math.min(flat?(matchMedia('(max-width:700px)').matches?6:4):3,value));}
-  function zoom(factor){stop();scale=clampScale(scale*factor);request();}
-  function home(){stop();rotation=[-115,-18,0];scale=1;pan=[0,0];request();}
-  function focus(coords){stop();if(flat){configure();const point=projection(coords),targetY=projection.translate()[1]-pan[1];pan=[pan[0]+w/2-point[0],pan[1]+targetY-point[1]];}else rotation=[-coords[0],-coords[1],0];request();}
-  function setActive(value){active=value;if(!value)stop();else resize();}
-  function spin(){if(media.matches||flat)return;if(spinning)stop();else{spinning=true;spinButton.setAttribute('aria-pressed','true');spinButton.setAttribute('aria-label','지구본 회전 정지');spinButton.querySelector('span').textContent='회전 정지';last=0;request();}}
+  function zoom(factor){stop();interact();scale=clampScale(scale*factor);request();}
+  function home(){stop();interact();rotation=[-115,-18,0];scale=1;pan=[0,0];request();}
+  function focus(coords){stop();interact();if(flat){configure();const point=projection(coords),targetY=projection.translate()[1]-pan[1];pan=[pan[0]+w/2-point[0],pan[1]+targetY-point[1]];}else rotation=[-coords[0],-coords[1],0];request();}
+  function setActive(value){active=value;if(!value){cancelGuide();stop();}else resize();}
+  function spin(){if(media.matches||flat)return;interact();if(spinning)stop();else{spinning=true;spinButton.setAttribute('aria-pressed','true');spinButton.setAttribute('aria-label','지구본 회전 정지');spinButton.querySelector('span').textContent='회전 정지';last=0;request();}}
   canvas.addEventListener('wheel',e=>{e.preventDefault();zoom(Math.exp(-e.deltaY*.001));},{passive:false});
   canvas.addEventListener('keydown',e=>{
     if(['+','=','-'].includes(e.key)){e.preventDefault();zoom(e.key==='-'?1/1.2:1.2);return;}
     if(e.key==='Home'){e.preventDefault();home();return;}
     const steps={ArrowLeft:[12,0],ArrowRight:[-12,0],ArrowUp:[0,-10],ArrowDown:[0,10]};
-    if(!steps[e.key])return;e.preventDefault();stop();const [dx,dy]=steps[e.key];if(flat){pan[0]+=dx*3;pan[1]-=dy*3;}else{rotation[0]+=dx;rotation[1]=Math.max(-85,Math.min(85,rotation[1]+dy));}request();
+    if(!steps[e.key])return;e.preventDefault();stop();interact();const [dx,dy]=steps[e.key];if(flat){pan[0]+=dx*3;pan[1]-=dy*3;}else{rotation[0]+=dx;rotation[1]=Math.max(-85,Math.min(85,rotation[1]+dy));}request();
   });
   canvas.addEventListener('pointerdown',e=>{
-    if(e.button!==0)return;stop();pointers.set(e.pointerId,[e.clientX,e.clientY]);canvas.setPointerCapture(e.pointerId);
+    if(e.button!==0)return;stop();interact();pointers.set(e.pointerId,[e.clientX,e.clientY]);canvas.setPointerCapture(e.pointerId);
     const points=[...pointers.values()];gesture={points:points.map(p=>[...p]),rotation:[...rotation],pan:[...pan],scale,start:[e.clientX,e.clientY],id:e.pointerId};if(points.length===1)dragged=false;else dragged=true;
   });
   canvas.addEventListener('pointermove',e=>{
@@ -196,7 +180,7 @@ window.NewsmapGlobe=(root,geography,onSelect)=>{
     if(pointers.size){const points=[...pointers.values()];gesture={points:points.map(p=>[...p]),rotation:[...rotation],pan:[...pan],scale};dragged=true;}else gesture=null;
   }
   canvas.addEventListener('pointerup',release);canvas.addEventListener('pointercancel',release);canvas.addEventListener('lostpointercapture',e=>pointers.delete(e.pointerId));
-  media.addEventListener('change',()=>{stop();request();});
+  media.addEventListener('change',()=>{cancelGuide();stop();request();});
   new ResizeObserver(resize).observe(wrap);resize();
-  return {update,zoom,home,focus,resize,setActive,spin,stop};
+  return {update,zoom,home,focus,resize,setActive,spin,stop,cancelGuide};
 };

@@ -366,7 +366,7 @@
   $('credits-button').addEventListener('click',()=>{openAbout();$('credits').scrollIntoView({block:'end'});});
   $('about').querySelector('.dialog-close').addEventListener('click',()=>$('about').close());
   $('about').addEventListener('click',event=>{if(event.target===$('about')){const rect=$('about').getBoundingClientRect();if(event.clientX<rect.left||event.clientX>rect.right||event.clientY<rect.top||event.clientY>rect.bottom)$('about').close();}});
-  let pendingRefresh=null;
+  let pendingRefresh=null,lastDataCheck=null;
   function refreshData(silent=false){
     if(pendingRefresh){if(!silent){refreshStatus='데이터 다시 확인 중…';renderList();}return pendingRefresh;}
     let complete;pendingRefresh=new Promise(resolve=>{complete=resolve;});
@@ -377,7 +377,7 @@
     let finished=false,changed=false;
     const timeout=window.setTimeout(()=>finish(false),15000);
     const finish=ok=>{
-      if(finished)return;finished=true;window.clearTimeout(timeout);
+      if(finished)return;finished=true;lastDataCheck=ok;window.clearTimeout(timeout);
       refreshStatus=ok?'배포된 데이터 확인 완료':hasValidSnapshot?'재확인 실패 · 기존 기사 유지':'데이터 로드 실패 · 다시 확인해 주세요.';
       button.disabled=false;button.removeAttribute('aria-busy');script.remove();
       if(!ok)window.NEWSMAP_ARTICLES=payload;
@@ -449,5 +449,5 @@
   }
   // Static script URLs may be cached across releases; verify current data immediately.
   refreshData(true);
-  window.NewsmapApp={state,nodes,refreshData,restoreView:restoreUrl,get world(){return payload.world;},get articles(){return payload.articles;},get shown(){return shown;},selectPlace,render,get map(){return map;},cutoff};
+  window.NewsmapApp={state,nodes,refreshData,get dataCheckFailed(){return lastDataCheck===false;},restoreView:restoreUrl,get world(){return payload.world;},get articles(){return payload.articles;},get shown(){return shown;},selectPlace,render,get map(){return map;},cutoff};
 })();

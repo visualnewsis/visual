@@ -14,34 +14,25 @@
       return Number.isFinite(published)&&published<=collected&&published>=collected-30*86400000&&Array.isArray(a.locations)&&a.locations.length<=200&&a.locations.every(l=>l&&typeof l==='object'&&typeof l.country==='string'&&COUNTRY_CODES.has(l.country)&&['place','related'].includes(l.role)&&Array.isArray(l.evidence)&&l.evidence.every(e=>typeof e==='string'))&&new Set(a.locations.map(l=>l.country)).size===a.locations.length;
     });
   }
-  function filter(articles,{country='',period='all',q='',onlyNew=false,cutoff=0,now=Date.now()}={}){
+  function filter(articles,{country='',period='all',q='',now=Date.now()}={}){
     const seen=new Set(),since=period==='all'?-Infinity:now-Number(period)*3600000;
     return articles.filter(a=>{
       if(seen.has(a.id))return false;
       const published=Date.parse(a.publishedAt);
-      if(!Number.isFinite(published)||published>now||published<since||(onlyNew&&published<=cutoff)||q&&!a.title.toLocaleLowerCase().includes(q.toLocaleLowerCase())||country&&(country==='unlocated'?a.locations.length:a.locations.every(l=>l.country!==country)))return false;
+      if(!Number.isFinite(published)||published>now||published<since||q&&!a.title.toLocaleLowerCase().includes(q.toLocaleLowerCase())||country&&(country==='unlocated'?a.locations.length:a.locations.every(l=>l.country!==country)))return false;
       seen.add(a.id);return true;
     }).sort((a,b)=>Date.parse(b.publishedAt)-Date.parse(a.publishedAt));
   }
   function groups(articles){
     const groups=new Map();
-    for(const a of articles)for(const l of a.locations){if(!groups.has(l.country))groups.set(l.country,{country:l.country,ids:new Set(),placeIds:new Set()});const g=groups.get(l.country);g.ids.add(a.id);if(l.role==='place')g.placeIds.add(a.id);}
-    return [...groups.values()].map(g=>({country:g.country,count:g.ids.size,placeCount:g.placeIds.size}));
-  }
-  function signals(articles,{cutoff=0,entry=0}={}){
-    const countries=new Map();
-    for(const a of articles)for(const l of a.locations){
-      if(!countries.has(l.country))countries.set(l.country,{country:l.country,ids:new Set(),pulsePriority:0,latest:-Infinity});
-      const g=countries.get(l.country),published=Date.parse(a.publishedAt);g.ids.add(a.id);
-      if(published>cutoff)g.pulsePriority=1;g.latest=Math.max(g.latest,published);
-    }
-    return [...countries.values()].map(({ids,...g})=>({...g,pulseIds:[...ids],pulseKey:entry+':'+[...ids].sort().join(',')}));
+    for(const a of articles)for(const l of a.locations){if(!groups.has(l.country))groups.set(l.country,{country:l.country,ids:new Set(),placeIds:new Set(),latest:-Infinity});const g=groups.get(l.country);g.ids.add(a.id);g.latest=Math.max(g.latest,Date.parse(a.publishedAt));if(l.role==='place')g.placeIds.add(a.id);}
+    return [...groups.values()].map(g=>({country:g.country,count:g.ids.size,placeCount:g.placeIds.size,latest:g.latest}));
   }
   function nearestCountry(points,point,radius=12){
     let nearest=null,best=radius*radius;
     for(const p of points){const distance=(p.x-point[0])**2+(p.y-point[1])**2;if(distance<best){best=distance;nearest=p.country;}}
     return nearest;
   }
-  const api={VERSION,valid,filter,groups,signals,nearestCountry};root.NewsmapWorldRules=api;
+  const api={VERSION,valid,filter,groups,nearestCountry};root.NewsmapWorldRules=api;
   if(typeof module==='object')module.exports=api;
 })(typeof window==='object'?window:globalThis);
