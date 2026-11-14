@@ -34,19 +34,19 @@
   <link rel="stylesheet" href="../assets/visual-header.css?v=20261026-goodeasy-lab1">
   <link rel="stylesheet" href="vendor/leaflet.css">
   <link rel="stylesheet" href="style.css?v=20261103-review-v2">
-  <link rel="stylesheet" href="world.css?v=20261114-2">
+  <link rel="stylesheet" href="world.css?v=20261114-3">
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-6BKMWE02W5"></script>
   <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','G-6BKMWE02W5');</script>
   <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"여기뉴스","alternateName":["여기 뉴스"],"url":"https://visual.newsis.com/newsmap/","description":"여기 무슨 일 있어? 우리 동네부터 세계까지 뉴시스 기사를 지역과 나라별로 탐색하는 뉴스 지도","applicationCategory":"NewsApplication","operatingSystem":"Any","inLanguage":"ko-KR","isAccessibleForFree":true,"publisher":{"@type":"NewsMediaOrganization","name":"뉴시스","url":"https://www.newsis.com/"},"@id":"https://visual.newsis.com/newsmap/#app","image":"https://visual.newsis.com/newsmap/assets/share-here-news-final-20261023.png?v=20261023-final","creator":{"@type":"Person","name":"안재현","jobTitle":["뉴시스 기자","크리에이티브 디렉터"]},"isPartOf":{"@type":"WebSite","name":"VISUAL NEWSIS","url":"https://visual.newsis.com/"},"keywords":["여기뉴스","여기 뉴스","지역 뉴스","동네 뉴스","뉴스 지도","국제 뉴스","세계 뉴스","뉴시스"]}</script>
   <script defer src="../assets/visual-header.js?v=20261026-menuorder1" data-section="여기뉴스" data-current="newsmap" data-section-href="./"></script>
   <script defer src="vendor/leaflet.js"></script>
   <script defer src="data/geography.js"></script>
-  <script defer src="data/articles.js?v=20261114-world-2"></script>
+  <script defer src="data/articles.js?v=20261114-world-3"></script>
   <script defer src="core.js?v=20261103-review-v2"></script>
   <script defer src="basemap.js?v=20261023-performance"></script>
   <script defer src="mobile-sheet.js?v=20261022-4"></script>
-  <script defer src="app.js?v=20261114-world-2"></script>
-  <script defer src="world-entry.js?v=20261114-2"></script>
+  <script defer src="app.js?v=20261114-world-3"></script>
+  <script defer src="world-entry.js?v=20261114-3"></script>
 </head>
 <body>
   <a class="skip" href="#results">기사 목록으로 건너뛰기</a>
@@ -106,13 +106,13 @@
         <p class="world-map-notice" id="world-map-notice" role="status">지구본을 준비하고 있습니다. 기사 목록은 먼저 볼 수 있어요.</p>
         <button id="world-retry" class="world-retry" hidden>다시 확인</button>
         <div class="world-controls" role="group" aria-label="지구본 조작"><button id="world-spin" aria-pressed="false" aria-label="지구본 회전 시작">↻ <span>회전 시작</span></button><button id="world-find" hidden>국가 찾기</button><button id="world-home" aria-label="세계지도 초기화">지도 초기화</button><button id="world-zoom-in" aria-label="세계지도 확대">+</button><button id="world-zoom-out" aria-label="세계지도 축소">−</button><button id="world-expand" aria-label="지구본 크게 보기" aria-pressed="false">⤢</button></div>
-        <div class="world-map-legend"><span><i class="world-dot-place"></i>기사 속 장소</span><span><i class="world-dot-related"></i>관련 국가</span><button id="world-motion" aria-pressed="true" title="새로 수집한 미열람 기사를 짧은 파동으로 강조합니다. 새 수집 후 최대 10분 이내에 재생되며 실제 사건 발생 시각을 뜻하지 않습니다.">새 기사 파동 켜짐</button></div>
+        <div class="world-map-legend"><span><i class="world-dot-place"></i>기사 속 장소</span><span><i class="world-dot-related"></i>관련 국가</span><button id="world-motion" aria-pressed="true" title="실제 기사가 있는 나라를 안내하는 파동입니다. 지난 방문 이후 새 기사가 있는 나라를 우선 안내하며, 새 기사 여부는 NEW 표시로 구분합니다.">안내 파동 켜짐</button></div>
         <p class="world-map-note">점은 나라별 대표 위치입니다. 정확한 사건 지점은 아닙니다.<br><a href="https://www.naturalearthdata.com/about/terms-of-use/" target="_blank" rel="noopener noreferrer">Natural Earth</a> · 경계는 탐색용 참고 자료</p>
       </div>
     </section>
     <footer><span class="footer-note">© NEWSIS · 뉴스를 보는 새로운 방식<br><span>지역 원은 기사 묶음의 대표 위치이며 사건의 정확한 지점이 아닙니다.</span></span><span class="footer-credit">크리에이티브 디렉터 · <strong>안재현</strong></span><button id="credits-button">지도·데이터 출처</button></footer>
   </main>
-  <dialog id="about"><button class="dialog-close" aria-label="안내 닫기">×</button><span class="eyebrow">NEWS MAP GUIDE</span><h2>동네를 따라,<br>뉴스를 읽는 방법.</h2><div class="guide-row"><b>01</b><p><strong>궁금한 동네로 들어가세요.</strong>지도 위 원을 누르거나 지역 이름을 검색하세요. 읍·면·동까지 선택할 수 있습니다.</p></div><div class="guide-row"><b>02</b><p><strong>동네뉴스와 전체뉴스를 골라보세요.</strong>동네뉴스는 지역의 생활·현장 소식, 전체뉴스는 국내 뉴스를 관련 장소에서 보여줍니다. 세계 뉴스에서는 국제 기사를 나라별로 탐색할 수 있습니다. 세계지도 점은 나라별 대표 위치이며 실제 사건 발생 지점은 아닙니다. 구까지만 확인된 기사를 특정 동네로 추정하지 않습니다.</p></div><div class="guide-row"><b>03</b><p><strong>색상과 파동은 기준이 달라요.</strong>빨강은 지난 방문 이후 발행된 새 기사가 있는 지역이며, 첫 방문은 최근 24시간이 기준입니다. 초록은 그 기준의 새 기사가 없는 기사 묶음이고, 원 안 숫자는 전체 기사 수입니다. 새로 수집된 미열람 기사는 최대 10분 동안 파동을 표시합니다. 세계지도에서도 새로 수집한 미열람 기사가 있는 나라에 짧은 파동이 나타납니다. 새 수집 후 최대 10분 이내에 재생되며 실제 사건 발생 시각을 뜻하지 않습니다. 읽거나 시간이 지나면 파동이 멈춥니다. 방문·읽음 기록은 이 브라우저에 저장합니다.</p></div><p class="guide-note">현재는 공개 뉴시스 기사 일부를 모은 시제품입니다. 기사 수는 수집된 뉴시스 보도량이며 지역의 실제 사건 발생량이나 전체 취재량을 의미하지 않습니다. 자동 위치 분류는 원문과 대조가 필요합니다. 공식 RSS와 필요한 기사 도입부를 10분 주기로 확인합니다. 예약 실행이나 배포 대기로 반영이 늦어질 수 있습니다.</p><div id="credits"><strong>지도·데이터 출처</strong><p>기사: 뉴시스 공식 RSS 및 공개 기사 메타데이터<br>배경지도: © OpenStreetMap contributors<br>행정동 경계: 통계청 SGIS · vuski/admdongkor, 2026-10-01판을 단순화 가공. 경계는 참고용입니다.<br>지도 라이브러리: Leaflet 1.9.4 (BSD-2-Clause)</p><a href="https://github.com/vuski/admdongkor" target="_blank" rel="noopener noreferrer">행정동 경계 원자료 ↗</a></div></dialog>
+  <dialog id="about"><button class="dialog-close" aria-label="안내 닫기">×</button><span class="eyebrow">NEWS MAP GUIDE</span><h2>동네를 따라,<br>뉴스를 읽는 방법.</h2><div class="guide-row"><b>01</b><p><strong>궁금한 동네로 들어가세요.</strong>지도 위 원을 누르거나 지역 이름을 검색하세요. 읍·면·동까지 선택할 수 있습니다.</p></div><div class="guide-row"><b>02</b><p><strong>동네뉴스와 전체뉴스를 골라보세요.</strong>동네뉴스는 지역의 생활·현장 소식, 전체뉴스는 국내 뉴스를 관련 장소에서 보여줍니다. 세계 뉴스에서는 국제 기사를 나라별로 탐색할 수 있습니다. 세계지도 점은 나라별 대표 위치이며 실제 사건 발생 지점은 아닙니다. 구까지만 확인된 기사를 특정 동네로 추정하지 않습니다.</p></div><div class="guide-row"><b>03</b><p><strong>색상과 파동은 기준이 달라요.</strong>빨강은 지난 방문 이후 발행된 새 기사가 있는 지역이며, 첫 방문은 최근 24시간이 기준입니다. 초록은 그 기준의 새 기사가 없는 기사 묶음이고, 원 안 숫자는 전체 기사 수입니다. 국내 지도는 새로 수집된 미열람 기사에 최대 10분 동안 파동을 표시합니다. 이 파동은 읽거나 시간이 지나면 멈춥니다. 세계지도의 안내 파동은 실제 기사가 있는 나라를 짧게 강조합니다. 세계 화면에 들어오면 보이는 나라부터 안내하고, 지난 방문 이후 새 기사가 있는 나라를 우선합니다. 새 기사 여부는 NEW 표시로 구분하며 파동이 실제 사건 발생 시각을 뜻하지는 않습니다. 방문 기록은 이 브라우저에 저장합니다.</p></div><p class="guide-note">현재는 공개 뉴시스 기사 일부를 모은 시제품입니다. 기사 수는 수집된 뉴시스 보도량이며 지역의 실제 사건 발생량이나 전체 취재량을 의미하지 않습니다. 자동 위치 분류는 원문과 대조가 필요합니다. 공식 RSS와 필요한 기사 도입부를 10분 주기로 확인합니다. 예약 실행이나 배포 대기로 반영이 늦어질 수 있습니다.</p><div id="credits"><strong>지도·데이터 출처</strong><p>기사: 뉴시스 공식 RSS 및 공개 기사 메타데이터<br>배경지도: © OpenStreetMap contributors<br>행정동 경계: 통계청 SGIS · vuski/admdongkor, 2026-10-01판을 단순화 가공. 경계는 참고용입니다.<br>지도 라이브러리: Leaflet 1.9.4 (BSD-2-Clause)</p><a href="https://github.com/vuski/admdongkor" target="_blank" rel="noopener noreferrer">행정동 경계 원자료 ↗</a></div></dialog>
   <noscript><p class="noscript">지도를 탐색하려면 JavaScript를 켜주세요. <a href="https://www.newsis.com/local/">뉴시스 지방 뉴스 읽기</a></p></noscript>
 </body>
 </html>

@@ -10,8 +10,8 @@
     if(view)return view;
     if(!loading)loading=(async()=>{
       // List/data state is independent from geographic rendering.
-      if(!window.NewsmapWorldRules)await load('world-core.js?v=20261114-2');
-      if(!window.NewsmapWorld)await load('world.js?v=20261114-2');
+      if(!window.NewsmapWorldRules)await load('world-core.js?v=20261114-3');
+      if(!window.NewsmapWorld)await load('world.js?v=20261114-3');
       view=window.NewsmapWorld(world);
       view.restore();
       return view;

@@ -28,11 +28,20 @@
     for(const a of articles)for(const l of a.locations){if(!groups.has(l.country))groups.set(l.country,{country:l.country,ids:new Set(),placeIds:new Set()});const g=groups.get(l.country);g.ids.add(a.id);if(l.role==='place')g.placeIds.add(a.id);}
     return [...groups.values()].map(g=>({country:g.country,count:g.ids.size,placeCount:g.placeIds.size}));
   }
+  function signals(articles,{cutoff=0,entry=0}={}){
+    const countries=new Map();
+    for(const a of articles)for(const l of a.locations){
+      if(!countries.has(l.country))countries.set(l.country,{country:l.country,ids:new Set(),pulsePriority:0,latest:-Infinity});
+      const g=countries.get(l.country),published=Date.parse(a.publishedAt);g.ids.add(a.id);
+      if(published>cutoff)g.pulsePriority=1;g.latest=Math.max(g.latest,published);
+    }
+    return [...countries.values()].map(({ids,...g})=>({...g,pulseIds:[...ids],pulseKey:entry+':'+[...ids].sort().join(',')}));
+  }
   function nearestCountry(points,point,radius=12){
     let nearest=null,best=radius*radius;
     for(const p of points){const distance=(p.x-point[0])**2+(p.y-point[1])**2;if(distance<best){best=distance;nearest=p.country;}}
     return nearest;
   }
-  const api={VERSION,valid,filter,groups,nearestCountry};root.NewsmapWorldRules=api;
+  const api={VERSION,valid,filter,groups,signals,nearestCountry};root.NewsmapWorldRules=api;
   if(typeof module==='object')module.exports=api;
 })(typeof window==='object'?window:globalThis);
