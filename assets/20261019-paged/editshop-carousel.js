@@ -19,7 +19,9 @@
     {slug:"smartwatch",num:"015",meta:"신변보호 스마트워치 · 지급 이후의 점검",title:"방전된 안전",image:"/smartwatch/images/og-songpa-court-1200x630.jpg",alt:"송파 장모 살해·아내 납치 사건 피의자의 법원 출석 모습"},
     {slug:"spai",num:"016",meta:"AI 직원 감시 · 근무 기록의 빈틈",title:"“쟤 지금 딴짓해요” 회사가 고용한 SPAI",image:"/spai/images/og-spai-1200x630.jpg",alt:"밤늦은 사무실에서 모니터 앞에 앉은 직원의 뒷모습과 천장의 감시 카메라"},
     {slug:"quit",num:"017",meta:"퇴사 후 생활비 · 통장 잔고 · 인터랙티브",title:"퇴사할게여 · 내 통장 몇 달 버틸 수 있을까",image:"/quit/images/og-quit-1200x630.jpg",alt:"개인 물품 상자를 들고 회사를 나서는 직장인, 생성형 AI 이미지"},
-    {slug:"braille-100",num:"018",meta:"훈맹정음 100년 · 한글 점자 · 인터랙티브",title:"점점⠿ 문장이 손에 잡혔다",image:"/braille-100/images/contact-720.jpg",alt:"점자책 위에 놓인 손끝. 사진 김종택 기자"}
+    {slug:"braille-100",num:"018",meta:"훈맹정음 100년 · 한글 점자 · 인터랙티브",title:"점점⠿ 문장이 손에 잡혔다",image:"/braille-100/images/contact-720.jpg",alt:"점자책 위에 놓인 손끝. 사진 김종택 기자"},
+    {"slug":"turn-toward-busan","num":"019","meta":"유엔참전용사 · 부산을 향한 묵념","title":"11월 11일 오전 11시<br>111명의 이름을 다시","image":"/turn-toward-busan/images/NISI20251111_0021053031-1600.jpg","alt":"부산 유엔기념공원에서 휠체어에 앉은 참석자들이 경례하는 모습"},
+    {"slug":"admission-priority","num":"020","meta":"복직 · 어린이집 입소 대기 · 돌봄 공백","title":"돌봄? 내 멘탈은 누가 돌봄?","image":"/admission-priority/assets/daycare-parent-newsis.jpg","alt":"아이를 안고 있는 보호자의 등원 자료사진. 사진 속 인물은 본문 사례와 관계없다."}
 
   ];
   const start=()=>{
