@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-11-15T21:12:23+00:00",
+  "updatedAt": "2026-11-16T06:48:10+00:00",
   "source": "VISUAL NEWSIS editshop landing page",
   "articles": [
     {
@@ -191,6 +191,16 @@
       "image": "https://visual.newsis.com/turn-toward-busan/images/NISI20251111_0021053031-1600.jpg",
       "url": "https://visual.newsis.com/turn-toward-busan/",
       "profile": "edge"
+    },
+    {
+      "id": "admission-priority",
+      "issue": "편집#020",
+      "label": "복직 / 어린이집 / 돌봄 공백",
+      "title": "돌봄? 내 멘탈은 누가 돌봄?",
+      "description": "어린이집을 기다린 두 달, 부모님께 아이를 맡기고 복직했다. 김씨의 실제 경험과 공개 조사로 입소 전후의 돌봄 공백을 살핍니다.",
+      "image": "https://visual.newsis.com/admission-priority/assets/daycare-parent-newsis.jpg",
+      "url": "https://visual.newsis.com/admission-priority/",
+      "profile": "center"
     }
   ]
 }
