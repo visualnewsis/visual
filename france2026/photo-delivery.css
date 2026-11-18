@@ -1,0 +1,7 @@
+/* This viewport omits only the branded bottom margin. Source files stay intact. */
+.photo-surface{position:relative;overflow:hidden;background:#071217}
+.photo-surface>img{position:absolute;display:block;max-width:none!important;max-height:none!important;object-fit:fill!important;padding:0!important;margin:0!important;transform:none!important;transition:none!important}
+.photo-surface>img.photo-detail[hidden]{display:none}
+.record-photo-surface{width:100%;height:min(23svh,220px);object-fit:contain}
+#recordFigure .photo-surface>img{width:auto;height:auto}
+@media(max-width:760px){#atlasDialog .record-photo-surface{height:115px}}
