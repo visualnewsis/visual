@@ -111,26 +111,37 @@ const gateJourneyModel=(()=>{
  const koreaZoom=t=>ease(t/.86);
  const koreaFlat=t=>ease((t-.38)/.24);
  function koreaRadius(w,h){return Math.min(w*.68/(3.5*Math.PI/180*Math.cos(36.4*Math.PI/180)),h*.65/(5.5*Math.PI/180))}
+ function readingBoundary(a,b){
+  if(cityArrival(a,b))return .94;
+  if(a?.type==='photo'&&b?.type==='map')return .9;
+  return a?.globe==='korea'&&b?.type==='stat'?.93:.5;
+ }
  function readingIndex(p,states){
   const i=Math.floor(clamp(p,0,states.length-1)),a=states[i],b=states[i+1],t=p-i;
   if(!b)return i;
-  const threshold=a.cityArrival&&b.type==='photo' ? .89 : a.globe==='korea'&&b.type==='stat' ? .93 : .5;
+  const threshold=readingBoundary(a,b);
   return t<threshold?i:i+1;
  }
  function readingOpacity(p,states,moving=true){
-  if(!moving)return 1;
   const i=Math.floor(clamp(p,0,states.length-1)),a=states[i],b=states[i+1];
   if(!b)return 1;
+  const t=p-i,boundary=readingBoundary(a,b);
+  // A photographic handoff has one scroll-controlled visual owner. Pausing
+  // must not relight the old headline over the next country's map.
+  if(cityArrival(a,b))return t<boundary?1-ease(photoFrameAt(p,states).opacity/.65):ease((t-boundary)/(1-boundary));
+  if(a.type==='photo'&&b.type==='map')return t<boundary?ease(photoFrameAt(p,states).opacity):ease((t-boundary)/(1-boundary));
+  if(!moving)return 1;
   if(a.coverReading&&b.coverReading)return 1;
-  const boundary=a.cityArrival&&b.type==='photo'?.89:a.globe==='korea'&&b.type==='stat'?.93:.5;
-  return ease(Math.abs(p-i-boundary)/.07);
+  return ease(Math.abs(p-i-boundary)/Math.min(.07,1-boundary));
  }
  function cityArrival(a,b){return !!(a?.cityArrival&&b?.type==='photo'&&a.selected===b.city)}
  function mapFrameAt(p,states,cameraFor,w,h,focusFor){
   const i=Math.floor(p),t=p-i,a=states[i],b=states[i+1],active=readingIndex(p,states);
   const before=n=>{for(let k=n;k>=0;k--)if(states[k].type==='map')return k;return-1};
   const after=n=>{for(let k=n;k<states.length;k++)if(states[k].type==='map')return k;return-1};
-  const index=states[active].type==='map'?active:before(i)>=0?before(i):after(i+1);
+  // The next country owns the returning map while the outgoing photo still
+  // covers it. Copy changes later, once that map has actually been revealed.
+  const index=a?.type==='photo'&&b?.type==='map'?i+1:states[active].type==='map'?active:before(i)>=0?before(i):after(i+1);
   if(index<0)return null;
   let cam=cameraFor(states[index]),labels=index,labelOpacity=1;
   let departureIndex=i;while(states[departureIndex]?.type==='interlude')departureIndex--;
@@ -157,7 +168,9 @@ const gateJourneyModel=(()=>{
   const i=Math.floor(p),t=p-i,a=states[i],b=states[i+1];
   if(a?.gate==='opening'&&b?.type==='photo')return{key:b.photo,opacity:ease(t/.5)};
   if(cityArrival(a,b))return{key:b.photo,opacity:cityReveal(t)};
-  if(a?.type==='photo'&&a.country&&(b?.type==='map'||b?.type==='globe'))return{key:a.photo,opacity:1-ease(t/.42)};
+  // Pull back from the city behind the photograph first. Revealing the map
+  // too early exposes a flat pale close-up between two country chapters.
+  if(a?.type==='photo'&&(b?.type==='map'||b?.type==='globe'))return{key:a.photo,opacity:1-ease((t-.52)/.38)};
   if(a?.type==='photo')return{key:a.photo,opacity:b&&b.type!=='photo'?1-ease((t-.35)/.65):1};
   if(b?.type==='photo')return{key:b.photo,opacity:ease((t-.15)/.85)};
   return{key:null,opacity:0};
@@ -169,6 +182,6 @@ const gateJourneyModel=(()=>{
   if(p>=promise-.35&&p<=end)return{visible:true,open:ease((p-evidence-.55)/.4),opacity:ease((p-promise+.35)/.35),mode:'ending'};
   return{visible:false,open:0,opacity:0,mode:'none'};
  }
- return{clamp,ease,storyAnchors,introProgress,frameInset,mobileBookendWeight,mobilePhotoBox,coverReading,interludeOpacity,spotlightFrame,holdAfter,transitionSpan,readingPosition,scrollPosition,spotlightHold,coverHold,readingTrack,positionOnTrack,scrollOnTrack,rebaseScroll,globeScaleForCamera,wrapLongitude,globeControl,dragOrientation,geographicAt,centeredCamera,contextCamera,zoomAt,mixCamera,cameraBetween,advance,gateAt,cityScale,countryFlagOpacity,cityCamera,cityReveal,koreaReveal,koreaZoom,koreaFlat,koreaRadius,readingIndex,readingOpacity,cityArrival,mapFrameAt,photoFrameAt};
+ return{clamp,ease,storyAnchors,introProgress,frameInset,mobileBookendWeight,mobilePhotoBox,coverReading,interludeOpacity,spotlightFrame,holdAfter,transitionSpan,readingPosition,scrollPosition,spotlightHold,coverHold,readingTrack,positionOnTrack,scrollOnTrack,rebaseScroll,globeScaleForCamera,wrapLongitude,globeControl,dragOrientation,geographicAt,centeredCamera,contextCamera,zoomAt,mixCamera,cameraBetween,advance,gateAt,cityScale,countryFlagOpacity,cityCamera,cityReveal,koreaReveal,koreaZoom,koreaFlat,koreaRadius,readingBoundary,readingIndex,readingOpacity,cityArrival,mapFrameAt,photoFrameAt};
 })();
 if(typeof module!=='undefined')module.exports=gateJourneyModel;

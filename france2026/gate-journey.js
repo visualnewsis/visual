@@ -3,6 +3,9 @@ const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
 const reduceMotion=matchMedia('(prefers-reduced-motion: reduce)');
 const {states:journeyStates,groups:journeyGroups}=gateStory;
 const initialScene=location.hash.slice(1);
+// The scene hash restores the reading stop. Native pixel restoration can
+// otherwise overwrite it after a resize or a change in scroll distance.
+if('scrollRestoration' in history)history.scrollRestoration='manual';
 const M=gateJourneyModel,stage=$('#journeyStage'),story=$('#top');
 const journeyAnchors=M.storyAnchors(journeyStates);
 const mobileViewport=matchMedia('(max-width:800px), (pointer:coarse) and (max-width:1200px), (max-height:540px) and (max-width:1200px)');
@@ -78,7 +81,7 @@ transcriptRoot.querySelectorAll('article').forEach(article=>article.remove());
 transcriptRoot.insertAdjacentHTML('beforeend',transcriptStates.map(s=>'<article><h3>'+textTitle(s)+'</h3>'+s.body.split(/\n\s*\n/).filter(Boolean).map(p=>'<p>'+p+'</p>').join('')+'<p class="transcript-note">'+s.note+'</p>'+refsHTML(s.refs,transcriptSources)+'</article>').join(''));
 
 function origin(){return scrollOrigin}
-function step(){return Math.max(460,innerHeight-(phoneLayout?0:104))*.94/M.transitionSpan}
+function step(){return Math.max(460,innerHeight-(phoneLayout?0:104))*1.08/M.transitionSpan}
 function cancelSeek(event){
  if(event?.type==='touchstart'&&event.target.closest('button,select,a,input'))return;
  if(requested!==null)scrollTo({top:scrollY,behavior:'instant'});
@@ -100,6 +103,13 @@ function readScroll(){
  if(!raf)raf=requestAnimationFrame(()=>{raf=0;paint(visual)});
  clearTimeout(scrollIdle);scrollIdle=setTimeout(()=>{scrollMoving=false;cancelAnimationFrame(raf);raf=0;paint(visual)},120);
 }
+// Inline fragments follow the actual printed lines, including soft wraps.
+// They protect photo copy without casting a large oval over the photograph.
+function protectPhotoCopy(element){
+ const walker=document.createTreeWalker(element,NodeFilter.SHOW_TEXT),nodes=[];
+ while(walker.nextNode()){const node=walker.currentNode;if(node.textContent.trim()&&!node.parentElement.closest('.copy-ink,.hanging-quote'))nodes.push(node)}
+ for(const node of nodes){const ink=document.createElement('span');ink.className='copy-ink';node.replaceWith(ink);ink.append(node)}
+}
 function setState(index){
  const s=journeyStates[index],wasCover=stage.dataset.cover==='true';current=index;stage.dataset.kind=s.type;stage.dataset.group=s.group;stage.dataset.state=s.id;stage.dataset.cover=String(!!s.coverReading);stage.dataset.standard=String(!s.coverReading&&s.id!=='gate-open'&&s.type!=='interlude');stage.dataset.spotlightBlank=String(!!s.spotlightBlank);
  const bookend=s.type!=='interlude'&&(!phoneLayout||!!s.coverReading||s.id==='gate-open'),screen=s.type==='interlude'?'black':bookend?'framed':'immersive';
@@ -120,6 +130,7 @@ function setState(index){
  $('#journeyLead').textContent=s.quotedLead?lead.slice(1):lead;
  if(s.quotedLead){const quote=document.createElement('span');quote.className='hanging-quote';quote.setAttribute('aria-hidden','true');quote.textContent='"';$('#journeyLead').prepend(quote)}
  $('#journeyLead').setAttribute('aria-label',lead);
+ if(s.type==='photo')for(const element of [$('#journeyTitle'),$('#journeyKicker'),$('#journeyLead'),$('#sourceButton'),$('#photoReturn')])protectPhotoCopy(element);
  $('#journeyTitle').setAttribute('tabindex','-1');$('#journeyTitle').hidden=!!s.spotlightBlank;
  const groupIndex=journeyGroups.findIndex(g=>g.id===s.group);
  menu.querySelectorAll('[data-group]').forEach(b=>{if(b.dataset.group===s.group)b.setAttribute('aria-current','step');else b.removeAttribute('aria-current')});
@@ -145,10 +156,21 @@ function setState(index){
  queueMobileLayout();
  requestAnimationFrame(()=>{photoDelivery.layout($('#journeyPhoto .photo-surface>img'));if(geometry)paint(visual)});
 }
-let mobileLayoutFrame=0;
-function queueMobileLayout(){if(!phoneLayout||mobileLayoutFrame)return;mobileLayoutFrame=requestAnimationFrame(()=>{mobileLayoutFrame=0;const s=journeyStates[current],top=$('.journey-top');if(s.coverReading){stage.style.setProperty('--mobile-cover-title-bottom',top.offsetTop+top.offsetHeight+'px');return}if(s.type!=='photo')return;
- const bottom=$('.journey-bottom'),profile=mobileLayoutData.photos[s.photo];
- const box=M.mobilePhotoBox(stage.clientWidth,stage.clientHeight,top.offsetTop+top.offsetHeight,bottom.offsetTop,profile?.aspect,profile?.portrait);
+let mobileLayoutFrame=0,mobilePhotoLayout=null;
+function queueMobileLayout(){if(!phoneLayout||mobileLayoutFrame)return;mobileLayoutFrame=requestAnimationFrame(()=>{mobileLayoutFrame=0;const s=journeyStates[current],top=$('.journey-top');if(s.coverReading){stage.style.setProperty('--mobile-cover-title-bottom',top.offsetTop+top.offsetHeight+'px');return}
+ const shot=photoFor(visual);if(!shot.key)return;
+ const bottom=$('.journey-bottom'),profile=mobileLayoutData.photos[shot.key],w=stage.clientWidth,h=stage.clientHeight;
+ stage.style.setProperty('--mobile-photo-x',profile?.x??.5);stage.style.setProperty('--mobile-photo-y',profile?.y??.5);
+ const targetBox=M.mobilePhotoBox(w,h,top.offsetTop+top.offsetHeight,bottom.offsetTop,profile?.aspect,profile?.portrait);
+ if(mobilePhotoLayout?.key!==shot.key||mobilePhotoLayout.w!==w||mobilePhotoLayout.h!==h)mobilePhotoLayout={key:shot.key,w,h,entry:targetBox,reading:targetBox};
+ if(s.type==='photo')mobilePhotoLayout.reading=targetBox;
+ const i=Math.floor(visual),a=journeyStates[i],b=journeyStates[i+1];let box=mobilePhotoLayout.reading;
+ if(a?.type!=='photo'&&b?.photo===shot.key){
+  // The photo has one frame while the map fades. Only the remaining native
+  // transition interpolates into its measured reading composition.
+  const boundary=M.readingBoundary(a,b),q=M.ease((visual-i-boundary)/(1-boundary));
+  box=Object.fromEntries(Object.keys(targetBox).map(name=>[name,mobilePhotoLayout.entry[name]*(1-q)+mobilePhotoLayout.reading[name]*q]));
+ }
  for(const [name,value]of Object.entries(box))stage.style.setProperty('--mobile-image-'+name,value+'px');
  photoDelivery.layout($('#journeyPhoto .photo-surface>img'));
 })}
@@ -304,6 +326,7 @@ function paint(p){
  interludeLayer.style.opacity=interludeBlack;
  const s=journeyStates[index],koreaFlat=p>korea&&p<korea+1?M.koreaFlat(p-korea):0,globeOpacity=p<entry?1-M.ease((openingProgress-.82)/.18):p>korea-1&&p<korea+1?M.ease((p-korea+1)/.45)*(1-koreaFlat)*(1-M.koreaReveal(p-korea)):p>returnWorld-1&&p<returnWorld+1?M.ease(p-returnWorld+1)*(1-M.ease((p-returnWorld-.82)/.18)):0;
  const photographic=photoFor(p);const gate=M.gateAt(p,journeyAnchors);
+ queueMobileLayout();
  let mapOpacity=s.type==='map'?1:0;
  const a=journeyStates[Math.floor(p)],b=journeyStates[Math.floor(p)+1],t=p-Math.floor(p);
  if(a?.type==='map'&&b?.type!=='map')mapOpacity=1-M.ease((t-.3)/.7);

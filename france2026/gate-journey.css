@@ -50,14 +50,21 @@ a>.article-byline{display:inline-block;font-size:1em;font-weight:400;line-height
 /* Desktop photographs keep their complete horizontal field of view. */
 @media(min-width:801px){
  .journey-photo .photo-surface{inset:0;padding:0;--photo-fit-width:1;--photo-position-x:0}
- /* An elliptical falloff protects the letters without outlining their text boxes. */
+ /* Protect each printed line, leaving the rest of the photograph clear. */
  #journeyStage[data-kind=photo] .journey-top::before,
  #journeyStage[data-kind=photo] .journey-bottom::before{
-  content:'';position:absolute;inset:-160px -360px -160px -4vw;z-index:-1;pointer-events:none;
-  background:radial-gradient(ellipse farthest-side at 15% 50%,#07151ec7 0%,#07151ec2 48%,#07151eb8 68%,#07151e80 80%,#07151e38 91%,transparent 100%);
-  mask-image:none;
+  content:none;
  }
- #journeyStage[data-kind=photo] .journey-bottom::before{opacity:var(--photo-copy-opacity,1);mask-image:linear-gradient(0deg,transparent 142px,#000 160px)}
+ body[data-layout=desktop] #journeyStage[data-kind=photo] .copy-ink{
+  padding:.055em .12em;margin-inline:-.12em;background:#07151eb8;
+  -webkit-box-decoration-break:clone;box-decoration-break:clone;
+ }
+ /* Inline font boxes are taller than the title's line-height. Limit only
+    the painted backing so adjacent rows have a real transparent gap. */
+ body[data-layout=desktop] #journeyStage[data-kind=photo] #journeyTitle .copy-ink{
+  background:linear-gradient(#07151eb8,#07151eb8) center / 100% 1.08em no-repeat;
+ }
+ body[data-layout=desktop] #journeyStage[data-kind=photo] .journey-actions .copy-ink{padding-block:.2em}
  .gate-still{width:100%;height:auto;inset:auto 0;top:50%;transform:translateY(-50%);object-fit:contain}
 }
 

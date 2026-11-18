@@ -38,7 +38,7 @@
  #journeyStage[data-kind=photo] .journey-top::before,#journeyStage[data-kind=photo] .journey-bottom::before{display:none}
  #journeyStage[data-kind=photo] .journey-shade{background:none}
  #journeyStage .journey-photo{background:#10262c}
- #journeyStage[data-kind=photo] .journey-photo .photo-surface{
+ #journeyStage[data-kind] .journey-photo .photo-surface{
   inset:auto;left:var(--mobile-image-left,0px);top:var(--mobile-image-top,24%);width:var(--mobile-image-width,100%);height:var(--mobile-image-height,44%);padding:0;transform:none;object-fit:cover;
   --photo-fit-width:0;--photo-position-x:var(--mobile-photo-x,.5);--photo-position-y:var(--mobile-photo-y,.5);
  }
