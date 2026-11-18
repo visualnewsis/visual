@@ -36,6 +36,8 @@
 .article-page .hero-dots .braille-cell{grid-template-columns:repeat(2,10px);grid-auto-rows:10px;gap:9px;padding:4px}
 .article-page .hero-dots .braille-space{width:18px}
 .article-page .hero-korean{font-size:clamp(44px,4.5vw,66px);line-height:1.4;letter-spacing:-.055em;margin:0;padding:0;max-width:760px}
+.article-page .hero-title-first{white-space:nowrap}
+.article-page .hero-title-braille{display:inline-block;margin-left:.4em;font-family:"Segoe UI Symbol","Apple Symbols","Noto Sans Symbols 2",sans-serif;font-size:.55em;line-height:1;letter-spacing:0;vertical-align:.08em}
 .article-page .opening .hero-byline{margin:0 0 25px;padding-left:calc(46.7% + 27px)}
 .article-page .opening-bottom{padding:0 0 40px;align-items:center}
 .article-page .standfirst{font-size:17px;line-height:1.85;max-width:780px}
