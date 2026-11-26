@@ -121,8 +121,25 @@ function eagle() {
   const map=new THREE.TextureLoader().load(new URL('./sky-eagle.webp',import.meta.url).href);
   map.colorSpace=THREE.SRGBColorSpace;
   const paint=new THREE.MeshBasicMaterial({map,alphaTest:.15,side:THREE.DoubleSide,toneMapped:false});
-  const root=new THREE.Mesh(new THREE.PlaneGeometry(5.5,5.5*5/6),paint);
-  return root;
+  // The photographed wing axis runs from lower left to upper right. Rotate
+  // each span about its own shoulder; the head, breast and tail stay rigid.
+  const beat={value:0};
+  paint.onBeforeCompile=shader=>{
+    shader.uniforms.beat=beat;
+    shader.vertexShader='uniform float beat;\n'+shader.vertexShader.replace('#include <begin_vertex>',`
+      #include <begin_vertex>
+      vec2 spanAxis=normalize(vec2(.79,.61));
+      float span=dot(position.xy-vec2(-.04,-.04),spanAxis);
+      float reach=max(abs(span)-.48,0.);
+      float tip=smoothstep(.0,2.9,reach);
+      float angle=beat*(.65+.47*tip);
+      transformed.xy+=spanAxis*sign(span)*reach*(cos(angle)-1.);
+      transformed.y+=reach*sin(angle)*.48;
+      transformed.z+=reach*sin(angle)*.86;
+    `);
+  };
+  const root=new THREE.Mesh(new THREE.PlaneGeometry(5.5,5.5*5/6,48,40),paint);
+  return {root,beat};
 }
 
 function dragon() {
@@ -193,10 +210,14 @@ export function createSky(scene,tuftMap,flocks) {
   const banks=[makeCloudBank(scene,map,tuftMap,312,54,.14),makeCloudBank(scene,map,tuftMap,714,69,.73)];
   const raptor=eagle(),serpent=dragon();
   const {craft,satellite}=spaceModels();
-  scene.add(raptor,serpent.root,craft,satellite);
+  // Keep the entire crossing in the clear air nearest the reader. Scaling
+  // depth and size together preserves the angular size of each silhouette.
+  const foreground=new THREE.Group();
+  foreground.scale.setScalar(.36);
+  foreground.add(raptor.root,serpent.root,craft,satellite,...flocks.map(flock=>flock.formation));
+  scene.add(foreground);
   const clearFog=new THREE.Color(0xc8dcdf),mist=new THREE.Color(0xdbe4e5);
   const blue=new THREE.Color(0x749eb7),twilight=new THREE.Color(0x233951),skyTint=new THREE.Color();
-  const screenPoint=new THREE.Vector3();
   const starPositions=[];
   for (let i=0;i<66;i++) {
     const x=(i*.61803398875%1-.5)*620;
@@ -216,12 +237,17 @@ export function createSky(scene,tuftMap,flocks) {
     root.visible=enabled && t>=0 && t<=1;
     if (!root.visible) return;
     const halfH=depth*Math.tan(THREE.MathUtils.degToRad(camera.fov*.5));
-    screenPoint.set(mix(from,to,t)*halfH*camera.aspect,y*halfH,-depth);
-    root.position.copy(camera.localToWorld(screenPoint));
-    root.quaternion.copy(camera.quaternion);
+    root.position.set(mix(from,to,t)*halfH*camera.aspect,y*halfH,-depth);
+    root.quaternion.identity();
   }
 
-  return function update(camera,renderer,level,time,riding,topFloor) {
+  return function update(camera,renderer,level,time,riding,topFloor,wingTime=time) {
+    foreground.position.copy(camera.position);
+    foreground.quaternion.copy(camera.quaternion);
+    // Project each encounter from a fixed scenic altitude. A rising camera
+    // sees the flight drop, and reversing the lift reverses only that parallax.
+    const focalSlope=Math.tan(THREE.MathUtils.degToRad(camera.fov*.5));
+    const skyHeight=(altitude,distance)=>(altitude-camera.position.y)/(distance*focalSlope);
     let immersion=0;
     for (const bank of banks) {
       const dy=camera.position.y-bank.y;
@@ -261,40 +287,43 @@ export function createSky(scene,tuftMap,flocks) {
     const journey=.5-Math.sin(Math.asin(1-2*heightRatio)/3);
     for (const {formation,birds,index} of flocks) {
       const pass=(journey-(index ? .15 : .008))/.30;
-      fly(formation,camera,pass,34,-1.36,1.68,.35+index*.20+.07*Math.sin(pass*Math.PI),riding);
+      fly(formation,camera,pass,34,-1.36,1.68,skyHeight(index?272:113,index?540:350)+.035*Math.sin(pass*Math.PI),riding);
       if (!formation.visible) continue;
       formation.scale.setScalar(Math.min(1.04,camera.aspect*.88));
       formation.rotateY(-.32);
       birds.forEach(([left,right],i)=>{
-        const beat=time*.0031+i*.67;
+        const beat=wingTime*.0031+i*.67;
         const flap=.13+.31*Math.sin(beat)*(.5+.5*Math.cos(beat*.32));
         left.rotation.z=-flap;
         right.rotation.z=flap;
       });
     }
     const flight=(journey-.24)/.39;
-    fly(raptor,camera,flight,28,1.19,-1.19,.31+.09*Math.sin(flight*Math.PI),riding);
-    if (raptor.visible) {
-      raptor.rotateZ(.08+.12*Math.sin(flight*Math.PI*2));
-      raptor.rotateY(.32*Math.sin(flight*Math.PI*2));
-      raptor.scale.setScalar(Math.min(1.18,camera.aspect));
+    fly(raptor.root,camera,flight,28,1.19,-1.19,skyHeight(456,930)+.035*Math.sin(flight*Math.PI),riding);
+    if (raptor.root.visible) {
+      const seconds=wingTime*.001;
+      const cycle=(seconds%4.8)/4.8;
+      const burst=smooth(cycle,0,.08)*(1-smooth(cycle,.53,.73));
+      raptor.beat.value=.12+burst*.94*Math.sin(seconds*Math.PI*2*1.24);
+      raptor.root.rotateZ(.08+.12*Math.sin(flight*Math.PI*2));
+      raptor.root.scale.setScalar(Math.min(1.18,camera.aspect));
     }
     const pass=(journey-.48)/.385;
-    fly(serpent.root,camera,pass,36,-1.34,1.34,.69+.055*Math.sin(pass*Math.PI),riding);
+    fly(serpent.root,camera,pass,36,-1.34,1.34,skyHeight(758,920)+.045*Math.sin(pass*Math.PI),riding);
     if (serpent.root.visible) {
       serpent.root.rotateZ(.07*Math.cos(pass*Math.PI));
       serpent.root.scale.setScalar(Math.min(1.5,camera.aspect*.85));
-      serpent.wave.value=time*.00145;
+      serpent.wave.value=wingTime*.00145;
     }
     const orbit=(journey-.67)/.33;
-    fly(craft,camera,orbit,33,-1.32,1.32,.59+.12*orbit,riding);
+    fly(craft,camera,orbit,33,-1.32,1.32,skyHeight(959,760)+.035*orbit,riding);
     if (craft.visible) {
       const span=Math.min(9.4,camera.aspect*6.9);
       craft.scale.set(span,span*.50,1);
       craft.material.rotation=.085+.025*Math.sin(orbit*Math.PI);
     }
     const arrival=(journey-.81)/.19;
-    fly(satellite,camera,arrival,37,1.48,.45,.60-.23*arrival,riding);
+    fly(satellite,camera,arrival,37,1.48,.45,skyHeight(1026,450)-.08*arrival,riding);
     if (satellite.visible) {
       satellite.rotateZ(-.32-.14*arrival);
       satellite.rotateY(.46-.23*arrival);

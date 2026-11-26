@@ -1,4 +1,4 @@
-import {createConstructionScene} from './construction-scene.js?v=20261126-glide2';
+import {createConstructionScene} from './construction-scene.js?v=20261126-flight-clearance';
 
 const canvas=document.querySelector('#tower-canvas');
 const stage=canvas.parentElement;
@@ -44,6 +44,9 @@ let sceneTime=0;
 let siteTime=-1;
 let frame=0;
 let descentFrame=0;
+let skyFrame=0;
+let descentStarted=0;
+let stageInView=false;
 let descending=false;
 let descentFloor=null;
 let paused=false;
@@ -61,6 +64,8 @@ function collapseRunway() {
   const report=document.querySelector('#report');
   const anchor=report.getBoundingClientRect().top<innerHeight/2?report:tower;
   const oldTop=anchor.getBoundingClientRect().top;
+  cancelAnimationFrame(skyFrame);
+  skyFrame=0;
   descending=false;
   descentFloor=null;
   lastDrivenScroll=null;
@@ -93,7 +98,8 @@ if (scene) {
     const level=descentFloor ?? elevation;
     ichonMarker.hidden=level<39 || level>52 || (descentFloor===null && !frame && !paused && floors!==39);
     scene.render({floor:floors,elevation,siteTime,time:sceneTime,working:Boolean(frame||paused)&&elevation>0,
-      descentFloor,detail,detailTime});
+      descentFloor,detail,detailTime,
+      wingTime:descending&&!reducedMotion.matches ? endTime+performance.now()-descentStarted : sceneTime});
   }
 
   const ruler=document.createElement('div');
@@ -198,6 +204,29 @@ if (scene) {
     if (hadFocus) build.focus({preventScroll:true});
   }
 
+  // Wind and wingbeats continue while a reader stops scrolling beside a
+  // flight. Pause the extra renders outside that scene or in a hidden tab.
+  let lastSkyRender=0;
+  function animateRestingSky(now) {
+    skyFrame=0;
+    if (!available || !descending || !stageInView || document.hidden ||
+        reducedMotion.matches || descentFloor<4 || descentFloor>305) return;
+    if (now-lastSkyRender>=1000/24) {
+      render();
+      lastSkyRender=now;
+    }
+    skyFrame=requestAnimationFrame(animateRestingSky);
+  }
+  function wakeSky() {
+    if (!skyFrame && descending) skyFrame=requestAnimationFrame(animateRestingSky);
+  }
+  new IntersectionObserver(([entry])=>{
+    stageInView=entry.isIntersecting;
+    wakeSky();
+  }).observe(stage);
+  reducedMotion.addEventListener('change',wakeSky);
+  document.addEventListener('visibilitychange',wakeSky);
+
   function updateDescent() {
     const offset=Math.min(travel,Math.max(0,window.scrollY-runwayStart));
     const level=startingFloor-offset/pixelsPerFloor;
@@ -205,6 +234,7 @@ if (scene) {
     clipRuler();
     if (descentFloor===level) return;
     descentFloor=level;
+    wakeSky();
     count.value=String(displayed);
     slider.value=String(displayed);
     slider.setAttribute('aria-valuetext',displayed+'층');
@@ -212,6 +242,7 @@ if (scene) {
     sceneTime=endTime+(reducedMotion.matches?0:offset*1.5);
     hint.textContent=level===1?'1층 도착 · 계속 내리면 기사로 이어집니다':'↓ 스크롤해서 1층까지 내려가세요';
     if (level===1) status.textContent=hint.textContent;
+    lastSkyRender=performance.now();
     render();
   }
 
@@ -219,6 +250,7 @@ if (scene) {
     frame=0;
     paused=false;
     descending=true;
+    descentStarted=performance.now();
     descentFloor=null;
     if (!runway.hasAttribute('data-active')) enterRunway();
     setAscentScroll();

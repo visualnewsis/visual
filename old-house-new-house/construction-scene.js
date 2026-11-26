@@ -1,5 +1,5 @@
 import * as THREE from '../dmz/js/lib/three.module.min.js';
-import {createSky} from './sky.js?v=20261126-glide2';
+import {createSky} from './sky.js?v=20261126-flight-clearance';
 import {createExcavator} from './excavator.js?v=20261126-grounded';
 
 const {Vector3, Object3D, Group, Mesh, InstancedMesh, BoxGeometry, CylinderGeometry, MeshStandardMaterial} = THREE;
@@ -823,7 +823,7 @@ export function createConstructionScene({canvas,frame,background,onLost}) {
     renderer.setSize(rect.width,rect.height,false);
   }
 
-  function render({floor,elevation,siteTime,time,working,descentFloor,detail,detailTime}) {
+  function render({floor,elevation,siteTime,time,working,descentFloor,detail,detailTime,wingTime=time}) {
     resize();
     const onGround=floor===0 || (descentFloor!==null && descentFloor<14);
     const activeDetail=onGround && detail;
@@ -890,7 +890,7 @@ export function createConstructionScene({canvas,frame,background,onLost}) {
     camera.position.copy(cameraGoal);
     camera.lookAt(target);
     camera.updateMatrixWorld();
-    updateSky(camera,renderer,atElevation,time,workDeck,towerLimit);
+    updateSky(camera,renderer,atElevation,time,workDeck,towerLimit,wingTime);
     renderer.render(scene,camera);
   }
 
