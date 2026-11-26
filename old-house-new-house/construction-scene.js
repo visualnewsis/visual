@@ -1,5 +1,5 @@
 import * as THREE from '../dmz/js/lib/three.module.min.js';
-import {createSky} from './sky.js?v=20261126-flight-clearance';
+import {createSky} from './sky.js?v=20261126-soaring';
 import {createExcavator} from './excavator.js?v=20261126-backhoe2';
 
 const {Vector3, Object3D, Group, Mesh, InstancedMesh, BoxGeometry, CylinderGeometry, MeshStandardMaterial} = THREE;

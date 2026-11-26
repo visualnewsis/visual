@@ -121,25 +121,7 @@ function eagle() {
   const map=new THREE.TextureLoader().load(new URL('./sky-eagle.webp',import.meta.url).href);
   map.colorSpace=THREE.SRGBColorSpace;
   const paint=new THREE.MeshBasicMaterial({map,alphaTest:.15,side:THREE.DoubleSide,toneMapped:false});
-  // The photographed wing axis runs from lower left to upper right. Rotate
-  // each span about its own shoulder; the head, breast and tail stay rigid.
-  const beat={value:0};
-  paint.onBeforeCompile=shader=>{
-    shader.uniforms.beat=beat;
-    shader.vertexShader='uniform float beat;\n'+shader.vertexShader.replace('#include <begin_vertex>',`
-      #include <begin_vertex>
-      vec2 spanAxis=normalize(vec2(.79,.61));
-      float span=dot(position.xy-vec2(-.04,-.04),spanAxis);
-      float reach=max(abs(span)-.48,0.);
-      float tip=smoothstep(.0,2.9,reach);
-      float angle=beat*(.65+.47*tip);
-      transformed.xy+=spanAxis*sign(span)*reach*(cos(angle)-1.);
-      transformed.y+=reach*sin(angle)*.48;
-      transformed.z+=reach*sin(angle)*.86;
-    `);
-  };
-  const root=new THREE.Mesh(new THREE.PlaneGeometry(5.5,5.5*5/6,48,40),paint);
-  return {root,beat};
+  return new THREE.Mesh(new THREE.PlaneGeometry(5.5,5.5*5/6),paint);
 }
 
 function dragon() {
@@ -214,7 +196,7 @@ export function createSky(scene,tuftMap,flocks) {
   // depth and size together preserves the angular size of each silhouette.
   const foreground=new THREE.Group();
   foreground.scale.setScalar(.36);
-  foreground.add(raptor.root,serpent.root,craft,satellite,...flocks.map(flock=>flock.formation));
+  foreground.add(raptor,serpent.root,craft,satellite,...flocks.map(flock=>flock.formation));
   scene.add(foreground);
   const clearFog=new THREE.Color(0xc8dcdf),mist=new THREE.Color(0xdbe4e5);
   const blue=new THREE.Color(0x749eb7),twilight=new THREE.Color(0x233951),skyTint=new THREE.Color();
@@ -299,14 +281,10 @@ export function createSky(scene,tuftMap,flocks) {
       });
     }
     const flight=(journey-.24)/.39;
-    fly(raptor.root,camera,flight,28,1.19,-1.19,skyHeight(456,930)+.035*Math.sin(flight*Math.PI),riding);
-    if (raptor.root.visible) {
-      const seconds=wingTime*.001;
-      const cycle=(seconds%4.8)/4.8;
-      const burst=smooth(cycle,0,.08)*(1-smooth(cycle,.53,.73));
-      raptor.beat.value=.12+burst*.94*Math.sin(seconds*Math.PI*2*1.24);
-      raptor.root.rotateZ(.08+.12*Math.sin(flight*Math.PI*2));
-      raptor.root.scale.setScalar(Math.min(1.18,camera.aspect));
+    fly(raptor,camera,flight,28,1.19,-1.19,skyHeight(456,930)+.035*Math.sin(flight*Math.PI),riding);
+    if (raptor.visible) {
+      raptor.rotateZ(.08+.12*Math.sin(flight*Math.PI*2));
+      raptor.scale.setScalar(Math.min(1.18,camera.aspect));
     }
     const pass=(journey-.48)/.385;
     fly(serpent.root,camera,pass,36,-1.34,1.34,skyHeight(758,920)+.045*Math.sin(pass*Math.PI),riding);
