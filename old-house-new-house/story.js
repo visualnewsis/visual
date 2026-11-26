@@ -1,4 +1,4 @@
-import {createConstructionScene} from './construction-scene.js?v=20261126-orbit021';
+import {createConstructionScene} from './construction-scene.js?v=20261126-glide2';
 
 const canvas=document.querySelector('#tower-canvas');
 const stage=canvas.parentElement;

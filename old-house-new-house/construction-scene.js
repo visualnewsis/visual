@@ -1,5 +1,5 @@
 import * as THREE from '../dmz/js/lib/three.module.min.js';
-import {createSky} from './sky.js?v=20261126-orbit021';
+import {createSky} from './sky.js?v=20261126-glide2';
 import {createExcavator} from './excavator.js?v=20261126-grounded';
 
 const {Vector3, Object3D, Group, Mesh, InstancedMesh, BoxGeometry, CylinderGeometry, MeshStandardMaterial} = THREE;
@@ -740,7 +740,7 @@ function makeBirds(scene) {
   shape.lineTo(.58,-.10);
   shape.lineTo(.14,-.15);
   const wing=new THREE.ShapeGeometry(shape);
-  return [15,57].map((floor,index)=>{
+  return [0,1].map(index=>{
     const formation=group(scene);
     const birds=[];
     for (let i=0;i<4;i++) {
@@ -757,7 +757,7 @@ function makeBirds(scene) {
       bird.add(left,right);
       birds.push([left,right]);
     }
-    return {floor,formation,birds,index};
+    return {formation,birds,index};
   });
 }
 
@@ -804,8 +804,7 @@ export function createConstructionScene({canvas,frame,background,onLost}) {
   const cloudMap=new THREE.TextureLoader().load(new URL('./sky-cumulus.webp',import.meta.url).href);
   cloudMap.colorSpace=THREE.SRGBColorSpace;
   const clouds=makeClouds(scene,cloudMap);
-  const updateSky=createSky(scene,cloudMap);
-  const birds=makeBirds(scene);
+  const updateSky=createSky(scene,cloudMap,makeBirds(scene));
   let aspect=1;
   let viewSize='';
   let groundShadowView=null;
@@ -853,17 +852,6 @@ export function createConstructionScene({canvas,frame,background,onLost}) {
       sprite.visible=atElevation>=8 && Math.abs(alt-atElevation)<28;
       sprite.position.set(x+Math.sin(time/3200+phase)*6,alt*floorHeight,z);
     }
-    for (const {floor:alt,formation,birds:members,index} of birds) {
-      formation.visible=Math.abs(alt-atElevation)<12;
-      formation.position.set(-17+((time*.007+index*12)%42),alt*floorHeight,14-index*2);
-      formation.rotation.y=-.24;
-      members.forEach(([left,right],i)=>{
-        const flap=Math.sin(time/94+i*.8)*.54;
-        left.rotation.z=-flap;
-        right.rotation.z=flap;
-      });
-    }
-
     let photo=clamp(1-atElevation/27,0,1);
     if (activeDetail) photo*=.86;
     background.style.opacity=String(photo);
@@ -902,7 +890,7 @@ export function createConstructionScene({canvas,frame,background,onLost}) {
     camera.position.copy(cameraGoal);
     camera.lookAt(target);
     camera.updateMatrixWorld();
-    updateSky(camera,renderer,atElevation,time,workDeck);
+    updateSky(camera,renderer,atElevation,time,workDeck,towerLimit);
     renderer.render(scene,camera);
   }
 
