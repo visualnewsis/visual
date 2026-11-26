@@ -1,6 +1,6 @@
 import * as THREE from '../dmz/js/lib/three.module.min.js';
 import {createSky} from './sky.js?v=20261126-flight-clearance';
-import {createExcavator} from './excavator.js?v=20261126-grounded';
+import {createExcavator} from './excavator.js?v=20261126-backhoe';
 
 const {Vector3, Object3D, Group, Mesh, InstancedMesh, BoxGeometry, CylinderGeometry, MeshStandardMaterial} = THREE;
 const unit = new BoxGeometry(1,1,1);

@@ -228,22 +228,28 @@ export function createExcavator() {
     hose(arm,c.seals,[v(.13,.30,side*.26),v(.72,.48,side*.26),v(1.49,.36,side*.246),v(2.12,.22,side*.22)]);
   }
 
-  const shell = [[-.34,-.28],[-.56,-.53],[-.49,-.86],[-.29,-1.09],[.14,-1.16],[.66,-.99],[.78,-.87],[.62,-.87],
-    [.12,-1.00],[-.22,-.94],[-.39,-.75],[-.40,-.52],[-.26,-.32]];
+  const shell = [[.34,-.28],[.56,-.53],[.49,-.86],[.29,-1.09],[-.14,-1.16],[-.66,-.99],[-.78,-.87],[-.62,-.87],
+    [-.12,-1.00],[.22,-.94],[.39,-.75],[.40,-.52],[.26,-.32]];
   extruded(bucket,c.bucket,shell,.91,.016);
-  const cheek = [[-.32,.17],[-.57,-.26],[-.54,-.56],[-.42,-.91],[-.25,-1.05],[.13,-1.10],[.71,-.92],
-    [.55,-.83],[.06,-.60],[-.02,-.19],[.18,.13]];
+  const cheek = [[.32,.17],[.57,-.26],[.54,-.56],[.42,-.91],[.25,-1.05],[-.13,-1.10],[-.71,-.92],
+    [-.55,-.83],[-.06,-.60],[.02,-.19],[-.18,.13]];
   for (const side of [-1,1]) {
     const plate = extruded(bucket,c.armor,cheek,.055,.016);
     plate.position.z = side*.467;
-    axial(bucket,c.steel,.13,.06,-.012,0,side*.51,10);
+    axial(bucket,c.steel,.13,.06,.012,0,side*.51,10);
   }
   for (let tooth = 0; tooth < 5; tooth++) {
-    const point = extruded(bucket,c.steel,[[.53,-.98],[.67,-1.015],[.92,-.91],[.90,-.84],[.69,-.864]],.102,.012);
+    const point = extruded(bucket,c.steel,[[-.53,-.98],[-.67,-1.015],[-.92,-.91],[-.90,-.84],[-.69,-.864]],.102,.012);
     point.position.z = (tooth - 2)*.181;
   }
-  box(bucket,c.armor,-.16,-.14,0,.25,.41,.81);
-  axial(bucket,c.dark,.095,.75,-.23,.25,0,10);
+  // The wrist pin is the origin. Two mounting ears join it to the
+  // linkage pin on the rounded back, opposite the inward-facing teeth.
+  const bucketLinkPin=v(.23,.25,0);
+  for (const side of [-1,1]) {
+    const ear=extruded(bucket,c.armor,[[-.14,-.17],[.04,-.25],[.33,.14],[.33,.29],[.22,.36],[.12,.31],[-.12,.10]],.088,.012);
+    ear.position.z=side*.24;
+  }
+  axial(bucket,c.dark,.095,.75,bucketLinkPin.x,bucketLinkPin.y,0,12);
 
   const boomStroke = [-1,1].map(() => toolStroke(turret,c.edge,c.chrome,c.armor,.104,1.75));
   const armStroke = toolStroke(turret,c.paint,c.chrome,c.armor,.092,2.06);
@@ -256,9 +262,14 @@ export function createExcavator() {
   function setPose(time, digging = 0, pitFacing = 0) {
     const cycle = time / 540;
     const mix = THREE.MathUtils.lerp;
-    const boomAngle = mix(.74 + .145*Math.cos(cycle), .30, digging);
-    const armAngle = mix(-.96 + .29*Math.sin(cycle + .35), -1.38, digging);
-    const bucketAngle = mix(-.63 + .39*Math.sin(cycle - .8), -1.05, digging);
+    // On the digging stroke the stick pulls in first, then the teeth
+    // sweep back under the wrist and the boom lifts the curled bucket.
+    const pull=.5-.5*Math.cos(cycle);
+    const curl=.5-.5*Math.cos(cycle-.34);
+    const lift=.5-.5*Math.cos(cycle-.82);
+    const boomAngle=mix(.54,.25,digging)+.33*lift;
+    const armAngle=mix(-.72,-1.57,pull);
+    const bucketAngle=mix(.78,-.74,curl);
     turret.rotation.y = mix(-.29 + .21*Math.sin(time / 1100), .96 + .14*digging, pitFacing);
     const boomPoint = (x,y,z = 0) => v(x,y,z).applyAxisAngle(axisZ,boomAngle).add(pivot);
     const elbow = boomPoint(boomLength,0);
@@ -277,7 +288,7 @@ export function createExcavator() {
     }
     armStroke(boomPoint(2.12,.64),armPoint(.61,.34));
     const fixed = armPoint(1.99,.25,.03);
-    const lug = bucketPoint(-.23,.25,.03);
+    const lug = bucketPoint(bucketLinkPin.x,bucketLinkPin.y,.03);
     const joint = linkagePoint(fixed,lug,.45,.40);
     bucketStroke(armPoint(.92,.30,.03),joint);
     for (const [index, side] of [-1,1].entries()) {

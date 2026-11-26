@@ -1,4 +1,4 @@
-import {createConstructionScene} from './construction-scene.js?v=20261126-flight-clearance';
+import {createConstructionScene} from './construction-scene.js?v=20261126-backhoe';
 
 const canvas=document.querySelector('#tower-canvas');
 const stage=canvas.parentElement;
