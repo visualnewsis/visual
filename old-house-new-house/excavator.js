@@ -238,8 +238,9 @@ export function createExcavator() {
     plate.position.z = side*.467;
     axial(bucket,c.steel,.13,.06,.012,0,side*.51,10);
   }
+  const wornSteel=surface(0xc8c5b8,.51,.34);
   for (let tooth = 0; tooth < 5; tooth++) {
-    const point = extruded(bucket,c.steel,[[-.53,-.98],[-.67,-1.015],[-.92,-.91],[-.90,-.84],[-.69,-.864]],.102,.012);
+    const point = extruded(bucket,wornSteel,[[-.53,-.98],[-.67,-1.015],[-1.01,-.89],[-1.01,-.86],[-.69,-.864]],.096,.009);
     point.position.z = (tooth - 2)*.181;
   }
   // The wrist pin is the origin. Two mounting ears join it to the
@@ -250,6 +251,9 @@ export function createExcavator() {
     ear.position.z=side*.24;
   }
   axial(bucket,c.dark,.095,.75,bucketLinkPin.x,bucketLinkPin.y,0,12);
+  for (const side of [-1,1]) {
+    axial(bucket,wornSteel,.088,.027,bucketLinkPin.x,bucketLinkPin.y,side*.38,14);
+  }
 
   const boomStroke = [-1,1].map(() => toolStroke(turret,c.edge,c.chrome,c.armor,.104,1.75));
   const armStroke = toolStroke(turret,c.paint,c.chrome,c.armor,.092,2.06);
@@ -287,9 +291,9 @@ export function createExcavator() {
       boomStroke[index](boomRamBase.clone().setZ(side*.348),boomPoint(1.91,-.24,side*.348));
     }
     armStroke(boomPoint(2.12,.64),armPoint(.61,.34));
-    const fixed = armPoint(1.99,.25,.03);
+    const fixed = armPoint(1.99,.18,.03);
     const lug = bucketPoint(bucketLinkPin.x,bucketLinkPin.y,.03);
-    const joint = linkagePoint(fixed,lug,.45,.40);
+    const joint = linkagePoint(fixed,lug,.39,.50);
     bucketStroke(armPoint(.92,.30,.03),joint);
     for (const [index, side] of [-1,1].entries()) {
       const shift = v(0,0,side*.23);
