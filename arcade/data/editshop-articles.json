@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-11-26T00:36:20+00:00",
+  "updatedAt": "2026-11-26T14:04:28+00:00",
   "source": "VISUAL NEWSIS editshop landing page",
   "articles": [
     {
@@ -200,6 +200,16 @@
       "description": "어린이집을 기다린 두 달, 부모님께 아이를 맡기고 복직했다. 김씨의 실제 경험과 공개 조사로 입소 전후의 돌봄 공백을 살핍니다.",
       "image": "https://visual.newsis.com/admission-priority/assets/daycare-parent-newsis.jpg",
       "url": "https://visual.newsis.com/admission-priority/",
+      "profile": "center"
+    },
+    {
+      "id": "old-house-new-house",
+      "issue": "편집#021",
+      "label": "재건축 / 일반분양 / 분담금",
+      "title": "초역세권 320층. 1층까지 단 20분",
+      "description": "서울 이촌동 두 단지는 최고 39층으로 다시 지어도 네 가구가 줄어든다. 층수는 오르는데 집은 왜 줄어들까.",
+      "image": "https://visual.newsis.com/old-house-new-house/presale-hero.jpg",
+      "url": "https://visual.newsis.com/old-house-new-house/",
       "profile": "center"
     }
   ]
