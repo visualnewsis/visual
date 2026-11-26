@@ -150,9 +150,8 @@ function spaceModels() {
   const shuttleMap=new THREE.TextureLoader().load(new URL('./sky-orbiter.webp',import.meta.url).href);
   shuttleMap.colorSpace=THREE.SRGBColorSpace;
   const craft=new THREE.Sprite(new THREE.SpriteMaterial({
-    map:shuttleMap,transparent:true,depthWrite:false,toneMapped:false
+    map:shuttleMap,transparent:false,alphaTest:.25,depthWrite:true,toneMapped:false
   }));
-  craft.renderOrder=2;
   function part(parent,geometry,paint,x=0,y=0,z=0) {
     const mesh=new THREE.Mesh(geometry,paint);
     mesh.position.set(x,y,z);
@@ -196,8 +195,8 @@ export function createSky(scene,tuftMap,flocks) {
   // depth and size together preserves the angular size of each silhouette.
   const foreground=new THREE.Group();
   foreground.scale.setScalar(.36);
-  foreground.add(raptor,serpent.root,craft,satellite,...flocks.map(flock=>flock.formation));
-  scene.add(foreground);
+  foreground.add(raptor,serpent.root,satellite,...flocks.map(flock=>flock.formation));
+  scene.add(foreground,craft);
   const clearFog=new THREE.Color(0xc8dcdf),mist=new THREE.Color(0xdbe4e5);
   const blue=new THREE.Color(0x749eb7),twilight=new THREE.Color(0x233951),skyTint=new THREE.Color();
   const starPositions=[];
@@ -294,9 +293,13 @@ export function createSky(scene,tuftMap,flocks) {
       serpent.wave.value=wingTime*.00145;
     }
     const orbit=(journey-.67)/.33;
-    fly(craft,camera,orbit,33,-1.32,1.32,skyHeight(959,760)+.035*orbit,riding);
+    // Place the orbiter beyond the far facade even when the portrait camera
+    // pulls back. The depth buffer clips its silhouette at the building edge.
+    const orbitDepth=Math.hypot(camera.position.x,camera.position.z)*1.65+48;
+    fly(craft,camera,orbit,orbitDepth,-1.32,1.32,skyHeight(959,760)+.035*orbit,riding);
     if (craft.visible) {
-      const span=Math.min(9.4,camera.aspect*6.9);
+      camera.localToWorld(craft.position);
+      const span=orbitDepth*Math.min(.21,camera.aspect*.16);
       craft.scale.set(span,span*.50,1);
       craft.material.rotation=.085+.025*Math.sin(orbit*Math.PI);
     }

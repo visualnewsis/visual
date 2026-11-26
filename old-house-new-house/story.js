@@ -1,4 +1,4 @@
-import {createConstructionScene} from './construction-scene.js?v=20261126-soaring';
+import {createConstructionScene} from './construction-scene.js?v=20261126-distant-orbit';
 
 const canvas=document.querySelector('#tower-canvas');
 const stage=canvas.parentElement;
