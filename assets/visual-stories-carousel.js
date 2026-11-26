@@ -32,7 +32,8 @@
     {slug:"braille-100",num:"027",meta:"훈맹정음 100년 · 한글 점자 · 인터랙티브",title:"점점⠿<br><span class='vns-braille-title-line'>문장이 손에 잡혔다</span>",image:"/braille-100/images/contact-720.jpg",alt:"점자책 위에 놓인 손끝. 사진 김종택 기자"},
     {"slug":"turn-toward-busan","num":"028","meta":"유엔참전용사 · 부산을 향한 묵념","title":"11월 11일 오전 11시<br>111명의 이름을 다시","image":"/turn-toward-busan/images/NISI20251111_0021053031-1600.jpg","alt":"부산 유엔기념공원에서 휠체어에 앉은 참석자들이 경례하는 모습"},
     {"slug":"admission-priority","num":"029","meta":"복직 · 어린이집 입소 대기 · 돌봄 공백","title":"돌봄? 내 멘탈은 누가 돌봄?","image":"/admission-priority/assets/daycare-parent-newsis.jpg","alt":"아이를 안고 있는 보호자의 등원 자료사진. 사진 속 인물은 본문 사례와 관계없다."},
-    {"slug":"france2026","num":"030","meta":"프랑스 고교생 시위 · 교육 · 인터랙티브","title":"佛만의 문제일까?","image":"/france2026/assets/photos/paris-oct24-960.webp","alt":"2026년 10월 24일 프랑스 파리 도심에서 고물가 개선을 요구하며 모인 시위 참가자들. AP/뉴시스"}
+    {"slug":"france2026","num":"030","meta":"프랑스 고교생 시위 · 교육 · 인터랙티브","title":"佛만의 문제일까?","image":"/france2026/assets/photos/paris-oct24-960.webp","alt":"2026년 10월 24일 프랑스 파리 도심에서 고물가 개선을 요구하며 모인 시위 참가자들. AP/뉴시스"},
+    {"slug":"old-house-new-house","num":"031","meta":"재건축 · 일반분양 · 분담금","title":"초역세권 320층.<br>1층까지 단 20분","image":"/old-house-new-house/presale-hero.jpg","alt":"가상의 320층 아파트를 그린 분양 광고 이미지"}
 
   ];
   const mount=host=>{
