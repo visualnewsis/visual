@@ -150,7 +150,12 @@
     function schedule() {if (!disposed && !frame) frame = requestAnimationFrame(render);}
     function focus(event) {
       // Keyboard navigation must never leave the focused original behind a layer.
-      if (hero.contains(event.target)) {completed = true;cleanup();}
+      // Reparenting an anchor during pointer-down cancels its native click.
+      if (!event.target.matches(':focus-visible')) return;
+      const target = event.target;
+      completed = true;
+      cleanup();
+      if (document.activeElement !== target) target.focus({preventScroll:true});
     }
     addEventListener('scroll',schedule,{passive:true});
     addEventListener('resize',measure);
